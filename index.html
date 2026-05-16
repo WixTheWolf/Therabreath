@@ -24,9 +24,9 @@
         --soft-blue: #effaff;
         --soft-green: #f3fbef;
         --soft-orange: #fff5eb;
-        --radius-lg: 36px;
-        --radius-md: 24px;
-        --shadow: 0 28px 80px rgba(13, 27, 42, 0.10);
+        --radius-lg: 28px;
+        --radius-md: 18px;
+        --shadow: 0 18px 50px rgba(13, 27, 42, 0.09);
       }
 
       * {
@@ -111,8 +111,8 @@
         position: relative;
         overflow: hidden;
         min-height: calc(100vh - 72px);
-        padding: 86px 24px 42px;
-        text-align: center;
+        padding: 86px 24px 54px;
+        text-align: left;
         background:
           radial-gradient(circle at 48% 16%, rgba(0, 143, 211, 0.18), transparent 30rem),
           radial-gradient(circle at 88% 8%, rgba(245, 130, 32, 0.10), transparent 22rem),
@@ -120,6 +120,7 @@
       }
 
       .eyebrow {
+        max-width: 1120px;
         margin: 0 auto 22px;
         color: var(--muted);
         font-size: clamp(0.8rem, 1.4vw, 0.98rem);
@@ -136,7 +137,7 @@
       }
 
       h1 {
-        max-width: 1100px;
+        max-width: 1120px;
         margin: 0 auto;
         font-size: clamp(4rem, 11vw, 9.8rem);
         font-weight: 850;
@@ -146,7 +147,7 @@
 
       .hero-subhead {
         max-width: 760px;
-        margin: 28px auto 0;
+        margin: 28px auto 0 max((100vw - 1120px) / 2, 0px);
         color: #2d3748;
         font-size: clamp(1.25rem, 2.6vw, 2rem);
         font-weight: 650;
@@ -157,8 +158,9 @@
       .hero-meta {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 10px;
+        max-width: 1120px;
         margin: 30px auto 0;
       }
 
@@ -193,7 +195,7 @@
         margin: 76px auto 0;
         overflow: hidden;
         border: 1px solid #dceaf2;
-        border-radius: 46px;
+        border-radius: 34px;
         background:
           radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.34), transparent 18rem),
           linear-gradient(135deg, rgba(0, 143, 211, 0.96), rgba(95, 184, 50, 0.80)),
@@ -345,6 +347,14 @@
         line-height: 1.55;
       }
 
+      .section-note {
+        max-width: 620px;
+        margin-top: 18px;
+        color: #667085;
+        font-size: 1rem;
+        line-height: 1.55;
+      }
+
       .split {
         display: grid;
         grid-template-columns: 0.88fr 1.12fr;
@@ -354,11 +364,11 @@
 
       .statement {
         margin-top: 42px;
-        padding: clamp(30px, 5vw, 54px);
+        padding: clamp(28px, 4vw, 46px);
         border: 1px solid var(--line);
         border-radius: var(--radius-lg);
         background: #fff;
-        box-shadow: 0 20px 60px rgba(13, 27, 42, 0.07);
+        box-shadow: 0 14px 36px rgba(13, 27, 42, 0.06);
       }
 
       .statement p {
@@ -383,6 +393,12 @@
         border: 1px solid var(--line);
         border-radius: var(--radius-md);
         background: #fff;
+      }
+
+      .metric-card:nth-child(2),
+      .pillar-card:nth-child(3),
+      .trend-card:nth-child(4) {
+        background: #fffdf9;
       }
 
       .metric-card {
@@ -752,6 +768,10 @@
           padding: 0 20px;
         }
 
+        .hero-subhead {
+          margin-left: 0;
+        }
+
         .nav-links a:not(.nav-cta) {
           display: none;
         }
@@ -794,11 +814,11 @@
       <section class="hero" aria-labelledby="hero-title">
         <p class="eyebrow">The Flavor Factory X Therabreath</p>
         <h1 id="hero-title">Breath of Innovation</h1>
-        <p class="hero-subhead">We know fresh. We know scale. This workshop is about building what comes next for Therabreath with flavors that are clean, reliable, and hard to forget.</p>
+        <p class="hero-subhead">A working session for the Therabreath team. What is solid today, what needs protection, and where flavor can open up the next round of growth.</p>
         <div class="hero-meta" aria-label="Workshop details">
           <span class="pill">July 2026 Capabilities Workshop</span>
           <span class="pill">Norco, California</span>
-          <span class="pill">Flavor partnership workshop</span>
+          <span class="pill">Working session</span>
         </div>
         <div class="hero-card" aria-hidden="true">
           <div class="bottle-stage">
@@ -820,24 +840,24 @@
         <div class="container split">
           <div>
             <p class="section-kicker">Our partnership</p>
-            <h2 class="section-title">We make flavor work at scale.</h2>
-            <p class="section-copy">For July 2026, we are keeping the conversation simple: what is working, what needs to be protected, and where flavor can help Therabreath grow next.</p>
+            <h2 class="section-title">Here is where we are strong.</h2>
+            <p class="section-copy">The point of the day is not a big show. It is a clear look at our setup, the work we have done together, and the places where we think flavor can do more for Therabreath.</p>
             <div class="statement">
-              <p>Therabreath is not just another project. It is a brand we know, support, and want to help grow.</p>
+              <p>Therabreath is a brand we know well. We care about the details because the details are what keep the product consistent.</p>
             </div>
           </div>
           <div class="metrics" aria-label="Partnership highlights">
             <article class="metric-card">
               <div class="metric-number">99%+</div>
-              <p>Reliable supply, consistent execution, and the discipline to keep launches and core items moving.</p>
+              <p>Reliable supply and consistent execution — the stuff that only gets noticed when it is missing.</p>
             </article>
             <article class="metric-card">
               <div class="metric-number">Dedicated</div>
-              <p>Dedicated Therabreath production space built for focus, quality, and repeatable execution.</p>
+              <p>A dedicated Therabreath production space so the important things stay controlled and repeatable.</p>
             </article>
             <article class="metric-card">
               <div class="metric-number">Growth</div>
-              <p>A multi-year relationship with real momentum and room to keep building.</p>
+              <p>A multi-year relationship with momentum, trust, and more room to build.</p>
             </article>
           </div>
         </div>
@@ -846,14 +866,14 @@
       <section id="capabilities" class="soft">
         <div class="container">
           <p class="section-kicker">Capabilities</p>
-          <h2 class="section-title">How we support the Therabreath business.</h2>
-          <p class="section-copy">The work is bigger than making something taste good. We protect supply, move quickly, communicate clearly, and create flavors that can survive the realities of production.</p>
+          <h2 class="section-title">How we help day to day.</h2>
+          <p class="section-copy">Good flavor matters. So does everything around it: raw materials, timing, quality, scale-up, and communication when something changes.</p>
 
           <div class="pillars">
             <article class="pillar-card">
               <span class="pillar-index">1</span>
               <h3>Resiliency &amp; Business Continuity</h3>
-              <p class="sub">Protect the core. Be ready for the upside.</p>
+              <p class="sub">Protect the core. Be ready when demand moves.</p>
               <ul class="clean-list">
                 <li>Capacity planning and scalability</li>
                 <li>Dedicated Therabreath production room</li>
@@ -865,7 +885,7 @@
             <article class="pillar-card">
               <span class="pillar-index">2</span>
               <h3>Innovation &amp; Technical Capabilities</h3>
-              <p class="sub">Create new reasons to reach for the bottle.</p>
+              <p class="sub">Give people another reason to reach for the bottle.</p>
               <ul class="clean-list">
                 <li>Flavor creation capabilities and trend identification</li>
                 <li>Proactive ideation and new product development</li>
@@ -877,7 +897,7 @@
             <article class="pillar-card">
               <span class="pillar-index">3</span>
               <h3>Supply Chain &amp; Operations</h3>
-              <p class="sub">Make it clean. Make it repeatable. Make it clear.</p>
+              <p class="sub">Keep the work clean, repeatable, and visible.</p>
               <ul class="clean-list">
                 <li>Current manufacturing footprint and recent investments</li>
                 <li>Lead times, OTIF performance, and scalability</li>
@@ -888,7 +908,7 @@
             <article class="pillar-card">
               <span class="pillar-index">4</span>
               <h3>Partnership &amp; Growth Vision</h3>
-              <p class="sub">Stay close, think ahead, build together.</p>
+              <p class="sub">Stay close and keep building together.</p>
               <ul class="clean-list">
                 <li>Alignment with Therabreath’s growth priorities</li>
                 <li>Willingness and ability to invest in the partnership</li>
@@ -903,14 +923,14 @@
       <section id="trends">
         <div class="container">
           <p class="section-kicker">Flavor trends</p>
-          <h2 class="section-title">Freshness can do more.</h2>
-          <p class="section-copy">Mint still matters. But the next wave of oral care gives people more reasons to engage: comfort, brightness, indulgence, hydration, and seasonal discovery.</p>
+          <h2 class="section-title">Fresh can stretch further.</h2>
+          <p class="section-copy">Mint is still the anchor. The opportunity is to bring in more reasons to use the product: comfort, brightness, hydration, a little fun, and the occasional seasonal idea.</p>
           <div class="trends-grid">
-            <article class="trend-card"><span>01</span><h3>Functional + sensory pleasure</h3><p>Freshness works harder when people actually enjoy the experience.</p></article>
-            <article class="trend-card"><span>02</span><h3>Beyond mint</h3><p>Dessert, tropical, and herbal-calming profiles open new doors without walking away from fresh.</p></article>
-            <article class="trend-card"><span>03</span><h3>Natural-forward profiles</h3><p>Clean-label cues need flavors that feel clear, bright, and intentional.</p></article>
-            <article class="trend-card"><span>04</span><h3>Kids and adult indulgence</h3><p>The same brand can support playful family moments and premium adult routines.</p></article>
-            <article class="trend-card"><span>05</span><h3>Limited-edition energy</h3><p>Limited runs can create urgency, conversation, and incremental trial.</p></article>
+            <article class="trend-card"><span>01</span><h3>Functional + sensory pleasure</h3><p>Fresh works harder when people enjoy using the product.</p></article>
+            <article class="trend-card"><span>02</span><h3>Beyond mint</h3><p>Dessert, tropical, and calming profiles can open new doors without walking away from fresh.</p></article>
+            <article class="trend-card"><span>03</span><h3>Natural-forward profiles</h3><p>Cleaner cues need flavors that feel clear, bright, and intentional.</p></article>
+            <article class="trend-card"><span>04</span><h3>Kids and adult indulgence</h3><p>There is room for both family-friendly and more adult routines.</p></article>
+            <article class="trend-card"><span>05</span><h3>Limited-edition energy</h3><p>Limited runs can create a reason to try now.</p></article>
           </div>
         </div>
       </section>
@@ -918,8 +938,9 @@
       <section id="concepts" class="soft">
         <div class="container">
           <p class="section-kicker">Prototype concepts</p>
-          <h2 class="section-title">Five flavor directions worth tasting.</h2>
-          <p class="section-copy">These are not random flavor ideas. Each one is built to stretch the Therabreath world while keeping the finish clean, fresh, and credible.</p>
+          <h2 class="section-title">Five ideas to taste and talk through.</h2>
+          <p class="section-copy">These are starting points. Each one is meant to stretch the Therabreath world a little while still finishing clean and fresh.</p>
+          <p class="section-note">None of these are precious. The point is to taste, react, edit, and decide what is worth building.</p>
 
           <div class="concepts">
             <article class="concept-card" style="--accent: #ed3d70">
@@ -928,7 +949,7 @@
                 <h3>Berry Bliss</h3>
                 <p class="sub">Sweet Wild Berry + Cooling Mint Finish</p>
                 <div class="profile"><div class="profile-row"><b>Top</b><span>Juicy strawberry &amp; raspberry</span></div><div class="profile-row"><b>Heart</b><span>Subtle blueberry roundness</span></div><div class="profile-row"><b>Finish</b><span>Signature TFF cooling mint</span></div></div>
-                <p>Approachable, playful, and designed to mask metallic notes while delivering long-lasting freshness.</p>
+                <p>Approachable and playful, with enough mint finish to keep it feeling like oral care.</p>
                 <p class="claim">“Fun, Fresh Breath Kids Love”</p>
               </div>
             </article>
@@ -938,7 +959,7 @@
                 <h3>Tropical Oasis</h3>
                 <p class="sub">Mango, Pineapple, Coconut Water + Subtle Mint</p>
                 <div class="profile"><div class="profile-row"><b>Top</b><span>Bright mango &amp; pineapple</span></div><div class="profile-row"><b>Heart</b><span>Creamy coconut water</span></div><div class="profile-row"><b>Finish</b><span>Gentle mint cooling</span></div></div>
-                <p>Vacation in a bottle — energizing, juicy, and incredibly refreshing.</p>
+                <p>Bright and vacation-like, but still gentle enough to belong in a rinse.</p>
                 <p class="claim">“Escape to Fresh”</p>
               </div>
             </article>
@@ -948,7 +969,7 @@
                 <h3>Crisp Cucumber Mint</h3>
                 <p class="sub">Fresh Cucumber + Cooling Mint Finish</p>
                 <div class="profile"><div class="profile-row"><b>Top</b><span>Crisp watery cucumber</span></div><div class="profile-row"><b>Heart</b><span>Light herbal freshness</span></div><div class="profile-row"><b>Finish</b><span>Long cooling mint</span></div></div>
-                <p>Crisp, cooling freshness with an ultra-clean mouthfeel and long-lasting coolness.</p>
+                <p>Clean, watery, and spa-like with a cool finish that lasts.</p>
                 <p class="claim">“Hydrating Freshness”</p>
               </div>
             </article>
@@ -958,7 +979,7 @@
                 <h3>Citrus Ginger Spark</h3>
                 <p class="sub">Bright Lemon-Lime + Ginger Zing + Cooling Mint</p>
                 <div class="profile"><div class="profile-row"><b>Top</b><span>Zesty lemon-lime</span></div><div class="profile-row"><b>Heart</b><span>Warming ginger kick</span></div><div class="profile-row"><b>Finish</b><span>Crisp mint</span></div></div>
-                <p>Clean, bright, and slightly spicy with a memorable energized finish.</p>
+                <p>Bright, clean, and a little spicy — more energy than a standard mint.</p>
                 <p class="claim">“Spark of Fresh”</p>
               </div>
             </article>
@@ -968,7 +989,7 @@
                 <h3>Dessert Mint Dream</h3>
                 <p class="sub">Vanilla Bean + Chocolate Mint + Cooling Finish</p>
                 <div class="profile"><div class="profile-row"><b>Top</b><span>Warm vanilla bean</span></div><div class="profile-row"><b>Heart</b><span>Hint of chocolate mint</span></div><div class="profile-row"><b>Finish</b><span>Sophisticated cooling</span></div></div>
-                <p>Indulgent yet sophisticated — balancing treat and treatment.</p>
+                <p>A little indulgent, but not candy. The finish still has to do its job.</p>
                 <p class="claim">“Sweet Escape, Clean Finish”</p>
               </div>
             </article>
@@ -979,8 +1000,8 @@
       <section id="evaluation">
         <div class="container">
           <p class="section-kicker">Sensory evaluation</p>
-          <h2 class="section-title">Taste it like it is going to market.</h2>
-          <p class="section-copy">The goal is not just “like” or “dislike.” We want to know what feels ownable, what feels scalable, and what deserves another round of work.</p>
+          <h2 class="section-title">Taste it like we might make it.</h2>
+          <p class="section-copy">We are not only looking for favorites. We are looking for what feels right for the brand, what can scale, and what needs another pass.</p>
           <div class="steps">
             <article class="step-card"><b>01</b><h3>Swish</h3><p>Swish 10–15 ml for 10 seconds.</p></article>
             <article class="step-card"><b>02</b><h3>Notice</h3><p>Note aroma, flavor intensity, and cooling effect.</p></article>
@@ -993,8 +1014,8 @@
       <section id="feedback" class="soft">
         <div class="container">
           <p class="section-kicker">Your feedback</p>
-          <h2 class="section-title">Tell us what has legs.</h2>
-          <p class="section-copy">Use this section to call out the winners, the concerns, and the ideas that should move into deeper validation.</p>
+          <h2 class="section-title">Tell us what is worth chasing.</h2>
+          <p class="section-copy">Use this section for the honest notes: winners, concerns, watch-outs, and anything that should come back for another round.</p>
           <div class="feedback-panel">
             <table aria-label="Flavor feedback scoring table">
               <thead><tr><th>Flavor</th><th>Overall Liking</th><th>Uniqueness</th><th>Purchase Intent</th><th>Comments</th></tr></thead>
@@ -1020,16 +1041,16 @@
       <section id="next" class="closing">
         <div class="container">
           <p class="section-kicker">Co-creation &amp; next steps</p>
-          <h2 class="section-title">Ready for the next round.</h2>
-          <p class="section-copy">Once we know what you believe in, we can move quickly: refine the flavor, validate the experience, and prepare the winners for scale.</p>
+          <h2 class="section-title">After the workshop.</h2>
+          <p class="section-copy">Once we know where there is interest, we can tighten the formulas, make more, test properly, and get the strongest ideas ready for scale.</p>
           <div class="next-grid">
             <article class="next-card">
-              <h3>From bench sample to scale-up, without losing the thread.</h3>
+              <h3>Keep the idea intact from bench to scale-up.</h3>
               <ul class="clean-list">
-                <li>Compound larger pilot batches</li>
-                <li>Conduct formal sensory panels</li>
-                <li>Develop custom claims and packaging concepts</li>
-                <li>Scale winning concepts into production</li>
+                <li>Make larger pilot batches</li>
+                <li>Run formal sensory panels</li>
+                <li>Build claims and packaging direction around the winners</li>
+                <li>Move the strongest concepts toward production</li>
               </ul>
             </article>
             <article class="next-card contact">
