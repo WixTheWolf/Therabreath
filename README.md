@@ -1,6 +1,6 @@
-# The Flavor Factory × TheraBreath Capabilities Workshop Site
+# The Flavor Factory X Therabreath Capabilities Workshop Site
 
-This repository contains a minimal, Apple-inspired static workshop site for **The Flavor Factory × Church & Dwight / TheraBreath Capabilities Workshop | July 2026**.
+This repository contains a minimal, Apple-inspired static workshop site for **The Flavor Factory X Therabreath Capabilities Workshop | July 2026**.
 
 ## Deliverable
 
@@ -11,9 +11,9 @@ This repository contains a minimal, Apple-inspired static workshop site for **Th
 ## Design Direction
 
 - Minimal, premium, and highly spacious web presentation rather than a dense booklet/PDF.
-- Visual direction aligns with The Flavor Factory’s clean black-and-white website foundation while introducing TheraBreath blue `#00A3E0` and mint `#7ED321` as restrained accents.
+- Visual direction aligns with The Flavor Factory’s clean black-and-white website foundation while using Therabreath’s recognizable blue bottle, orange lid, and green copy colors as the core accent system.
 - Large Apple-style hero typography, sticky navigation, soft gradients, pill metadata, clean card systems, and horizontal concept galleries.
-- Copy is focused on strategic partnership, operational excellence, innovation readiness, and the five prototype flavor concepts.
+- Copy is direct, practical, and in The Flavor Factory’s voice: flavor expertise, reliable scale, clear partnership, and prototype concepts that can become real production opportunities.
 
 ## Vercel Deployment
 

@@ -5,20 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Breath of Innovation: Scaling Fresh Together — July 2026 Capabilities Workshop for Church & Dwight / TheraBreath."
+      content="Breath of Innovation: Scaling Fresh Together — July 2026 Capabilities Workshop for Therabreath."
     />
-    <title>Breath of Innovation | The Flavor Factory × TheraBreath</title>
+    <title>Breath of Innovation | The Flavor Factory X Therabreath</title>
     <style>
       :root {
-        --blue: #00a3e0;
-        --mint: #7ed321;
+        --bottle-blue: #008fd3;
+        --lid-orange: #f58220;
+        --copy-green: #5fb832;
+        --blue: var(--bottle-blue);
+        --mint: var(--copy-green);
+        --orange: var(--lid-orange);
         --ink: #090909;
         --navy: #0d1b2a;
         --muted: #667085;
         --line: #e7edf2;
         --paper: #fbfcfd;
         --soft-blue: #effaff;
-        --soft-mint: #f2fbea;
+        --soft-green: #f3fbef;
+        --soft-orange: #fff5eb;
         --radius-lg: 36px;
         --radius-md: 24px;
         --shadow: 0 28px 80px rgba(13, 27, 42, 0.10);
@@ -97,8 +102,9 @@
         padding: 10px 16px;
         border-radius: 999px;
         color: #fff;
-        background: #111;
+        background: var(--lid-orange);
         font-weight: 700;
+        box-shadow: 0 10px 24px rgba(245, 130, 32, 0.18);
       }
 
       .hero {
@@ -108,7 +114,8 @@
         padding: 86px 24px 42px;
         text-align: center;
         background:
-          radial-gradient(circle at 50% 18%, rgba(0, 163, 224, 0.20), transparent 30rem),
+          radial-gradient(circle at 48% 16%, rgba(0, 143, 211, 0.18), transparent 30rem),
+          radial-gradient(circle at 88% 8%, rgba(245, 130, 32, 0.10), transparent 22rem),
           linear-gradient(#fff, #f7fbfd 62%, #fff);
       }
 
@@ -169,6 +176,16 @@
         font-weight: 650;
       }
 
+      .pill:nth-child(2) {
+        border-color: rgba(245, 130, 32, 0.28);
+        background: rgba(255, 245, 235, 0.82);
+      }
+
+      .pill:nth-child(3) {
+        border-color: rgba(95, 184, 50, 0.24);
+        background: rgba(243, 251, 239, 0.82);
+      }
+
       .hero-card {
         position: relative;
         width: min(1040px, calc(100vw - 42px));
@@ -178,8 +195,9 @@
         border: 1px solid #dceaf2;
         border-radius: 46px;
         background:
-          linear-gradient(135deg, rgba(0, 163, 224, 0.92), rgba(126, 211, 33, 0.78)),
-          #00a3e0;
+          radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.34), transparent 18rem),
+          linear-gradient(135deg, rgba(0, 143, 211, 0.96), rgba(95, 184, 50, 0.80)),
+          var(--bottle-blue);
         box-shadow: var(--shadow);
       }
 
@@ -209,24 +227,88 @@
         content: "";
       }
 
-      .vials {
+      .bottle-stage {
         position: absolute;
-        right: 8%;
-        bottom: 54px;
-        left: 8%;
+        inset: 0;
         display: grid;
-        grid-template-columns: repeat(6, minmax(34px, 1fr));
-        align-items: end;
-        gap: clamp(12px, 3vw, 34px);
+        place-items: center;
       }
 
-      .vial {
-        height: var(--h);
-        border: 1px solid rgba(255, 255, 255, 0.56);
-        border-radius: 18px 18px 10px 10px;
+      .bottle {
+        position: relative;
+        width: min(280px, 46vw);
+        height: 310px;
+        border-radius: 48px 48px 72px 72px;
         background:
-          linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.18) 28%, var(--c) 29%, var(--c));
-        box-shadow: inset 0 1px rgba(255, 255, 255, 0.7), 0 20px 36px rgba(13, 27, 42, 0.12);
+          linear-gradient(90deg, rgba(255,255,255,.30), transparent 18%, transparent 72%, rgba(0,0,0,.10)),
+          linear-gradient(180deg, #0ba7e4, #007fc1 66%, #006aa6);
+        box-shadow: 0 36px 80px rgba(13, 27, 42, 0.22), inset 0 1px rgba(255,255,255,.48);
+      }
+
+      .bottle::before {
+        position: absolute;
+        top: -54px;
+        left: 50%;
+        width: 132px;
+        height: 64px;
+        border-radius: 28px 28px 14px 14px;
+        background: linear-gradient(180deg, #ff9a3d, var(--lid-orange));
+        box-shadow: inset 0 1px rgba(255,255,255,.50), 0 18px 38px rgba(13, 27, 42, 0.16);
+        content: "";
+        transform: translateX(-50%);
+      }
+
+      .bottle::after {
+        position: absolute;
+        right: 32px;
+        bottom: 46px;
+        left: 32px;
+        height: 132px;
+        border-radius: 34px;
+        background: rgba(255,255,255,.93);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.55);
+        content: "";
+      }
+
+      .bottle-label {
+        position: absolute;
+        z-index: 2;
+        right: 46px;
+        bottom: 82px;
+        left: 46px;
+        color: var(--copy-green);
+        font-size: clamp(1.55rem, 4vw, 2.5rem);
+        font-weight: 850;
+        letter-spacing: -0.035em;
+        line-height: .92;
+        text-align: center;
+      }
+
+      .bottle-label small {
+        display: block;
+        margin-top: 8px;
+        color: var(--bottle-blue);
+        font-size: .72rem;
+        font-weight: 800;
+        letter-spacing: .10em;
+        text-transform: uppercase;
+      }
+
+      .flavor-orbs {
+        position: absolute;
+        inset: auto 7% 46px;
+        display: flex;
+        justify-content: space-between;
+        pointer-events: none;
+      }
+
+      .flavor-orbs span {
+        width: clamp(28px, 5vw, 58px);
+        aspect-ratio: 1;
+        border: 1px solid rgba(255,255,255,.50);
+        border-radius: 999px;
+        background: var(--orb);
+        box-shadow: 0 20px 40px rgba(13,27,42,.13);
       }
 
       section {
@@ -358,7 +440,7 @@
         margin-bottom: 28px;
         border-radius: 50%;
         color: #fff;
-        background: #111;
+        background: linear-gradient(135deg, var(--bottle-blue), var(--copy-green));
         font-weight: 800;
       }
 
@@ -710,22 +792,26 @@
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <p class="eyebrow">The Flavor Factory × Church &amp; Dwight / TheraBreath</p>
+        <p class="eyebrow">The Flavor Factory X Therabreath</p>
         <h1 id="hero-title">Breath of Innovation</h1>
-        <p class="hero-subhead">A focused innovation workshop for scaling fresh breath experiences with operational confidence, sensory discipline, and concepts built for TheraBreath’s next chapter.</p>
+        <p class="hero-subhead">We know fresh. We know scale. This workshop is about building what comes next for Therabreath with flavors that are clean, reliable, and hard to forget.</p>
         <div class="hero-meta" aria-label="Workshop details">
           <span class="pill">July 2026 Capabilities Workshop</span>
           <span class="pill">Norco, California</span>
-          <span class="pill">Strategic partnership workshop</span>
+          <span class="pill">Flavor partnership workshop</span>
         </div>
         <div class="hero-card" aria-hidden="true">
-          <div class="vials">
-            <span class="vial" style="--h: 146px; --c: rgba(0,163,224,.82)"></span>
-            <span class="vial" style="--h: 104px; --c: rgba(126,211,33,.82)"></span>
-            <span class="vial" style="--h: 178px; --c: rgba(237,61,112,.76)"></span>
-            <span class="vial" style="--h: 132px; --c: rgba(255,185,44,.78)"></span>
-            <span class="vial" style="--h: 164px; --c: rgba(117,211,221,.72)"></span>
-            <span class="vial" style="--h: 118px; --c: rgba(78,47,37,.72)"></span>
+          <div class="bottle-stage">
+            <div class="bottle">
+              <div class="bottle-label">Therabreath<small>Fresh flavor systems</small></div>
+            </div>
+          </div>
+          <div class="flavor-orbs">
+            <span style="--orb: rgba(237,61,112,.78)"></span>
+            <span style="--orb: rgba(255,185,44,.82)"></span>
+            <span style="--orb: rgba(95,184,50,.72)"></span>
+            <span style="--orb: rgba(245,130,32,.78)"></span>
+            <span style="--orb: rgba(78,47,37,.72)"></span>
           </div>
         </div>
       </section>
@@ -734,24 +820,24 @@
         <div class="container split">
           <div>
             <p class="section-kicker">Our partnership</p>
-            <h2 class="section-title">A partnership built for consistent growth.</h2>
-            <p class="section-copy">For the July 2026 capabilities workshop, we are bringing together the operating discipline, flavor expertise, and long-term planning required to support TheraBreath’s continued growth.</p>
+            <h2 class="section-title">We make flavor work at scale.</h2>
+            <p class="section-copy">For July 2026, we are keeping the conversation simple: what is working, what needs to be protected, and where flavor can help Therabreath grow next.</p>
             <div class="statement">
-              <p>TheraBreath is more than a customer — it is a strategic growth partner.</p>
+              <p>Therabreath is not just another project. It is a brand we know, support, and want to help grow.</p>
             </div>
           </div>
           <div class="metrics" aria-label="Partnership highlights">
             <article class="metric-card">
               <div class="metric-number">99%+</div>
-              <p>Consistent OTIF performance that supports confident planning and reliable supply.</p>
+              <p>Reliable supply, consistent execution, and the discipline to keep launches and core items moving.</p>
             </article>
             <article class="metric-card">
               <div class="metric-number">Dedicated</div>
-              <p>TheraBreath production room built for focus, quality, and repeatable execution.</p>
+              <p>Dedicated Therabreath production space built for focus, quality, and repeatable execution.</p>
             </article>
             <article class="metric-card">
               <div class="metric-number">Growth</div>
-              <p>Multi-year collaboration supporting significant year-over-year volume growth.</p>
+              <p>A multi-year relationship with real momentum and room to keep building.</p>
             </article>
           </div>
         </div>
@@ -760,17 +846,17 @@
       <section id="capabilities" class="soft">
         <div class="container">
           <p class="section-kicker">Capabilities</p>
-          <h2 class="section-title">Four pillars for scalable fresh-breath growth.</h2>
-          <p class="section-copy">These pillars frame how The Flavor Factory supports TheraBreath with resilient operations, disciplined innovation, transparent execution, and a shared long-term growth vision.</p>
+          <h2 class="section-title">How we support the Therabreath business.</h2>
+          <p class="section-copy">The work is bigger than making something taste good. We protect supply, move quickly, communicate clearly, and create flavors that can survive the realities of production.</p>
 
           <div class="pillars">
             <article class="pillar-card">
               <span class="pillar-index">1</span>
               <h3>Resiliency &amp; Business Continuity</h3>
-              <p class="sub">Built to scale and protect supply.</p>
+              <p class="sub">Protect the core. Be ready for the upside.</p>
               <ul class="clean-list">
                 <li>Capacity planning and scalability</li>
-                <li>Dedicated TheraBreath production room</li>
+                <li>Dedicated Therabreath production room</li>
                 <li>Redundancy and risk mitigation</li>
                 <li>Quality systems and compliance infrastructure</li>
                 <li>Disaster recovery and contingency planning</li>
@@ -779,7 +865,7 @@
             <article class="pillar-card">
               <span class="pillar-index">2</span>
               <h3>Innovation &amp; Technical Capabilities</h3>
-              <p class="sub">Creating the next generation of freshness.</p>
+              <p class="sub">Create new reasons to reach for the bottle.</p>
               <ul class="clean-list">
                 <li>Flavor creation capabilities and trend identification</li>
                 <li>Proactive ideation and new product development</li>
@@ -791,7 +877,7 @@
             <article class="pillar-card">
               <span class="pillar-index">3</span>
               <h3>Supply Chain &amp; Operations</h3>
-              <p class="sub">Reliable. Scalable. Transparent.</p>
+              <p class="sub">Make it clean. Make it repeatable. Make it clear.</p>
               <ul class="clean-list">
                 <li>Current manufacturing footprint and recent investments</li>
                 <li>Lead times, OTIF performance, and scalability</li>
@@ -802,12 +888,12 @@
             <article class="pillar-card">
               <span class="pillar-index">4</span>
               <h3>Partnership &amp; Growth Vision</h3>
-              <p class="sub">Strategic flavor partnership for the next five years.</p>
+              <p class="sub">Stay close, think ahead, build together.</p>
               <ul class="clean-list">
-                <li>Alignment with Church &amp; Dwight’s oral care ambitions</li>
+                <li>Alignment with Therabreath’s growth priorities</li>
                 <li>Willingness and ability to invest in the partnership</li>
                 <li>Enhanced communication and ways of working</li>
-                <li>Vision for supporting TheraBreath growth over the next 3–5 years</li>
+                <li>Vision for supporting Therabreath growth over the next 3–5 years</li>
               </ul>
             </article>
           </div>
@@ -817,14 +903,14 @@
       <section id="trends">
         <div class="container">
           <p class="section-kicker">Flavor trends</p>
-          <h2 class="section-title">Freshness is becoming more sensorial.</h2>
-          <p class="section-copy">Oral care is moving beyond traditional mint into a broader language of wellness, pleasure, clean-label cues, seasonal energy, and audience-specific experiences.</p>
+          <h2 class="section-title">Freshness can do more.</h2>
+          <p class="section-copy">Mint still matters. But the next wave of oral care gives people more reasons to engage: comfort, brightness, indulgence, hydration, and seasonal discovery.</p>
           <div class="trends-grid">
-            <article class="trend-card"><span>01</span><h3>Functional + sensory pleasure</h3><p>Wellness and freshness work harder when the experience is enjoyable.</p></article>
-            <article class="trend-card"><span>02</span><h3>Beyond mint</h3><p>Dessert, tropical, and herbal-calming profiles create new reasons to engage.</p></article>
-            <article class="trend-card"><span>03</span><h3>Natural-forward profiles</h3><p>Clean-label expectations reward flavors that feel clear, bright, and intentional.</p></article>
-            <article class="trend-card"><span>04</span><h3>Kids and adult indulgence</h3><p>Portfolio expansion can support both playful and premium moments.</p></article>
-            <article class="trend-card"><span>05</span><h3>Limited-edition energy</h3><p>Seasonal concepts can create urgency, conversation, and incremental trial.</p></article>
+            <article class="trend-card"><span>01</span><h3>Functional + sensory pleasure</h3><p>Freshness works harder when people actually enjoy the experience.</p></article>
+            <article class="trend-card"><span>02</span><h3>Beyond mint</h3><p>Dessert, tropical, and herbal-calming profiles open new doors without walking away from fresh.</p></article>
+            <article class="trend-card"><span>03</span><h3>Natural-forward profiles</h3><p>Clean-label cues need flavors that feel clear, bright, and intentional.</p></article>
+            <article class="trend-card"><span>04</span><h3>Kids and adult indulgence</h3><p>The same brand can support playful family moments and premium adult routines.</p></article>
+            <article class="trend-card"><span>05</span><h3>Limited-edition energy</h3><p>Limited runs can create urgency, conversation, and incremental trial.</p></article>
           </div>
         </div>
       </section>
@@ -832,8 +918,8 @@
       <section id="concepts" class="soft">
         <div class="container">
           <p class="section-kicker">Prototype concepts</p>
-          <h2 class="section-title">Five fresh futures to explore.</h2>
-          <p class="section-copy">Each prototype is designed to stretch the portfolio without losing the clean, effective, sensorially superior experience consumers expect from TheraBreath.</p>
+          <h2 class="section-title">Five flavor directions worth tasting.</h2>
+          <p class="section-copy">These are not random flavor ideas. Each one is built to stretch the Therabreath world while keeping the finish clean, fresh, and credible.</p>
 
           <div class="concepts">
             <article class="concept-card" style="--accent: #ed3d70">
@@ -893,8 +979,8 @@
       <section id="evaluation">
         <div class="container">
           <p class="section-kicker">Sensory evaluation</p>
-          <h2 class="section-title">Taste with a clear point of view.</h2>
-          <p class="section-copy">A simple, consistent protocol turns individual reactions into useful direction for refinement, prioritization, and next-step decisions.</p>
+          <h2 class="section-title">Taste it like it is going to market.</h2>
+          <p class="section-copy">The goal is not just “like” or “dislike.” We want to know what feels ownable, what feels scalable, and what deserves another round of work.</p>
           <div class="steps">
             <article class="step-card"><b>01</b><h3>Swish</h3><p>Swish 10–15 ml for 10 seconds.</p></article>
             <article class="step-card"><b>02</b><h3>Notice</h3><p>Note aroma, flavor intensity, and cooling effect.</p></article>
@@ -907,8 +993,8 @@
       <section id="feedback" class="soft">
         <div class="container">
           <p class="section-kicker">Your feedback</p>
-          <h2 class="section-title">Shape what moves forward.</h2>
-          <p class="section-copy">Use this space to identify what feels ownable, what needs refinement, and which concepts deserve deeper validation.</p>
+          <h2 class="section-title">Tell us what has legs.</h2>
+          <p class="section-copy">Use this section to call out the winners, the concerns, and the ideas that should move into deeper validation.</p>
           <div class="feedback-panel">
             <table aria-label="Flavor feedback scoring table">
               <thead><tr><th>Flavor</th><th>Overall Liking</th><th>Uniqueness</th><th>Purchase Intent</th><th>Comments</th></tr></thead>
@@ -934,11 +1020,11 @@
       <section id="next" class="closing">
         <div class="container">
           <p class="section-kicker">Co-creation &amp; next steps</p>
-          <h2 class="section-title">Ready to move with focus.</h2>
-          <p class="section-copy">With clear feedback, we can move quickly from promising prototypes to validated concepts and production-ready flavor systems.</p>
+          <h2 class="section-title">Ready for the next round.</h2>
+          <p class="section-copy">Once we know what you believe in, we can move quickly: refine the flavor, validate the experience, and prepare the winners for scale.</p>
           <div class="next-grid">
             <article class="next-card">
-              <h3>From prototype to production, with discipline.</h3>
+              <h3>From bench sample to scale-up, without losing the thread.</h3>
               <ul class="clean-list">
                 <li>Compound larger pilot batches</li>
                 <li>Conduct formal sensory panels</li>
@@ -956,6 +1042,6 @@
       </section>
     </main>
 
-    <footer class="footer">Confidential – Prepared exclusively for Church &amp; Dwight / TheraBreath | July 2026</footer>
+    <footer class="footer">Confidential – Prepared for Flavor Factory X Therabreath | July 2026</footer>
   </body>
 </html>
