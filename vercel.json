@@ -1,0 +1,25 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/dist/(.*).pdf",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/pdf"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "inline"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/booklet",
+      "destination": "/dist/therabreath_capabilities_workshop_booklet.pdf"
+    }
+  ]
+}
