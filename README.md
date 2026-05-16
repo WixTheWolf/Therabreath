@@ -1,32 +1,24 @@
-# The Flavor Factory × TheraBreath Capabilities Workshop Booklet
+# The Flavor Factory × TheraBreath Capabilities Workshop Site
 
-This repository contains a generated, print-ready 18-page US Letter portrait PDF booklet for **The Flavor Factory × Church & Dwight / TheraBreath Capabilities Workshop | July 2026**.
+This repository contains a minimal, Apple-inspired static workshop site for **The Flavor Factory × Church & Dwight / TheraBreath Capabilities Workshop | July 2026**.
 
 ## Deliverable
 
-- `dist/therabreath_capabilities_workshop_booklet.pdf` — final 18-page vector PDF booklet.
+- `index.html` — the primary long-form workshop experience.
+- `404.html` — a simple not-found page.
+- `vercel.json` — Vercel clean URL and rewrite configuration.
 
-## Design System
+## Design Direction
 
-- Page size: US Letter portrait, 8.5 × 11 inches.
-- Palette: TheraBreath blue `#00A3E0`, mint green `#7ED321`, dark navy body text, and white/pale backgrounds.
-- Typography intent: Montserrat-style bold headings and Open-Sans-style clean sans body text, implemented with dependency-free PDF core sans-serif fonts for reliable generation in restricted environments.
-- Production details: consistent page numbers, thin blue/mint footer rule, confidential footer text, molecule/water-droplet accents, executive partnership pages, refined capability-pillar infographics, premium concept spreads, scoring table, and QR-code placeholder.
+- Minimal, premium, and highly spacious web presentation rather than a dense booklet/PDF.
+- Visual direction aligns with The Flavor Factory’s clean black-and-white website foundation while introducing TheraBreath blue `#00A3E0` and mint `#7ED321` as restrained accents.
+- Large Apple-style hero typography, sticky navigation, soft gradients, pill metadata, clean card systems, and horizontal concept galleries.
+- Copy is focused on strategic partnership, operational excellence, innovation readiness, and the five prototype flavor concepts.
 
 ## Vercel Deployment
 
-This repository is deployable as a static Vercel site. The root `index.html` provides a landing page with links to the generated PDF, and `vercel.json` adds PDF headers plus a `/booklet` rewrite to the booklet file.
-
 Expected public routes after deployment:
 
-- `/` — landing page.
-- `/dist/therabreath_capabilities_workshop_booklet.pdf` — direct PDF URL.
-- `/booklet` — short PDF URL.
-
-## Regenerate
-
-```bash
-python3 build_booklet.py
-```
-
-The command writes the PDF to `dist/therabreath_capabilities_workshop_booklet.pdf`.
+- `/` — primary workshop site.
+- `/booklet` — rewrite to the workshop site for compatibility with older links.
+- `/workshop` — alternate route to the workshop site.
