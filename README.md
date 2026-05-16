@@ -11,7 +11,7 @@ This repository contains a generated, print-ready 18-page US Letter portrait PDF
 - Page size: US Letter portrait, 8.5 × 11 inches.
 - Palette: TheraBreath blue `#00A3E0`, mint green `#7ED321`, dark navy body text, and white/pale backgrounds.
 - Typography intent: Montserrat-style bold headings and Open-Sans-style clean sans body text, implemented with dependency-free PDF core sans-serif fonts for reliable generation in restricted environments.
-- Production details: consistent page numbers, thin blue/mint footer rule, confidential footer text, molecule/water-droplet accents, concept-card pages, scoring table, and QR-code placeholder.
+- Production details: consistent page numbers, thin blue/mint footer rule, confidential footer text, molecule/water-droplet accents, executive partnership pages, refined capability-pillar infographics, premium concept spreads, scoring table, and QR-code placeholder.
 
 ## Vercel Deployment
 
