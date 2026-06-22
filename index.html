@@ -496,6 +496,47 @@
         text-transform: uppercase;
       }
 
+
+      .agenda-card {
+        grid-column: 1 / -1;
+        max-width: 920px;
+        margin: 6px auto 0;
+      }
+
+      .agenda-list {
+        display: grid;
+        gap: 12px;
+        margin: 28px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .agenda-list li {
+        display: grid;
+        grid-template-columns: 128px 1fr;
+        gap: 18px;
+        align-items: start;
+        padding: 18px 0;
+        border-top: 1px solid var(--line);
+        color: #475467;
+        line-height: 1.45;
+      }
+
+      .agenda-list time {
+        color: var(--bottle-blue);
+        font-size: .78rem;
+        font-weight: 850;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+
+      .agenda-list b {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--ink);
+        font-size: 1.02rem;
+      }
+
       .pillars {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -888,6 +929,12 @@
           grid-template-columns: 1fr;
         }
 
+        .agenda-list li {
+          grid-template-columns: 1fr;
+          gap: 8px;
+          text-align: center;
+        }
+
         .hero-card {
           min-height: 320px;
           border-radius: 34px;
@@ -903,6 +950,7 @@
       </a>
       <nav class="nav-links" aria-label="Workshop sections">
         <a href="#partnership">Partnership</a>
+        <a href="#visit-brief">Agenda</a>
         <a href="#capabilities">Capabilities</a>
         <a href="#concepts">Concepts</a>
         <a href="#feedback">Feedback</a>
@@ -983,6 +1031,20 @@
                 <li><b>Ideas</b><span>Flavor creation, sensory science, trends, and co-creation capacity.</span></li>
                 <li><b>Trust</b><span>Clear communication, transparency, and long-term investment.</span></li>
               </ul>
+            </article>
+            <article class="brief-card agenda-card">
+              <h3>Proposed morning flow.</h3>
+              <p>Suggested time windows for July 8. We can flex this live, but the sequence should keep the tasting before lunch while the palate and discussion are fresh.</p>
+              <ol class="agenda-list">
+                <li><time>8:30–8:45</time><span><b>Arrival, coffee, and quick hellos</b>Settle in, introduce both teams, and align on the goal for the morning.</span></li>
+                <li><time>8:45–9:00</time><span><b>Workshop objectives</b>Confirm the key questions Therabreath wants answered and frame the discussion around scale, continuity, innovation, and partnership.</span></li>
+                <li><time>9:00–9:45</time><span><b>Resiliency and business continuity</b>Walk through capacity planning, redundancy, quality systems, risk mitigation, and how we protect supply as the brand grows.</span></li>
+                <li><time>9:45–10:25</time><span><b>Innovation and technical capabilities</b>Cover flavor creation, trend work, proactive ideation, sensory resources, and support for seasonal flavors, new formats, and adjacencies.</span></li>
+                <li><time>10:25–10:35</time><span><b>Short reset</b>A quick break before moving from technical capability into operations and growth planning.</span></li>
+                <li><time>10:35–11:15</time><span><b>Supply chain, operations, and growth vision</b>Discuss manufacturing footprint, dedicated Therabreath room, lead times, OTIF, sourcing security, communication, and the next 3–5 years.</span></li>
+                <li><time>11:15–12:00</time><span><b>Tasting and concept feedback</b>Taste the new concepts before lunch, capture immediate reactions, and identify what feels most worth refining.</span></li>
+                <li><time>12:00–12:45</time><span><b>Lunch</b>Continue the conversation informally after the tasting and before any facility walk-through or follow-up discussion.</span></li>
+              </ol>
             </article>
           </div>
         </div>
