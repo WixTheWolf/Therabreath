@@ -360,6 +360,73 @@
         text-align: center;
       }
 
+
+      .guest-guide {
+        padding-top: clamp(72px, 10vw, 112px);
+        padding-bottom: clamp(72px, 10vw, 112px);
+        background: #fff;
+      }
+
+      .guide-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 46px;
+      }
+
+      .guide-card {
+        display: flex;
+        min-height: 260px;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 26px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        color: inherit;
+        background:
+          radial-gradient(circle at 85% 0%, rgba(0, 143, 211, 0.10), transparent 10rem),
+          #fff;
+        text-align: center;
+        text-decoration: none;
+        transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      }
+
+      .guide-card:nth-child(2) {
+        background: radial-gradient(circle at 85% 0%, rgba(95, 184, 50, 0.11), transparent 10rem), #fff;
+      }
+
+      .guide-card:nth-child(3) {
+        background: radial-gradient(circle at 85% 0%, rgba(245, 130, 32, 0.13), transparent 10rem), #fff;
+      }
+
+      .guide-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(0, 143, 211, 0.28);
+        box-shadow: 0 18px 44px rgba(13, 27, 42, 0.08);
+      }
+
+      .guide-card span {
+        color: var(--bottle-blue);
+        font-size: .76rem;
+        font-weight: 850;
+        letter-spacing: .10em;
+        text-transform: uppercase;
+      }
+
+      .guide-card h3 {
+        margin: 30px 0 10px;
+        font-size: clamp(1.45rem, 2.4vw, 2.2rem);
+        font-weight: 790;
+        letter-spacing: -0.025em;
+        line-height: 1.04;
+      }
+
+      .guide-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
       .partnership-board {
         display: grid;
         grid-template-columns: 1fr;
@@ -925,7 +992,8 @@
         .metrics,
         .pillars,
         .steps,
-        .visit-brief {
+        .visit-brief,
+        .guide-grid {
           grid-template-columns: 1fr;
         }
 
@@ -949,6 +1017,7 @@
         <span>The Flavor Factory</span>
       </a>
       <nav class="nav-links" aria-label="Workshop sections">
+        <a href="#guest-guide">Start here</a>
         <a href="#partnership">Partnership</a>
         <a href="#visit-brief">Agenda</a>
         <a href="#capabilities">Capabilities</a>
@@ -984,9 +1053,23 @@
         </div>
       </section>
 
+      <section id="guest-guide" class="guest-guide" aria-labelledby="guide-title">
+        <div class="container">
+          <p class="section-kicker">Start here</p>
+          <h2 id="guide-title" class="section-title">How to follow the morning.</h2>
+          <p class="section-copy">This page is built to move in the same order as the visit: why we are together, what Therabreath asked us to cover, how TFF answers it, what we are tasting, and what we do next.</p>
+          <div class="guide-grid" aria-label="Workshop flow guide">
+            <a class="guide-card" href="#visit-brief"><span>01 / Agenda</span><div><h3>Know where we are.</h3><p>Use the proposed time windows to keep the session moving without making it feel rigid.</p></div></a>
+            <a class="guide-card" href="#capabilities"><span>02 / Capabilities</span><div><h3>Answer the four pillars.</h3><p>Walk through resiliency, innovation, operations, and the 3–5 year growth vision.</p></div></a>
+            <a class="guide-card" href="#concepts"><span>03 / Tasting</span><div><h3>Taste before lunch.</h3><p>Capture fresh reactions while the concepts are still clear and the conversation is active.</p></div></a>
+            <a class="guide-card" href="#feedback"><span>04 / Feedback</span><div><h3>Leave with direction.</h3><p>Turn the discussion into priorities, watch-outs, and clear next steps after Norco.</p></div></a>
+          </div>
+        </div>
+      </section>
+
       <section id="partnership">
         <div class="container">
-          <p class="section-kicker">Our partnership</p>
+          <p class="section-kicker">01 / Our partnership</p>
           <h2 class="section-title">A strong partnership, ready for scale.</h2>
           <p class="section-copy">Therabreath asked for a capabilities review because the brand is growing. This visit is our chance to show the full system behind the work: the room, the people, the planning, the quality discipline, and the flavor thinking that keep the business moving.</p>
           <div class="partnership-board">
@@ -1014,7 +1097,7 @@
 
       <section id="visit-brief" class="soft">
         <div class="container">
-          <p class="section-kicker">What they asked us to cover</p>
+          <p class="section-kicker">02 / Visit agenda</p>
           <h2 class="section-title">Show the system, not just the samples.</h2>
           <p class="section-copy">Their note was clear: they value the partnership, and they want to make sure both teams are positioned for success as Therabreath continues to scale.</p>
           <div class="visit-brief">
@@ -1052,7 +1135,7 @@
 
       <section id="capabilities">
         <div class="container">
-          <p class="section-kicker">Capabilities</p>
+          <p class="section-kicker">03 / Capabilities</p>
           <h2 class="section-title">The four areas they care about most.</h2>
           <p class="section-copy">Their framework is the right one. If we answer these four areas well, the visit will feel thoughtful, thorough, and useful.</p>
 
@@ -1112,7 +1195,7 @@
 
       <section id="trends" class="soft">
         <div class="container">
-          <p class="section-kicker">Flavor trends</p>
+          <p class="section-kicker">04 / Flavor trends</p>
           <h2 class="section-title">Fresh can stretch further.</h2>
           <p class="section-copy">Mint is still the anchor. The opportunity is to bring in more reasons to use the product: comfort, brightness, hydration, a little fun, and the occasional seasonal idea.</p>
           <div class="trends-grid">
@@ -1127,7 +1210,7 @@
 
       <section id="concepts">
         <div class="container">
-          <p class="section-kicker">Prototype concepts</p>
+          <p class="section-kicker">05 / Prototype concepts</p>
           <h2 class="section-title">Five ideas to taste and talk through.</h2>
           <p class="section-copy">These are starting points. Each one is meant to stretch the Therabreath world a little while still finishing clean and fresh.</p>
           <p class="section-note">None of these are precious. The point is to taste, react, edit, and decide what is worth building.</p>
@@ -1189,7 +1272,7 @@
 
       <section id="evaluation">
         <div class="container">
-          <p class="section-kicker">Sensory evaluation</p>
+          <p class="section-kicker">06 / Sensory evaluation</p>
           <h2 class="section-title">Taste it like we might make it.</h2>
           <p class="section-copy">We are not only looking for favorites. We are looking for what feels right for the brand, what can scale, and what needs another pass.</p>
           <div class="steps">
@@ -1203,7 +1286,7 @@
 
       <section id="feedback" class="soft">
         <div class="container">
-          <p class="section-kicker">Your feedback</p>
+          <p class="section-kicker">07 / Your feedback</p>
           <h2 class="section-title">Tell us what is worth chasing.</h2>
           <p class="section-copy">Use this section for the honest notes: winners, concerns, watch-outs, and anything that should come back for another round.</p>
           <div class="feedback-panel">
@@ -1230,7 +1313,7 @@
 
       <section id="next" class="closing">
         <div class="container">
-          <p class="section-kicker">Co-creation &amp; next steps</p>
+          <p class="section-kicker">08 / Co-creation &amp; next steps</p>
           <h2 class="section-title">After the workshop.</h2>
           <p class="section-copy">If we show the system clearly and use the tasting to create real discussion, they should leave Norco confident in the partnership and excited about what we can build next.</p>
           <div class="next-grid">
