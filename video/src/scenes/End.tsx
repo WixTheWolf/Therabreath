@@ -34,7 +34,7 @@ export const End: React.FC = () => {
         </div>
         <div style={{ fontFamily: BODY, fontWeight: 700, fontSize: 52, color: "#fff", marginTop: 24,
           opacity: interpolate(f, [18, 26], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }}>
-          Church &amp; Dwight HQ · Ewing, NJ
+          10:00 AM · Darwin · Church &amp; Dwight HQ
         </div>
       </div>
       <div style={{ position: "absolute", left: 0, right: 0, bottom: 90, display: "flex", justifyContent: "center", alignItems: "center", gap: 26,

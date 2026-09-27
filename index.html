@@ -209,7 +209,29 @@ body[data-tone="dark"] .rail{color:#fff}
 @keyframes halo{50%{transform:scale(1.06)}}
 .hero-stage .bottle{position:relative;width:100%;filter:drop-shadow(0 40px 40px rgba(0,60,120,.22));animation:float 7s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-12px)}}
-.agenda{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:clamp(40px,7vh,72px)}
+.agenda{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:clamp(40px,7vh,72px)}
+.agenda .o{margin-top:auto;padding-top:8px;font-family:var(--f-d);font-weight:800;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange-d)}
+.agenda-foot{margin-top:12px;font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3)}
+.objs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:clamp(32px,5vh,56px)}
+.objs .card{padding:26px;display:flex;flex-direction:column;gap:10px}
+.objs .n{font-family:var(--f-d);font-weight:800;font-stretch:112%;font-size:clamp(56px,5vw,84px);line-height:.8;color:var(--orange);letter-spacing:-.04em}
+.objs h3{margin:6px 0 0;font-family:var(--f-d);font-weight:800;font-size:clamp(24px,2vw,30px);letter-spacing:-.02em}
+.objs p{margin:0;color:var(--fg-2);font-size:16px}
+.objs .out{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);font-size:15px;font-weight:600}
+.objs .out b{display:block;font-family:var(--f-d);font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
+.sig .tt{align-self:flex-start;font-family:var(--f-d);font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:99px;background:var(--tc);color:var(--tf)}
+.hzs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:clamp(32px,5vh,56px)}
+.hzc{padding:26px;border-top:6px solid var(--c);display:flex;flex-direction:column;gap:10px}
+.hzc .k{font-family:var(--f-d);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.hzc h3{margin:0;font-family:var(--f-d);font-weight:800;font-size:clamp(24px,2.2vw,32px);letter-spacing:-.02em;line-height:1.05}
+.hzc p{margin:0;color:var(--fg-2);font-size:16px}
+.hzc .cz{display:flex;flex-direction:column;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
+.hzc .cz span{display:flex;align-items:center;gap:10px;font-family:var(--f-d);font-weight:700;font-size:16px}
+.hzc .cz small{font-family:var(--f-b);font-weight:500;font-size:13px;color:var(--fg-3)}
+.hzc .cz i{width:11px;height:11px;border-radius:50%;background:var(--cc);flex:none}
+.trend-in{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:inherit;font:inherit;font-size:16px}
+@media (max-width:1100px){.agenda{grid-template-columns:repeat(3,minmax(0,1fr))}.objs,.hzs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.objs,.hzs{grid-template-columns:minmax(0,1fr)}}
 .agenda div{padding:18px 20px;display:flex;flex-direction:column;gap:4px}
 .agenda .lab{color:var(--brand)}
 .agenda b{font-family:var(--f-d);font-weight:800;font-size:22px;letter-spacing:-.01em}
@@ -598,12 +620,12 @@ body[data-tone="dark"] .rail{color:#fff}
 <main>
 
 <!-- ============ HERO ============ -->
-<section class="scene hero" id="open" data-bg="#E6F6FD" data-glow="#FFFFFF" data-tone="light" data-phase="Frame" data-title="Welcome" data-stop>
+<section class="scene hero" id="open" data-bg="#E6F6FD" data-glow="#FFFFFF" data-tone="light" data-phase="Welcome" data-title="Welcome" data-stop>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <div class="hero-meta rv"><span>TheraBreath Flavor Playbook</span><span>Church &amp; Dwight HQ · Ewing, NJ</span><span>Mon · Nov 9, 2026</span></div>
+      <div class="hero-meta rv"><span>TheraBreath Flavor Playbook</span><span>Mon · Nov 9, 2026 · 10:00 AM</span><span>Darwin · Church &amp; Dwight HQ</span></div>
       <h1 class="d d-xxl rv d1">Expand what <span class="fresh">fresh<svg viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M5,22 C80,6 190,4 295,16"/></svg></span> can feel like.</h1>
-      <p class="lede rv d2">A working session to choose the platforms and concepts worth developing next for TheraBreath. From The Flavor Factory, a family-owned flavor house in Norco, California.</p>
+      <p class="lede rv d2">A working session to define TheraBreath’s flavor playbook, for near-term product innovation and long-term franchise growth. From The Flavor Factory, a family-owned flavor house in Norco, California.</p>
       <div class="tune rv d3">Fresh can feel <b id="tune">cool</b></div>
     </div>
     <div class="hero-stage rv d2" aria-hidden="true">
@@ -612,17 +634,12 @@ body[data-tone="dark"] .rail{color:#fff}
     </div>
   </div>
   <div class="wrap">
-    <div class="agenda">
-      <div class="card rv"><span class="lab">0:00 – 0:35</span><b>Frame</b><small>Where fresh could go</small></div>
-      <div class="card rv d1"><span class="lab">0:35 – 1:20</span><b>Taste</b><small>Six concepts, the whole rinse</small></div>
-      <div class="card rv d2"><span class="lab">1:20 – 1:45</span><b>Choose</b><small>Three checks, three leads</small></div>
-      <div class="card rv d3"><span class="lab">1:45 – 2:00</span><b>Assign</b><small>One owner for each test</small></div>
-    </div>
+    <div class="agenda" id="agenda"></div>
   </div>
 </section>
 
 <!-- ============ WHO WE ARE ============ -->
-<section class="scene" id="us" data-bg="#FFFFFF" data-glow="#FDECEA" data-tone="light" data-phase="Frame" data-title="Who we are" data-stop>
+<section class="scene" id="us" data-bg="#FFFFFF" data-glow="#FDECEA" data-tone="light" data-phase="Welcome" data-title="Who we are" data-stop>
   <div class="wrap us-grid">
     <div>
       <span class="eyebrow rv">Who we are</span>
@@ -643,8 +660,18 @@ body[data-tone="dark"] .rail{color:#fff}
   </div>
 </section>
 
+<!-- ============ OBJECTIVES ============ -->
+<section class="scene" id="goal" data-bg="#0A2A5C" data-glow="#0F4C86" data-tone="dark" data-phase="Welcome" data-title="The objective" data-stop style="min-height:auto">
+  <div class="wrap">
+    <span class="eyebrow rv">The objective for today</span>
+    <h2 class="d d-xl rv d1" style="margin-top:20px">Together, define <span class="hl">a flavor playbook.</span></h2>
+    <p class="lede rv d2" style="margin-top:22px">For near-term product innovation and long-term franchise growth, built around the four objectives in Ross’s invite.</p>
+    <div class="objs" id="objs"></div>
+  </div>
+</section>
+
 <!-- ============ OPPORTUNITY ============ -->
-<section class="scene" id="opportunity" data-bg="#FFFFFF" data-glow="#E6F6FD" data-tone="light" data-phase="Frame" data-title="Opportunity" data-stop>
+<section class="scene" id="opportunity" data-bg="#FFFFFF" data-glow="#E6F6FD" data-tone="light" data-phase="Trends" data-title="Opportunity" data-stop>
   <div class="wrap">
     <span class="eyebrow rv">The opportunity</span>
     <h2 class="d d-xl rv d1" style="margin-top:20px">The benefit is familiar.<br><span class="hl">The flavor can do more.</span></h2>
@@ -671,27 +698,27 @@ body[data-tone="dark"] .rail{color:#fff}
 </section>
 
 <!-- ============ SIGNALS ============ -->
-<section class="scene" id="signals" data-bg="#F2F9FC" data-glow="#FFF3E8" data-tone="light" data-phase="Frame" data-title="Signals" data-stop>
+<section class="scene" id="signals" data-bg="#F2F9FC" data-glow="#FFF3E8" data-tone="light" data-phase="Trends" data-title="Signals" data-stop>
   <div class="wrap">
     <div class="head2">
-      <div><span class="eyebrow rv">The world around TheraBreath</span>
-        <h2 class="d d-l rv d1" style="margin-top:20px">What people call <span class="hl">fresh</span> is changing.</h2></div>
-      <p class="body rv d2">Four shifts we see across the categories we make flavors for, from beverages to nutraceuticals. They are shaping what people expect a rinse to feel like.</p>
+      <div><span class="eyebrow rv">Objective 01 · Trends</span>
+        <h2 class="d d-l rv d1" style="margin-top:20px">Trends shaping <span class="hl">the future of oral care.</span></h2></div>
+      <p class="body rv d2">Flavor, sensory and consumer trends we see across the categories we make flavors for, from beverages to nutraceuticals. They are shaping what people expect a rinse to feel like.</p>
     </div>
     <div class="signals">
-      <article class="sig card rv"><div class="vis v-beauty"><i></i><i></i><i></i></div><div class="word">Beauty</div><h3>Personal-care rituals</h3><p>Oral care is joining the skincare shelf as one more step in a self-care routine.</p><div class="seen"><b>Where we see it</b>Layered skincare routines, bathroom “shelfies”, oral care sold beside serums.</div></article>
-      <article class="sig card rv d1"><div class="vis v-flavor" id="vFlavor"></div><div class="word">Flavor</div><h3>A broader vocabulary</h3><p>People now taste yuzu, shiso and cardamom in drinks, snacks and wellness shots every week.</p><div class="seen"><b>Where we see it</b>Zero-proof bars, functional beverages, global menus, fine fragrance.</div></article>
-      <article class="sig card rv d2"><div class="vis v-sense"><svg viewBox="0 0 300 150" preserveAspectRatio="none" id="vSense"></svg></div><div class="word">Sensation</div><h3>Sensory proof</h3><p>People want an effect they can feel and describe. That is how they know it works.</p><div class="seen"><b>Where we see it</b>Cooling skincare, tingling lip products, “you can feel it working” claims.</div></article>
-      <article class="sig card rv d3"><div class="vis v-well"><div class="sun"></div><div class="dot"></div></div><div class="word">Trust</div><h3>Everyday wellness</h3><p>Products earn a place in the day: morning energy, midday reset, evening calm.</p><div class="seen"><b>Where we see it</b>Sleep and hydration rituals, adaptogen drinks, “night” versions of everything.</div></article>
+      <article class="sig card rv"><div class="vis v-beauty"><i></i><i></i><i></i></div><span class="tt" style="--tc:#FDECEA;--tf:#B23A2A">Consumer trend</span><div class="word">Beauty</div><h3>Personal-care rituals</h3><p>Oral care is joining the skincare shelf as one more step in a self-care routine.</p><div class="seen"><b>Where we see it</b>Layered skincare routines, bathroom “shelfies”, oral care sold beside serums.</div></article>
+      <article class="sig card rv d1"><div class="vis v-flavor" id="vFlavor"></div><span class="tt" style="--tc:#FFF3E0;--tf:#C85F0E">Flavor trend</span><div class="word">Flavor</div><h3>A broader vocabulary</h3><p>People now taste yuzu, shiso and cardamom in drinks, snacks and wellness shots every week.</p><div class="seen"><b>Where we see it</b>Zero-proof bars, functional beverages, global menus, fine fragrance.</div></article>
+      <article class="sig card rv d2"><div class="vis v-sense"><svg viewBox="0 0 300 150" preserveAspectRatio="none" id="vSense"></svg></div><span class="tt" style="--tc:#E6F6FD;--tf:#0072BC">Sensory trend</span><div class="word">Sensation</div><h3>Sensory proof</h3><p>People want an effect they can feel and describe. That is how they know it works.</p><div class="seen"><b>Where we see it</b>Cooling skincare, tingling lip products, “you can feel it working” claims.</div></article>
+      <article class="sig card rv d3"><div class="vis v-well"><div class="sun"></div><div class="dot"></div></div><span class="tt" style="--tc:#FDECEA;--tf:#B23A2A">Consumer trend</span><div class="word">Wellness</div><h3>Everyday wellness</h3><p>Products earn a place in the day: morning energy, midday reset, evening calm.</p><div class="seen"><b>Where we see it</b>Sleep and hydration rituals, adaptogen drinks, “night” versions of everything.</div></article>
     </div>
   </div>
 </section>
 
 <!-- ============ MAP ============ -->
-<section class="scene" id="map" data-bg="#062150" data-glow="#0B3F7E" data-tone="dark" data-phase="Frame" data-title="Flavor map" data-stop>
+<section class="scene" id="map" data-bg="#062150" data-glow="#0B3F7E" data-tone="dark" data-phase="Territories" data-title="Flavor map" data-stop>
   <div class="wrap">
     <div class="head2" style="margin-bottom:28px">
-      <div><span class="eyebrow rv">World flavor culture</span>
+      <div><span class="eyebrow rv">Objective 02 · Territories</span>
         <h2 class="d rv d1" style="margin-top:20px;font-size:clamp(34px,3.9vw,70px)">Flavor culture is much bigger than <span class="hl">mint.</span></h2></div>
       <p class="body rv d2">Places our flavorists look for ideas. We’re not suggesting twelve launches. It’s a reminder of how much room there is beyond mint. Tap a point.</p>
     </div>
@@ -710,7 +737,7 @@ body[data-tone="dark"] .rail{color:#fff}
 </section>
 
 <!-- ============ ANCHOR ============ -->
-<section class="scene" id="anchor" data-bg="#ECF8F1" data-glow="#FFFFFF" data-tone="light" data-phase="Frame" data-title="Portfolio" data-stop>
+<section class="scene" id="anchor" data-bg="#ECF8F1" data-glow="#FFFFFF" data-tone="light" data-phase="Territories" data-title="Portfolio" data-stop>
   <div class="wrap">
     <span class="eyebrow rv">Portfolio reality</span>
     <h2 class="d d-xl rv d1" style="margin-top:20px">Mint is an anchor,<br><span class="hl">not the whole map.</span></h2>
@@ -742,7 +769,7 @@ body[data-tone="dark"] .rail{color:#fff}
 </section>
 
 <!-- ============ WHITE SPACE ============ -->
-<section class="scene" id="whitespace" data-bg="#0A2A5C" data-glow="#0F4C86" data-tone="dark" data-phase="Frame" data-title="White space" data-stop>
+<section class="scene" id="whitespace" data-bg="#0A2A5C" data-glow="#0F4C86" data-tone="dark" data-phase="Territories" data-title="White space" data-stop>
   <div class="wrap split">
     <div>
       <span class="eyebrow rv">The white space</span>
@@ -756,7 +783,7 @@ body[data-tone="dark"] .rail{color:#fff}
 </section>
 
 <!-- ============ PLATFORMS ============ -->
-<section class="scene" id="platforms" data-bg="#FFFFFF" data-glow="#FFF1E4" data-tone="light" data-phase="Frame" data-title="Platforms" data-stop>
+<section class="scene" id="platforms" data-bg="#FFFFFF" data-glow="#FFF1E4" data-tone="light" data-phase="Territories" data-title="Platforms" data-stop>
   <div class="wrap stack" style="gap:36px">
     <span class="eyebrow rv">Four innovation platforms</span>
     <h2 class="d d-xl rv d1">Four places<br><span class="hl">TheraBreath could grow.</span></h2>
@@ -770,7 +797,7 @@ body[data-tone="dark"] .rail{color:#fff}
   </div>
 </section>
 
-<section class="scene" id="p-newfresh" data-bg="#EEF8E4" data-glow="#FFFBD9" data-tone="light" data-phase="Frame" data-title="New Fresh" data-stop>
+<section class="scene" id="p-newfresh" data-bg="#EEF8E4" data-glow="#FFFBD9" data-tone="light" data-phase="Territories" data-title="New Fresh" data-stop>
   <div class="wrap split plat">
     <div>
       <span class="num rv">PLATFORM 01</span>
@@ -782,7 +809,7 @@ body[data-tone="dark"] .rail{color:#fff}
   </div>
 </section>
 
-<section class="scene" id="p-sensory" data-bg="#03264A" data-glow="#005E97" data-tone="dark" data-phase="Frame" data-title="Sensory Proof" data-stop>
+<section class="scene" id="p-sensory" data-bg="#03264A" data-glow="#005E97" data-tone="dark" data-phase="Territories" data-title="Sensory Proof" data-stop>
   <div class="wrap split plat">
     <div>
       <span class="num rv">PLATFORM 02</span>
@@ -806,7 +833,7 @@ body[data-tone="dark"] .rail{color:#fff}
   </div>
 </section>
 
-<section class="scene" id="p-ritual" data-bg="#FFF0E3" data-glow="#FFFFFF" data-tone="light" data-phase="Frame" data-title="Ritual by Time" data-stop>
+<section class="scene" id="p-ritual" data-bg="#FFF0E3" data-glow="#FFFFFF" data-tone="light" data-phase="Territories" data-title="Ritual by Time" data-stop>
   <div class="wrap split plat">
     <div>
       <span class="num rv">PLATFORM 03</span>
@@ -821,7 +848,7 @@ body[data-tone="dark"] .rail{color:#fff}
   </div>
 </section>
 
-<section class="scene" id="p-elevated" data-bg="#2A1916" data-glow="#5A3325" data-tone="dark" data-phase="Frame" data-title="Elevated Escape" data-stop>
+<section class="scene" id="p-elevated" data-bg="#2A1916" data-glow="#5A3325" data-tone="dark" data-phase="Territories" data-title="Elevated Escape" data-stop>
   <div class="wrap split plat">
     <div>
       <span class="num rv">PLATFORM 04</span>
@@ -915,14 +942,16 @@ body[data-tone="dark"] .rail{color:#fff}
 </section>
 
 <!-- ============ FLAVOR LAB ============ -->
-<section class="scene" id="lab" data-bg="#0A2A5C" data-glow="#0F4C86" data-tone="dark" data-phase="Taste" data-title="Flavor Lab" data-stop>
+<section class="scene" id="lab" data-bg="#0A2A5C" data-glow="#0F4C86" data-tone="dark" data-phase="Create" data-title="Flavor Lab" data-stop>
   <div class="wrap labx-grid">
     <div>
-      <span class="eyebrow rv">Flavor Lab</span>
-      <h2 class="d d-l rv d1" style="margin-top:20px">Keep one cue. <span class="hl">Change one thing.</span></h2>
-      <p class="body rv d2" style="margin-top:20px">Try a combination live. Pick the freshness cue we keep, then the one thing we change. If it’s one we’ve already built, you’ll see it. If not, it goes on our list.</p>
+      <span class="eyebrow rv">Objective 03 · Create</span>
+      <h2 class="d d-l rv d1" style="margin-top:20px">Build a concept <span class="hl">for a new moment.</span></h2>
+      <p class="body rv d2" style="margin-top:20px">Try a combination live. Pick the freshness cue we keep and the one thing we change, then the moment and the consumer it’s for. If it’s one we’ve already built, you’ll see it. If not, it goes into the playbook.</p>
       <div class="labx-step rv d2"><span class="lab">1 · Keep</span><div class="chips" id="labKeep" role="group" aria-label="Freshness cue to keep"></div></div>
       <div class="labx-step rv d3"><span class="lab">2 · Change</span><div class="chips" id="labChange" role="group" aria-label="One thing to change"></div></div>
+      <div class="labx-step rv d3"><span class="lab">3 · When</span><div class="chips" id="labWhenC" role="group" aria-label="Occasion"></div></div>
+      <div class="labx-step rv d3"><span class="lab">4 · For whom</span><div class="chips" id="labWhoC" role="group" aria-label="Consumer"></div></div>
     </div>
     <div class="labx-out rv d1">
       <div class="labx-bottle" id="labBottle"></div>
@@ -931,16 +960,16 @@ body[data-tone="dark"] .rail{color:#fff}
         <span class="lab" style="color:var(--fg-3)">Your concept</span>
         <div class="nm" id="labName"></div>
         <div class="fl" id="labFlavor"></div>
-                <dl><dt>Platform</dt><dd id="labPlat"></dd><dt>Stretches</dt><dd id="labAxis"></dd><dt>Watch-out</dt><dd id="labWatch"></dd></dl>
+                <dl><dt>When</dt><dd id="labWhen"></dd><dt>For</dt><dd id="labWho"></dd><dt>Platform</dt><dd id="labPlat"></dd><dt>Stretches</dt><dd id="labAxis"></dd><dt>Watch-out</dt><dd id="labWatch"></dd></dl>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ DECIDE ============ -->
-<section class="scene" id="decide" data-bg="#062150" data-glow="#0B3F7E" data-tone="dark" data-phase="Choose" data-title="Decide" data-stop>
+<section class="scene" id="decide" data-bg="#062150" data-glow="#0B3F7E" data-tone="dark" data-phase="Playbook" data-title="Decide" data-stop>
   <div class="wrap">
-    <span class="eyebrow rv">Decision framework</span>
+    <span class="eyebrow rv">Objective 04 · Pipeline · the three checks</span>
     <h2 class="d d-l rv d1" style="margin:20px 0 36px">Brand Fit × Technical Reality × <span class="hl">Consumer Desire</span></h2>
     <div class="three-q">
       <div class="card rv"><span class="lab" style="color:#5CCBF5">01 · Brand</span><div class="d d-s">Does it fit the brand?</div><p>Could TheraBreath credibly own this, gentle and dentist-formulated?</p></div>
@@ -965,13 +994,25 @@ body[data-tone="dark"] .rail{color:#fff}
   </div>
 </section>
 
+<!-- ============ PIPELINE ============ -->
+<section class="scene" id="pipeline" data-bg="#F2F9FC" data-glow="#FFFFFF" data-tone="light" data-phase="Playbook" data-title="Pipeline" data-stop style="min-height:auto">
+  <div class="wrap">
+    <div class="head2">
+      <div><span class="eyebrow rv">Objective 04 · Pipeline</span>
+        <h2 class="d d-l rv d1" style="margin-top:20px">From near-term launches <span class="hl">to long-term growth.</span></h2></div>
+      <p class="body rv d2">Our starting read, placed by how close each direction sits to today’s rinse. The room moves the cards, and adds what came out of Create.</p>
+    </div>
+    <div class="hzs" id="hzs"></div>
+  </div>
+</section>
+
 <!-- ============ TRAVEL ============ -->
-<section class="scene" id="travel" data-bg="#E6F6FD" data-glow="#FFFFFF" data-tone="light" data-phase="Choose" data-title="Beyond the bottle" data-stop style="min-height:auto">
+<section class="scene" id="travel" data-bg="#E6F6FD" data-glow="#FFFFFF" data-tone="light" data-phase="Playbook" data-title="Beyond the bottle" data-stop style="min-height:auto">
   <div class="wrap travel-grid">
     <div class="stack" style="justify-content:center">
-      <span class="eyebrow rv">Also on our bench</span>
+      <span class="eyebrow rv">Long-term · across the franchise</span>
       <h2 class="d d-m rv d1">Beyond the bottle: a TheraBreath travel kit.</h2>
-      <p class="body rv d2">Something we’ve been sketching on the side: a travel kit that goes through airport security and still feels like TheraBreath.</p>
+      <p class="body rv d2">One example of carrying flavor across the franchise and into a new occasion: a travel kit that goes through airport security and still feels like TheraBreath.</p>
       <span class="lab rv d3" style="color:var(--brand)">Liquids ≤ 3.4 oz / 100 mL · one quart-size bag</span>
     </div>
     <div class="kit card rv d1" id="zipKit">
@@ -1007,23 +1048,23 @@ body[data-tone="dark"] .rail{color:#fff}
 </section>
 
 <!-- ============ ASSIGN ============ -->
-<section class="scene" id="assign" data-bg="#004E38" data-glow="#0A7A58" data-tone="dark" data-phase="Assign" data-title="Short list" data-stop>
+<section class="scene" id="assign" data-bg="#004E38" data-glow="#0A7A58" data-tone="dark" data-phase="Playbook" data-title="Draft playbook" data-stop>
   <div class="wrap stack" style="gap:clamp(32px,5vh,56px)">
     <div class="arcflow rv">
-      <div><span class="lab">Frame</span><span class="d d-s">Possibility</span></div>
-      <div><span class="lab">Taste</span><span class="d d-s">Evidence</span></div>
-      <div><span class="lab">Choose</span><span class="d d-s">Focus</span></div>
-      <div class="on"><span class="lab" style="color:#FFB066">Assign</span><span class="d d-s">Action</span></div>
+      <div><span class="lab">01</span><span class="d d-s">Trends</span></div>
+      <div><span class="lab">02</span><span class="d d-s">Territories</span></div>
+      <div><span class="lab">03</span><span class="d d-s">Concepts</span></div>
+      <div class="on"><span class="lab" style="color:#FFB066">04</span><span class="d d-s">Pipeline</span></div>
     </div>
-    <div><span class="eyebrow rv" style="color:#fff">What we leave with</span><h2 class="d d-xl rv d1" style="margin-top:20px">Leave with a short list.</h2></div>
+    <div><span class="eyebrow rv" style="color:#fff">What we leave with</span><h2 class="d d-xl rv d1" style="margin-top:20px">The draft playbook.</h2></div>
     <div class="short">
-      <div class="col card rv"><h3><span>Platforms</span><span>2</span></h3><div id="shortPlat"></div></div>
-      <div class="col card rv d1"><h3><span>Lead concepts · owner · next action</span><span>3</span></h3><div id="shortLeads"></div></div>
+      <div class="col card rv"><h3><span>Trends to act on</span><span>01</span></h3><div id="shortTrends" style="display:flex;flex-direction:column;gap:10px"></div><h3 style="margin-top:14px"><span>Priority territories</span><span>02</span></h3><div id="shortPlat"></div></div>
+      <div class="col card rv d1"><h3><span>Near-term concepts · owner · next action</span><span>03 · 04</span></h3><div id="shortLeads"></div></div>
     </div>
     <div class="finale rv">
       <div><p class="d d-m" style="margin:0 0 12px">Familiar enough to trust.<br>Different enough to remember.</p>
-        <span class="lab" style="color:var(--fg-2)">The Flavor Factory · Norco, California · for TheraBreath · November 9, 2026</span></div>
-      <button class="btn" id="copyPlan" type="button">Copy the short list</button>
+        <span class="lab" style="color:var(--fg-2)">The Flavor Factory · Norco, California · for TheraBreath · November 9, 2026 · Darwin</span></div>
+      <button class="btn" id="copyPlan" type="button">Copy the draft playbook</button>
     </div>
   </div>
 </section>
@@ -1037,8 +1078,8 @@ body[data-tone="dark"] .rail{color:#fff}
     <span class="eyebrow">Notes for the presenting team</span>
     <h2 class="d d-l" id="notesTitle" style="margin:18px 0 10px">How this experience works</h2>
     <section><h3>What this is</h3><div>
-      <p>The in-room companion to the deck, and the leave-behind afterwards. It holds the tools we use during the session: the blind scorecard and rinse timer, the Flavor Lab, the decision board and the short list.</p>
-      <p>Order matters: we taste blind first, then reveal what was behind each code, then decide. Don’t open the reveal section before the tasting.</p>
+      <p>The in-room companion to the deck, and the leave-behind afterwards. It holds the tools we use during the session: the blind scorecard and rinse timer, the Flavor Lab (our Create tool), the decision board, the pipeline and the draft playbook.</p>
+      <p>The session runs 10:00 AM to noon in Darwin, then lunch. The order follows the four objectives in Ross Conroy’s invite: trends, territories, concepts, pipeline. Within that, we taste blind first, then reveal what was behind each code, then create and decide. Don’t open the reveal section before the tasting.</p>
     </div></section>
     <section><h3>Type</h3><div>
       <p><span style="font-family:var(--f-d);font-weight:800;font-stretch:112%;font-size:34px;letter-spacing:-.03em">Archivo ExtraBold, expanded</span><br>Headlines. Heavy, wide and confident, and readable from the back of the room.</p>
@@ -1047,9 +1088,9 @@ body[data-tone="dark"] .rail{color:#fff}
     <section><h3>Colour</h3><div><p>TheraBreath blue and navy carry the brand. The orange of the cap is the one accent: it marks what is active, chosen or next. Each flavor and platform adds its own world colour behind the content. Coral means overreach and appears only there.</p><div class="swatches" id="swatches"></div></div></section>
     <section><h3>Presenting</h3><div><ul>
       <li>← → or Page Up / Down moves one screen. F goes full screen. N opens these notes.</li>
-      <li>Tasting scores, checks and owners are saved in this browser only. Use “Copy the short list” for the follow-up email.</li>
+      <li>Tasting scores, checks and owners are saved in this browser only. Use “Copy the draft playbook” for the follow-up email.</li>
       <li>Print (⌘P) gives a one-scene-per-page takeaway.</li>
-      <li>The companion slide deck lives at <a href="deck/">deck/</a> (30 slides, speaker notes, presenter view with P). A PDF export is in <code>dist/</code>.</li>
+      <li>The companion slide deck lives at <a href="deck/">deck/</a> (27 slides, speaker notes, presenter view with P). A PDF export is in <code>dist/</code>.</li>
       <li>The logo and product photo are official artwork in <code>assets/</code>. The concept bottles are drawn to match the current rinse label system.</li>
     </ul></div></section>
   </div>
@@ -1065,14 +1106,18 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const { hex, rgba, rng, PLATS, CONCEPTS, CONTROL, STATUS, REGIONS, HOME, GRID, SPECTRUM, AXES, BASE, SHAPES, MOMENTS, WILD, DIMS, ACTIONS, bottle, setBottle, conceptBottleOpts, splitName, ART } = window.TBCore;
+const { SESSION, OBJECTIVES, AGENDA, HORIZONS, CREATE, hex, rgba, rng, PLATS, CONCEPTS, CONTROL, STATUS, REGIONS, HOME, GRID, SPECTRUM, AXES, BASE, SHAPES, MOMENTS, WILD, DIMS, ACTIONS, bottle, setBottle, conceptBottleOpts, splitName, ART } = window.TBCore;
 const SAMPLES = [...CONCEPTS, CONTROL];
 const byId = id => SAMPLES.find(c => c.id === id);
 document.body.insertAdjacentHTML("afterbegin", window.TBCore.logoSymbol("assets/therabreath-logo.png"));
+document.getElementById("agenda").innerHTML = AGENDA.map((a, i) => `<div class="card rv${i % 4 ? " d" + (i % 4) : ""}"><span class="lab">${a.t} – ${a.e}</span><b>${a.h}</b><small>${a.w}</small>${a.o ? `<span class="o">Objective 0${a.o}</span>` : ""}</div>`).join("");
+document.getElementById("agenda").insertAdjacentHTML("afterend", `<div class="agenda-foot rv">12:00 · Lunch, provided by Church &amp; Dwight</div>`);
+document.getElementById("objs").innerHTML = OBJECTIVES.map((o, i) => `<div class="card rv${i ? " d" + i : ""}"><span class="n">${o.n}</span><h3>${o.h}</h3><p>${o.line}</p><div class="out"><b>We leave with</b>${o.out}</div></div>`).join("");
+document.getElementById("hzs").innerHTML = HORIZONS.map((h, i) => `<div class="hzc card rv${i ? " d" + i : ""}" style="--c:${h.c}"><span class="k">${h.h}</span><h3>${h.w}</h3><p>${h.p}</p><div class="cz">${CONCEPTS.filter(c => c.horizon === h.k).map(c => `<span style="--cc:${c.acc}"><i></i>${c.flavor}<small>${c.when}</small></span>`).join("")}${h.k === "long" ? WILD.map(w => `<span style="--cc:${w.sw[1]}"><i></i>${w.flavor}<small>wildcard</small></span>`).join("") : ""}</div></div>`).join("");
 
 /* ------------------------------------------------------------------ state */
 const KEY = "tb-flavor-playbook-2026";
-let S = { scores: {}, words: {}, checks: {}, advance: [], platforms: [], assign: {}, reveal: false, cur: "yuzu" };
+let S = { scores: {}, words: {}, checks: {}, advance: [], platforms: [], assign: {}, trends: ["", ""], reveal: false, cur: "yuzu" };
 try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch (e) {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 let toastT;
@@ -1135,7 +1180,7 @@ const bgLayer = $("#bg"), stage = $("#stage"), show = $("#show");
 const mobile = matchMedia("(max-width: 860px)");
 const rail = $("#rail");
 const railItems = $$("[data-stop][data-title]");
-const phases = ["Frame", "Taste", "Choose", "Assign"];
+const phases = ["Welcome", "Trends", "Territories", "Taste", "Create", "Playbook"];
 rail.innerHTML = phases.map(ph => `<div class="ph" data-ph="${ph}"><span class="ph-l">${ph.toUpperCase()}</span>${railItems.filter(s => s.dataset.phase === ph).map(s => `<a href="#${s.id}" data-for="${s.id}" aria-label="${s.dataset.title}"><span>${s.dataset.title}</span></a>`).join("")}</div>`).join("");
 let activeEl = null, showConcept = () => {};
 function setActive(el) {
@@ -1463,7 +1508,10 @@ addEventListener("scroll", () => {
 
 /* ------------------------------------------------------------------ decision */
 const renderAssign = (() => {
-  const plat = $("#shortPlat"), leads = $("#shortLeads");
+  const plat = $("#shortPlat"), leads = $("#shortLeads"), trends = $("#shortTrends");
+  if (!Array.isArray(S.trends)) S.trends = ["", ""];
+  trends.innerHTML = [0, 1].map(i => `<input class="trend-in" data-i="${i}" aria-label="Trend to act on ${i + 1}" placeholder="Trend ${i + 1}" value="${(S.trends[i] || "").replace(/"/g, "&quot;")}">`).join("");
+  trends.addEventListener("input", e => { const i = e.target.dataset.i; if (i == null) return; S.trends[i] = e.target.value; save(); });
   const render = () => {
     const ps = S.platforms.slice(0, 2);
     plat.innerHTML = [0, 1].map(i => ps[i] ? `<div class="slot"><span class="mono" style="color:var(--fg-soft)">Platform ${i + 1}</span><span class="d d-s">${PLATS[ps[i]]}</span></div>` : `<div class="slot empty"><span class="mono" style="color:var(--fg-soft)">Platform ${i + 1}</span><span class="d d-s">Chosen in the room</span></div>`).join("");
@@ -1482,11 +1530,14 @@ const renderAssign = (() => {
   leads.addEventListener("change", e => { const el = e.target; if (!el.dataset.key) return; (S.assign[el.dataset.key] = S.assign[el.dataset.key] || {})[el.dataset.f] = el.value; save(); });
   $("#copyPlan").addEventListener("click", () => {
     const ps = S.platforms.slice(0, 2).map(p => PLATS[p]); const ad = S.advance.slice(0, 3);
-    const lines = ["TheraBreath Flavor Playbook · short list", "Church & Dwight HQ, Ewing, NJ · November 9, 2026", "", "Platforms: " + (ps.length ? ps.join(" + ") : "to be chosen"), "", "Lead concepts:"];
+    const tr = (S.trends || []).filter(Boolean);
+    const lines = ["TheraBreath Flavor Playbook · draft", "Church & Dwight HQ, Ewing, NJ · Darwin · November 9, 2026", "", "01 Trends to act on: " + (tr.length ? tr.join("; ") : "to be agreed"), "02 Priority territories: " + (ps.length ? ps.join(" + ") : "to be chosen"), "", "03/04 Near-term concepts:"];
     [0, 1, 2].forEach(i => { const c = ad[i] && byId(ad[i]); const key = c ? c.id : "slot" + i; const a = S.assign[key] || {};
       lines.push(`${i + 1}. ${c ? c.name : "(open)"} · owner: ${a.owner || "TBD"} · next: ${a.action || ACTIONS[i === 0 ? 0 : i === 1 ? 1 : 3]}${a.date ? " · by " + a.date : ""}`); });
+    lines.push("", "Pipeline (starting read):");
+    HORIZONS.forEach(h => lines.push(`${h.h}: ${CONCEPTS.filter(c => c.horizon === h.k).map(c => c.flavor).join(", ") || "from Create"}`));
     lines.push("", "Familiar enough to trust. Different enough to remember.");
-    copy(lines.join("\n"), "Short list copied");
+    copy(lines.join("\n"), "Draft playbook copied");
   });
   render(); return render;
 })();
@@ -1585,12 +1636,17 @@ $("#foldBtn").addEventListener("click", e => { const k = $("#foldKit"); k.classL
   const chip = (o, grp) => `<button type="button" class="chipb" data-g="${grp}" data-id="${o.id}" style="--c:${o.col}"><i></i>${o.label}</button>`;
   $("#labKeep").innerHTML = KEEP.map(o => chip(o, "k")).join("");
   $("#labChange").innerHTML = CHANGE.map(o => chip(o, "c")).join("");
+  const OCC = CREATE.occasions.map(t => ({ id: t, label: t, col: "#F58025" })), WHO = CREATE.consumers.map(t => ({ id: t, label: t, col: "#00A3E0" }));
+  let when = OCC[0], who = WHO[0];
+  $("#labWhenC").innerHTML = OCC.map(o => chip(o, "w")).join("");
+  $("#labWhoC").innerHTML = WHO.map(o => chip(o, "p")).join("");
   $("#labBottle").innerHTML = bottle({ liq: [change.col, keep.col], band: change.band, flavor: "Polar Light", sub: "Arctic Yuzu" });
   const lb = $("#labBottle .bottle");
   const meter = (el, n) => el.innerHTML = [1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("");
   let t;
   const render = animate => {
-    $$("#lab .chipb").forEach(b => b.classList.toggle("on", (b.dataset.g === "k" ? keep : change).id === b.dataset.id));
+    $$("#lab .chipb").forEach(b => b.classList.toggle("on", ({ k: keep, c: change, w: when, p: who })[b.dataset.g].id === b.dataset.id));
+    $("#labWhen").textContent = when.label; $("#labWho").textContent = who.label;
     const m = MATCH[keep.id + "|" + change.id], c = m && CONCEPTS.find(x => x.id === m);
     const name = c ? c.name : change.label;
     const apply = () => {
@@ -1604,7 +1660,7 @@ $("#foldBtn").addEventListener("click", e => { const k = $("#foldKit"); k.classL
     if (!animate || REDUCED) return apply();
     lb.classList.add("drain"); clearTimeout(t); t = setTimeout(() => requestAnimationFrame(apply), 560);
   };
-  $("#lab").addEventListener("click", e => { const b = e.target.closest(".chipb"); if (!b) return; if (b.dataset.g === "k") keep = KEEP.find(o => o.id === b.dataset.id); else change = CHANGE.find(o => o.id === b.dataset.id); render(true); });
+  $("#lab").addEventListener("click", e => { const b = e.target.closest(".chipb"); if (!b) return; const g = b.dataset.g; if (g === "w" || g === "p") { if (g === "w") when = OCC.find(o => o.id === b.dataset.id); else who = WHO.find(o => o.id === b.dataset.id); render(false); return; } if (g === "k") keep = KEEP.find(o => o.id === b.dataset.id); else change = CHANGE.find(o => o.id === b.dataset.id); render(true); });
   render(false);
 })();
 

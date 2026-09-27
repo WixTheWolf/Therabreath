@@ -113,22 +113,34 @@ section{padding-block:clamp(72px,11vh,130px)}
 .why .eyebrow{color:#A8F0CB}
 .why .big{font-family:var(--f-d);font-weight:800;font-stretch:110%;letter-spacing:-.03em;line-height:1.02;font-size:clamp(34px,4.4vw,70px);margin:20px 0 0;max-width:20ch}
 .why .big em{font-style:normal;color:#A8F0CB}
-.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:clamp(40px,6vh,64px)}
+.why .sub{margin:22px 0 0;max-width:60ch;color:rgba(255,255,255,.84);font-size:clamp(17px,1.3vw,20px)}
+.pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:clamp(40px,6vh,64px)}
+.pillar .out{margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.16);font-size:15px;font-weight:600;color:#fff}
+.pillar .out b{display:block;font-family:var(--f-d);font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#A8F0CB}
 .pillar{padding:28px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
 .pillar .k{font-family:var(--f-d);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#FFB066}
 .pillar h3{margin:8px 0 6px;font-family:var(--f-d);font-weight:800;font-size:32px;letter-spacing:-.02em}
 .pillar p{margin:0;color:rgba(255,255,255,.82);font-size:17px}
 
+.ww{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;margin:12px 0 0;font-size:14.5px}
+.ww dt{font-family:var(--f-d);font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--c);padding-top:3px;filter:brightness(.8)}
+.ww dd{margin:0;color:var(--fg-2)}
 /* agenda */
-.tline{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px}
+.tline{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:22px}
 .tline::before{content:"";position:absolute;left:14px;right:14px;top:14px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--green),var(--orange));transform-origin:0 50%;transform:scaleX(0);transition:transform 1.6s var(--ease)}
 .tline.in::before{transform:scaleX(1)}
 .step{position:relative;padding-top:56px;display:flex;flex-direction:column;gap:8px}
 .step::before{content:"";position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 7px var(--paper)}
 .step .t{font-family:var(--f-d);font-weight:800;font-size:15px;color:var(--orange-d);letter-spacing:.04em}
-.step h3{margin:0;font-family:var(--f-d);font-weight:800;font-stretch:110%;font-size:clamp(30px,2.8vw,44px);letter-spacing:-.03em}
+.step h3{margin:0;font-family:var(--f-d);font-weight:800;font-stretch:104%;font-size:clamp(22px,2vw,32px);letter-spacing:-.02em;overflow-wrap:anywhere}
 .step p{margin:0;color:var(--fg-2);font-size:17px}
-.step .out{margin-top:6px;font-size:15px;font-weight:600}
+.step .out{margin-top:auto;padding-top:6px;font-size:15px;font-weight:600}
+.step .o{align-self:flex-start;font-family:var(--f-d);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:99px;background:#E4F4EC;color:var(--green)}
+.step h3 small{display:block;margin-top:6px;font-size:16px;font-weight:700;font-stretch:100%;letter-spacing:0;color:var(--fg)}
+.lunch{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;margin-top:40px;padding:18px 22px;border-radius:18px;background:#fff;border:1px dashed var(--line)}
+.lunch .t{font-family:var(--f-d);font-weight:800;font-size:15px;color:var(--orange-d);letter-spacing:.04em}
+.lunch b{font-family:var(--f-d);font-weight:800;font-size:22px}
+.lunch span:last-child{color:var(--fg-2);font-size:16px}
 .step .out b{display:block;font-family:var(--f-d);font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
 
 /* platforms */
@@ -184,6 +196,14 @@ section{padding-block:clamp(72px,11vh,130px)}
 .stat .n{font-family:var(--f-d);font-weight:800;font-stretch:112%;font-size:clamp(120px,14vw,220px);line-height:.8;color:var(--orange);letter-spacing:-.05em}
 .stat h3{margin:14px 0 6px;font-family:var(--f-d);font-weight:800;font-size:clamp(24px,2.2vw,34px);letter-spacing:-.02em}
 .stat p{margin:0;color:var(--fg-2);font-size:17px;max-width:26ch}
+.hz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.hzc{padding:26px;border-top:6px solid var(--c);display:flex;flex-direction:column;gap:8px}
+.hzc .k{font-family:var(--f-d);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.hzc h3{margin:0;font-family:var(--f-d);font-weight:800;font-size:clamp(24px,2.2vw,32px);letter-spacing:-.02em;line-height:1.05}
+.hzc p{margin:0;color:var(--fg-2);font-size:16px}
+.pb{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.pb span{display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:99px;background:#fff;border:1px solid var(--line);font-family:var(--f-d);font-weight:700;font-size:15px}
+.pb span b{color:var(--orange-d)}
 
 /* close */
 .close{position:relative;overflow:hidden;background:linear-gradient(180deg,#1A9BE0 0%,#0072BC 50%,#006649 100%);color:#fff;text-align:center;padding-block:clamp(110px,16vh,180px)}
@@ -196,14 +216,16 @@ section{padding-block:clamp(72px,11vh,130px)}
 
 /* responsive */
 @media (max-width:980px){
-  .plats,.prep,.stages{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .plats,.prep,.stages,.pillars,.hz{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tline{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:40px}
+  .tline::before{display:none}
   .cgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:760px){
-  .hero-grid,.sec-head,.pillars,.stats{grid-template-columns:minmax(0,1fr)}
+  .hero-grid,.sec-head,.pillars,.stats,.hz{grid-template-columns:minmax(0,1fr)}
   .lineup{height:340px;margin-top:10px}
-  .tline{grid-template-columns:minmax(0,1fr)}
-  .tline::before{left:14px;right:auto;top:14px;bottom:14px;width:4px;height:auto;transform:scaleY(0);transform-origin:50% 0}
+  .tline{grid-template-columns:minmax(0,1fr);row-gap:26px}
+  .tline::before{display:block;left:14px;right:auto;top:14px;bottom:14px;width:4px;height:auto;transform:scaleY(0);transform-origin:50% 0}
   .tline.in::before{transform:scaleY(1)}
   .step{padding-top:0;padding-left:56px}
   .cgrid{grid-template-columns:minmax(0,1fr)}
@@ -236,14 +258,14 @@ section{padding-block:clamp(72px,11vh,130px)}
     <div>
       <span class="eyebrow rv">TheraBreath Flavor Playbook · Pre-read</span>
       <h1 class="d rv d1" id="h1" style="margin-top:22px">Before we meet: <span class="hl">where fresh goes next.</span></h1>
-      <p class="lede rv d2">Thank you for hosting us. Here’s what to expect, so we can spend our two hours together tasting and deciding.</p>
+      <p class="lede rv d2">Thank you for hosting us. Ross asked for a session on growing TheraBreath through flavor innovation. Here’s how we’ll use the morning to build a flavor playbook together, for near-term launches and long-term franchise growth.</p>
       <div class="facts rv d3">
         <span class="fact"><i></i>Monday, November 9, 2026</span>
-        <span class="fact" style="--c:var(--green)"><i></i>Church &amp; Dwight HQ · Ewing, NJ</span>
-        <span class="fact" style="--c:var(--blue)"><i></i>2 hours · hands-on tasting</span>
-        <span class="fact todo-chip"><i></i>To add: start time</span>
+        <span class="fact" style="--c:var(--blue)"><i></i>10:00 AM – 12:00 PM ET</span>
+        <span class="fact" style="--c:var(--green)"><i></i>Darwin · Church &amp; Dwight HQ, Ewing, NJ</span>
+        <span class="fact" style="--c:#7ED321"><i></i>Lunch provided</span>
       </div>
-      <div class="count rv d3" id="count" aria-live="off"><span class="n" id="days">–</span><span class="t" id="daysT">days until<br>we meet<small>Nov 9, 2026</small></span></div>
+      <div class="count rv d3" id="count" aria-live="off"><span class="n" id="days">–</span><span class="t" id="daysT">days until<br>we meet<small>Nov 9 · 10:00 AM ET</small></span></div>
     </div>
     <div class="lineup" id="lineup" aria-hidden="true"><div class="halo"></div></div>
   </div>
@@ -287,12 +309,9 @@ section{padding-block:clamp(72px,11vh,130px)}
 <section class="why">
   <div class="wrap">
     <span class="eyebrow rv">Why we’re coming</span>
-    <p class="big rv d1">TheraBreath already owns gentle, non-burning freshness. <em>We think flavor can do more.</em></p>
-    <div class="pillars">
-      <div class="pillar rv"><span class="k">Keep</span><h3>Trust</h3><p>The gentle, effective, dentist-formulated promise stays at the center of everything we bring.</p></div>
-      <div class="pillar rv d1"><span class="k">Add</span><h3>Character</h3><p>Flavor that gives people a reason to notice TheraBreath, talk about it and remember it.</p></div>
-      <div class="pillar rv d2"><span class="k">Earn</span><h3>Repeat use</h3><p>An experience people enjoy is one they reach for again tomorrow morning.</p></div>
-    </div>
+    <p class="big rv d1">Together, we’ll define <em>a flavor playbook for TheraBreath.</em></p>
+    <p class="sub rv d2">It should support near-term product innovation and long-term franchise growth. The morning is built around the four objectives in Ross’s invite. TheraBreath’s gentle, non-burning freshness stays at the center of all of it.</p>
+    <div class="pillars" id="objs"></div>
   </div>
 </section>
 
@@ -300,15 +319,11 @@ section{padding-block:clamp(72px,11vh,130px)}
 <section>
   <div class="wrap">
     <div class="sec-head">
-      <div><span class="eyebrow rv">The two hours</span><h2 class="d rv d1">Four moves, <span class="hl">one short list.</span></h2></div>
-      <p class="rv d2">It’s a working session. You’ll spend most of it tasting, scoring and deciding.</p>
+      <div><span class="eyebrow rv">The morning</span><h2 class="d rv d1">10:00 to noon, <span class="hl">then lunch.</span></h2></div>
+      <p class="rv d2">It’s a working session. Every block maps to one of the objectives, and each one ends with something the room has agreed.</p>
     </div>
-    <div class="tline rv" id="tline">
-      <div class="step"><span class="t">0:00 – 0:35</span><h3>Frame</h3><p>What is changing around freshness, and four territories TheraBreath could own.</p><div class="out"><b>Leave with</b>A shared view of the opportunity</div></div>
-      <div class="step"><span class="t">0:35 – 1:20</span><h3>Taste</h3><p>Six concepts, tasted blind, from the first second to the finish.</p><div class="out"><b>Leave with</b>A room score for every sample</div></div>
-      <div class="step"><span class="t">1:20 – 1:45</span><h3>Choose</h3><p>Each concept against three checks: brand fit, technical reality, consumer desire.</p><div class="out"><b>Leave with</b>Three concepts, two platforms</div></div>
-      <div class="step"><span class="t">1:45 – 2:00</span><h3>Assign</h3><p>An owner, a next step and a date for every concept that advances.</p><div class="out"><b>Leave with</b>The short list</div></div>
-    </div>
+    <div class="tline rv" id="tline"></div>
+    <div class="lunch rv"><span class="t">12:00</span><b>Lunch</b><span>Provided for everyone. Thank you, Church &amp; Dwight.</span></div>
   </div>
 </section>
 
@@ -327,8 +342,8 @@ section{padding-block:clamp(72px,11vh,130px)}
 <section class="concepts">
   <div class="wrap">
     <div class="sec-head">
-      <div><span class="eyebrow rv">A first look</span><h2 class="d rv d1">Six flavors. <span class="hl">You decide which three advance.</span></h2></div>
-      <p class="rv d2">Each keeps one familiar freshness cue and changes one thing people will notice. Their working names stay under wraps until after the tasting.</p>
+      <div><span class="eyebrow rv">A first look</span><h2 class="d rv d1">Six flavor directions, <span class="hl">each with a who and a when.</span></h2></div>
+      <p class="rv d2">Each keeps one familiar freshness cue and changes one thing people will notice, and each points at a new occasion or consumer. They’re our starting point for the room to build on. Working names stay under wraps until after the tasting.</p>
     </div>
     <div class="cgrid" id="cgrid"></div>
     <div class="blind rv"><span>On the day you’ll taste all six blind, alongside today’s TheraBreath as a control.</span><span class="codes" id="codes"></span></div>
@@ -361,13 +376,14 @@ section{padding-block:clamp(72px,11vh,130px)}
 <section class="qs">
   <div class="wrap">
     <div class="sec-head">
-      <div><span class="eyebrow rv">Before you arrive</span><h2 class="d rv d1">Three questions <span class="hl" style="color:#6FD9AE">to sit with.</span></h2></div>
+      <div><span class="eyebrow rv">Before you arrive</span><h2 class="d rv d1">Four questions <span class="hl" style="color:#6FD9AE">to sit with.</span></h2></div>
       <p class="rv d2">No homework, just a head start. We’ll open the session with your answers.</p>
     </div>
     <div class="qlist">
-      <div class="q rv"><span class="n">01</span><div><h3>Where does TheraBreath’s freshness feel most at home today, and where is it missing?</h3><p>Think about moments, routines and places, not just flavors.</p></div></div>
-      <div class="q rv"><span class="n">02</span><div><h3>Which moment in your day could use a different kind of fresh?</h3><p>Morning, after coffee, before a meeting, before bed.</p></div></div>
-      <div class="q rv"><span class="n">03</span><div><h3>What should never change about how TheraBreath feels?</h3><p>The one thing any new flavor has to protect.</p></div></div>
+      <div class="q rv"><span class="n">01</span><div><h3>Which flavor, sensory or consumer trends are you already seeing?</h3><p>In oral care or anywhere else: food, drink, beauty, wellness.</p></div></div>
+      <div class="q rv"><span class="n">02</span><div><h3>Which consumers and moments is TheraBreath not reaching yet?</h3><p>Think about who, and when in their day.</p></div></div>
+      <div class="q rv"><span class="n">03</span><div><h3>Where in the franchise could flavor drive the most growth?</h3><p>The rinse, another format, or something TheraBreath doesn’t make yet.</p></div></div>
+      <div class="q rv"><span class="n">04</span><div><h3>What should never change about how TheraBreath feels?</h3><p>The one thing any new flavor has to protect.</p></div></div>
     </div>
   </div>
 </section>
@@ -376,13 +392,11 @@ section{padding-block:clamp(72px,11vh,130px)}
 <section>
   <div class="wrap">
     <div class="sec-head">
-      <div><span class="eyebrow rv">What we’ll leave with</span><h2 class="d rv d1">The goal is <span class="hl">decisions.</span></h2></div>
+      <div><span class="eyebrow rv">What we’ll leave with</span><h2 class="d rv d1">A draft <span class="hl">flavor playbook.</span></h2></div>
+      <p class="rv d2">We build it together in the room. Afterwards we write it up and send it to everyone who was there.</p>
     </div>
-    <div class="stats">
-      <div class="stat rv"><span class="n" data-n="2">2</span><h3>Innovation platforms</h3><p>Territories TheraBreath could own across several launches.</p></div>
-      <div class="stat rv d1"><span class="n" data-n="3">3</span><h3>Lead concepts</h3><p>Tasted, scored and cleared against three checks.</p></div>
-      <div class="stat rv d2"><span class="n" data-n="1">1</span><h3>Owner per test</h3><p>With a named next step and a date.</p></div>
-    </div>
+    <div class="hz" id="hz"></div>
+    <div class="pb rv" id="pb"></div>
   </div>
 </section>
 
@@ -391,7 +405,7 @@ section{padding-block:clamp(72px,11vh,130px)}
   <div class="bubbles" id="bubbles" aria-hidden="true"></div>
   <div class="wrap" style="position:relative">
     <h2 class="d rv">See you on <span class="hl">November 9.</span></h2>
-    <p class="rv d1">Questions before the day, or anything we should know? Reply to the email this link came in and we’ll take care of it.</p>
+    <p class="rv d1">10:00 AM in Darwin, Church &amp; Dwight HQ. Questions before the day, or anything we should know? Reply to the email this link came in and we’ll take care of it.</p>
     <div class="sign rv d2">The Flavor Factory for TheraBreath</div>
   </div>
 </section>
@@ -403,7 +417,7 @@ section{padding-block:clamp(72px,11vh,130px)}
 "use strict";
 document.documentElement.classList.add("js");
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const T = window.TBCore, { CONCEPTS, CONTROL, PLATS, bottle, conceptBottleOpts } = T;
+const T = window.TBCore, { CONCEPTS, CONTROL, PLATS, OBJECTIVES, AGENDA, HORIZONS, bottle, conceptBottleOpts } = T;
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 document.body.insertAdjacentHTML("afterbegin", T.logoSymbol("../assets/therabreath-logo.png"));
 
@@ -412,8 +426,8 @@ document.body.insertAdjacentHTML("afterbegin", T.logoSymbol("../assets/therabrea
   const now = new Date(), day = new Date(2026, 10, 9);
   const d = Math.round((new Date(day.getFullYear(), day.getMonth(), day.getDate()) - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 864e5);
   if (d > 1) { $("#days").textContent = d; }
-  else if (d === 1) { $("#days").textContent = "1"; $("#daysT").innerHTML = "day until<br>we meet<small>Nov 9, 2026</small>"; }
-  else if (d === 0) { $("#days").textContent = "Today"; $("#daysT").innerHTML = "<small>Monday, November 9, 2026</small>"; }
+  else if (d === 1) { $("#days").textContent = "1"; $("#daysT").innerHTML = "day until<br>we meet<small>Nov 9 · 10:00 AM ET</small>"; }
+  else if (d === 0) { $("#days").textContent = "Today"; $("#daysT").innerHTML = "<small>10:00 AM ET · Darwin</small>"; }
   else { $("#count").hidden = true; }
 })();
 
@@ -423,6 +437,12 @@ const iconic = bottle({ liq: ["#4FB3E6", "#1A78C0"], band: "#6CC3EA", flavor: "I
 const pos = [[4, 34, .2], [18, 22, .35], [70, 22, .35], [84, 34, .2]];
 const side = [CONCEPTS[1], CONCEPTS[0], CONCEPTS[2], CONCEPTS[3]];
 $("#lineup").insertAdjacentHTML("beforeend", side.map((c, i) => `<div class="bt" style="left:${pos[i][0]}%;bottom:${i === 0 || i === 3 ? 6 : 3}%;transition-delay:${pos[i][2] + .2}s;z-index:${i === 0 || i === 3 ? 1 : 2}">${teaser(c)}</div>`).join("") + `<div class="bt c" style="left:35%;transition-delay:.1s">${iconic}</div>`);
+
+/* objectives, agenda, playbook */
+$("#objs").innerHTML = OBJECTIVES.map((o, i) => `<div class="pillar rv${i ? " d" + i : ""}"><span class="k">Objective ${o.n}</span><h3>${o.h}</h3><p>${o.line}</p><div class="out"><b>We leave with</b>${o.out}</div></div>`).join("");
+$("#tline").innerHTML = AGENDA.map(a => `<div class="step"><span class="t">${a.t} – ${a.e}</span><h3>${a.h}<small>${a.w}</small></h3><p>${a.p}</p>${a.o ? `<span class="o">Objective 0${a.o}</span>` : ""}<div class="out"><b>Leave with</b>${a.out}</div></div>`).join("");
+$("#hz").innerHTML = HORIZONS.map((h, i) => `<div class="hzc card rv${i ? " d" + i : ""}" style="--c:${h.c}"><span class="k">${h.h}</span><h3>${h.w}</h3><p>${h.p}</p></div>`).join("");
+$("#pb").innerHTML = OBJECTIVES.map(o => `<span><b>${o.n}</b>${o.out}</span>`).join("") + `<span><b>+</b>An owner and a date for every next step</span>`;
 
 /* platforms */
 const PD = [
@@ -434,7 +454,7 @@ const PD = [
 $("#plats").innerHTML = PD.map(([id, n, pb, pf, d, ic], i) => `<div class="plat card rv${i ? " d" + i : ""}"><div class="top" style="--pb:${pb};--pf:${pf}"><span class="n">${n}</span><svg viewBox="0 0 86 86" aria-hidden="true">${ic}</svg></div><div class="bd"><h3>${PLATS[id]}</h3><p>${d}</p></div></div>`).join("");
 
 /* concepts */
-$("#cgrid").innerHTML = CONCEPTS.map((c, i) => `<article class="con card rv${i % 3 ? " d" + (i % 3) : ""}" style="--c:${c.acc}"><div class="bt">${teaser(c)}</div><div><h3>${c.flavor}</h3><div class="fl">Working name revealed on the day</div><p>${c.feels}</p></div></article>`).join("");
+$("#cgrid").innerHTML = CONCEPTS.map((c, i) => `<article class="con card rv${i % 3 ? " d" + (i % 3) : ""}" style="--c:${c.acc}"><div class="bt">${teaser(c)}</div><div><h3>${c.flavor}</h3><div class="fl">Working name revealed on the day</div><p>${c.feels}</p><dl class="ww"><dt>Who</dt><dd>${c.who}</dd><dt>When</dt><dd>${c.when}</dd></dl></div></article>`).join("");
 $("#codes").innerHTML = [...CONCEPTS.map(c => c.code).sort(), CONTROL.code].map(c => `<span>${c}</span>`).join("");
 
 /* closing bubbles */

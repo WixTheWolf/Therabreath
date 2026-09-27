@@ -32,9 +32,10 @@ const SFX = [
   sfx("impact", 274, 0.6),
   sfx("whoosh", 300, 0.8),
   sfx("impact", 315, 0.8),
+  sfx("impact", 330, 0.75),
   sfx("impact", 345, 0.8),
   sfx("riser", 343, 0.55),
-  sfx("impact", 375, 0.8),
+  sfx("impact", 360, 0.85),
   sfx("shimmer", 392, 0.6),
 ];
 

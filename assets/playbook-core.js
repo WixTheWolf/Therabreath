@@ -13,42 +13,42 @@
   /* ---------------------------------------------------------------- data */
   const PLATS = { newfresh: "New Fresh", sensory: "Sensory Proof", ritual: "Ritual by Time", elevated: "Elevated Escape" };
   const CONCEPTS = [
-    { id: "yuzu", n: "01", name: "Polar Light", flavor: "Arctic Yuzu", tag: "Bright citrus, very cold.", status: "lead", code: "318", tone: "light", bg: "#E1F4FC", glow: "#F6FBC8", acc: "#C3D21E", band: "Electric Citrus Chill",
+    { id: "yuzu", who: "People who want strong freshness without the burn", when: "Wake-up", horizon: "near", n: "01", name: "Polar Light", flavor: "Arctic Yuzu", tag: "Bright citrus, very cold.", status: "lead", code: "318", tone: "light", bg: "#E1F4FC", glow: "#F6FBC8", acc: "#C3D21E", band: "Electric Citrus Chill",
       liquid: ["#D9EA5C", "#58BCE6"], kw: ["bright", "icy", "citrus", "clean", "modern", "energetic"],
       feels: "The first breath outside on a clear winter morning, lit by citrus.",
       arc: ["Sharp, bright yuzu peel.", "A clean cold wave builds, with no burn.", "Bright, awake, completely clean."],
       plat: ["newfresh", "sensory"],
       note: "Build the yuzu from oxidation-tolerant top notes, since citral-heavy lemon profiles fade in oxidizing rinse systems. Non-menthol cooling agents carry the cold without the burn.",
       avoid: "Lemon mouthwash. Snowflakes." },
-    { id: "gtc", n: "02", name: "Glasshouse", flavor: "Green Tea Cucumber", tag: "Botanical calm, poured cold.", status: "lead", code: "742", tone: "light", bg: "#E6F3E8", glow: "#FFFFFF", acc: "#4E9A6E", band: "Clean Botanical Calm",
+    { id: "gtc", who: "Wellness and skincare-routine shoppers", when: "Midday reset", horizon: "near", n: "02", name: "Glasshouse", flavor: "Green Tea Cucumber", tag: "Botanical calm, poured cold.", status: "lead", code: "742", tone: "light", bg: "#E6F3E8", glow: "#FFFFFF", acc: "#4E9A6E", band: "Clean Botanical Calm",
       liquid: ["#9FD6A6", "#3C9A68"], kw: ["clean", "botanical", "spa-like", "calm", "hydrating", "effortless"],
       feels: "A glass of cold water in a quiet, sunlit room.",
       arc: ["Soft green sencha, cool and light.", "Watery cucumber freshness settles in.", "Hydrated and calm, nothing left over."],
       plat: ["newfresh", "ritual"],
       note: "Cucumber’s green notes are volatile and fragile. A quiet spearmint backbone protects the profile and keeps it reading as oral care.",
       avoid: "Health-food store. Cucumber slices on eyes." },
-    { id: "ginger", n: "03", name: "Limelight", flavor: "Ginger Lime", tag: "Cool lime with a little warmth.", status: "lead", code: "506", tone: "dark", bg: "#1B2710", glow: "#4F3410", acc: "#F58220", band: "Zesty Warming Spark",
+    { id: "ginger", who: "Flavor-curious adults who find mint predictable", when: "After coffee", horizon: "next", n: "03", name: "Limelight", flavor: "Ginger Lime", tag: "Cool lime with a little warmth.", status: "lead", code: "506", tone: "dark", bg: "#1B2710", glow: "#4F3410", acc: "#F58220", band: "Zesty Warming Spark",
       liquid: ["#C4E04A", "#E88E36"], kw: ["bright", "kinetic", "warming", "crisp", "energetic", "unexpected"],
       feels: "Cold lime on the tongue, then a spark of warmth underneath.",
       arc: ["A zesty lime snap.", "Ginger warmth rises under the cool.", "Crisp, energized, clean."],
       plat: ["sensory", "ritual"],
       note: "Warmth has to read as lively, never as burn, because no-burn is the TheraBreath promise. Keep ginger’s pungency well below irritation and let cooling lead.",
       avoid: "Margaritas. Anything that looks like a cocktail." },
-    { id: "grapefruit", n: "04", name: "Pink Hour", flavor: "Grapefruit Rose Mint", tag: "Golden hour, in pink.", status: "contender", code: "261", tone: "light", bg: "#FCE8E2", glow: "#FFF8F5", acc: "#E2553F", band: "Bright Citrus Floral",
+    { id: "grapefruit", who: "Beauty shoppers who treat oral care as self-care", when: "Before going out", horizon: "next", n: "04", name: "Pink Hour", flavor: "Grapefruit Rose Mint", tag: "Golden hour, in pink.", status: "contender", code: "261", tone: "light", bg: "#FCE8E2", glow: "#FFF8F5", acc: "#E2553F", band: "Bright Citrus Floral",
       liquid: ["#F6A898", "#DD5E4A"], kw: ["elevated", "aromatic", "modern botanical", "citrus floral"],
       feels: "Morning light through pink glass.",
       arc: ["Juicy pink grapefruit.", "A dry, green rose heart: more stem than petal.", "Cool mint comes back to close."],
       plat: ["elevated", "newfresh"],
       note: "Use a green, geranium-leaning rose accord rather than a sweet floral. That keeps it far from soap and perfume cues.",
       avoid: "Perfume counter. Bath soap." },
-    { id: "pear", n: "05", name: "Green Orchard", flavor: "Pear Cardamom Mint", tag: "Pear and cardamom, finished cool.", status: "contender", code: "893", tone: "light", bg: "#F3EFD8", glow: "#FFFCEB", acc: "#8E7B3A", band: "Layered Culinary Cool",
+    { id: "pear", who: "Shoppers who pay more for a premium experience", when: "After a meal", horizon: "long", n: "05", name: "Green Orchard", flavor: "Pear Cardamom Mint", tag: "Pear and cardamom, finished cool.", status: "contender", code: "893", tone: "light", bg: "#F3EFD8", glow: "#FFFCEB", acc: "#8E7B3A", band: "Layered Culinary Cool",
       liquid: ["#E0D78A", "#A5964C"], kw: ["elegant", "layered", "culinary", "premium", "sophisticated"],
       feels: "A chef’s pairing, translated into freshness.",
       arc: ["Crisp green pear, cool.", "Cardamom’s airy, eucalyptus-like lift.", "Soft, clean spice held by mint."],
       plat: ["elevated"],
       note: "Cardamom naturally carries 1,8-cineole, the same cool note as eucalyptus. It is a built-in bridge between spice and mint.",
       avoid: "Holiday baking. Dessert." },
-    { id: "chamomile", n: "06", name: "Lights Out", flavor: "Chamomile Vanilla Mint", tag: "The last rinse of the day.", status: "open", code: "437", tone: "dark", bg: "#121936", glow: "#2C3468", acc: "#E9C77A", band: "Soft Evening Calm",
+    { id: "chamomile", who: "Anyone with a night routine", when: "Wind-down, before bed", horizon: "next", n: "06", name: "Lights Out", flavor: "Chamomile Vanilla Mint", tag: "The last rinse of the day.", status: "open", code: "437", tone: "dark", bg: "#121936", glow: "#2C3468", acc: "#E9C77A", band: "Soft Evening Calm",
       liquid: ["#E6D59C", "#958BD2"], kw: ["calm", "evening", "gentle", "soft", "comforting"],
       feels: "Lights low. The day is done.",
       arc: ["Gentle, soft mint.", "Honeyed chamomile calm.", "A dry vanilla softness, still clean."],
@@ -56,6 +56,33 @@
       note: "Keep the vanilla dry and airy, low in sweetness, so the finish reads clean rather than dessert.",
       avoid: "Tea packaging. Candles." }
   ];
+
+  /* From Ross Conroy's invite (Sep 24, 2026). Keep every page in step with these. */
+  const SESSION = { day: "Monday, November 9, 2026", short: "Mon, Nov 9", time: "10:00 AM – 12:00 PM ET", room: "Darwin", place: "Church & Dwight HQ · Ewing, NJ", lunch: "Lunch provided", start: "2026-11-09T15:00:00Z" };
+  const OBJECTIVES = [
+    { k: "trends", n: "01", h: "Trends", line: "Identify the flavor, sensory and consumer trends shaping the future of oral care.", out: "The trends worth acting on" },
+    { k: "territories", n: "02", h: "Territories", line: "Explore new flavor territories and sensory experiences that strengthen TheraBreath’s edge.", out: "The territories to prioritize" },
+    { k: "concepts", n: "03", h: "Concepts", line: "Generate concepts that create new usage occasions, reach new consumers and expand the portfolio.", out: "Concepts with a clear who and when" },
+    { k: "pipeline", n: "04", h: "Pipeline", line: "Build a pipeline of platforms, flavor directions and white space for growth across the franchise.", out: "A pipeline from near-term to long-term" }
+  ];
+  const AGENDA = [
+    { t: "10:00", e: "10:10", h: "Welcome", w: "Introductions and the goal", p: "Who’s in the room, and what the playbook needs to do.", out: "One goal for the morning" },
+    { t: "10:10", e: "10:30", h: "Trends", w: "What’s shaping oral care", p: "Flavor, sensory and consumer trends we see from our bench and the market.", out: "The trends worth acting on", o: 1 },
+    { t: "10:30", e: "10:50", h: "Territories", w: "Where fresh could go", p: "Flavor territories beyond mint, the white space and four platforms.", out: "Territories to prioritize", o: 2 },
+    { t: "10:50", e: "11:20", h: "Taste", w: "Six directions, blind", p: "Six flavor directions beside today’s TheraBreath, scored across the whole rinse.", out: "A room score for each", o: 2 },
+    { t: "11:20", e: "11:40", h: "Create", w: "New occasions, new consumers", p: "In small groups: pick a territory, a moment and a consumer, and build a concept.", out: "New concepts from the room", o: 3 },
+    { t: "11:40", e: "12:00", h: "Playbook", w: "Prioritize and assign", p: "Three checks, then a pipeline from near-term launches to long-term bets, with owners.", out: "The draft playbook", o: 4 }
+  ];
+  const HORIZONS = [
+    { k: "near", h: "Near-term", w: "New flavors for today’s rinse", p: "Directions that fit the current base and shelf. The fastest path from bench to launch.", c: "#006649" },
+    { k: "next", h: "Next", w: "Platforms and new occasions", p: "Grow a platform into a family: a morning and night pair, a sensory line, a premium tier.", c: "#00A3E0" },
+    { k: "long", h: "Long-term", w: "Across the franchise", p: "Carry the winners into other formats, such as toothpaste and lozenges, and toward new consumers.", c: "#F58025" }
+  ];
+  const TRENDS = { flavor: "Flavor trend", sensory: "Sensory trend", consumer: "Consumer trend" };
+  const CREATE = {
+    occasions: ["Wake-up", "After coffee", "After a meal", "Before a meeting", "Before going out", "After the gym", "Travel", "Wind-down"],
+    consumers: ["Strong-but-gentle seekers", "Mint-fatigued adults", "Self-care and beauty routines", "Flavor-curious younger adults", "Night-routine sleepers", "Commuters and travelers"]
+  };
   const CONTROL = { id: "control", name: "TheraBreath Fresh Breath", code: "150", acc: "#00A3E0" };
   const STATUS = { lead: "Current lead", contender: "Contender", open: "Open exploration" };
   const REGIONS = [
@@ -341,7 +368,7 @@
 
 
 
-  const TB = { hex, rgba, rng, PLATS, CONCEPTS, CONTROL, STATUS, REGIONS, HOME, GRID, SPECTRUM, AXES, BASE, SHAPES, MOMENTS, WILD, DIMS, ACTIONS, bottle, setBottle, conceptBottleOpts, splitName, logoSymbol, ART };
+  const TB = { SESSION, OBJECTIVES, AGENDA, HORIZONS, TRENDS, CREATE, hex, rgba, rng, PLATS, CONCEPTS, CONTROL, STATUS, REGIONS, HOME, GRID, SPECTRUM, AXES, BASE, SHAPES, MOMENTS, WILD, DIMS, ACTIONS, bottle, setBottle, conceptBottleOpts, splitName, logoSymbol, ART };
   if (typeof module === "object" && module.exports) module.exports = TB;
   else root.TBCore = TB;
 })(typeof self !== "undefined" ? self : this);

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * Export the workshop deck (deck/index.html) to a 30-page PDF, one 1920 × 1080
+ * Export the workshop deck (deck/index.html) to a PDF, one 1920 × 1080
  * slide per page, for presenting offline or sending as a leave-behind.
  *
  *   npm i --no-save playwright-core     # any recent version

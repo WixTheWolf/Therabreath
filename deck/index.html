@@ -112,6 +112,46 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .kicker{display:flex;align-items:center;gap:22px;font:800 34px var(--f-d);letter-spacing:-.01em}
 .kicker i{width:14px;height:14px;border-radius:50%;background:var(--orange)}
 
+.objs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;margin-top:auto;margin-bottom:auto}
+.obj{padding:30px 30px 34px;border-radius:26px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);display:flex;flex-direction:column;gap:14px}
+.obj .n{font:800 120px/.8 var(--f-d);font-stretch:112%;letter-spacing:-.05em;color:var(--orange)}
+.obj h3{margin:10px 0 0;font:800 46px/1 var(--f-d);font-stretch:108%;letter-spacing:-.02em}
+.obj p{margin:0;font:500 23px/1.42 var(--f-b);color:var(--fg2)}
+.obj .out{margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.16);font:600 20px/1.35 var(--f-b)}
+.obj .out b{display:block;font:800 14px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:#A8F0CB;margin-bottom:4px}
+.tline.ag6{grid-template-columns:repeat(6,minmax(0,1fr));gap:28px;margin-top:60px}
+.tline.ag6 .tstep h3{font-size:42px;letter-spacing:-.025em}
+.tline.ag6 .tstep .out{margin-top:auto}
+.tline.ag6 .tstep .w{font-size:23px}
+.tline.ag6 .tstep p{font-size:20px}
+.tline.ag6 .tstep .out{font-size:18px;padding:14px 16px}
+.tline.ag6 .tstep .o{align-self:flex-start;font:800 13px var(--f-d);letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:99px;background:#E4F4EC;color:var(--green)}
+.lunchbar{margin-top:34px;display:flex;align-items:baseline;gap:22px;padding:18px 26px;border-radius:18px;border:2px dashed var(--line);font:500 22px var(--f-b);color:var(--fg2)}
+.lunchbar .t{font:800 22px var(--f-d);color:var(--orange-d);letter-spacing:.04em}
+.lunchbar b{font:800 30px var(--f-d);color:var(--fg)}
+.sig .tt{align-self:flex-start;font:800 13px var(--f-d);letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:99px;background:var(--tc,#E6F6FD);color:var(--tf,#0072BC)}
+.s-con .ww{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 18px;font:500 22px/1.35 var(--f-b)}
+.s-con .ww dt{font:800 16px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);padding-top:4px}
+.s-con .ww dd{margin:0}
+.create{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 380px;gap:24px;margin-top:50px;align-items:stretch}
+.create .col{padding:26px;display:flex;flex-direction:column;gap:12px}
+.create h4{margin:0;font:800 16px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.create h3{margin:0 0 6px;font:800 36px/1 var(--f-d);letter-spacing:-.02em}
+.create .pills{display:flex;flex-wrap:wrap;gap:10px}
+.create .pills span{padding:9px 15px;border-radius:99px;background:#fff;border:1px solid var(--line);font:700 19px var(--f-d)}
+.create .pills span i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:8px}
+.create .canvas{padding:28px;border:3px dashed var(--orange);background:#FFF8F1;display:flex;flex-direction:column;gap:14px}
+.create .canvas .ln{flex:1;display:flex;align-items:flex-end;border-bottom:2px solid rgba(7,28,60,.18);padding:6px 0 12px;font:800 15px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.hzs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:50px;flex:1}
+.hzc{padding:30px;border-top:8px solid var(--c);display:flex;flex-direction:column;gap:14px}
+.hzc .k{font:800 16px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.hzc h3{margin:0;font:800 40px/1.02 var(--f-d);letter-spacing:-.02em}
+.hzc p{margin:0;font:500 22px/1.42 var(--f-b);color:var(--fg2)}
+.hzc .cz{display:flex;flex-direction:column;gap:10px;margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+.hzc .cz span{display:flex;align-items:center;gap:12px;font:700 21px var(--f-d)}
+.hzc .cz span small{font:500 17px var(--f-b);color:var(--fg3)}
+.hzc .cz i{width:14px;height:14px;border-radius:50%;background:var(--cc);flex:none}
+.hzc .cz .add{border:2px dashed var(--line);border-radius:12px;padding:10px 14px;color:var(--fg3);font:700 18px var(--f-d)}
 /* ---------- 03 agenda ---------- */
 .tline{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px;margin-top:70px}
 .tline::before{content:"";position:absolute;left:20px;right:20px;top:18px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--green),var(--orange))}
@@ -457,15 +497,15 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
   <div class="pad" style="padding-top:130px">
     <div class="s-title">
       <div>
-        <div class="meta b"><span>TheraBreath Flavor Playbook</span><span>Innovation workshop</span></div>
+        <div class="meta b"><span>TheraBreath Flavor Playbook</span><span>Nov 9, 2026 · 10:00 AM · Darwin</span></div>
         <h1 class="d h-hero b">Expand what <span class="fresh">fresh<svg viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M5,22 C80,6 190,4 295,16"/></svg></span> can feel like.</h1>
-        <p class="lede b">A working session to choose the platforms and concepts worth developing next for TheraBreath.</p>
-        <div class="byline b"><span class="lab">Presented by</span><b>The Flavor Factory</b><i class="sep"></i>Church &amp; Dwight HQ, Ewing, NJ<i class="sep"></i>Monday, November 9, 2026</div>
+        <p class="lede b">A working session to define TheraBreath’s flavor playbook, for near-term product innovation and long-term franchise growth.</p>
+        <div class="byline b"><span class="lab">Presented by</span><b>The Flavor Factory</b><i class="sep"></i>Church &amp; Dwight HQ, Ewing, NJ</div>
       </div>
       <div class="trio b" id="trio"><div class="halo"></div></div>
     </div>
   </div>
-  <aside class="notes">Welcome, and thank you for hosting us. This is a working session. We’re here to decide things together, and most of our time will go to tasting. Over the next two hours we will explore where TheraBreath could take freshness next, taste six concepts together, and leave with a short list the whole room agrees on.</aside>
+  <aside class="notes">Welcome, and thank you for hosting us, and to Ross for pulling the group together. This is a working session. By noon we want a draft flavor playbook the whole room has shaped: the trends worth acting on, the territories to prioritize, concepts with a clear consumer and occasion, and a pipeline from near-term launches to long-term bets. Lunch follows.</aside>
 </section>
 
 <!-- 01b · WHO WE ARE -->
@@ -488,37 +528,29 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 </section>
 
 <!-- 02 · GOAL -->
-<section class="slide" data-tone="dark" data-bg="#0A2A5C" data-glow="#0F4C86" data-sec="Frame" data-title="Today we leave with a short list">
+<section class="slide" data-tone="dark" data-bg="#0A2A5C" data-glow="#0F4C86" data-sec="Welcome" data-title="Together, a flavor playbook">
   <div class="pad">
-    <span class="eyebrow b">Our goal for today</span>
-    <h2 class="d h1 b">Today we leave with <span class="hl">a short list.</span></h2>
-    <div class="stats">
-      <div class="stat b"><span class="n">2</span><span class="l">Innovation platforms</span><span class="dd">Territories TheraBreath could own across several launches.</span></div>
-      <div class="stat b"><span class="n">3</span><span class="l">Lead concepts</span><span class="dd">Tasted, scored and cleared against three checks.</span></div>
-      <div class="stat b"><span class="n">1</span><span class="l">Owner per test</span><span class="dd">With a named next action and a date.</span></div>
-    </div>
-    <div class="kicker b"><i></i>The goal is decisions.</div>
+    <span class="eyebrow b">The objective for today</span>
+    <h2 class="d h1 b">Together, define <span class="hl">a flavor playbook.</span></h2>
+    <div class="objs" id="objs"></div>
+    <div class="kicker b"><i></i>For near-term product innovation and long-term franchise growth.</div>
   </div>
-  <aside class="notes">This is the outcome we are designing for: two platforms to build in, three lead concepts to develop, and one owner with a next action for each test. Everything today serves those three numbers. If we end with good ideas but no owners, we have not finished.</aside>
+  <aside class="notes">Ross’s invite set four objectives, and the morning is built around them. First, identify the flavor, sensory and consumer trends shaping oral care. Second, explore new flavor territories and sensory experiences that strengthen TheraBreath’s edge. Third, generate concepts that create new usage occasions, reach new consumers and expand the portfolio. Fourth, build a pipeline of platforms, flavor directions and white space for growth across the franchise. Together those four make the playbook.</aside>
 </section>
 
 <!-- 03 · AGENDA -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#E6F6FD" data-sec="Frame" data-title="Two hours, four moves">
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#E6F6FD" data-sec="Welcome" data-title="10:00 to noon, then lunch">
   <div class="pad">
-    <span class="eyebrow b">The workshop arc</span>
-    <h2 class="d h1 b">Two hours, <span class="hl">four moves.</span></h2>
-    <div class="tline">
-      <div class="tstep b"><span class="t">0:00 – 0:35</span><h3 class="d h2">Frame</h3><span class="w">Where fresh could go</span><p>Signals, flavor culture, the white space and four platforms.</p><div class="out card"><b>We leave with</b>A shared view of the opportunity</div></div>
-      <div class="tstep b"><span class="t">0:35 – 1:20</span><h3 class="d h2">Taste</h3><span class="w">Six concepts, the whole rinse</span><p>Blind samples scored from the first second to tomorrow morning.</p><div class="out card"><b>We leave with</b>A room score for every sample</div></div>
-      <div class="tstep b"><span class="t">1:20 – 1:45</span><h3 class="d h2">Choose</h3><span class="w">Three checks</span><p>Brand fit, technical reality and consumer desire.</p><div class="out card"><b>We leave with</b>Three concepts and two platforms</div></div>
-      <div class="tstep b"><span class="t">1:45 – 2:00</span><h3 class="d h2">Assign</h3><span class="w">Owners and next steps</span><p>One owner, one action and one date for each test.</p><div class="out card"><b>We leave with</b>The short list</div></div>
-    </div>
+    <span class="eyebrow b">The morning</span>
+    <h2 class="d h1 b">10:00 to noon, <span class="hl">then lunch.</span></h2>
+    <div class="tline ag6" id="agenda"></div>
+    <div class="lunchbar b"><span class="t">12:00</span><b>Lunch</b><span>Thank you, Church &amp; Dwight.</span></div>
   </div>
-  <aside class="notes">Four moves. Frame, about 35 minutes: signals, flavor culture and the white space. Taste, 45 minutes: six concepts tasted blind and scored across the whole rinse. Choose, 25 minutes: three checks. Assign, the last 15 minutes: owners and dates. We will keep time visible and park side topics.</aside>
+  <aside class="notes">Six blocks, each tied to one of the four objectives. Welcome, ten minutes. Trends, twenty. Territories, twenty. Taste, thirty: six directions blind beside today’s TheraBreath, so about four minutes a sample. Create, twenty, in small groups. Playbook, the last twenty: three checks, the pipeline and owners. We will keep time visible and park side topics, because lunch is at noon.</aside>
 </section>
 
 <!-- 04 · OPPORTUNITY -->
-<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFFFFF" data-sec="Frame" data-title="The benefit is familiar. The flavor can do more.">
+<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFFFFF" data-sec="Trends" data-title="The benefit is familiar. The flavor can do more.">
   <div class="pad">
     <div class="s-opp">
       <figure class="card photo b"><img src="../assets/therabreath-rinses.jpg" alt="TheraBreath Fresh Breath Oral Rinse in Invigorating Icy Mint, Rainforest Mint and Mild Mint"><figcaption>The shelf today: one orange cap, three mints</figcaption></figure>
@@ -538,24 +570,34 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 </section>
 
 <!-- 05 · SIGNALS -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF3E8" data-sec="Frame" data-title="What people call fresh is changing">
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF3E8" data-sec="Trends" data-title="Trends shaping the future of oral care">
   <div class="pad">
-    <span class="eyebrow b">The world around TheraBreath</span>
-    <h2 class="d h1 b">What people call <span class="hl">fresh</span> is changing.</h2>
+    <span class="eyebrow b">Objective 01 · Trends</span>
+    <h2 class="d h1 b">Trends shaping <span class="hl">the future of oral care.</span></h2>
     <div class="sigs">
-      <article class="sig card b"><div class="vis v-beauty"><i></i><i></i><i></i></div><div class="word">Beauty</div><h4>Personal-care rituals</h4><p>Oral care is joining the skincare shelf as one more step in a self-care routine.</p><div class="seen"><b>Where we see it</b>Layered skincare routines, bathroom “shelfies”, oral care sold beside serums.</div></article>
-      <article class="sig card b"><div class="vis v-flavor" id="vFlavor"></div><div class="word">Flavor</div><h4>A broader vocabulary</h4><p>People now taste yuzu, shiso and cardamom in drinks, snacks and wellness shots.</p><div class="seen"><b>Where we see it</b>Zero-proof bars, functional beverages, global menus, fine fragrance.</div></article>
-      <article class="sig card b"><div class="vis v-sense"><svg viewBox="0 0 300 150" preserveAspectRatio="none" id="vSense"></svg></div><div class="word">Sensation</div><h4>Sensory proof</h4><p>People want an effect they can feel and describe. That is how they know it works.</p><div class="seen"><b>Where we see it</b>Cooling skincare, tingling lip products, “you can feel it working” claims.</div></article>
-      <article class="sig card b"><div class="vis v-well"><div class="arc"></div><div class="sun"></div></div><div class="word">Trust</div><h4>Everyday wellness</h4><p>Products earn a place in the day: morning energy, midday reset, evening calm.</p><div class="seen"><b>Where we see it</b>Sleep and hydration rituals, adaptogen drinks, “night” versions of everything.</div></article>
+      <article class="sig card b"><div class="vis v-beauty"><i></i><i></i><i></i></div><span class="tt" style="--tc:#FDECEA;--tf:#B23A2A">Consumer trend</span><div class="word">Beauty</div><h4>Personal-care rituals</h4><p>Oral care is joining the skincare shelf as one more step in a self-care routine.</p><div class="seen"><b>Where we see it</b>Layered skincare routines, bathroom “shelfies”, oral care sold beside serums.</div></article>
+      <article class="sig card b"><div class="vis v-flavor" id="vFlavor"></div><span class="tt" style="--tc:#FFF3E0;--tf:#C85F0E">Flavor trend</span><div class="word">Flavor</div><h4>A broader vocabulary</h4><p>People now taste yuzu, shiso and cardamom in drinks, snacks and wellness shots.</p><div class="seen"><b>Where we see it</b>Zero-proof bars, functional beverages, global menus, fine fragrance.</div></article>
+      <article class="sig card b"><div class="vis v-sense"><svg viewBox="0 0 300 150" preserveAspectRatio="none" id="vSense"></svg></div><span class="tt" style="--tc:#E6F6FD;--tf:#0072BC">Sensory trend</span><div class="word">Sensation</div><h4>Sensory proof</h4><p>People want an effect they can feel and describe. That is how they know it works.</p><div class="seen"><b>Where we see it</b>Cooling skincare, tingling lip products, “you can feel it working” claims.</div></article>
+      <article class="sig card b"><div class="vis v-well"><div class="arc"></div><div class="sun"></div></div><span class="tt" style="--tc:#FDECEA;--tf:#B23A2A">Consumer trend</span><div class="word">Wellness</div><h4>Everyday wellness</h4><p>Products earn a place in the day: morning energy, midday reset, evening calm.</p><div class="seen"><b>Where we see it</b>Sleep and hydration rituals, adaptogen drinks, “night” versions of everything.</div></article>
     </div>
   </div>
-  <aside class="notes">Four signals from outside oral care are changing what people expect. Beauty: oral care is becoming a self-care step. Flavor: people now taste yuzu and cardamom every week. Sensation: people want to feel it working. Wellness: products earn a place at a moment in the day. Shorthand: Beauty, Flavor, Sensation, Trust.</aside>
+  <aside class="notes">Objective one: the trends. Four we see from our bench and across the categories we make flavors for, grouped the way Ross framed them. A consumer trend: oral care is becoming a self-care step. A flavor trend: people now taste yuzu, shiso and cardamom in everyday food and drink. A sensory trend: people want to feel a product working. And a consumer trend: products earn a place at a moment in the day. Which of these does the room see too, and what are we missing?</aside>
+</section>
+
+<!-- 06 · MAP -->
+<section class="slide" data-tone="dark" data-bg="#062150" data-glow="#0B3F7E" data-sec="Territories" data-title="Flavor culture is much bigger than mint">
+  <div class="pad" style="padding-top:140px">
+    <h2 class="d h2 b">Flavor culture is much bigger than <span class="hl">mint.</span></h2>
+    <div class="map-wrap b" id="mapWrap"><canvas id="mapCanvas" aria-label="Dot map of twelve flavor regions, each linked to the room"></canvas></div>
+    <div class="map-note b"><span class="small">Twelve places reshaping what fresh can mean. A vocabulary to borrow from, not a launch list.</span><span class="lab">12 regions · 4 platforms · 1 room</span></div>
+  </div>
+  <aside class="notes">Flavor culture is far bigger than traditional mint. These twelve places are where freshness cues are coming from, and every line runs back to this room. The point is not to launch twelve flavors. It is to borrow a vocabulary.</aside>
 </section>
 
 <!-- 08 · SPECTRUM -->
-<section class="slide" data-tone="light" data-bg="#ECF8F1" data-glow="#FFFFFF" data-sec="Frame" data-title="Mint is an anchor, not the whole map">
+<section class="slide" data-tone="light" data-bg="#ECF8F1" data-glow="#FFFFFF" data-sec="Territories" data-title="Mint is an anchor, not the whole map">
   <div class="pad">
-    <span class="eyebrow b">Portfolio reality</span>
+    <span class="eyebrow b">Objective 02 · Territories</span>
     <h2 class="d h1 b">Mint is an anchor, <span class="hl">not the whole map.</span></h2>
     <div class="spec b">
       <div class="spec-bar"><div class="zone" style="left:0;width:28%">Expected</div><div class="zone sw">Worth remembering</div><div class="zone" style="left:72%;width:28%;justify-content:flex-end;color:#fff">Novelty</div></div>
@@ -571,7 +613,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 </section>
 
 <!-- 09 · RULE -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#ECF8F1" data-sec="Frame" data-title="Keep one familiar cue. Change one thing.">
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#ECF8F1" data-sec="Territories" data-title="Keep one familiar cue. Change one thing.">
   <div class="pad">
     <span class="eyebrow b">The rule for every idea</span>
     <h2 class="d h2 b">Keep one familiar cue.<br><span class="hl">Change one thing people notice.</span></h2>
@@ -587,8 +629,20 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
   <aside class="notes">One rule to judge every idea today: keep one familiar freshness cue and change one thing people can notice. Arctic yuzu keeps the cold, clean finish and changes the citrus. Green tea cucumber keeps gentle freshness and adds calm. Ginger lime keeps the crisp cool and adds a little warmth.</aside>
 </section>
 
+<!-- 10 · WHITE SPACE -->
+<section class="slide" data-tone="dark" data-bg="#0A2A5C" data-glow="#0F4C86" data-sec="Territories" data-title="Stretch one dimension at a time">
+  <div class="pad" style="padding-top:140px">
+    <h2 class="d h2 b">The white space: stretch one dimension <span class="hl">at a time.</span></h2>
+    <div class="s-ws">
+      <div class="legend-r b" id="legendR"></div>
+      <div class="minis" id="minis"></div>
+    </div>
+  </div>
+  <aside class="notes">Here is the same idea as a map of the white space. Each spoke is a dimension, running from what oral care usually is at the center to where it could go at the edge. Classic mint sits near the center on all of them. Strong concepts pull hard on one or two spokes. When everything changes at once, there is nothing left to trust.</aside>
+</section>
+
 <!-- 11 · PLATFORMS -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF1E4" data-sec="Frame" data-title="Four platforms">
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF1E4" data-sec="Territories" data-title="Four platforms">
   <div class="pad">
     <span class="eyebrow b">Four innovation platforms</span>
     <h2 class="d h1 b">Four places <span class="hl">TheraBreath could grow.</span></h2>
@@ -638,8 +692,29 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 <!-- 17–22 · CONCEPTS (rendered from playbook-core) -->
 <template id="conceptSlot"></template>
 
+<!-- 23 · WILDCARDS -->
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#EAF7FD" data-sec="Reveal" data-title="Three wildcards from our bench">
+  <div class="pad">
+    <span class="eyebrow b">In our pocket</span>
+    <h2 class="d h1 b">Three wildcards from our bench, <span class="hl">if we want to push further.</span></h2>
+    <div class="wilds" id="wilds"></div>
+  </div>
+  <aside class="notes">If the room wants to push further, we have three wildcards from our bench: Forest Bath (hinoki spearmint), Sun Shower (watermelon shiso) and Salt Air (makrut lime and sea salt). They are more territories for the pipeline, and good raw material for the Create exercise that comes next.</aside>
+</section>
+
+<!-- CREATE -->
+<section class="slide" data-tone="light" data-bg="#FFF8F1" data-glow="#FFFFFF" data-sec="Create" data-title="Create: new occasions, new consumers">
+  <div class="pad">
+    <span class="eyebrow b">Objective 03 · Concepts</span>
+    <h2 class="d h2 b">Create: one territory, one moment, <span class="hl">one consumer.</span></h2>
+    <div class="create" id="create"></div>
+    <div class="tnote b" style="margin-top:34px"><span class="chip"><i style="--c:var(--orange)"></i>Small mixed groups</span><span class="chip"><i style="--c:var(--blue)"></i>12 minutes to build</span><span class="chip"><i style="--c:var(--green)"></i>2 minutes each to share</span><span>Every card goes into the playbook.</span></div>
+  </div>
+  <aside class="notes">Now it’s the room’s turn. Split into small groups, mixing Church &amp; Dwight and Flavor Factory people. Each group picks one territory, one occasion and one consumer, and builds a concept on the card: a working name, what it tastes like, why this person would choose it at this moment, and how it stays unmistakably TheraBreath. You can start from anything you tasted, a wildcard, or something entirely new. Twelve minutes to build, then two minutes per group to share. Every card goes into the playbook.</aside>
+</section>
+
 <!-- 26 · DECISION FRAMEWORK -->
-<section class="slide" data-tone="dark" data-bg="#062150" data-glow="#0B3F7E" data-sec="Choose" data-title="Brand Fit × Technical Reality × Consumer Desire">
+<section class="slide" data-tone="dark" data-bg="#062150" data-glow="#0B3F7E" data-sec="Playbook" data-title="Brand Fit × Technical Reality × Consumer Desire">
   <div class="pad" style="padding-top:140px">
     <h2 class="d h2 b">Brand Fit × Technical Reality × <span class="hl">Consumer Desire</span></h2>
     <div class="s-dec">
@@ -651,37 +726,52 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
       </div>
     </div>
   </div>
-  <aside class="notes">Every concept must clear three checks. Does it fit the brand, something TheraBreath could credibly own? Can we make it, stable in TheraBreath’s oxidizing, alcohol-free system over shelf life? And will people choose it: appealing, understandable, different and repeatable? Only the center advances.</aside>
+  <aside class="notes">Objective four: the pipeline. Before anything goes in it, every concept, tasted or created this morning, must clear three checks. Does it fit the brand, something TheraBreath could credibly own? Can we make it, stable in TheraBreath’s oxidizing, alcohol-free system over shelf life? And will people choose it: appealing, understandable, different and repeatable? Only the center advances.</aside>
 </section>
 
 <!-- 27 · DECISION BOARD -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF1E4" data-sec="Choose" data-title="Decision board">
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF1E4" data-sec="Playbook" data-title="Decision board">
   <div class="pad">
     <span class="eyebrow b">Decision board</span>
-    <h2 class="d h2 b">Six enter. <span class="hl">Three advance.</span></h2>
+    <h2 class="d h2 b">Six enter. <span class="hl">Three lead the near term.</span></h2>
     <table class="tbl b" id="decTbl"></table>
     <div class="tnote b"><span class="lab" style="color:var(--fg2)">Then choose two platforms</span><span class="chip"><i style="--c:#7ED321"></i>New Fresh</span><span class="chip"><i style="--c:#00A3E0"></i>Sensory Proof</span><span class="chip"><i style="--c:#F58025"></i>Ritual by Time</span><span class="chip"><i style="--c:#9E5A55"></i>Elevated Escape</span></div>
   </div>
-  <aside class="notes">Let’s go concept by concept and tick a check only when the room agrees. Three advance. If more than three clear all checks, we rank on repeat-use potential from the tasting. Then we pick the two platforms to build in.</aside>
+  <aside class="notes">Let’s go concept by concept and tick a check only when the room agrees. Three lead the near term. If more than three clear all checks, we rank on repeat-use potential from the tasting. The rest aren’t lost: they move to Next or Long-term on the pipeline. Then we pick the two platforms to build in.</aside>
 </section>
 
-<!-- 29 · SHORT LIST -->
-<section class="slide" data-tone="dark" data-bg="#004E38" data-glow="#0A7A58" data-sec="Assign" data-title="Leave with a short list">
+<!-- PIPELINE -->
+<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFFFFF" data-sec="Playbook" data-title="The pipeline: near-term to long-term">
+  <div class="pad">
+    <span class="eyebrow b">Objective 04 · Pipeline</span>
+    <h2 class="d h2 b">A pipeline from near-term launches <span class="hl">to long-term growth.</span></h2>
+    <div class="hzs" id="hzs"></div>
+    <div class="tnote b" style="margin-top:26px"><span class="chip"><i style="--c:var(--orange)"></i>Our starting read</span><span>The room moves the cards, and adds what came out of Create.</span></div>
+  </div>
+  <aside class="notes">This is our starting read, not a decision. Near-term: directions that fit today’s rinse base and shelf, the fastest path from bench to launch. Next: platforms and new occasions, where one flavor grows into a family, like a morning and night pair. Long-term: across the franchise, carrying the winners into other formats and toward new consumers. Let’s move the cards until the room agrees, and add what came out of Create.</aside>
+</section>
+
+<!-- 29 · DRAFT PLAYBOOK -->
+<section class="slide" data-tone="dark" data-bg="#004E38" data-glow="#0A7A58" data-sec="Playbook" data-title="The draft playbook">
   <div class="pad">
     <span class="eyebrow b" style="color:#fff">What we leave with</span>
-    <h2 class="d h1 b">Leave with a short list.</h2>
+    <h2 class="d h1 b">The draft playbook.</h2>
     <div class="s-short">
-      <div class="col card b"><h4><span>Platforms</span><span>2</span></h4>
+      <div class="col card b"><h4><span>Trends to act on</span><span>01</span></h4>
+        <div class="slot"><div class="write"></div></div>
+        <div class="slot"><div class="write"></div></div>
+        <h4 style="margin-top:22px"><span>Priority territories</span><span>02</span></h4>
         <div class="slot"><span class="lab">Platform 1</span><div class="write"></div></div>
         <div class="slot"><span class="lab">Platform 2</span><div class="write"></div></div>
       </div>
-      <div class="col card b"><h4><span>Lead concepts · owner · next action</span><span>3</span></h4>
+      <div class="col card b"><h4><span>Near-term concepts · owner · next action</span><span>03 · 04</span></h4>
         <div class="leads" id="leads"></div>
         <div class="acts" id="acts"></div>
       </div>
     </div>
+    <div class="tnote b" style="margin-top:28px;color:rgba(255,255,255,.8)"><span class="chip"><i style="--c:#A8F0CB"></i>Next and long-term bets stay on the pipeline</span><span>We send the written playbook to everyone here after today.</span></div>
   </div>
-  <aside class="notes">Let’s close decisively. Two platforms, three lead concepts, and for each a named owner, a next action and a date. Typical first steps are bench samples in base, an accelerated stability test, or a consumer concept screen.</aside>
+  <aside class="notes">Let’s close decisively, one line per objective. The trends we will act on. The two territories to prioritize. The near-term concepts, each with a named owner, a next action and a date. Next and long-term bets stay on the pipeline board, and we capture them in the write-up. Typical first steps are bench samples in base, an accelerated stability test, or a consumer concept screen. We will send the written playbook to everyone here after today.</aside>
 </section>
 
 <!-- 30 · CLOSE -->
@@ -690,20 +780,11 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
     <div class="s-close">
       <span class="eyebrow b">Thank you</span>
       <h2 class="d h1 b">Familiar enough to trust.<br><span class="hl">Different enough to remember.</span></h2>
-      <div class="byline b"><b>The Flavor Factory</b> · Norco, California · for <b>TheraBreath</b><i class="sep"></i>November 9, 2026</div>
+      <div class="byline b"><b>The Flavor Factory</b> · Norco, California · for <b>TheraBreath</b><i class="sep"></i>November 9, 2026 · Darwin</div>
       <div class="lineup b" id="lineup"></div>
     </div>
   </div>
-  <aside class="notes">Familiar enough to trust, different enough to remember. Thank you. We will follow up with the short list, the room’s scores and the owners we agreed today.</aside>
-</section>
-<!-- 06 · MAP -->
-<section class="slide" data-skip data-tone="dark" data-bg="#062150" data-glow="#0B3F7E" data-sec="Frame" data-title="Flavor culture is much bigger than mint">
-  <div class="pad" style="padding-top:140px">
-    <h2 class="d h2 b">Flavor culture is much bigger than <span class="hl">mint.</span></h2>
-    <div class="map-wrap b" id="mapWrap"><canvas id="mapCanvas" aria-label="Dot map of twelve flavor regions, each linked to the room"></canvas></div>
-    <div class="map-note b"><span class="small">Twelve places reshaping what fresh can mean. A vocabulary to borrow from, not a launch list.</span><span class="lab">12 regions · 4 platforms · 1 room</span></div>
-  </div>
-  <aside class="notes">Flavor culture is far bigger than traditional mint. These twelve places are where freshness cues are coming from, and every line runs back to this room. The point is not to launch twelve flavors. It is to borrow a vocabulary.</aside>
+  <aside class="notes">Familiar enough to trust, different enough to remember. Thank you. We will follow up with the written playbook: the room’s scores, the concepts from Create, the pipeline and the owners we agreed today. Enjoy lunch.</aside>
 </section>
 
 <!-- 07 · CUES -->
@@ -716,17 +797,6 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
   <aside class="notes">A few lessons worth borrowing. In Kerala, cardamom after meals already means a fresh mouth. In Japan, yuzu and sencha show that fresh can be bright and quiet at once. Grasse shows how a rinse could be structured like a fragrance: top, heart and base. London’s zero-proof bars prove that sophisticated and alcohol-free go together, and TheraBreath already is both.</aside>
 </section>
 
-<!-- 10 · WHITE SPACE -->
-<section class="slide" data-skip data-tone="dark" data-bg="#0A2A5C" data-glow="#0F4C86" data-sec="Frame" data-title="Stretch one dimension at a time">
-  <div class="pad" style="padding-top:140px">
-    <h2 class="d h2 b">Stretch one dimension <span class="hl">at a time.</span></h2>
-    <div class="s-ws">
-      <div class="legend-r b" id="legendR"></div>
-      <div class="minis" id="minis"></div>
-    </div>
-  </div>
-  <aside class="notes">Here is the same idea as a map of the white space. Each spoke is a dimension, running from what oral care usually is at the center to where it could go at the edge. Classic mint sits near the center on all of them. Strong concepts pull hard on one or two spokes. When everything changes at once, there is nothing left to trust.</aside>
-</section>
 
 <!-- 12 · NEW FRESH -->
 <section class="slide" data-skip data-tone="light" data-bg="#EEF8E4" data-glow="#FFFBD9" data-sec="Frame" data-title="New Fresh">
@@ -818,15 +888,6 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
   <aside class="notes">Elevated Escape borrows from fragrance, spa, tea and zero-proof bars. It uses fragrance logic, top, heart and base, but always finishes clean. A small daily luxury that stays alcohol-free.</aside>
 </section>
 
-<!-- 23 · WILDCARDS -->
-<section class="slide" data-skip data-tone="light" data-bg="#FFFFFF" data-glow="#EAF7FD" data-sec="Taste" data-title="Three wildcards from our bench">
-  <div class="pad">
-    <span class="eyebrow b">In our pocket</span>
-    <h2 class="d h1 b">Three wildcards from our bench, <span class="hl">if we want to push further.</span></h2>
-    <div class="wilds" id="wilds"></div>
-  </div>
-  <aside class="notes">If the room wants to push further, we have three wildcards from our bench: Forest Bath (hinoki spearmint), Sun Shower (watermelon shiso) and Salt Air (makrut lime and sea salt). They are not on the table today unless you pull them in.</aside>
-</section>
 
 <!-- 28 · TRAVEL -->
 <section class="slide" data-skip data-tone="light" data-bg="#E6F6FD" data-glow="#FFFFFF" data-sec="Choose" data-title="Beyond the bottle">
@@ -883,7 +944,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const T = window.TBCore;
-const { CONCEPTS, CONTROL, STATUS, PLATS, REGIONS, HOME, GRID, SPECTRUM, AXES, BASE, SHAPES, MOMENTS, WILD, DIMS, ACTIONS, bottle, conceptBottleOpts, ART, rng, rgba } = T;
+const { SESSION, OBJECTIVES, AGENDA, HORIZONS, CREATE, CONCEPTS, CONTROL, STATUS, PLATS, REGIONS, HOME, GRID, SPECTRUM, AXES, BASE, SHAPES, MOMENTS, WILD, DIMS, ACTIONS, bottle, conceptBottleOpts, ART, rng, rgba } = T;
 const params = new URLSearchParams(location.search);
 const MODE = params.has("print") ? "print" : params.has("embed") ? "embed" : params.has("presenter") ? "presenter" : "show";
 document.documentElement.classList.add(MODE);
@@ -905,7 +966,7 @@ $("#conceptSlot").outerHTML = CONCEPTS.map(c => `
         <div class="meta b"><span class="lab">Concept ${c.n} / 06</span><span class="status">Sample ${c.code}</span></div>
         <h2 class="d b">${hlLast(c.name)}</h2>
         <div class="flv b">${c.flavor} · ${c.tag}</div>
-        <div class="kw b">${c.kw.join(" · ")}</div>
+        <dl class="ww b"><dt>Who</dt><dd>${c.who}</dd><dt>When</dt><dd>${c.when}</dd></dl>
         <p class="feels b">${c.feels}</p>
         <div class="arc b"><div><b>Opening</b>${c.arc[0]}</div><div><b>Development</b>${c.arc[1]}</div><div><b>Finish</b>${c.arc[2]}</div></div>
         <div class="foot card b">
@@ -915,12 +976,22 @@ $("#conceptSlot").outerHTML = CONCEPTS.map(c => `
       </div>
     </div>
   </div>
-  <aside class="notes">${c.name}, our ${c.flavor} concept. ${c.feels} Opening: ${c.arc[0]} Development: ${c.arc[1]} Finish: ${c.arc[2]} On the technical side: ${c.note} What we avoid: ${c.avoid}</aside>
+  <aside class="notes">${c.name}, our ${c.flavor} concept. ${c.feels} Who it could reach: ${c.who.toLowerCase()}, at ${c.when.toLowerCase()}. Opening: ${c.arc[0]} Development: ${c.arc[1]} Finish: ${c.arc[2]} On the technical side: ${c.note} What we avoid: ${c.avoid}</aside>
 </section>`).join("");
 
 /* ------------------------------------------------------------ fill data-driven pieces */
 // title trio
 $("#trio").insertAdjacentHTML("beforeend", `<div class="bt l">${conceptBottle(cById("yuzu"))}</div><div class="bt r">${conceptBottle(cById("gtc"))}</div><div class="bt c">${iconic()}</div>`);
+// objectives, agenda
+$("#objs").innerHTML = OBJECTIVES.map(o => `<div class="obj b"><span class="n">${o.n}</span><h3>${o.h}</h3><p>${o.line}</p><div class="out"><b>We leave with</b>${o.out}</div></div>`).join("");
+$("#agenda").innerHTML = AGENDA.map(a => `<div class="tstep b"><span class="t">${a.t} – ${a.e}</span><h3 class="d">${a.h}</h3><span class="w">${a.w}</span><p>${a.p}</p>${a.o ? `<span class="o">Objective 0${a.o}</span>` : ""}<div class="out card"><b>We leave with</b>${a.out}</div></div>`).join("");
+// create
+$("#create").innerHTML = `<div class="col card b"><h4>Pick a territory</h4><h3>Where</h3><div class="pills">${Object.keys(PLATS).map(k => `<span>${PLATS[k]}</span>`).join("")}${WILD.map(w => `<span>${w.name}</span>`).join("")}<span>Something new</span></div></div>
+  <div class="col card b"><h4>Pick an occasion</h4><h3>When</h3><div class="pills">${CREATE.occasions.map(o => `<span>${o}</span>`).join("")}</div></div>
+  <div class="col card b"><h4>Pick a consumer</h4><h3>Who</h3><div class="pills">${CREATE.consumers.map(o => `<span>${o}</span>`).join("")}</div></div>
+  <div class="canvas card b"><h4>Concept card</h4><div class="ln">Working name</div><div class="ln">It tastes like</div><div class="ln">Why this person, at this moment</div><div class="ln">How it stays TheraBreath</div><div class="ln">Horizon: near · next · long</div></div>`;
+// pipeline
+$("#hzs").innerHTML = HORIZONS.map(h => `<div class="hzc card b" style="--c:${h.c}"><span class="k">${h.h}</span><h3>${h.w}</h3><p>${h.p}</p><div class="cz">${CONCEPTS.filter(c => c.horizon === h.k).map(c => `<span style="--cc:${c.acc}"><i></i>${c.flavor}<small>${c.when}</small></span>`).join("")}${h.k === "long" ? WILD.map(w => `<span style="--cc:${w.sw[1]}"><i></i>${w.flavor}<small>wildcard</small></span>`).join("") : ""}<span class="add">+ from Create</span></div></div>`).join("");
 // signals minis
 (() => {
   const cols = ["#E6F04A", "#9CC5A1", "#F2B5B0", "#F4C98A", "#7FC8A6", "#C9B28A", "#9FE0FF", "#E0703C", "#B9B7E0", "#D9EC7A", "#F1E3B8", "#5E9E6A", "#E86F5C", "#8FD0E0", "#A89A5C", "#F7C6C0"];

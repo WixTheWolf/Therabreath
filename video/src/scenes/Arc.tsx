@@ -1,12 +1,13 @@
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
 import { C, DISPLAY, BODY } from "../theme";
 
-// 315-390 (local 0-75): TASTE / CHOOSE / ASSIGN stamp in on the build, then liquid rises into the end card.
+// 315-390 (local 0-75): the four objectives from the invite stamp in on the beat, then liquid rises into the end card.
 const out = Easing.bezier(0.16, 1, 0.3, 1);
 const ROWS = [
-  { w: "Taste.", at: 0, col: C.ink, note: "6 flavors, blind" },
-  { w: "Choose.", at: 30, col: C.green, note: "3 advance" },
-  { w: "Assign.", at: 60, col: C.orange, note: "1 owner each" },
+  { w: "Trends.", at: 0, col: C.ink, note: "flavor · sensory · consumer" },
+  { w: "Territories.", at: 15, col: C.blue, note: "new sensory worlds" },
+  { w: "Concepts.", at: 30, col: C.green, note: "new occasions & consumers" },
+  { w: "Pipeline.", at: 45, col: C.orange, note: "near-term to long-term" },
 ];
 
 export const Arc: React.FC = () => {
@@ -19,17 +20,17 @@ export const Arc: React.FC = () => {
         {ROWS.map((r, i) => {
           const l = f - r.at;
           return (
-            <div key={r.w} style={{ position: "absolute", left: 140, right: 140, top: 150 + i * 260, height: 240, display: "flex", alignItems: "center", justifyContent: "space-between",
+            <div key={r.w} style={{ position: "absolute", left: 140, right: 140, top: 70 + i * 238, height: 220, display: "flex", alignItems: "center", gap: 48,
               opacity: l >= 0 ? 1 : 0 }}>
-              <div style={{ fontFamily: DISPLAY, fontWeight: 900, fontStretch: "118%", fontSize: 250, letterSpacing: "-0.05em", lineHeight: 1, color: r.col,
+              <div style={{ fontFamily: DISPLAY, fontWeight: 900, fontStretch: "118%", fontSize: 176, letterSpacing: "-0.05em", lineHeight: 1, color: r.col,
                 scale: `${interpolate(l, [0, 6], [1.7, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}`,
                 rotate: `${interpolate(l, [0, 6], [-6, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}deg`, transformOrigin: "0 60%" }}>
                 {r.w}
               </div>
-              <div style={{ fontFamily: BODY, fontWeight: 700, fontSize: 56, color: C.ink, display: "flex", alignItems: "center", gap: 22,
+              <div style={{ fontFamily: BODY, fontWeight: 700, fontSize: 42, marginLeft: "auto", whiteSpace: "nowrap", color: C.ink, display: "flex", alignItems: "center", gap: 22,
                 opacity: interpolate(l, [4, 10], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
                 translate: `${interpolate(l, [4, 12], [60, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}px 0px` }}>
-                <span style={{ width: 22, height: 22, borderRadius: "50%", background: r.col }} />
+                <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 30, color: r.col }}>0{i + 1}</span>
                 {r.note}
               </div>
             </div>
