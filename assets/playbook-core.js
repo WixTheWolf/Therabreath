@@ -13,10 +13,10 @@
   /* ---------------------------------------------------------------- data */
   const PLATS = { newfresh: "New Fresh", sensory: "Sensory Proof", ritual: "Ritual by Time", elevated: "Elevated Escape" };
   const CONCEPTS = [
-    { id: "yuzu", n: "01", name: "Polar Spark", flavor: "Arctic Yuzu", tag: "Citrus, electrified by cold.", status: "lead", code: "318", tone: "light", bg: "#E1F4FC", glow: "#F6FBC8", acc: "#C3D21E", band: "Electric Citrus Chill",
-      liquid: ["#D9EA5C", "#58BCE6"], kw: ["electric", "icy", "citrus", "clean", "modern", "energetic"],
+    { id: "yuzu", n: "01", name: "Polar Light", flavor: "Arctic Yuzu", tag: "Bright citrus, very cold.", status: "lead", code: "318", tone: "light", bg: "#E1F4FC", glow: "#F6FBC8", acc: "#C3D21E", band: "Electric Citrus Chill",
+      liquid: ["#D9EA5C", "#58BCE6"], kw: ["bright", "icy", "citrus", "clean", "modern", "energetic"],
       feels: "The first breath outside on a clear winter morning, lit by citrus.",
-      arc: ["Sharp yuzu peel, almost electric.", "A clean cold wave builds, with no burn.", "Bright, awake, completely clean."],
+      arc: ["Sharp, bright yuzu peel.", "A clean cold wave builds, with no burn.", "Bright, awake, completely clean."],
       plat: ["newfresh", "sensory"],
       note: "Build the yuzu from oxidation-tolerant top notes, since citral-heavy lemon profiles fade in oxidizing rinse systems. Non-menthol cooling agents carry the cold without the burn.",
       avoid: "Lemon mouthwash. Snowflakes." },
@@ -27,7 +27,7 @@
       plat: ["newfresh", "ritual"],
       note: "Cucumber’s green notes are volatile and fragile. A quiet spearmint backbone protects the profile and keeps it reading as oral care.",
       avoid: "Health-food store. Cucumber slices on eyes." },
-    { id: "ginger", n: "03", name: "Live Wire", flavor: "Ginger Lime", tag: "Cool lime. Hot spark.", status: "lead", code: "506", tone: "dark", bg: "#1B2710", glow: "#4F3410", acc: "#F58220", band: "Zesty Warming Spark",
+    { id: "ginger", n: "03", name: "Limelight", flavor: "Ginger Lime", tag: "Cool lime with a little warmth.", status: "lead", code: "506", tone: "dark", bg: "#1B2710", glow: "#4F3410", acc: "#F58220", band: "Zesty Warming Spark",
       liquid: ["#C4E04A", "#E88E36"], kw: ["bright", "kinetic", "warming", "crisp", "energetic", "unexpected"],
       feels: "Cold lime on the tongue, then a spark of warmth underneath.",
       arc: ["A zesty lime snap.", "Ginger warmth rises under the cool.", "Crisp, energized, clean."],
@@ -41,7 +41,7 @@
       plat: ["elevated", "newfresh"],
       note: "Use a green, geranium-leaning rose accord rather than a sweet floral. That keeps it far from soap and perfume cues.",
       avoid: "Perfume counter. Bath soap." },
-    { id: "pear", n: "05", name: "Orchard Reserve", flavor: "Pear Cardamom Mint", tag: "Pear and cardamom, finished cool.", status: "contender", code: "893", tone: "light", bg: "#F3EFD8", glow: "#FFFCEB", acc: "#8E7B3A", band: "Layered Culinary Cool",
+    { id: "pear", n: "05", name: "Green Orchard", flavor: "Pear Cardamom Mint", tag: "Pear and cardamom, finished cool.", status: "contender", code: "893", tone: "light", bg: "#F3EFD8", glow: "#FFFCEB", acc: "#8E7B3A", band: "Layered Culinary Cool",
       liquid: ["#E0D78A", "#A5964C"], kw: ["elegant", "layered", "culinary", "premium", "sophisticated"],
       feels: "A chef’s pairing, translated into freshness.",
       arc: ["Crisp green pear, cool.", "Cardamom’s airy, eucalyptus-like lift.", "Soft, clean spice held by mint."],
@@ -81,12 +81,12 @@
     { v: 3, name: "Classic peppermint", c: false, line: "Trusted, and easy to forget." },
     { v: 12, name: "Cool mint", c: false, line: "The category default." },
     { v: 21, name: "Spearmint", c: false, line: "A small step. Still expected." },
-    { v: 33, name: "Lights Out", c: true },
-    { v: 40, name: "Glasshouse", c: true },
-    { v: 48, name: "Polar Spark", c: true },
-    { v: 55, name: "Orchard Reserve", c: true },
-    { v: 61, name: "Pink Hour", c: true },
-    { v: 67, name: "Live Wire", c: true },
+    { v: 33, name: "Chamomile Vanilla Mint", c: true },
+    { v: 40, name: "Green Tea Cucumber", c: true },
+    { v: 48, name: "Arctic Yuzu", c: true },
+    { v: 55, name: "Pear Cardamom Mint", c: true },
+    { v: 61, name: "Grapefruit Rose Mint", c: true },
+    { v: 67, name: "Ginger Lime", c: true },
     { v: 81, name: "Smoked chili cola", c: false, line: "Memorable once. Hard to buy twice." },
     { v: 94, name: "Pickle-brine mint", c: false, line: "Novelty for its own sake." }
   ];
@@ -103,11 +103,11 @@
   };
 
   const MOMENTS = [
-    { h: 6.5, t: "6:30 AM", name: "Wake", flavor: "Polar Spark", line: "A bright, cold start." },
-    { h: 12.5, t: "12:30 PM", name: "Midday reset", flavor: "Glasshouse", line: "Clean and calm, back to the afternoon." },
-    { h: 15.25, t: "3:15 PM", name: "After coffee", flavor: "Live Wire", line: "Cut through coffee, lift the energy." },
-    { h: 19, t: "7:00 PM", name: "Before going out", flavor: "Pink Hour", line: "Confident, elevated, social." },
-    { h: 22.5, t: "10:30 PM", name: "Wind-down", flavor: "Lights Out", line: "Soft, clean, ready for sleep." }
+    { h: 6.5, t: "6:30 AM", name: "Wake", flavor: "Arctic Yuzu", line: "A bright, cold start." },
+    { h: 12.5, t: "12:30 PM", name: "Midday reset", flavor: "Green Tea Cucumber", line: "Clean and calm, back to the afternoon." },
+    { h: 15.25, t: "3:15 PM", name: "After coffee", flavor: "Ginger Lime", line: "Cut through coffee, lift the energy." },
+    { h: 19, t: "7:00 PM", name: "Before going out", flavor: "Grapefruit Rose Mint", line: "Confident, elevated, social." },
+    { h: 22.5, t: "10:30 PM", name: "Wind-down", flavor: "Chamomile Vanilla Mint", line: "Soft, clean, ready for sleep." }
   ];
 
   const WILD = [
@@ -136,9 +136,10 @@
     const cond = 'style="font-stretch:72%"';
     const bubs = [[40, 470, 3, 0, 5.5], [70, 455, 2, 1.8, 6.5], [150, 480, 3.5, 3.1, 5], [165, 450, 2.5, .7, 7], [28, 440, 2, 4.2, 6]]
       .map(([x, y, r, d, du]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" opacity="0"><animate attributeName="cy" values="${y};${y - 320}" dur="${du}s" begin="${d}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.8;0" dur="${du}s" begin="${d}s" repeatCount="indefinite"/></circle>`).join("");
-    const sub = o.sub
-      ? `<text class="subt" x="100" y="384" text-anchor="middle" font-size="8.6" fill="#006649" letter-spacing=".4" ${cond}>${o.sub.toUpperCase()} FLAVOR</text><text x="100" y="396" text-anchor="middle" font-size="5.6" font-weight="600" fill="#444">No alcohol · Non burning</text>`
-      : `<text class="subt" x="100" y="381" text-anchor="middle" font-size="5.6" font-weight="600" fill="#444">Works instantly to target bad breath germs</text><text x="100" y="390" text-anchor="middle" font-size="5.6" font-weight="600" fill="#444">No alcohol · Non burning</text>`;
+    const concept = !!o.sub;
+    const sub = concept
+      ? `<text class="subt" x="100" y="374" text-anchor="middle" font-size="9.5" fill="#006649" letter-spacing=".4" ${cond}>${o.sub.toUpperCase()}</text><text x="100" y="392" text-anchor="middle" font-size="7" fill="#C85F0E" letter-spacing="1.2" ${cond}>FLAVOR CONCEPT · NOT A PRODUCT</text>`
+      : `<text x="100" y="368" text-anchor="middle" font-size="8" fill="#111" ${cond}>FIGHTS BAD BREATH FOR <tspan fill="#F58025" font-size="10">24</tspan> HOURS*</text><text class="subt" x="100" y="381" text-anchor="middle" font-size="5.6" font-weight="600" fill="#444">Works instantly to target bad breath germs</text><text x="100" y="390" text-anchor="middle" font-size="5.6" font-weight="600" fill="#444">No alcohol · Non burning</text>`;
     return `<svg class="bottle" viewBox="0 0 200 500" aria-hidden="true" font-family="Archivo, Arial Narrow, Arial, sans-serif" font-weight="900"><defs>
     <linearGradient id="${id}c" x1="0" x2="1"><stop offset="0" stop-color="#C75A0C"/><stop offset=".2" stop-color="#F7852A"/><stop offset=".45" stop-color="#FFA65A"/><stop offset=".65" stop-color="#F58025"/><stop offset="1" stop-color="#B8520A"/></linearGradient>
     <linearGradient id="${id}l" x1="0" y1="0" x2="0" y2="1"><stop class="s0" offset="0" stop-color="${o.liq[0]}"/><stop class="s1" offset="1" stop-color="${o.liq[1]}"/></linearGradient>
@@ -160,14 +161,13 @@
     <path d="${body}" fill="url(#${id}g)" opacity=".7"/>
     <rect x="18" y="150" width="9" height="46" rx="4.5" fill="#fff" opacity=".45"/>
     <rect x="18" y="458" width="9" height="26" rx="4.5" fill="#fff" opacity=".35"/>
-    <text x="100" y="218.5" text-anchor="middle" font-size="8.5" fill="#fff" letter-spacing="1" ${cond}>POWERED BY OXYGEN™</text>
-    <text x="100" y="233" text-anchor="middle" font-size="6.5" fill="#006649" letter-spacing=".8" ${cond}>PROFESSIONAL FORMULA</text>
+    <text x="100" y="218.5" text-anchor="middle" font-size="8.5" fill="#fff" letter-spacing="1" ${cond}>${concept ? "CONCEPT MOCKUP" : "POWERED BY OXYGEN™"}</text>
+    ${concept ? "" : `<text x="100" y="233" text-anchor="middle" font-size="6.5" fill="#006649" letter-spacing=".8" ${cond}>PROFESSIONAL FORMULA</text>`}
     <use href="#tbLogo" x="28" y="236" width="144" height="37"/>
-    <text x="100" y="289" text-anchor="middle" font-size="13.5" fill="#111" ${cond}>DENTIST FORMULATED</text>
+    ${concept ? "" : `<text x="100" y="289" text-anchor="middle" font-size="13.5" fill="#111" ${cond}>DENTIST FORMULATED</text>`}
     <rect x="30" y="295" width="140" height="28" fill="#F58025"/>
     <text x="100" y="316" text-anchor="middle" font-size="19" fill="#fff" ${cond}>FRESH BREATH</text>
     <text x="100" y="352" text-anchor="middle" font-size="27" fill="#111" letter-spacing="1" ${cond}>ORAL RINSE</text>
-    <text x="100" y="368" text-anchor="middle" font-size="8" fill="#111" ${cond}>FIGHTS BAD BREATH FOR <tspan fill="#F58025" font-size="10">24</tspan> HOURS*</text>
     ${sub}
     <text class="bandt" x="100" y="438" text-anchor="middle" font-size="13" fill="#fff" letter-spacing=".6" ${cond}${bandFit(o.flavor)}>${o.flavor.toUpperCase()}</text>
     <path d="${body}" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
@@ -188,7 +188,7 @@
     q(".bandr").setAttribute("fill", o.band);
     const bt = q(".bandt"); bt.textContent = o.flavor.toUpperCase();
     if (o.flavor.length > 14) { bt.setAttribute("textLength", Math.min(150, o.flavor.length * 9)); bt.setAttribute("lengthAdjust", "spacingAndGlyphs"); } else { bt.removeAttribute("textLength"); bt.removeAttribute("lengthAdjust"); }
-    const st = q(".subt"); if (st && o.sub) st.textContent = o.sub.toUpperCase() + " FLAVOR";
+    const st = q(".subt"); if (st && o.sub) st.textContent = o.sub.toUpperCase();
   }
   /* Concept bottle: product name on the band, flavor on the label. */
   const conceptBottleOpts = c => ({ liq: c.liquid, band: c.acc, flavor: c.name, sub: c.flavor });

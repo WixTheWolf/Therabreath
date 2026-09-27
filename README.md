@@ -26,29 +26,44 @@ The command writes the PDF to `dist/therabreath_capabilities_workshop_booklet.pd
 - `brief/index.html` is the briefing page to send the TheraBreath team ahead of the November 9 session: why we are coming, the two-hour agenda, the four platforms, a first look at the six concepts, how to prepare for the tasting, three questions to think about, and what we will leave with. It includes a live countdown to the day and prints cleanly to PDF.
 - Share the deployed URL ending in `/brief/`. It does not link to the workshop site or deck, so nothing from the session is given away early.
 
-## Concept names
+## Concept names (working names, not trademark-screened)
+
+Status is internal only: none of the pieces show lead/contender to TheraBreath, so the room isn't steered. Names are hidden in the pre-read and revealed after the blind tasting.
 
 | Product name | Flavor | Status |
 |---|---|---|
-| Polar Spark | Arctic Yuzu | Current lead |
+| Polar Light | Arctic Yuzu | Current lead |
 | Glasshouse | Green Tea Cucumber | Current lead |
-| Live Wire | Ginger Lime | Current lead |
+| Limelight | Ginger Lime | Current lead |
 | Pink Hour | Grapefruit Rose Mint | Contender |
-| Orchard Reserve | Pear Cardamom Mint | Contender |
+| Green Orchard | Pear Cardamom Mint | Contender |
 | Lights Out | Chamomile Vanilla Mint | Open exploration |
 
-Studio wildcards: Forest Bath (Hinoki Spearmint), Sun Shower (Watermelon Shiso), Salt Air (Makrut Lime & Sea Salt). Names live in `assets/playbook-core.js` and update the site, deck and pre-read together.
+Wildcards: Forest Bath (Hinoki Spearmint), Sun Shower (Watermelon Shiso), Salt Air (Makrut Lime & Sea Salt). Names live in `assets/playbook-core.js` and update the site, deck and pre-read together.
+
+## Session order
+
+Frame → **taste blind** → reveal → choose → assign. The deck and site both put the tasting before the concept slides; don't open the reveal early.
+
+## Still to add (marked in red dashed boxes on the pages)
+
+- The Flavor Factory logo file (header lockups still use typed text)
+- Team photo, plus names and roles of who is attending
+- Meeting start time (pre-read)
+- Flavorist sign-off on every formulation note in `assets/playbook-core.js`
+- Decision on whether to show working names at all
 
 ## Workshop deck
 
-- `deck/index.html` is the 30-slide presentation for the session (1920 × 1080, scales to any screen). It follows the workshop arc: Frame → Taste → Choose → Assign, with a slide for each of the six concepts, a blind scorecard and a decision board to fill in live.
+- `deck/index.html` is the 22-slide presentation for the session (1920 × 1080, scales to any screen). It follows the workshop arc: Frame → Taste → Choose → Assign, with a slide for each of the six concepts, a blind scorecard and a decision board to fill in live.
 - Keys: ← → / space to move, **G** slide overview, **N** speaker notes, **P** presenter view (current + next slide, notes and a timer, synced with the main window), **F** full screen, **B** blank screen. Slide numbers deep-link (`deck/#17`).
 - `dist/TheraBreath_Flavor_Playbook_Deck.pdf` is the PDF export for offline presenting or sending after the session. Regenerate it with `node scripts/export-deck-pdf.js` (needs `playwright-core` and a local Chrome; see the script header).
+- Fonts are self-hosted in `assets/fonts/` so the pages render the same offline or on a locked-down network.
 - Concept copy, regions, frameworks, the bottle drawing and the concept artwork live in `assets/playbook-core.js`, shared by the deck and the web experience, so an edit there updates both.
 
 ## Workshop web experience
 
-Highlights: an opening "pour" intro (plays once per browser session, skippable), headlines that rise word by word, bottle liquid that sloshes with scroll speed, a concept section where the bottle drains and refills with each flavor, a product-name marquee, and a **Flavor Lab** where the room picks a cue to keep and one thing to change and gets a named concept with its platform and formulation watch-out.
+Highlights: headlines that rise word by word, bottle liquid that sloshes with scroll speed, a concept section where the bottle drains and refills with each flavor, and a **Flavor Lab** where the room picks a cue to keep and one thing to change and sees whether it matches one of the six, with its platform and formulation watch-out.
 
 
 - `index.html` is the interactive scroll experience for the **TheraBreath Flavor Playbook** workshop (Princeton, NJ, November 9, 2026). It is a single self-contained file: open it in a browser, or serve the repo root with any static host.

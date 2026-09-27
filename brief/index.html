@@ -8,9 +8,7 @@
 <meta property="og:title" content="Before we meet: where fresh goes next">
 <meta property="og:description" content="Your pre-read for the TheraBreath Flavor Playbook workshop with The Flavor Factory, Monday, November 9, 2026.">
 <meta property="og:type" content="website">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Figtree:ital,wght@0,400..800;1,400..800&display=swap">
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
 /* ==========================================================================
    TheraBreath Flavor Playbook · pre-read
@@ -87,6 +85,17 @@ section{padding-block:clamp(72px,11vh,130px)}
 .scroll-cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;font-family:var(--f-d);font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#fff;display:flex;flex-direction:column;align-items:center;gap:6px}
 .scroll-cue i{width:2px;height:28px;background:#fff;animation:cue 2.2s ease-in-out infinite;transform-origin:top}
 @keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+
+/* who */
+.who-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center}
+.who-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.who-list .card{padding:22px;display:flex;flex-direction:column;gap:6px}
+.who-list b{font-family:var(--f-d);font-weight:800;font-size:20px;letter-spacing:-.015em;line-height:1.1}
+.who-list p{margin:0;font-size:15.5px;color:var(--fg-2)}
+.todo{margin-top:24px;padding:14px 16px;border:2px dashed #D0342C;border-radius:14px;color:#D0342C;font-family:var(--f-d);font-weight:700;font-size:14px;letter-spacing:.03em}
+.fact.todo-chip{border:2px dashed #D0342C;color:#D0342C}.fact.todo-chip i{background:#D0342C}
+@media (max-width:760px){.who-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:480px){.who-list{grid-template-columns:minmax(0,1fr)}}
 
 /* why */
 .why{background:var(--green);color:#fff}
@@ -216,11 +225,12 @@ section{padding-block:clamp(72px,11vh,130px)}
     <div>
       <span class="eyebrow rv">TheraBreath Flavor Playbook · Pre-read</span>
       <h1 class="d rv d1" id="h1" style="margin-top:22px">Before we meet: <span class="hl">where fresh goes next.</span></h1>
-      <p class="lede rv d2">Thank you for hosting us. Here is everything you need before our session, so we can spend our two hours together tasting and deciding.</p>
+      <p class="lede rv d2">Thank you for hosting us. Here’s what to expect, so we can spend our two hours together tasting and deciding.</p>
       <div class="facts rv d3">
         <span class="fact"><i></i>Monday, November 9, 2026</span>
-        <span class="fact" style="--c:var(--green)"><i></i>Church &amp; Dwight headquarters</span>
+        <span class="fact" style="--c:var(--green)"><i></i>Church &amp; Dwight HQ · Ewing, NJ</span>
         <span class="fact" style="--c:var(--blue)"><i></i>2 hours · hands-on tasting</span>
+        <span class="fact todo-chip"><i></i>To add: start time</span>
       </div>
       <div class="count rv d3" id="count" aria-live="off"><span class="n" id="days">–</span><span class="t" id="daysT">days until<br>we meet<small>Nov 9, 2026</small></span></div>
     </div>
@@ -231,6 +241,24 @@ section{padding-block:clamp(72px,11vh,130px)}
     <svg viewBox="0 0 2880 110" preserveAspectRatio="none"><path d="M0,66 q240,-36 480,0 t480,0 t480,0 t480,0 t480,0 t480,0 V110 H0 Z" fill="#006649"/></svg>
   </div>
   <div class="scroll-cue" aria-hidden="true"><i></i>Read on</div>
+</section>
+
+<!-- WHO -->
+<section class="who">
+  <div class="wrap who-grid">
+    <div>
+      <span class="eyebrow rv">Who we are</span>
+      <h2 class="d rv d1" style="margin-top:18px;font-size:clamp(36px,4.2vw,68px)">A family-owned flavor house <span class="hl">in Norco, California.</span></h2>
+      <p class="rv d2" style="margin:22px 0 0;color:var(--fg-2);max-width:48ch">We make custom liquid and powder flavors for food, beverage, nutraceutical, personal care and oral care brands. We’re small on purpose: you work directly with the people formulating your flavor, and samples come back fast.</p>
+      <div class="todo rv d3">To add: team photo, plus the names and roles of who’s coming</div>
+    </div>
+    <div class="who-list">
+      <div class="card rv"><b>Custom, from the bench</b><p>Every flavor is built for the product it goes into, in liquid or powder.</p></div>
+      <div class="card rv d1"><b>Oral care is part of what we do</b><p>It’s one of the industries we already make flavors for.</p></div>
+      <div class="card rv d2"><b>Low minimum orders</b><p>Small pilot batches keep testing a new flavor affordable.</p></div>
+      <div class="card rv d3"><b>Fast turnaround</b><p>Most orders ship within 3–5 business days.</p></div>
+    </div>
+  </div>
 </section>
 
 <!-- WHY -->
@@ -251,7 +279,7 @@ section{padding-block:clamp(72px,11vh,130px)}
   <div class="wrap">
     <div class="sec-head">
       <div><span class="eyebrow rv">The two hours</span><h2 class="d rv d1">Four moves, <span class="hl">one short list.</span></h2></div>
-      <p class="rv d2">A working session, not a presentation. You’ll spend most of the time tasting, scoring and deciding.</p>
+      <p class="rv d2">It’s a working session. You’ll spend most of it tasting, scoring and deciding.</p>
     </div>
     <div class="tline rv" id="tline">
       <div class="step"><span class="t">0:00 – 0:35</span><h3>Frame</h3><p>What is changing around freshness, and four territories TheraBreath could own.</p><div class="out"><b>Leave with</b>A shared view of the opportunity</div></div>
@@ -266,8 +294,8 @@ section{padding-block:clamp(72px,11vh,130px)}
 <section style="padding-top:0">
   <div class="wrap">
     <div class="sec-head">
-      <div><span class="eyebrow rv">What we’ll explore</span><h2 class="d rv d1">Four platforms, <span class="hl">not one-off flavors.</span></h2></div>
-      <p class="rv d2">Each is a territory TheraBreath could build across several launches. We’ll ask you to pick two.</p>
+      <div><span class="eyebrow rv">What we’ll explore</span><h2 class="d rv d1">Four places <span class="hl">TheraBreath could grow.</span></h2></div>
+      <p class="rv d2">Each could carry several launches. On the day we’ll ask you to pick two.</p>
     </div>
     <div class="plats" id="plats"></div>
   </div>
@@ -277,8 +305,8 @@ section{padding-block:clamp(72px,11vh,130px)}
 <section class="concepts">
   <div class="wrap">
     <div class="sec-head">
-      <div><span class="eyebrow rv">A first look</span><h2 class="d rv d1">Six concepts. <span class="hl">You decide which three advance.</span></h2></div>
-      <p class="rv d2">Each keeps one familiar freshness cue and changes one thing people will notice. Here are their working names.</p>
+      <div><span class="eyebrow rv">A first look</span><h2 class="d rv d1">Six flavors. <span class="hl">You decide which three advance.</span></h2></div>
+      <p class="rv d2">Each keeps one familiar freshness cue and changes one thing people will notice. Their working names stay under wraps until after the tasting.</p>
     </div>
     <div class="cgrid" id="cgrid"></div>
     <div class="blind rv"><span>On the day you’ll taste all six blind, alongside today’s TheraBreath as a control.</span><span class="codes" id="codes"></span></div>
@@ -326,7 +354,7 @@ section{padding-block:clamp(72px,11vh,130px)}
 <section>
   <div class="wrap">
     <div class="sec-head">
-      <div><span class="eyebrow rv">What we’ll leave with</span><h2 class="d rv d1">Not just inspiration. <span class="hl">Decisions.</span></h2></div>
+      <div><span class="eyebrow rv">What we’ll leave with</span><h2 class="d rv d1">The goal is <span class="hl">decisions.</span></h2></div>
     </div>
     <div class="stats">
       <div class="stat rv"><span class="n" data-n="2">2</span><h3>Innovation platforms</h3><p>Territories TheraBreath could own across several launches.</p></div>
@@ -368,10 +396,11 @@ document.body.insertAdjacentHTML("afterbegin", T.logoSymbol("../assets/therabrea
 })();
 
 /* hero lineup: the iconic rinse flanked by concepts */
+const teaser = c => bottle({ liq: c.liquid, band: c.acc, flavor: "Revealed Nov 9", sub: c.flavor });
 const iconic = bottle({ liq: ["#4FB3E6", "#1A78C0"], band: "#6CC3EA", flavor: "Invigorating Icy Mint" });
 const pos = [[4, 34, .2], [18, 22, .35], [70, 22, .35], [84, 34, .2]];
 const side = [CONCEPTS[1], CONCEPTS[0], CONCEPTS[2], CONCEPTS[3]];
-$("#lineup").insertAdjacentHTML("beforeend", side.map((c, i) => `<div class="bt" style="left:${pos[i][0]}%;bottom:${i === 0 || i === 3 ? 6 : 3}%;transition-delay:${pos[i][2] + .2}s;z-index:${i === 0 || i === 3 ? 1 : 2}">${bottle(conceptBottleOpts(c))}</div>`).join("") + `<div class="bt c" style="left:35%;transition-delay:.1s">${iconic}</div>`);
+$("#lineup").insertAdjacentHTML("beforeend", side.map((c, i) => `<div class="bt" style="left:${pos[i][0]}%;bottom:${i === 0 || i === 3 ? 6 : 3}%;transition-delay:${pos[i][2] + .2}s;z-index:${i === 0 || i === 3 ? 1 : 2}">${teaser(c)}</div>`).join("") + `<div class="bt c" style="left:35%;transition-delay:.1s">${iconic}</div>`);
 
 /* platforms */
 const PD = [
@@ -383,7 +412,7 @@ const PD = [
 $("#plats").innerHTML = PD.map(([id, n, pb, pf, d, ic], i) => `<div class="plat card rv${i ? " d" + i : ""}"><div class="top" style="--pb:${pb};--pf:${pf}"><span class="n">${n}</span><svg viewBox="0 0 86 86" aria-hidden="true">${ic}</svg></div><div class="bd"><h3>${PLATS[id]}</h3><p>${d}</p></div></div>`).join("");
 
 /* concepts */
-$("#cgrid").innerHTML = CONCEPTS.map((c, i) => `<article class="con card rv${i % 3 ? " d" + (i % 3) : ""}" style="--c:${c.acc}"><div class="bt">${bottle(conceptBottleOpts(c))}</div><div><h3>${c.name}</h3><div class="fl">${c.flavor}</div><p>${c.feels}</p></div></article>`).join("");
+$("#cgrid").innerHTML = CONCEPTS.map((c, i) => `<article class="con card rv${i % 3 ? " d" + (i % 3) : ""}" style="--c:${c.acc}"><div class="bt">${teaser(c)}</div><div><h3>${c.flavor}</h3><div class="fl">Working name revealed on the day</div><p>${c.feels}</p></div></article>`).join("");
 $("#codes").innerHTML = [...CONCEPTS.map(c => c.code).sort(), CONTROL.code].map(c => `<span>${c}</span>`).join("");
 
 /* closing bubbles */

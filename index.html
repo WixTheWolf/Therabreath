@@ -4,10 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>TheraBreath Flavor Playbook</title>
-<meta name="description" content="Expand what fresh can feel like. An innovation workshop by The Flavor Factory for TheraBreath, Princeton NJ, November 9, 2026.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Figtree:ital,wght@0,400..800;1,400..800&display=swap">
+<meta name="description" content="Expand what fresh can feel like. An innovation workshop by The Flavor Factory for TheraBreath at Church &amp; Dwight, Ewing NJ, November 9, 2026.">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
 <style>
 /* ==========================================================================
    TheraBreath Flavor Playbook · v2
@@ -216,6 +214,22 @@ body[data-tone="dark"] .rail{color:#fff}
 .agenda .lab{color:var(--brand)}
 .agenda b{font-family:var(--f-d);font-weight:800;font-size:22px;letter-spacing:-.01em}
 .agenda small{font-size:15px;color:var(--fg-2)}
+
+/* ======================= WHO WE ARE ======================= */
+.us-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center}
+.us-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.us-list .card{padding:24px;display:flex;flex-direction:column;gap:6px}
+.us-list b{font-family:var(--f-d);font-weight:800;font-size:21px;letter-spacing:-.015em;line-height:1.1}
+.us-list p{margin:0;font-size:16px;color:var(--fg-2)}
+.todo{margin-top:26px;padding:16px 18px;border:2px dashed #D0342C;border-radius:14px;color:#D0342C;font-family:var(--f-d);font-weight:700;font-size:14px;letter-spacing:.04em}
+.path{margin-top:clamp(36px,6vh,60px);display:flex;flex-direction:column;gap:14px}
+.path ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;counter-reset:p}
+.path li{position:relative;padding:18px 20px;border-radius:16px;background:var(--navy);color:#fff;display:flex;flex-direction:column;gap:2px;counter-increment:p}
+.path li::before{content:counter(p);font-family:var(--f-d);font-weight:800;font-size:13px;color:#FFB066}
+.path li b{font-family:var(--f-d);font-weight:800;font-size:20px}
+.path li span{font-size:14px;color:rgba(255,255,255,.78)}
+@media (max-width:860px){.us-grid{grid-template-columns:minmax(0,1fr)}.path ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.us-list{grid-template-columns:minmax(0,1fr)}}
 
 /* ======================= OPPORTUNITY ======================= */
 .photo{margin:0;overflow:hidden;display:flex;flex-direction:column}
@@ -581,22 +595,15 @@ body[data-tone="dark"] .rail{color:#fff}
 <nav class="rail" id="rail" aria-label="Chapters"></nav>
 <div class="keys" aria-hidden="true">← → to move · F full screen</div>
 
-<div class="intro" id="intro" aria-hidden="true">
-  <div class="intro-bottle" id="introBottle"></div>
-  <div class="intro-liquid"><svg viewBox="0 0 2880 60" preserveAspectRatio="none"><path d="M0,30 q180,-30 360,0 t360,0 t360,0 t360,0 t360,0 t360,0 t360,0 t360,0 V60 H0 Z" fill="#1A9BE0"/></svg></div>
-  <div class="intro-word"><span><i>Expand what</i></span><span><i>fresh</i></span><span><i>can feel like.</i></span></div>
-  <button class="intro-skip" id="introSkip" type="button">Skip intro</button>
-</div>
-
 <main>
 
 <!-- ============ HERO ============ -->
 <section class="scene hero" id="open" data-bg="#E6F6FD" data-glow="#FFFFFF" data-tone="light" data-phase="Frame" data-title="Welcome" data-stop>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <div class="hero-meta rv"><span>TheraBreath Flavor Playbook</span><span>Princeton, NJ</span><span>Mon · Nov 9, 2026</span></div>
+      <div class="hero-meta rv"><span>TheraBreath Flavor Playbook</span><span>Church &amp; Dwight HQ · Ewing, NJ</span><span>Mon · Nov 9, 2026</span></div>
       <h1 class="d d-xxl rv d1">Expand what <span class="fresh">fresh<svg viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M5,22 C80,6 190,4 295,16"/></svg></span> can feel like.</h1>
-      <p class="lede rv d2">A working session to choose the platforms and concepts worth developing next for TheraBreath.</p>
+      <p class="lede rv d2">A working session to choose the platforms and concepts worth developing next for TheraBreath. From The Flavor Factory, a family-owned flavor house in Norco, California.</p>
       <div class="tune rv d3">Fresh can feel <b id="tune">cool</b></div>
     </div>
     <div class="hero-stage rv d2" aria-hidden="true">
@@ -611,6 +618,28 @@ body[data-tone="dark"] .rail{color:#fff}
       <div class="card rv d2"><span class="lab">1:20 – 1:45</span><b>Choose</b><small>Three checks, three leads</small></div>
       <div class="card rv d3"><span class="lab">1:45 – 2:00</span><b>Assign</b><small>One owner for each test</small></div>
     </div>
+  </div>
+</section>
+
+<!-- ============ WHO WE ARE ============ -->
+<section class="scene" id="us" data-bg="#FFFFFF" data-glow="#FDECEA" data-tone="light" data-phase="Frame" data-title="Who we are" data-stop>
+  <div class="wrap us-grid">
+    <div>
+      <span class="eyebrow rv">Who we are</span>
+      <h2 class="d d-l rv d1" style="margin-top:20px">A family-owned flavor house <span class="hl">in Norco, California.</span></h2>
+      <p class="lede rv d2" style="margin-top:22px">We make custom liquid and powder flavors, including for oral care. We’re small on purpose: you work directly with the people formulating your flavor, and samples come back fast.</p>
+      <div class="todo rv d3">To add: team photo, plus the names and roles of who’s coming</div>
+    </div>
+    <div class="us-list">
+      <div class="card rv"><b>Custom, from the bench</b><p>Every flavor is built for the product it goes into, in liquid or powder.</p></div>
+      <div class="card rv d1"><b>Oral care is part of what we do</b><p>It’s one of the industries we already make flavors for.</p></div>
+      <div class="card rv d2"><b>Low minimum orders</b><p>Small pilot batches keep testing a new flavor affordable.</p></div>
+      <div class="card rv d3"><b>Fast turnaround</b><p>Most orders ship within 3–5 business days.</p></div>
+    </div>
+  </div>
+  <div class="wrap path rv">
+    <span class="lab">How a concept gets from today to a shelf</span>
+    <ol><li><b>Bench samples</b><span>built in your base</span></li><li><b>Stability</b><span>tested in your system</span></li><li><b>Sensory</b><span>panel and refinement</span></li><li><b>Scale-up</b><span>for production</span></li></ol>
   </div>
 </section>
 
@@ -647,13 +676,13 @@ body[data-tone="dark"] .rail{color:#fff}
     <div class="head2">
       <div><span class="eyebrow rv">The world around TheraBreath</span>
         <h2 class="d d-l rv d1" style="margin-top:20px">What people call <span class="hl">fresh</span> is changing.</h2></div>
-      <p class="body rv d2">Four signals from outside oral care are reshaping what people expect a rinse to feel like.</p>
+      <p class="body rv d2">Four shifts we see across the categories we make flavors for, from beverages to nutraceuticals. They are shaping what people expect a rinse to feel like.</p>
     </div>
     <div class="signals">
-      <article class="sig card rv"><div class="vis v-beauty"><i></i><i></i><i></i></div><div class="word">Beauty</div><h3>Personal-care rituals</h3><p>Oral care is joining the skincare shelf as one more step in a self-care routine.</p><div class="seen"><b>Seen in</b>Layered skincare routines, bathroom “shelfies”, oral care sold beside serums.</div></article>
-      <article class="sig card rv d1"><div class="vis v-flavor" id="vFlavor"></div><div class="word">Flavor</div><h3>A broader vocabulary</h3><p>People now taste yuzu, shiso and cardamom in drinks, snacks and wellness shots every week.</p><div class="seen"><b>Seen in</b>Zero-proof bars, functional beverages, global menus, fine fragrance.</div></article>
-      <article class="sig card rv d2"><div class="vis v-sense"><svg viewBox="0 0 300 150" preserveAspectRatio="none" id="vSense"></svg></div><div class="word">Sensation</div><h3>Sensory proof</h3><p>People want an effect they can feel and describe. That is how they know it works.</p><div class="seen"><b>Seen in</b>Cooling skincare, tingling lip products, “you can feel it working” claims.</div></article>
-      <article class="sig card rv d3"><div class="vis v-well"><div class="sun"></div><div class="dot"></div></div><div class="word">Trust</div><h3>Everyday wellness</h3><p>Products earn a place in the day: morning energy, midday reset, evening calm.</p><div class="seen"><b>Seen in</b>Sleep and hydration rituals, adaptogen drinks, “night” versions of everything.</div></article>
+      <article class="sig card rv"><div class="vis v-beauty"><i></i><i></i><i></i></div><div class="word">Beauty</div><h3>Personal-care rituals</h3><p>Oral care is joining the skincare shelf as one more step in a self-care routine.</p><div class="seen"><b>Where we see it</b>Layered skincare routines, bathroom “shelfies”, oral care sold beside serums.</div></article>
+      <article class="sig card rv d1"><div class="vis v-flavor" id="vFlavor"></div><div class="word">Flavor</div><h3>A broader vocabulary</h3><p>People now taste yuzu, shiso and cardamom in drinks, snacks and wellness shots every week.</p><div class="seen"><b>Where we see it</b>Zero-proof bars, functional beverages, global menus, fine fragrance.</div></article>
+      <article class="sig card rv d2"><div class="vis v-sense"><svg viewBox="0 0 300 150" preserveAspectRatio="none" id="vSense"></svg></div><div class="word">Sensation</div><h3>Sensory proof</h3><p>People want an effect they can feel and describe. That is how they know it works.</p><div class="seen"><b>Where we see it</b>Cooling skincare, tingling lip products, “you can feel it working” claims.</div></article>
+      <article class="sig card rv d3"><div class="vis v-well"><div class="sun"></div><div class="dot"></div></div><div class="word">Trust</div><h3>Everyday wellness</h3><p>Products earn a place in the day: morning energy, midday reset, evening calm.</p><div class="seen"><b>Where we see it</b>Sleep and hydration rituals, adaptogen drinks, “night” versions of everything.</div></article>
     </div>
   </div>
 </section>
@@ -664,7 +693,7 @@ body[data-tone="dark"] .rail{color:#fff}
     <div class="head2" style="margin-bottom:28px">
       <div><span class="eyebrow rv">World flavor culture</span>
         <h2 class="d rv d1" style="margin-top:20px;font-size:clamp(34px,3.9vw,70px)">Flavor culture is much bigger than <span class="hl">mint.</span></h2></div>
-      <p class="body rv d2">Where today’s freshness cues come from. A vocabulary to borrow from, not a launch list. Tap a point.</p>
+      <p class="body rv d2">Places our flavorists look for ideas. We’re not suggesting twelve launches. It’s a reminder of how much room there is beyond mint. Tap a point.</p>
     </div>
     <div class="filters rv" id="mapFilters" role="group" aria-label="Filter by platform">
       <button class="filt on" data-f="all" type="button">All signals</button>
@@ -696,8 +725,9 @@ body[data-tone="dark"] .rail{color:#fff}
         <div class="spec-handle" id="specHandle" role="slider" tabindex="0" aria-label="Familiar to exploratory" aria-valuemin="0" aria-valuemax="100" aria-valuenow="48"><div class="spec-orb"></div></div>
       </div>
       <div class="spec-ends"><span>← Familiar</span><span>Exploratory →</span></div>
+      <p class="small" style="margin:10px 0 0">Placements are our flavorists’ read, not measured data. We’ll test them in the tasting.</p>
       <div class="spec-read card">
-        <div><span class="lab" id="specZone" style="color:var(--brand)">Worth remembering</span><div class="d d-m" id="specName">Polar Spark</div></div>
+        <div><span class="lab" id="specZone" style="color:var(--brand)">Worth remembering</span><div class="d d-m" id="specName">Arctic Yuzu</div></div>
         <p class="body" id="specLine" style="font-size:20px">Familiar enough to trust, different enough to remember.</p>
       </div>
     </div>
@@ -717,7 +747,7 @@ body[data-tone="dark"] .rail{color:#fff}
     <div>
       <span class="eyebrow rv">The white space</span>
       <h2 class="d d-l rv d1" style="margin-top:20px">Stretch one dimension <span class="hl">at a time.</span></h2>
-      <p class="body rv d2" style="margin-top:22px">Each spoke runs from what oral care usually is (center) to where it could go (edge). Classic mint sits near the center. Strong concepts pull hard on one or two spokes.</p>
+      <p class="body rv d2" style="margin-top:22px">Each spoke runs from what oral care usually is (center) to where it could go (edge). Classic mint sits near the center. Strong concepts pull hard on one or two spokes. The shapes are our read, not measured data.</p>
       <div class="ws-ctrl rv d3" id="wsCtrl" role="group" aria-label="Choose a concept to plot"></div>
       <div class="ws-read" id="wsRead" aria-live="polite"></div>
     </div>
@@ -729,8 +759,8 @@ body[data-tone="dark"] .rail{color:#fff}
 <section class="scene" id="platforms" data-bg="#FFFFFF" data-glow="#FFF1E4" data-tone="light" data-phase="Frame" data-title="Platforms" data-stop>
   <div class="wrap stack" style="gap:36px">
     <span class="eyebrow rv">Four innovation platforms</span>
-    <h2 class="d d-xl rv d1">Build worlds,<br><span class="hl">not one-off flavors.</span></h2>
-    <p class="lede rv d2">Each platform is a territory TheraBreath could own across several launches. Every concept belongs to at least one.</p>
+    <h2 class="d d-xl rv d1">Four places<br><span class="hl">TheraBreath could grow.</span></h2>
+    <p class="lede rv d2">We’d rather help build a few lines that last than chase one-off flavors. Each platform could carry several launches, and every concept belongs to at least one.</p>
     <div class="plat-index">
       <a class="card rv" href="#p-newfresh"><span class="n">01</span><span class="d d-s">New Fresh</span><span class="small">Fresh beyond mint</span></a>
       <a class="card rv d1" href="#p-sensory"><span class="n">02</span><span class="d d-s">Sensory Proof</span><span class="small">Fresh you can feel</span></a>
@@ -746,7 +776,7 @@ body[data-tone="dark"] .rail{color:#fff}
       <span class="num rv">PLATFORM 01</span>
       <h2 class="d d-xl rv d1">New Fresh</h2>
       <p class="def rv d2">Expand what fresh tastes like, well beyond peppermint.</p>
-      <dl class="rv d3"><dt>Cues</dt><dd>Bright fruit, citrus peel, tea, cool greens, soft herbs, botanicals.</dd><dt>Promise</dt><dd>The same clean TheraBreath finish, reached by a new route.</dd><dt>Concepts</dt><dd>Polar Spark · Glasshouse · Pink Hour</dd></dl>
+      <dl class="rv d3"><dt>Cues</dt><dd>Bright fruit, citrus peel, tea, cool greens, soft herbs, botanicals.</dd><dt>Promise</dt><dd>The same clean TheraBreath finish, reached by a new route.</dd><dt>Concepts</dt><dd>Arctic Yuzu · Green Tea Cucumber · Grapefruit Rose Mint</dd></dl>
     </div>
     <div class="plat-vis rv" aria-hidden="true"><div class="nf-ring" id="nfA"></div><div class="nf-ring b" id="nfB"></div><div class="nf-core"><span>Mint<br>anchor</span></div></div>
   </div>
@@ -758,13 +788,13 @@ body[data-tone="dark"] .rail{color:#fff}
       <span class="num rv">PLATFORM 02</span>
       <h2 class="d d-xl rv d1">Sensory Proof</h2>
       <p class="def rv d2">Flavor and sensation that make freshness something you can feel happening.</p>
-      <dl class="rv d3"><dt>Cues</dt><dd>Cooling bloom, bright top note, contrast, a flavor that evolves, a long clean finish.</dd><dt>Guardrail</dt><dd>Intensity without burn. Gentleness is the proof point, never the trade-off.</dd><dt>Concepts</dt><dd>Polar Spark · Live Wire</dd></dl>
+      <dl class="rv d3"><dt>Cues</dt><dd>Cooling bloom, bright top note, contrast, a flavor that evolves, a long clean finish.</dd><dt>Guardrail</dt><dd>Intensity without burn. Gentleness is the proof point, never the trade-off.</dd><dt>Concepts</dt><dd>Arctic Yuzu · Ginger Lime</dd></dl>
     </div>
     <div class="plat-vis wave-chart rv" id="wave" aria-hidden="true">
       <svg viewBox="0 0 520 520"><g transform="translate(20,70)">
         <line x1="0" y1="360" x2="480" y2="360" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
         <text x="0" y="390">0s</text><text x="100" y="390">5s</text><text x="296" y="390">30s</text><text x="432" y="390">60s+</text>
-        <text x="0" y="-22">INTENSITY THROUGH THE RINSE</text>
+        <text x="0" y="-22">INTENSITY THROUGH THE RINSE · ILLUSTRATIVE</text>
         <path class="ln a" stroke="#F58220" d="M0,350 C40,340 60,70 110,60 S190,190 260,240 S400,300 480,320"/>
         <path class="ln b" stroke="#5CCBF5" d="M0,355 C80,350 120,230 200,120 S330,80 380,130 S450,210 480,220"/>
         <path class="ln c" stroke="#FFFFFF" stroke-dasharray="6 8" d="M0,358 C120,356 200,330 280,290 S420,180 480,170"/>
@@ -782,11 +812,11 @@ body[data-tone="dark"] .rail{color:#fff}
       <span class="num rv">PLATFORM 03</span>
       <h2 class="d d-xl rv d1">Ritual by Time</h2>
       <p class="def rv d2">Different moments of the day call for different kinds of fresh.</p>
-      <dl class="rv d3"><dt>Cues</dt><dd>Morning lift, midday reset, after coffee, before going out, wind-down.</dd><dt>Promise</dt><dd>Oral care that behaves like a personal ritual, not a chore.</dd><dt>Concepts</dt><dd>Glasshouse · Live Wire · Lights Out</dd></dl>
+      <dl class="rv d3"><dt>Cues</dt><dd>Morning lift, midday reset, after coffee, before going out, wind-down.</dd><dt>Promise</dt><dd>Oral care that behaves like a personal ritual, not a chore.</dd><dt>Concepts</dt><dd>Green Tea Cucumber · Ginger Lime · Chamomile Vanilla Mint</dd></dl>
     </div>
     <div class="plat-vis rv" id="dialWrap">
       <div class="dial" aria-hidden="true"></div>
-      <div class="dial-center" aria-live="polite"><span class="t" id="dT">6:30 AM</span><span class="n" id="dN">Wake</span><span class="f" id="dF">Polar Spark</span><span class="l" id="dL">A bright, cold start.</span></div>
+      <div class="dial-center" aria-live="polite"><span class="t" id="dT">6:30 AM</span><span class="n" id="dN">Wake</span><span class="f" id="dF">Arctic Yuzu</span><span class="l" id="dL">A bright, cold start.</span></div>
     </div>
   </div>
 </section>
@@ -797,7 +827,7 @@ body[data-tone="dark"] .rail{color:#fff}
       <span class="num rv">PLATFORM 04</span>
       <h2 class="d d-xl rv d1">Elevated Escape</h2>
       <p class="def rv d2">Premium flavor worlds borrowed from fragrance, spa, tea and zero-proof bars.</p>
-      <dl class="rv d3"><dt>Cues</dt><dd>Fragrance structure, hospitality, culinary pairings, global botanicals.</dd><dt>Promise</dt><dd>A small daily luxury that is still clean and alcohol-free.</dd><dt>Concepts</dt><dd>Pink Hour · Orchard Reserve</dd></dl>
+      <dl class="rv d3"><dt>Cues</dt><dd>Fragrance structure, hospitality, culinary pairings, global botanicals.</dd><dt>Promise</dt><dd>A small daily luxury that is still clean and alcohol-free.</dd><dt>Concepts</dt><dd>Grapefruit Rose Mint · Pear Cardamom Mint</dd></dl>
     </div>
     <div class="plat-vis pyr rv" aria-hidden="true">
       <svg viewBox="0 0 540 520">
@@ -817,64 +847,13 @@ body[data-tone="dark"] .rail{color:#fff}
   </div>
 </section>
 
-<!-- ============ CONCEPTS ============ -->
-<section class="scene" id="concepts" data-bg="#F2F9FC" data-glow="#FFFFFF" data-tone="light" data-phase="Taste" data-title="Six concepts" data-stop>
-  <div class="wrap stack" style="gap:40px">
-    <span class="eyebrow rv">Future flavor concepts</span>
-    <h2 class="d d-xl rv d1">Six enter.<br><span class="hl">Three advance.</span></h2>
-    <div class="six-row" id="sixRow"></div>
-  </div>
-</section>
-<div class="marquee" aria-hidden="true"><div class="mq-track" id="mq"></div></div>
-<div class="show" id="show">
-  <div class="stage" id="stage">
-    <div class="stage-in">
-      <canvas id="art" aria-hidden="true"></canvas>
-      <div class="bottles" id="bottles" aria-hidden="true"></div>
-      <div class="stage-meta" id="pips"></div>
-    </div>
-  </div>
-  <div class="steps" id="steps"></div>
-</div>
-
-<section class="scene" id="wildcards" data-bg="#FFFFFF" data-glow="#EAF7FD" data-tone="light" data-phase="Taste" data-title="Wildcards" data-stop style="min-height:auto">
-  <div class="wrap split" style="align-items:start">
-    <div><span class="eyebrow rv">In our pocket</span><h2 class="d d-m rv d1" style="margin-top:18px">Three studio wildcards, if the room wants to push further.</h2></div>
-    <div class="wild-row" id="wildRow"></div>
-  </div>
-</section>
-
-<!-- ============ FLAVOR LAB ============ -->
-<section class="scene" id="lab" data-bg="#0A2A5C" data-glow="#0F4C86" data-tone="dark" data-phase="Taste" data-title="Flavor Lab" data-stop>
-  <div class="wrap labx-grid">
-    <div>
-      <span class="eyebrow rv">Flavor Lab</span>
-      <h2 class="d d-l rv d1" style="margin-top:20px">Keep one cue. <span class="hl">Change one thing.</span></h2>
-      <p class="body rv d2" style="margin-top:20px">Build a concept live. Pick the freshness cue we keep, then the one thing we change, and watch the bottle refill.</p>
-      <div class="labx-step rv d2"><span class="lab">1 · Keep</span><div class="chips" id="labKeep" role="group" aria-label="Freshness cue to keep"></div></div>
-      <div class="labx-step rv d3"><span class="lab">2 · Change</span><div class="chips" id="labChange" role="group" aria-label="One thing to change"></div></div>
-    </div>
-    <div class="labx-out rv d1">
-      <div class="labx-bottle" id="labBottle"></div>
-      <div class="labx-card card" aria-live="polite">
-        <span class="match" id="labMatch">One of today’s six</span>
-        <span class="lab" style="color:var(--fg-3)">Your concept</span>
-        <div class="nm" id="labName"></div>
-        <div class="fl" id="labFlavor"></div>
-        <div class="meters"><div class="m">Familiar<div class="meter" id="mFam"></div></div><div class="m">Distinct<div class="meter" id="mDis"></div></div></div>
-        <dl><dt>Platform</dt><dd id="labPlat"></dd><dt>Stretches</dt><dd id="labAxis"></dd><dt>Watch-out</dt><dd id="labWatch"></dd></dl>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============ TASTING ============ -->
 <section class="scene" id="tasting" data-bg="#F2F9FC" data-glow="#FFF3E8" data-tone="light" data-phase="Taste" data-title="Tasting" data-stop>
   <div class="wrap">
     <div class="head2" style="margin-bottom:40px">
       <div><span class="eyebrow rv">The tasting</span>
-        <h2 class="d d-l rv d1" style="margin-top:20px">Taste the whole rinse, <span class="hl">not just the flavor.</span></h2></div>
-      <p class="body rv d2">“Do I like it?” is one question out of four. Follow each sample from the first second to tomorrow morning.</p>
+        <h2 class="d d-l rv d1" style="margin-top:20px">Taste <span class="hl">the whole rinse.</span></h2></div>
+      <p class="body rv d2">Every sample is coded, so nobody knows which concept they’re tasting. Follow each one from the first second to tomorrow morning. “Do I like it?” is only one of four questions.</p>
     </div>
     <div class="timeline rv" id="timeline">
       <div class="tl-head" id="tlHead"></div>
@@ -903,6 +882,56 @@ body[data-tone="dark"] .rail{color:#fff}
         <div id="boardRows" style="display:flex;flex-direction:column;gap:12px"></div>
         <div class="board-actions"><button class="btn ghost" id="copyScores" type="button">Copy scores</button><button class="btn ghost" id="resetScores" type="button">Clear</button></div>
         <p class="small" style="margin:0">Scores stay on this device. Nothing is sent anywhere.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONCEPTS ============ -->
+<section class="scene" id="concepts" data-bg="#F2F9FC" data-glow="#FFFFFF" data-tone="light" data-phase="Taste" data-title="The reveal" data-stop>
+  <div class="wrap stack" style="gap:40px">
+    <span class="eyebrow rv">The reveal</span>
+    <h2 class="d d-xl rv d1">What you <span class="hl">just tasted.</span></h2>
+    <p class="lede rv d2">Six concepts entered. Three advance. Here’s what was behind each code. All names are working names.</p>
+    <div class="six-row" id="sixRow"></div>
+  </div>
+</section>
+<div class="show" id="show">
+  <div class="stage" id="stage">
+    <div class="stage-in">
+      <canvas id="art" aria-hidden="true"></canvas>
+      <div class="bottles" id="bottles" aria-hidden="true"></div>
+      <div class="stage-meta" id="pips"></div>
+    </div>
+  </div>
+  <div class="steps" id="steps"></div>
+</div>
+
+<section class="scene" id="wildcards" data-bg="#FFFFFF" data-glow="#EAF7FD" data-tone="light" data-phase="Taste" data-title="Wildcards" data-stop style="min-height:auto">
+  <div class="wrap split" style="align-items:start">
+    <div><span class="eyebrow rv">Also on our bench</span><h2 class="d d-m rv d1" style="margin-top:18px">Three more our flavorists want you to try.</h2></div>
+    <div class="wild-row" id="wildRow"></div>
+  </div>
+</section>
+
+<!-- ============ FLAVOR LAB ============ -->
+<section class="scene" id="lab" data-bg="#0A2A5C" data-glow="#0F4C86" data-tone="dark" data-phase="Taste" data-title="Flavor Lab" data-stop>
+  <div class="wrap labx-grid">
+    <div>
+      <span class="eyebrow rv">Flavor Lab</span>
+      <h2 class="d d-l rv d1" style="margin-top:20px">Keep one cue. <span class="hl">Change one thing.</span></h2>
+      <p class="body rv d2" style="margin-top:20px">Try a combination live. Pick the freshness cue we keep, then the one thing we change. If it’s one we’ve already built, you’ll see it. If not, it goes on our list.</p>
+      <div class="labx-step rv d2"><span class="lab">1 · Keep</span><div class="chips" id="labKeep" role="group" aria-label="Freshness cue to keep"></div></div>
+      <div class="labx-step rv d3"><span class="lab">2 · Change</span><div class="chips" id="labChange" role="group" aria-label="One thing to change"></div></div>
+    </div>
+    <div class="labx-out rv d1">
+      <div class="labx-bottle" id="labBottle"></div>
+      <div class="labx-card card" aria-live="polite">
+        <span class="match" id="labMatch">One of today’s six</span>
+        <span class="lab" style="color:var(--fg-3)">Your concept</span>
+        <div class="nm" id="labName"></div>
+        <div class="fl" id="labFlavor"></div>
+                <dl><dt>Platform</dt><dd id="labPlat"></dd><dt>Stretches</dt><dd id="labAxis"></dd><dt>Watch-out</dt><dd id="labWatch"></dd></dl>
       </div>
     </div>
   </div>
@@ -940,9 +969,9 @@ body[data-tone="dark"] .rail{color:#fff}
 <section class="scene" id="travel" data-bg="#E6F6FD" data-glow="#FFFFFF" data-tone="light" data-phase="Choose" data-title="Beyond the bottle" data-stop style="min-height:auto">
   <div class="wrap travel-grid">
     <div class="stack" style="justify-content:center">
-      <span class="eyebrow rv">Also from the studio</span>
+      <span class="eyebrow rv">Also on our bench</span>
       <h2 class="d d-m rv d1">Beyond the bottle: a TheraBreath travel kit.</h2>
-      <p class="body rv d2">A side project, shown because it’s how we think: the whole experience, not just the liquid. Compact, TSA-ready, unmistakably TheraBreath.</p>
+      <p class="body rv d2">Something we’ve been sketching on the side: a travel kit that goes through airport security and still feels like TheraBreath.</p>
       <span class="lab rv d3" style="color:var(--brand)">Liquids ≤ 3.4 oz / 100 mL · one quart-size bag</span>
     </div>
     <div class="kit card rv d1" id="zipKit">
@@ -993,7 +1022,7 @@ body[data-tone="dark"] .rail{color:#fff}
     </div>
     <div class="finale rv">
       <div><p class="d d-m" style="margin:0 0 12px">Familiar enough to trust.<br>Different enough to remember.</p>
-        <span class="lab" style="color:var(--fg-2)">The Flavor Factory for TheraBreath · Princeton · November 9, 2026</span></div>
+        <span class="lab" style="color:var(--fg-2)">The Flavor Factory · Norco, California · for TheraBreath · November 9, 2026</span></div>
       <button class="btn" id="copyPlan" type="button">Copy the short list</button>
     </div>
   </div>
@@ -1007,9 +1036,9 @@ body[data-tone="dark"] .rail{color:#fff}
   <div class="wrap">
     <span class="eyebrow">Notes for the presenting team</span>
     <h2 class="d d-l" id="notesTitle" style="margin:18px 0 10px">How this experience works</h2>
-    <section><h3>Idea</h3><div>
-      <p><strong>One bottle, many worlds.</strong> The TheraBreath bottle, orange cap and all, anchors the story. The colour field behind the page eases from one world to the next as each scene reaches the middle of the screen. In the concept section the bottle stays pinned while its liquid, label and world change for each flavor.</p>
-      <p>Each screen answers one question: a big idea, one supporting line, one piece of evidence. The presenter talks and the screen shows.</p>
+    <section><h3>What this is</h3><div>
+      <p>The in-room companion to the deck, and the leave-behind afterwards. It holds the tools we use during the session: the blind scorecard and rinse timer, the Flavor Lab, the decision board and the short list.</p>
+      <p>Order matters: we taste blind first, then reveal what was behind each code, then decide. Don’t open the reveal section before the tasting.</p>
     </div></section>
     <section><h3>Type</h3><div>
       <p><span style="font-family:var(--f-d);font-weight:800;font-stretch:112%;font-size:34px;letter-spacing:-.03em">Archivo ExtraBold, expanded</span><br>Headlines. Heavy, wide and confident, and readable from the back of the room.</p>
@@ -1057,13 +1086,12 @@ const copy = (text, ok) => {
 const conceptBottle = c => bottle(conceptBottleOpts(c));
 const ICONIC = { liq: ["#4FB3E6", "#1A78C0"], band: "#6CC3EA", flavor: "Invigorating Icy Mint" };
 $("#heroBottle").outerHTML = bottle(ICONIC);
-$("#introBottle").innerHTML = bottle(ICONIC);
-$("#mq").innerHTML = [...CONCEPTS, ...CONCEPTS].map(c => `<span>${c.name}<em>${c.flavor}</em><b>✦</b></span>`).join("");
+
 
 /* ------------------------------------------------------------------ concept markup */
 const hlLast = n => { const w = n.split(" "); const l = w.pop(); return (w.length ? w.join(" ") + " " : "") + `<span class="hl">${l}</span>`; };
 $("#steps").innerHTML = CONCEPTS.map(c => `<article class="step" id="c-${c.id}" data-concept="${c.id}" data-bg="${c.bg}" data-glow="${c.glow}" data-tone="${c.tone}" data-phase="Taste" data-title="${c.name}" data-stop style="--acc:${c.acc}">
-  <div class="c-meta rv"><span class="lab" style="color:var(--fg-3)">Concept ${c.n} / 06</span><span class="status">${STATUS[c.status]}</span></div>
+  <div class="c-meta rv"><span class="lab" style="color:var(--fg-3)">Concept ${c.n} / 06</span><span class="status">Sample ${c.code}</span></div>
   <h2 class="d rv d1">${hlLast(c.name)}</h2>
   <div class="flv rv d1">${c.flavor} · ${c.tag}</div>
   <div class="kw rv d1">${c.kw.join(" · ")}</div>
@@ -1075,7 +1103,7 @@ $("#steps").innerHTML = CONCEPTS.map(c => `<article class="step" id="c-${c.id}" 
   </div></article>`).join("");
 $("#bottles").innerHTML = conceptBottle(CONCEPTS[0]);
 $("#pips").innerHTML = CONCEPTS.map(c => `<span class="pip" title="${c.name}"></span>`).join("");
-$("#sixRow").innerHTML = CONCEPTS.map(c => `<a class="card" href="#c-${c.id}"><div class="mini"><canvas data-mini="${c.id}" width="320" height="320" style="width:100%;height:100%;display:block"></canvas></div><span class="st">${c.n} · ${STATUS[c.status]}</span><span class="nm">${c.name}</span><span class="fl">${c.flavor}</span></a>`).join("");
+$("#sixRow").innerHTML = CONCEPTS.map(c => `<a class="card" href="#c-${c.id}"><div class="mini"><canvas data-mini="${c.id}" width="320" height="320" style="width:100%;height:100%;display:block"></canvas></div><span class="st">${c.n} · Sample ${c.code}</span><span class="nm">${c.name}</span><span class="fl">${c.flavor}</span></a>`).join("");
 $("#wildRow").innerHTML = WILD.map(w => `<div class="wild-card card rv"><div class="sw" style="background:linear-gradient(120deg,${w.sw[0]},${w.sw[1]})"></div><span class="lab" style="color:var(--fg-3)">${PLATS[w.plat]}</span><h3>${w.name}</h3><span class="lab" style="color:var(--brand);margin-top:-4px">${w.flavor}</span><p class="small" style="margin:0">${w.line}</p></div>`).join("");
 
 /* ------------------------------------------------------------------ observers */
@@ -1178,7 +1206,7 @@ addEventListener("scroll", () => {
     b.innerHTML = `<span class="nm">${r.name}</span>`; b.setAttribute("aria-label", `${r.name}, ${r.country}`);
     b.addEventListener("click", () => select(r)); r.el = b; stageEl.appendChild(b);
   });
-  const hm = document.createElement("div"); hm.className = "hot home"; hm.style.left = home[0] / GRID.W * 100 + "%"; hm.style.top = home[1] / GRID.H * 100 + "%"; hm.innerHTML = `<span class="nm">Princeton · the room</span>`; stageEl.appendChild(hm);
+  const hm = document.createElement("div"); hm.className = "hot home"; hm.style.left = home[0] / GRID.W * 100 + "%"; hm.style.top = home[1] / GRID.H * 100 + "%"; hm.innerHTML = `<span class="nm">Ewing, NJ · the room</span>`; stageEl.appendChild(hm);
   function select(r) {
     sel = r;
     const [sx, sy] = toXY(r.lon, r.lat);
@@ -1187,7 +1215,7 @@ addEventListener("scroll", () => {
     card.innerHTML = `<div class="sw" style="background:linear-gradient(135deg,${r.sw[0]},${r.sw[1]})"></div>
       <span class="lab" style="color:var(--fg-3)">${r.country}</span><h3>${r.name}</h3>
       <div class="cue-l">${r.cue}</div><p class="small" style="margin:0">${r.line}</p><p class="teach">${r.teach}</p>
-      <div class="links">${r.links.map(id => `<span class="tag" style="border-color:${r.sw[0]};color:#fff">${byId(id).name}</span>`).join("")}${r.plat.map(p => `<span class="tag">${PLATS[p]}</span>`).join("")}</div>`;
+      <div class="links">${r.links.map(id => `<span class="tag" style="border-color:${r.sw[0]};color:#fff">${byId(id).flavor}</span>`).join("")}${r.plat.map(p => `<span class="tag">${PLATS[p]}</span>`).join("")}</div>`;
     paint(performance.now() / 1000);
   }
   $$("#mapFilters .filt").forEach(b => b.addEventListener("click", () => {
@@ -1275,7 +1303,7 @@ addEventListener("scroll", () => {
   svg.innerHTML = html;
   const shape = $("#wsShape"), dots = $$(".wsv", svg);
   let curV = BASE.slice(), anim;
-  const opts = [...CONCEPTS.map(c => ({ id: c.id, name: c.name, col: c.acc })), { id: "all", name: "Change everything", col: "#E8745E" }];
+  const opts = [...CONCEPTS.map(c => ({ id: c.id, name: c.flavor, col: c.acc })), { id: "all", name: "Change everything", col: "#E8745E" }];
   $("#wsCtrl").innerHTML = opts.map(o => `<button type="button" class="ws-btn${o.id === "all" ? " warn" : ""}" data-id="${o.id}">${o.name}</button>`).join("");
   const show = id => {
     const o = opts.find(x => x.id === id), tgt = SHAPES[id], from = curV.slice(), t0 = performance.now();
@@ -1454,7 +1482,7 @@ const renderAssign = (() => {
   leads.addEventListener("change", e => { const el = e.target; if (!el.dataset.key) return; (S.assign[el.dataset.key] = S.assign[el.dataset.key] || {})[el.dataset.f] = el.value; save(); });
   $("#copyPlan").addEventListener("click", () => {
     const ps = S.platforms.slice(0, 2).map(p => PLATS[p]); const ad = S.advance.slice(0, 3);
-    const lines = ["TheraBreath Flavor Playbook · short list", "Princeton, NJ · November 9, 2026", "", "Platforms: " + (ps.length ? ps.join(" + ") : "to be chosen"), "", "Lead concepts:"];
+    const lines = ["TheraBreath Flavor Playbook · short list", "Church & Dwight HQ, Ewing, NJ · November 9, 2026", "", "Platforms: " + (ps.length ? ps.join(" + ") : "to be chosen"), "", "Lead concepts:"];
     [0, 1, 2].forEach(i => { const c = ad[i] && byId(ad[i]); const key = c ? c.id : "slot" + i; const a = S.assign[key] || {};
       lines.push(`${i + 1}. ${c ? c.name : "(open)"} · owner: ${a.owner || "TBD"} · next: ${a.action || ACTIONS[i === 0 ? 0 : i === 1 ? 1 : 3]}${a.date ? " · by " + a.date : ""}`); });
     lines.push("", "Familiar enough to trust. Different enough to remember.");
@@ -1533,10 +1561,6 @@ $("#foldBtn").addEventListener("click", e => { const k = $("#foldKit"); k.classL
   const hero = $("#heroTilt"), stageEl = $(".hero-stage");
   stageEl.parentElement.addEventListener("pointermove", e => { const r = stageEl.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; hero.style.transform = `perspective(900px) rotateY(${x * 22}deg) rotateX(${-y * 12}deg) translateX(${x * 14}px)`; });
   stageEl.parentElement.addEventListener("pointerleave", () => hero.style.transform = "");
-  $$(".plat-index a, .six-row a, .sig, .wild-card, .kit").forEach(el => {
-    el.addEventListener("pointermove", e => { const r = el.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; el.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px)`; el.style.transition = "transform .15s"; });
-    el.addEventListener("pointerleave", () => { el.style.transform = ""; el.style.transition = "transform .6s var(--ease)"; });
-  });
 })();
 
 /* ------------------------------------------------------------------ flavor lab */
@@ -1561,20 +1585,19 @@ $("#foldBtn").addEventListener("click", e => { const k = $("#foldKit"); k.classL
   const chip = (o, grp) => `<button type="button" class="chipb" data-g="${grp}" data-id="${o.id}" style="--c:${o.col}"><i></i>${o.label}</button>`;
   $("#labKeep").innerHTML = KEEP.map(o => chip(o, "k")).join("");
   $("#labChange").innerHTML = CHANGE.map(o => chip(o, "c")).join("");
-  $("#labBottle").innerHTML = bottle({ liq: [change.col, keep.col], band: change.band, flavor: "Polar Spark", sub: "Yuzu" });
+  $("#labBottle").innerHTML = bottle({ liq: [change.col, keep.col], band: change.band, flavor: "Polar Light", sub: "Arctic Yuzu" });
   const lb = $("#labBottle .bottle");
   const meter = (el, n) => el.innerHTML = [1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("");
   let t;
   const render = animate => {
     $$("#lab .chipb").forEach(b => b.classList.toggle("on", (b.dataset.g === "k" ? keep : change).id === b.dataset.id));
     const m = MATCH[keep.id + "|" + change.id], c = m && CONCEPTS.find(x => x.id === m);
-    const name = c ? c.name : `${keep.word} ${change.noun}`;
+    const name = c ? c.name : change.label;
     const apply = () => {
       setBottle(lb, { liq: c ? c.liquid : [change.col, keep.col], band: c ? c.acc : change.band, flavor: name, sub: change.label });
       const nm = $("#labName"); nm.textContent = name; nm.classList.remove("swap"); void nm.offsetWidth; nm.classList.add("swap");
-      $("#labFlavor").textContent = c ? c.flavor : `${change.label} on ${keep.desc}`;
+      $("#labFlavor").textContent = c ? c.flavor : `on ${keep.desc} · not yet built`;
       $("#labMatch").classList.toggle("on", !!c);
-      meter($("#mFam"), keep.fam - (change.dis > 4 ? 1 : 0)); meter($("#mDis"), change.dis);
       $("#labPlat").textContent = change.plat; $("#labAxis").textContent = change.axis; $("#labWatch").textContent = change.watch;
       lb.classList.remove("drain");
     };
