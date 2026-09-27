@@ -25,4 +25,4 @@ The command writes the PDF to `dist/therabreath_capabilities_workshop_booklet.pd
 
 - `index.html` is the interactive scroll experience for the **TheraBreath Flavor Playbook** workshop (Princeton, NJ, November 9, 2026). It is a single self-contained file: open it in a browser, or serve the repo root with any static host.
 - Present with ← → (one screen per press), F for full screen, N for presenter notes. Tasting scores, decisions and owners are saved in the presenting browser only. "Copy the short list" puts the outcome on the clipboard.
-- The TheraBreath wordmark and bottle are drawn stand-ins (orange cap, tinted bottle, front label). Replace them with official logo and product artwork before the session.
+- `assets/` holds the official TheraBreath logo and product photo. The concept bottles are drawn in code to match the current rinse label (orange cap, "Powered by Oxygen" band, FRESH BREATH box, flavor band).

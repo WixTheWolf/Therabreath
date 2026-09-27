@@ -20,7 +20,8 @@
 :root{
   color-scheme: light;
   --blue:#00A3E0;          /* TheraBreath blue (from the capabilities booklet) */
-  --blue-d:#0072BC;        /* deeper blue for text on white                  */
+  --blue-d:#0072BC;        /* deeper blue                                    */
+  --green:#006649;         /* TheraBreath logo green                         */
   --navy:#0A2A5C;
   --ink:#071C3C;
   --orange:#F58220;        /* the signature cap                              */
@@ -35,7 +36,7 @@
   --line:rgba(7,28,60,.14);
   --card:#FFFFFF;
   --card-line:rgba(7,28,60,.08);
-  --brand:var(--blue-d);
+  --brand:var(--green);
 
   --f-d:"Archivo", "Arial Narrow", Arial, sans-serif;
   --f-b:"Figtree", "Helvetica Neue", Arial, system-ui, sans-serif;
@@ -74,8 +75,8 @@ input,select{font:inherit;color:inherit}
 /* scenes */
 main{position:relative;z-index:1}
 .scene{position:relative;min-height:100vh;padding-block:clamp(100px, 13vh, 150px);padding-inline:var(--gut);display:flex;flex-direction:column;justify-content:center}
-[data-tone="dark"]{--fg:#FFFFFF;--fg-2:rgba(255,255,255,.8);--fg-3:rgba(255,255,255,.56);--line:rgba(255,255,255,.18);--card:rgba(255,255,255,.07);--card-line:rgba(255,255,255,.14);--brand:#5CCBF5;color:var(--fg)}
-[data-tone="light"]{--fg:var(--ink);--fg-2:rgba(7,28,60,.74);--fg-3:rgba(7,28,60,.5);--line:rgba(7,28,60,.14);--card:#FFFFFF;--card-line:rgba(7,28,60,.08);--brand:var(--blue-d);color:var(--fg)}
+[data-tone="dark"]{--fg:#FFFFFF;--fg-2:rgba(255,255,255,.8);--fg-3:rgba(255,255,255,.56);--line:rgba(255,255,255,.18);--card:rgba(255,255,255,.07);--card-line:rgba(255,255,255,.14);--brand:#6FD9AE;color:var(--fg)}
+[data-tone="light"]{--fg:var(--ink);--fg-2:rgba(7,28,60,.74);--fg-3:rgba(7,28,60,.5);--line:rgba(7,28,60,.14);--card:#FFFFFF;--card-line:rgba(7,28,60,.08);--brand:var(--green);color:var(--fg)}
 .wrap{max-width:1440px;margin-inline:auto;width:100%}
 .stack{display:flex;flex-direction:column;gap:24px}
 .card{background:var(--card);border:1px solid var(--card-line);border-radius:24px}
@@ -95,6 +96,7 @@ body[data-tone="dark"] .nav{color:#fff}
 .lockup{display:flex;align-items:center;gap:12px;white-space:nowrap;color:inherit;text-decoration:none}
 .lockup .tb{font-family:var(--f-d);font-weight:800;font-stretch:105%;letter-spacing:-.02em;font-size:21px;color:var(--blue-d)}
 body[data-tone="dark"] .lockup .tb{color:#5CCBF5}
+.tb-logo{display:block;height:30px;width:auto;background:#fff;padding:5px 9px;border-radius:9px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
 .lockup .x{font-weight:400;opacity:.45}
 .lockup .ff{font-family:var(--f-d);font-weight:600;font-size:15px;letter-spacing:.01em}
 .nav-r{display:flex;align-items:center;gap:12px}
@@ -125,7 +127,7 @@ body[data-tone="dark"] .rail{color:#fff}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(20px,4vw,64px);align-items:center}
 .hero-meta{display:flex;flex-wrap:wrap;gap:10px 28px;margin-bottom:28px}
 .hero-meta span{font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2)}
-.fresh{position:relative;color:var(--blue);white-space:nowrap}
+.fresh{position:relative;color:var(--green);white-space:nowrap}
 .fresh svg{position:absolute;left:-2%;bottom:.02em;width:104%;height:.22em;overflow:visible}
 .hero h1{font-size:clamp(50px,6.4vw,118px)}
 .fresh path{fill:none;stroke:var(--orange);stroke-width:10;stroke-linecap:round;stroke-dasharray:600;stroke-dashoffset:600;animation:swoosh 1.6s .5s var(--ease) forwards}
@@ -145,7 +147,11 @@ body[data-tone="dark"] .rail{color:#fff}
 .agenda small{font-size:15px;color:var(--fg-2)}
 
 /* ======================= OPPORTUNITY ======================= */
-.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:clamp(36px,6vh,64px)}
+.photo{margin:0;overflow:hidden;display:flex;flex-direction:column}
+.photo img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.three .photo{padding:0;gap:0}
+.photo figcaption{padding:16px 20px;color:var(--fg-2)}
+.three{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:clamp(36px,6vh,64px)}
 .three .card{padding:30px;display:flex;flex-direction:column;gap:14px}
 .ring{width:84px;height:84px}
 .three h3{margin:0}
@@ -454,7 +460,8 @@ body[data-tone="dark"] .rail{color:#fff}
   .timeline{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .lead-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .lead-row > :first-child{grid-column:1/-1}
-  .chapter,.keys,.lockup .ff,.lockup .x{display:none}
+  .chapter,.keys,.lockup .ff,.tb-logo{display:block;height:30px;width:auto;background:#fff;padding:5px 9px;border-radius:9px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.lockup .x{display:none}
   .notes section{grid-template-columns:minmax(0,1fr)}
   /* showcase: bottle pinned on top, copy scrolls underneath */
   .show{grid-template-columns:minmax(0,1fr);padding-inline:0}
@@ -488,12 +495,12 @@ body[data-tone="dark"] .rail{color:#fff}
 </head>
 <body data-tone="light">
 <div id="bg" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="tbLogo" viewBox="0 0 800 207"><image width="800" height="207" href="data:image/png;base64,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"/></symbol></svg>
 <div class="progress" id="progress" aria-hidden="true"></div>
 
 <header class="nav">
-  <!-- Wordmark is typeset as a stand-in: drop in the official TheraBreath logo SVG here -->
   <a class="lockup" href="#open" aria-label="TheraBreath Flavor Playbook, back to start">
-    <span class="tb">TheraBreath</span><span class="x">×</span><span class="ff">The Flavor Factory</span>
+    <img class="tb-logo" src="assets/therabreath-logo.png" alt="TheraBreath" width="116" height="30"><span class="x">×</span><span class="ff">The Flavor Factory</span>
   </a>
   <div class="nav-r">
     <span class="chapter" id="chapter">Frame</span>
@@ -536,8 +543,9 @@ body[data-tone="dark"] .rail{color:#fff}
     <span class="eyebrow rv">The opportunity</span>
     <h2 class="d d-xl rv d1" style="margin-top:20px">The benefit is familiar.<br><span class="hl">The flavor can do more.</span></h2>
     <div class="three">
+      <figure class="card photo rv"><img src="assets/therabreath-rinses.jpg" alt="TheraBreath Fresh Breath Oral Rinse in Invigorating Icy Mint, Rainforest Mint and Mild Mint" loading="lazy"><figcaption class="lab">The shelf today: one orange cap, three mints</figcaption></figure>
       <div class="card rv">
-        <svg class="ring" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="#00A3E0"/><circle cx="42" cy="42" r="36" fill="none" stroke="#0072BC" stroke-width="6"/></svg>
+        <svg class="ring" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="#1F8A66"/><circle cx="42" cy="42" r="36" fill="none" stroke="#006649" stroke-width="6"/></svg>
         <span class="lab" style="color:var(--brand)">Owned today</span><h3 class="d d-m">Trust</h3>
         <p>Gentle, effective, non-burning freshness. TheraBreath already owns it, and it stays at the center.</p>
       </div>
@@ -868,7 +876,7 @@ body[data-tone="dark"] .rail{color:#fff}
 </section>
 
 <!-- ============ ASSIGN ============ -->
-<section class="scene" id="assign" data-bg="#005EA8" data-glow="#00A3E0" data-tone="dark" data-phase="Assign" data-title="Short list" data-stop>
+<section class="scene" id="assign" data-bg="#004E38" data-glow="#0A7A58" data-tone="dark" data-phase="Assign" data-title="Short list" data-stop>
   <div class="wrap stack" style="gap:clamp(32px,5vh,56px)">
     <div class="arcflow rv">
       <div><span class="lab">Frame</span><span class="d d-s">Possibility</span></div>
@@ -910,7 +918,7 @@ body[data-tone="dark"] .rail{color:#fff}
       <li>← → or Page Up / Down moves one screen. F goes full screen. N opens these notes.</li>
       <li>Tasting scores, checks and owners are saved in this browser only. Use “Copy the short list” for the follow-up email.</li>
       <li>Print (⌘P) gives a one-scene-per-page takeaway.</li>
-      <li>Before the session, swap the typeset wordmark and the drawn bottle for official TheraBreath logo and product artwork.</li>
+      <li>The logo and product photo are official artwork in <code>assets/</code>. The concept bottles are drawn to match the current rinse label system.</li>
     </ul></div></section>
   </div>
 </div>
@@ -932,42 +940,42 @@ const rng = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Mat
 const PLATS = { newfresh: "New Fresh", sensory: "Sensory Proof", ritual: "Ritual by Time", elevated: "Elevated Escape" };
 const CONCEPTS = [
   { id: "yuzu", n: "01", name: "Arctic Yuzu", status: "lead", code: "318", tone: "light", bg: "#E1F4FC", glow: "#F6FBC8", acc: "#C3D21E", band: "Electric Citrus Chill",
-    liquid: ["#F1F8B0", "#8FD3F2"], kw: ["electric", "icy", "citrus", "clean", "modern", "energetic"],
+    liquid: ["#D9EA5C", "#58BCE6"], kw: ["electric", "icy", "citrus", "clean", "modern", "energetic"],
     feels: "The first breath outside on a clear winter morning, lit by citrus.",
     arc: ["Sharp yuzu peel, almost electric.", "A clean cold wave builds, with no burn.", "Bright, awake, completely clean."],
     plat: ["newfresh", "sensory"],
     note: "Build the yuzu from oxidation-tolerant top notes, since citral-heavy lemon profiles fade in oxidizing rinse systems. Non-menthol cooling agents carry the cold without the burn.",
     avoid: "Lemon mouthwash. Snowflakes." },
   { id: "gtc", n: "02", name: "Green Tea Cucumber", status: "lead", code: "742", tone: "light", bg: "#E6F3E8", glow: "#FFFFFF", acc: "#4E9A6E", band: "Clean Botanical Calm",
-    liquid: ["#DDF1DC", "#98CBA8"], kw: ["clean", "botanical", "spa-like", "calm", "hydrating", "effortless"],
+    liquid: ["#9FD6A6", "#3C9A68"], kw: ["clean", "botanical", "spa-like", "calm", "hydrating", "effortless"],
     feels: "A glass of cold water in a quiet, sunlit room.",
     arc: ["Soft green sencha, cool and light.", "Watery cucumber freshness settles in.", "Hydrated and calm, nothing left over."],
     plat: ["newfresh", "ritual"],
     note: "Cucumber’s green notes are volatile and fragile. A quiet spearmint backbone protects the profile and keeps it reading as oral care.",
     avoid: "Health-food store. Cucumber slices on eyes." },
   { id: "ginger", n: "03", name: "Ginger Lime", status: "lead", code: "506", tone: "dark", bg: "#1B2710", glow: "#4F3410", acc: "#F58220", band: "Zesty Warming Spark",
-    liquid: ["#D6EE74", "#F2B866"], kw: ["bright", "kinetic", "warming", "crisp", "energetic", "unexpected"],
+    liquid: ["#C4E04A", "#E88E36"], kw: ["bright", "kinetic", "warming", "crisp", "energetic", "unexpected"],
     feels: "Cold lime on the tongue, then a spark of warmth underneath.",
     arc: ["A zesty lime snap.", "Ginger warmth rises under the cool.", "Crisp, energized, clean."],
     plat: ["sensory", "ritual"],
     note: "Warmth has to read as lively, never as burn, because no-burn is the TheraBreath promise. Keep ginger’s pungency well below irritation and let cooling lead.",
     avoid: "Margaritas. Anything that looks like a cocktail." },
   { id: "grapefruit", n: "04", name: "Grapefruit Rose Mint", status: "contender", code: "261", tone: "light", bg: "#FCE8E2", glow: "#FFF8F5", acc: "#E2553F", band: "Bright Citrus Floral",
-    liquid: ["#FBD7CD", "#EE9B8B"], kw: ["elevated", "aromatic", "modern botanical", "citrus floral"],
+    liquid: ["#F6A898", "#DD5E4A"], kw: ["elevated", "aromatic", "modern botanical", "citrus floral"],
     feels: "Morning light through pink glass.",
     arc: ["Juicy pink grapefruit.", "A dry, green rose heart: more stem than petal.", "Cool mint comes back to close."],
     plat: ["elevated", "newfresh"],
     note: "Use a green, geranium-leaning rose accord rather than a sweet floral. That keeps it far from soap and perfume cues.",
     avoid: "Perfume counter. Bath soap." },
   { id: "pear", n: "05", name: "Pear Cardamom Mint", status: "contender", code: "893", tone: "light", bg: "#F3EFD8", glow: "#FFFCEB", acc: "#8E7B3A", band: "Layered Culinary Cool",
-    liquid: ["#F1EABB", "#C3B878"], kw: ["elegant", "layered", "culinary", "premium", "sophisticated"],
+    liquid: ["#E0D78A", "#A5964C"], kw: ["elegant", "layered", "culinary", "premium", "sophisticated"],
     feels: "A chef’s pairing, translated into freshness.",
     arc: ["Crisp green pear, cool.", "Cardamom’s airy, eucalyptus-like lift.", "Soft, clean spice held by mint."],
     plat: ["elevated"],
     note: "Cardamom naturally carries 1,8-cineole, the same cool note as eucalyptus. It is a built-in bridge between spice and mint.",
     avoid: "Holiday baking. Dessert." },
   { id: "chamomile", n: "06", name: "Chamomile Vanilla Mint", status: "open", code: "437", tone: "dark", bg: "#121936", glow: "#2C3468", acc: "#E9C77A", band: "Soft Evening Calm",
-    liquid: ["#F4E7C0", "#BDB6E6"], kw: ["calm", "evening", "gentle", "soft", "comforting"],
+    liquid: ["#E6D59C", "#958BD2"], kw: ["calm", "evening", "gentle", "soft", "comforting"],
     feels: "Lights low. The day is done.",
     arc: ["Gentle, soft mint.", "Honeyed chamomile calm.", "A dry vanilla softness, still clean."],
     plat: ["ritual"],
@@ -1063,51 +1071,54 @@ const copy = (text, ok) => {
 // Drawn stand-in for the TheraBreath rinse bottle: tinted PET body, ribbed orange cap,
 // white front label. Swap for official product artwork when available.
 let bottleN = 0;
+// Drawn to match the current TheraBreath rinse: coloured bottle, ribbed two-tier orange cap,
+// white wrap label with the orange "Powered by Oxygen" band, orange FRESH BREATH box and a flavor band.
 function bottle(o) {
   const id = "tb" + (bottleN++);
-  const body = "M70,120 L130,120 C130,146 186,150 186,196 L186,462 Q186,492 156,492 L44,492 Q14,492 14,462 L14,196 C14,150 70,146 70,120 Z";
-  const ribs = Array.from({ length: 20 }, (_, i) => { const x = 59 + i * 4.3; return `<line x1="${x}" y1="17" x2="${x}" y2="94" stroke="rgba(110,40,0,.24)" stroke-width="1.4"/><line x1="${x + 1.7}" y1="17" x2="${x + 1.7}" y2="94" stroke="rgba(255,255,255,.2)" stroke-width="1"/>`; }).join("");
-  const bubs = [[48, 470, 3, 0, 5.5], [72, 450, 2, -1.8, 6.5], [96, 480, 4, -3.1, 5], [122, 460, 2.5, -.7, 7], [146, 476, 3, -4.2, 6], [160, 440, 2, -2.4, 5.8], [60, 430, 2, -5, 6.8]]
-    .map(([x, y, r, d, du]) => `<circle class="bub" cx="${x}" cy="${y}" r="${r}" fill="#fff" style="animation-delay:${d}s;animation-duration:${du}s"/>`).join("");
-  const fit = (s, max, per = 8.4) => s.length > max ? ` textLength="${Math.min(124, s.length * per)}" lengthAdjust="spacingAndGlyphs"` : "";
-  const nameLines = o.l2
-    ? `<text x="100" y="313" text-anchor="middle" font-size="16" fill="#0A2A5C"${fit(o.l1, 9, 10)}>${o.l1}</text><text x="100" y="333" text-anchor="middle" font-size="16" fill="#0A2A5C"${fit(o.l2, 9, 10)}>${o.l2}</text>`
-    : `<text x="100" y="324" text-anchor="middle" font-size="18" fill="#0A2A5C"${fit(o.l1, 8, 10)}>${o.l1}</text>`;
-  return `<svg class="bottle" viewBox="0 0 200 500" aria-hidden="true" font-family="Archivo, Arial, sans-serif" font-weight="800"><defs>
-  <linearGradient id="${id}c" x1="0" x2="1"><stop offset="0" stop-color="#B24A06"/><stop offset=".16" stop-color="#F07A1A"/><stop offset=".4" stop-color="#FFAE5E"/><stop offset=".58" stop-color="#F58220"/><stop offset="1" stop-color="#A24204"/></linearGradient>
+  const body = "M66,122 L134,122 L134,134 C172,140 190,168 190,206 L190,462 Q190,494 158,494 L42,494 Q10,494 10,462 L10,206 C10,168 28,140 66,134 Z";
+  const ribs = (x0, x1, y0, y1) => { let r = ""; for (let x = x0; x <= x1; x += 4.2) r += `<line x1="${x.toFixed(1)}" y1="${y0}" x2="${x.toFixed(1)}" y2="${y1}" stroke="rgba(120,45,0,.22)" stroke-width="1.3"/>`; return r; };
+  const cond = 'style="font-stretch:72%"';
+  const fitBand = o.flavor.length > 14 ? ` textLength="${Math.min(150, o.flavor.length * 9)}" lengthAdjust="spacingAndGlyphs"` : "";
+  return `<svg class="bottle" viewBox="0 0 200 500" aria-hidden="true" font-family="Archivo, Arial Narrow, Arial, sans-serif" font-weight="900"><defs>
+  <linearGradient id="${id}c" x1="0" x2="1"><stop offset="0" stop-color="#C75A0C"/><stop offset=".2" stop-color="#F7852A"/><stop offset=".45" stop-color="#FFA65A"/><stop offset=".65" stop-color="#F58025"/><stop offset="1" stop-color="#B8520A"/></linearGradient>
   <linearGradient id="${id}l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${o.liq[0]}"/><stop offset="1" stop-color="${o.liq[1]}"/></linearGradient>
-  <linearGradient id="${id}g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".16" stop-color="#fff" stop-opacity=".06"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset=".86" stop-color="#003060" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></linearGradient>
+  <linearGradient id="${id}g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".14" stop-color="#fff" stop-opacity=".05"/><stop offset=".7" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>
   <clipPath id="${id}k"><path d="${body}"/></clipPath></defs>
-  <path d="${body}" fill="rgba(255,255,255,.35)"/>
-  <g clip-path="url(#${id}k)">
-    <rect x="0" y="176" width="200" height="330" fill="url(#${id}l)"/>
-    <path class="wave" d="M-200,172 q50,-10 100,0 t100,0 t100,0 t100,0 t100,0 t100,0 V200 H-200 Z" fill="${o.liq[0]}"/>
-    ${bubs}
-  </g>
+  <path d="${body}" fill="url(#${id}l)"/>
   <path d="${body}" fill="url(#${id}g)"/>
-  <rect x="24" y="200" width="9" height="270" rx="4.5" fill="#fff" opacity=".5"/>
-  <rect x="170" y="214" width="5" height="236" rx="2.5" fill="#fff" opacity=".28"/>
-  <path d="${body}" fill="none" stroke="rgba(255,255,255,.95)" stroke-width="2"/>
-  <path d="${body}" fill="none" stroke="rgba(0,40,90,.16)" stroke-width="1"/>
-  <rect x="68" y="110" width="64" height="14" rx="2" fill="rgba(255,255,255,.6)" stroke="rgba(0,40,90,.15)"/>
-  <rect x="50" y="94" width="100" height="20" rx="5" fill="url(#${id}c)"/><rect x="50" y="108" width="100" height="6" rx="3" fill="rgba(0,0,0,.14)"/>
-  <rect x="54" y="6" width="92" height="94" rx="10" fill="url(#${id}c)"/>${ribs}
-  <rect x="58" y="6" width="84" height="7" rx="3.5" fill="#fff" opacity=".35"/>
-  <rect x="30" y="226" width="140" height="222" rx="10" fill="#fff"/>
-  <text x="100" y="262" text-anchor="middle" font-size="22" fill="#0072BC" letter-spacing="-.5" textLength="120" lengthAdjust="spacingAndGlyphs">TheraBreath</text>
-  <text x="100" y="278" text-anchor="middle" font-size="7" font-weight="700" fill="#6A7A90" letter-spacing="1.4" textLength="98" lengthAdjust="spacingAndGlyphs">DENTIST FORMULATED</text>
-  <line x1="50" y1="289" x2="150" y2="289" stroke="#E1EAF2" stroke-width="1.5"/>
-  ${nameLines}
-  <text x="100" y="355" text-anchor="middle" font-size="9.5" fill="#00A3E0" letter-spacing="2.2">ORAL RINSE</text>
-  <rect x="30" y="366" width="140" height="30" fill="${o.band}"/>
-  <text x="100" y="385" text-anchor="middle" font-size="10" fill="#fff" letter-spacing=".6"${fit(o.bandText, 16)}>${o.bandText.toUpperCase()}</text>
-  <text x="100" y="416" text-anchor="middle" font-size="7" font-weight="700" fill="#0A2A5C" letter-spacing=".8" textLength="112" lengthAdjust="spacingAndGlyphs">ALCOHOL-FREE · NO BURN</text>
-  <text x="100" y="432" text-anchor="middle" font-size="7" font-weight="600" fill="#6A7A90">16 FL OZ (473 mL)</text>
+  <g clip-path="url(#${id}k)">
+    <path d="M40,150 C70,132 130,132 160,150 L160,160 C130,146 70,146 40,160 Z" fill="#fff" opacity=".28"/>
+    <rect x="10" y="206" width="180" height="246" fill="#fff"/>
+    <rect x="10" y="206" width="180" height="17" fill="#F58025"/>
+    <rect x="10" y="418" width="180" height="30" fill="${o.band}"/>
+    <rect x="10" y="206" width="180" height="246" fill="url(#${id}g)" opacity=".6"/>
+  </g>
+  <rect x="20" y="226" width="7" height="0" fill="none"/>
+  <rect x="18" y="150" width="9" height="46" rx="4.5" fill="#fff" opacity=".45"/>
+  <rect x="18" y="458" width="9" height="26" rx="4.5" fill="#fff" opacity=".35"/>
+  <text x="100" y="218.5" text-anchor="middle" font-size="8.5" fill="#fff" letter-spacing="1" ${cond}>POWERED BY OXYGEN™</text>
+  <text x="100" y="233" text-anchor="middle" font-size="6.5" fill="#006649" letter-spacing=".8" ${cond}>PROFESSIONAL FORMULA</text>
+  <use href="#tbLogo" x="28" y="236" width="144" height="37"/>
+  <text x="100" y="289" text-anchor="middle" font-size="13.5" fill="#111" ${cond}>DENTIST FORMULATED</text>
+  <rect x="30" y="295" width="140" height="28" fill="#F58025"/>
+  <text x="100" y="316" text-anchor="middle" font-size="19" fill="#fff" ${cond}>FRESH BREATH</text>
+  <text x="100" y="352" text-anchor="middle" font-size="27" fill="#111" letter-spacing="1" ${cond}>ORAL RINSE</text>
+  <text x="100" y="368" text-anchor="middle" font-size="8" fill="#111" ${cond}>FIGHTS BAD BREATH FOR <tspan fill="#F58025" font-size="10">24</tspan> HOURS*</text>
+  <text x="100" y="381" text-anchor="middle" font-size="5.6" font-weight="600" fill="#444">Works instantly to target bad breath germs</text>
+  <text x="100" y="390" text-anchor="middle" font-size="5.6" font-weight="600" fill="#444">No alcohol · Non burning</text>
+  <text x="100" y="438" text-anchor="middle" font-size="13" fill="#fff" letter-spacing=".6" ${cond}${fitBand}>${o.flavor.toUpperCase()}</text>
+  <path d="${body}" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+  <rect x="62" y="118" width="76" height="10" fill="${o.liq[0]}"/>
+  <rect x="46" y="50" width="108" height="74" rx="9" fill="url(#${id}c)"/>${ribs(50, 150, 56, 120)}
+  <rect x="46" y="112" width="108" height="12" rx="6" fill="rgba(0,0,0,.12)"/>
+  <path d="M58,52 L62,14 Q63,6 72,6 L128,6 Q137,6 138,14 L142,52 Z" fill="url(#${id}c)"/>${ribs(64, 136, 12, 50)}
+  <rect x="60" y="48" width="80" height="4" fill="rgba(0,0,0,.16)"/>
+  <rect x="70" y="6" width="60" height="5" rx="2.5" fill="#fff" opacity=".35"/>
   </svg>`;
 }
 const splitName = n => { const w = n.split(" "); if (w.length === 1) return [n, ""]; if (w[0] === "GREEN") return [w.slice(0, 2).join(" "), w.slice(2).join(" ")]; return [w[0], w.slice(1).join(" ")]; };
-const conceptBottle = c => { const [a, b] = splitName(c.name.toUpperCase()); return bottle({ liq: c.liquid, band: c.acc, l1: a, l2: b, bandText: c.band }); };
-$("#heroBottle").outerHTML = bottle({ liq: ["#9ADCF7", "#1C93D8"], band: "#00A3E0", l1: "FRESH BREATH", l2: "", bandText: "Invigorating Icy Mint" });
+const conceptBottle = c => bottle({ liq: c.liquid, band: c.acc, flavor: c.name });
+$("#heroBottle").outerHTML = bottle({ liq: ["#4FB3E6", "#1A78C0"], band: "#6CC3EA", flavor: "Invigorating Icy Mint" });
 
 /* ------------------------------------------------------------------ concept markup */
 const hlLast = n => { const w = n.split(" "); const l = w.pop(); return (w.length ? w.join(" ") + " " : "") + `<span class="hl">${l}</span>`; };
@@ -1671,7 +1682,7 @@ $("#foldBtn").addEventListener("click", e => { const k = $("#foldKit"); k.classL
 
 /* ------------------------------------------------------------------ notes */
 (() => {
-  const sw = [["Ink", "#071C3C"], ["Navy", "#0A2A5C"], ["TheraBreath blue", "#00A3E0"], ["Deep blue", "#0072BC"], ["Cap orange", "#F58220"], ["Overreach", "#EF5B3F"]];
+  const sw = [["Ink", "#071C3C"], ["Navy", "#0A2A5C"], ["TheraBreath green", "#006649"], ["Icy blue", "#00A3E0"], ["Deep blue", "#0072BC"], ["Cap orange", "#F58220"], ["Overreach", "#EF5B3F"]];
   $("#swatches").innerHTML = sw.map(([n, c]) => `<div><i style="background:${c}"></i><span>${n}<br>${c}</span></div>`).join("") +
     CONCEPTS.map(c => `<div><i style="background:linear-gradient(120deg,${c.bg},${c.liquid[1]})"></i><span>${c.name}</span></div>`).join("");
   const notes = $("#notes");
