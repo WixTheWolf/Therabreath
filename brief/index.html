@@ -86,6 +86,17 @@ section{padding-block:clamp(72px,11vh,130px)}
 .scroll-cue i{width:2px;height:28px;background:#fff;animation:cue 2.2s ease-in-out infinite;transform-origin:top}
 @keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
 
+/* reel */
+.reel{padding-block:clamp(40px,7vh,80px) 0}
+.reel-frame{position:relative;border-radius:28px;overflow:hidden;background:#071C3C;box-shadow:0 30px 80px rgba(7,28,60,.22);aspect-ratio:16/9}
+.reel-frame video{display:block;width:100%;height:100%;object-fit:cover}
+.reel-play{position:absolute;left:50%;top:50%;width:120px;height:120px;margin:-60px 0 0 -60px;border:0;border-radius:50%;background:var(--orange);cursor:pointer;box-shadow:0 20px 50px rgba(0,0,0,.35);transition:transform .3s var(--ease),opacity .3s}
+.reel-play:hover{transform:scale(1.07)}
+.reel-play span{position:absolute;left:50%;top:50%;margin:-22px 0 0 -12px;border-style:solid;border-width:22px 0 22px 36px;border-color:transparent transparent transparent #fff}
+.reel-frame.playing .reel-play{opacity:0;pointer-events:none}
+.reel-cap{margin:14px 4px 0;font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3)}
+@media print{.reel{display:none}}
+
 /* who */
 .who-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center}
 .who-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
@@ -241,6 +252,17 @@ section{padding-block:clamp(72px,11vh,130px)}
     <svg viewBox="0 0 2880 110" preserveAspectRatio="none"><path d="M0,66 q240,-36 480,0 t480,0 t480,0 t480,0 t480,0 t480,0 V110 H0 Z" fill="#006649"/></svg>
   </div>
   <div class="scroll-cue" aria-hidden="true"><i></i>Read on</div>
+</section>
+
+<!-- REEL -->
+<section class="reel" aria-label="15-second preview">
+  <div class="wrap">
+    <div class="reel-frame rv">
+      <video id="reel" poster="media/flavor-playbook-reel-poster.jpg" playsinline preload="metadata" controls><source src="media/flavor-playbook-reel.mp4" type="video/mp4"><source src="media/flavor-playbook-reel.webm" type="video/webm"></video>
+      <button class="reel-play" id="reelPlay" type="button" aria-label="Play the 15-second preview with sound"><span></span></button>
+    </div>
+    <p class="reel-cap rv d1">15 seconds, sound on.</p>
+  </div>
 </section>
 
 <!-- WHO -->
@@ -438,6 +460,16 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 }), { rootMargin: "0px 0px -8% 0px", threshold: .06 });
 $$(".rv, #lineup").forEach(el => io.observe(el));
 setTimeout(() => $("#lineup").classList.add("in"), 300);
+
+/* reel: big play button, sound on */
+(() => {
+  const v = $("#reel"), b = $("#reelPlay"), fr = v && v.parentElement;
+  if (!v) return;
+  v.controls = false;
+  b.addEventListener("click", () => { v.muted = false; v.currentTime = v.ended ? 0 : v.currentTime; const p = v.play(); p && p.catch(() => {}); });
+  v.addEventListener("play", () => { fr.classList.add("playing"); v.controls = true; });
+  v.addEventListener("ended", () => fr.classList.remove("playing"));
+})();
 
 /* bar + progress */
 const bar = $("#bar"), prog = $("#progress"); let tick = false;

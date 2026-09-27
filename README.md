@@ -26,6 +26,10 @@ The command writes the PDF to `dist/therabreath_capabilities_workshop_booklet.pd
 - `brief/index.html` is the briefing page to send the TheraBreath team ahead of the November 9 session: why we are coming, the two-hour agenda, the four platforms, a first look at the six concepts, how to prepare for the tasting, three questions to think about, and what we will leave with. It includes a live countdown to the day and prints cleanly to PDF.
 - Share the deployed URL ending in `/brief/`. It does not link to the workshop site or deck, so nothing from the session is given away early.
 
+## Pre-read reel
+
+`video/` is a Remotion project for the 15-second reel at the top of the pre-read (original synthesized music and sound effects, cuts on the beat). Rendered MP4 and WebM plus the poster are in `brief/media/`. See `video/README.md`.
+
 ## Concept names (working names, not trademark-screened)
 
 Status is internal only: none of the pieces show lead/contender to TheraBreath, so the room isn't steered. Names are hidden in the pre-read and revealed after the blind tasting.
