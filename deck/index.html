@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TheraBreath Flavor Playbook Deck</title>
+<meta name="description" content="Slide deck for the TheraBreath Flavor Playbook innovation workshop, presented by The Flavor Factory. Princeton, NJ, November 9, 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Figtree:ital,wght@0,400..800;1,400..800&display=swap">
+<style>
+/* ==========================================================================
+   TheraBreath Flavor Playbook · workshop deck
+   1920 × 1080 slides scaled to the screen. Same type, colour and bottle as the
+   web experience (../index.html); data comes from ../assets/playbook-core.js.
+   Keys: ← → / space / page keys move · G overview · P presenter view ·
+   N notes · F full screen · B blank screen.
+   ========================================================================== */
+:root{
+  --blue:#00A3E0; --green:#006649; --navy:#0A2A5C; --ink:#071C3C;
+  --orange:#F58025; --orange-d:#C85F0E; --mint:#7ED321; --coral:#EF5B3F;
+  --f-d:"Archivo", "Arial Narrow", Arial, sans-serif;
+  --f-b:"Figtree", "Helvetica Neue", Arial, sans-serif;
+  --ease:cubic-bezier(.2,.7,.1,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0B1424;color:#fff;font-family:var(--f-b);-webkit-font-smoothing:antialiased}
+body{overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+
+/* ---------- stage & slides ---------- */
+.viewport{position:fixed;inset:0;overflow:hidden}
+.deck{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--s,.5));transform-origin:50% 50%}
+.slide{position:absolute;inset:0;overflow:hidden;background:var(--bgc,#fff);color:var(--fg);opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s linear .5s}
+.slide.on{opacity:1;visibility:visible;transition:opacity .5s ease}
+.slide::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(1250px 900px at 84% 4%, var(--glow,transparent), transparent 70%)}
+.slide:not(.on) *{animation-play-state:paused!important}
+[data-tone="light"]{--fg:#071C3C;--fg2:rgba(7,28,60,.74);--fg3:rgba(7,28,60,.5);--line:rgba(7,28,60,.14);--card:#FFFFFF;--card-line:rgba(7,28,60,.08);--hl:var(--green)}
+[data-tone="dark"]{--fg:#FFFFFF;--fg2:rgba(255,255,255,.8);--fg3:rgba(255,255,255,.55);--line:rgba(255,255,255,.2);--card:rgba(255,255,255,.07);--card-line:rgba(255,255,255,.14);--hl:#6FD9AE}
+.slide > aside.notes{display:none}
+.pad{position:absolute;inset:0;padding:150px 130px 118px;display:flex;flex-direction:column;z-index:2}
+
+/* builds */
+.b{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:calc(var(--i,0) * 80ms + 120ms)}
+.slide.on .b{opacity:1;transform:none}
+
+/* chrome */
+.chrome{position:absolute;inset:0;pointer-events:none;z-index:4;color:var(--fg)}
+.chrome .lock{position:absolute;left:130px;top:52px;display:flex;align-items:center;gap:16px}
+.chrome .lock img{display:block;height:44px;width:auto;background:#fff;padding:7px 13px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.chrome .lock .x{font:400 22px var(--f-d);opacity:.5}
+.chrome .lock .ff{font:700 22px var(--f-d);letter-spacing:.01em}
+.chrome .sec{position:absolute;right:130px;top:64px;font:700 18px var(--f-d);letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
+.chrome .sec b{color:var(--orange);font-weight:800}
+.chrome .foot{position:absolute;left:130px;bottom:46px;font:600 16px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.chrome .num{position:absolute;right:130px;bottom:42px;font:800 20px var(--f-d);color:var(--fg3);font-variant-numeric:tabular-nums}
+
+/* type */
+.d{font-family:var(--f-d);font-weight:800;font-stretch:112%;letter-spacing:-.035em;line-height:.95;margin:0;text-wrap:balance}
+.hl{color:var(--hl)}
+.h-hero{font-size:128px;line-height:.92}
+.h1{font-size:96px}
+.h2{font-size:72px}
+.h3{font-size:44px;line-height:1.02;letter-spacing:-.025em}
+.h4{font-size:32px;line-height:1.05;letter-spacing:-.02em}
+.eyebrow{font:700 20px var(--f-d);letter-spacing:.14em;text-transform:uppercase;color:var(--hl);display:inline-flex;gap:14px;align-items:center;margin-bottom:26px}
+.eyebrow::before{content:"";width:30px;height:4px;border-radius:2px;background:var(--orange)}
+.lab{font:700 18px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.lede{font:500 34px/1.36 var(--f-b);color:var(--fg2);margin:0;max-width:30ch;text-wrap:pretty}
+.body{font:500 27px/1.45 var(--f-b);color:var(--fg2);margin:0}
+.small{font:500 22px/1.45 var(--f-b);color:var(--fg2);margin:0}
+.card{background:var(--card);border:1px solid var(--card-line);border-radius:28px}
+[data-tone="light"] .card{box-shadow:0 1px 2px rgba(7,28,60,.04),0 22px 50px rgba(7,28,60,.08)}
+.chip{display:inline-flex;align-items:center;gap:10px;font:700 18px var(--f-d);padding:9px 16px;border-radius:99px;border:2px solid var(--line);color:var(--fg2);white-space:nowrap}
+.chip i{width:12px;height:12px;border-radius:50%;background:var(--c,var(--orange));flex:none}
+.bottle{display:block;width:100%;height:auto;overflow:visible}
+
+/* ---------- 01 title ---------- */
+.s-title{display:grid;grid-template-columns:1.22fr .78fr;gap:30px;height:100%;align-items:center}
+.s-title .meta{display:flex;gap:34px;margin-bottom:40px}
+.s-title .meta span{font:700 20px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg2)}
+.fresh{position:relative;color:var(--green);white-space:nowrap}
+.fresh svg{position:absolute;left:-2%;bottom:.02em;width:104%;height:.22em;overflow:visible}
+.fresh path{fill:none;stroke:var(--orange);stroke-width:10;stroke-linecap:round;stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset 1.4s .6s var(--ease)}
+.slide.on .fresh path{stroke-dashoffset:0}
+.s-title .lede{margin-top:40px}
+.byline{margin-top:54px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;font:600 24px var(--f-b);color:var(--fg2)}
+.byline b{font:800 26px var(--f-d);color:var(--fg)}
+.byline .sep{width:6px;height:6px;border-radius:50%;background:var(--orange)}
+.trio{position:relative;height:820px;margin-top:20px}
+.trio .halo{position:absolute;left:50%;top:48%;width:780px;height:780px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#fff 0%,rgba(255,255,255,.6) 40%,rgba(0,163,224,.13) 62%,transparent 70%)}
+.trio .bt{position:absolute;bottom:20px;filter:drop-shadow(0 40px 36px rgba(0,50,100,.22))}
+.trio .bt.c{left:50%;width:300px;transform:translateX(-50%);z-index:2}
+.trio .bt.l{left:6%;width:228px;bottom:44px}
+.trio .bt.r{right:6%;width:228px;bottom:44px}
+
+/* ---------- 02 goal ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:60px;margin-top:auto;margin-bottom:auto}
+.stat{display:flex;flex-direction:column;gap:14px}
+.stat .n{font:800 300px/.82 var(--f-d);font-stretch:112%;letter-spacing:-.05em;color:var(--orange)}
+.stat .l{font:800 46px/1.02 var(--f-d);font-stretch:108%;letter-spacing:-.02em}
+.stat .dd{font:500 26px/1.4 var(--f-b);color:var(--fg2);max-width:22ch}
+.kicker{display:flex;align-items:center;gap:22px;font:800 34px var(--f-d);letter-spacing:-.01em}
+.kicker i{width:14px;height:14px;border-radius:50%;background:var(--orange)}
+
+/* ---------- 03 agenda ---------- */
+.tline{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px;margin-top:70px}
+.tline::before{content:"";position:absolute;left:20px;right:20px;top:18px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--green),var(--orange))}
+.tstep{position:relative;padding-top:74px;display:flex;flex-direction:column;gap:12px}
+.tstep::before{content:"";position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 8px #fff,0 6px 20px rgba(0,0,0,.12)}
+.tstep .t{font:800 22px var(--f-d);color:var(--orange-d);letter-spacing:.04em}
+.tstep h3{margin:0}
+.tstep .w{font:700 28px/1.2 var(--f-d);color:var(--fg)}
+.tstep p{margin:0;font:500 24px/1.45 var(--f-b);color:var(--fg2)}
+.tstep .out{margin-top:10px;padding:18px 22px;font:600 21px/1.4 var(--f-b);color:var(--fg)}
+.tstep .out b{display:block;font:800 15px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:4px}
+
+/* ---------- 04 opportunity ---------- */
+.s-opp{display:grid;grid-template-columns:600px minmax(0,1fr);gap:80px;height:100%;align-items:center}
+.photo{margin:0;overflow:hidden;padding:0}
+.photo img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.photo figcaption{padding:20px 26px;font:700 18px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.rows{display:flex;flex-direction:column;gap:26px;margin-top:40px}
+.row{display:grid;grid-template-columns:78px minmax(0,1fr);gap:26px;align-items:center}
+.row svg{width:78px;height:78px}
+.row .lab{display:block;margin-bottom:2px}
+.row h4{margin:0 0 4px}
+.row p{margin:0;font:500 24px/1.4 var(--f-b);color:var(--fg2)}
+.journey{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:40px;font:800 29px var(--f-d);font-stretch:108%;letter-spacing:-.02em}
+.journey i{font-style:normal;color:var(--orange)}
+
+/* ---------- 05 signals ---------- */
+.sigs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;margin-top:56px;flex:1}
+.sig{padding:24px 24px 28px;display:flex;flex-direction:column;gap:14px}
+.sig .vis{height:170px;border-radius:18px;position:relative;overflow:hidden;margin-bottom:6px}
+.sig .word{font:800 50px/1 var(--f-d);font-stretch:112%;letter-spacing:-.03em}
+.sig h4{margin:0;font:700 24px var(--f-b);color:var(--hl)}
+.sig p{margin:0;font:500 22px/1.42 var(--f-b);color:var(--fg2)}
+.sig .seen{margin-top:auto;padding-top:16px;border-top:1px solid var(--line);font:500 19px/1.45 var(--f-b);color:var(--fg2)}
+.sig .seen b{display:block;font:800 14px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg);margin-bottom:4px}
+.v-beauty{background:linear-gradient(160deg,#FDEDEA,#E6F4FB)}
+.v-beauty i{position:absolute;left:50%;width:62%;height:26%;border-radius:40%;transform:translateX(-50%);border:1px solid #fff;background:linear-gradient(90deg,rgba(255,255,255,.9),rgba(255,255,255,.35));box-shadow:0 10px 24px rgba(120,90,90,.12);animation:layer 7s ease-in-out infinite}
+.v-beauty i:nth-child(1){top:12%}.v-beauty i:nth-child(2){top:37%;animation-delay:-2.3s;background:linear-gradient(90deg,rgba(245,190,176,.75),rgba(255,255,255,.3))}.v-beauty i:nth-child(3){top:62%;animation-delay:-4.6s;background:linear-gradient(90deg,rgba(120,200,235,.7),rgba(255,255,255,.3))}
+@keyframes layer{50%{transform:translateX(-46%) translateY(-6px)}}
+.v-flavor{background:#F5F3EE;display:grid;grid-template-columns:repeat(8,1fr);gap:6px;padding:16px;align-content:center}
+.v-flavor i{border-radius:50%;aspect-ratio:1}
+.v-sense{background:linear-gradient(180deg,#DFF3FB,#F6FBFD)}
+.v-sense svg{position:absolute;inset:0;width:100%;height:100%}
+.v-well{background:linear-gradient(180deg,#FFF0DF,#EAF5FB)}
+.v-well .arc{position:absolute;left:50%;bottom:-88%;width:100%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;border:3px dashed rgba(7,28,60,.18)}
+.v-well .sun{position:absolute;left:62%;top:22%;width:30px;height:30px;border-radius:50%;background:var(--orange);box-shadow:0 0 34px var(--orange)}
+
+/* ---------- 06 map ---------- */
+.map-wrap{position:relative;width:1660px;height:622px;margin-top:34px}
+.map-wrap canvas{position:absolute;inset:0;width:100%;height:100%}
+.mlab{position:absolute;display:flex;flex-direction:column;gap:1px;white-space:nowrap;transform:translateY(-50%);pointer-events:none}
+.mlab b{font:800 20px var(--f-d);color:#fff;text-shadow:0 1px 10px #031634}
+.mlab span{font:600 15px var(--f-b);color:rgba(255,255,255,.7)}
+.mlab.l{align-items:flex-end;transform:translate(-100%,-50%)}
+.mlab.t{align-items:center;transform:translate(-50%,-100%)}
+.mlab.bm{align-items:center;transform:translate(-50%,0)}
+.mdot{position:absolute;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);background:var(--c);box-shadow:0 0 0 5px rgba(255,255,255,.12),0 0 22px var(--c)}
+.mdot.home{width:20px;height:20px;background:var(--orange);box-shadow:0 0 0 7px rgba(245,128,37,.28),0 0 26px var(--orange)}
+.map-note{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+
+/* ---------- 07 cues ---------- */
+.cues{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-top:50px}
+.cue{padding:28px 30px;display:grid;grid-template-columns:70px minmax(0,1fr);gap:22px;align-items:start}
+.cue .sw{width:70px;height:70px;border-radius:50%}
+.cue h4{margin:0 0 4px}
+.cue .c1{font:700 16px var(--f-d);letter-spacing:.06em;text-transform:uppercase;color:var(--fg3);margin-bottom:12px}
+.cue .t{font:800 25px/1.2 var(--f-d);letter-spacing:-.01em;margin:0 0 10px}
+.cue p{margin:0;font:500 20px/1.45 var(--f-b);color:var(--fg2)}
+
+/* ---------- 08 spectrum ---------- */
+.spec{position:relative;margin-top:120px}
+.spec-bar{position:relative;height:120px;border-radius:99px;overflow:hidden;background:linear-gradient(90deg,#D4ECF7 0%,#CDEFE0 28%,#BFEFD5 34%,#EAF6B8 52%,#FFE0BF 66%,#FFB79F 78%,#EF5B3F 100%)}
+.zone{position:absolute;top:0;bottom:0;display:flex;align-items:center;padding:0 34px;font:800 22px var(--f-d);letter-spacing:.08em;text-transform:uppercase;color:rgba(7,28,60,.55)}
+.zone.sw{left:28%;width:44%;border-left:4px solid #fff;border-right:4px solid #fff;color:var(--ink);justify-content:center}
+.stick{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;white-space:nowrap}
+.stick.up{bottom:calc(100% + 12px)}
+.stick.dn{top:calc(100% + 12px);flex-direction:column-reverse}
+.stick b{font:800 21px var(--f-d);font-stretch:100%;color:var(--fg)}
+.stick i{width:3px;height:18px;border-radius:2px;background:var(--fg3)}
+.spec-ends{display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;margin-top:110px}
+.spec-ends div{display:flex;flex-direction:column;gap:6px}
+.spec-ends div:nth-child(2){text-align:center}
+.spec-ends div:nth-child(3){text-align:right}
+.spec-ends .d{font-size:36px}
+
+/* ---------- 09 rule ---------- */
+.formula{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:22px;align-items:stretch;margin-top:56px}
+.formula .f{padding:30px 32px;display:flex;flex-direction:column;gap:10px}
+.formula .op{align-self:center;font:800 76px var(--f-d);color:var(--orange)}
+.formula .f .lab{color:var(--hl)}
+.ex{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-top:40px}
+.ex > div{padding:26px 30px;display:flex;flex-direction:column;gap:12px}
+.ex h4{display:flex;align-items:center;gap:12px;margin:0}
+.ex h4 i{width:16px;height:16px;border-radius:50%;background:var(--c);flex:none}
+.ex dl{display:grid;grid-template-columns:100px minmax(0,1fr);gap:8px 14px;margin:0}
+.ex dt{font:800 15px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);padding-top:5px}
+.ex dd{margin:0;font:600 22px/1.35 var(--f-b);color:var(--fg)}
+
+/* ---------- 10 white space ---------- */
+.s-ws{display:grid;grid-template-columns:600px minmax(0,1fr);gap:60px;margin-top:36px;flex:1;align-items:center}
+.minis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.mini{padding:16px 16px 18px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center}
+.mini svg{width:100%;height:auto}
+.mini b{font:800 20px/1.1 var(--f-d);letter-spacing:-.01em}
+.mini span{font:600 16px/1.3 var(--f-b);color:var(--fg2)}
+.radar text{font-family:var(--f-d);font-weight:700}
+.legend-r .note{display:flex;gap:26px;justify-content:center;margin-top:10px;font:600 18px var(--f-b);color:var(--fg2)}
+.legend-r .note i{display:inline-block;width:30px;height:0;border-top:3px dashed rgba(255,255,255,.6);vertical-align:middle;margin-right:10px}
+.legend-r .note i.s{border-top:3px solid #E6F04A}
+
+/* ---------- 11 platforms ---------- */
+.plats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:50px;flex:1}
+.plat{display:flex;flex-direction:column;overflow:hidden;padding:0}
+.plat .top{height:180px;position:relative;display:flex;align-items:flex-end;padding:24px 26px;background:var(--pb);color:var(--pf)}
+.plat .top .n{font:800 88px/.8 var(--f-d);font-stretch:112%;opacity:.9}
+.plat .top svg{position:absolute;right:18px;top:18px;width:150px;height:150px}
+.plat .bd{padding:26px 26px 28px;display:flex;flex-direction:column;gap:14px;flex:1}
+.plat .bd p{margin:0;font:600 22px/1.4 var(--f-b);color:var(--fg)}
+.plat .bd .cz{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.plat .bd .cz span{display:flex;align-items:center;gap:10px;font:700 19px var(--f-d)}
+.plat .bd .cz i{width:12px;height:12px;border-radius:50%;background:var(--c)}
+.plat .bd .cues-l{font:500 19px/1.45 var(--f-b);color:var(--fg2)}
+
+/* ---------- 12–15 platform detail ---------- */
+.s-plat{display:grid;grid-template-columns:minmax(0,1fr) 760px;gap:70px;height:100%;align-items:center}
+.s-plat .num{font:800 22px var(--f-d);letter-spacing:.14em;color:var(--orange)}
+.s-plat h2{margin:16px 0 22px}
+.s-plat .def{font:700 38px/1.18 var(--f-d);letter-spacing:-.015em;margin:0 0 34px;max-width:24ch}
+.s-plat dl{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px 22px;margin:0}
+.s-plat dt{font:700 17px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);padding-top:5px}
+.s-plat dd{margin:0;font:500 24px/1.42 var(--f-b);color:var(--fg)}
+.pvis{position:relative;width:760px;height:760px}
+.nf-core{position:absolute;left:50%;top:50%;width:190px;height:190px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#CFEFE3 45%,#5FC4A2);box-shadow:0 0 90px rgba(95,196,162,.55);display:grid;place-items:center;text-align:center;font:800 20px/1.1 var(--f-d);letter-spacing:.06em;text-transform:uppercase;color:#083B2D}
+.nf-ring{position:absolute;border-radius:50%;border:2px solid rgba(7,28,60,.12)}
+.nf-s{position:absolute;display:flex;flex-direction:column;align-items:center;gap:8px;transform:translate(-50%,-50%)}
+.nf-s i{display:block;width:80px;height:80px;border-radius:50%;box-shadow:inset 0 -8px 16px rgba(0,0,0,.12),0 12px 26px rgba(7,28,60,.14)}
+.nf-s em{font-style:normal;font:700 17px var(--f-d);color:var(--ink);background:#fff;padding:4px 11px;border-radius:99px;white-space:nowrap}
+.curves svg{width:100%;height:100%;overflow:visible}
+.curves .ln{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:1400;stroke-dashoffset:1400;transition:stroke-dashoffset 2.2s var(--ease)}
+.slide.on .curves .ln{stroke-dashoffset:0}
+.curves .ln.b2{transition-delay:.35s}.curves .ln.c2{transition-delay:.7s}
+.curves text{font-family:var(--f-d);font-weight:700;font-size:15px;fill:rgba(255,255,255,.75)}
+.dial{position:absolute;inset:40px;border-radius:50%;background:conic-gradient(from 180deg,#1B2B5C 0deg,#2C4A8E 50deg,#FFB58A 90deg,#FFE3B0 120deg,#CDEFFB 180deg,#FFEAC4 240deg,#FF9A6B 275deg,#5A4C9A 300deg,#1B2B5C 340deg);box-shadow:0 30px 70px rgba(60,40,80,.18)}
+.dial::after{content:"";position:absolute;inset:18%;border-radius:50%;background:#FFF9F4}
+.dial-c{position:absolute;inset:210px;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;color:var(--ink)}
+.dial-c b{font:800 64px/1 var(--f-d);font-stretch:108%;letter-spacing:-.03em}
+.dial-c span{font:700 20px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:rgba(7,28,60,.6)}
+.mom{position:absolute;z-index:3;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px}
+.mom i{width:24px;height:24px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 6px #fff}
+.mom span{font:700 17px var(--f-d);white-space:nowrap;color:var(--ink);background:#fff;padding:3px 10px;border-radius:99px}
+.pairs{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:10px 20px;margin-top:30px;font:600 22px/1.3 var(--f-b);align-items:baseline}
+.pairs .tm{font:800 18px var(--f-d);color:var(--orange-d);font-variant-numeric:tabular-nums}
+.pairs .mo{font:800 22px var(--f-d)}
+.pairs .fl{color:var(--fg2)}
+.pyr svg{width:100%;height:100%;overflow:visible}
+.pyr text{font-family:var(--f-d);font-weight:700;font-size:15px;letter-spacing:.12em;text-transform:uppercase;fill:rgba(255,236,220,.72)}
+.pyr .pn{font-size:28px;letter-spacing:-.01em;text-transform:none;fill:#FFF3E8;font-weight:800}
+
+/* ---------- 16 six ---------- */
+.six{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:30px;margin-top:auto;align-items:end}
+.six > div{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.six .bt{width:200px;filter:drop-shadow(0 26px 26px rgba(0,40,80,.2))}
+.six b{font:800 26px/1.05 var(--f-d);letter-spacing:-.015em}
+.six .st{font:700 15px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.six .st.lead{color:var(--green)}
+
+/* ---------- 17–22 concepts ---------- */
+.s-con{display:grid;grid-template-columns:820px minmax(0,1fr);gap:60px;height:100%;align-items:center}
+.stagec{position:relative;width:820px;height:820px}
+.stagec canvas{position:absolute;left:30px;top:60px;width:700px;height:700px;border-radius:50%;box-shadow:0 40px 100px rgba(7,28,60,.24)}
+.stagec .bt{position:absolute;left:400px;top:-10px;width:336px;filter:drop-shadow(0 34px 34px rgba(0,0,0,.28));z-index:2}
+.s-con .meta{display:flex;align-items:center;gap:16px}
+.status{font:800 16px var(--f-d);letter-spacing:.1em;text-transform:uppercase;padding:8px 15px;border-radius:99px;border:2px solid currentColor;display:inline-flex;gap:9px;align-items:center}
+.status::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--orange)}
+.s-con h2{margin:20px 0 14px;font-size:88px}
+.s-con .kw{font:700 19px var(--f-d);letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);line-height:1.6}
+.s-con .feels{font:800 34px/1.18 var(--f-d);letter-spacing:-.015em;margin:26px 0 28px;max-width:24ch}
+.s-con .arc{display:flex;flex-direction:column;gap:12px;border-left:4px solid var(--acc);padding-left:24px;margin-bottom:28px}
+.s-con .arc div{font:500 24px/1.35 var(--f-b)}
+.s-con .arc b{display:inline-block;min-width:170px;font:800 16px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.s-con .foot{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;padding:26px 30px}
+.s-con .foot h5{margin:0 0 8px;font:800 15px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--hl)}
+.s-con .foot p{margin:0;font:500 20px/1.45 var(--f-b);color:var(--fg2)}
+.s-con .foot .chips{display:flex;gap:8px;flex-wrap:wrap}
+.s-con .foot .chip{font-size:16px;padding:7px 13px}
+
+/* ---------- 23 wildcards ---------- */
+.wilds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:60px}
+.wild{padding:30px;display:flex;flex-direction:column;gap:14px}
+.wild .sw{height:190px;border-radius:20px}
+.wild p{margin:0;font:500 24px/1.45 var(--f-b);color:var(--fg2)}
+
+/* ---------- 24 tasting ---------- */
+.stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;margin-top:50px}
+.stg{padding:26px 28px;display:flex;flex-direction:column;gap:10px;position:relative}
+.stg .t{font:800 20px var(--f-d);color:var(--orange-d);letter-spacing:.04em}
+.stg h3{margin:0}
+.stg p{margin:0;font:600 24px/1.35 var(--f-b);color:var(--fg)}
+.stg .ar{position:absolute;right:-22px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-top:4px solid var(--orange);border-right:4px solid var(--orange);rotate:45deg;z-index:2}
+.dims{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:16px;margin-top:40px}
+.dm{padding:20px 18px;display:flex;flex-direction:column;gap:8px}
+.dm b{font:800 21px/1.1 var(--f-d)}
+.dm span{font:500 17px/1.4 var(--f-b);color:var(--fg2)}
+.scale{display:flex;align-items:center;gap:18px;margin-top:30px;font:600 22px var(--f-b);color:var(--fg2)}
+.scale .dots{display:flex;gap:8px}
+.scale .dots i{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font:800 18px var(--f-d);font-style:normal;color:var(--fg)}
+.scale .dots i:last-child{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* ---------- 25 / 27 tables ---------- */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;margin-top:44px;font-family:var(--f-b)}
+.tbl th{font:800 17px/1.2 var(--f-d);letter-spacing:.06em;text-transform:uppercase;color:var(--fg2);text-align:center;padding:0 10px 16px;vertical-align:bottom}
+.tbl th:first-child{text-align:left}
+.tbl td{height:64px;border-top:1px solid var(--line);text-align:center;font:600 22px var(--f-b);color:var(--fg)}
+.tbl td:first-child{text-align:left}
+.tbl .code{font:800 30px var(--f-d);font-variant-numeric:tabular-nums}
+.tbl .code small{font:600 18px var(--f-b);color:var(--fg3);margin-left:12px}
+.tbl .box{display:inline-block;width:60px;height:44px;border-radius:12px;border:2px solid var(--line)}
+.tbl .circ{display:inline-block;width:44px;height:44px;border-radius:50%;border:3px solid var(--line)}
+.tbl .star{display:inline-block;width:132px;height:46px;border-radius:99px;border:3px dashed var(--orange)}
+.tbl .cn{display:flex;align-items:center;gap:14px;font:800 26px var(--f-d)}
+.tbl .cn i{width:16px;height:16px;border-radius:50%;background:var(--c)}
+.tbl .cn small{font:700 14px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.tbl tr.ctl td{background:rgba(0,163,224,.06)}
+.tnote{display:flex;gap:30px;align-items:center;margin-top:26px;font:600 20px var(--f-b);color:var(--fg2)}
+
+/* ---------- 26 decision ---------- */
+.s-dec{display:grid;grid-template-columns:720px minmax(0,1fr);gap:70px;margin-top:30px;flex:1;align-items:center}
+.venn{position:relative;width:720px;height:720px}
+.venn .c{position:absolute;width:418px;height:418px;border-radius:50%;mix-blend-mode:screen;display:flex;padding:64px}
+.venn .c span{font:800 22px var(--f-d);letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.venn .c1{left:151px;top:14px;background:radial-gradient(circle,rgba(0,163,224,.55),rgba(0,163,224,.2));border:3px solid rgba(92,203,245,.75);justify-content:center;align-items:flex-start}
+.venn .c2{left:14px;top:259px;background:radial-gradient(circle,rgba(126,211,33,.45),rgba(126,211,33,.16));border:3px solid rgba(126,211,33,.65);align-items:flex-end}
+.venn .c3{left:288px;top:259px;background:radial-gradient(circle,rgba(245,128,37,.5),rgba(245,128,37,.18));border:3px solid rgba(245,128,37,.75);align-items:flex-end;justify-content:flex-end}
+.venn .core{position:absolute;left:360px;top:330px;transform:translate(-50%,-50%);font:800 34px var(--f-d);color:#fff}
+.qs{display:flex;flex-direction:column;gap:22px}
+.q{padding:28px 32px;display:grid;grid-template-columns:70px minmax(0,1fr);gap:22px;align-items:start}
+.q .n{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;font:800 30px var(--f-d);color:#071C3C;background:var(--c)}
+.q h4{margin:0 0 8px}
+.q p{margin:0;font:500 23px/1.42 var(--f-b);color:var(--fg2)}
+
+/* ---------- 28 travel ---------- */
+.kits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;margin-top:44px}
+.kit{padding:30px;display:flex;flex-direction:column;gap:14px}
+.kit svg{width:100%;height:330px}
+.kit p{margin:0;font:500 22px/1.45 var(--f-b);color:var(--fg2)}
+
+/* ---------- 29 short list ---------- */
+.s-short{display:grid;grid-template-columns:480px minmax(0,1fr);gap:30px;margin-top:44px}
+.s-short .col{padding:30px;display:flex;flex-direction:column;gap:6px}
+.s-short h4{margin:0 0 10px;font:800 18px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg2);display:flex;justify-content:space-between}
+.slot{padding:18px 0 22px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:14px}
+.slot .lab{color:var(--fg3)}
+.write{height:3px;background:repeating-linear-gradient(90deg,var(--line) 0 14px,transparent 14px 22px);margin-top:26px}
+.leads{display:grid;grid-template-columns:1.1fr 1fr 1.2fr .7fr;gap:0 26px}
+.leads .hd{font:800 15px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);padding-bottom:12px}
+.leads .cell{border-top:1px solid var(--line);height:96px;display:flex;align-items:flex-end;padding-bottom:18px}
+.leads .cell .write{flex:1;margin:0}
+.leads .cell.n{font:800 30px var(--f-d);color:var(--orange);gap:18px;align-items:center;padding-bottom:0}
+.leads .cell.n .write{align-self:flex-end;margin-bottom:18px}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+
+/* ---------- 30 close ---------- */
+.s-close{display:flex;flex-direction:column;height:100%}
+.s-close .lineup{display:flex;justify-content:center;gap:34px;margin-top:auto;align-items:flex-end}
+.s-close .lineup .bt{width:150px;filter:drop-shadow(0 22px 22px rgba(0,40,80,.2))}
+.s-close .lineup .bt.c{width:190px}
+
+/* ---------- UI: progress, hints, overview, notes, presenter ---------- */
+.ui-progress{position:fixed;left:0;bottom:0;height:4px;width:100%;transform-origin:0 50%;background:linear-gradient(90deg,var(--green),var(--orange));z-index:20;transition:transform .4s var(--ease)}
+.ui-hint{position:fixed;right:18px;bottom:14px;z-index:20;font:700 12px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);background:rgba(7,20,40,.55);padding:8px 12px;border-radius:99px;transition:opacity .6s}
+.ui-hint.off{opacity:0}
+.blank{position:fixed;inset:0;background:#000;z-index:30}
+.notes-panel{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);width:min(1100px,92vw);max-height:36vh;overflow:auto;z-index:25;background:rgba(7,20,40,.94);color:#fff;border-radius:18px;padding:22px 26px;font:500 18px/1.55 var(--f-b);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.notes-panel b{display:block;font:800 13px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:#FFB066;margin-bottom:6px}
+.ov{position:fixed;inset:0;z-index:40;background:#0B1424;overflow:auto;padding:28px}
+.ov-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:0 6px 20px;flex-wrap:wrap}
+.ov-head h2{margin:0;font:800 26px var(--f-d);letter-spacing:-.01em}
+.ov-head .links{display:flex;gap:10px;flex-wrap:wrap}
+.ov-head a,.ov-head button{font:700 13px var(--f-d);letter-spacing:.08em;text-transform:uppercase;color:#fff;text-decoration:none;border:2px solid rgba(255,255,255,.3);padding:9px 14px;border-radius:99px}
+.ov-head a:hover,.ov-head button:hover{border-color:#fff}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.ov-grid button{display:flex;flex-direction:column;gap:8px;text-align:left;padding:0}
+.ov-grid .th{width:100%;aspect-ratio:16/9;border-radius:12px;background:var(--bgc);position:relative;overflow:hidden;border:2px solid transparent;display:flex;align-items:flex-end;padding:12px 14px}
+.ov-grid .th span{font:800 17px/1.1 var(--f-d);color:var(--tfg);letter-spacing:-.01em}
+.ov-grid button.cur .th{border-color:var(--orange)}
+.ov-grid small{font:700 12px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+/* presenter */
+.pv{position:fixed;inset:0;z-index:50;background:#0B1424;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:18px;padding:18px}
+.pv-top{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.pv-top .t{font:800 44px var(--f-d);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.pv-top .meta{font:700 14px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+.pv-top .ctl{display:flex;gap:10px}
+.pv-top .ctl button{font:800 14px var(--f-d);letter-spacing:.08em;text-transform:uppercase;border:2px solid rgba(255,255,255,.35);padding:10px 16px;border-radius:99px}
+.pv-cur,.pv-next{position:relative;background:#000;border-radius:12px;overflow:hidden}
+.pv-cur{aspect-ratio:16/9;align-self:start}
+.pv-cur iframe,.pv-next iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.pv-side{display:flex;flex-direction:column;gap:14px;min-height:0}
+.pv-next{aspect-ratio:16/9}
+.pv-side .lab{color:rgba(255,255,255,.6)}
+.pv-notes{flex:1;overflow:auto;background:rgba(255,255,255,.06);border-radius:12px;padding:18px 20px;font:500 21px/1.55 var(--f-b)}
+.pv-notes h3{margin:0 0 10px;font:800 24px var(--f-d)}
+
+/* embed (presenter previews) */
+.embed .ui-progress,.embed .ui-hint{display:none}
+.embed .slide{transition:none}
+.embed .b{transition:none;opacity:1;transform:none}
+.embed .curves .ln,.embed .fresh path{transition:none}
+
+/* print / PDF: every slide on its own 1920 × 1080 page */
+@page{size:1920px 1080px;margin:0}
+html.print,html.print body{overflow:visible;height:auto;background:#fff}
+.print .viewport{position:static}
+.print .deck{position:static;transform:none;width:1920px;height:auto}
+.print .slide{position:relative;width:1920px;height:1080px;opacity:1;visibility:visible;transition:none;break-after:page;page-break-after:always}
+.print .b{opacity:1;transform:none;transition:none}
+.print .fresh path,.print .curves .ln{stroke-dashoffset:0;transition:none}
+.print .ui-progress,.print .ui-hint{display:none}
+/* keep the PDF light: blurred shadows and blend modes would be rasterised on every page */
+.print .bt,.print .stagec canvas{filter:none!important;box-shadow:none!important}
+.print .card{box-shadow:none!important;border-color:rgba(7,28,60,.12)}
+.print [data-tone="dark"] .card{border-color:rgba(255,255,255,.16)}
+.print .venn .c{mix-blend-mode:normal}
+.print .venn .c1{background:rgba(0,163,224,.34)}.print .venn .c2{background:rgba(126,211,33,.26)}.print .venn .c3{background:rgba(245,128,37,.3)}
+.print .chrome .lock img{box-shadow:none}
+@media print{
+  html,body{overflow:visible;height:auto}
+  .viewport{position:static}
+  .deck{position:static;transform:none;width:1920px;height:auto}
+  .slide{position:relative;width:1920px;height:1080px;opacity:1;visibility:visible;break-after:page}
+  .b{opacity:1;transform:none}
+  .ui-progress,.ui-hint,.notes-panel,.ov,.pv{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="deck" id="deck">
+
+<!-- 01 · TITLE -->
+<section class="slide" data-tone="light" data-bg="#E6F6FD" data-glow="#FFFFFF" data-sec="Welcome" data-title="Expand what fresh can feel like">
+  <div class="pad" style="padding-top:130px">
+    <div class="s-title">
+      <div>
+        <div class="meta b"><span>TheraBreath Flavor Playbook</span><span>Innovation workshop</span></div>
+        <h1 class="d h-hero b">Expand what <span class="fresh">fresh<svg viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M5,22 C80,6 190,4 295,16"/></svg></span> can feel like.</h1>
+        <p class="lede b">A working session to choose the platforms and concepts worth developing next for TheraBreath.</p>
+        <div class="byline b"><span class="lab">Presented by</span><b>The Flavor Factory</b><i class="sep"></i>Princeton, NJ<i class="sep"></i>Monday, November 9, 2026</div>
+      </div>
+      <div class="trio b" id="trio"><div class="halo"></div></div>
+    </div>
+  </div>
+  <aside class="notes">Welcome, and thank you for hosting us in Princeton. This is a working session, not a flavor sales presentation. Over the next two hours we will explore where TheraBreath could take freshness next, taste six concepts together, and leave with a short list the whole room agrees on.</aside>
+</section>
+
+<!-- 02 · GOAL -->
+<section class="slide" data-tone="dark" data-bg="#0A2A5C" data-glow="#0F4C86" data-sec="Frame" data-title="Today we leave with a short list">
+  <div class="pad">
+    <span class="eyebrow b">Our goal for today</span>
+    <h2 class="d h1 b">Today we leave with <span class="hl">a short list.</span></h2>
+    <div class="stats">
+      <div class="stat b"><span class="n">2</span><span class="l">Innovation platforms</span><span class="dd">Territories TheraBreath could own across several launches.</span></div>
+      <div class="stat b"><span class="n">3</span><span class="l">Lead concepts</span><span class="dd">Tasted, scored and cleared against three checks.</span></div>
+      <div class="stat b"><span class="n">1</span><span class="l">Owner per test</span><span class="dd">With a named next action and a date.</span></div>
+    </div>
+    <div class="kicker b"><i></i>Not just inspiration. Decisions.</div>
+  </div>
+  <aside class="notes">This is the outcome we are designing for: two platforms to build in, three lead concepts to develop, and one owner with a next action for each test. Everything today serves those three numbers. If we end with good ideas but no owners, we have not finished.</aside>
+</section>
+
+<!-- 03 · AGENDA -->
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#E6F6FD" data-sec="Frame" data-title="Two hours, four moves">
+  <div class="pad">
+    <span class="eyebrow b">The workshop arc</span>
+    <h2 class="d h1 b">Two hours, <span class="hl">four moves.</span></h2>
+    <div class="tline">
+      <div class="tstep b"><span class="t">0:00 – 0:35</span><h3 class="d h2">Frame</h3><span class="w">Where fresh could go</span><p>Signals, flavor culture, the white space and four platforms.</p><div class="out card"><b>We leave with</b>A shared view of the opportunity</div></div>
+      <div class="tstep b"><span class="t">0:35 – 1:20</span><h3 class="d h2">Taste</h3><span class="w">Six concepts, the whole rinse</span><p>Blind samples scored from the first second to tomorrow morning.</p><div class="out card"><b>We leave with</b>A room score for every sample</div></div>
+      <div class="tstep b"><span class="t">1:20 – 1:45</span><h3 class="d h2">Choose</h3><span class="w">Three checks</span><p>Brand fit, technical reality and consumer desire.</p><div class="out card"><b>We leave with</b>Three concepts and two platforms</div></div>
+      <div class="tstep b"><span class="t">1:45 – 2:00</span><h3 class="d h2">Assign</h3><span class="w">Owners and next steps</span><p>One owner, one action and one date for each test.</p><div class="out card"><b>We leave with</b>The short list</div></div>
+    </div>
+  </div>
+  <aside class="notes">Four moves. Frame, about 35 minutes: signals, flavor culture and the white space. Taste, 45 minutes: six concepts tasted blind and scored across the whole rinse. Choose, 25 minutes: three checks. Assign, the last 15 minutes: owners and dates. We will keep time visible and park side topics.</aside>
+</section>
+
+<!-- 04 · OPPORTUNITY -->
+<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFFFFF" data-sec="Frame" data-title="The benefit is familiar. The flavor can do more.">
+  <div class="pad">
+    <div class="s-opp">
+      <figure class="card photo b"><img src="../assets/therabreath-rinses.jpg" alt="TheraBreath Fresh Breath Oral Rinse in Invigorating Icy Mint, Rainforest Mint and Mild Mint"><figcaption>The shelf today: one orange cap, three mints</figcaption></figure>
+      <div>
+        <span class="eyebrow b">The opportunity</span>
+        <h2 class="d h2 b">The benefit is familiar.<br><span class="hl">The flavor can do more.</span></h2>
+        <div class="rows">
+          <div class="row b"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="#1F8A66"/><circle cx="42" cy="42" r="36" fill="none" stroke="#006649" stroke-width="6"/></svg><div><span class="lab" style="color:var(--green)">Owned today</span><h4 class="d h4">Trust</h4><p>Gentle, effective, non-burning freshness. It stays at the center.</p></div></div>
+          <div class="row b"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="rgba(7,28,60,.12)" stroke-width="6"/><path d="M42,6 A36,36 0 0 1 42,78" fill="none" stroke="#F58025" stroke-width="6" stroke-linecap="round"/><circle cx="42" cy="42" r="20" fill="#FFE6D1"/></svg><div><span class="lab" style="color:var(--orange-d)">The opportunity</span><h4 class="d h4">Character</h4><p>A reason to notice the product and remember it.</p></div></div>
+          <div class="row b"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="#7ED321" stroke-width="6" stroke-dasharray="8 7" stroke-linecap="round"/><path d="M30,44 l8,8 l16,-18" fill="none" stroke="#5AA80F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg><div><span class="lab" style="color:#4E9A0C">The payoff</span><h4 class="d h4">Repeat use</h4><p>An experience people enjoy is one they choose again tomorrow.</p></div></div>
+        </div>
+        <div class="journey b"><span>Notice</span><i>→</i><span>Remember</span><i>→</i><span>Choose</span><i>→</i><span>Enjoy</span><i>→</i><span>Come back</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">We start from what already works. TheraBreath owns gentle, effective, non-burning freshness, and that stays at the center. The opportunity is to add character: a reason to notice the product, remember it, choose it, enjoy it and come back to it. This is an evolution of the brand, not a departure from it.</aside>
+</section>
+
+<!-- 05 · SIGNALS -->
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF3E8" data-sec="Frame" data-title="What people call fresh is changing">
+  <div class="pad">
+    <span class="eyebrow b">The world around TheraBreath</span>
+    <h2 class="d h1 b">What people call <span class="hl">fresh</span> is changing.</h2>
+    <div class="sigs">
+      <article class="sig card b"><div class="vis v-beauty"><i></i><i></i><i></i></div><div class="word">Beauty</div><h4>Personal-care rituals</h4><p>Oral care is joining the skincare shelf as one more step in a self-care routine.</p><div class="seen"><b>Seen in</b>Layered skincare routines, bathroom “shelfies”, oral care sold beside serums.</div></article>
+      <article class="sig card b"><div class="vis v-flavor" id="vFlavor"></div><div class="word">Flavor</div><h4>A broader vocabulary</h4><p>People now taste yuzu, shiso and cardamom in drinks, snacks and wellness shots.</p><div class="seen"><b>Seen in</b>Zero-proof bars, functional beverages, global menus, fine fragrance.</div></article>
+      <article class="sig card b"><div class="vis v-sense"><svg viewBox="0 0 300 150" preserveAspectRatio="none" id="vSense"></svg></div><div class="word">Sensation</div><h4>Sensory proof</h4><p>People want an effect they can feel and describe. That is how they know it works.</p><div class="seen"><b>Seen in</b>Cooling skincare, tingling lip products, “you can feel it working” claims.</div></article>
+      <article class="sig card b"><div class="vis v-well"><div class="arc"></div><div class="sun"></div></div><div class="word">Trust</div><h4>Everyday wellness</h4><p>Products earn a place in the day: morning energy, midday reset, evening calm.</p><div class="seen"><b>Seen in</b>Sleep and hydration rituals, adaptogen drinks, “night” versions of everything.</div></article>
+    </div>
+  </div>
+  <aside class="notes">Four signals from outside oral care are changing what people expect. Beauty: oral care is becoming a self-care step. Flavor: people now taste yuzu and cardamom every week. Sensation: people want to feel it working. Wellness: products earn a place at a moment in the day. Shorthand: Beauty, Flavor, Sensation, Trust.</aside>
+</section>
+
+<!-- 06 · MAP -->
+<section class="slide" data-tone="dark" data-bg="#062150" data-glow="#0B3F7E" data-sec="Frame" data-title="Flavor culture is much bigger than mint">
+  <div class="pad" style="padding-top:140px">
+    <h2 class="d h2 b">Flavor culture is much bigger than <span class="hl">mint.</span></h2>
+    <div class="map-wrap b" id="mapWrap"><canvas id="mapCanvas" aria-label="Dot map of twelve flavor regions, each linked to Princeton"></canvas></div>
+    <div class="map-note b"><span class="small">Twelve places reshaping what fresh can mean. A vocabulary to borrow from, not a launch list.</span><span class="lab">12 regions · 4 platforms · 1 room</span></div>
+  </div>
+  <aside class="notes">Flavor culture is far bigger than traditional mint. These twelve places are where freshness cues are coming from, and every line runs back to this room. The point is not to launch twelve flavors. It is to borrow a vocabulary.</aside>
+</section>
+
+<!-- 07 · CUES -->
+<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFFFFF" data-sec="Frame" data-title="What the world is teaching fresh">
+  <div class="pad">
+    <span class="eyebrow b">Borrowed vocabulary</span>
+    <h2 class="d h2 b">What the world is <span class="hl">teaching fresh.</span></h2>
+    <div class="cues" id="cues"></div>
+  </div>
+  <aside class="notes">A few lessons worth borrowing. In Kerala, cardamom after meals already means a fresh mouth. In Japan, yuzu and sencha show that fresh can be bright and quiet at once. Grasse shows how a rinse could be structured like a fragrance: top, heart and base. London’s zero-proof bars prove that sophisticated and alcohol-free go together, and TheraBreath already is both.</aside>
+</section>
+
+<!-- 08 · SPECTRUM -->
+<section class="slide" data-tone="light" data-bg="#ECF8F1" data-glow="#FFFFFF" data-sec="Frame" data-title="Mint is an anchor, not the whole map">
+  <div class="pad">
+    <span class="eyebrow b">Portfolio reality</span>
+    <h2 class="d h1 b">Mint is an anchor, <span class="hl">not the whole map.</span></h2>
+    <div class="spec b">
+      <div class="spec-bar"><div class="zone" style="left:0;width:28%">Expected</div><div class="zone sw">Worth remembering</div><div class="zone" style="left:72%;width:28%;justify-content:flex-end;color:#fff">Novelty</div></div>
+      <div id="specTicks"></div>
+    </div>
+    <div class="spec-ends b">
+      <div><span class="d h4">← Familiar</span><span class="small">Classic peppermint, cool mint. Trusted, and easy to forget.</span></div>
+      <div><span class="d h4" style="color:var(--green)">The sweet spot</span><span class="small">Familiar enough to trust, different enough to remember.</span></div>
+      <div><span class="d h4">Exploratory →</span><span class="small">Smoked chili cola, pickle-brine mint. Memorable once, hard to buy twice.</span></div>
+    </div>
+  </div>
+  <aside class="notes">Mint is the anchor, not the whole map. On the left is the expected: trusted and easy to forget. On the right is novelty: memorable once, hard to buy twice. Our six concepts sit deliberately in the middle band.</aside>
+</section>
+
+<!-- 09 · RULE -->
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#ECF8F1" data-sec="Frame" data-title="Keep one familiar cue. Change one thing.">
+  <div class="pad">
+    <span class="eyebrow b">The rule for every idea</span>
+    <h2 class="d h2 b">Keep one familiar cue.<br><span class="hl">Change one thing people notice.</span></h2>
+    <div class="formula">
+      <div class="f card b"><span class="lab">Keep</span><span class="d h4">One familiar freshness cue</span><span class="small">Cooling, a clean finish, a thread of mint.</span></div>
+      <div class="op b" aria-hidden="true">+</div>
+      <div class="f card b"><span class="lab">Change</span><span class="d h4">One thing people notice</span><span class="small">A fruit, a botanical, a warmth, a moment.</span></div>
+      <div class="op b" aria-hidden="true">=</div>
+      <div class="f card b"><span class="lab">Get</span><span class="d h4">Familiar · Fresh · Distinct</span><span class="small">Something people trust and still talk about.</span></div>
+    </div>
+    <div class="ex" id="ex"></div>
+  </div>
+  <aside class="notes">One rule to judge every idea today: keep one familiar freshness cue and change one thing people can notice. Arctic Yuzu keeps the cold, clean finish and changes the citrus. Green Tea Cucumber keeps gentle freshness and adds calm. Ginger Lime keeps the crisp cool and adds a spark of warmth.</aside>
+</section>
+
+<!-- 10 · WHITE SPACE -->
+<section class="slide" data-tone="dark" data-bg="#0A2A5C" data-glow="#0F4C86" data-sec="Frame" data-title="Stretch one dimension at a time">
+  <div class="pad" style="padding-top:140px">
+    <h2 class="d h2 b">Stretch one dimension <span class="hl">at a time.</span></h2>
+    <div class="s-ws">
+      <div class="legend-r b" id="legendR"></div>
+      <div class="minis" id="minis"></div>
+    </div>
+  </div>
+  <aside class="notes">Here is the same idea as a map of the white space. Each spoke is a dimension, running from what oral care usually is at the center to where it could go at the edge. Classic mint sits near the center on all of them. Strong concepts pull hard on one or two spokes. When everything changes at once, there is nothing left to trust.</aside>
+</section>
+
+<!-- 11 · PLATFORMS -->
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF1E4" data-sec="Frame" data-title="Four platforms">
+  <div class="pad">
+    <span class="eyebrow b">Four innovation platforms</span>
+    <h2 class="d h1 b">Build worlds, <span class="hl">not one-off flavors.</span></h2>
+    <div class="plats" id="plats"></div>
+  </div>
+  <aside class="notes">We think in platforms, not one-off flavors. Four territories TheraBreath could own across several launches: New Fresh, Sensory Proof, Ritual by Time and Elevated Escape. Every concept you will taste belongs to at least one. Later we will pick two.</aside>
+</section>
+
+<!-- 12 · NEW FRESH -->
+<section class="slide" data-tone="light" data-bg="#EEF8E4" data-glow="#FFFBD9" data-sec="Frame" data-title="New Fresh">
+  <div class="pad">
+    <div class="s-plat">
+      <div>
+        <span class="num b">PLATFORM 01</span>
+        <h2 class="d h1 b">New Fresh</h2>
+        <p class="def b">Expand what fresh tastes like, well beyond peppermint.</p>
+        <dl class="b"><dt>Cues</dt><dd>Bright fruit, citrus peel, tea, cool greens, soft herbs, botanicals.</dd><dt>Promise</dt><dd>The same clean TheraBreath finish, reached by a new route.</dd><dt>Concepts</dt><dd>Arctic Yuzu · Green Tea Cucumber · Grapefruit Rose Mint</dd></dl>
+      </div>
+      <div class="pvis b" id="orbit"></div>
+    </div>
+  </div>
+  <aside class="notes">New Fresh expands what fresh tastes like beyond peppermint: bright fruit, citrus peel, tea, cool greens and soft herbs, all orbiting a familiar mint anchor. Same clean TheraBreath finish, reached by a new route.</aside>
+</section>
+
+<!-- 13 · SENSORY PROOF -->
+<section class="slide" data-tone="dark" data-bg="#03264A" data-glow="#005E97" data-sec="Frame" data-title="Sensory Proof">
+  <div class="pad">
+    <div class="s-plat">
+      <div>
+        <span class="num b">PLATFORM 02</span>
+        <h2 class="d h1 b">Sensory Proof</h2>
+        <p class="def b">Flavor and sensation that make freshness something you can feel happening.</p>
+        <dl class="b"><dt>Cues</dt><dd>Cooling bloom, bright top note, contrast, a flavor that evolves, a long clean finish.</dd><dt>Guardrail</dt><dd>Intensity without burn. Gentleness is the proof point, never the trade-off.</dd><dt>Concepts</dt><dd>Arctic Yuzu · Ginger Lime</dd></dl>
+      </div>
+      <div class="pvis curves b" aria-hidden="true">
+        <svg viewBox="0 0 520 520"><g transform="translate(20,80)">
+          <line x1="0" y1="360" x2="480" y2="360" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+          <text x="0" y="392">0s</text><text x="100" y="392">5s</text><text x="296" y="392">30s</text><text x="430" y="392">60s+</text>
+          <text x="0" y="-26">INTENSITY THROUGH THE RINSE</text>
+          <path class="ln" stroke="#F58025" d="M0,350 C40,340 60,70 110,60 S190,190 260,240 S400,300 480,320"/>
+          <path class="ln b2" stroke="#5CCBF5" d="M0,355 C80,350 120,230 200,120 S330,80 380,130 S450,210 480,220"/>
+          <path class="ln c2" stroke="#FFFFFF" stroke-dasharray="6 8" d="M0,358 C120,356 200,330 280,290 S420,180 480,170"/>
+          <circle cx="110" cy="60" r="8" fill="#F58025"/><text x="128" y="55" style="fill:#FFB066">Bright opening</text>
+          <circle cx="330" cy="92" r="8" fill="#5CCBF5"/><text x="348" y="86" style="fill:#5CCBF5">Cooling bloom</text>
+          <circle cx="480" cy="170" r="8" fill="#fff"/><text x="480" y="262" text-anchor="end" style="fill:#fff">Clean linger</text>
+        </g></svg>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Sensory Proof makes freshness perceptible: a bright opening, a cooling bloom, and a clean lingering finish. The guardrail is non-negotiable: intensity without burn. Gentleness is the proof point, never the trade-off.</aside>
+</section>
+
+<!-- 14 · RITUAL BY TIME -->
+<section class="slide" data-tone="light" data-bg="#FFF0E3" data-glow="#FFFFFF" data-sec="Frame" data-title="Ritual by Time">
+  <div class="pad">
+    <div class="s-plat">
+      <div>
+        <span class="num b">PLATFORM 03</span>
+        <h2 class="d h1 b">Ritual by Time</h2>
+        <p class="def b">Different moments of the day call for different kinds of fresh.</p>
+        <div class="pairs b" id="pairs"></div>
+      </div>
+      <div class="pvis b" id="dial"><div class="dial" aria-hidden="true"></div><div class="dial-c"><b>24 h</b><span>Five moments</span></div></div>
+    </div>
+  </div>
+  <aside class="notes">Ritual by Time gives different flavors to different moments: a bright cold start in the morning, a calm reset midday, something to cut through coffee, a confident note before going out, and a soft wind-down at night.</aside>
+</section>
+
+<!-- 15 · ELEVATED ESCAPE -->
+<section class="slide" data-tone="dark" data-bg="#2A1916" data-glow="#5A3325" data-sec="Frame" data-title="Elevated Escape">
+  <div class="pad">
+    <div class="s-plat">
+      <div>
+        <span class="num b">PLATFORM 04</span>
+        <h2 class="d h1 b">Elevated Escape</h2>
+        <p class="def b">Premium flavor worlds borrowed from fragrance, spa, tea and zero-proof bars.</p>
+        <dl class="b"><dt>Cues</dt><dd>Fragrance structure, hospitality, culinary pairings, global botanicals.</dd><dt>Promise</dt><dd>A small daily luxury that is still clean and alcohol-free.</dd><dt>Concepts</dt><dd>Grapefruit Rose Mint · Pear Cardamom Mint</dd></dl>
+      </div>
+      <div class="pvis pyr b" aria-hidden="true">
+        <svg viewBox="0 0 540 520">
+          <defs>
+            <linearGradient id="py1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC08A" stop-opacity=".75"/><stop offset="1" stop-color="#F58025" stop-opacity=".45"/></linearGradient>
+            <linearGradient id="py2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2A0A0" stop-opacity=".55"/><stop offset="1" stop-color="#9E5A55" stop-opacity=".4"/></linearGradient>
+            <linearGradient id="py3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD6BC" stop-opacity=".5"/><stop offset="1" stop-color="#2C5A48" stop-opacity=".45"/></linearGradient>
+          </defs>
+          <polygon points="190,40 250,170 130,170" fill="url(#py1)" stroke="rgba(255,236,220,.6)" stroke-width="2"/>
+          <polygon points="126,178 254,178 313,308 67,308" fill="url(#py2)" stroke="rgba(255,236,220,.5)" stroke-width="2"/>
+          <polygon points="63,316 317,316 377,446 3,446" fill="url(#py3)" stroke="rgba(255,236,220,.45)" stroke-width="2"/>
+          <text x="270" y="110">Top · opening</text><text class="pn" x="270" y="142">grapefruit, pear</text>
+          <text x="332" y="238">Heart · development</text><text class="pn" x="332" y="270">rose, cardamom</text>
+          <text x="392" y="370">Base · finish</text><text class="pn" x="392" y="402">clean mint</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Elevated Escape borrows from fragrance, spa, tea and zero-proof bars. It uses fragrance logic, top, heart and base, but always finishes clean. A small daily luxury that stays alcohol-free.</aside>
+</section>
+
+<!-- 16 · SIX ENTER -->
+<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFFFFF" data-sec="Taste" data-title="Six enter. Three advance.">
+  <div class="pad">
+    <span class="eyebrow b">Future flavor concepts</span>
+    <h2 class="d h1 b">Six enter. <span class="hl">Three advance.</span></h2>
+    <div class="six" id="six"></div>
+  </div>
+  <aside class="notes">Six concepts enter today and three advance. Green Tea Cucumber, Arctic Yuzu and Ginger Lime are our current leads. Grapefruit Rose Mint and Pear Cardamom Mint are strong contenders, and Chamomile Vanilla Mint stays open. The room decides, not us.</aside>
+</section>
+
+<!-- 17–22 · CONCEPTS (rendered from playbook-core) -->
+<template id="conceptSlot"></template>
+
+<!-- 23 · WILDCARDS -->
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#EAF7FD" data-sec="Taste" data-title="Three studio wildcards">
+  <div class="pad">
+    <span class="eyebrow b">In our pocket</span>
+    <h2 class="d h1 b">Three studio wildcards, <span class="hl">if we want to push further.</span></h2>
+    <div class="wilds" id="wilds"></div>
+  </div>
+  <aside class="notes">If the room wants to push further, we have three studio wildcards: Hinoki Spearmint, Watermelon Shiso, and Makrut Lime with Sea Salt. They are not on the table today unless you pull them in.</aside>
+</section>
+
+<!-- 24 · TASTING FRAMEWORK -->
+<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFF3E8" data-sec="Taste" data-title="Taste the whole rinse">
+  <div class="pad">
+    <span class="eyebrow b">The tasting</span>
+    <h2 class="d h1 b">Taste the whole rinse, <span class="hl">not just the flavor.</span></h2>
+    <div class="stages">
+      <div class="stg card b"><span class="t">0 – 5 SECONDS</span><h3 class="d h3">Opening</h3><p>What happens immediately?</p><i class="ar"></i></div>
+      <div class="stg card b"><span class="t">5 – 60 SECONDS</span><h3 class="d h3">Development</h3><p>How does it evolve while rinsing?</p><i class="ar"></i></div>
+      <div class="stg card b"><span class="t">1 – 3 MINUTES</span><h3 class="d h3">Finish</h3><p>What remains after you spit?</p><i class="ar"></i></div>
+      <div class="stg card b"><span class="t">TOMORROW</span><h3 class="d h3">Repeat</h3><p>Would I use this again?</p></div>
+    </div>
+    <div class="dims" id="dims"></div>
+    <div class="scale b"><span>Score each dimension</span><span class="dots"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i></span><span>1 = not at all · 5 = absolutely</span></div>
+  </div>
+  <aside class="notes">Now we taste. We will follow each sample through the whole rinse: what happens in the first five seconds, how it evolves while rinsing, what remains a minute or two after, and whether you would want it again tomorrow. Score seven dimensions from one to five.</aside>
+</section>
+
+<!-- 25 · SCORECARD -->
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#F2F9FC" data-sec="Taste" data-title="Room scorecard">
+  <div class="pad">
+    <span class="eyebrow b">Blind tasting</span>
+    <h2 class="d h2 b">Room scorecard</h2>
+    <table class="tbl b" id="scoreTbl"></table>
+    <div class="tnote b"><span class="chip"><i style="--c:var(--blue)"></i>150 = current TheraBreath control</span><span>Score 1–5. Names are revealed after scoring.</span></div>
+  </div>
+  <aside class="notes">Samples are coded blind, and 150 is the current TheraBreath control. Score each sample on the seven dimensions and give it one word. We reveal the names only after scoring. The live scorecard on the web page tallies the room if you would rather score digitally.</aside>
+</section>
+
+<!-- 26 · DECISION FRAMEWORK -->
+<section class="slide" data-tone="dark" data-bg="#062150" data-glow="#0B3F7E" data-sec="Choose" data-title="Brand Fit × Technical Reality × Consumer Desire">
+  <div class="pad" style="padding-top:140px">
+    <h2 class="d h2 b">Brand Fit × Technical Reality × <span class="hl">Consumer Desire</span></h2>
+    <div class="s-dec">
+      <div class="venn b"><div class="c c1"><span>Brand fit</span></div><div class="c c2"><span>Technical reality</span></div><div class="c c3"><span>Consumer desire</span></div><div class="core">Advance</div></div>
+      <div class="qs">
+        <div class="q card b"><span class="n" style="--c:#5CCBF5">1</span><div><h4 class="d h4">Does it fit the brand?</h4><p>Could TheraBreath credibly own this: gentle, dentist-formulated, unmistakably clean?</p></div></div>
+        <div class="q card b"><span class="n" style="--c:#9BE35A">2</span><div><h4 class="d h4">Can we make it?</h4><p>Will the flavor hold up in TheraBreath’s oxidizing, alcohol-free system over shelf life?</p></div></div>
+        <div class="q card b"><span class="n" style="--c:#FFB066">3</span><div><h4 class="d h4">Will people choose it?</h4><p>Is it appealing, easy to understand, different, and something people buy again?</p></div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Every concept must clear three checks. Does it fit the brand, something TheraBreath could credibly own? Can we make it, stable in TheraBreath’s oxidizing, alcohol-free system over shelf life? And will people choose it: appealing, understandable, different and repeatable? Only the center advances.</aside>
+</section>
+
+<!-- 27 · DECISION BOARD -->
+<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF1E4" data-sec="Choose" data-title="Decision board">
+  <div class="pad">
+    <span class="eyebrow b">Decision board</span>
+    <h2 class="d h2 b">Six enter. <span class="hl">Three advance.</span></h2>
+    <table class="tbl b" id="decTbl"></table>
+    <div class="tnote b"><span class="lab" style="color:var(--fg2)">Then choose two platforms</span><span class="chip"><i style="--c:#7ED321"></i>New Fresh</span><span class="chip"><i style="--c:#00A3E0"></i>Sensory Proof</span><span class="chip"><i style="--c:#F58025"></i>Ritual by Time</span><span class="chip"><i style="--c:#9E5A55"></i>Elevated Escape</span></div>
+  </div>
+  <aside class="notes">Let’s go concept by concept and tick a check only when the room agrees. Three advance. If more than three clear all checks, we rank on repeat-use potential from the tasting. Then we pick the two platforms to build in.</aside>
+</section>
+
+<!-- 28 · TRAVEL -->
+<section class="slide" data-tone="light" data-bg="#E6F6FD" data-glow="#FFFFFF" data-sec="Choose" data-title="Beyond the bottle">
+  <div class="pad">
+    <span class="eyebrow b">Also from the studio</span>
+    <h2 class="d h2 b">Beyond the bottle: <span class="hl">a TheraBreath travel kit.</span></h2>
+    <div class="kits">
+      <div class="kit card b"><span class="lab" style="color:var(--orange-d)">Concept A</span><h3 class="d h3">Zip &amp; Go</h3>
+        <svg viewBox="0 0 400 260" aria-label="Clear zip pouch holding five travel items">
+          <defs><linearGradient id="pouch" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#D6EEF9" stop-opacity=".8"/></linearGradient></defs>
+          <rect x="20" y="40" width="360" height="200" rx="26" fill="url(#pouch)" stroke="#8CCBE8" stroke-width="2"/>
+          <rect x="20" y="40" width="360" height="22" rx="11" fill="#006649"/><line x1="40" y1="51" x2="360" y2="51" stroke="#fff" stroke-dasharray="3 4"/><circle cx="352" cy="51" r="7" fill="#F58025"/>
+          <g transform="translate(50,82)" font-family="Archivo, Arial" font-weight="800">
+            <rect x="0" y="26" width="48" height="112" rx="10" fill="#4FB3E6" stroke="#1A78C0" stroke-width="1.5"/><rect x="7" y="0" width="34" height="28" rx="4" fill="#F58025"/><rect x="5" y="64" width="38" height="42" rx="4" fill="#fff"/><text x="24" y="89" font-size="7" text-anchor="middle" fill="#006649">RINSE</text>
+            <path d="M70,138 L70,42 Q70,26 86,26 L100,26 Q116,26 116,42 L116,138 Z" fill="#fff" stroke="#006649" stroke-width="1.5"/><rect x="80" y="8" width="26" height="20" rx="3" fill="#F58025"/><text x="93" y="86" font-size="7" text-anchor="middle" fill="#006649" transform="rotate(-90 93 86)">TOOTHPASTE</text>
+            <rect x="140" y="4" width="12" height="134" rx="6" fill="#fff" stroke="#006649" stroke-width="1.5"/><rect x="138" y="4" width="16" height="32" rx="4" fill="#00A3E0"/>
+            <rect x="176" y="54" width="38" height="84" rx="12" fill="#E4F4FB" stroke="#006649" stroke-width="1.5"/><rect x="186" y="36" width="18" height="20" rx="4" fill="#F58025"/><text x="195" y="100" font-size="7" text-anchor="middle" fill="#006649">SPRAY</text>
+            <rect x="236" y="78" width="54" height="60" rx="14" fill="#fff" stroke="#006649" stroke-width="1.5"/><circle cx="263" cy="108" r="12" fill="none" stroke="#F58025" stroke-width="3"/><text x="263" y="152" font-size="7" text-anchor="middle" fill="#006649">FLOSS</text>
+          </g>
+        </svg>
+        <p>A clear, flat-bottomed pouch that stands up in a hotel bathroom and goes straight through security.</p></div>
+      <div class="kit card b"><span class="lab" style="color:var(--orange-d)">Concept B</span><h3 class="d h3">Fold &amp; Go</h3>
+        <svg viewBox="0 0 400 260" aria-label="Tri-fold case that opens flat">
+          <rect x="30" y="50" width="110" height="170" rx="16" fill="#D9F0FA" stroke="#006649" stroke-width="1.5"/>
+          <rect x="145" y="50" width="110" height="170" rx="16" fill="#fff" stroke="#006649" stroke-width="1.5"/>
+          <rect x="260" y="50" width="110" height="170" rx="16" fill="#D9F0FA" stroke="#006649" stroke-width="1.5"/>
+          <rect x="165" y="84" width="30" height="110" rx="8" fill="#4FB3E6" stroke="#1A78C0" stroke-width="1.5"/><rect x="169" y="68" width="22" height="18" rx="3" fill="#F58025"/>
+          <rect x="205" y="72" width="30" height="126" rx="14" fill="#fff" stroke="#006649" stroke-width="1.5"/>
+          <image href="../assets/therabreath-logo.png" x="160" y="203" width="80" height="21"/>
+        </svg>
+        <p>A slim tri-fold that closes to the size of a passport and lies flat when open.</p></div>
+    </div>
+    <div class="tnote b"><span class="chip"><i style="--c:var(--orange)"></i>Liquids ≤ 3.4 oz / 100 mL</span><span class="chip"><i style="--c:var(--green)"></i>Fits one quart-size bag</span></div>
+  </div>
+  <aside class="notes">A quick aside from the studio, because it shows how we think about the whole experience: a TSA-ready travel kit in two formats, Zip &amp; Go and Fold &amp; Go. It is not today’s decision, just a glimpse of what else we are working on.</aside>
+</section>
+
+<!-- 29 · SHORT LIST -->
+<section class="slide" data-tone="dark" data-bg="#004E38" data-glow="#0A7A58" data-sec="Assign" data-title="Leave with a short list">
+  <div class="pad">
+    <span class="eyebrow b" style="color:#fff">What we leave with</span>
+    <h2 class="d h1 b">Leave with a short list.</h2>
+    <div class="s-short">
+      <div class="col card b"><h4><span>Platforms</span><span>2</span></h4>
+        <div class="slot"><span class="lab">Platform 1</span><div class="write"></div></div>
+        <div class="slot"><span class="lab">Platform 2</span><div class="write"></div></div>
+      </div>
+      <div class="col card b"><h4><span>Lead concepts · owner · next action</span><span>3</span></h4>
+        <div class="leads" id="leads"></div>
+        <div class="acts" id="acts"></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Let’s close decisively. Two platforms, three lead concepts, and for each a named owner, a next action and a date. Typical first steps are bench samples in base, an accelerated stability test, or a consumer concept screen.</aside>
+</section>
+
+<!-- 30 · CLOSE -->
+<section class="slide" data-tone="light" data-bg="#E6F6FD" data-glow="#FFFFFF" data-sec="Thank you" data-title="Familiar enough to trust. Different enough to remember.">
+  <div class="pad">
+    <div class="s-close">
+      <span class="eyebrow b">Thank you</span>
+      <h2 class="d h1 b">Familiar enough to trust.<br><span class="hl">Different enough to remember.</span></h2>
+      <div class="byline b"><b>The Flavor Factory</b> for <b>TheraBreath</b><i class="sep"></i>Princeton, NJ<i class="sep"></i>November 9, 2026</div>
+      <div class="lineup b" id="lineup"></div>
+    </div>
+  </div>
+  <aside class="notes">Familiar enough to trust, different enough to remember. Thank you. We will follow up with the short list, the room’s scores and the owners we agreed today.</aside>
+</section>
+
+</div></div>
+
+<div class="ui-progress" id="progress" aria-hidden="true"></div>
+<div class="ui-hint" id="hint">← → move · G overview · P presenter · N notes · F full screen</div>
+<div class="blank" id="blank" hidden></div>
+<div class="notes-panel" id="notesPanel" hidden aria-live="polite"></div>
+<div class="ov" id="ov" hidden>
+  <div class="ov-head"><h2>TheraBreath Flavor Playbook · deck</h2><div class="links"><a href="../">Open the web experience</a><a href="../dist/TheraBreath_Flavor_Playbook_Deck.pdf">PDF</a><button type="button" id="ovClose">Close · Esc</button></div></div>
+  <div class="ov-grid" id="ovGrid"></div>
+</div>
+
+<script src="../assets/playbook-core.js"></script>
+<script>
+(() => {
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const T = window.TBCore;
+const { CONCEPTS, CONTROL, STATUS, PLATS, REGIONS, HOME, GRID, SPECTRUM, AXES, BASE, SHAPES, MOMENTS, WILD, DIMS, ACTIONS, bottle, ART, rng, rgba } = T;
+const params = new URLSearchParams(location.search);
+const MODE = params.has("print") ? "print" : params.has("embed") ? "embed" : params.has("presenter") ? "presenter" : "show";
+document.documentElement.classList.add(MODE);
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.body.insertAdjacentHTML("afterbegin", T.logoSymbol("../assets/therabreath-logo.png"));
+
+const conceptBottle = c => bottle({ liq: c.liquid, band: c.acc, flavor: c.name });
+const iconic = () => bottle({ liq: ["#4FB3E6", "#1A78C0"], band: "#6CC3EA", flavor: "Invigorating Icy Mint" });
+const hlLast = n => { const w = n.split(" "); const l = w.pop(); return (w.length ? w.join(" ") + " " : "") + `<span class="hl">${l}</span>`; };
+const cById = id => CONCEPTS.find(c => c.id === id);
+
+/* ------------------------------------------------------------ concept slides */
+$("#conceptSlot").outerHTML = CONCEPTS.map(c => `
+<section class="slide concept" data-concept="${c.id}" data-tone="${c.tone}" data-bg="${c.bg}" data-glow="${c.glow}" data-sec="Taste" data-title="${c.name}" style="--acc:${c.acc}">
+  <div class="pad" style="padding-top:120px;padding-bottom:100px">
+    <div class="s-con">
+      <div class="stagec b"><canvas data-art="${c.id}" aria-label="Sensory artwork for ${c.name}"></canvas><div class="bt">${conceptBottle(c)}</div></div>
+      <div>
+        <div class="meta b"><span class="lab">Concept ${c.n} / 06</span><span class="status">${STATUS[c.status]}</span></div>
+        <h2 class="d b">${hlLast(c.name)}</h2>
+        <div class="kw b">${c.kw.join(" · ")}</div>
+        <p class="feels b">${c.feels}</p>
+        <div class="arc b"><div><b>Opening</b>${c.arc[0]}</div><div><b>Development</b>${c.arc[1]}</div><div><b>Finish</b>${c.arc[2]}</div></div>
+        <div class="foot card b">
+          <div><h5>Formulation note</h5><p>${c.note}</p></div>
+          <div><h5>Platforms</h5><div class="chips">${c.plat.map(p => `<span class="chip">${PLATS[p]}</span>`).join("")}</div><h5 style="margin-top:18px">Stay clear of</h5><p>${c.avoid}</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">${c.name}. ${c.feels} Opening: ${c.arc[0]} Development: ${c.arc[1]} Finish: ${c.arc[2]} On the technical side: ${c.note} What we avoid: ${c.avoid}</aside>
+</section>`).join("");
+
+/* ------------------------------------------------------------ fill data-driven pieces */
+// title trio
+$("#trio").insertAdjacentHTML("beforeend", `<div class="bt l">${conceptBottle(cById("yuzu"))}</div><div class="bt r">${conceptBottle(cById("gtc"))}</div><div class="bt c">${iconic()}</div>`);
+// signals minis
+(() => {
+  const cols = ["#E6F04A", "#9CC5A1", "#F2B5B0", "#F4C98A", "#7FC8A6", "#C9B28A", "#9FE0FF", "#E0703C", "#B9B7E0", "#D9EC7A", "#F1E3B8", "#5E9E6A", "#E86F5C", "#8FD0E0", "#A89A5C", "#F7C6C0"];
+  $("#vFlavor").innerHTML = Array.from({ length: 32 }, (_, i) => `<i style="background:${cols[(i * 7) % cols.length]};transform:scale(${.72 + ((i * 37) % 28) / 100})"></i>`).join("");
+  const mk = (amp, per, y, ph) => { let d = ""; for (let x = 0; x <= 300; x += 4) d += (x ? "L" : "M") + x + "," + (y + Math.sin(x / per * Math.PI * 2 + ph) * amp * (0.4 + 0.6 * Math.sin(x / 300 * Math.PI))).toFixed(1); return d; };
+  $("#vSense").innerHTML = [["#006649", 26, 150, 75, 0], ["#00A3E0", 18, 100, 75, 1], ["#F58025", 12, 75, 75, 2]].map(([c, a, p, y, ph], i) => `<path d="${mk(a, p, y, ph)}" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${.95 - i * .15}"/>`).join("");
+})();
+// cues (six regions)
+$("#cues").innerHTML = ["kerala", "japan", "marrakech", "grasse", "london", "nordics"].map(id => { const r = REGIONS.find(x => x.id === id);
+  return `<div class="cue card b"><span class="sw" style="background:radial-gradient(circle at 35% 30%,#fff,${r.sw[0]} 55%,${r.sw[1]})"></span><div><h4 class="d h4">${r.name}</h4><div class="c1">${r.country} · ${r.cue}</div><p class="t">${r.teach}</p><p>${r.line}</p></div></div>`; }).join("");
+// spectrum ticks
+(() => { let k = 0; $("#specTicks").innerHTML = SPECTRUM.filter(s => s.c).map(s => `<div class="stick ${k++ % 2 ? "dn" : "up"}" style="left:${s.v}%"><b>${s.name}</b><i></i></div>`).join(""); })();
+// rule examples
+$("#ex").innerHTML = [["yuzu", "The cold, clean finish", "Sharp Japanese citrus"], ["gtc", "Gentle, clean freshness", "A calm, spa-like botanical"], ["ginger", "Crisp cooling", "A spark of warmth"]].map(([id, keep, change]) => { const c = cById(id);
+  return `<div class="card b"><h4 class="d h4" style="--c:${c.acc}"><i></i>${c.name}</h4><dl><dt>Keep</dt><dd>${keep}</dd><dt>Change</dt><dd>${change}</dd></dl></div>`; }).join("");
+// white space radars
+const radar = (vals, col, o = {}) => {
+  const S = o.size || 300, C = S / 2, R = S * .4, N = AXES.length, pad = o.labels ? 130 : 8;
+  const ang = i => i / N * Math.PI * 2 - Math.PI / 2, pt = (i, v) => [C + Math.cos(ang(i)) * R * v, C + Math.sin(ang(i)) * R * v];
+  const poly = vs => vs.map((v, i) => pt(i, v).map(n => n.toFixed(1)).join(",")).join(" ");
+  let g = "";
+  [.25, .5, .75, 1].forEach(k => g += `<polygon points="${poly(Array(N).fill(k))}" fill="none" stroke="rgba(255,255,255,${k === 1 ? .3 : .12})" stroke-width="${o.labels ? 1.5 : 1}"/>`);
+  AXES.forEach((a, i) => { const [x, y] = pt(i, 1); g += `<line x1="${C}" y1="${C}" x2="${x}" y2="${y}" stroke="rgba(255,255,255,.16)"/>`;
+    if (o.labels) { const [lx, ly] = pt(i, 1.16), cx = Math.cos(ang(i)), an = cx > .25 ? "start" : cx < -.25 ? "end" : "middle";
+      g += `<text x="${lx}" y="${ly}" text-anchor="${an}" font-size="19" fill="#fff" font-weight="800">${a[0]}</text><text x="${lx}" y="${ly + 20}" text-anchor="${an}" font-size="14" fill="rgba(255,255,255,.6)" letter-spacing=".06em">${a[1].toUpperCase()}</text>`; } });
+  g += `<polygon points="${poly(BASE)}" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-dasharray="4 5"/>`;
+  if (vals) { g += `<polygon points="${poly(vals)}" fill="${rgba(col, .25)}" stroke="${col}" stroke-width="${o.labels ? 3 : 2.5}" stroke-linejoin="round"${o.dash ? ' stroke-dasharray="7 6"' : ""}/>`;
+    vals.forEach((v, i) => { const [x, y] = pt(i, v); g += `<circle cx="${x}" cy="${y}" r="${o.labels ? 5 : 3.5}" fill="${col}"/>`; }); }
+  return `<svg class="radar" viewBox="${-pad} ${-pad * .55} ${S + pad * 2} ${S + pad * 1.1}" role="img">${g}</svg>`;
+};
+const stretches = vals => vals.map((v, i) => [v - BASE[i], i]).sort((a, b) => b[0] - a[0]).filter(d => d[0] > .35).map(d => AXES[d[1]][0]);
+$("#legendR").innerHTML = radar(SHAPES.yuzu, "#E6F04A", { labels: true, size: 380 }) + `<div class="note"><span><i></i>Classic mint</span><span><i class="s"></i>Arctic Yuzu</span></div>`;
+$("#minis").innerHTML = CONCEPTS.map(c => { const col = c.tone === "dark" && c.id === "chamomile" ? "#E9C77A" : c.acc;
+  return `<div class="mini card b">${radar(SHAPES[c.id], col === "#8E7B3A" ? "#D7C27A" : col === "#4E9A6E" ? "#7FD6A2" : col)}<b>${c.name}</b><span>${stretches(SHAPES[c.id]).join(" + ")}</span></div>`; }).join("")
+  + `<div class="mini card b" style="border-color:rgba(239,91,63,.6)">${radar(SHAPES.all, "#EF5B3F", { dash: true })}<b style="color:#FF8A70">Change everything</b><span>Nothing left to trust</span></div>`;
+// platforms overview
+const PDATA = [
+  { id: "newfresh", n: "01", pb: "#EEF8E4", pf: "#1F5A2E", def: "Expand what fresh tastes like, well beyond peppermint.", cues: "Bright fruit, citrus peel, tea, cool greens, soft herbs.", cs: ["yuzu", "gtc", "grapefruit"],
+    ic: `<circle cx="75" cy="75" r="22" fill="#5FC4A2"/><circle cx="75" cy="75" r="52" fill="none" stroke="rgba(31,90,46,.3)" stroke-width="2"/><circle cx="75" cy="23" r="10" fill="#E6F04A"/><circle cx="120" cy="100" r="10" fill="#F2A596"/><circle cx="30" cy="100" r="10" fill="#9CC5A1"/>` },
+  { id: "sensory", n: "02", pb: "#03264A", pf: "#FFFFFF", def: "Flavor and sensation that make freshness perceptible.", cues: "Cooling bloom, bright top note, contrast, a long clean finish.", cs: ["yuzu", "ginger"],
+    ic: `<path d="M10,120 C30,118 38,30 60,28 S90,80 140,92" fill="none" stroke="#F58025" stroke-width="5" stroke-linecap="round"/><path d="M10,124 C50,122 64,64 90,44 S130,60 140,70" fill="none" stroke="#5CCBF5" stroke-width="5" stroke-linecap="round"/>` },
+  { id: "ritual", n: "03", pb: "#FFF0E3", pf: "#7A3E12", def: "Different moments of the day call for different kinds of fresh.", cues: "Morning lift, midday reset, after coffee, going out, wind-down.", cs: ["gtc", "ginger", "chamomile"],
+    ic: `<circle cx="75" cy="75" r="55" fill="none" stroke="rgba(122,62,18,.25)" stroke-width="3" stroke-dasharray="6 6"/><circle cx="75" cy="20" r="14" fill="#F58025"/><circle cx="75" cy="130" r="10" fill="#2C4A8E"/>` },
+  { id: "elevated", n: "04", pb: "#2A1916", pf: "#FFF3E8", def: "Premium flavor worlds from fragrance, spa, tea and zero-proof bars.", cues: "Fragrance structure, hospitality, culinary pairings.", cs: ["grapefruit", "pear"],
+    ic: `<polygon points="75,14 98,56 52,56" fill="#FFC08A" opacity=".85"/><polygon points="50,62 100,62 122,102 28,102" fill="#F2A0A0" opacity=".6"/><polygon points="26,108 124,108 146,146 4,146" fill="#8FD6BC" opacity=".55"/>` }
+];
+$("#plats").innerHTML = PDATA.map(p => `<div class="plat card b"><div class="top" style="--pb:${p.pb};--pf:${p.pf}"><span class="n">${p.n}</span><svg viewBox="0 0 150 150" aria-hidden="true">${p.ic}</svg></div>
+  <div class="bd"><h3 class="d h4">${PLATS[p.id]}</h3><p>${p.def}</p><span class="cues-l">${p.cues}</span><div class="cz">${p.cs.map(id => { const c = cById(id); return `<span style="--c:${c.acc}"><i></i>${c.name}</span>`; }).join("")}</div></div></div>`).join("");
+// new fresh orbit
+(() => {
+  const A = [["Yuzu", "#E6F04A"], ["Sencha", "#9CC5A1"], ["Cucumber", "#CFE9D6"], ["Grapefruit", "#F2A596"], ["Pear", "#E5E0A6"], ["Lemongrass", "#D9EC7A"]];
+  const B = [["Shiso", "#7FB08A"], ["Rose", "#F2B5B0"], ["Spearmint", "#7CC7AE"], ["Chamomile", "#F2DE8A"]];
+  let h = `<div class="nf-ring" style="inset:30px"></div><div class="nf-ring" style="inset:150px"></div>`;
+  const place = (list, r, off) => list.forEach(([n, c], i) => { const a = i / list.length * Math.PI * 2 + off; h += `<div class="nf-s" style="left:${380 + Math.cos(a) * r}px;top:${380 + Math.sin(a) * r}px"><i style="background:radial-gradient(circle at 35% 30%,#fff,${c} 55%,${c})"></i><em>${n}</em></div>`; });
+  place(A, 350, -Math.PI / 2); place(B, 230, Math.PI / 4);
+  $("#orbit").innerHTML = h + `<div class="nf-core">Mint<br>anchor</div>`;
+})();
+// ritual dial + pairings
+(() => {
+  const wrap = $("#dial");
+  MOMENTS.forEach(m => { const th = (180 + m.h * 15) * Math.PI / 180; wrap.insertAdjacentHTML("beforeend", `<div class="mom" style="left:${380 + 340 * Math.sin(th)}px;top:${380 - 340 * Math.cos(th)}px"><i></i><span>${m.name}</span></div>`); });
+  $("#pairs").innerHTML = MOMENTS.map(m => `<span class="tm">${m.t}</span><span class="mo">${m.name}</span><span class="fl">${m.flavor}: ${m.line.toLowerCase().replace(/\.$/, "")}</span>`).join("");
+})();
+// six lineup
+$("#six").innerHTML = CONCEPTS.map(c => `<div class="b"><div class="bt">${conceptBottle(c)}</div><b>${c.name}</b><span class="st${c.status === "lead" ? " lead" : ""}">${STATUS[c.status]}</span></div>`).join("");
+// wildcards
+$("#wilds").innerHTML = WILD.map(w => `<div class="wild card b"><div class="sw" style="background:linear-gradient(120deg,${w.sw[0]},${w.sw[1]})"></div><span class="lab">${PLATS[w.plat]}</span><h3 class="d h3">${w.name}</h3><p>${w.line}</p></div>`).join("");
+// tasting dimensions
+$("#dims").innerHTML = DIMS.map(([k, l, q]) => `<div class="dm card b"><b>${l}</b><span>${q}</span></div>`).join("");
+// scorecard
+(() => {
+  const heads = ["Sample", ...DIMS.map(d => d[1]), "One word"];
+  const rows = [...CONCEPTS.map(c => c.code).sort(), CONTROL.code];
+  $("#scoreTbl").innerHTML = `<thead><tr>${heads.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(code => `<tr${code === CONTROL.code ? ' class="ctl"' : ""}><td class="code">${code}${code === CONTROL.code ? "<small>Control</small>" : ""}</td>${DIMS.map(() => `<td><span class="box"></span></td>`).join("")}<td><span class="box" style="width:150px"></span></td></tr>`).join("")}</tbody>`;
+})();
+// decision board
+$("#decTbl").innerHTML = `<thead><tr><th>Concept</th><th>Fits the brand</th><th>We can make it</th><th>People will choose it</th><th>Advance</th></tr></thead><tbody>${CONCEPTS.map(c => `<tr><td><span class="cn" style="--c:${c.acc}"><i></i>${c.name} <small>${STATUS[c.status]}</small></span></td><td><span class="circ"></span></td><td><span class="circ"></span></td><td><span class="circ"></span></td><td><span class="star"></span></td></tr>`).join("")}</tbody>`;
+// short list
+$("#leads").innerHTML = `<div class="hd">Lead concept</div><div class="hd">Owner</div><div class="hd">Next action</div><div class="hd">By</div>` +
+  [1, 2, 3].map(n => `<div class="cell n">${n}<div class="write"></div></div><div class="cell"><div class="write"></div></div><div class="cell"><div class="write"></div></div><div class="cell"><div class="write"></div></div>`).join("");
+$("#acts").innerHTML = ACTIONS.map(a => `<span class="chip"><i></i>${a}</span>`).join("");
+// closing lineup
+$("#lineup").innerHTML = CONCEPTS.slice(0, 3).map(c => `<div class="bt">${conceptBottle(c)}</div>`).join("")
+  + `<div class="bt c">${iconic()}</div>` + CONCEPTS.slice(3).map(c => `<div class="bt">${conceptBottle(c)}</div>`).join("");
+
+/* ------------------------------------------------------------ chrome, builds */
+const slides = $$(".slide");
+const N = slides.length;
+slides.forEach((s, i) => {
+  s.style.setProperty("--bgc", s.dataset.bg); s.style.setProperty("--glow", s.dataset.glow || s.dataset.bg);
+  const first = i === 0;
+  s.insertAdjacentHTML("beforeend", `<div class="chrome" aria-hidden="true">
+    <div class="lock"><img src="../assets/therabreath-logo.png" alt=""><span class="x">×</span><span class="ff">The Flavor Factory</span></div>
+    ${first ? "" : `<div class="sec"><b>●</b> ${s.dataset.sec}</div><div class="foot">TheraBreath Flavor Playbook · November 9, 2026</div><div class="num">${String(i + 1).padStart(2, "0")} / ${N}</div>`}</div>`);
+  $$(".b", s).forEach((el, k) => el.style.setProperty("--i", k));
+});
+
+/* ------------------------------------------------------------ canvases */
+const arts = $$("canvas[data-art]").map((cv, i) => ({ cv, art: ART[cv.dataset.art], st: ART[cv.dataset.art].init(rng(101 + i * 17)), slide: cv.closest(".slide") }));
+const sizeCanvas = (cv, dprMax = 2) => { const w = cv.offsetWidth, h = cv.offsetHeight, d = MODE === "print" ? 1.25 : Math.min(devicePixelRatio || 1, dprMax); cv.width = w * d; cv.height = h * d; const c = cv.getContext("2d"); c.setTransform(d, 0, 0, d, 0, 0); return { c, w, h }; };
+arts.forEach(a => { Object.assign(a, sizeCanvas(a.cv)); a.art.draw(a.c, a.w, a.h, 9, a.st); });
+
+// map
+const map = (() => {
+  const wrap = $("#mapWrap"), cv = $("#mapCanvas");
+  const W = 1660, H = 622; const { c } = sizeCanvas(cv);
+  const bits = GRID.rows.map(r => r.split("").map(ch => parseInt(ch, 16).toString(2).padStart(4, "0")).join(""));
+  const toXY = (lon, lat) => [(lon + 180) / 360 * W, (GRID.top - lat) / (GRID.top - GRID.bot) * H];
+  const cw = W / GRID.W, ch = H / GRID.H;
+  const base = document.createElement("canvas"); base.width = cv.width; base.height = cv.height; const b = base.getContext("2d"); b.setTransform(cv.width / W, 0, 0, cv.height / H, 0, 0);
+  b.fillStyle = "rgba(255,255,255,.2)";
+  bits.forEach((row, y) => { for (let x = 0; x < GRID.W; x++) if (row[x] === "1") { b.beginPath(); b.arc((x + .5) * cw, (y + .5) * ch, Math.min(cw, ch) * .28, 0, 6.283); b.fill(); } });
+  const Hm = toXY(HOME.lon, HOME.lat);
+  const SIDE = { japan: "r", seoul: "l", kerala: "l", bangkok: "r", mexico: "l", la: "l", marrakech: "l", grasse: "r", london: "l", nordics: "t", nile: "r", madagascar: "r" };
+  const arcs = REGIONS.map(r => { const A = toXY(r.lon, r.lat), dist = Math.hypot(A[0] - Hm[0], A[1] - Hm[1]); return { r, A, C: [(A[0] + Hm[0]) / 2, Math.min(A[1], Hm[1]) - dist * .3] }; });
+  let html = "";
+  arcs.forEach(({ r, A }) => { const s = SIDE[r.id] || "r", dx = s === "r" ? 20 : s === "l" ? -20 : 0, dy = s === "t" ? -16 : 0;
+    html += `<span class="mdot" style="left:${A[0]}px;top:${A[1]}px;--c:${r.sw[0]}"></span><div class="mlab ${s === "r" ? "" : s}" style="left:${A[0] + dx}px;top:${A[1] + dy}px"><b>${r.name}</b><span>${r.cue.split(" · ").slice(0, 2).join(" · ")}</span></div>`; });
+  html += `<span class="mdot home" style="left:${Hm[0]}px;top:${Hm[1]}px"></span><div class="mlab bm" style="left:${Hm[0]}px;top:${Hm[1] + 20}px"><b>Princeton · the room</b></div>`;
+  wrap.insertAdjacentHTML("beforeend", html);
+  const bez = (a, m, e, t) => [(1 - t) * (1 - t) * a[0] + 2 * (1 - t) * t * m[0] + t * t * e[0], (1 - t) * (1 - t) * a[1] + 2 * (1 - t) * t * m[1] + t * t * e[1]];
+  const draw = time => {
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height); c.drawImage(base, 0, 0); c.restore();
+    arcs.forEach(({ r, A, C }) => {
+      c.beginPath(); c.moveTo(A[0], A[1]); c.quadraticCurveTo(C[0], C[1], Hm[0], Hm[1]); c.strokeStyle = rgba(r.sw[0], .45); c.lineWidth = 1.6; c.stroke();
+      const [px, py] = bez(A, C, Hm, (time * .18 + r.lon / 360 + 1) % 1); c.fillStyle = r.sw[0]; c.beginPath(); c.arc(px, py, 4, 0, 6.283); c.fill();
+    });
+  };
+  draw(.3);
+  return { draw, slide: cv.closest(".slide") };
+})();
+
+/* ------------------------------------------------------------ navigation */
+let cur = 0;
+const setScale = () => { const s = Math.min(innerWidth / 1920, innerHeight / 1080); $("#deck").style.setProperty("--s", s); };
+const chan = "BroadcastChannel" in window ? new BroadcastChannel("tb-deck") : null;
+function go(i, from) {
+  i = Math.max(0, Math.min(N - 1, i));
+  slides.forEach((s, k) => s.classList.toggle("on", k === i));
+  cur = i;
+  $("#progress").style.transform = `scaleX(${(i + 1) / N})`;
+  if (MODE !== "embed" && location.hash !== "#" + (i + 1)) history.replaceState(null, "", "#" + (i + 1));
+  const np = $("#notesPanel"); if (!np.hidden) np.innerHTML = `<b>${i + 1} · ${slides[i].dataset.title}</b>${$("aside.notes", slides[i]).textContent}`;
+  if (chan && MODE === "show" && from !== "remote") chan.postMessage({ type: "at", i });
+}
+const fromHash = () => { const n = parseInt(location.hash.slice(1), 10); return isNaN(n) ? 0 : n - 1; };
+
+if (MODE === "print") {
+  slides.forEach(s => s.classList.add("on"));
+} else if (MODE === "presenter") {
+  buildPresenter();
+} else {
+  setScale(); addEventListener("resize", setScale);
+  go(fromHash());
+  addEventListener("hashchange", () => { const n = fromHash(); if (n !== cur) go(n); });
+  // animate the active slide's canvas only
+  let t0 = performance.now();
+  const loop = now => {
+    const t = (now - t0) / 1000 * (REDUCED ? .05 : 1) + 9;
+    const s = slides[cur];
+    arts.forEach(a => { if (a.slide === s && MODE === "show") a.art.draw(a.c, a.w, a.h, t, a.st); });
+    if (map.slide === s && MODE === "show" && !REDUCED) map.draw(t);
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+}
+
+if (MODE === "show") {
+  const hint = $("#hint"); setTimeout(() => hint.classList.add("off"), 4500);
+  if (chan) chan.onmessage = e => { if (e.data && e.data.type === "go") go(e.data.i, "remote"); if (e.data && e.data.type === "hello") chan.postMessage({ type: "at", i: cur }); };
+  const fs = () => { const d = document; if (!d.fullscreenElement) { const p = d.documentElement.requestFullscreen && d.documentElement.requestFullscreen(); p && p.catch && p.catch(() => {}); } else d.exitFullscreen && d.exitFullscreen(); };
+  const ov = $("#ov"), grid = $("#ovGrid");
+  grid.innerHTML = slides.map((s, i) => `<button type="button" data-i="${i}"><span class="th" style="--bgc:${s.dataset.bg};--tfg:${s.dataset.tone === "dark" ? "#fff" : "#071C3C"}"><span>${s.dataset.title}</span></span><small>${String(i + 1).padStart(2, "0")} · ${s.dataset.sec}</small></button>`).join("");
+  const openOv = () => { $$("button", grid).forEach((b, i) => b.classList.toggle("cur", i === cur)); ov.hidden = false; const b = $(`button[data-i="${cur}"]`, grid); b && b.focus(); };
+  grid.addEventListener("click", e => { const b = e.target.closest("button[data-i]"); if (b) { go(+b.dataset.i); ov.hidden = true; } });
+  $("#ovClose").addEventListener("click", () => ov.hidden = true);
+  const toggleNotes = () => { const np = $("#notesPanel"); np.hidden = !np.hidden; go(cur); };
+  addEventListener("keydown", e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (!ov.hidden) { if (e.key === "Escape" || e.key === "g" || e.key === "G") { ov.hidden = true; e.preventDefault(); } return; }
+    const k = e.key;
+    if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter"].includes(k)) { e.preventDefault(); go(cur + 1); }
+    else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(k)) { e.preventDefault(); go(cur - 1); }
+    else if (k === "Home") go(0); else if (k === "End") go(N - 1);
+    else if (k === "f" || k === "F") fs();
+    else if (k === "g" || k === "G" || k === "Escape") openOv();
+    else if (k === "n" || k === "N") toggleNotes();
+    else if (k === "b" || k === "B" || k === ".") $("#blank").hidden = !$("#blank").hidden;
+    else if (k === "p" || k === "P") window.open(location.pathname + "?presenter#" + (cur + 1), "tb-presenter", "width=1280,height=800");
+  });
+  // click / tap to advance (right two thirds forward, left third back)
+  $(".viewport").addEventListener("click", e => { if (e.target.closest("a,button")) return; go(cur + (e.clientX > innerWidth / 3 ? 1 : -1)); });
+  let tx = null; addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
+  addEventListener("touchend", e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1)); tx = null; });
+}
+
+/* ------------------------------------------------------------ presenter view */
+function buildPresenter() {
+  document.title = "Presenter · TheraBreath Flavor Playbook";
+  const titles = slides.map(s => s.dataset.title), notes = slides.map(s => $("aside.notes", s).textContent.trim());
+  document.body.insertAdjacentHTML("beforeend", `<div class="pv">
+    <div class="pv-top"><div><div class="meta" id="pvMeta"></div><div class="t" id="pvTimer">00:00</div></div>
+      <div class="ctl"><button type="button" id="pvPrev">← Back</button><button type="button" id="pvNext">Next →</button><button type="button" id="pvReset">Reset timer</button></div></div>
+    <div class="pv-cur"><iframe id="pvA" title="Current slide" src="${location.pathname}?embed#1"></iframe></div>
+    <div class="pv-side"><span class="lab">Next</span><div class="pv-next"><iframe id="pvB" title="Next slide" src="${location.pathname}?embed#2"></iframe></div><div class="pv-notes" id="pvNotes"></div></div></div>`);
+  $(".viewport").hidden = true; $("#progress").hidden = true; $("#hint").hidden = true;
+  let at = fromHash(), start = Date.now();
+  const show = i => {
+    at = Math.max(0, Math.min(N - 1, i));
+    $("#pvA").contentWindow && ($("#pvA").src = `${location.pathname}?embed#${at + 1}`);
+    $("#pvB").src = `${location.pathname}?embed#${Math.min(N, at + 2)}`;
+    $("#pvMeta").textContent = `Slide ${at + 1} of ${N} · ${slides[at].dataset.sec}` + (at < N - 1 ? ` · next: ${titles[at + 1]}` : " · last slide");
+    $("#pvNotes").innerHTML = `<h3>${titles[at]}</h3>${notes[at]}`;
+  };
+  const send = i => { show(i); chan && chan.postMessage({ type: "go", i: at }); };
+  $("#pvPrev").onclick = () => send(at - 1); $("#pvNext").onclick = () => send(at + 1); $("#pvReset").onclick = () => start = Date.now();
+  addEventListener("keydown", e => { if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); send(at + 1); } else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); send(at - 1); } });
+  if (chan) { chan.onmessage = e => { if (e.data && e.data.type === "at" && e.data.i !== at) show(e.data.i); }; chan.postMessage({ type: "hello" }); }
+  setInterval(() => { const s = Math.floor((Date.now() - start) / 1000); $("#pvTimer").textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; }, 500);
+  show(at);
+}
+})();
+</script>
+</body>
+</html>

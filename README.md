@@ -21,6 +21,13 @@ python3 build_booklet.py
 
 The command writes the PDF to `dist/therabreath_capabilities_workshop_booklet.pdf`.
 
+## Workshop deck
+
+- `deck/index.html` is the 30-slide presentation for the session (1920 × 1080, scales to any screen). It follows the workshop arc: Frame → Taste → Choose → Assign, with a slide for each of the six concepts, a blind scorecard and a decision board to fill in live.
+- Keys: ← → / space to move, **G** slide overview, **N** speaker notes, **P** presenter view (current + next slide, notes and a timer, synced with the main window), **F** full screen, **B** blank screen. Slide numbers deep-link (`deck/#17`).
+- `dist/TheraBreath_Flavor_Playbook_Deck.pdf` is the PDF export for offline presenting or sending after the session. Regenerate it with `node scripts/export-deck-pdf.js` (needs `playwright-core` and a local Chrome; see the script header).
+- Concept copy, regions, frameworks, the bottle drawing and the concept artwork live in `assets/playbook-core.js`, shared by the deck and the web experience, so an edit there updates both.
+
 ## Workshop web experience
 
 - `index.html` is the interactive scroll experience for the **TheraBreath Flavor Playbook** workshop (Princeton, NJ, November 9, 2026). It is a single self-contained file: open it in a browser, or serve the repo root with any static host.
