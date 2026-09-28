@@ -4,25 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>TheraBreath Flavor Playbook Deck</title>
-<meta name="description" content="Slide deck for the TheraBreath Flavor Playbook innovation workshop, presented by The Flavor Factory at Church &amp; Dwight, Ewing, NJ, November 9, 2026.">
+<meta name="description" content="Slide deck for the TheraBreath Flavor Playbook workshop: six new flavor worlds built for sodium chlorite. The Flavor Factory at Church &amp; Dwight, Ewing, NJ, November 9, 2026.">
 <link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
 /* ==========================================================================
    TheraBreath Flavor Playbook · workshop deck
-   1920 × 1080 slides scaled to the screen. Same type, colour and bottle as the
-   web experience (../index.html); data comes from ../assets/playbook-core.js.
+   1920 × 1080 slides scaled to the screen. Every slide sits in its own
+   animated flavor world (the same worlds as the site and pre-read), drawn
+   from ../assets/playbook-core.js.
    Keys: ← → / space / page keys move · G overview · P presenter view ·
    N notes · F full screen · B blank screen.
    ========================================================================== */
 :root{
-  --blue:#00A3E0; --green:#006649; --navy:#0A2A5C; --ink:#071C3C;
-  --orange:#F58025; --orange-d:#C85F0E; --mint:#7ED321; --coral:#EF5B3F;
-  --f-d:"Archivo", "Arial Narrow", Arial, sans-serif;
-  --f-b:"Figtree", "Helvetica Neue", Arial, sans-serif;
-  --ease:cubic-bezier(.2,.7,.1,1);
+  --blue:#00A3E0; --green:#006649; --navy:#0A2A5C; --ink:#071C3C; --orange:#F58025; --orange-d:#C85F0E;
+  --f-d:"Bricolage Grotesque", Archivo, "Arial Narrow", sans-serif;
+  --f-b:Figtree, "Helvetica Neue", Arial, sans-serif;
+  --f-m:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  --ease:cubic-bezier(.2,.75,.15,1);
 }
 *,*::before,*::after{box-sizing:border-box}
-html,body{margin:0;height:100%;background:#0B1424;color:#fff;font-family:var(--f-b);-webkit-font-smoothing:antialiased}
+html,body{margin:0;height:100%;background:#050B18;color:#fff;font-family:var(--f-b);-webkit-font-smoothing:antialiased}
 body{overflow:hidden}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 [hidden]{display:none!important}
@@ -31,422 +32,277 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 /* ---------- stage & slides ---------- */
 .viewport{position:fixed;inset:0;overflow:hidden}
 .deck{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--s,.5));transform-origin:50% 50%}
-.slide{position:absolute;inset:0;overflow:hidden;background:var(--bgc,#fff);color:var(--fg);opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s linear .5s}
-.slide.on{opacity:1;visibility:visible;transition:opacity .5s ease}
-.slide::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(1250px 900px at 84% 4%, var(--glow,transparent), transparent 70%)}
+.slide{position:absolute;inset:0;overflow:hidden;background:var(--bgc,#fff);color:var(--fg);opacity:0;visibility:hidden;transition:opacity .6s ease,visibility 0s linear .6s}
+.slide.on{opacity:1;visibility:visible;transition:opacity .6s ease}
+.slide > canvas.bgw{position:absolute;inset:0;width:1920px;height:1080px;display:block}
 .slide:not(.on) *{animation-play-state:paused!important}
-[data-tone="light"]{--fg:#071C3C;--fg2:rgba(7,28,60,.74);--fg3:rgba(7,28,60,.5);--line:rgba(7,28,60,.14);--card:#FFFFFF;--card-line:rgba(7,28,60,.08);--hl:var(--green)}
-[data-tone="dark"]{--fg:#FFFFFF;--fg2:rgba(255,255,255,.8);--fg3:rgba(255,255,255,.55);--line:rgba(255,255,255,.2);--card:rgba(255,255,255,.07);--card-line:rgba(255,255,255,.14);--hl:#6FD9AE}
+[data-tone="light"]{--fg:#071C3C;--fg2:rgba(7,28,60,.74);--fg3:rgba(7,28,60,.52);--line:rgba(7,28,60,.14);--card:rgba(255,255,255,.84);--card-line:rgba(7,28,60,.08);--hl:var(--orange)}
+[data-tone="dark"]{--fg:#FFFFFF;--fg2:rgba(255,255,255,.82);--fg3:rgba(255,255,255,.58);--line:rgba(255,255,255,.22);--card:rgba(255,255,255,.1);--card-line:rgba(255,255,255,.18);--hl:#FFB066}
 .slide > aside.notes{display:none}
 .pad{position:absolute;inset:0;padding:150px 130px 118px;display:flex;flex-direction:column;z-index:2}
 
 /* builds */
-.b{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:calc(var(--i,0) * 80ms + 120ms)}
+.b{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .9s var(--ease);transition-delay:calc(var(--i,0) * 85ms + 140ms)}
 .slide.on .b{opacity:1;transform:none}
+.mega .ln{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.mega .ln > span{display:inline-block;transform:translateY(105%);transition:transform 1.1s var(--ease);transition-delay:calc(var(--k,0) * 120ms + 200ms)}
+.slide.on .mega .ln > span{transform:none}
 
 /* chrome */
 .chrome{position:absolute;inset:0;pointer-events:none;z-index:4;color:var(--fg)}
-.chrome .lock{position:absolute;left:130px;top:52px;display:flex;align-items:center;gap:16px}
-.chrome .lock img{display:block;height:44px;width:auto;background:#fff;padding:7px 13px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
-.chrome .lock .x{font:400 22px var(--f-d);opacity:.5}
-.chrome .lock .ff{font:700 22px var(--f-d);letter-spacing:.01em}
-.chrome .sec{position:absolute;right:130px;top:64px;font:700 18px var(--f-d);letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
-.chrome .sec b{color:var(--orange);font-weight:800}
-.chrome .foot{position:absolute;left:130px;bottom:46px;font:600 16px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
-.chrome .num{position:absolute;right:130px;bottom:42px;font:800 20px var(--f-d);color:var(--fg3);font-variant-numeric:tabular-nums}
+.chrome .lock{position:absolute;left:130px;top:50px;display:flex;align-items:center;gap:16px}
+.chrome .lock img{display:block;height:46px;width:auto;background:#fff;padding:7px 13px;border-radius:12px;box-shadow:0 6px 18px rgba(0,30,60,.14)}
+.chrome .lock .x{font:500 20px var(--f-m);opacity:.55}
+.chrome .lock .ff{font:800 24px var(--f-d);letter-spacing:-.01em}
+.chrome .sec{position:absolute;right:130px;top:58px;font:700 16px var(--f-m);letter-spacing:.16em;text-transform:uppercase;padding:10px 16px;border-radius:99px;background:var(--card);border:1px solid var(--card-line)}
+.chrome .sec b{color:var(--orange)}
+.chrome .foot{position:absolute;left:130px;bottom:44px;font:700 14px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
+.chrome .num{position:absolute;right:130px;bottom:40px;font:700 18px var(--f-m);color:var(--fg3);font-variant-numeric:tabular-nums}
 
 /* type */
-.d{font-family:var(--f-d);font-weight:800;font-stretch:112%;letter-spacing:-.035em;line-height:.95;margin:0;text-wrap:balance}
-.hl{color:var(--hl)}
-.h-hero{font-size:128px;line-height:.92}
-.h1{font-size:96px}
-.h2{font-size:72px}
-.h3{font-size:44px;line-height:1.02;letter-spacing:-.025em}
-.h4{font-size:32px;line-height:1.05;letter-spacing:-.02em}
-.eyebrow{font:700 20px var(--f-d);letter-spacing:.14em;text-transform:uppercase;color:var(--hl);display:inline-flex;gap:14px;align-items:center;margin-bottom:26px}
-.eyebrow::before{content:"";width:30px;height:4px;border-radius:2px;background:var(--orange)}
-.lab{font:700 18px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
-.lede{font:500 34px/1.36 var(--f-b);color:var(--fg2);margin:0;max-width:30ch;text-wrap:pretty}
-.body{font:500 27px/1.45 var(--f-b);color:var(--fg2);margin:0}
+.mega{font-family:var(--f-d);font-weight:800;font-size:230px;line-height:.84;letter-spacing:-.028em;text-transform:uppercase;margin:0;font-stretch:88%}
+.mega em{font-style:normal;color:var(--hl)}
+.display{font-family:var(--f-d);font-weight:800;font-size:104px;line-height:.92;letter-spacing:-.026em;margin:0;font-stretch:90%}
+.display em{font-style:normal;color:var(--hl)}
+.h3{font-family:var(--f-d);font-weight:800;font-size:40px;line-height:1.04;letter-spacing:-.02em;margin:0}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;font:700 17px var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--fg2);margin-bottom:24px}
+.eyebrow b{display:inline-grid;place-items:center;min-width:40px;height:40px;padding:0 10px;border-radius:99px;background:var(--orange);color:#fff;font-size:16px;letter-spacing:.04em}
+.lab{font:700 15px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
+.lede{font:500 34px/1.38 var(--f-b);color:var(--fg2);margin:0;max-width:32ch}
 .small{font:500 22px/1.45 var(--f-b);color:var(--fg2);margin:0}
-.card{background:var(--card);border:1px solid var(--card-line);border-radius:28px}
-[data-tone="light"] .card{box-shadow:0 1px 2px rgba(7,28,60,.04),0 22px 50px rgba(7,28,60,.08)}
-.chip{display:inline-flex;align-items:center;gap:10px;font:700 18px var(--f-d);padding:9px 16px;border-radius:99px;border:2px solid var(--line);color:var(--fg2);white-space:nowrap}
+.card{background:var(--card);border:1px solid var(--card-line);border-radius:30px}
+.chip{display:inline-flex;align-items:center;gap:10px;font:700 15px var(--f-m);letter-spacing:.1em;text-transform:uppercase;padding:10px 16px;border-radius:99px;background:var(--card);border:1px solid var(--line);color:var(--fg);white-space:nowrap}
 .chip i{width:12px;height:12px;border-radius:50%;background:var(--c,var(--orange));flex:none}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.todo{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:99px;border:2px dashed #E0473C;color:#E0473C;font:700 15px var(--f-m);letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.75)}
 .bottle{display:block;width:100%;height:auto;overflow:visible}
+.tnote{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:auto;font:500 22px var(--f-b);color:var(--fg2)}
 
-/* ---------- 01 title ---------- */
-.s-title{display:grid;grid-template-columns:1.22fr .78fr;gap:30px;height:100%;align-items:center}
-.s-title .meta{display:flex;gap:34px;margin-bottom:40px}
-.s-title .meta span{font:700 20px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg2)}
-.fresh{position:relative;color:var(--green);white-space:nowrap}
-.fresh svg{position:absolute;left:-2%;bottom:.02em;width:104%;height:.22em;overflow:visible}
-.fresh path{fill:none;stroke:var(--orange);stroke-width:10;stroke-linecap:round;stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset 1.4s .6s var(--ease)}
-.slide.on .fresh path{stroke-dashoffset:0}
-.s-title .lede{margin-top:40px}
-.byline{margin-top:54px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;font:600 24px var(--f-b);color:var(--fg2)}
-.byline b{font:800 26px var(--f-d);color:var(--fg)}
-.byline .sep{width:6px;height:6px;border-radius:50%;background:var(--orange)}
-.trio{position:relative;height:820px;margin-top:20px}
-.trio .halo{position:absolute;left:50%;top:48%;width:780px;height:780px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#fff 0%,rgba(255,255,255,.6) 40%,rgba(0,163,224,.13) 62%,transparent 70%)}
-.trio .bt{position:absolute;bottom:20px;filter:drop-shadow(0 40px 36px rgba(0,50,100,.22))}
-.trio .bt.c{left:50%;width:300px;transform:translateX(-50%);z-index:2}
-.trio .bt.l{left:6%;width:228px;bottom:44px}
-.trio .bt.r{right:6%;width:228px;bottom:44px}
+/* ---------- title ---------- */
+.s-title{display:grid;grid-template-columns:1.25fr .75fr;gap:30px;align-items:center;height:100%}
+.s-title .meta{display:flex;gap:28px;margin-bottom:34px}
+.s-title .meta span{font:700 18px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--fg2)}
+.s-title .lede{margin-top:40px;color:var(--ink);opacity:.82}
+.byline{margin-top:46px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;font:600 24px var(--f-b);color:var(--fg2)}
+.byline b{font:800 28px var(--f-d);color:var(--fg)}
+.byline .sep{width:7px;height:7px;border-radius:50%;background:var(--orange)}
+.hero-bt{position:relative;justify-self:center;height:800px;aspect-ratio:2/5}
+.hero-bt .bottle{height:100%;width:100%;filter:drop-shadow(0 50px 50px rgba(0,50,110,.3));animation:bob 6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-16px) rotate(1.5deg)}}
+.hero-bt .ring{position:absolute;left:50%;top:50%;width:640px;height:640px;transform:translate(-50%,-50%);animation:spin 40s linear infinite}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 
-/* ---------- who we are ---------- */
-.s-who{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:60px;margin-top:56px;align-items:start}
-.who-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-.who-list .card{padding:28px;display:flex;flex-direction:column;gap:8px}
-.who-list b{font:800 28px/1.1 var(--f-d);letter-spacing:-.015em}
-.who-list span{font:500 21px/1.4 var(--f-b);color:var(--fg2)}
-.todo{margin-top:34px;padding:20px 24px;border:3px dashed #D0342C;border-radius:18px;color:#D0342C;font:700 20px var(--f-d);letter-spacing:.03em}
-.slide[data-skip]{display:none!important}
+/* ---------- who ---------- */
+.s-who{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;height:100%}
+.bench{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.bench .card{padding:28px 26px 30px}
+.bench svg{width:60px;height:60px}
+.bench b{display:block;font:800 36px var(--f-d);letter-spacing:-.02em;margin:18px 0 8px}
+.bench span{font:500 21px/1.4 var(--f-b);color:var(--fg2)}
 
-/* ---------- 02 goal ---------- */
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:60px;margin-top:auto;margin-bottom:auto}
-.stat{display:flex;flex-direction:column;gap:14px}
-.stat .n{font:800 300px/.82 var(--f-d);font-stretch:112%;letter-spacing:-.05em;color:var(--orange)}
-.stat .l{font:800 46px/1.02 var(--f-d);font-stretch:108%;letter-spacing:-.02em}
-.stat .dd{font:500 26px/1.4 var(--f-b);color:var(--fg2);max-width:22ch}
-.kicker{display:flex;align-items:center;gap:22px;font:800 34px var(--f-d);letter-spacing:-.01em}
-.kicker i{width:14px;height:14px;border-radius:50%;background:var(--orange)}
+/* ---------- objectives ---------- */
+.objs{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:auto}
+.obj{padding:30px 28px 32px;display:flex;flex-direction:column;gap:12px;min-height:420px}
+.obj .n{font:800 128px/.8 var(--f-d);letter-spacing:-.05em;color:var(--orange);font-stretch:80%}
+.obj h3{margin:14px 0 0;font:800 44px var(--f-d);letter-spacing:-.02em}
+.obj p{margin:0;font:500 22px/1.42 var(--f-b);color:var(--fg2)}
+.obj .out{margin-top:auto;padding-top:16px;border-top:1px solid var(--line);font:600 19px/1.35 var(--f-b)}
+.obj .out b{display:block;font:700 13px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:4px}
+.kick{margin-top:30px;font:800 32px var(--f-d);letter-spacing:-.015em;display:flex;align-items:center;gap:16px}
+.kick i{width:12px;height:12px;border-radius:50%;background:var(--orange)}
 
-.objs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;margin-top:auto;margin-bottom:auto}
-.obj{padding:30px 30px 34px;border-radius:26px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);display:flex;flex-direction:column;gap:14px}
-.obj .n{font:800 120px/.8 var(--f-d);font-stretch:112%;letter-spacing:-.05em;color:var(--orange)}
-.obj h3{margin:10px 0 0;font:800 46px/1 var(--f-d);font-stretch:108%;letter-spacing:-.02em}
-.obj p{margin:0;font:500 23px/1.42 var(--f-b);color:var(--fg2)}
-.obj .out{margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.16);font:600 20px/1.35 var(--f-b)}
-.obj .out b{display:block;font:800 14px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:#A8F0CB;margin-bottom:4px}
-.tline.ag6{grid-template-columns:repeat(6,minmax(0,1fr));gap:28px;margin-top:60px}
-.tline.ag6 .tstep h3{font-size:42px;letter-spacing:-.025em}
-.tline.ag6 .tstep .out{margin-top:auto}
-.tline.ag6 .tstep .w{font-size:23px}
-.tline.ag6 .tstep p{font-size:20px}
-.tline.ag6 .tstep .out{font-size:18px;padding:14px 16px}
-.tline.ag6 .tstep .o{align-self:flex-start;font:800 13px var(--f-d);letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:99px;background:#E4F4EC;color:var(--green)}
-.lunchbar{margin-top:34px;display:flex;align-items:baseline;gap:22px;padding:18px 26px;border-radius:18px;border:2px dashed var(--line);font:500 22px var(--f-b);color:var(--fg2)}
-.lunchbar .t{font:800 22px var(--f-d);color:var(--orange-d);letter-spacing:.04em}
-.lunchbar b{font:800 30px var(--f-d);color:var(--fg)}
-.sig .tt{align-self:flex-start;font:800 13px var(--f-d);letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:99px;background:var(--tc,#E6F6FD);color:var(--tf,#0072BC)}
-.s-con .ww{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 18px;font:500 22px/1.35 var(--f-b)}
-.s-con .ww dt{font:800 16px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);padding-top:4px}
-.s-con .ww dd{margin:0}
-.create{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 380px;gap:24px;margin-top:50px;align-items:stretch}
-.create .col{padding:26px;display:flex;flex-direction:column;gap:12px}
-.create h4{margin:0;font:800 16px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
-.create h3{margin:0 0 6px;font:800 36px/1 var(--f-d);letter-spacing:-.02em}
-.create .pills{display:flex;flex-wrap:wrap;gap:10px}
-.create .pills span{padding:9px 15px;border-radius:99px;background:#fff;border:1px solid var(--line);font:700 19px var(--f-d)}
-.create .pills span i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:8px}
-.create .canvas{padding:28px;border:3px dashed var(--orange);background:#FFF8F1;display:flex;flex-direction:column;gap:14px}
-.create .canvas .ln{flex:1;display:flex;align-items:flex-end;border-bottom:2px solid rgba(7,28,60,.18);padding:6px 0 12px;font:800 15px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
-.hzs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:50px;flex:1}
-.hzc{padding:30px;border-top:8px solid var(--c);display:flex;flex-direction:column;gap:14px}
-.hzc .k{font:800 16px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
-.hzc h3{margin:0;font:800 40px/1.02 var(--f-d);letter-spacing:-.02em}
-.hzc p{margin:0;font:500 22px/1.42 var(--f-b);color:var(--fg2)}
-.hzc .cz{display:flex;flex-direction:column;gap:10px;margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
-.hzc .cz span{display:flex;align-items:center;gap:12px;font:700 21px var(--f-d)}
-.hzc .cz span small{font:500 17px var(--f-b);color:var(--fg3)}
-.hzc .cz i{width:14px;height:14px;border-radius:50%;background:var(--cc);flex:none}
-.hzc .cz .add{border:2px dashed var(--line);border-radius:12px;padding:10px 14px;color:var(--fg3);font:700 18px var(--f-d)}
-/* ---------- 03 agenda ---------- */
-.tline{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px;margin-top:70px}
-.tline::before{content:"";position:absolute;left:20px;right:20px;top:18px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--green),var(--orange))}
-.tstep{position:relative;padding-top:74px;display:flex;flex-direction:column;gap:12px}
-.tstep::before{content:"";position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 8px #fff,0 6px 20px rgba(0,0,0,.12)}
-.tstep .t{font:800 22px var(--f-d);color:var(--orange-d);letter-spacing:.04em}
-.tstep h3{margin:0}
-.tstep .w{font:700 28px/1.2 var(--f-d);color:var(--fg)}
-.tstep p{margin:0;font:500 24px/1.45 var(--f-b);color:var(--fg2)}
-.tstep .out{margin-top:10px;padding:18px 22px;font:600 21px/1.4 var(--f-b);color:var(--fg)}
-.tstep .out b{display:block;font:800 15px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:4px}
+/* ---------- agenda ---------- */
+.s-agenda{display:grid;grid-template-columns:1fr 720px;gap:60px;height:100%;align-items:center;padding-top:130px;padding-bottom:100px}
+.alist{display:flex;flex-direction:column;margin-top:30px}
+.ai{display:grid;grid-template-columns:170px 1fr auto;gap:18px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.ai .t{font:700 20px var(--f-m);color:var(--orange-d)}
+.ai b{font:800 30px var(--f-d);letter-spacing:-.02em}
+.ai span.w{display:block;font:500 19px var(--f-b);color:var(--fg2)}
+.dial svg{width:720px;height:720px;overflow:visible}
+.dial .arc{fill:none;stroke-width:52;stroke-dasharray:var(--len) var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset 1.2s var(--ease);transition-delay:calc(var(--i) * 140ms + 300ms)}
+.slide.on .dial .arc{stroke-dashoffset:0}
+.dial .lbl{font:800 22px var(--f-d);fill:var(--ink)}
+.dial .tm{font:700 15px var(--f-m);fill:var(--orange-d)}
 
-/* ---------- 04 opportunity ---------- */
-.s-opp{display:grid;grid-template-columns:600px minmax(0,1fr);gap:80px;height:100%;align-items:center}
-.photo{margin:0;overflow:hidden;padding:0}
-.photo img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
-.photo figcaption{padding:20px 26px;font:700 18px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
-.rows{display:flex;flex-direction:column;gap:26px;margin-top:40px}
-.row{display:grid;grid-template-columns:78px minmax(0,1fr);gap:26px;align-items:center}
-.row svg{width:78px;height:78px}
-.row .lab{display:block;margin-bottom:2px}
-.row h4{margin:0 0 4px}
-.row p{margin:0;font:500 24px/1.4 var(--f-b);color:var(--fg2)}
-.journey{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:40px;font:800 29px var(--f-d);font-stretch:108%;letter-spacing:-.02em}
-.journey i{font-style:normal;color:var(--orange)}
+/* ---------- trends ---------- */
+.trends{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:auto}
+.tr{overflow:hidden;display:flex;flex-direction:column;background:#fff;border-radius:30px;box-shadow:0 24px 60px rgba(90,60,10,.12)}
+.tr canvas{width:100%;height:210px;display:block}
+.tr .tx{padding:22px 24px 26px;display:flex;flex-direction:column;gap:12px;flex:1;color:var(--ink)}
+.tr .chip{align-self:flex-start;background:#fff;color:var(--ink);border-color:rgba(7,28,60,.14)}
+.tr .word{font:800 64px/.84 var(--f-d);letter-spacing:-.04em;font-stretch:82%}
+.tr p{margin:0;font:700 25px/1.2 var(--f-d);letter-spacing:-.01em}
+.tr .seen{margin-top:auto;padding-top:14px;border-top:1px solid rgba(7,28,60,.12);font:500 18px/1.4 var(--f-b);color:rgba(7,28,60,.72)}
+.tr .seen b{display:block;font:700 12px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:rgba(7,28,60,.5);margin-bottom:4px}
 
-/* ---------- 05 signals ---------- */
-.sigs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;margin-top:56px;flex:1}
-.sig{padding:24px 24px 28px;display:flex;flex-direction:column;gap:14px}
-.sig .vis{height:170px;border-radius:18px;position:relative;overflow:hidden;margin-bottom:6px}
-.sig .word{font:800 50px/1 var(--f-d);font-stretch:112%;letter-spacing:-.03em}
-.sig h4{margin:0;font:700 24px var(--f-b);color:var(--hl)}
-.sig p{margin:0;font:500 22px/1.42 var(--f-b);color:var(--fg2)}
-.sig .seen{margin-top:auto;padding-top:16px;border-top:1px solid var(--line);font:500 19px/1.45 var(--f-b);color:var(--fg2)}
-.sig .seen b{display:block;font:800 14px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg);margin-bottom:4px}
-.v-beauty{background:linear-gradient(160deg,#FDEDEA,#E6F4FB)}
-.v-beauty i{position:absolute;left:50%;width:62%;height:26%;border-radius:40%;transform:translateX(-50%);border:1px solid #fff;background:linear-gradient(90deg,rgba(255,255,255,.9),rgba(255,255,255,.35));box-shadow:0 10px 24px rgba(120,90,90,.12);animation:layer 7s ease-in-out infinite}
-.v-beauty i:nth-child(1){top:12%}.v-beauty i:nth-child(2){top:37%;animation-delay:-2.3s;background:linear-gradient(90deg,rgba(245,190,176,.75),rgba(255,255,255,.3))}.v-beauty i:nth-child(3){top:62%;animation-delay:-4.6s;background:linear-gradient(90deg,rgba(120,200,235,.7),rgba(255,255,255,.3))}
-@keyframes layer{50%{transform:translateX(-46%) translateY(-6px)}}
-.v-flavor{background:#F5F3EE;display:grid;grid-template-columns:repeat(8,1fr);gap:6px;padding:16px;align-content:center}
-.v-flavor i{border-radius:50%;aspect-ratio:1}
-.v-sense{background:linear-gradient(180deg,#DFF3FB,#F6FBFD)}
-.v-sense svg{position:absolute;inset:0;width:100%;height:100%}
-.v-well{background:linear-gradient(180deg,#FFF0DF,#EAF5FB)}
-.v-well .arc{position:absolute;left:50%;bottom:-88%;width:100%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;border:3px dashed rgba(7,28,60,.18)}
-.v-well .sun{position:absolute;left:62%;top:22%;width:30px;height:30px;border-radius:50%;background:var(--orange);box-shadow:0 0 34px var(--orange)}
+/* ---------- the base ---------- */
+.s-base{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}
+.col h4{margin:0 0 16px;display:flex;align-items:center;gap:12px;font:800 18px var(--f-m);letter-spacing:.14em;text-transform:uppercase}
+.col h4 i{width:14px;height:14px;border-radius:50%;background:var(--c)}
+.mols{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.mol{padding:16px 18px;border-radius:20px;border:1.5px solid rgba(126,227,174,.8);background:rgba(126,227,174,.12);box-shadow:0 0 0 5px rgba(126,227,174,.08)}
+.mol b{display:block;font:800 26px var(--f-d);letter-spacing:-.015em;line-height:1.05}
+.mol span{display:block;font:700 13px var(--f-m);letter-spacing:.12em;text-transform:uppercase;opacity:.75;margin-top:6px}
+.mol small{display:block;font:500 17px var(--f-b);opacity:.8;margin-top:2px}
+.mol.x{border-color:rgba(255,138,91,.6);background:rgba(255,255,255,.04);box-shadow:none;position:relative}
+.mol.x b{color:rgba(255,255,255,.55);text-decoration:line-through;text-decoration-color:#FF8A5B;text-decoration-thickness:3px}
+.mol.x em{position:absolute;right:14px;top:-13px;font:800 12px var(--f-m);letter-spacing:.12em;text-transform:uppercase;font-style:normal;background:#FF8A5B;color:#3A1206;padding:5px 10px;border-radius:99px}
+.base-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-top:auto}
+.base-foot .rule{font:800 36px/1.08 var(--f-d);letter-spacing:-.02em;max-width:26ch}
+.base-foot .cav{font:500 18px/1.45 var(--f-b);color:var(--fg3);max-width:38ch;margin:0}
 
-/* ---------- 06 map ---------- */
-.map-wrap{position:relative;width:1660px;height:622px;margin-top:34px}
-.map-wrap canvas{position:absolute;inset:0;width:100%;height:100%}
-.mlab{position:absolute;display:flex;flex-direction:column;gap:1px;white-space:nowrap;transform:translateY(-50%);pointer-events:none}
-.mlab b{font:800 20px var(--f-d);color:#fff;text-shadow:0 1px 10px #031634}
-.mlab span{font:600 15px var(--f-b);color:rgba(255,255,255,.7)}
-.mlab.l{align-items:flex-end;transform:translate(-100%,-50%)}
-.mlab.t{align-items:center;transform:translate(-50%,-100%)}
-.mlab.bm{align-items:center;transform:translate(-50%,0)}
-.mdot{position:absolute;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);background:var(--c);box-shadow:0 0 0 5px rgba(255,255,255,.12),0 0 22px var(--c)}
-.mdot.home{width:20px;height:20px;background:var(--orange);box-shadow:0 0 0 7px rgba(245,128,37,.28),0 0 26px var(--orange)}
-.map-note{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+/* ---------- map ---------- */
+.map{position:relative;margin-top:30px;flex:1;border-radius:34px;background:rgba(255,255,255,.62);border:1px solid var(--line);overflow:hidden}
+.map .sweet{position:absolute;left:26%;right:14%;top:6%;bottom:6%;border-radius:50%;background:radial-gradient(closest-side,rgba(245,128,37,.2),rgba(245,128,37,.06) 70%,transparent)}
+.map .sweet span{position:absolute;left:50%;top:7%;transform:translateX(-50%);font:700 14px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--orange-d);white-space:nowrap}
+.map .ax{position:absolute;font:700 14px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
+.orb{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px}
+.orb i{display:block;width:var(--s,96px);height:var(--s,96px);border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff 0%,var(--c1) 28%,var(--c2) 100%);box-shadow:0 16px 32px rgba(7,28,60,.18),inset 0 0 0 3px rgba(255,255,255,.5)}
+.orb b{font:800 22px var(--f-d);letter-spacing:-.01em;white-space:nowrap}
+.orb.wild i{background:transparent;border:4px dashed var(--c2);box-shadow:none}
+.orb.wild b{font-weight:700;font-size:19px;opacity:.8}
+.orb.today i{width:18px;height:18px;background:#9AA8B8;box-shadow:none}
+.orb.today b{font:700 14px var(--f-m);opacity:.7}
+.plats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+.plat{padding:16px 20px}
+.plat b{display:block;font:800 26px var(--f-d);letter-spacing:-.015em}
+.plat span{font:500 18px/1.35 var(--f-b);color:var(--fg2)}
 
-/* ---------- 07 cues ---------- */
-.cues{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-top:50px}
-.cue{padding:28px 30px;display:grid;grid-template-columns:70px minmax(0,1fr);gap:22px;align-items:start}
-.cue .sw{width:70px;height:70px;border-radius:50%}
-.cue h4{margin:0 0 4px}
-.cue .c1{font:700 16px var(--f-d);letter-spacing:.06em;text-transform:uppercase;color:var(--fg3);margin-bottom:12px}
-.cue .t{font:800 25px/1.2 var(--f-d);letter-spacing:-.01em;margin:0 0 10px}
-.cue p{margin:0;font:500 20px/1.45 var(--f-b);color:var(--fg2)}
-
-/* ---------- 08 spectrum ---------- */
-.spec{position:relative;margin-top:120px}
-.spec-bar{position:relative;height:120px;border-radius:99px;overflow:hidden;background:linear-gradient(90deg,#D4ECF7 0%,#CDEFE0 28%,#BFEFD5 34%,#EAF6B8 52%,#FFE0BF 66%,#FFB79F 78%,#EF5B3F 100%)}
-.zone{position:absolute;top:0;bottom:0;display:flex;align-items:center;padding:0 34px;font:800 22px var(--f-d);letter-spacing:.08em;text-transform:uppercase;color:rgba(7,28,60,.55)}
-.zone.sw{left:28%;width:44%;border-left:4px solid #fff;border-right:4px solid #fff;color:var(--ink);justify-content:center}
-.stick{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;white-space:nowrap}
-.stick.up{bottom:calc(100% + 12px)}
-.stick.dn{top:calc(100% + 12px);flex-direction:column-reverse}
-.stick b{font:800 21px var(--f-d);font-stretch:100%;color:var(--fg)}
-.stick i{width:3px;height:18px;border-radius:2px;background:var(--fg3)}
-.spec-ends{display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;margin-top:110px}
-.spec-ends div{display:flex;flex-direction:column;gap:6px}
-.spec-ends div:nth-child(2){text-align:center}
-.spec-ends div:nth-child(3){text-align:right}
-.spec-ends .d{font-size:36px}
-
-/* ---------- 09 rule ---------- */
-.formula{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:22px;align-items:stretch;margin-top:56px}
-.formula .f{padding:30px 32px;display:flex;flex-direction:column;gap:10px}
-.formula .op{align-self:center;font:800 76px var(--f-d);color:var(--orange)}
-.formula .f .lab{color:var(--hl)}
-.ex{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-top:40px}
-.ex > div{padding:26px 30px;display:flex;flex-direction:column;gap:12px}
-.ex h4{display:flex;align-items:center;gap:12px;margin:0}
-.ex h4 i{width:16px;height:16px;border-radius:50%;background:var(--c);flex:none}
-.ex dl{display:grid;grid-template-columns:100px minmax(0,1fr);gap:8px 14px;margin:0}
-.ex dt{font:800 15px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);padding-top:5px}
-.ex dd{margin:0;font:600 22px/1.35 var(--f-b);color:var(--fg)}
-
-/* ---------- 10 white space ---------- */
-.s-ws{display:grid;grid-template-columns:600px minmax(0,1fr);gap:60px;margin-top:36px;flex:1;align-items:center}
-.minis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
-.mini{padding:16px 16px 18px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center}
-.mini svg{width:100%;height:auto}
-.mini b{font:800 20px/1.1 var(--f-d);letter-spacing:-.01em}
-.mini span{font:600 16px/1.3 var(--f-b);color:var(--fg2)}
-.radar text{font-family:var(--f-d);font-weight:700}
-.legend-r .note{display:flex;gap:26px;justify-content:center;margin-top:10px;font:600 18px var(--f-b);color:var(--fg2)}
-.legend-r .note i{display:inline-block;width:30px;height:0;border-top:3px dashed rgba(255,255,255,.6);vertical-align:middle;margin-right:10px}
-.legend-r .note i.s{border-top:3px solid #E6F04A}
-
-/* ---------- 11 platforms ---------- */
-.plats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:50px;flex:1}
-.plat{display:flex;flex-direction:column;overflow:hidden;padding:0}
-.plat .top{height:180px;position:relative;display:flex;align-items:flex-end;padding:24px 26px;background:var(--pb);color:var(--pf)}
-.plat .top .n{font:800 88px/.8 var(--f-d);font-stretch:112%;opacity:.9}
-.plat .top svg{position:absolute;right:18px;top:18px;width:150px;height:150px}
-.plat .bd{padding:26px 26px 28px;display:flex;flex-direction:column;gap:14px;flex:1}
-.plat .bd p{margin:0;font:600 22px/1.4 var(--f-b);color:var(--fg)}
-.plat .bd .cz{margin-top:auto;display:flex;flex-direction:column;gap:8px}
-.plat .bd .cz span{display:flex;align-items:center;gap:10px;font:700 19px var(--f-d)}
-.plat .bd .cz i{width:12px;height:12px;border-radius:50%;background:var(--c)}
-.plat .bd .cues-l{font:500 19px/1.45 var(--f-b);color:var(--fg2)}
-
-/* ---------- 12–15 platform detail ---------- */
-.s-plat{display:grid;grid-template-columns:minmax(0,1fr) 760px;gap:70px;height:100%;align-items:center}
-.s-plat .num{font:800 22px var(--f-d);letter-spacing:.14em;color:var(--orange)}
-.s-plat h2{margin:16px 0 22px}
-.s-plat .def{font:700 38px/1.18 var(--f-d);letter-spacing:-.015em;margin:0 0 34px;max-width:24ch}
-.s-plat dl{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px 22px;margin:0}
-.s-plat dt{font:700 17px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);padding-top:5px}
-.s-plat dd{margin:0;font:500 24px/1.42 var(--f-b);color:var(--fg)}
-.pvis{position:relative;width:760px;height:760px}
-.nf-core{position:absolute;left:50%;top:50%;width:190px;height:190px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#CFEFE3 45%,#5FC4A2);box-shadow:0 0 90px rgba(95,196,162,.55);display:grid;place-items:center;text-align:center;font:800 20px/1.1 var(--f-d);letter-spacing:.06em;text-transform:uppercase;color:#083B2D}
-.nf-ring{position:absolute;border-radius:50%;border:2px solid rgba(7,28,60,.12)}
-.nf-s{position:absolute;display:flex;flex-direction:column;align-items:center;gap:8px;transform:translate(-50%,-50%)}
-.nf-s i{display:block;width:80px;height:80px;border-radius:50%;box-shadow:inset 0 -8px 16px rgba(0,0,0,.12),0 12px 26px rgba(7,28,60,.14)}
-.nf-s em{font-style:normal;font:700 17px var(--f-d);color:var(--ink);background:#fff;padding:4px 11px;border-radius:99px;white-space:nowrap}
-.curves svg{width:100%;height:100%;overflow:visible}
-.curves .ln{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:1400;stroke-dashoffset:1400;transition:stroke-dashoffset 2.2s var(--ease)}
-.slide.on .curves .ln{stroke-dashoffset:0}
-.curves .ln.b2{transition-delay:.35s}.curves .ln.c2{transition-delay:.7s}
-.curves text{font-family:var(--f-d);font-weight:700;font-size:15px;fill:rgba(255,255,255,.75)}
-.dial{position:absolute;inset:40px;border-radius:50%;background:conic-gradient(from 180deg,#1B2B5C 0deg,#2C4A8E 50deg,#FFB58A 90deg,#FFE3B0 120deg,#CDEFFB 180deg,#FFEAC4 240deg,#FF9A6B 275deg,#5A4C9A 300deg,#1B2B5C 340deg);box-shadow:0 30px 70px rgba(60,40,80,.18)}
-.dial::after{content:"";position:absolute;inset:18%;border-radius:50%;background:#FFF9F4}
-.dial-c{position:absolute;inset:210px;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;color:var(--ink)}
-.dial-c b{font:800 64px/1 var(--f-d);font-stretch:108%;letter-spacing:-.03em}
-.dial-c span{font:700 20px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:rgba(7,28,60,.6)}
-.mom{position:absolute;z-index:3;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px}
-.mom i{width:24px;height:24px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 6px #fff}
-.mom span{font:700 17px var(--f-d);white-space:nowrap;color:var(--ink);background:#fff;padding:3px 10px;border-radius:99px}
-.pairs{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:10px 20px;margin-top:30px;font:600 22px/1.3 var(--f-b);align-items:baseline}
-.pairs .tm{font:800 18px var(--f-d);color:var(--orange-d);font-variant-numeric:tabular-nums}
-.pairs .mo{font:800 22px var(--f-d)}
-.pairs .fl{color:var(--fg2)}
-.pyr svg{width:100%;height:100%;overflow:visible}
-.pyr text{font-family:var(--f-d);font-weight:700;font-size:15px;letter-spacing:.12em;text-transform:uppercase;fill:rgba(255,236,220,.72)}
-.pyr .pn{font-size:28px;letter-spacing:-.01em;text-transform:none;fill:#FFF3E8;font-weight:800}
-
-/* ---------- 16 six ---------- */
-.six{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:30px;margin-top:auto;align-items:end}
-.six > div{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
-.six .bt{width:200px;filter:drop-shadow(0 26px 26px rgba(0,40,80,.2))}
-.six b{font:800 26px/1.05 var(--f-d);letter-spacing:-.015em}
-.six .fl{font:600 18px/1.2 var(--f-b);color:var(--fg2);margin-top:-8px}
-.six .st{font:700 15px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
-.six .st.lead{color:var(--green)}
-
-/* ---------- 17–22 concepts ---------- */
-.s-con{display:grid;grid-template-columns:820px minmax(0,1fr);gap:60px;height:100%;align-items:center}
-.stagec{position:relative;width:820px;height:820px}
-.stagec canvas{position:absolute;left:30px;top:60px;width:700px;height:700px;border-radius:50%;box-shadow:0 40px 100px rgba(7,28,60,.24)}
-.stagec .bt{position:absolute;left:400px;top:-10px;width:336px;filter:drop-shadow(0 34px 34px rgba(0,0,0,.28));z-index:2}
-.s-con .meta{display:flex;align-items:center;gap:16px}
-.status{font:800 16px var(--f-d);letter-spacing:.1em;text-transform:uppercase;padding:8px 15px;border-radius:99px;border:2px solid currentColor;display:inline-flex;gap:9px;align-items:center}
-.status::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--orange)}
-.s-con h2{margin:18px 0 12px;font-size:92px}
-.s-con .flv{font:800 28px/1.15 var(--f-d);letter-spacing:-.015em;color:var(--hl);margin:-4px 0 16px}
-.s-con .kw{font:700 19px var(--f-d);letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);line-height:1.6}
-.s-con .feels{font:800 30px/1.18 var(--f-d);letter-spacing:-.015em;margin:26px 0 28px;max-width:24ch}
-.s-con .arc{display:flex;flex-direction:column;gap:12px;border-left:4px solid var(--acc);padding-left:24px;margin-bottom:28px}
-.s-con .arc div{font:500 24px/1.35 var(--f-b)}
-.s-con .arc b{display:inline-block;min-width:170px;font:800 16px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
-.s-con .foot{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;padding:26px 30px}
-.s-con .foot h5{margin:0 0 8px;font:800 15px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--hl)}
-.s-con .foot p{margin:0;font:500 20px/1.45 var(--f-b);color:var(--fg2)}
-.s-con .foot .chips{display:flex;gap:8px;flex-wrap:wrap}
-.s-con .foot .chip{font-size:16px;padding:7px 13px}
-
-/* ---------- 23 wildcards ---------- */
-.wilds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:60px}
-.wild{padding:30px;display:flex;flex-direction:column;gap:14px}
-.wild .sw{height:190px;border-radius:20px}
-.wild p{margin:0;font:500 24px/1.45 var(--f-b);color:var(--fg2)}
-
-/* ---------- 24 tasting ---------- */
-.stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;margin-top:50px}
-.stg{padding:26px 28px;display:flex;flex-direction:column;gap:10px;position:relative}
-.stg .t{font:800 20px var(--f-d);color:var(--orange-d);letter-spacing:.04em}
-.stg h3{margin:0}
-.stg p{margin:0;font:600 24px/1.35 var(--f-b);color:var(--fg)}
-.stg .ar{position:absolute;right:-22px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-top:4px solid var(--orange);border-right:4px solid var(--orange);rotate:45deg;z-index:2}
-.dims{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:16px;margin-top:40px}
-.dm{padding:20px 18px;display:flex;flex-direction:column;gap:8px}
-.dm b{font:800 21px/1.1 var(--f-d)}
-.dm span{font:500 17px/1.4 var(--f-b);color:var(--fg2)}
-.scale{display:flex;align-items:center;gap:18px;margin-top:30px;font:600 22px var(--f-b);color:var(--fg2)}
+/* ---------- tasting ---------- */
+.stages{display:grid;grid-template-columns:repeat(4,1fr);margin-top:56px;position:relative}
+.stages::before{content:"";position:absolute;left:0;right:0;top:30px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--blue),var(--green),var(--orange))}
+.stg{position:relative;padding:76px 24px 0 0}
+.stg::before{content:"";position:absolute;left:0;top:14px;width:36px;height:36px;border-radius:50%;background:#fff;box-shadow:0 0 0 7px var(--c),0 8px 18px rgba(0,0,0,.12)}
+.stg .t{font:700 16px var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.stg b{display:block;font:800 48px var(--f-d);letter-spacing:-.025em;margin:8px 0 4px}
+.stg span{font:500 23px var(--f-b);color:var(--fg2)}
+.dims{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:auto}
+.dm{padding:22px 24px}
+.dm b{display:block;font:800 28px var(--f-d);letter-spacing:-.015em}
+.dm span{font:500 19px/1.4 var(--f-b);color:var(--fg2)}
+.scale{display:flex;align-items:center;gap:18px;margin-top:18px;font:600 20px var(--f-b);color:var(--fg2)}
 .scale .dots{display:flex;gap:8px}
-.scale .dots i{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font:800 18px var(--f-d);font-style:normal;color:var(--fg)}
-.scale .dots i:last-child{background:var(--blue);border-color:var(--blue);color:#fff}
+.scale .dots i{width:38px;height:38px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font:700 15px var(--f-m);font-style:normal;background:#fff}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;margin-top:40px;background:rgba(255,255,255,.85);border-radius:26px;overflow:hidden;border:1px solid var(--line)}
+.tbl th{font:700 14px var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);text-align:left;padding:18px 20px;border-bottom:1px solid var(--line)}
+.tbl td{padding:12px 20px;border-bottom:1px solid var(--line);font:600 22px var(--f-b)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .code{font:800 30px var(--f-m);letter-spacing:.04em}
+.tbl .code small{display:block;font:700 12px var(--f-m);letter-spacing:.12em;color:var(--fg3)}
+.tbl .box{display:inline-block;width:64px;height:40px;border-radius:12px;border:2px dashed rgba(7,28,60,.2)}
+.tbl tr.ctl td{background:rgba(0,163,224,.07)}
 
-/* ---------- 25 / 27 tables ---------- */
-.tbl{width:100%;border-collapse:separate;border-spacing:0;margin-top:44px;font-family:var(--f-b)}
-.tbl th{font:800 17px/1.2 var(--f-d);letter-spacing:.06em;text-transform:uppercase;color:var(--fg2);text-align:center;padding:0 10px 16px;vertical-align:bottom}
-.tbl th:first-child{text-align:left}
-.tbl td{height:64px;border-top:1px solid var(--line);text-align:center;font:600 22px var(--f-b);color:var(--fg)}
-.tbl td:first-child{text-align:left}
-.tbl .code{font:800 30px var(--f-d);font-variant-numeric:tabular-nums}
-.tbl .code small{font:600 18px var(--f-b);color:var(--fg3);margin-left:12px}
-.tbl .box{display:inline-block;width:60px;height:44px;border-radius:12px;border:2px solid var(--line)}
-.tbl .circ{display:inline-block;width:44px;height:44px;border-radius:50%;border:3px solid var(--line)}
-.tbl .star{display:inline-block;width:132px;height:46px;border-radius:99px;border:3px dashed var(--orange)}
-.tbl .cn{display:flex;align-items:center;gap:14px;font:800 26px var(--f-d)}
-.tbl .cn i{width:16px;height:16px;border-radius:50%;background:var(--c)}
-.tbl .cn small{font:700 14px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
-.tbl tr.ctl td{background:rgba(0,163,224,.06)}
-.tnote{display:flex;gap:30px;align-items:center;margin-top:26px;font:600 20px var(--f-b);color:var(--fg2)}
+/* ---------- reveal ---------- */
+.lineup{display:flex;justify-content:center;align-items:flex-end;gap:30px;margin-top:auto}
+.lineup .bt{width:150px;text-align:center}
+.lineup .bt .bottle{filter:drop-shadow(0 26px 26px rgba(0,30,70,.3))}
+.lineup .bt span{display:block;margin-top:14px;font:700 15px var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--fg2)}
 
-/* ---------- 26 decision ---------- */
-.s-dec{display:grid;grid-template-columns:720px minmax(0,1fr);gap:70px;margin-top:30px;flex:1;align-items:center}
-.venn{position:relative;width:720px;height:720px}
-.venn .c{position:absolute;width:418px;height:418px;border-radius:50%;mix-blend-mode:screen;display:flex;padding:64px}
-.venn .c span{font:800 22px var(--f-d);letter-spacing:.08em;text-transform:uppercase;color:#fff}
-.venn .c1{left:151px;top:14px;background:radial-gradient(circle,rgba(0,163,224,.55),rgba(0,163,224,.2));border:3px solid rgba(92,203,245,.75);justify-content:center;align-items:flex-start}
-.venn .c2{left:14px;top:259px;background:radial-gradient(circle,rgba(126,211,33,.45),rgba(126,211,33,.16));border:3px solid rgba(126,211,33,.65);align-items:flex-end}
-.venn .c3{left:288px;top:259px;background:radial-gradient(circle,rgba(245,128,37,.5),rgba(245,128,37,.18));border:3px solid rgba(245,128,37,.75);align-items:flex-end;justify-content:flex-end}
-.venn .core{position:absolute;left:360px;top:330px;transform:translate(-50%,-50%);font:800 34px var(--f-d);color:#fff}
-.qs{display:flex;flex-direction:column;gap:22px}
-.q{padding:28px 32px;display:grid;grid-template-columns:70px minmax(0,1fr);gap:22px;align-items:start}
-.q .n{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;font:800 30px var(--f-d);color:#071C3C;background:var(--c)}
-.q h4{margin:0 0 8px}
-.q p{margin:0;font:500 23px/1.42 var(--f-b);color:var(--fg2)}
+/* ---------- a flavor world ---------- */
+.s-world{display:grid;grid-template-columns:1fr 440px;gap:40px;height:100%}
+.s-world .left{display:flex;flex-direction:column;min-width:0}
+.s-world .top{display:flex;align-items:center;gap:14px}
+.s-world .mega{margin-top:26px;font-size:var(--ms,212px)}
+.s-world .mega .o{color:transparent;-webkit-text-stroke:3px var(--fg);letter-spacing:.01em}
+.s-world .tag{margin-top:24px;font:700 44px/1.08 var(--f-d);letter-spacing:-.02em;max-width:24ch}
+.s-world .low{margin-top:auto;display:grid;grid-template-columns:1.1fr 1fr;gap:22px;align-items:end}
+.s-world .arc3{padding:22px 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.s-world .arc3 div{font:500 20px/1.35 var(--f-b);color:var(--fg2)}
+.s-world .arc3 b{display:block;font:700 13px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--fg);margin-bottom:6px}
+.s-world .arc3 b::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--acc);margin-right:8px;vertical-align:-1px}
+.s-world .ww{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.s-world .ww .chip{white-space:normal}
+.s-world .chem{padding:22px 24px}
+.s-world .chem .lab{display:flex;align-items:center;gap:10px;color:var(--fg)}
+.s-world .chem .lab svg{width:22px;height:22px}
+.s-world .chem .keys{margin:10px 0 8px;font:800 25px/1.2 var(--f-d);letter-spacing:-.01em}
+.s-world .chem p{margin:0;font:500 18px/1.42 var(--f-b);color:var(--fg2)}
+.s-world .bt{align-self:center;height:860px;aspect-ratio:2/5;justify-self:center}
+.s-world .bt .bottle{height:100%;width:100%;filter:drop-shadow(0 50px 50px rgba(0,20,50,.32))}
 
-/* ---------- 28 travel ---------- */
-.kits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;margin-top:44px}
-.kit{padding:30px;display:flex;flex-direction:column;gap:14px}
-.kit svg{width:100%;height:330px}
-.kit p{margin:0;font:500 22px/1.45 var(--f-b);color:var(--fg2)}
+/* ---------- wildcards ---------- */
+.portals{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;margin-top:auto}
+.portal{text-align:center}
+.portal .disc{width:440px;height:440px;margin:0 auto;border-radius:50%;overflow:hidden;box-shadow:0 30px 70px rgba(7,28,60,.22),0 0 0 10px rgba(255,255,255,.65)}
+.portal canvas{width:440px;height:440px;display:block}
+.portal b{display:block;margin-top:28px;font:800 48px var(--f-d);letter-spacing:-.03em}
+.portal span{display:block;font:500 22px var(--f-b);color:var(--fg2);margin-top:6px}
+.portal small{display:block;font:600 15px/1.45 var(--f-m);color:var(--fg3);margin:10px auto 0;max-width:34ch}
 
-/* ---------- 29 short list ---------- */
-.s-short{display:grid;grid-template-columns:480px minmax(0,1fr);gap:30px;margin-top:44px}
-.s-short .col{padding:30px;display:flex;flex-direction:column;gap:6px}
-.s-short h4{margin:0 0 10px;font:800 18px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg2);display:flex;justify-content:space-between}
-.slot{padding:18px 0 22px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:14px}
-.slot .lab{color:var(--fg3)}
-.write{height:3px;background:repeating-linear-gradient(90deg,var(--line) 0 14px,transparent 14px 22px);margin-top:26px}
-.leads{display:grid;grid-template-columns:1.1fr 1fr 1.2fr .7fr;gap:0 26px}
-.leads .hd{font:800 15px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);padding-bottom:12px}
-.leads .cell{border-top:1px solid var(--line);height:96px;display:flex;align-items:flex-end;padding-bottom:18px}
-.leads .cell .write{flex:1;margin:0}
-.leads .cell.n{font:800 30px var(--f-d);color:var(--orange);gap:18px;align-items:center;padding-bottom:0}
-.leads .cell.n .write{align-self:flex-end;margin-bottom:18px}
-.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+/* ---------- create ---------- */
+.create{display:grid;grid-template-columns:repeat(3,1fr) 420px;gap:22px;margin-top:44px;flex:1}
+.create .col2{padding:26px;display:flex;flex-direction:column;gap:14px}
+.create h4{margin:0;font:700 15px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
+.create h3{margin:0 0 6px;font:800 44px var(--f-d);letter-spacing:-.02em}
+.create .pills{display:flex;flex-wrap:wrap;gap:10px}
+.create .pills span{padding:10px 16px;border-radius:99px;background:#fff;border:1px solid var(--line);font:700 20px var(--f-d)}
+.create .pills span i{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--c);margin-right:8px}
+.canvas{padding:28px;border:3px dashed var(--orange);background:rgba(255,248,241,.9);display:flex;flex-direction:column;gap:12px;border-radius:30px}
+.canvas .ln{flex:1;display:flex;align-items:flex-end;border-bottom:2px solid rgba(7,28,60,.18);padding-bottom:10px;font:700 14px var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
 
-/* ---------- 30 close ---------- */
-.s-close{display:flex;flex-direction:column;height:100%}
-.s-close .lineup{display:flex;justify-content:center;gap:34px;margin-top:auto;align-items:flex-end}
-.s-close .lineup .bt{width:150px;filter:drop-shadow(0 22px 22px rgba(0,40,80,.2))}
-.s-close .lineup .bt.c{width:190px}
+/* ---------- checks + decisions ---------- */
+.qs3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:auto}
+.qc{min-height:360px;display:flex;flex-direction:column}
+
+.qc{padding:34px 32px 36px}
+.qc .n{font:800 120px/.8 var(--f-d);color:var(--c);letter-spacing:-.05em;font-stretch:80%}
+.qc h3{margin:22px 0 12px;font:800 44px/1.04 var(--f-d);letter-spacing:-.02em}
+.qc p{margin:0;font:500 23px/1.42 var(--f-b);color:var(--fg2)}
+.dec td .nm{display:flex;align-items:center;gap:14px;font:800 28px var(--f-d)}
+.dec td .nm i{width:16px;height:16px;border-radius:50%;background:var(--c)}
+.dec .circ{display:inline-block;width:44px;height:44px;border-radius:12px;border:2px solid rgba(7,28,60,.22);background:#fff}
+.dec .star{font-size:36px;color:rgba(7,28,60,.16)}
+
+/* ---------- pipeline ---------- */
+.lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px;flex:1}
+.lane{padding:26px 26px 22px;border-top:10px solid var(--c);display:flex;flex-direction:column}
+.lane .k{font:800 15px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--c)}
+.lane h3{margin:8px 0 6px;font:800 38px/1.04 var(--f-d);letter-spacing:-.02em}
+.lane p{margin:0;font:500 20px/1.4 var(--f-b);color:var(--fg2)}
+.lane .bots{display:flex;flex-wrap:wrap;gap:14px 10px;margin-top:auto;padding-top:22px}
+.lane .lb{width:108px;text-align:center}
+.lane .lb .bottle{width:64px;margin:0 auto;filter:drop-shadow(0 10px 10px rgba(0,30,70,.2))}
+.lane .lb span{display:block;margin-top:8px;font:800 17px/1.1 var(--f-d)}
+.lane .lb.w .bottle{opacity:.6}
+
+/* ---------- playbook ---------- */
+.pbk{display:grid;grid-template-columns:520px 1fr;gap:26px;margin-top:40px}
+.pbk .col3{padding:30px;display:flex;flex-direction:column;gap:8px}
+.pbk h4{margin:0 0 10px;display:flex;justify-content:space-between;font:800 15px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--fg2)}
+.slot{border-top:1px solid var(--line);padding:16px 0 12px}
+.slot .lab{display:block;margin-bottom:26px}
+.write{border-bottom:3px dashed var(--line);height:2px}
+.leads{display:grid;grid-template-columns:1.1fr 1fr 1.2fr .7fr;gap:0 24px}
+.leads .hd{font:700 13px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--fg3);padding-bottom:12px}
+.leads .cell{border-top:1px solid var(--line);height:92px;display:flex;align-items:flex-end;padding-bottom:18px;gap:14px}
+.leads .cell .write{flex:1}
+.leads .cell.n{font:800 30px var(--f-d);color:var(--orange)}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
 
 /* ---------- UI: progress, hints, overview, notes, presenter ---------- */
-.ui-progress{position:fixed;left:0;bottom:0;height:4px;width:100%;transform-origin:0 50%;background:linear-gradient(90deg,var(--green),var(--orange));z-index:20;transition:transform .4s var(--ease)}
-.ui-hint{position:fixed;right:18px;bottom:14px;z-index:20;font:700 12px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);background:rgba(7,20,40,.55);padding:8px 12px;border-radius:99px;transition:opacity .6s}
+.ui-progress{position:fixed;left:0;bottom:0;height:4px;width:100%;transform-origin:0 50%;background:linear-gradient(90deg,var(--blue),var(--green),var(--orange));z-index:20;transition:transform .4s var(--ease)}
+.ui-hint{position:fixed;right:18px;bottom:14px;z-index:20;font:700 12px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);background:rgba(7,20,40,.6);padding:8px 12px;border-radius:99px;transition:opacity .6s}
 .ui-hint.off{opacity:0}
 .blank{position:fixed;inset:0;background:#000;z-index:30}
 .notes-panel{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);width:min(1100px,92vw);max-height:36vh;overflow:auto;z-index:25;background:rgba(7,20,40,.94);color:#fff;border-radius:18px;padding:22px 26px;font:500 18px/1.55 var(--f-b);box-shadow:0 20px 60px rgba(0,0,0,.4)}
-.notes-panel b{display:block;font:800 13px var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:#FFB066;margin-bottom:6px}
-.ov{position:fixed;inset:0;z-index:40;background:#0B1424;overflow:auto;padding:28px}
+.notes-panel b{display:block;font:700 13px var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:#FFB066;margin-bottom:6px}
+.ov{position:fixed;inset:0;z-index:40;background:#050B18;overflow:auto;padding:28px}
 .ov-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:0 6px 20px;flex-wrap:wrap}
 .ov-head h2{margin:0;font:800 26px var(--f-d);letter-spacing:-.01em}
 .ov-head .links{display:flex;gap:10px;flex-wrap:wrap}
-.ov-head a,.ov-head button{font:700 13px var(--f-d);letter-spacing:.08em;text-transform:uppercase;color:#fff;text-decoration:none;border:2px solid rgba(255,255,255,.3);padding:9px 14px;border-radius:99px}
-.ov-head a:hover,.ov-head button:hover{border-color:#fff}
+.ov-head a,.ov-head button{font:700 12px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:#fff;text-decoration:none;border:2px solid rgba(255,255,255,.3);padding:9px 14px;border-radius:99px}
 .ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
 .ov-grid button{display:flex;flex-direction:column;gap:8px;text-align:left;padding:0}
 .ov-grid .th{width:100%;aspect-ratio:16/9;border-radius:12px;background:var(--bgc);position:relative;overflow:hidden;border:2px solid transparent;display:flex;align-items:flex-end;padding:12px 14px}
 .ov-grid .th span{font:800 17px/1.1 var(--f-d);color:var(--tfg);letter-spacing:-.01em}
 .ov-grid button.cur .th{border-color:var(--orange)}
-.ov-grid small{font:700 12px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
-/* presenter */
-.pv{position:fixed;inset:0;z-index:50;background:#0B1424;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:18px;padding:18px}
+.ov-grid small{font:700 11px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.pv{position:fixed;inset:0;z-index:50;background:#050B18;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:18px;padding:18px}
 .pv-top{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:16px}
 .pv-top .t{font:800 44px var(--f-d);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.pv-top .meta{font:700 14px var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+.pv-top .meta{font:700 13px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65)}
 .pv-top .ctl{display:flex;gap:10px}
-.pv-top .ctl button{font:800 14px var(--f-d);letter-spacing:.08em;text-transform:uppercase;border:2px solid rgba(255,255,255,.35);padding:10px 16px;border-radius:99px}
+.pv-top .ctl button{font:700 13px var(--f-m);letter-spacing:.08em;text-transform:uppercase;border:2px solid rgba(255,255,255,.35);padding:10px 16px;border-radius:99px}
 .pv-cur,.pv-next{position:relative;background:#000;border-radius:12px;overflow:hidden}
 .pv-cur{aspect-ratio:16/9;align-self:start}
 .pv-cur iframe,.pv-next iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -459,8 +315,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 /* embed (presenter previews) */
 .embed .ui-progress,.embed .ui-hint{display:none}
 .embed .slide{transition:none}
-.embed .b{transition:none;opacity:1;transform:none}
-.embed .curves .ln,.embed .fresh path{transition:none}
+.embed .b,.embed .mega .ln > span,.embed .dial .arc{transition:none!important;opacity:1;transform:none;stroke-dashoffset:0}
 
 /* print / PDF: every slide on its own 1920 × 1080 page */
 @page{size:1920px 1080px;margin:0}
@@ -468,24 +323,12 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 .print .viewport{position:static}
 .print .deck{position:static;transform:none;width:1920px;height:auto}
 .print .slide{position:relative;width:1920px;height:1080px;opacity:1;visibility:visible;transition:none;break-after:page;page-break-after:always}
-.print .b{opacity:1;transform:none;transition:none}
-.print .fresh path,.print .curves .ln{stroke-dashoffset:0;transition:none}
+.print .b,.print .mega .ln > span{opacity:1;transform:none;transition:none}
+.print .dial .arc{stroke-dashoffset:0;transition:none}
 .print .ui-progress,.print .ui-hint{display:none}
-/* keep the PDF light: blurred shadows and blend modes would be rasterised on every page */
-.print .bt,.print .stagec canvas{filter:none!important;box-shadow:none!important}
-.print .card{box-shadow:none!important;border-color:rgba(7,28,60,.12)}
-.print [data-tone="dark"] .card{border-color:rgba(255,255,255,.16)}
-.print .venn .c{mix-blend-mode:normal}
-.print .venn .c1{background:rgba(0,163,224,.34)}.print .venn .c2{background:rgba(126,211,33,.26)}.print .venn .c3{background:rgba(245,128,37,.3)}
+.print .bottle,.print .tr,.print .portal .disc,.print .orb i,.print .hero-bt .bottle{filter:none!important;box-shadow:none!important;animation:none!important}
 .print .chrome .lock img{box-shadow:none}
-@media print{
-  html,body{overflow:visible;height:auto}
-  .viewport{position:static}
-  .deck{position:static;transform:none;width:1920px;height:auto}
-  .slide{position:relative;width:1920px;height:1080px;opacity:1;visibility:visible;break-after:page}
-  .b{opacity:1;transform:none}
-  .ui-progress,.ui-hint,.notes-panel,.ov,.pv{display:none!important}
-}
+.print .hero-bt .ring{animation:none}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}}
 </style>
 </head>
@@ -493,438 +336,226 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 <div class="viewport"><div class="deck" id="deck">
 
 <!-- 01 · TITLE -->
-<section class="slide" data-tone="light" data-bg="#E6F6FD" data-glow="#FFFFFF" data-sec="Welcome" data-title="Expand what fresh can feel like">
-  <div class="pad" style="padding-top:130px">
-    <div class="s-title">
-      <div>
-        <div class="meta b"><span>TheraBreath Flavor Playbook</span><span>Nov 9, 2026 · 10:00 AM · Darwin</span></div>
-        <h1 class="d h-hero b">Expand what <span class="fresh">fresh<svg viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M5,22 C80,6 190,4 295,16"/></svg></span> can feel like.</h1>
-        <p class="lede b">A working session to define TheraBreath’s flavor playbook, for near-term product innovation and long-term franchise growth.</p>
-        <div class="byline b"><span class="lab">Presented by</span><b>The Flavor Factory</b><i class="sep"></i>Church &amp; Dwight HQ, Ewing, NJ</div>
-      </div>
-      <div class="trio b" id="trio"><div class="halo"></div></div>
+<section class="slide" data-world="oxygen" data-tone="light" data-bg="#BFE8FA" data-sec="Welcome" data-title="The future of fresh">
+  <div class="pad s-title">
+    <div>
+      <div class="meta b"><span>TheraBreath Flavor Playbook</span><span>Nov 9, 2026 · 10:00 AM · Darwin</span></div>
+      <h1 class="mega"><span class="ln"><span>The future</span></span><span class="ln"><span style="--k:1">of <em>fresh.</em></span></span></h1>
+      <p class="lede b">Six new flavor worlds for TheraBreath, each one built to survive the oxygen in the bottle.</p>
+      <div class="byline b"><span class="lab">Presented by</span><b>The Flavor Factory</b><i class="sep"></i>Church &amp; Dwight HQ, Ewing, NJ</div>
+    </div>
+    <div class="hero-bt b" id="heroBt">
+      <svg class="ring" viewBox="0 0 500 500" aria-hidden="true"><defs><path id="ringP" d="M250,250 m-205,0 a205,205 0 1,1 410,0 a205,205 0 1,1 -410,0"/></defs><text font-family="JetBrains Mono, monospace" font-weight="700" font-size="15" letter-spacing="7" fill="#0A4F8A"><textPath href="#ringP">POWERED BY OXYGEN · SIX NEW WORLDS OF FRESH · POWERED BY OXYGEN · SIX NEW WORLDS OF FRESH ·</textPath></text></svg>
     </div>
   </div>
-  <aside class="notes">Welcome, and thank you for hosting us, and to Ross for pulling the group together. This is a working session. By noon we want a draft flavor playbook the whole room has shaped: the trends worth acting on, the territories to prioritize, concepts with a clear consumer and occasion, and a pipeline from near-term launches to long-term bets. Lunch follows.</aside>
+  <aside class="notes">Welcome, and thank you for hosting us, and to Ross for pulling the group together. This is a working session. By noon we want a draft flavor playbook the whole room has shaped. At the center of it are six new flavor worlds we built for TheraBreath, and every one of them is designed to survive the oxygen in the bottle. Lunch follows.</aside>
 </section>
 
-<!-- 01b · WHO WE ARE -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FDECEA" data-sec="Welcome" data-title="Who we are">
-  <div class="pad">
-    <span class="eyebrow b">Who we are</span>
-    <h2 class="d h1 b">A family-owned flavor house <span class="hl">in Norco, California.</span></h2>
-    <div class="s-who">
-      <div class="b"><p class="lede" style="max-width:34ch">We make custom liquid and powder flavors, including for oral care. We’re small on purpose: you work directly with the people formulating your flavor, and samples come back fast.</p>
-        <div class="todo">To add: team photo, plus the names and roles of who’s here today</div></div>
-      <div class="who-list">
-        <div class="card b"><b>Custom, from the bench</b><span>Every flavor built for the product it goes into, liquid or powder.</span></div>
-        <div class="card b"><b>Oral care is part of what we do</b><span>One of the industries we already make flavors for.</span></div>
-        <div class="card b"><b>Low minimum orders</b><span>Small pilot batches keep testing a new flavor affordable.</span></div>
-        <div class="card b"><b>Fast turnaround</b><span>Most orders ship within 3–5 business days.</span></div>
-      </div>
+<!-- 02 · WHO WE ARE -->
+<section class="slide" data-world="oxygen" data-tone="light" data-bg="#BFE8FA" data-sec="Welcome" data-title="Hello from Norco">
+  <div class="pad s-who">
+    <div>
+      <span class="eyebrow b">Who we are</span>
+      <h2 class="display b">Hello from <em>Norco.</em></h2>
+      <p class="lede b" style="margin-top:34px">We’re The Flavor Factory, a family flavor house from Norco, California. We spend our days at the bench getting flavor to behave in whatever base it has to live in. For TheraBreath, that base runs on oxygen.</p>
+      <div class="todo b" style="margin-top:34px">To add: team photo, plus the names and roles of who’s here today</div>
+    </div>
+    <div class="bench">
+      <div class="card b"><svg viewBox="0 0 48 48" fill="none" stroke="#006649" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22 24 9l16 13v17H8z"/><path d="M20 39V28h8v11"/></svg><b>Family</b><span>Run by a family, in Norco, California.</span></div>
+      <div class="card b"><svg viewBox="0 0 48 48" fill="none" stroke="#F58025" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6h12M20 6v12L9 38a3 3 0 0 0 3 4h24a3 3 0 0 0 3-4L28 18V6"/><path d="M14 30h20"/></svg><b>Bench-first</b><span>Every flavor built for the base it goes into.</span></div>
+      <div class="card b"><svg viewBox="0 0 48 48" fill="none" stroke="#00A3E0" stroke-width="3"><circle cx="18" cy="28" r="9"/><circle cx="33" cy="16" r="6"/><circle cx="35" cy="34" r="4"/></svg><b>Oxygen-ready</b><span>Six new flavors made for sodium chlorite.</span></div>
     </div>
   </div>
-  <aside class="notes">A quick word on who we are, for anyone meeting us for the first time. We’re a family-owned flavor house in Norco, California. We make custom liquid and powder flavors, and oral care is one of the industries we already serve. Being small is the point: you work directly with the people formulating, minimums are low so pilot batches are affordable, and most orders ship within three to five business days. That’s exactly what early-stage innovation needs.</aside>
+  <aside class="notes">A quick word on who we are, for anyone meeting us for the first time. We’re a family flavor house from Norco, California. Our work happens at the bench: getting a flavor to behave in the base it has to live in. For TheraBreath that base is an oxygenating sodium chlorite rinse, and that shaped everything we’re about to show you.</aside>
 </section>
 
-<!-- 02 · GOAL -->
-<section class="slide" data-tone="dark" data-bg="#0A2A5C" data-glow="#0F4C86" data-sec="Welcome" data-title="Together, a flavor playbook">
+<!-- 03 · OBJECTIVE -->
+<section class="slide" data-world="studio" data-tone="light" data-bg="#FBF6EF" data-sec="Welcome" data-title="Together, a flavor playbook">
   <div class="pad">
     <span class="eyebrow b">The objective for today</span>
-    <h2 class="d h1 b">Together, define <span class="hl">a flavor playbook.</span></h2>
+    <h2 class="display b">Together, define <em>a flavor playbook.</em></h2>
     <div class="objs" id="objs"></div>
-    <div class="kicker b"><i></i>For near-term product innovation and long-term franchise growth.</div>
+    <div class="kick b"><i></i>For near-term product innovation and long-term franchise growth.</div>
   </div>
   <aside class="notes">Ross’s invite set four objectives, and the morning is built around them. First, identify the flavor, sensory and consumer trends shaping oral care. Second, explore new flavor territories and sensory experiences that strengthen TheraBreath’s edge. Third, generate concepts that create new usage occasions, reach new consumers and expand the portfolio. Fourth, build a pipeline of platforms, flavor directions and white space for growth across the franchise. Together those four make the playbook.</aside>
 </section>
 
-<!-- 03 · AGENDA -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#E6F6FD" data-sec="Welcome" data-title="10:00 to noon, then lunch">
-  <div class="pad">
-    <span class="eyebrow b">The morning</span>
-    <h2 class="d h1 b">10:00 to noon, <span class="hl">then lunch.</span></h2>
-    <div class="tline ag6" id="agenda"></div>
-    <div class="lunchbar b"><span class="t">12:00</span><b>Lunch</b><span>Thank you, Church &amp; Dwight.</span></div>
-  </div>
-  <aside class="notes">Six blocks, each tied to one of the four objectives. Welcome, ten minutes. Trends, twenty. Territories, twenty. Taste, thirty: six directions blind beside today’s TheraBreath, so about four minutes a sample. Create, twenty, in small groups. Playbook, the last twenty: three checks, the pipeline and owners. We will keep time visible and park side topics, because lunch is at noon.</aside>
-</section>
-
-<!-- 04 · OPPORTUNITY -->
-<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFFFFF" data-sec="Trends" data-title="The benefit is familiar. The flavor can do more.">
-  <div class="pad">
-    <div class="s-opp">
-      <figure class="card photo b"><img src="../assets/therabreath-rinses.jpg" alt="TheraBreath Fresh Breath Oral Rinse in Invigorating Icy Mint, Rainforest Mint and Mild Mint"><figcaption>The shelf today: one orange cap, three mints</figcaption></figure>
-      <div>
-        <span class="eyebrow b">The opportunity</span>
-        <h2 class="d h2 b">The benefit is familiar.<br><span class="hl">The flavor can do more.</span></h2>
-        <div class="rows">
-          <div class="row b"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="#1F8A66"/><circle cx="42" cy="42" r="36" fill="none" stroke="#006649" stroke-width="6"/></svg><div><span class="lab" style="color:var(--green)">Owned today</span><h4 class="d h4">Trust</h4><p>Gentle, effective, non-burning freshness. It stays at the center.</p></div></div>
-          <div class="row b"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="rgba(7,28,60,.12)" stroke-width="6"/><path d="M42,6 A36,36 0 0 1 42,78" fill="none" stroke="#F58025" stroke-width="6" stroke-linecap="round"/><circle cx="42" cy="42" r="20" fill="#FFE6D1"/></svg><div><span class="lab" style="color:var(--orange-d)">The opportunity</span><h4 class="d h4">Character</h4><p>A reason to notice the product and remember it.</p></div></div>
-          <div class="row b"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="#7ED321" stroke-width="6" stroke-dasharray="8 7" stroke-linecap="round"/><path d="M30,44 l8,8 l16,-18" fill="none" stroke="#5AA80F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg><div><span class="lab" style="color:#4E9A0C">The payoff</span><h4 class="d h4">Repeat use</h4><p>An experience people enjoy is one they choose again tomorrow.</p></div></div>
-        </div>
-        <div class="journey b"><span>Notice</span><i>→</i><span>Remember</span><i>→</i><span>Choose</span><i>→</i><span>Enjoy</span><i>→</i><span>Come back</span></div>
-      </div>
+<!-- 04 · AGENDA -->
+<section class="slide" data-world="studio" data-tone="light" data-bg="#FBF6EF" data-sec="Welcome" data-title="10:00 to noon, then lunch">
+  <div class="pad s-agenda">
+    <div>
+      <span class="eyebrow b">The morning</span>
+      <h2 class="display b" style="font-size:88px">10:00 to noon, <em>then lunch.</em></h2>
+      <div class="alist" id="alist"></div>
     </div>
+    <div class="dial b" id="dial"></div>
   </div>
-  <aside class="notes">We start from what already works. TheraBreath owns gentle, effective, non-burning freshness, and that stays at the center. The opportunity is to add character: a reason to notice the product, remember it, choose it, enjoy it and come back to it. This is an evolution of the brand, not a departure from it.</aside>
+  <aside class="notes">Six blocks, each tied to one of the four objectives. Welcome, ten minutes. Trends, twenty. Territories, twenty, including what survives sodium chlorite. Taste, thirty: six new flavors blind beside today’s TheraBreath, so about four minutes a sample. Create, twenty, in small groups. Playbook, the last twenty: three checks, the pipeline and owners. We will keep time visible, because lunch is at noon.</aside>
 </section>
 
-<!-- 05 · SIGNALS -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF3E8" data-sec="Trends" data-title="Trends shaping the future of oral care">
+<!-- 05 · TRENDS -->
+<section class="slide" data-world="spectrum" data-tone="light" data-bg="#FBEFDC" data-sec="Trends" data-title="What’s shaping oral care">
   <div class="pad">
-    <span class="eyebrow b">Objective 01 · Trends</span>
-    <h2 class="d h1 b">Trends shaping <span class="hl">the future of oral care.</span></h2>
-    <div class="sigs">
-      <article class="sig card b"><div class="vis v-beauty"><i></i><i></i><i></i></div><span class="tt" style="--tc:#FDECEA;--tf:#B23A2A">Consumer trend</span><div class="word">Beauty</div><h4>Personal-care rituals</h4><p>Oral care is joining the skincare shelf as one more step in a self-care routine.</p><div class="seen"><b>Where we see it</b>Layered skincare routines, bathroom “shelfies”, oral care sold beside serums.</div></article>
-      <article class="sig card b"><div class="vis v-flavor" id="vFlavor"></div><span class="tt" style="--tc:#FFF3E0;--tf:#C85F0E">Flavor trend</span><div class="word">Flavor</div><h4>A broader vocabulary</h4><p>People now taste yuzu, shiso and cardamom in drinks, snacks and wellness shots.</p><div class="seen"><b>Where we see it</b>Zero-proof bars, functional beverages, global menus, fine fragrance.</div></article>
-      <article class="sig card b"><div class="vis v-sense"><svg viewBox="0 0 300 150" preserveAspectRatio="none" id="vSense"></svg></div><span class="tt" style="--tc:#E6F6FD;--tf:#0072BC">Sensory trend</span><div class="word">Sensation</div><h4>Sensory proof</h4><p>People want an effect they can feel and describe. That is how they know it works.</p><div class="seen"><b>Where we see it</b>Cooling skincare, tingling lip products, “you can feel it working” claims.</div></article>
-      <article class="sig card b"><div class="vis v-well"><div class="arc"></div><div class="sun"></div></div><span class="tt" style="--tc:#FDECEA;--tf:#B23A2A">Consumer trend</span><div class="word">Wellness</div><h4>Everyday wellness</h4><p>Products earn a place in the day: morning energy, midday reset, evening calm.</p><div class="seen"><b>Where we see it</b>Sleep and hydration rituals, adaptogen drinks, “night” versions of everything.</div></article>
-    </div>
+    <span class="eyebrow b"><b>01</b>Trends</span>
+    <h2 class="display b">What’s shaping <em>oral care.</em></h2>
+    <div class="trends" id="trends"></div>
   </div>
-  <aside class="notes">Objective one: the trends. Four we see from our bench and across the categories we make flavors for, grouped the way Ross framed them. A consumer trend: oral care is becoming a self-care step. A flavor trend: people now taste yuzu, shiso and cardamom in everyday food and drink. A sensory trend: people want to feel a product working. And a consumer trend: products earn a place at a moment in the day. Which of these does the room see too, and what are we missing?</aside>
+  <aside class="notes">Objective one: the trends. Four we see from the bench and across the categories we work in, grouped the way Ross framed them. A consumer trend: oral care is joining the self-care shelf. A flavor trend: people now taste cardamom, rosewater and coconut water in everyday drinks. A sensory trend: people want to feel a product working. And a consumer trend: people want a different kind of fresh for each moment. Which of these does the room see too, and what are we missing?</aside>
 </section>
 
-<!-- 06 · MAP -->
-<section class="slide" data-tone="dark" data-bg="#062150" data-glow="#0B3F7E" data-sec="Territories" data-title="Flavor culture is much bigger than mint">
-  <div class="pad" style="padding-top:140px">
-    <h2 class="d h2 b">Flavor culture is much bigger than <span class="hl">mint.</span></h2>
-    <div class="map-wrap b" id="mapWrap"><canvas id="mapCanvas" aria-label="Dot map of twelve flavor regions, each linked to the room"></canvas></div>
-    <div class="map-note b"><span class="small">Twelve places reshaping what fresh can mean. A vocabulary to borrow from, not a launch list.</span><span class="lab">12 regions · 4 platforms · 1 room</span></div>
-  </div>
-  <aside class="notes">Flavor culture is far bigger than traditional mint. These twelve places are where freshness cues are coming from, and every line runs back to this room. The point is not to launch twelve flavors. It is to borrow a vocabulary.</aside>
-</section>
-
-<!-- 08 · SPECTRUM -->
-<section class="slide" data-tone="light" data-bg="#ECF8F1" data-glow="#FFFFFF" data-sec="Territories" data-title="Mint is an anchor, not the whole map">
+<!-- 06 · THE BASE -->
+<section class="slide" data-world="lab" data-tone="dark" data-bg="#071A40" data-sec="Territories" data-title="Built to survive oxygen">
   <div class="pad">
-    <span class="eyebrow b">Objective 02 · Territories</span>
-    <h2 class="d h1 b">Mint is an anchor, <span class="hl">not the whole map.</span></h2>
-    <div class="spec b">
-      <div class="spec-bar"><div class="zone" style="left:0;width:28%">Expected</div><div class="zone sw">Worth remembering</div><div class="zone" style="left:72%;width:28%;justify-content:flex-end;color:#fff">Novelty</div></div>
-      <div id="specTicks"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px">
+      <div><span class="eyebrow b"><b>02</b>Territories · the base</span><h2 class="display b">Built to survive <em>oxygen.</em></h2></div>
+      <p class="small b" style="max-width:36ch" id="fact"></p>
     </div>
-    <div class="spec-ends b">
-      <div><span class="d h4">← Familiar</span><span class="small">Classic peppermint, cool mint. Trusted, and easy to forget.</span></div>
-      <div><span class="d h4" style="color:var(--green)">The sweet spot</span><span class="small">Familiar enough to trust, different enough to remember. Placements are our flavorists’ read.</span></div>
-      <div><span class="d h4">Exploratory →</span><span class="small">Smoked chili cola, pickle-brine mint. Memorable once, hard to buy twice.</span></div>
+    <div class="s-base">
+      <div class="col b"><h4 style="--c:#7EE3AE"><i></i>Survives sodium chlorite</h4><div class="mols" id="molsOk"></div></div>
+      <div class="col b"><h4 style="--c:#FF8A5B"><i></i>Fades or turns</h4><div class="mols" id="molsX"></div></div>
     </div>
+    <div class="base-foot b"><div class="rule" id="rule"></div><p class="cav" id="cav"></p></div>
   </div>
-  <aside class="notes">Mint is the anchor, not the whole map. On the left is the expected: trusted and easy to forget. On the right is novelty: memorable once, hard to buy twice. Our six concepts sit deliberately in the middle band.</aside>
+  <aside class="notes">Before any flavor, the base. TheraBreath is an oxygenating sodium chlorite rinse, and that changes the rules. In the lab, sodium chlorite is the classic reagent for turning aldehydes into acids. In a rinse it works slowly, but it works the same way. That’s why citrus, cinnamon, vanilla, clove and cucumber fade or turn in this kind of base, and why mint has had the shelf to itself. So we built every new flavor from molecules with nothing for the oxidizer to find: saturated alcohols like menthol, ethers like cineole, amide coolants, saturated lactones and esters. This is our bench read, and everything still goes into accelerated stability in the real base.</aside>
 </section>
 
-<!-- 09 · RULE -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#ECF8F1" data-sec="Territories" data-title="Keep one familiar cue. Change one thing.">
+<!-- 07 · MAP -->
+<section class="slide" data-world="aura" data-tone="light" data-bg="#FFF3E6" data-sec="Territories" data-title="Where fresh could go">
   <div class="pad">
-    <span class="eyebrow b">The rule for every idea</span>
-    <h2 class="d h2 b">Keep one familiar cue.<br><span class="hl">Change one thing people notice.</span></h2>
-    <div class="formula">
-      <div class="f card b"><span class="lab">Keep</span><span class="d h4">One familiar freshness cue</span><span class="small">Cooling, a clean finish, a thread of mint.</span></div>
-      <div class="op b" aria-hidden="true">+</div>
-      <div class="f card b"><span class="lab">Change</span><span class="d h4">One thing people notice</span><span class="small">A fruit, a botanical, a warmth, a moment.</span></div>
-      <div class="op b" aria-hidden="true">=</div>
-      <div class="f card b"><span class="lab">Get</span><span class="d h4">Familiar · Fresh · Distinct</span><span class="small">Something people trust and still talk about.</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px">
+      <div><span class="eyebrow b"><b>02</b>Territories</span><h2 class="display b">Where fresh <em>could go.</em></h2></div>
+      <p class="small b" style="max-width:34ch">Today’s shelf lives in the top-left corner. Six new worlds and three wildcards spread into the white space. Positions are our read.</p>
     </div>
-    <div class="ex" id="ex"></div>
-  </div>
-  <aside class="notes">One rule to judge every idea today: keep one familiar freshness cue and change one thing people can notice. Arctic yuzu keeps the cold, clean finish and changes the citrus. Green tea cucumber keeps gentle freshness and adds calm. Ginger lime keeps the crisp cool and adds a little warmth.</aside>
-</section>
-
-<!-- 10 · WHITE SPACE -->
-<section class="slide" data-tone="dark" data-bg="#0A2A5C" data-glow="#0F4C86" data-sec="Territories" data-title="Stretch one dimension at a time">
-  <div class="pad" style="padding-top:140px">
-    <h2 class="d h2 b">The white space: stretch one dimension <span class="hl">at a time.</span></h2>
-    <div class="s-ws">
-      <div class="legend-r b" id="legendR"></div>
-      <div class="minis" id="minis"></div>
-    </div>
-  </div>
-  <aside class="notes">Here is the same idea as a map of the white space. Each spoke is a dimension, running from what oral care usually is at the center to where it could go at the edge. Classic mint sits near the center on all of them. Strong concepts pull hard on one or two spokes. When everything changes at once, there is nothing left to trust.</aside>
-</section>
-
-<!-- 11 · PLATFORMS -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF1E4" data-sec="Territories" data-title="Four platforms">
-  <div class="pad">
-    <span class="eyebrow b">Four innovation platforms</span>
-    <h2 class="d h1 b">Four places <span class="hl">TheraBreath could grow.</span></h2>
+    <div class="map b" id="map"></div>
     <div class="plats" id="plats"></div>
   </div>
-  <aside class="notes">We’d rather help build a few lines that last than chase one-off flavors. Four platforms, each able to carry several launches: New Fresh, Sensory Proof, Ritual by Time and Elevated Escape. Every concept you will taste belongs to at least one. Later we will pick two.</aside>
+  <aside class="notes">Here’s the territory. Today’s TheraBreath flavors cluster in the familiar, cool corner. The six new worlds spread into the white space, and the three wildcards push further. The sweet spot is the middle band: familiar enough to trust, different enough to remember. Underneath, the four platforms each could carry several launches. Later we will pick two.</aside>
 </section>
 
-<!-- 24 · TASTING FRAMEWORK -->
-<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFF3E8" data-sec="Taste" data-title="Taste the whole rinse">
+<!-- 08 · TASTING -->
+<section class="slide" data-world="ripple" data-tone="light" data-bg="#E8F4FA" data-sec="Taste" data-title="Taste first. Names later.">
   <div class="pad">
     <span class="eyebrow b">The tasting</span>
-    <h2 class="d h1 b">Taste <span class="hl">the whole rinse.</span></h2>
-    <div class="stages">
-      <div class="stg card b"><span class="t">0 – 5 SECONDS</span><h3 class="d h3">Opening</h3><p>What happens immediately?</p><i class="ar"></i></div>
-      <div class="stg card b"><span class="t">5 – 60 SECONDS</span><h3 class="d h3">Development</h3><p>How does it evolve while rinsing?</p><i class="ar"></i></div>
-      <div class="stg card b"><span class="t">1 – 3 MINUTES</span><h3 class="d h3">Finish</h3><p>What remains after you spit?</p><i class="ar"></i></div>
-      <div class="stg card b"><span class="t">TOMORROW</span><h3 class="d h3">Repeat</h3><p>Would I use this again?</p></div>
+    <h2 class="display b">Taste first. <em>Names later.</em></h2>
+    <div class="stages b">
+      <div class="stg" style="--c:#00A3E0"><span class="t">0–5 seconds</span><b>Opening</b><span>What happens first?</span></div>
+      <div class="stg" style="--c:#12A0A6"><span class="t">5–60 seconds</span><b>Development</b><span>How does it change?</span></div>
+      <div class="stg" style="--c:#006649"><span class="t">1–3 minutes</span><b>Finish</b><span>What stays with you?</span></div>
+      <div class="stg" style="--c:#F58025"><span class="t">Tomorrow</span><b>Repeat</b><span>Would you use it again?</span></div>
     </div>
     <div class="dims" id="dims"></div>
-    <div class="scale b"><span>Score each dimension</span><span class="dots"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i></span><span>1 = not at all · 5 = absolutely</span></div>
+    <div class="scale b"><span>Score each one</span><span class="dots"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i></span><span>1 = not at all · 5 = absolutely</span></div>
   </div>
-  <aside class="notes">Now we taste. We will follow each sample through the whole rinse: what happens in the first five seconds, how it evolves while rinsing, what remains a minute or two after, and whether you would want it again tomorrow. Score seven dimensions from one to five.</aside>
+  <aside class="notes">Now we taste. Seven coded cups: six new flavors and today’s TheraBreath as a control. Follow each one through the whole rinse: the first five seconds, how it develops, what stays after a minute or two, and whether you would want it again tomorrow. Four scores from one to five, and one word. The pre-read showed the six worlds, but not which cup is which, so it’s still blind.</aside>
 </section>
 
-<!-- 25 · SCORECARD -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#F2F9FC" data-sec="Taste" data-title="Room scorecard">
+<!-- 09 · SCORECARD -->
+<section class="slide" data-world="ripple" data-tone="light" data-bg="#E8F4FA" data-sec="Taste" data-title="Room scorecard">
   <div class="pad">
     <span class="eyebrow b">Blind tasting</span>
-    <h2 class="d h2 b">Room scorecard</h2>
+    <h2 class="display b" style="font-size:88px">Room scorecard</h2>
     <table class="tbl b" id="scoreTbl"></table>
-    <div class="tnote b"><span class="chip"><i style="--c:var(--blue)"></i>150 = current TheraBreath control</span><span>Score 1–5. Names are revealed after scoring.</span></div>
+    <div class="tnote b" style="margin-top:22px"><span class="chip"><i style="--c:var(--blue)"></i>150 = today’s TheraBreath</span><span>Names are revealed after scoring.</span></div>
   </div>
-  <aside class="notes">Samples are coded blind, and 150 is the current TheraBreath control. Score each sample on the seven dimensions and give it one word. We reveal the names only after scoring. The live scorecard on the web page tallies the room if you would rather score digitally.</aside>
+  <aside class="notes">Samples are coded, and 150 is today’s TheraBreath. Score each sample on the four dimensions and give it one word. The web page tallies the scores if you’d rather score digitally. We reveal the names only after everyone has scored.</aside>
 </section>
 
-<!-- 16 · SIX ENTER -->
-<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFFFFF" data-sec="Reveal" data-title="What you just tasted">
-  <div class="pad">
+<!-- 10 · REVEAL -->
+<section class="slide" data-world="finale" data-tone="dark" data-bg="#0B72C0" data-sec="Reveal" data-title="Six new worlds">
+  <div class="pad" style="text-align:center;align-items:center">
     <span class="eyebrow b">The reveal</span>
-    <h2 class="d h1 b">What you <span class="hl">just tasted.</span></h2>
-    <div class="six" id="six"></div>
+    <h2 class="mega" style="font-size:170px"><span class="ln"><span>Six new</span></span><span class="ln"><span style="--k:1">worlds.</span></span></h2>
+    <p class="lede b" style="margin-top:20px">Named the way TheraBreath names its flavors. Built for sodium chlorite.</p>
+    <div class="lineup" id="lineup"></div>
   </div>
-  <aside class="notes">Now the reveal. Here’s what was behind each code. The names are working names for today. Take a moment to compare this with your scores: anything that surprised you is worth talking about.</aside>
+  <aside class="notes">Here’s what was in the cups. Six new worlds, each named the way TheraBreath names its flavors: Frost Mint, Coastal Mint, Cardamom Mint, Coconut Mint, Rosewater Mint and Orchard Mint. Compare them with your scores. Anything that surprised you is worth talking about.</aside>
 </section>
 
-<!-- 17–22 · CONCEPTS (rendered from playbook-core) -->
-<template id="conceptSlot"></template>
+<!-- 11–16 · THE SIX WORLDS (rendered from playbook-core) -->
+<template id="worldSlot"></template>
 
-<!-- 23 · WILDCARDS -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#EAF7FD" data-sec="Reveal" data-title="Three wildcards from our bench">
+<!-- 17 · WILDCARDS -->
+<section class="slide" data-world="aura" data-tone="light" data-bg="#FFF3E6" data-sec="Reveal" data-title="Three wildcards">
   <div class="pad">
-    <span class="eyebrow b">In our pocket</span>
-    <h2 class="d h1 b">Three wildcards from our bench, <span class="hl">if we want to push further.</span></h2>
-    <div class="wilds" id="wilds"></div>
+    <span class="eyebrow b">Three more from the bench</span>
+    <h2 class="display b">Wildcards, <em>if we want to push.</em></h2>
+    <div class="portals" id="portals"></div>
   </div>
-  <aside class="notes">If the room wants to push further, we have three wildcards from our bench: Forest Bath (hinoki spearmint), Sun Shower (watermelon shiso) and Salt Air (makrut lime and sea salt). They are more territories for the pipeline, and good raw material for the Create exercise that comes next.</aside>
+  <aside class="notes">If the room wants to push further, we have three wildcards, built on the same rules: Sage Mint, soft garden herbs; Watermelon Mint, juicy and made for younger users; and Cedar Mint, a walk in the woods. They are more territories for the pipeline, and good raw material for Create.</aside>
 </section>
 
-<!-- CREATE -->
-<section class="slide" data-tone="light" data-bg="#FFF8F1" data-glow="#FFFFFF" data-sec="Create" data-title="Create: new occasions, new consumers">
+<!-- 18 · CREATE -->
+<section class="slide" data-world="studio" data-tone="light" data-bg="#FBF6EF" data-sec="Create" data-title="Create: one world, one moment, one person">
   <div class="pad">
-    <span class="eyebrow b">Objective 03 · Concepts</span>
-    <h2 class="d h2 b">Create: one territory, one moment, <span class="hl">one consumer.</span></h2>
+    <span class="eyebrow b"><b>03</b>Create</span>
+    <h2 class="display b" style="font-size:92px">One world. One moment. <em>One person.</em></h2>
     <div class="create" id="create"></div>
-    <div class="tnote b" style="margin-top:34px"><span class="chip"><i style="--c:var(--orange)"></i>Small mixed groups</span><span class="chip"><i style="--c:var(--blue)"></i>12 minutes to build</span><span class="chip"><i style="--c:var(--green)"></i>2 minutes each to share</span><span>Every card goes into the playbook.</span></div>
+    <div class="tnote b" style="margin-top:24px"><span class="chip"><i></i>Small mixed groups</span><span class="chip"><i style="--c:var(--blue)"></i>12 minutes to build</span><span class="chip"><i style="--c:var(--green)"></i>2 minutes each to share</span><span>Every card goes into the playbook.</span></div>
   </div>
-  <aside class="notes">Now it’s the room’s turn. Split into small groups, mixing Church &amp; Dwight and Flavor Factory people. Each group picks one territory, one occasion and one consumer, and builds a concept on the card: a working name, what it tastes like, why this person would choose it at this moment, and how it stays unmistakably TheraBreath. You can start from anything you tasted, a wildcard, or something entirely new. Twelve minutes to build, then two minutes per group to share. Every card goes into the playbook.</aside>
+  <aside class="notes">Now it’s the room’s turn. Split into small groups, mixing Church &amp; Dwight and Flavor Factory people. Each group picks one flavor world, one moment and one person, and builds a concept on the card: a working name, what it tastes like, why this person would choose it at this moment, and how it stays unmistakably TheraBreath. Twelve minutes to build, then two minutes per group to share.</aside>
 </section>
 
-<!-- 26 · DECISION FRAMEWORK -->
-<section class="slide" data-tone="dark" data-bg="#062150" data-glow="#0B3F7E" data-sec="Playbook" data-title="Brand Fit × Technical Reality × Consumer Desire">
-  <div class="pad" style="padding-top:140px">
-    <h2 class="d h2 b">Brand Fit × Technical Reality × <span class="hl">Consumer Desire</span></h2>
-    <div class="s-dec">
-      <div class="venn b"><div class="c c1"><span>Brand fit</span></div><div class="c c2"><span>Technical reality</span></div><div class="c c3"><span>Consumer desire</span></div><div class="core">Advance</div></div>
-      <div class="qs">
-        <div class="q card b"><span class="n" style="--c:#5CCBF5">1</span><div><h4 class="d h4">Does it fit the brand?</h4><p>Could TheraBreath credibly own this: gentle, dentist-formulated, unmistakably clean?</p></div></div>
-        <div class="q card b"><span class="n" style="--c:#9BE35A">2</span><div><h4 class="d h4">Can we make it?</h4><p>Will the flavor hold up in TheraBreath’s oxidizing, alcohol-free system over shelf life?</p></div></div>
-        <div class="q card b"><span class="n" style="--c:#FFB066">3</span><div><h4 class="d h4">Will people choose it?</h4><p>Is it appealing, easy to understand, different, and something people buy again?</p></div></div>
-      </div>
+<!-- 19 · THREE CHECKS -->
+<section class="slide" data-world="lab" data-tone="dark" data-bg="#071A40" data-sec="Playbook" data-title="Three checks">
+  <div class="pad">
+    <span class="eyebrow b"><b>04</b>Pipeline</span>
+    <h2 class="display b">Three checks <em>before the pipeline.</em></h2>
+    <div class="qs3">
+      <div class="qc card b" style="--c:#5CCBF5"><span class="n">01</span><h3>Does it fit the brand?</h3><p>Could TheraBreath credibly own it: gentle, dentist-formulated, unmistakably clean?</p></div>
+      <div class="qc card b" style="--c:#7EE3AE"><span class="n">02</span><h3>Can we make it?</h3><p>Does it hold up in sodium chlorite, alcohol-free, over the full shelf life?</p></div>
+      <div class="qc card b" style="--c:#FFB066"><span class="n">03</span><h3>Will people choose it?</h3><p>Is it appealing, easy to understand, different, and something people buy again?</p></div>
     </div>
+    <div class="tnote b" style="margin-top:30px"><span class="chip"><i style="--c:#7EE3AE"></i>Clears all three</span><span>Leads the near term. Anything else moves to Next or Long-term.</span></div>
   </div>
-  <aside class="notes">Objective four: the pipeline. Before anything goes in it, every concept, tasted or created this morning, must clear three checks. Does it fit the brand, something TheraBreath could credibly own? Can we make it, stable in TheraBreath’s oxidizing, alcohol-free system over shelf life? And will people choose it: appealing, understandable, different and repeatable? Only the center advances.</aside>
+  <aside class="notes">Objective four: the pipeline. Before anything goes in it, every flavor, tasted or created this morning, clears three checks. Does it fit the brand? Can we make it, in sodium chlorite, over the full shelf life? And will people choose it? Only the flavors that clear all three lead the near term.</aside>
 </section>
 
-<!-- 27 · DECISION BOARD -->
-<section class="slide" data-tone="light" data-bg="#FFFFFF" data-glow="#FFF1E4" data-sec="Playbook" data-title="Decision board">
+<!-- 20 · DECISION BOARD -->
+<section class="slide" data-world="aura" data-tone="light" data-bg="#FFF3E6" data-sec="Playbook" data-title="Decision board">
   <div class="pad">
     <span class="eyebrow b">Decision board</span>
-    <h2 class="d h2 b">Six enter. <span class="hl">Three lead the near term.</span></h2>
-    <table class="tbl b" id="decTbl"></table>
-    <div class="tnote b"><span class="lab" style="color:var(--fg2)">Then choose two platforms</span><span class="chip"><i style="--c:#7ED321"></i>New Fresh</span><span class="chip"><i style="--c:#00A3E0"></i>Sensory Proof</span><span class="chip"><i style="--c:#F58025"></i>Ritual by Time</span><span class="chip"><i style="--c:#9E5A55"></i>Elevated Escape</span></div>
+    <h2 class="display b" style="font-size:88px">Six enter. <em>Three lead the near term.</em></h2>
+    <table class="tbl dec b" id="decTbl"></table>
   </div>
-  <aside class="notes">Let’s go concept by concept and tick a check only when the room agrees. Three lead the near term. If more than three clear all checks, we rank on repeat-use potential from the tasting. The rest aren’t lost: they move to Next or Long-term on the pipeline. Then we pick the two platforms to build in.</aside>
+  <aside class="notes">Let’s go flavor by flavor and tick a check only when the room agrees. Three lead the near term. If more than three clear all checks, we rank on the repeat-use score from the tasting. The rest aren’t lost: they move to Next or Long-term on the pipeline.</aside>
 </section>
 
-<!-- PIPELINE -->
-<section class="slide" data-tone="light" data-bg="#F2F9FC" data-glow="#FFFFFF" data-sec="Playbook" data-title="The pipeline: near-term to long-term">
+<!-- 21 · PIPELINE -->
+<section class="slide" data-world="river" data-tone="light" data-bg="#EEF7F3" data-sec="Playbook" data-title="Now, next and later">
   <div class="pad">
-    <span class="eyebrow b">Objective 04 · Pipeline</span>
-    <h2 class="d h2 b">A pipeline from near-term launches <span class="hl">to long-term growth.</span></h2>
-    <div class="hzs" id="hzs"></div>
-    <div class="tnote b" style="margin-top:26px"><span class="chip"><i style="--c:var(--orange)"></i>Our starting read</span><span>The room moves the cards, and adds what came out of Create.</span></div>
+    <span class="eyebrow b"><b>04</b>Pipeline</span>
+    <h2 class="display b">Now, next <em>and later.</em></h2>
+    <div class="lanes" id="lanes"></div>
+    <div class="tnote b" style="margin-top:20px"><span class="chip"><i></i>Our starting read</span><span>The room moves the bottles, and adds what came out of Create.</span></div>
   </div>
-  <aside class="notes">This is our starting read, not a decision. Near-term: directions that fit today’s rinse base and shelf, the fastest path from bench to launch. Next: platforms and new occasions, where one flavor grows into a family, like a morning and night pair. Long-term: across the franchise, carrying the winners into other formats and toward new consumers. Let’s move the cards until the room agrees, and add what came out of Create.</aside>
+  <aside class="notes">This is our starting read, not a decision. Near-term: directions that sit closest to today’s base and shelf, Frost Mint and Orchard Mint. Next: platforms and new occasions, where one flavor grows into a family. Long-term: across the franchise, carrying the winners into other formats and toward new consumers. Let’s move the bottles until the room agrees.</aside>
 </section>
 
-<!-- 29 · DRAFT PLAYBOOK -->
-<section class="slide" data-tone="dark" data-bg="#004E38" data-glow="#0A7A58" data-sec="Playbook" data-title="The draft playbook">
+<!-- 22 · DRAFT PLAYBOOK -->
+<section class="slide" data-world="aura" data-tone="light" data-bg="#FFF3E6" data-sec="Playbook" data-title="The draft playbook">
   <div class="pad">
-    <span class="eyebrow b" style="color:#fff">What we leave with</span>
-    <h2 class="d h1 b">The draft playbook.</h2>
-    <div class="s-short">
-      <div class="col card b"><h4><span>Trends to act on</span><span>01</span></h4>
-        <div class="slot"><div class="write"></div></div>
-        <div class="slot"><div class="write"></div></div>
+    <span class="eyebrow b">What we leave with</span>
+    <h2 class="display b">The draft <em>playbook.</em></h2>
+    <div class="pbk">
+      <div class="col3 card b"><h4><span>Trends to act on</span><span>01</span></h4>
+        <div class="slot"><div class="write"></div></div><div class="slot"><div class="write"></div></div>
         <h4 style="margin-top:22px"><span>Priority territories</span><span>02</span></h4>
-        <div class="slot"><span class="lab">Platform 1</span><div class="write"></div></div>
-        <div class="slot"><span class="lab">Platform 2</span><div class="write"></div></div>
-      </div>
-      <div class="col card b"><h4><span>Near-term concepts · owner · next action</span><span>03 · 04</span></h4>
-        <div class="leads" id="leads"></div>
-        <div class="acts" id="acts"></div>
-      </div>
+        <div class="slot"><span class="lab">Platform 1</span><div class="write"></div></div><div class="slot"><span class="lab">Platform 2</span><div class="write"></div></div></div>
+      <div class="col3 card b"><h4><span>Near-term flavors · owner · next action</span><span>03 · 04</span></h4><div class="leads" id="leads"></div><div class="acts" id="acts"></div></div>
     </div>
-    <div class="tnote b" style="margin-top:28px;color:rgba(255,255,255,.8)"><span class="chip"><i style="--c:#A8F0CB"></i>Next and long-term bets stay on the pipeline</span><span>We send the written playbook to everyone here after today.</span></div>
   </div>
-  <aside class="notes">Let’s close decisively, one line per objective. The trends we will act on. The two territories to prioritize. The near-term concepts, each with a named owner, a next action and a date. Next and long-term bets stay on the pipeline board, and we capture them in the write-up. Typical first steps are bench samples in base, an accelerated stability test, or a consumer concept screen. We will send the written playbook to everyone here after today.</aside>
+  <aside class="notes">Let’s close decisively, one line per objective. The trends we will act on. The two territories to prioritize. The near-term flavors, each with a named owner, a next action and a date. Next and long-term bets stay on the pipeline, and we capture them in the write-up. We’ll send the written playbook to everyone here after today.</aside>
 </section>
 
-<!-- 30 · CLOSE -->
-<section class="slide" data-tone="light" data-bg="#E6F6FD" data-glow="#FFFFFF" data-sec="Thank you" data-title="Familiar enough to trust. Different enough to remember.">
-  <div class="pad">
-    <div class="s-close">
-      <span class="eyebrow b">Thank you</span>
-      <h2 class="d h1 b">Familiar enough to trust.<br><span class="hl">Different enough to remember.</span></h2>
-      <div class="byline b"><b>The Flavor Factory</b> · Norco, California · for <b>TheraBreath</b><i class="sep"></i>November 9, 2026 · Darwin</div>
-      <div class="lineup b" id="lineup"></div>
-    </div>
+<!-- 23 · CLOSE -->
+<section class="slide" data-world="finale" data-tone="dark" data-bg="#0B72C0" data-sec="Thank you" data-title="Familiar enough to trust">
+  <div class="pad" style="text-align:center;align-items:center">
+    <h2 class="display b" style="font-size:96px;margin-top:10px">Familiar enough to trust.<br><em>Different enough to remember.</em></h2>
+    <div class="lineup" id="lineup2"></div>
+    <div class="lab b" style="margin-top:36px;color:var(--fg2)">The Flavor Factory × TheraBreath · November 9, 2026 · Darwin</div>
   </div>
   <aside class="notes">Familiar enough to trust, different enough to remember. Thank you. We will follow up with the written playbook: the room’s scores, the concepts from Create, the pipeline and the owners we agreed today. Enjoy lunch.</aside>
 </section>
-
-<!-- 07 · CUES -->
-<section class="slide" data-skip data-tone="light" data-bg="#F2F9FC" data-glow="#FFFFFF" data-sec="Frame" data-title="What the world is teaching fresh">
-  <div class="pad">
-    <span class="eyebrow b">Borrowed vocabulary</span>
-    <h2 class="d h2 b">What the world is <span class="hl">teaching fresh.</span></h2>
-    <div class="cues" id="cues"></div>
-  </div>
-  <aside class="notes">A few lessons worth borrowing. In Kerala, cardamom after meals already means a fresh mouth. In Japan, yuzu and sencha show that fresh can be bright and quiet at once. Grasse shows how a rinse could be structured like a fragrance: top, heart and base. London’s zero-proof bars prove that sophisticated and alcohol-free go together, and TheraBreath already is both.</aside>
-</section>
-
-
-<!-- 12 · NEW FRESH -->
-<section class="slide" data-skip data-tone="light" data-bg="#EEF8E4" data-glow="#FFFBD9" data-sec="Frame" data-title="New Fresh">
-  <div class="pad">
-    <div class="s-plat">
-      <div>
-        <span class="num b">PLATFORM 01</span>
-        <h2 class="d h1 b">New Fresh</h2>
-        <p class="def b">Expand what fresh tastes like, well beyond peppermint.</p>
-        <dl class="b"><dt>Cues</dt><dd>Bright fruit, citrus peel, tea, cool greens, soft herbs, botanicals.</dd><dt>Promise</dt><dd>The same clean TheraBreath finish, reached by a new route.</dd><dt>Concepts</dt><dd>Arctic Yuzu · Green Tea Cucumber · Grapefruit Rose Mint</dd></dl>
-      </div>
-      <div class="pvis b" id="orbit"></div>
-    </div>
-  </div>
-  <aside class="notes">New Fresh expands what fresh tastes like beyond peppermint: bright fruit, citrus peel, tea, cool greens and soft herbs, all orbiting a familiar mint anchor. Same clean TheraBreath finish, reached by a new route.</aside>
-</section>
-
-<!-- 13 · SENSORY PROOF -->
-<section class="slide" data-skip data-tone="dark" data-bg="#03264A" data-glow="#005E97" data-sec="Frame" data-title="Sensory Proof">
-  <div class="pad">
-    <div class="s-plat">
-      <div>
-        <span class="num b">PLATFORM 02</span>
-        <h2 class="d h1 b">Sensory Proof</h2>
-        <p class="def b">Flavor and sensation that make freshness something you can feel happening.</p>
-        <dl class="b"><dt>Cues</dt><dd>Cooling bloom, bright top note, contrast, a flavor that evolves, a long clean finish.</dd><dt>Guardrail</dt><dd>Intensity without burn. Gentleness is the proof point, never the trade-off.</dd><dt>Concepts</dt><dd>Arctic Yuzu · Ginger Lime</dd></dl>
-      </div>
-      <div class="pvis curves b" aria-hidden="true">
-        <svg viewBox="0 0 520 520"><g transform="translate(20,80)">
-          <line x1="0" y1="360" x2="480" y2="360" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
-          <text x="0" y="392">0s</text><text x="100" y="392">5s</text><text x="296" y="392">30s</text><text x="430" y="392">60s+</text>
-          <text x="0" y="-26">INTENSITY THROUGH THE RINSE</text>
-          <path class="ln" stroke="#F58025" d="M0,350 C40,340 60,70 110,60 S190,190 260,240 S400,300 480,320"/>
-          <path class="ln b2" stroke="#5CCBF5" d="M0,355 C80,350 120,230 200,120 S330,80 380,130 S450,210 480,220"/>
-          <path class="ln c2" stroke="#FFFFFF" stroke-dasharray="6 8" d="M0,358 C120,356 200,330 280,290 S420,180 480,170"/>
-          <circle cx="110" cy="60" r="8" fill="#F58025"/><text x="128" y="55" style="fill:#FFB066">Bright opening</text>
-          <circle cx="330" cy="92" r="8" fill="#5CCBF5"/><text x="348" y="86" style="fill:#5CCBF5">Cooling bloom</text>
-          <circle cx="480" cy="170" r="8" fill="#fff"/><text x="480" y="262" text-anchor="end" style="fill:#fff">Clean linger</text>
-        </g></svg>
-      </div>
-    </div>
-  </div>
-  <aside class="notes">Sensory Proof makes freshness perceptible: a bright opening, a cooling bloom, and a clean lingering finish. The guardrail is non-negotiable: intensity without burn. Gentleness is the proof point, never the trade-off.</aside>
-</section>
-
-<!-- 14 · RITUAL BY TIME -->
-<section class="slide" data-skip data-tone="light" data-bg="#FFF0E3" data-glow="#FFFFFF" data-sec="Frame" data-title="Ritual by Time">
-  <div class="pad">
-    <div class="s-plat">
-      <div>
-        <span class="num b">PLATFORM 03</span>
-        <h2 class="d h1 b">Ritual by Time</h2>
-        <p class="def b">Different moments of the day call for different kinds of fresh.</p>
-        <div class="pairs b" id="pairs"></div>
-      </div>
-      <div class="pvis b" id="dial"><div class="dial" aria-hidden="true"></div><div class="dial-c"><b>24 h</b><span>Five moments</span></div></div>
-    </div>
-  </div>
-  <aside class="notes">Ritual by Time gives different flavors to different moments: a bright cold start in the morning, a calm reset midday, something to cut through coffee, a confident note before going out, and a soft wind-down at night.</aside>
-</section>
-
-<!-- 15 · ELEVATED ESCAPE -->
-<section class="slide" data-skip data-tone="dark" data-bg="#2A1916" data-glow="#5A3325" data-sec="Frame" data-title="Elevated Escape">
-  <div class="pad">
-    <div class="s-plat">
-      <div>
-        <span class="num b">PLATFORM 04</span>
-        <h2 class="d h1 b">Elevated Escape</h2>
-        <p class="def b">Premium flavor worlds borrowed from fragrance, spa, tea and zero-proof bars.</p>
-        <dl class="b"><dt>Cues</dt><dd>Fragrance structure, hospitality, culinary pairings, global botanicals.</dd><dt>Promise</dt><dd>A small daily luxury that is still clean and alcohol-free.</dd><dt>Concepts</dt><dd>Grapefruit Rose Mint · Pear Cardamom Mint</dd></dl>
-      </div>
-      <div class="pvis pyr b" aria-hidden="true">
-        <svg viewBox="0 0 540 520">
-          <defs>
-            <linearGradient id="py1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC08A" stop-opacity=".75"/><stop offset="1" stop-color="#F58025" stop-opacity=".45"/></linearGradient>
-            <linearGradient id="py2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2A0A0" stop-opacity=".55"/><stop offset="1" stop-color="#9E5A55" stop-opacity=".4"/></linearGradient>
-            <linearGradient id="py3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD6BC" stop-opacity=".5"/><stop offset="1" stop-color="#2C5A48" stop-opacity=".45"/></linearGradient>
-          </defs>
-          <polygon points="190,40 250,170 130,170" fill="url(#py1)" stroke="rgba(255,236,220,.6)" stroke-width="2"/>
-          <polygon points="126,178 254,178 313,308 67,308" fill="url(#py2)" stroke="rgba(255,236,220,.5)" stroke-width="2"/>
-          <polygon points="63,316 317,316 377,446 3,446" fill="url(#py3)" stroke="rgba(255,236,220,.45)" stroke-width="2"/>
-          <text x="270" y="110">Top · opening</text><text class="pn" x="270" y="142">grapefruit, pear</text>
-          <text x="332" y="238">Heart · development</text><text class="pn" x="332" y="270">rose, cardamom</text>
-          <text x="392" y="370">Base · finish</text><text class="pn" x="392" y="402">clean mint</text>
-        </svg>
-      </div>
-    </div>
-  </div>
-  <aside class="notes">Elevated Escape borrows from fragrance, spa, tea and zero-proof bars. It uses fragrance logic, top, heart and base, but always finishes clean. A small daily luxury that stays alcohol-free.</aside>
-</section>
-
-
-<!-- 28 · TRAVEL -->
-<section class="slide" data-skip data-tone="light" data-bg="#E6F6FD" data-glow="#FFFFFF" data-sec="Choose" data-title="Beyond the bottle">
-  <div class="pad">
-    <span class="eyebrow b">Also on our bench</span>
-    <h2 class="d h2 b">Beyond the bottle: <span class="hl">a TheraBreath travel kit.</span></h2>
-    <div class="kits">
-      <div class="kit card b"><span class="lab" style="color:var(--orange-d)">Concept A</span><h3 class="d h3">Zip &amp; Go</h3>
-        <svg viewBox="0 0 400 260" aria-label="Clear zip pouch holding five travel items">
-          <defs><linearGradient id="pouch" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#D6EEF9" stop-opacity=".8"/></linearGradient></defs>
-          <rect x="20" y="40" width="360" height="200" rx="26" fill="url(#pouch)" stroke="#8CCBE8" stroke-width="2"/>
-          <rect x="20" y="40" width="360" height="22" rx="11" fill="#006649"/><line x1="40" y1="51" x2="360" y2="51" stroke="#fff" stroke-dasharray="3 4"/><circle cx="352" cy="51" r="7" fill="#F58025"/>
-          <g transform="translate(50,82)" font-family="Archivo, Arial" font-weight="800">
-            <rect x="0" y="26" width="48" height="112" rx="10" fill="#4FB3E6" stroke="#1A78C0" stroke-width="1.5"/><rect x="7" y="0" width="34" height="28" rx="4" fill="#F58025"/><rect x="5" y="64" width="38" height="42" rx="4" fill="#fff"/><text x="24" y="89" font-size="7" text-anchor="middle" fill="#006649">RINSE</text>
-            <path d="M70,138 L70,42 Q70,26 86,26 L100,26 Q116,26 116,42 L116,138 Z" fill="#fff" stroke="#006649" stroke-width="1.5"/><rect x="80" y="8" width="26" height="20" rx="3" fill="#F58025"/><text x="93" y="86" font-size="7" text-anchor="middle" fill="#006649" transform="rotate(-90 93 86)">TOOTHPASTE</text>
-            <rect x="140" y="4" width="12" height="134" rx="6" fill="#fff" stroke="#006649" stroke-width="1.5"/><rect x="138" y="4" width="16" height="32" rx="4" fill="#00A3E0"/>
-            <rect x="176" y="54" width="38" height="84" rx="12" fill="#E4F4FB" stroke="#006649" stroke-width="1.5"/><rect x="186" y="36" width="18" height="20" rx="4" fill="#F58025"/><text x="195" y="100" font-size="7" text-anchor="middle" fill="#006649">SPRAY</text>
-            <rect x="236" y="78" width="54" height="60" rx="14" fill="#fff" stroke="#006649" stroke-width="1.5"/><circle cx="263" cy="108" r="12" fill="none" stroke="#F58025" stroke-width="3"/><text x="263" y="152" font-size="7" text-anchor="middle" fill="#006649">FLOSS</text>
-          </g>
-        </svg>
-        <p>A clear, flat-bottomed pouch that stands up in a hotel bathroom and goes straight through security.</p></div>
-      <div class="kit card b"><span class="lab" style="color:var(--orange-d)">Concept B</span><h3 class="d h3">Fold &amp; Go</h3>
-        <svg viewBox="0 0 400 260" aria-label="Tri-fold case that opens flat">
-          <rect x="30" y="50" width="110" height="170" rx="16" fill="#D9F0FA" stroke="#006649" stroke-width="1.5"/>
-          <rect x="145" y="50" width="110" height="170" rx="16" fill="#fff" stroke="#006649" stroke-width="1.5"/>
-          <rect x="260" y="50" width="110" height="170" rx="16" fill="#D9F0FA" stroke="#006649" stroke-width="1.5"/>
-          <rect x="165" y="84" width="30" height="110" rx="8" fill="#4FB3E6" stroke="#1A78C0" stroke-width="1.5"/><rect x="169" y="68" width="22" height="18" rx="3" fill="#F58025"/>
-          <rect x="205" y="72" width="30" height="126" rx="14" fill="#fff" stroke="#006649" stroke-width="1.5"/>
-          <image href="../assets/therabreath-logo.png" x="160" y="203" width="80" height="21"/>
-        </svg>
-        <p>A slim tri-fold that closes to the size of a passport and lies flat when open.</p></div>
-    </div>
-    <div class="tnote b"><span class="chip"><i style="--c:var(--orange)"></i>Liquids ≤ 3.4 oz / 100 mL</span><span class="chip"><i style="--c:var(--green)"></i>Fits one quart-size bag</span></div>
-  </div>
-  <aside class="notes">A quick aside from our bench, because it shows how we think about the whole experience: a TSA-ready travel kit in two formats, Zip &amp; Go and Fold &amp; Go. It is not today’s decision, just a glimpse of what else we are working on.</aside>
-</section>
-
 
 </div></div>
 
@@ -944,144 +575,87 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const T = window.TBCore;
-const { SESSION, OBJECTIVES, AGENDA, HORIZONS, CREATE, CONCEPTS, CONTROL, STATUS, PLATS, REGIONS, HOME, GRID, SPECTRUM, AXES, BASE, SHAPES, MOMENTS, WILD, DIMS, ACTIONS, bottle, conceptBottleOpts, ART, rng, rgba } = T;
+const { CONCEPTS, CONTROL, WILD, TODAY, CHEM, PLATS, PLAT_LINES, OBJECTIVES, AGENDA, HORIZONS, CREATE, TREND_LIST, TRENDS, DIMS, ACTIONS, bottle, conceptBottleOpts, WORLDS } = T;
 const params = new URLSearchParams(location.search);
 const MODE = params.has("print") ? "print" : params.has("embed") ? "embed" : params.has("presenter") ? "presenter" : "show";
 document.documentElement.classList.add(MODE);
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 document.body.insertAdjacentHTML("afterbegin", T.logoSymbol("../assets/therabreath-logo.png"));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const cb = c => bottle(conceptBottleOpts(c));
+const shield = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>`;
 
-const conceptBottle = c => bottle(conceptBottleOpts(c));
-const iconic = () => bottle({ liq: ["#4FB3E6", "#1A78C0"], band: "#6CC3EA", flavor: "Invigorating Icy Mint" });
-const hlLast = n => { const w = n.split(" "); const l = w.pop(); return (w.length ? w.join(" ") + " " : "") + `<span class="hl">${l}</span>`; };
-const cById = id => CONCEPTS.find(c => c.id === id);
-
-/* ------------------------------------------------------------ concept slides */
-$("#conceptSlot").outerHTML = CONCEPTS.map(c => `
-<section class="slide concept" data-concept="${c.id}" data-tone="${c.tone}" data-bg="${c.bg}" data-glow="${c.glow}" data-sec="Reveal" data-title="${c.name}" style="--acc:${c.acc}">
-  <div class="pad" style="padding-top:120px;padding-bottom:100px">
-    <div class="s-con">
-      <div class="stagec b"><canvas data-art="${c.id}" aria-label="Sensory artwork for ${c.name}"></canvas><div class="bt">${conceptBottle(c)}</div></div>
-      <div>
-        <div class="meta b"><span class="lab">Concept ${c.n} / 06</span><span class="status">Sample ${c.code}</span></div>
-        <h2 class="d b">${hlLast(c.name)}</h2>
-        <div class="flv b">${c.flavor} · ${c.tag}</div>
-        <dl class="ww b"><dt>Who</dt><dd>${c.who}</dd><dt>When</dt><dd>${c.when}</dd></dl>
-        <p class="feels b">${c.feels}</p>
-        <div class="arc b"><div><b>Opening</b>${c.arc[0]}</div><div><b>Development</b>${c.arc[1]}</div><div><b>Finish</b>${c.arc[2]}</div></div>
-        <div class="foot card b">
-          <div><h5>Formulation note</h5><p>${c.note}</p></div>
-          <div><h5>Platforms</h5><div class="chips">${c.plat.map(p => `<span class="chip">${PLATS[p]}</span>`).join("")}</div><h5 style="margin-top:18px">Stay clear of</h5><p>${c.avoid}</p></div>
-        </div>
+/* ------------------------------------------------------------ the six world slides */
+$("#worldSlot").outerHTML = CONCEPTS.map(c => {
+  const [w1, ...rest] = c.name.split(" ");
+  return `<section class="slide" data-world="${c.id}" data-tone="${c.tone}" data-bg="${c.bg}" data-sec="Reveal" data-title="${esc(c.name)}" style="--acc:${c.hi};--ms:${w1.length > 7 ? 168 : 212}px">
+  <div class="pad s-world">
+    <div class="left">
+      <div class="top b"><span class="eyebrow" style="margin:0"><b>${c.n}</b>World ${c.n} of 06</span><span class="chip"><i style="--c:${c.hi}"></i>Sample ${c.code}</span></div>
+      <h2 class="mega"><span class="ln"><span>${esc(w1)}</span></span><span class="ln"><span class="o" style="--k:1">${esc(rest.join(" "))}</span></span></h2>
+      <p class="tag b">${esc(c.tag)}</p>
+      <div class="low">
+        <div class="b"><div class="arc3 card"><div><b>Opening</b>${esc(c.arc[0])}</div><div><b>Heart</b>${esc(c.arc[1])}</div><div><b>Finish</b>${esc(c.arc[2])}</div></div>
+          <div class="ww"><span class="chip"><i style="--c:${c.hi}"></i>For: ${esc(c.who)}</span><span class="chip"><i style="--c:${c.hi}"></i>When: ${esc(c.when)}</span></div></div>
+        <div class="chem card b"><span class="lab">${shield}Built to survive sodium chlorite</span><div class="keys">${c.chem.keys.map(esc).join(" · ")}</div><p>${esc(c.chem.why)}</p></div>
       </div>
     </div>
+    <div class="bt b">${cb(c)}</div>
   </div>
-  <aside class="notes">${c.name}, our ${c.flavor} concept. ${c.feels} Who it could reach: ${c.who.toLowerCase()}, at ${c.when.toLowerCase()}. Opening: ${c.arc[0]} Development: ${c.arc[1]} Finish: ${c.arc[2]} On the technical side: ${c.note} What we avoid: ${c.avoid}</aside>
-</section>`).join("");
+  <aside class="notes">${esc(c.name)}. ${esc(c.feels)} Opening: ${esc(c.arc[0])} Heart: ${esc(c.arc[1])} Finish: ${esc(c.arc[2])} Who it could reach: ${esc(c.who.toLowerCase())}, at ${esc(c.when.toLowerCase())}. Why it survives sodium chlorite: ${esc(c.chem.why)} What we watch: ${esc(c.chem.watch)} What we avoid: ${esc(c.avoid)}</aside>
+</section>`;
+}).join("");
 
 /* ------------------------------------------------------------ fill data-driven pieces */
-// title trio
-$("#trio").insertAdjacentHTML("beforeend", `<div class="bt l">${conceptBottle(cById("yuzu"))}</div><div class="bt r">${conceptBottle(cById("gtc"))}</div><div class="bt c">${iconic()}</div>`);
-// objectives, agenda
-$("#objs").innerHTML = OBJECTIVES.map(o => `<div class="obj b"><span class="n">${o.n}</span><h3>${o.h}</h3><p>${o.line}</p><div class="out"><b>We leave with</b>${o.out}</div></div>`).join("");
-$("#agenda").innerHTML = AGENDA.map(a => `<div class="tstep b"><span class="t">${a.t} – ${a.e}</span><h3 class="d">${a.h}</h3><span class="w">${a.w}</span><p>${a.p}</p>${a.o ? `<span class="o">Objective 0${a.o}</span>` : ""}<div class="out card"><b>We leave with</b>${a.out}</div></div>`).join("");
-// create
-$("#create").innerHTML = `<div class="col card b"><h4>Pick a territory</h4><h3>Where</h3><div class="pills">${Object.keys(PLATS).map(k => `<span>${PLATS[k]}</span>`).join("")}${WILD.map(w => `<span>${w.name}</span>`).join("")}<span>Something new</span></div></div>
-  <div class="col card b"><h4>Pick an occasion</h4><h3>When</h3><div class="pills">${CREATE.occasions.map(o => `<span>${o}</span>`).join("")}</div></div>
-  <div class="col card b"><h4>Pick a consumer</h4><h3>Who</h3><div class="pills">${CREATE.consumers.map(o => `<span>${o}</span>`).join("")}</div></div>
-  <div class="canvas card b"><h4>Concept card</h4><div class="ln">Working name</div><div class="ln">It tastes like</div><div class="ln">Why this person, at this moment</div><div class="ln">How it stays TheraBreath</div><div class="ln">Horizon: near · next · long</div></div>`;
-// pipeline
-$("#hzs").innerHTML = HORIZONS.map(h => `<div class="hzc card b" style="--c:${h.c}"><span class="k">${h.h}</span><h3>${h.w}</h3><p>${h.p}</p><div class="cz">${CONCEPTS.filter(c => c.horizon === h.k).map(c => `<span style="--cc:${c.acc}"><i></i>${c.flavor}<small>${c.when}</small></span>`).join("")}${h.k === "long" ? WILD.map(w => `<span style="--cc:${w.sw[1]}"><i></i>${w.flavor}<small>wildcard</small></span>`).join("") : ""}<span class="add">+ from Create</span></div></div>`).join("");
-// signals minis
+$("#heroBt").insertAdjacentHTML("afterbegin", bottle({ liq: ["#4FB3E6", "#1A78C0"], band: "#6CC3EA", flavor: "Invigorating Icy Mint" }));
+$("#objs").innerHTML = OBJECTIVES.map(o => `<div class="obj card b"><span class="n">${o.n}</span><h3>${esc(o.h)}</h3><p>${esc(o.line)}</p><div class="out"><b>We leave with</b>${esc(o.out)}</div></div>`).join("");
+$("#alist").innerHTML = AGENDA.map(a => `<div class="ai b"><span class="t">${a.t}–${a.e}</span><div><b>${esc(a.h)}</b><span class="w">${esc(a.w)}</span></div>${a.o ? `<span class="chip"><i></i>Objective 0${a.o}</span>` : "<span></span>"}</div>`).join("") + `<div class="ai b"><span class="t">12:00</span><div><b>Lunch</b><span class="w">Thank you, Church &amp; Dwight.</span></div><span></span></div>`;
 (() => {
-  const cols = ["#E6F04A", "#9CC5A1", "#F2B5B0", "#F4C98A", "#7FC8A6", "#C9B28A", "#9FE0FF", "#E0703C", "#B9B7E0", "#D9EC7A", "#F1E3B8", "#5E9E6A", "#E86F5C", "#8FD0E0", "#A89A5C", "#F7C6C0"];
-  $("#vFlavor").innerHTML = Array.from({ length: 32 }, (_, i) => `<i style="background:${cols[(i * 7) % cols.length]};transform:scale(${.72 + ((i * 37) % 28) / 100})"></i>`).join("");
-  const mk = (amp, per, y, ph) => { let d = ""; for (let x = 0; x <= 300; x += 4) d += (x ? "L" : "M") + x + "," + (y + Math.sin(x / per * Math.PI * 2 + ph) * amp * (0.4 + 0.6 * Math.sin(x / 300 * Math.PI))).toFixed(1); return d; };
-  $("#vSense").innerHTML = [["#006649", 26, 150, 75, 0], ["#00A3E0", 18, 100, 75, 1], ["#F58025", 12, 75, 75, 2]].map(([c, a, p, y, ph], i) => `<path d="${mk(a, p, y, ph)}" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${.95 - i * .15}"/>`).join("");
+  const cols = ["#0A2A5C", "#E9B949", "#12A0A6", "#2EA8E6", "#D9577A", "#F58025"], mins = a => { const [h, m] = a.split(":").map(Number); return h * 60 + m; };
+  const R = 230, cx = 360, cy = 360; let arcs = "", labels = "";
+  AGENDA.forEach((a, i) => {
+    const g = .006, a0 = ((mins(a.t) - 600) / 120 + g) * Math.PI * 2 - Math.PI / 2, a1 = ((mins(a.e) - 600) / 120 - g) * Math.PI * 2 - Math.PI / 2;
+    const p0 = [cx + Math.cos(a0) * R, cy + Math.sin(a0) * R], p1 = [cx + Math.cos(a1) * R, cy + Math.sin(a1) * R];
+    arcs += `<path class="arc" d="M${p0[0].toFixed(1)},${p0[1].toFixed(1)} A${R},${R} 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${p1[0].toFixed(1)},${p1[1].toFixed(1)}" stroke="${cols[i]}" style="--len:${((a1 - a0) * R).toFixed(1)};--i:${i}"/>`;
+    const am = (a0 + a1) / 2, lx = cx + Math.cos(am) * (R + 60), ly = cy + Math.sin(am) * (R + 60), anc = Math.cos(am) > .2 ? "start" : Math.cos(am) < -.2 ? "end" : "middle";
+    labels += `<text class="tm" x="${lx.toFixed(1)}" y="${(ly - 10).toFixed(1)}" text-anchor="${anc}">${a.t}</text><text class="lbl" x="${lx.toFixed(1)}" y="${(ly + 16).toFixed(1)}" text-anchor="${anc}">${esc(a.h)}</text>`;
+  });
+  $("#dial").innerHTML = `<svg viewBox="0 0 720 720"><circle cx="360" cy="360" r="${R}" fill="none" stroke="rgba(7,28,60,.08)" stroke-width="52"/>${arcs}${labels}<text x="360" y="365" text-anchor="middle" font-family="Bricolage Grotesque" font-weight="800" font-size="84" fill="#071C3C" letter-spacing="-2">10:00</text><text x="360" y="408" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="16" fill="rgba(7,28,60,.6)" letter-spacing="3">TO NOON · DARWIN</text><text x="360" y="440" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="16" fill="#C85F0E" letter-spacing="3">THEN LUNCH</text></svg>`;
 })();
-// cues (six regions)
-$("#cues").innerHTML = ["kerala", "japan", "marrakech", "grasse", "london", "nordics"].map(id => { const r = REGIONS.find(x => x.id === id);
-  return `<div class="cue card b"><span class="sw" style="background:radial-gradient(circle at 35% 30%,#fff,${r.sw[0]} 55%,${r.sw[1]})"></span><div><h4 class="d h4">${r.name}</h4><div class="c1">${r.country} · ${r.cue}</div><p class="t">${r.teach}</p><p>${r.line}</p></div></div>`; }).join("");
-// spectrum ticks
-(() => { let k = 0; $("#specTicks").innerHTML = SPECTRUM.filter(s => s.c).map(s => `<div class="stick ${k++ % 2 ? "dn" : "up"}" style="left:${s.v}%"><b>${s.name}</b><i></i></div>`).join(""); })();
-// rule examples
-$("#ex").innerHTML = [["yuzu", "The cold, clean finish", "Sharp Japanese citrus"], ["gtc", "Gentle, clean freshness", "A calm, spa-like botanical"], ["ginger", "Crisp cooling", "A little warmth"]].map(([id, keep, change]) => { const c = cById(id);
-  return `<div class="card b"><h4 class="d h4" style="--c:${c.acc}"><i></i>${c.flavor}</h4><dl><dt>Keep</dt><dd>${keep}</dd><dt>Change</dt><dd>${change}</dd></dl></div>`; }).join("");
-// white space radars
-const radar = (vals, col, o = {}) => {
-  const S = o.size || 300, C = S / 2, R = S * .4, N = AXES.length, pad = o.labels ? 130 : 8;
-  const ang = i => i / N * Math.PI * 2 - Math.PI / 2, pt = (i, v) => [C + Math.cos(ang(i)) * R * v, C + Math.sin(ang(i)) * R * v];
-  const poly = vs => vs.map((v, i) => pt(i, v).map(n => n.toFixed(1)).join(",")).join(" ");
-  let g = "";
-  [.25, .5, .75, 1].forEach(k => g += `<polygon points="${poly(Array(N).fill(k))}" fill="none" stroke="rgba(255,255,255,${k === 1 ? .3 : .12})" stroke-width="${o.labels ? 1.5 : 1}"/>`);
-  AXES.forEach((a, i) => { const [x, y] = pt(i, 1); g += `<line x1="${C}" y1="${C}" x2="${x}" y2="${y}" stroke="rgba(255,255,255,.16)"/>`;
-    if (o.labels) { const [lx, ly] = pt(i, 1.16), cx = Math.cos(ang(i)), an = cx > .25 ? "start" : cx < -.25 ? "end" : "middle";
-      g += `<text x="${lx}" y="${ly}" text-anchor="${an}" font-size="19" fill="#fff" font-weight="800">${a[0]}</text><text x="${lx}" y="${ly + 20}" text-anchor="${an}" font-size="14" fill="rgba(255,255,255,.6)" letter-spacing=".06em">${a[1].toUpperCase()}</text>`; } });
-  g += `<polygon points="${poly(BASE)}" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-dasharray="4 5"/>`;
-  if (vals) { g += `<polygon points="${poly(vals)}" fill="${rgba(col, .25)}" stroke="${col}" stroke-width="${o.labels ? 3 : 2.5}" stroke-linejoin="round"${o.dash ? ' stroke-dasharray="7 6"' : ""}/>`;
-    vals.forEach((v, i) => { const [x, y] = pt(i, v); g += `<circle cx="${x}" cy="${y}" r="${o.labels ? 5 : 3.5}" fill="${col}"/>`; }); }
-  return `<svg class="radar" viewBox="${-pad} ${-pad * .55} ${S + pad * 2} ${S + pad * 1.1}" role="img">${g}</svg>`;
-};
-const stretches = vals => vals.map((v, i) => [v - BASE[i], i]).sort((a, b) => b[0] - a[0]).filter(d => d[0] > .35).map(d => AXES[d[1]][0]);
-$("#legendR").innerHTML = radar(SHAPES.yuzu, "#E6F04A", { labels: true, size: 380 }) + `<div class="note"><span><i></i>Classic mint</span><span><i class="s"></i>Arctic Yuzu</span></div>`;
-$("#minis").innerHTML = CONCEPTS.map(c => { const col = c.tone === "dark" && c.id === "chamomile" ? "#E9C77A" : c.acc;
-  return `<div class="mini card b">${radar(SHAPES[c.id], col === "#8E7B3A" ? "#D7C27A" : col === "#4E9A6E" ? "#7FD6A2" : col)}<b>${c.flavor}</b><span>${stretches(SHAPES[c.id]).join(" + ")}</span></div>`; }).join("")
-  + `<div class="mini card b" style="border-color:rgba(239,91,63,.6)">${radar(SHAPES.all, "#EF5B3F", { dash: true })}<b style="color:#FF8A70">Change everything</b><span>Nothing left to trust</span></div>`;
-// platforms overview
-const PDATA = [
-  { id: "newfresh", n: "01", pb: "#EEF8E4", pf: "#1F5A2E", def: "Expand what fresh tastes like, well beyond peppermint.", cues: "Bright fruit, citrus peel, tea, cool greens, soft herbs.", cs: ["yuzu", "gtc", "grapefruit"],
-    ic: `<circle cx="75" cy="75" r="22" fill="#5FC4A2"/><circle cx="75" cy="75" r="52" fill="none" stroke="rgba(31,90,46,.3)" stroke-width="2"/><circle cx="75" cy="23" r="10" fill="#E6F04A"/><circle cx="120" cy="100" r="10" fill="#F2A596"/><circle cx="30" cy="100" r="10" fill="#9CC5A1"/>` },
-  { id: "sensory", n: "02", pb: "#03264A", pf: "#FFFFFF", def: "Flavor and sensation that make freshness perceptible.", cues: "Cooling bloom, bright top note, contrast, a long clean finish.", cs: ["yuzu", "ginger"],
-    ic: `<path d="M10,120 C30,118 38,30 60,28 S90,80 140,92" fill="none" stroke="#F58025" stroke-width="5" stroke-linecap="round"/><path d="M10,124 C50,122 64,64 90,44 S130,60 140,70" fill="none" stroke="#5CCBF5" stroke-width="5" stroke-linecap="round"/>` },
-  { id: "ritual", n: "03", pb: "#FFF0E3", pf: "#7A3E12", def: "Different moments of the day call for different kinds of fresh.", cues: "Morning lift, midday reset, after coffee, going out, wind-down.", cs: ["gtc", "ginger", "chamomile"],
-    ic: `<circle cx="75" cy="75" r="55" fill="none" stroke="rgba(122,62,18,.25)" stroke-width="3" stroke-dasharray="6 6"/><circle cx="75" cy="20" r="14" fill="#F58025"/><circle cx="75" cy="130" r="10" fill="#2C4A8E"/>` },
-  { id: "elevated", n: "04", pb: "#2A1916", pf: "#FFF3E8", def: "Premium flavor worlds from fragrance, spa, tea and zero-proof bars.", cues: "Fragrance structure, hospitality, culinary pairings.", cs: ["grapefruit", "pear"],
-    ic: `<polygon points="75,14 98,56 52,56" fill="#FFC08A" opacity=".85"/><polygon points="50,62 100,62 122,102 28,102" fill="#F2A0A0" opacity=".6"/><polygon points="26,108 124,108 146,146 4,146" fill="#8FD6BC" opacity=".55"/>` }
-];
-$("#plats").innerHTML = PDATA.map(p => `<div class="plat card b"><div class="top" style="--pb:${p.pb};--pf:${p.pf}"><span class="n">${p.n}</span><svg viewBox="0 0 150 150" aria-hidden="true">${p.ic}</svg></div>
-  <div class="bd"><h3 class="d h4">${PLATS[p.id]}</h3><p>${p.def}</p><span class="cues-l">${p.cues}</span><div class="cz">${p.cs.map(id => { const c = cById(id); return `<span style="--c:${c.acc}"><i></i>${c.flavor}</span>`; }).join("")}</div></div></div>`).join("");
-// new fresh orbit
+$("#trends").innerHTML = TREND_LIST.map(tr => `<article class="tr b"><canvas data-art="${tr.art}" aria-hidden="true"></canvas><div class="tx"><span class="chip"><i style="--c:${tr.c}"></i>${esc(TRENDS[tr.k])}</span><div class="word">${esc(tr.word)}</div><p>${esc(tr.h)}</p><div class="seen"><b>Where we see it</b>${esc(tr.seen)}</div></div></article>`).join("");
+$("#fact").textContent = CHEM.fact; $("#rule").textContent = CHEM.rule; $("#cav").textContent = CHEM.caveat;
+$("#molsOk").innerHTML = CHEM.stable.slice(0, 6).map(m => `<div class="mol"><b>${esc(m.m)}</b><span>${esc(m.g)}</span><small>${esc(m.f)}</small></div>`).join("");
+$("#molsX").innerHTML = CHEM.fragile.slice(0, 6).map(m => `<div class="mol x"><em>${esc(m.fate)}</em><b>${esc(m.m)}</b><span>${esc(m.g)}</span><small>${esc(m.f)}</small></div>`).join("") + `<div class="mol"><b>${esc(CHEM.stable[6].m)}</b><span>${esc(CHEM.stable[6].g)}</span><small>${esc(CHEM.stable[6].f)} · survives</small></div>`;
 (() => {
-  const A = [["Yuzu", "#E6F04A"], ["Sencha", "#9CC5A1"], ["Cucumber", "#CFE9D6"], ["Grapefruit", "#F2A596"], ["Pear", "#E5E0A6"], ["Lemongrass", "#D9EC7A"]];
-  const B = [["Shiso", "#7FB08A"], ["Rose", "#F2B5B0"], ["Spearmint", "#7CC7AE"], ["Chamomile", "#F2DE8A"]];
-  let h = `<div class="nf-ring" style="inset:30px"></div><div class="nf-ring" style="inset:150px"></div>`;
-  const place = (list, r, off) => list.forEach(([n, c], i) => { const a = i / list.length * Math.PI * 2 + off; h += `<div class="nf-s" style="left:${380 + Math.cos(a) * r}px;top:${380 + Math.sin(a) * r}px"><i style="background:radial-gradient(circle at 35% 30%,#fff,${c} 55%,${c})"></i><em>${n}</em></div>`; });
-  place(A, 350, -Math.PI / 2); place(B, 230, Math.PI / 4);
-  $("#orbit").innerHTML = h + `<div class="nf-core">Mint<br>anchor</div>`;
+  const pos = m => `--x:${(7 + m.x * 86).toFixed(1)}%;--y:${(12 + m.y * 74).toFixed(1)}%`;
+  $("#map").innerHTML = `<div class="sweet"><span>The sweet spot: familiar enough to trust</span></div><span class="ax" style="left:26px;top:22px">Cool &amp; bright</span><span class="ax" style="left:26px;bottom:22px">Soft &amp; warm · ← familiar</span><span class="ax" style="right:26px;bottom:22px">Adventurous →</span>
+    ${TODAY.map(d => `<div class="orb today" style="${pos(d)}"><i></i><b>${esc(d.name)}</b></div>`).join("")}
+    ${WILD.map(d => `<div class="orb wild" style="${pos(d.map)};--c2:${d.acc};--s:70px"><i></i><b>${esc(d.name)}</b></div>`).join("")}
+    ${CONCEPTS.map(c => `<div class="orb" style="${pos(c.map)};--c1:${c.liquid[0]};--c2:${c.acc}"><i></i><b>${esc(c.name)}</b></div>`).join("")}`;
 })();
-// ritual dial + pairings
-(() => {
-  const wrap = $("#dial");
-  MOMENTS.forEach(m => { const th = (180 + m.h * 15) * Math.PI / 180; wrap.insertAdjacentHTML("beforeend", `<div class="mom" style="left:${380 + 340 * Math.sin(th)}px;top:${380 - 340 * Math.cos(th)}px"><i></i><span>${m.name}</span></div>`); });
-  $("#pairs").innerHTML = MOMENTS.map(m => `<span class="tm">${m.t}</span><span class="mo">${m.name}</span><span class="fl">${m.flavor}: ${m.line.toLowerCase().replace(/\.$/, "")}</span>`).join("");
-})();
-// six lineup
-$("#six").innerHTML = CONCEPTS.map(c => `<div class="b"><div class="bt">${conceptBottle(c)}</div><b>${c.name}</b><span class="fl">${c.flavor}</span><span class="st">Sample ${c.code}</span></div>`).join("");
-// wildcards
-$("#wilds").innerHTML = WILD.map(w => `<div class="wild card b"><div class="sw" style="background:linear-gradient(120deg,${w.sw[0]},${w.sw[1]})"></div><span class="lab">${PLATS[w.plat]}</span><h3 class="d h3">${w.name}</h3><span class="lab" style="color:var(--hl)">${w.flavor}</span><p>${w.line}</p></div>`).join("");
-// tasting dimensions
+$("#plats").innerHTML = Object.keys(PLATS).map(k => `<div class="plat card b"><b>${PLATS[k]}</b><span>${PLAT_LINES[k]}</span></div>`).join("");
 $("#dims").innerHTML = DIMS.map(([k, l, q]) => `<div class="dm card b"><b>${l}</b><span>${q}</span></div>`).join("");
-// scorecard
 (() => {
-  const heads = ["Sample", ...DIMS.map(d => d[1]), "One word"];
-  const rows = [...CONCEPTS.map(c => c.code).sort(), CONTROL.code];
-  $("#scoreTbl").innerHTML = `<thead><tr>${heads.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(code => `<tr${code === CONTROL.code ? ' class="ctl"' : ""}><td class="code">${code}${code === CONTROL.code ? "<small>Control</small>" : ""}</td>${DIMS.map(() => `<td><span class="box"></span></td>`).join("")}<td><span class="box" style="width:150px"></span></td></tr>`).join("")}</tbody>`;
+  const heads = ["Sample", ...DIMS.map(d => d[1]), "One word"], rows = [...CONCEPTS.map(c => c.code).sort(), CONTROL.code];
+  $("#scoreTbl").innerHTML = `<thead><tr>${heads.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(code => `<tr${code === CONTROL.code ? ' class="ctl"' : ""}><td class="code">${code}${code === CONTROL.code ? "<small>Control</small>" : ""}</td>${DIMS.map(() => `<td><span class="box"></span></td>`).join("")}<td><span class="box" style="width:220px"></span></td></tr>`).join("")}</tbody>`;
 })();
-// decision board
-$("#decTbl").innerHTML = `<thead><tr><th>Concept</th><th>Fits the brand</th><th>We can make it</th><th>People will choose it</th><th>Advance</th></tr></thead><tbody>${CONCEPTS.map(c => `<tr><td><span class="cn" style="--c:${c.acc}"><i></i>${c.name} <small>${c.flavor}</small></span></td><td><span class="circ"></span></td><td><span class="circ"></span></td><td><span class="circ"></span></td><td><span class="star"></span></td></tr>`).join("")}</tbody>`;
-// short list
-$("#leads").innerHTML = `<div class="hd">Lead concept</div><div class="hd">Owner</div><div class="hd">Next action</div><div class="hd">By</div>` +
-  [1, 2, 3].map(n => `<div class="cell n">${n}<div class="write"></div></div><div class="cell"><div class="write"></div></div><div class="cell"><div class="write"></div></div><div class="cell"><div class="write"></div></div>`).join("");
+const lineup = el => { el.innerHTML = CONCEPTS.map(c => `<div class="bt b">${cb(c)}<span>${esc(c.name)}</span></div>`).join(""); };
+lineup($("#lineup")); lineup($("#lineup2"));
+$("#portals").innerHTML = WILD.map(w => `<div class="portal b"><div class="disc"><canvas data-art="${w.id}" aria-hidden="true"></canvas></div><b>${esc(w.name)}</b><span>${esc(w.line)}</span><small>${esc(w.chem)}</small></div>`).join("");
+$("#create").innerHTML = `<div class="col2 card b"><h4>Pick a world</h4><h3>Where</h3><div class="pills">${[...CONCEPTS, ...WILD].map(k => `<span style="--c:${k.acc}"><i></i>${esc(k.name)}</span>`).join("")}</div></div>
+  <div class="col2 card b"><h4>Pick a moment</h4><h3>When</h3><div class="pills">${CREATE.occasions.map(o => `<span>${esc(o)}</span>`).join("")}</div></div>
+  <div class="col2 card b"><h4>Pick a person</h4><h3>Who</h3><div class="pills">${CREATE.consumers.map(o => `<span>${esc(o)}</span>`).join("")}</div></div>
+  <div class="canvas b"><h4 class="lab">Concept card</h4><div class="ln">Working name</div><div class="ln">It tastes like</div><div class="ln">Why this person, at this moment</div><div class="ln">How it stays TheraBreath</div><div class="ln">Horizon: near · next · long</div></div>`;
+$("#decTbl").innerHTML = `<thead><tr><th>Flavor</th><th>Fits the brand</th><th>We can make it</th><th>People will choose it</th><th>Leads</th></tr></thead><tbody>${CONCEPTS.map(c => `<tr><td><span class="nm" style="--c:${c.acc}"><i></i>${esc(c.name)}</span></td><td><span class="circ"></span></td><td><span class="circ"></span></td><td><span class="circ"></span></td><td><span class="star">★</span></td></tr>`).join("")}</tbody>`;
+$("#lanes").innerHTML = HORIZONS.map(h => `<div class="lane card b" style="--c:${h.c}"><span class="k">${h.h}</span><h3>${esc(h.w)}</h3><p>${esc(h.p)}</p><div class="bots">${[...CONCEPTS, ...WILD].filter(d => (d.horizon || "long") === h.k).map(d => `<div class="lb${d.liquid ? "" : " w"}">${bottle({ liq: d.liquid || d.sw, band: d.acc, flavor: d.name, sub: d.flavor })}<span>${esc(d.name)}</span></div>`).join("")}</div></div>`).join("");
+$("#leads").innerHTML = `<div class="hd">Flavor</div><div class="hd">Owner</div><div class="hd">Next action</div><div class="hd">By</div>` + [1, 2, 3].map(n => `<div class="cell n">${n}<div class="write"></div></div><div class="cell"><div class="write"></div></div><div class="cell"><div class="write"></div></div><div class="cell"><div class="write"></div></div>`).join("");
 $("#acts").innerHTML = ACTIONS.map(a => `<span class="chip"><i></i>${a}</span>`).join("");
-// closing lineup
-$("#lineup").innerHTML = CONCEPTS.slice(0, 3).map(c => `<div class="bt">${conceptBottle(c)}</div>`).join("")
-  + `<div class="bt c">${iconic()}</div>` + CONCEPTS.slice(3).map(c => `<div class="bt">${conceptBottle(c)}</div>`).join("");
 
 /* ------------------------------------------------------------ chrome, builds */
 const slides = $$(".slide:not([data-skip])");
 const N = slides.length;
 slides.forEach((s, i) => {
-  s.style.setProperty("--bgc", s.dataset.bg); s.style.setProperty("--glow", s.dataset.glow || s.dataset.bg);
+  s.style.setProperty("--bgc", s.dataset.bg);
   const first = i === 0;
   s.insertAdjacentHTML("beforeend", `<div class="chrome" aria-hidden="true">
     <div class="lock"><img src="../assets/therabreath-logo.png" alt=""><span class="x">×</span><span class="ff">The Flavor Factory</span></div>
@@ -1089,50 +663,28 @@ slides.forEach((s, i) => {
   $$(".b", s).forEach((el, k) => el.style.setProperty("--i", k));
 });
 
-/* ------------------------------------------------------------ canvases */
-const arts = $$("canvas[data-art]").map((cv, i) => ({ cv, art: ART[cv.dataset.art], st: ART[cv.dataset.art].init(rng(101 + i * 17)), slide: cv.closest(".slide") }));
-const sizeCanvas = (cv, dprMax = 2) => { const w = cv.offsetWidth, h = cv.offsetHeight, d = MODE === "print" ? 1.25 : Math.min(devicePixelRatio || 1, dprMax); cv.width = w * d; cv.height = h * d; const c = cv.getContext("2d"); c.setTransform(d, 0, 0, d, 0, 0); return { c, w, h }; };
-arts.forEach(a => { Object.assign(a, sizeCanvas(a.cv)); a.art.draw(a.c, a.w, a.h, 9, a.st); });
-
-// map
-const map = (() => {
-  const wrap = $("#mapWrap"), cv = $("#mapCanvas");
-  if (!cv || !cv.offsetWidth) return { draw() {}, slide: cv && cv.closest(".slide") };
-  const W = 1660, H = 622; const { c } = sizeCanvas(cv);
-  const bits = GRID.rows.map(r => r.split("").map(ch => parseInt(ch, 16).toString(2).padStart(4, "0")).join(""));
-  const toXY = (lon, lat) => [(lon + 180) / 360 * W, (GRID.top - lat) / (GRID.top - GRID.bot) * H];
-  const cw = W / GRID.W, ch = H / GRID.H;
-  const base = document.createElement("canvas"); base.width = cv.width; base.height = cv.height; const b = base.getContext("2d"); b.setTransform(cv.width / W, 0, 0, cv.height / H, 0, 0);
-  b.fillStyle = "rgba(255,255,255,.2)";
-  bits.forEach((row, y) => { for (let x = 0; x < GRID.W; x++) if (row[x] === "1") { b.beginPath(); b.arc((x + .5) * cw, (y + .5) * ch, Math.min(cw, ch) * .28, 0, 6.283); b.fill(); } });
-  const Hm = toXY(HOME.lon, HOME.lat);
-  const SIDE = { japan: "r", seoul: "l", kerala: "l", bangkok: "r", mexico: "l", la: "l", marrakech: "l", grasse: "r", london: "l", nordics: "t", nile: "r", madagascar: "r" };
-  const arcs = REGIONS.map(r => { const A = toXY(r.lon, r.lat), dist = Math.hypot(A[0] - Hm[0], A[1] - Hm[1]); return { r, A, C: [(A[0] + Hm[0]) / 2, Math.min(A[1], Hm[1]) - dist * .3] }; });
-  let html = "";
-  arcs.forEach(({ r, A }) => { const s = SIDE[r.id] || "r", dx = s === "r" ? 20 : s === "l" ? -20 : 0, dy = s === "t" ? -16 : 0;
-    html += `<span class="mdot" style="left:${A[0]}px;top:${A[1]}px;--c:${r.sw[0]}"></span><div class="mlab ${s === "r" ? "" : s}" style="left:${A[0] + dx}px;top:${A[1] + dy}px"><b>${r.name}</b><span>${r.cue.split(" · ").slice(0, 2).join(" · ")}</span></div>`; });
-  html += `<span class="mdot home" style="left:${Hm[0]}px;top:${Hm[1]}px"></span><div class="mlab bm" style="left:${Hm[0]}px;top:${Hm[1] + 20}px"><b>Ewing, NJ · the room</b></div>`;
-  wrap.insertAdjacentHTML("beforeend", html);
-  const bez = (a, m, e, t) => [(1 - t) * (1 - t) * a[0] + 2 * (1 - t) * t * m[0] + t * t * e[0], (1 - t) * (1 - t) * a[1] + 2 * (1 - t) * t * m[1] + t * t * e[1]];
-  const draw = time => {
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height); c.drawImage(base, 0, 0); c.restore();
-    arcs.forEach(({ r, A, C }) => {
-      c.beginPath(); c.moveTo(A[0], A[1]); c.quadraticCurveTo(C[0], C[1], Hm[0], Hm[1]); c.strokeStyle = rgba(r.sw[0], .45); c.lineWidth = 1.6; c.stroke();
-      const [px, py] = bez(A, C, Hm, (time * .18 + r.lon / 360 + 1) % 1); c.fillStyle = r.sw[0]; c.beginPath(); c.arc(px, py, 4, 0, 6.283); c.fill();
-    });
-  };
-  draw(.3);
-  return { draw, slide: cv.closest(".slide") };
-})();
+/* ------------------------------------------------------------ worlds */
+let scale = 1;
+const worlds = slides.filter(s => s.dataset.world).map(s => { const cv = document.createElement("canvas"); cv.className = "bgw"; cv.setAttribute("aria-hidden", "true"); s.prepend(cv); return { s, cv, key: s.dataset.world, w: 1920, h: 1080 }; });
+const minis = $$("canvas[data-art]").map(cv => ({ s: cv.closest(".slide"), cv, key: cv.dataset.art }));
+const sizeAll = () => {
+  const d = MODE === "print" ? 1 : Math.min(1.5, Math.max(.35, scale * (devicePixelRatio || 1)));
+  worlds.forEach(o => { o.cv.width = 1920 * d | 0; o.cv.height = 1080 * d | 0; o.c = o.cv.getContext("2d"); o.c.setTransform(d, 0, 0, d, 0, 0); });
+  minis.forEach(o => { const w = o.cv.offsetWidth || 400, h = o.cv.offsetHeight || 210; const k = MODE === "print" ? 1.5 : Math.min(2, d * 1.2); o.w = w; o.h = h; o.cv.width = w * k | 0; o.cv.height = h * k | 0; o.c = o.cv.getContext("2d"); o.c.setTransform(k, 0, 0, k, 0, 0); });
+};
+const drawSlide = (s, t) => {
+  worlds.forEach(o => { if (o.s === s) WORLDS[o.key].draw(o.c, 1920, 1080, t, {}, .4); });
+  minis.forEach(o => { if (o.s === s) WORLDS[o.key].draw(o.c, o.w, o.h, t + 3, {}, .4); });
+};
 
 /* ------------------------------------------------------------ navigation */
 let cur = 0;
-const setScale = () => { const s = Math.min(innerWidth / 1920, innerHeight / 1080); $("#deck").style.setProperty("--s", s); };
+const setScale = () => { scale = Math.min(innerWidth / 1920, innerHeight / 1080); $("#deck").style.setProperty("--s", scale); };
 const chan = "BroadcastChannel" in window ? new BroadcastChannel("tb-deck") : null;
 function go(i, from) {
   i = Math.max(0, Math.min(N - 1, i));
   slides.forEach((s, k) => s.classList.toggle("on", k === i));
-  cur = i;
+  cur = i; drawSlide(slides[i], performance.now() / 1000);
   $("#progress").style.transform = `scaleX(${(i + 1) / N})`;
   if (MODE !== "embed" && location.hash !== "#" + (i + 1)) history.replaceState(null, "", "#" + (i + 1));
   const np = $("#notesPanel"); if (!np.hidden) np.innerHTML = `<b>${i + 1} · ${slides[i].dataset.title}</b>${$("aside.notes", slides[i]).textContent}`;
@@ -1141,22 +693,20 @@ function go(i, from) {
 const fromHash = () => { const n = parseInt(location.hash.slice(1), 10); return isNaN(n) ? 0 : n - 1; };
 
 if (MODE === "print") {
-  slides.forEach(s => s.classList.add("on"));
+  sizeAll();
+  slides.forEach(s => { s.classList.add("on"); drawSlide(s, 9); });
+  // flatten each world to a JPEG so the PDF stays small
+  [...worlds, ...minis].forEach(o => { const img = new Image(); img.src = o.cv.toDataURL("image/jpeg", .84); img.className = o.cv.className; img.style.cssText = `width:${o.cv.offsetWidth || o.w}px;height:${o.cv.offsetHeight || o.h}px;display:block;` + (o.cv.classList.contains("bgw") ? "position:absolute;inset:0;" : ""); img.alt = ""; o.cv.replaceWith(img); });
 } else if (MODE === "presenter") {
   buildPresenter();
 } else {
-  setScale(); addEventListener("resize", setScale);
+  setScale(); sizeAll();
+  addEventListener("resize", () => { setScale(); sizeAll(); drawSlide(slides[cur], performance.now() / 1000); });
+  document.fonts && document.fonts.ready.then(() => { sizeAll(); drawSlide(slides[cur], performance.now() / 1000); });
   go(fromHash());
   addEventListener("hashchange", () => { const n = fromHash(); if (n !== cur) go(n); });
-  // animate the active slide's canvas only
-  let t0 = performance.now();
-  const loop = now => {
-    const t = (now - t0) / 1000 * (REDUCED ? .05 : 1) + 9;
-    const s = slides[cur];
-    arts.forEach(a => { if (a.slide === s && MODE === "show") a.art.draw(a.c, a.w, a.h, t, a.st); });
-    if (map.slide === s && MODE === "show" && !REDUCED) map.draw(t);
-    requestAnimationFrame(loop);
-  };
+  // animate the active slide's worlds only
+  const loop = now => { if (!REDUCED && MODE === "show") drawSlide(slides[cur], now / 1000); requestAnimationFrame(loop); };
   requestAnimationFrame(loop);
 }
 
@@ -1183,7 +733,6 @@ if (MODE === "show") {
     else if (k === "b" || k === "B" || k === ".") $("#blank").hidden = !$("#blank").hidden;
     else if (k === "p" || k === "P") window.open(location.pathname + "?presenter#" + (cur + 1), "tb-presenter", "width=1280,height=800");
   });
-  // click / tap to advance (right two thirds forward, left third back)
   $(".viewport").addEventListener("click", e => { if (e.target.closest("a,button")) return; go(cur + (e.clientX > innerWidth / 3 ? 1 : -1)); });
   let tx = null; addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
   addEventListener("touchend", e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1)); tx = null; });
@@ -1202,7 +751,7 @@ function buildPresenter() {
   let at = fromHash(), start = Date.now();
   const show = i => {
     at = Math.max(0, Math.min(N - 1, i));
-    $("#pvA").contentWindow && ($("#pvA").src = `${location.pathname}?embed#${at + 1}`);
+    $("#pvA").src = `${location.pathname}?embed#${at + 1}`;
     $("#pvB").src = `${location.pathname}?embed#${Math.min(N, at + 2)}`;
     $("#pvMeta").textContent = `Slide ${at + 1} of ${N} · ${slides[at].dataset.sec}` + (at < N - 1 ? ` · next: ${titles[at + 1]}` : " · last slide");
     $("#pvNotes").innerHTML = `<h3>${titles[at]}</h3>${notes[at]}`;

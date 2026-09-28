@@ -22,7 +22,7 @@ export const Arc: React.FC = () => {
           return (
             <div key={r.w} style={{ position: "absolute", left: 140, right: 140, top: 70 + i * 238, height: 220, display: "flex", alignItems: "center", gap: 48,
               opacity: l >= 0 ? 1 : 0 }}>
-              <div style={{ fontFamily: DISPLAY, fontWeight: 900, fontStretch: "118%", fontSize: 176, letterSpacing: "-0.05em", lineHeight: 1, color: r.col,
+              <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 176, letterSpacing: "-0.03em", lineHeight: 1, color: r.col,
                 scale: `${interpolate(l, [0, 6], [1.7, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}`,
                 rotate: `${interpolate(l, [0, 6], [-6, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}deg`, transformOrigin: "0 60%" }}>
                 {r.w}

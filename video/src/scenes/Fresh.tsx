@@ -34,8 +34,8 @@ export const Fresh: React.FC = () => {
       <Interactive.Div
         name="Kicker"
         style={{
-          position: "absolute", left: 140, top: 250, fontFamily: DISPLAY, fontWeight: 800, fontStretch: "112%",
-          fontSize: 120, letterSpacing: "-0.035em", lineHeight: 1, color: WORDS[i].fg,
+          position: "absolute", left: 140, top: 250, fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%",
+          fontSize: 120, letterSpacing: "-0.025em", lineHeight: 1, color: WORDS[i].fg,
           translate: interpolate(f, [0, 8], ["-80px 0px", "0px 0px"], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out }),
           opacity: interpolate(f, [0, 3], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
         }}
@@ -46,7 +46,7 @@ export const Fresh: React.FC = () => {
       <div style={{ position: "absolute", left: 130, top: 390, height: 360, overflow: "hidden", paddingRight: 80 }}>
         <div
           style={{
-            fontFamily: DISPLAY, fontWeight: 900, fontStretch: "118%", fontSize: 330, letterSpacing: "-0.05em", lineHeight: 1.05,
+            fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 330, letterSpacing: "-0.03em", lineHeight: 1.05,
             color: WORDS[i].fg, whiteSpace: "nowrap",
             translate: `0px ${interpolate(local, [0, 6], [100, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}%`,
             transform: `skewX(${interpolate(local, [0, 6], [-12, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}deg)`,

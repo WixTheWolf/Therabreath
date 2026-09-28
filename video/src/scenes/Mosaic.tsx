@@ -44,7 +44,7 @@ export const Mosaic: React.FC = () => {
               <div style={{ position: "absolute", left: "50%", bottom: -58, translate: "-50% 0", whiteSpace: "nowrap", fontFamily: DISPLAY, fontWeight: 800,
                 fontSize: 32, color: "#fff", rotate: `${-((1 - p) * (i % 2 ? 90 : -90) + f * (i % 2 ? 0.25 : -0.25))}deg`,
                 opacity: interpolate(f - start, [10, 16], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }}>
-                {c.flavor}
+                {c.name}
               </div>
             </div>
           );
@@ -54,7 +54,7 @@ export const Mosaic: React.FC = () => {
       <div style={{ position: "absolute", left: 0, right: 0, top: 540, translate: "0 -50%", textAlign: "center", pointerEvents: "none",
         opacity: interpolate(f, [34, 38, 58, 62], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }}>
         <span style={{ display: "inline-block", background: C.orange, color: "#fff", padding: "18px 44px", borderRadius: 18,
-          fontFamily: DISPLAY, fontWeight: 900, fontStretch: "115%", fontSize: 110, letterSpacing: "-0.04em",
+          fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 110, letterSpacing: "-0.028em",
           rotate: "-3deg", scale: `${interpolate(f, [34, 42], [1.5, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}`,
           boxShadow: "0 30px 80px rgba(0,0,0,.4)" }}>
           Tasted blind.

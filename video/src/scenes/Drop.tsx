@@ -70,7 +70,7 @@ export const Drop: React.FC = () => {
         name="Lockup"
         style={{
           position: "absolute", left: 0, right: 0, top: 480, textAlign: "center", color: "#fff",
-          fontFamily: DISPLAY, fontWeight: 800, fontStretch: "110%", fontSize: 64, letterSpacing: "-0.02em",
+          fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 64, letterSpacing: "-0.02em",
           opacity: interpolate(f, [34, 39], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
           translate: interpolate(f, [34, 45], ["0px 40px", "0px 0px"], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out }),
         }}

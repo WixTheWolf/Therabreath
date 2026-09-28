@@ -1,0 +1,298 @@
+/* ==========================================================================
+   Worlds of Fresh · scroll engine shared by the site and the pre-read
+   - one fixed canvas paints the flavor world of the section on screen
+   - the next section pours its world in over the last with a liquid edge
+   - builders for the pieces both pages use: the six worlds with a pinned
+     bottle, the sodium chlorite scene, the trend track, the agenda dial,
+     the territory map, portals and kinetic type
+   Everything reads from assets/playbook-core.js (window.TBCore).
+   ========================================================================== */
+(function () {
+  "use strict";
+  const T = window.TBCore;
+  const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const ease = x => 1 - Math.pow(1 - clamp(x), 3);
+  const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+  const UI = { REDUCED, esc, clamp, ease };
+  const ICONIC = { liq: ["#4FB3E6", "#1A78C0"], band: "#6CC3EA", flavor: "Invigorating Icy Mint" };
+  UI.ICONIC = ICONIC;
+  const shield = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>`;
+
+  /* ---------------------------------------------------------------- stage */
+  let cv, ctx, W = 0, VH = 0, DPR = 1, S = 1, secs = [], tops = [], docH = 1, lastY = -1, lastKey = "", dirty = true;
+  const scrollers = [], minis = [];
+  UI.onScroll = fn => scrollers.push(fn);
+
+  function measure() {
+    W = innerWidth; VH = innerHeight;
+    DPR = Math.min(devicePixelRatio || 1, 2, Math.sqrt(2.3e6 / (W * VH)));
+    cv.width = Math.round(W * DPR); cv.height = Math.round(VH * DPR); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    S = Math.max(.3, Math.min(W, VH) / 900);
+    scrollers.forEach(f => f.measure && f.measure());
+    secs = $$("[data-world]"); tops = secs.map(s => s.getBoundingClientRect().top + scrollY);
+    docH = document.documentElement.scrollHeight;
+    minis.forEach(m => { const r = m.cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 1.5); m.w = r.width; m.h = r.height; m.cv.width = Math.max(1, r.width * d); m.cv.height = Math.max(1, r.height * d); m.c.setTransform(d, 0, 0, d, 0, 0); });
+    dirty = true;
+  }
+  function edgePath(y, t, amp) {
+    const A = 16 * S * amp; ctx.beginPath(); ctx.moveTo(0, VH + 2);
+    for (let x = 0; x <= W + 24; x += 24) ctx.lineTo(x, y + A * Math.sin(x * .006 / S + t * 1.5) + A * .5 * Math.sin(x * .014 / S - t * 1.1));
+    ctx.lineTo(W + 24, VH + 2); ctx.closePath();
+  }
+  function paint(key, t, p) { const wd = T.WORLDS[key] || T.WORLDS.oxygen; wd.draw(ctx, W, VH, t, {}, p); }
+  function frame(now) {
+    const t = REDUCED ? 6 : now / 1000, y = scrollY;
+    const moved = y !== lastY; lastY = y;
+    if (moved || !REDUCED || dirty) {
+      let k = 0; for (let i = 0; i < tops.length; i++) if (tops[i] <= y + 1) k = i;
+      const A = secs[k], B = secs[k + 1];
+      if (A) {
+        const pa = clamp((y - tops[k]) / Math.max(1, (tops[k + 1] || docH) - tops[k]));
+        paint(A.dataset.world, t, pa);
+        let tone = A.dataset.tone || T.WORLDS[A.dataset.world]?.tone || "light", title = A.dataset.title || "";
+        if (B) {
+          const edge = tops[k + 1] - y;
+          if (edge < VH && B.dataset.world !== A.dataset.world) {
+            const q = 1 - edge / VH, amp = Math.sin(q * Math.PI) * .9 + .1;
+            ctx.save(); edgePath(edge, t, amp); ctx.clip(); paint(B.dataset.world, t, 0); ctx.restore();
+            ctx.save(); edgePath(edge, t, amp); ctx.strokeStyle = "rgba(255,255,255,.75)"; ctx.lineWidth = Math.max(1.5, 3 * S); ctx.stroke(); ctx.restore();
+          }
+          if (edge < 64) { tone = B.dataset.tone || T.WORLDS[B.dataset.world]?.tone || "light"; title = B.dataset.title || title; }
+        }
+        if (document.body.dataset.tone !== tone) document.body.dataset.tone = tone;
+        if (title !== lastKey) { lastKey = title; const wh = $("#where"); if (wh) wh.textContent = title; }
+      }
+      scrollers.forEach(f => f.update && f.update(y, t));
+      const pr = $("#progress"); if (pr) pr.style.transform = `scaleX(${clamp(y / Math.max(1, docH - VH))})`;
+      dirty = false;
+    } else scrollers.forEach(f => f.tick && f.tick(t));
+    if (!REDUCED || moved) minis.forEach(m => {
+      const r = m.cv.getBoundingClientRect(); if (r.bottom < 0 || r.top > VH || !m.w) return;
+      T.WORLDS[m.key].draw(m.c, m.w, m.h, t + m.off, {}, .4);
+    });
+    requestAnimationFrame(frame);
+  }
+  UI.mini = (canvas, key, off) => { const m = { cv: canvas, c: canvas.getContext("2d"), key, off: off || 0, w: 0, h: 0 }; minis.push(m); return m; };
+  UI.start = () => {
+    cv = $("#world"); if (!cv) { cv = document.createElement("canvas"); cv.id = "world"; cv.setAttribute("aria-hidden", "true"); document.body.prepend(cv); }
+    ctx = cv.getContext("2d");
+    measure();
+    addEventListener("resize", () => { clearTimeout(UI._rz); UI._rz = setTimeout(measure, 120); });
+    document.fonts && document.fonts.ready.then(measure);
+    addEventListener("load", measure);
+    setInterval(() => { const h = document.documentElement.scrollHeight; if (Math.abs(h - docH) > 2) measure(); }, 1200);
+    requestAnimationFrame(frame);
+    reveal();
+  };
+
+  /* ---------------------------------------------------------------- type + reveal */
+  UI.kinetic = (el, mode) => {
+    if (REDUCED || el.classList.contains("kin")) { el.classList.add("kin"); return; }
+    let i = 0;
+    const walk = node => [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const f = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { f.appendChild(document.createTextNode(" ")); return; }
+          if (mode === "ch") {
+            const w = document.createElement("span"); w.style.display = "inline-block"; w.style.whiteSpace = "nowrap";
+            [...part].forEach(chr => { const s = document.createElement("span"); s.className = "ch"; s.style.setProperty("--i", i++); s.textContent = chr; w.appendChild(s); });
+            f.appendChild(w);
+          } else { const s = document.createElement("span"); s.className = "wd"; s.style.setProperty("--i", i++ * 2); s.textContent = part; f.appendChild(s); }
+        });
+        n.replaceWith(f);
+      } else if (n.nodeType === 1 && n.tagName !== "BR" && n.tagName !== "SVG") walk(n);
+    });
+    walk(el); el.classList.add("kin");
+  };
+  let io;
+  function reveal() {
+    $$("[data-kin]").forEach(el => UI.kinetic(el, el.dataset.kin || "wd"));
+    io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -10% 0px", threshold: .12 });
+    $$(".rv, .kin, .lineup, .dial, [data-reveal]").forEach(el => io.observe(el));
+  }
+  UI.observe = el => io ? io.observe(el) : 0;
+
+  /* ---------------------------------------------------------------- bottles */
+  UI.conceptBottle = c => T.bottle(T.conceptBottleOpts(c));
+  UI.teaserBottle = c => T.bottle({ liq: c.liquid, band: c.acc, flavor: c.name, sub: c.flavor });
+  UI.iconicBottle = () => T.bottle(ICONIC);
+  UI.logo = href => document.body.insertAdjacentHTML("afterbegin", T.logoSymbol(href));
+
+  /* ---------------------------------------------------------------- the six worlds */
+  UI.sixWorlds = (host, o = {}) => {
+    const C = o.concepts || T.CONCEPTS;
+    const pops = Array.from({ length: 12 }, (_, i) => { const a = i / 12 * Math.PI * 2; return `<i class="pop" style="--bx:${Math.cos(a) * (140 + (i % 3) * 50)}px;--by:${Math.sin(a) * (180 + (i % 2) * 60)}px"></i>`; }).join("");
+    host.classList.add("six");
+    host.innerHTML = `<div class="six-track" aria-hidden="true"><div class="six-bottle"><div class="bt">${UI.conceptBottle(C[0])}${pops}</div></div></div>` + C.map((c, i) => {
+      const [w1, ...rest] = c.name.split(" "), w2 = rest.join(" ");
+      return `<section class="fw" data-world="${c.id}" data-tone="${c.tone}" data-title="${esc(c.name)}" id="w-${c.id}" style="--acc:${c.hi}">
+        <div class="fw-pin">
+          <div class="top"><span class="eyebrow"><b>${c.n}</b>${o.label || "Flavor world"} ${c.n} of 0${C.length}</span>${o.codes ? `<span class="chip"><i style="--c:${c.hi}"></i>Sample ${c.code}</span>` : ""}</div>
+          <h2 class="mega${w1.length > 7 ? " long" : ""}" data-name style="${w1.length > 7 ? "font-size:clamp(52px,9.4vw,180px)" : ""}"><span class="ln">${esc(w1)}</span><span class="ln outline fg l2">${esc(w2)}</span></h2>
+          <p class="tag rv">${esc(c.tag)}</p>
+          <div class="low rv" style="--d:.15s">
+            <div><div class="arc3"><div><b>Opening</b>${esc(c.arc[0])}</div><div><b>Heart</b>${esc(c.arc[1])}</div><div><b>Finish</b>${esc(c.arc[2])}</div></div>
+              <div class="ww"><span class="chip"><i style="--c:${c.hi}"></i>For: ${esc(c.who)}</span><span class="chip"><i style="--c:${c.hi}"></i>When: ${esc(c.when)}</span></div></div>
+            <div class="chem"><span class="mono">${shield}Built to survive sodium chlorite</span><div class="keys">${c.chem.keys.map(esc).join(" · ")}</div><p>${esc(c.chem.why)}</p></div>
+          </div>
+        </div></section>`;
+    }).join("");
+    const fws = $$(".fw", host), names = fws.map(f => $("[data-name]", f)), bw = $(".six-bottle", host);
+    names.forEach(n => UI.kinetic(n, "ch"));
+    const svg = () => $(".bottle", bw);
+    let shown = 0, want = 0, busy = false;
+    const swap = () => {
+      if (busy || want === shown) return;
+      busy = true; const target = want; bw.classList.add("drain");
+      setTimeout(() => {
+        T.setBottle(svg(), T.conceptBottleOpts(C[target])); shown = target;
+        bw.classList.remove("drain"); bw.classList.remove("slosh", "burst"); void bw.offsetWidth; bw.classList.add("slosh", "burst");
+        setTimeout(() => { busy = false; swap(); }, 420);
+      }, REDUCED ? 0 : 380);
+    };
+    let fTops = [];
+    UI.onScroll({
+      measure() { fTops = fws.map(f => f.getBoundingClientRect().top + scrollY); },
+      update(y) {
+        const mid = y + VH * .5; let k = 0;
+        fTops.forEach((tp, i) => { if (tp <= mid) k = i; });
+        if (k !== want) { want = k; swap(); }
+        fws.forEach((f, i) => {
+          const rel = (y - fTops[i]) / VH;
+          if (rel > -1.2 && rel < 1.6) {
+            const enter = clamp(1 + rel);
+            names[i].style.setProperty("--wd", (76 + 20 * ease(enter)).toFixed(1) + "%");
+            if (enter > .55) names[i].classList.add("in");
+          }
+        });
+      }
+    });
+  };
+
+  /* ---------------------------------------------------------------- sodium chlorite */
+  UI.chemScene = (sec, o = {}) => {
+    const X = T.CHEM;
+    const order = ["s", "f", "s", "s", "f", "s", "f", "s", "s", "f", "s", "f"];
+    let si = 0, fi = 0;
+    const mobileKeep = { s: [0, 1, 2, 4], f: [0, 1, 2, 3] };
+    const toks = order.map((kind, i) => {
+      const d = kind === "s" ? X.stable[si++] : X.fragile[fi++], idx = kind === "s" ? si - 1 : fi - 1;
+      const col = i % 4, row = Math.floor(i / 4);
+      return { kind, d, x: 12 + col * 25.3, y: 12 + row * 38, m: mobileKeep[kind].includes(idx) };
+    });
+    sec.classList.add("chem-sec"); sec.dataset.world = "lab"; sec.dataset.tone = "dark";
+    sec.innerHTML = `<div class="chem-pin">
+      <div class="chem-head"><div><span class="eyebrow"><b>${o.num || "02"}</b>${esc(o.kicker || "Territories · the base")}</span><h2 class="display" data-kin style="margin-top:16px">Built to survive <span class="hl">oxygen.</span></h2></div>
+        <p class="fact">${esc(X.fact)}</p></div>
+      <div class="chem-stage"><div class="front"><span>Oxygen · sodium chlorite →</span></div>
+        ${toks.map(k => `<div class="mol" data-kind="${k.kind}" data-m="${k.m ? 1 : 0}" style="--x:${k.x}%;--y:${k.y}%"><span class="badge">${k.kind === "s" ? "Survives" : esc(k.d.fate)}</span><b>${esc(k.d.m)}</b><span class="g">${esc(k.d.g)}</span><span class="f">${esc(k.d.f)}</span></div>`).join("")}
+      </div>
+      <div class="chem-foot"><div class="rule">${esc(X.rule)}</div><div><div class="legend"><span class="chip"><i style="--c:#7EE3AE"></i>Survives</span><span class="chip"><i style="--c:#FF8A5B"></i>Fades or turns</span></div><p class="cav" style="margin-top:10px">${esc(X.caveat)}</p></div></div>
+    </div>`;
+    const stage = $(".chem-stage", sec), front = $(".front", sec), foot = $(".chem-foot", sec), mols = $$(".mol", sec);
+    let top = 0, hgt = 1, sw = 1, mobile = false;
+    const place = () => {
+      mobile = innerWidth < 760; let mi = 0;
+      mols.forEach((m, i) => {
+        const k = toks[i];
+        if (mobile) { m.style.display = k.m ? "" : "none"; if (k.m) { const c2 = mi % 2, r2 = Math.floor(mi / 2); m.style.setProperty("--x", (26 + c2 * 48) + "%"); m.style.setProperty("--y", (6 + r2 * 29) + "%"); mi++; } }
+        else { m.style.display = ""; m.style.setProperty("--x", k.x + "%"); m.style.setProperty("--y", k.y + "%"); }
+      });
+    };
+    UI.onScroll({
+      measure() { sec.style.height = (REDUCED ? 100 : 300) + "vh"; top = sec.getBoundingClientRect().top + scrollY; hgt = sec.offsetHeight; sw = stage.offsetWidth; place(); },
+      update(y) {
+        const q = REDUCED ? 1 : clamp((y - top) / Math.max(1, hgt - VH));
+        const fq = clamp((q - .16) / .5), fx = -240 + fq * (sw + 480); front.style.setProperty("--fx", fx + "px"); front.style.setProperty("--fo", (fq > 0 && fq < 1 ? 1 : 0));
+        const edgeX = fx + 220;
+        mols.forEach((m, i) => {
+          if (m.style.display === "none") return;
+          const op = clamp((q - i * .008) / .08), mx = parseFloat(m.style.getPropertyValue("--x")) / 100 * sw, age = (edgeX - mx) / sw, hit = age > 0 && q > .16;
+          const s = toks[i].kind === "s";
+          m.classList.toggle("ok", hit && s); m.classList.toggle("hit", hit && !s);
+          const drop = hit && !s ? ease(age / .35) : 0;
+          m.style.setProperty("--op", (op * (1 - drop * .45)).toFixed(3));
+          m.style.setProperty("--ty", (hit && s ? -6 * ease(age / .2) : drop * 10 + (1 - op) * 30).toFixed(1) + "px");
+          m.style.setProperty("--rot", (drop * (i % 2 ? 5 : -5)).toFixed(2) + "deg");
+          m.style.setProperty("--tx", (hit && !s && age < .06 ? Math.sin(age * 900) * 5 : 0).toFixed(1) + "px");
+        });
+        foot.style.setProperty("--ro", clamp((q - .68) / .14).toFixed(3));
+      }
+    });
+  };
+
+  /* ---------------------------------------------------------------- trend track */
+  UI.trendTrack = (sec, o = {}) => {
+    const L = T.TREND_LIST;
+    sec.classList.add("track-sec"); sec.dataset.world = sec.dataset.world || "spectrum";
+    sec.innerHTML = `<div class="track-pin">
+      <div class="track-head"><div><span class="eyebrow"><b>${o.num || "01"}</b>Trends</span><h2 class="display" data-kin style="margin-top:14px">What’s shaping <span class="hl">oral care.</span></h2></div>
+        <p class="small" style="max-width:30ch;margin:0">${esc(o.sub || "Flavor, sensory and consumer shifts we see from the bench and across the categories we work in.")}</p></div>
+      <div class="track">${L.map((tr, i) => `<article class="tp"><canvas aria-hidden="true"></canvas><div class="txt"><span class="chip" style="align-self:flex-start;--chip:#fff;--line:rgba(7,28,60,.12);color:#071C3C"><i style="--c:${tr.c}"></i>${esc(T.TRENDS[tr.k])}</span><div class="word">${esc(tr.word)}</div><p class="h3">${esc(tr.h)}</p><div class="seen"><b>Where we see it</b>${esc(tr.seen)}</div></div><span class="num">0${i + 1} / 0${L.length}</span></article>`).join("")}</div>
+      <div class="track-dots">${L.map(() => "<i></i>").join("")}</div></div>`;
+    const track = $(".track", sec), dots = $$(".track-dots i", sec);
+    $$(".tp canvas", sec).forEach((c, i) => UI.mini(c, L[i].art, i * 3));
+    let top = 0, span = 1;
+    UI.onScroll({
+      measure() { span = Math.max(0, track.scrollWidth - innerWidth); sec.style.height = (innerHeight + span * (REDUCED ? 0 : 1.1)) + "px"; top = sec.getBoundingClientRect().top + scrollY; if (REDUCED) track.style.flexWrap = "wrap"; },
+      update(y) {
+        if (REDUCED) return;
+        const q = clamp((y - top) / Math.max(1, sec.offsetHeight - innerHeight));
+        track.style.transform = `translate3d(${(-q * span).toFixed(1)}px,0,0)`;
+        dots.forEach((d, i) => d.style.setProperty("--f", clamp(q * L.length - i).toFixed(3)));
+      }
+    });
+  };
+
+  /* ---------------------------------------------------------------- agenda dial */
+  UI.dial = (host, o = {}) => {
+    const A = T.AGENDA, cols = ["#0A2A5C", "#E9B949", "#12A0A6", "#2EA8E6", "#D9577A", "#F58025"];
+    const mins = a => { const [h, m] = a.split(":").map(Number); return h * 60 + m; };
+    const R = 200, cx = 300, cy = 300, total = 120;
+    let arcs = "", labels = "";
+    A.forEach((a, i) => {
+      const s0 = (mins(a.t) - 600) / total, s1 = (mins(a.e) - 600) / total, g = .006;
+      const a0 = (s0 + g) * Math.PI * 2 - Math.PI / 2, a1 = (s1 - g) * Math.PI * 2 - Math.PI / 2, large = a1 - a0 > Math.PI ? 1 : 0;
+      const p0 = [cx + Math.cos(a0) * R, cy + Math.sin(a0) * R], p1 = [cx + Math.cos(a1) * R, cy + Math.sin(a1) * R];
+      const len = (a1 - a0) * R;
+      arcs += `<path class="arc" d="M${p0[0].toFixed(1)},${p0[1].toFixed(1)} A${R},${R} 0 ${large} 1 ${p1[0].toFixed(1)},${p1[1].toFixed(1)}" stroke="${cols[i]}" style="--len:${len.toFixed(1)};--i:${i}"/>`;
+      const am = (a0 + a1) / 2, lx = cx + Math.cos(am) * (R + 50), ly = cy + Math.sin(am) * (R + 50), anc = Math.cos(am) > .2 ? "start" : Math.cos(am) < -.2 ? "end" : "middle";
+      labels += `<text class="tm" x="${lx.toFixed(1)}" y="${(ly - 9).toFixed(1)}" text-anchor="${anc}">${a.t}</text><text class="lbl" x="${lx.toFixed(1)}" y="${(ly + 13).toFixed(1)}" text-anchor="${anc}">${esc(a.h)}</text>`;
+    });
+    host.classList.add("dial");
+    host.innerHTML = `<svg viewBox="0 0 600 600" role="img" aria-label="Agenda from 10:00 to 12:00: ${A.map(a => a.t + " " + a.h).join(", ")}, then lunch"><circle cx="300" cy="300" r="${R}" fill="none" stroke="rgba(7,28,60,.08)" stroke-width="44"/>${arcs}${labels}
+      <g class="hand"><circle cx="300" cy="100" r="15" fill="#fff" stroke="#F58025" stroke-width="6"/></g></svg>
+      <div class="ctr"><div><b>10:00</b><span>to noon · ${esc(T.SESSION.room)}</span><span style="color:var(--orange-d)">then lunch</span></div></div>`;
+    const hand = $(".hand", host);
+    let top = 0;
+    UI.onScroll({ measure() { top = host.getBoundingClientRect().top + scrollY; }, update(y) { const q = clamp((y + VH - top) / (VH + host.offsetHeight)); hand.style.transform = `rotate(${(q * 330).toFixed(1)}deg)`; } });
+  };
+
+  /* ---------------------------------------------------------------- territory map */
+  UI.map = host => {
+    const pos = m => `--x:${(7 + m.x * 86).toFixed(1)}%;--y:${(12 + m.y * 74).toFixed(1)}%`;
+    host.classList.add("map");
+    host.innerHTML = `<div class="sweet"><span>The sweet spot: familiar enough to trust</span></div>
+      <span class="ax y0">Cool &amp; bright</span><span class="ax y1">Soft &amp; warm</span><div class="xline"></div><span class="ax x0">← Familiar</span><span class="ax x1">Adventurous →</span>
+      ${T.TODAY.map(d => `<div class="orb today" style="${pos(d)}"><i></i><b>${esc(d.name)}</b></div>`).join("")}
+      ${T.WILD.map((d, i) => `<div class="orb wild" style="${pos(d.map)};--c2:${d.acc};--s:62px;--dl:${-i * 1.7}s"><i></i><b>${esc(d.name)}</b></div>`).join("")}
+      ${T.CONCEPTS.map((c, i) => `<div class="orb" style="${pos(c.map)};--c1:${c.liquid[0]};--c2:${c.acc};--dl:${-i * 1.1}s"><i></i><b>${esc(c.name)}</b></div>`).join("")}`;
+  };
+
+  /* ---------------------------------------------------------------- lineup + portals */
+  UI.lineup = (host, withCodes) => {
+    host.classList.add("lineup");
+    host.innerHTML = T.CONCEPTS.map((c, i) => `<div class="bt" style="--i:${i}">${UI.conceptBottle(c)}<span>${withCodes ? "Sample " + c.code : esc(c.name)}</span></div>`).join("");
+  };
+  UI.portals = (host, items) => {
+    host.classList.add("portals");
+    host.innerHTML = items.map((d, i) => `<div class="portal rv" style="--d:${i * .12}s"><div class="disc"><canvas aria-hidden="true"></canvas></div><b>${esc(d.name)}</b><span>${esc(d.line)}</span>${d.chem ? `<small>${esc(d.chem)}</small>` : ""}</div>`).join("");
+    $$("canvas", host).forEach((c, i) => UI.mini(c, items[i].id, i * 5));
+  };
+
+  window.WorldsUI = UI;
+})();

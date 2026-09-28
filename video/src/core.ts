@@ -2,14 +2,15 @@
 // site/deck (../../assets/playbook-core.js), so the reel always matches them.
 import * as mod from "../../assets/playbook-core.js";
 
-type Concept = { id: string; name: string; flavor: string; tag: string; acc: string; bg: string; liquid: [string, string]; code: string };
-type Art = { init: (r: () => number) => unknown; draw: (c: CanvasRenderingContext2D, w: number, h: number, t: number, s: unknown) => void };
+type Concept = { id: string; name: string; flavor: string; tag: string; acc: string; bg: string; hi: string; tone: "light" | "dark"; liquid: [string, string]; code: string };
+type Art = { init: (r: () => number) => unknown; draw: (c: CanvasRenderingContext2D, w: number, h: number, t: number, s: unknown, p?: number) => void };
 type Core = {
   CONCEPTS: Concept[];
   ART: Record<string, Art>;
   rng: (seed: number) => () => number;
   bottle: (o: { liq: [string, string]; band: string; flavor: string; sub?: string }) => string;
   logoSymbol: (href: string) => string;
+  conceptBottleOpts: (c: Concept) => { liq: [string, string]; band: string; flavor: string; sub?: string };
 };
 
 const m = mod as unknown as { default?: Core } & Core;

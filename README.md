@@ -21,56 +21,52 @@ python3 build_booklet.py
 
 The command writes the PDF to `dist/therabreath_capabilities_workshop_booklet.pdf`.
 
+## Worlds of Fresh: the November 9 workshop
+
+The site, pre-read, deck and reel share one idea: every flavor is its own animated world. As you scroll (or advance a slide) the next world pours in over the last, and the TheraBreath bottle drains and refills with each flavor. The worlds, the six flavors, the sodium chlorite chemistry and the session details live in `assets/playbook-core.js`, so one edit updates every piece. `assets/worlds.js` and `assets/worlds.css` hold the scroll engine and styles shared by the site and the pre-read.
+
+Session (from Ross Conroy's invite, Sep 24, 2026): Monday, November 9, 2026, 10:00 AM – 12:00 PM ET, room Darwin, Church & Dwight HQ, Ewing, NJ, lunch provided. Four objectives: trends, territories, concepts, pipeline. Agenda: 10:00 Welcome → 10:10 Trends → 10:30 Territories → 10:50 Taste (blind) → 11:20 Create → 11:40 Playbook → 12:00 lunch.
+
+## The six flavors (working names, not trademark-screened)
+
+Named the way TheraBreath names its own flavors (Invigorating Mint, Rainforest Mint, Chamomile Mint…). Each is built from molecules that give sodium chlorite nothing to oxidize. The chemistry is our bench read: every flavor still needs accelerated stability in the real base and flavorist sign-off.
+
+| Name | Flavor | Key molecules | Why it survives sodium chlorite |
+|---|---|---|---|
+| Frost Mint | Staged cooling | Menthol, WS-3, WS-23, menthyl lactate | All saturated coolants, no aldehydes |
+| Coastal Mint | Sea salt & marine air | Calone, sea salt, menthol | Marine note is a ketone; salt is at home in a sodium base |
+| Cardamom Mint | Green cardamom | 1,8-cineole, terpinyl acetate, menthol | Cineole is one of the most oxidation-stable flavor molecules |
+| Coconut Mint | Coconut water | γ-nonalactone, δ-decalactone, menthol | Saturated lactones (confirm at the rinse's pH) |
+| Rosewater Mint | Rosewater | Phenylethyl alcohol, menthone, menthol | Stable alcohol instead of fragile rose terpenes |
+| Orchard Mint | Crisp green apple | Hexyl acetate, ethyl 2-methylbutyrate, menthol | Saturated esters, no green-apple aldehydes |
+
+Wildcards: Sage Mint, Watermelon Mint, Cedar Mint. What the base breaks down, and why we avoided it: citral (lemon, lime), cinnamaldehyde, vanillin, eugenol (clove), nonadienal (cucumber, melon).
+
 ## Pre-read (send before the meeting)
 
-- `brief/index.html` is the briefing page to send the TheraBreath team ahead of the November 9 session (10:00 AM – 12:00 PM ET, Darwin, lunch provided): the four objectives from Ross Conroy's invite, the 10:00–12:00 agenda, the four platforms, a first look at the six flavor directions (each with a who and a when), how to prepare for the tasting, four questions to think about, and the draft flavor playbook we will leave with. It includes a live countdown to the day and prints cleanly to PDF.
-- Share the deployed URL ending in `/brief/`. It does not link to the workshop site or deck, so nothing from the session is given away early.
+- `brief/index.html`: the scrolling pre-read. Hero with the session facts and a countdown, the 15-second reel, who we are, the four objectives with an agenda dial, the trends (a pinned horizontal track), the sodium chlorite scene (molecules survive or fade as an oxygen front sweeps across), the six flavor worlds with the pinned refilling bottle, tasting prep, four questions, and the draft playbook we'll leave with.
+- The six names are shown, but not which coded cup is which, so the tasting stays blind.
+- Share the deployed URL ending in `/brief/`. It does not link to the workshop site or deck.
 
 ## Pre-read reel
 
-`video/` is a Remotion project for the 15-second reel at the top of the pre-read (original synthesized music and sound effects, cuts on the beat). Rendered MP4 and WebM plus the poster are in `brief/media/`. See `video/README.md`.
+`video/` is a Remotion project for the 15-second reel (original synthesized music and sound effects, cuts on the beat). The bottle scene pours each flavor world in behind the bottle on the beat, using the same world renderers as the pages. Rendered MP4, WebM and poster are in `brief/media/`. See `video/README.md`.
 
-## Concept names (working names, not trademark-screened)
-
-Status is internal only: none of the pieces show lead/contender to TheraBreath, so the room isn't steered. Names are hidden in the pre-read and revealed after the blind tasting.
-
-| Product name | Flavor | Status |
-|---|---|---|
-| Polar Light | Arctic Yuzu | Current lead |
-| Glasshouse | Green Tea Cucumber | Current lead |
-| Limelight | Ginger Lime | Current lead |
-| Pink Hour | Grapefruit Rose Mint | Contender |
-| Green Orchard | Pear Cardamom Mint | Contender |
-| Lights Out | Chamomile Vanilla Mint | Open exploration |
-
-Wildcards: Forest Bath (Hinoki Spearmint), Sun Shower (Watermelon Shiso), Salt Air (Makrut Lime & Sea Salt). Names live in `assets/playbook-core.js` and update the site, deck and pre-read together.
-
-## Session brief and order
-
-Aligned to Ross Conroy's invite (Sep 24, 2026): Monday, November 9, 2026, 10:00 AM – 12:00 PM ET, room Darwin, lunch provided. The objective is to define a flavor playbook for near-term product innovation and long-term franchise growth, through four objectives: **trends** (flavor, sensory, consumer), **territories** (new flavor territories and sensory experiences), **concepts** (new usage occasions, new consumer segments, portfolio expansion) and a **pipeline** (platforms, flavor directions and white space across the franchise).
-
-Agenda: 10:00 Welcome → 10:10 Trends → 10:30 Territories → 10:50 Taste (blind) → 11:20 Create (small groups) → 11:40 Playbook (three checks, pipeline, owners) → 12:00 lunch. Session details, objectives, agenda, horizons and each concept's who/when live in `assets/playbook-core.js` (`SESSION`, `OBJECTIVES`, `AGENDA`, `HORIZONS`, `CREATE`) and feed the site, deck and pre-read. Taste blind before the reveal; don't open the reveal early.
-
-## Still to add (marked in red dashed boxes on the pages)
+## Still to add (red dashed boxes on the pages)
 
 - The Flavor Factory logo file (header lockups still use typed text)
 - Team photo, plus names and roles of who is attending
-- Flavorist sign-off on every formulation note in `assets/playbook-core.js`
-- Decision on whether to show working names at all
+- Flavorist sign-off on the six formulations and the who/when hypotheses
+- Decision on whether to keep the working names
 
 ## Workshop deck
 
-- `deck/index.html` is the 27-slide presentation for the session (1920 × 1080, scales to any screen). It follows the four objectives: Welcome → Trends → Territories → Taste → Create → Playbook, with a slide for each of the six concepts (with who and when), a blind scorecard, a Create canvas, a decision board, the near-term → long-term pipeline and the draft playbook to fill in live.
-- Keys: ← → / space to move, **G** slide overview, **N** speaker notes, **P** presenter view (current + next slide, notes and a timer, synced with the main window), **F** full screen, **B** blank screen. Slide numbers deep-link (`deck/#17`).
-- `dist/TheraBreath_Flavor_Playbook_Deck.pdf` is the PDF export for offline presenting or sending after the session. Regenerate it with `node scripts/export-deck-pdf.js` (needs `playwright-core` and a local Chrome; see the script header).
-- Fonts are self-hosted in `assets/fonts/` so the pages render the same offline or on a locked-down network.
-- Concept copy, regions, frameworks, the bottle drawing and the concept artwork live in `assets/playbook-core.js`, shared by the deck and the web experience, so an edit there updates both.
+- `deck/index.html`: 23 slides, 1920 × 1080, each in its own animated world. Welcome → Trends → the base (sodium chlorite) → Territory map → Tasting and scorecard → Reveal → one slide per flavor world → Wildcards → Create → Three checks → Decision board → Pipeline → Draft playbook → Close.
+- Keys: ← → / space to move, **G** overview, **N** speaker notes, **P** presenter view (current and next slide, notes, timer, synced), **F** full screen, **B** blank. Slide numbers deep-link (`deck/#12`).
+- `dist/TheraBreath_Flavor_Playbook_Deck.pdf` is the PDF export. Regenerate with `node scripts/export-deck-pdf.js` (needs `playwright-core` and a local Chrome; see the script header).
+- Fonts are self-hosted in `assets/fonts/` (Bricolage Grotesque, Figtree, JetBrains Mono, Archivo).
 
 ## Workshop web experience
 
-Highlights: headlines that rise word by word, bottle liquid that sloshes with scroll speed, a concept section where the bottle drains and refills with each flavor, and a **Flavor Lab** (the Create step) where the room picks a cue to keep, one thing to change, an occasion and a consumer, and sees whether it matches one of the six, with its platform and formulation watch-out.
-
-
-- `index.html` is the interactive scroll experience for the **TheraBreath Flavor Playbook** workshop (Darwin, Church & Dwight HQ, Ewing, NJ, November 9, 2026, 10:00 AM). It is a single self-contained file: open it in a browser, or serve the repo root with any static host.
-- Present with ← → (one screen per press), F for full screen, N for presenter notes. Tasting scores, decisions and owners are saved in the presenting browser only. "Copy the draft playbook" puts the outcome on the clipboard.
-- `assets/` holds the official TheraBreath logo and product photo. The concept bottles are drawn in code to match the current rinse label (orange cap, "Powered by Oxygen" band, FRESH BREATH box, flavor band).
+- `index.html`: the in-room tool and leave-behind. Scroll through the worlds; tools along the way: the blind scorecard (seven cups), the concept builder (pick a world, a moment and a person), the pipeline (tap a bottle to move it between near-term, next and long-term), and the draft playbook (trends, two territories, the three checks, owners). "Copy the draft playbook" puts it all on the clipboard. Everything is saved in the presenting browser only.
+- `assets/` holds the official TheraBreath logo and product photo. The concept bottles are drawn in code to match the current rinse label and read "Concept mockup · not a product".

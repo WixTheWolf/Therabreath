@@ -2,1698 +2,366 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TheraBreath Flavor Playbook</title>
-<meta name="description" content="Expand what fresh can feel like. An innovation workshop by The Flavor Factory for TheraBreath at Church &amp; Dwight, Ewing NJ, November 9, 2026.">
+<meta name="description" content="Six new flavor worlds for TheraBreath, built to survive sodium chlorite. The Flavor Factory × TheraBreath, November 9, 2026.">
+<meta name="theme-color" content="#0A63B5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='18' y='4' width='28' height='16' rx='4' fill='%23F58025'/%3E%3Cpath d='M20 22h24v6c9 2 12 8 12 16v12a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6V44c0-8 3-14 12-16z' fill='%2300A3E0'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/worlds.css">
 <style>
-/* ==========================================================================
-   TheraBreath Flavor Playbook · v2
-   Bold, bright, readable. One fixed colour field behind the page eases from
-   world to world as each scene reaches the middle of the screen. Everything
-   that moves is opacity or transform, so scrolling stays smooth.
-   ========================================================================== */
-@property --bg1 { syntax: "<color>"; inherits: false; initial-value: #E9F7FD; }
-@property --bg2 { syntax: "<color>"; inherits: false; initial-value: #FFFFFF; }
-:root{
-  color-scheme: light;
-  --blue:#00A3E0;          /* TheraBreath blue (from the capabilities booklet) */
-  --blue-d:#0072BC;        /* deeper blue                                    */
-  --green:#006649;         /* TheraBreath logo green                         */
-  --navy:#0A2A5C;
-  --ink:#071C3C;
-  --orange:#F58220;        /* the signature cap                              */
-  --orange-d:#C85F0E;
-  --mint:#7ED321;
-  --coral:#EF5B3F;         /* overreach only                                 */
-  --white:#FFFFFF;
-
-  --fg:var(--ink);
-  --fg-2:rgba(7,28,60,.74);
-  --fg-3:rgba(7,28,60,.5);
-  --line:rgba(7,28,60,.14);
-  --card:#FFFFFF;
-  --card-line:rgba(7,28,60,.08);
-  --brand:var(--green);
-
-  --f-d:"Archivo", "Arial Narrow", Arial, sans-serif;
-  --f-b:"Figtree", "Helvetica Neue", Arial, system-ui, sans-serif;
-  --gut:clamp(18px, 4.6vw, 80px);
-  --ease:cubic-bezier(.2,.7,.1,1);
+/* ---------- scorecard */
+.cups { display: flex; flex-wrap: wrap; gap: 14px; margin-top: clamp(30px, 5vh, 50px); }
+.cup { position: relative; width: 96px; height: 96px; border-radius: 50%; border: 0; background: radial-gradient(circle at 50% 42%, #fff 0 44%, #EAF4FA 45% 60%, #fff 61%); box-shadow: 0 12px 26px rgba(7, 28, 60, .14), inset 0 0 0 2px rgba(7, 28, 60, .08); font-family: var(--f-m); font-weight: 800; font-size: 20px; letter-spacing: .04em; color: var(--ink); transition: transform .25s var(--ease), box-shadow .25s; }
+.cup small { position: absolute; left: 0; right: 0; bottom: 14px; font-size: 9px; letter-spacing: .12em; color: rgba(7, 28, 60, .5); }
+.cup:hover { transform: translateY(-3px); }
+.cup.on { box-shadow: 0 0 0 4px var(--orange), 0 16px 30px rgba(245, 128, 37, .3); }
+.cup.done::after { content: "✓"; position: absolute; right: -2px; top: -2px; width: 26px; height: 26px; border-radius: 50%; background: var(--green); color: #fff; font-size: 14px; display: grid; place-items: center; }
+.rate { margin-top: 26px; padding: clamp(18px, 2.5vw, 30px); border-radius: 28px; background: rgba(255, 255, 255, .78); border: 1px solid var(--line); display: grid; grid-template-columns: 220px repeat(4, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.rate .who2 b { display: block; font-family: var(--f-d); font-weight: 800; font-size: 44px; letter-spacing: -.03em; line-height: 1; }
+.rate .who2 span { font-size: 14.5px; color: var(--fg2); }
+.dim label { display: block; font-family: var(--f-d); font-weight: 800; font-size: 19px; letter-spacing: -.01em; }
+.dim small { display: block; font-size: 13.5px; color: var(--fg2); min-height: 38px; }
+.dots5 { display: flex; gap: 6px; margin-top: 8px; }
+.dots5 button { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid rgba(7, 28, 60, .22); background: #fff; font-family: var(--f-m); font-weight: 700; font-size: 13px; }
+.dots5 button.on { background: var(--orange); border-color: var(--orange); color: #fff; }
+/* ---------- builder */
+.builder { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(20px, 3vw, 44px); margin-top: clamp(26px, 4vh, 44px); align-items: start; }
+.step { margin-bottom: 22px; }
+.step .mono { display: block; margin-bottom: 10px; color: var(--fg2); }
+.pick { display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 99px; border: 1.5px solid var(--line); background: rgba(255, 255, 255, .7); font-family: var(--f-d); font-weight: 700; font-size: 16px; letter-spacing: -.01em; transition: transform .2s var(--ease), background .2s, border-color .2s; }
+.pick i { width: 12px; height: 12px; border-radius: 50%; background: var(--c, var(--orange)); }
+.pick:hover { transform: translateY(-2px); }
+.pick.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.ccard { position: sticky; top: 90px; border-radius: 34px; overflow: hidden; background: #fff; box-shadow: 0 30px 80px rgba(7, 28, 60, .18); }
+.ccard .scene { position: relative; height: 300px; overflow: hidden; }
+.ccard canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ccard .scene .bottle { position: absolute; left: 50%; bottom: -40px; height: 330px; width: auto; transform: translateX(-50%); filter: drop-shadow(0 24px 24px rgba(0, 20, 50, .3)); }
+.ccard .body { padding: 26px 28px 28px; }
+.ccard .sent { font-family: var(--f-d); font-weight: 700; font-size: clamp(22px, 2.1vw, 30px); line-height: 1.15; letter-spacing: -.02em; margin: 0; }
+.ccard .sent b { font-weight: 800; color: var(--orange-d); }
+.ccard .ideas { margin: 18px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow: auto; }
+.ccard .ideas li { display: flex; gap: 10px; align-items: center; font-size: 15px; padding: 10px 12px; border-radius: 14px; background: #F6F1EA; }
+.ccard .ideas li i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); flex: none; }
+.ccard .ideas li button { margin-left: auto; border: 0; background: none; color: rgba(7, 28, 60, .5); font-size: 18px; line-height: 1; }
+/* ---------- pipeline lanes */
+.lanes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: clamp(24px, 4vh, 40px); }
+.lane { border-radius: 30px; padding: 22px 20px 20px; background: rgba(255, 255, 255, .72); border: 1px solid var(--line); border-top: 8px solid var(--c); min-height: 360px; }
+.lane .k { font-family: var(--f-m); font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--c); }
+.lane h3 { margin: 6px 0 4px; font-family: var(--f-d); font-weight: 800; font-size: 26px; letter-spacing: -.02em; line-height: 1.05; }
+.lane p { margin: 0 0 16px; font-size: 14.5px; color: var(--fg2); }
+.lane .bots { display: flex; flex-wrap: wrap; gap: 10px; }
+.lb { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 86px; border: 0; background: none; padding: 6px 0; border-radius: 16px; transition: transform .3s var(--ease), background .2s; }
+.lb:hover { background: rgba(7, 28, 60, .05); transform: translateY(-3px); }
+.lb .bottle { width: 44px; height: auto; filter: drop-shadow(0 8px 8px rgba(0, 30, 70, .2)); }
+.lb span { font-family: var(--f-d); font-weight: 700; font-size: 13px; line-height: 1.1; text-align: center; }
+.lb.wild .bottle { opacity: .6; }
+/* ---------- playbook */
+.pbk { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 18px; margin-top: clamp(24px, 4vh, 40px); }
+.pcol { border-radius: 30px; padding: clamp(18px, 2.2vw, 28px); background: rgba(255, 255, 255, .8); border: 1px solid var(--line); }
+.pcol h3 { margin: 0 0 12px; display: flex; justify-content: space-between; gap: 10px; font-family: var(--f-m); font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--fg2); }
+.pcol h3 + * { margin-bottom: 22px; }
+.in2 { width: 100%; padding: 13px 14px; border-radius: 14px; border: 1.5px solid var(--line); background: #fff; font-size: 16px; margin-bottom: 8px; }
+.checks { width: 100%; border-collapse: collapse; font-size: 15px; }
+.checks th { text-align: left; font-family: var(--f-m); font-weight: 700; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg3); padding: 0 6px 8px; }
+.checks td { border-top: 1px solid var(--line); padding: 8px 6px; }
+.checks .nm { display: flex; align-items: center; gap: 10px; font-family: var(--f-d); font-weight: 800; font-size: 17px; }
+.checks .nm i { width: 12px; height: 12px; border-radius: 50%; background: var(--c); }
+.tg { width: 34px; height: 34px; border-radius: 10px; border: 1.5px solid rgba(7, 28, 60, .22); background: #fff; font-size: 16px; color: #fff; }
+.tg.on { background: var(--green); border-color: var(--green); }
+.star { font-size: 22px; color: rgba(7, 28, 60, .16); }
+.star.on { color: var(--orange); }
+.own { display: grid; grid-template-columns: 1.1fr 1fr 1.2fr .9fr; gap: 8px; align-items: center; margin-bottom: 8px; }
+.own b { font-family: var(--f-d); font-weight: 800; font-size: 16px; }
+.own input, .own select { width: 100%; padding: 10px 10px; border-radius: 12px; border: 1.5px solid var(--line); background: #fff; font-size: 14.5px; }
+.toast { position: fixed; left: 50%; bottom: 26px; z-index: 60; transform: translate(-50%, 30px); opacity: 0; padding: 12px 20px; border-radius: 99px; background: var(--ink); color: #fff; font-family: var(--f-d); font-weight: 700; transition: .3s var(--ease); pointer-events: none; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+@media (max-width: 980px) {
+  .rate { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rate .who2 { grid-column: 1 / -1; }
+  .builder, .pbk { grid-template-columns: minmax(0, 1fr); }
+  .ccard { position: relative; top: 0; }
+  .lanes { grid-template-columns: minmax(0, 1fr); }
+  .lane { min-height: 0; }
 }
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background:#E9F7FD;color:var(--fg);font-family:var(--f-b);font-weight:500;font-size:clamp(17px, .5vw + 14px, 20px);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-img,svg,canvas{max-width:100%}
-button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
-input,select{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:6px}
-[hidden]{display:none!important}
-
-/* the colour field */
-#bg{position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(1100px 760px at 80% 8%, var(--bg2), transparent 70%), var(--bg1);
-  transition:--bg1 .9s ease, --bg2 .9s ease}
-
-/* type */
-.d{font-family:var(--f-d);font-weight:800;font-stretch:112%;letter-spacing:-.035em;line-height:.94;margin:0;text-wrap:balance}
-.d .hl{color:var(--brand)}
-.d-xxl{font-size:clamp(54px, 8.4vw, 156px)}
-.d-xl{font-size:clamp(46px, 6.2vw, 116px)}
-.d-l{font-size:clamp(38px, 4.6vw, 84px)}
-.d-m{font-size:clamp(28px, 2.8vw, 48px);line-height:1}
-.d-s{font-size:clamp(22px, 1.8vw, 30px);line-height:1.05;letter-spacing:-.02em}
-.lab{font-family:var(--f-d);font-weight:700;font-stretch:100%;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
-.eyebrow{font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);display:inline-flex;gap:10px;align-items:center}
-.eyebrow::before{content:"";width:22px;height:3px;border-radius:2px;background:var(--orange)}
-.lede{font-size:clamp(20px, 1vw + 12px, 27px);line-height:1.38;color:var(--fg-2);max-width:32ch;margin:0;font-weight:500;text-wrap:pretty}
-.body{max-width:56ch;color:var(--fg-2);margin:0}
-.small{font-size:15px;line-height:1.5;color:var(--fg-2)}
-
-/* scenes */
-main{position:relative;z-index:1}
-.scene{position:relative;min-height:100vh;padding-block:clamp(100px, 13vh, 150px);padding-inline:var(--gut);display:flex;flex-direction:column;justify-content:center}
-[data-tone="dark"]{--fg:#FFFFFF;--fg-2:rgba(255,255,255,.8);--fg-3:rgba(255,255,255,.56);--line:rgba(255,255,255,.18);--card:rgba(255,255,255,.07);--card-line:rgba(255,255,255,.14);--brand:#6FD9AE;color:var(--fg)}
-[data-tone="light"]{--fg:var(--ink);--fg-2:rgba(7,28,60,.74);--fg-3:rgba(7,28,60,.5);--line:rgba(7,28,60,.14);--card:#FFFFFF;--card-line:rgba(7,28,60,.08);--brand:var(--green);color:var(--fg)}
-.wrap{max-width:1440px;margin-inline:auto;width:100%}
-.stack{display:flex;flex-direction:column;gap:24px}
-.card{background:var(--card);border:1px solid var(--card-line);border-radius:24px}
-[data-tone="light"] .card{box-shadow:0 1px 2px rgba(7,28,60,.04),0 18px 44px rgba(7,28,60,.07)}
-.split{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,5vw,96px);align-items:center}
-.head2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:clamp(36px,6vh,64px)}
-
-/* reveal (only once JS confirms it can reveal) */
-.js .rv{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-.js .rv.in{opacity:1;transform:none}
-.js .rv.d1{transition-delay:.08s}.js .rv.d2{transition-delay:.16s}.js .rv.d3{transition-delay:.24s}
-
-/* chrome */
-.nav{position:fixed;z-index:50;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:calc(env(safe-area-inset-top,0px) + 16px) var(--gut) 16px;color:var(--ink);transition:color .5s;pointer-events:none}
-.nav > *{pointer-events:auto}
-body[data-tone="dark"] .nav{color:#fff}
-.lockup{display:flex;align-items:center;gap:12px;white-space:nowrap;color:inherit;text-decoration:none}
-.lockup .tb{font-family:var(--f-d);font-weight:800;font-stretch:105%;letter-spacing:-.02em;font-size:21px;color:var(--blue-d)}
-body[data-tone="dark"] .lockup .tb{color:#5CCBF5}
-.tb-logo{display:block;height:30px;width:auto;background:#fff;padding:5px 9px;border-radius:9px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
-.lockup .x{font-weight:400;opacity:.45}
-.lockup .ff{font-family:var(--f-d);font-weight:600;font-size:15px;letter-spacing:.01em}
-.nav-r{display:flex;align-items:center;gap:12px}
-.chapter{font-family:var(--f-d);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;text-align:right}
-.pill-btn{font-family:var(--f-d);font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:9px 14px;border:2px solid currentColor;border-radius:99px;transition:background .3s,color .3s}
-.pill-btn:hover{background:rgba(127,140,160,.16)}
-.rail{position:fixed;z-index:50;right:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:16px;color:var(--ink);transition:color .5s}
-body[data-tone="dark"] .rail{color:#fff}
-.rail .ph{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
-.rail .ph-l{font-family:var(--f-d);font-weight:700;font-size:10px;letter-spacing:.16em;opacity:0;transition:opacity .3s}
-.rail:hover .ph-l,.rail .ph.on .ph-l{opacity:.7}
-.rail a{color:inherit;display:block;width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.25;transition:opacity .3s,transform .3s;position:relative}
-.rail a.on{opacity:1;transform:scale(1.45);background:var(--orange)}
-.rail a span{position:absolute;right:16px;top:50%;transform:translateY(-50%);white-space:nowrap;font-family:var(--f-d);font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .3s}
-.rail a:hover span{opacity:1}
-.progress{position:fixed;z-index:51;top:0;left:0;height:4px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--blue),var(--orange))}
-.keys{position:fixed;z-index:50;left:var(--gut);bottom:calc(env(safe-area-inset-bottom,0px) + 16px);font-family:var(--f-d);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.5;color:var(--ink);transition:opacity .5s}
-
-/* ---------- the bottle ---------- */
-.bottle{display:block;width:100%;height:auto;overflow:visible}
-.bottle .liq{transform:rotate(calc(var(--slosh, 0) * 1deg));transition:transform .6s cubic-bezier(.3,1.5,.5,1)}
-.bottle .lvl{transition:transform .55s cubic-bezier(.6,0,.4,1)}
-.bottle.drain .lvl{transform:translateY(370px)}
-.bottle .cap{transform-origin:100px 50px;transition:transform .5s var(--ease)}
-.bottle.drain .cap{transform:translateY(-16px) rotate(-10deg)}
-.tilt{position:relative;width:52%;transition:transform .4s var(--ease);transform-style:preserve-3d}
-
-/* kinetic headlines: words rise out of a mask */
-.js .rv.kin{opacity:1;transform:none}
-.kin .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .03em .16em;margin:0 -.03em -.16em}
-.kin.done .w{overflow:visible}
-.kin .wi{display:inline-block;transform:translateY(112%) rotate(5deg);transform-origin:0 100%;transition:transform 1s var(--ease);transition-delay:calc(var(--k) * 60ms + 80ms)}
-.kin.in .wi{transform:none}
-.intro-on .kin .wi{transform:translateY(112%) rotate(5deg)!important}
-
-/* opening pour */
-.intro{position:fixed;inset:0;z-index:100;background:#E6F6FD;overflow:hidden;display:grid;place-items:center;transition:transform .9s cubic-bezier(.7,0,.2,1)}
-.intro.i4{transform:translateY(-100%)}
-.intro-bottle{position:relative;z-index:2;width:min(22vw,190px);transition:transform 1.1s cubic-bezier(.6,0,.2,1),opacity .5s;filter:drop-shadow(0 30px 30px rgba(0,60,120,.25))}
-.intro .bottle .cap{transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .4s .2s}
-.intro.i1 .bottle .cap{transform:translate(10px,-80px) rotate(-38deg);opacity:0}
-.intro.i2 .intro-bottle{transform:translate(20vw,-26vh) rotate(130deg) scale(.85)}
-.intro.i3 .intro-bottle{opacity:0}
-.intro-liquid{position:absolute;left:0;right:0;bottom:0;height:118%;z-index:1;transform:translateY(100%);transition:transform 1.4s cubic-bezier(.5,0,.1,1);background:linear-gradient(180deg,#1A9BE0 0%,#0072BC 55%,#006649 100%)}
-.intro.i2 .intro-liquid{transform:translateY(0)}
-.intro-liquid svg{position:absolute;left:0;top:-58px;width:200%;height:60px;animation:iwave 2.4s linear infinite}
-@keyframes iwave{to{transform:translateX(-50%)}}
-.intro-word{position:absolute;z-index:3;left:var(--gut);right:var(--gut);text-align:center;color:#fff;font-family:var(--f-d);font-weight:800;font-stretch:112%;letter-spacing:-.035em;font-size:clamp(46px,7.4vw,132px);line-height:.95}
-.intro-word span{display:block;overflow:hidden;padding-bottom:.1em}
-.intro-word i{display:block;font-style:normal;transform:translateY(115%);transition:transform .9s var(--ease)}
-.intro-word span:nth-child(2) i{transition-delay:.1s;color:#A8F0CB}.intro-word span:nth-child(3) i{transition-delay:.2s}
-.intro.i3 .intro-word i{transform:none}
-.intro-skip{position:absolute;right:24px;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);z-index:4;font-family:var(--f-d);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);border:2px solid currentColor;border-radius:99px;padding:9px 14px;transition:color .4s}
-.intro.i2 .intro-skip{color:#fff}
-
-/* name marquee */
-.marquee{position:relative;z-index:1;overflow:hidden;padding:26px 0;transform:skewY(calc(var(--skew, 0) * -.2deg));transition:transform .5s var(--ease)}
-.mq-track{display:flex;width:max-content;animation:mq 42s linear infinite}
-.mq-track span{font-family:var(--f-d);font-weight:800;font-stretch:118%;letter-spacing:-.03em;font-size:clamp(56px,8vw,140px);line-height:1;white-space:nowrap;padding-right:.4em;display:flex;align-items:center;gap:.4em}
-.mq-track span:nth-child(odd){color:var(--green)}
-.mq-track span:nth-child(even){color:transparent;-webkit-text-stroke:2px var(--ink)}
-.mq-track em{font-style:normal;font-size:.22em;letter-spacing:.1em;text-transform:uppercase;font-weight:700;-webkit-text-stroke:0;color:var(--fg-3)}
-.mq-track b{color:var(--orange);font-size:.5em;-webkit-text-stroke:0}
-@keyframes mq{to{transform:translateX(-50%)}}
-
-/* flavor lab */
-.labx-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,5vw,90px);align-items:center}
-.labx-step{margin-top:28px;display:flex;flex-direction:column;gap:12px}
-.labx-step .lab{color:var(--fg-2)}
-.chips{display:flex;flex-wrap:wrap;gap:10px}
-.chipb{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:99px;border:2px solid var(--line);font-family:var(--f-d);font-weight:800;font-size:16px;color:var(--fg-2);transition:background .25s,color .25s,border-color .25s,transform .25s var(--ease)}
-.chipb i{width:14px;height:14px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c)}
-.chipb:hover{border-color:rgba(255,255,255,.55);color:#fff;transform:translateY(-2px)}
-.chipb.on{background:#fff;color:var(--ink);border-color:#fff}
-.labx-out{display:grid;grid-template-columns:minmax(150px,210px) minmax(0,1fr);gap:clamp(18px,3vw,40px);align-items:center}
-.labx-bottle .bottle{filter:drop-shadow(0 34px 34px rgba(0,0,0,.4))}
-.labx-card{padding:30px;display:flex;flex-direction:column;gap:12px}
-.labx-card .nm{font-family:var(--f-d);font-weight:800;font-stretch:112%;letter-spacing:-.035em;line-height:.95;font-size:clamp(40px,4.2vw,74px)}
-.labx-card .nm.swap{animation:swap .6s var(--ease)}
-@keyframes swap{0%{opacity:0;transform:translateY(18px)}100%{opacity:1;transform:none}}
-.labx-card .fl{font-family:var(--f-d);font-weight:700;font-size:20px;color:#6FD9AE}
-.meters{display:flex;flex-direction:column;gap:10px;margin-top:6px}
-.meters .m{display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-2)}
-.meter{display:flex;gap:6px}
-.meter i{flex:1;height:10px;border-radius:99px;background:rgba(255,255,255,.14);transition:background .4s}
-.meter i.on{background:var(--orange)}
-.labx-card dl{display:grid;grid-template-columns:100px 1fr;gap:8px 12px;margin:6px 0 0;font-size:15px}
-.labx-card dt{font-family:var(--f-d);font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);padding-top:2px}
-.labx-card dd{margin:0;color:var(--fg)}
-.match{display:none;align-self:flex-start;font-family:var(--f-d);font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:var(--orange);color:#fff;padding:7px 12px;border-radius:99px}
-.match.on{display:inline-flex}
-.flv{font-family:var(--f-d);font-weight:800;font-size:clamp(20px,1.7vw,28px);color:var(--brand);letter-spacing:-.01em;margin:-2px 0 10px}
-.six-row .fl{font-size:13px;font-weight:600;color:var(--fg-2);margin-top:-6px}
-@keyframes wave{to{transform:translateX(-200px)}}
-@keyframes bub{0%{transform:translateY(0);opacity:0}15%{opacity:.8}100%{transform:translateY(-230px);opacity:0}}
-
-/* ======================= HERO ======================= */
-.hero{padding-top:clamp(110px,14vh,150px)}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(20px,4vw,64px);align-items:center}
-.hero-meta{display:flex;flex-wrap:wrap;gap:10px 28px;margin-bottom:28px}
-.hero-meta span{font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2)}
-.fresh{position:relative;color:var(--green);white-space:nowrap}
-.fresh svg{position:absolute;left:-2%;bottom:.02em;width:104%;height:.22em;overflow:visible}
-.hero h1{font-size:clamp(50px,6.4vw,118px)}
-.fresh path{fill:none;stroke:var(--orange);stroke-width:10;stroke-linecap:round;stroke-dasharray:600;stroke-dashoffset:600;animation:swoosh 1.6s .5s var(--ease) forwards}
-@keyframes swoosh{to{stroke-dashoffset:0}}
-.hero-copy{display:flex;flex-direction:column;gap:30px}
-.tune{font-family:var(--f-d);font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
-.tune b{color:var(--orange);transition:opacity .4s}
-.hero-stage{position:relative;justify-self:center;width:min(100%,440px);aspect-ratio:4/5;display:grid;place-items:center}
-.halo{position:absolute;width:115%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#FFFFFF 0%,rgba(255,255,255,.6) 38%,rgba(0,163,224,.12) 62%,transparent 70%);animation:halo 8s ease-in-out infinite}
-@keyframes halo{50%{transform:scale(1.06)}}
-.hero-stage .bottle{position:relative;width:100%;filter:drop-shadow(0 40px 40px rgba(0,60,120,.22));animation:float 7s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-12px)}}
-.agenda{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:clamp(40px,7vh,72px)}
-.agenda .o{margin-top:auto;padding-top:8px;font-family:var(--f-d);font-weight:800;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange-d)}
-.agenda-foot{margin-top:12px;font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3)}
-.objs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:clamp(32px,5vh,56px)}
-.objs .card{padding:26px;display:flex;flex-direction:column;gap:10px}
-.objs .n{font-family:var(--f-d);font-weight:800;font-stretch:112%;font-size:clamp(56px,5vw,84px);line-height:.8;color:var(--orange);letter-spacing:-.04em}
-.objs h3{margin:6px 0 0;font-family:var(--f-d);font-weight:800;font-size:clamp(24px,2vw,30px);letter-spacing:-.02em}
-.objs p{margin:0;color:var(--fg-2);font-size:16px}
-.objs .out{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);font-size:15px;font-weight:600}
-.objs .out b{display:block;font-family:var(--f-d);font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
-.sig .tt{align-self:flex-start;font-family:var(--f-d);font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:99px;background:var(--tc);color:var(--tf)}
-.hzs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:clamp(32px,5vh,56px)}
-.hzc{padding:26px;border-top:6px solid var(--c);display:flex;flex-direction:column;gap:10px}
-.hzc .k{font-family:var(--f-d);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
-.hzc h3{margin:0;font-family:var(--f-d);font-weight:800;font-size:clamp(24px,2.2vw,32px);letter-spacing:-.02em;line-height:1.05}
-.hzc p{margin:0;color:var(--fg-2);font-size:16px}
-.hzc .cz{display:flex;flex-direction:column;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
-.hzc .cz span{display:flex;align-items:center;gap:10px;font-family:var(--f-d);font-weight:700;font-size:16px}
-.hzc .cz small{font-family:var(--f-b);font-weight:500;font-size:13px;color:var(--fg-3)}
-.hzc .cz i{width:11px;height:11px;border-radius:50%;background:var(--cc);flex:none}
-.trend-in{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:inherit;font:inherit;font-size:16px}
-@media (max-width:1100px){.agenda{grid-template-columns:repeat(3,minmax(0,1fr))}.objs,.hzs{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.objs,.hzs{grid-template-columns:minmax(0,1fr)}}
-.agenda div{padding:18px 20px;display:flex;flex-direction:column;gap:4px}
-.agenda .lab{color:var(--brand)}
-.agenda b{font-family:var(--f-d);font-weight:800;font-size:22px;letter-spacing:-.01em}
-.agenda small{font-size:15px;color:var(--fg-2)}
-
-/* ======================= WHO WE ARE ======================= */
-.us-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center}
-.us-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.us-list .card{padding:24px;display:flex;flex-direction:column;gap:6px}
-.us-list b{font-family:var(--f-d);font-weight:800;font-size:21px;letter-spacing:-.015em;line-height:1.1}
-.us-list p{margin:0;font-size:16px;color:var(--fg-2)}
-.todo{margin-top:26px;padding:16px 18px;border:2px dashed #D0342C;border-radius:14px;color:#D0342C;font-family:var(--f-d);font-weight:700;font-size:14px;letter-spacing:.04em}
-.path{margin-top:clamp(36px,6vh,60px);display:flex;flex-direction:column;gap:14px}
-.path ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;counter-reset:p}
-.path li{position:relative;padding:18px 20px;border-radius:16px;background:var(--navy);color:#fff;display:flex;flex-direction:column;gap:2px;counter-increment:p}
-.path li::before{content:counter(p);font-family:var(--f-d);font-weight:800;font-size:13px;color:#FFB066}
-.path li b{font-family:var(--f-d);font-weight:800;font-size:20px}
-.path li span{font-size:14px;color:rgba(255,255,255,.78)}
-@media (max-width:860px){.us-grid{grid-template-columns:minmax(0,1fr)}.path ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.us-list{grid-template-columns:minmax(0,1fr)}}
-
-/* ======================= OPPORTUNITY ======================= */
-.photo{margin:0;overflow:hidden;display:flex;flex-direction:column}
-.photo img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
-.three .photo{padding:0;gap:0}
-.photo figcaption{padding:16px 20px;color:var(--fg-2)}
-.three{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:clamp(36px,6vh,64px)}
-.three .card{padding:30px;display:flex;flex-direction:column;gap:14px}
-.ring{width:84px;height:84px}
-.three h3{margin:0}
-.three p{margin:0;color:var(--fg-2)}
-.flow{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:36px;font-family:var(--f-d);font-weight:800;font-stretch:108%;font-size:clamp(22px,2.4vw,40px);letter-spacing:-.02em}
-.flow i{font-style:normal;color:var(--orange)}
-
-/* ======================= SIGNALS ======================= */
-.signals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-.sig{padding:20px 20px 26px;display:flex;flex-direction:column;gap:12px}
-.sig .vis{height:150px;border-radius:16px;position:relative;overflow:hidden;margin-bottom:6px}
-.sig .word{font-family:var(--f-d);font-weight:800;font-stretch:112%;font-size:clamp(30px,2.6vw,44px);letter-spacing:-.03em;line-height:1}
-.sig h3{margin:0;font-size:17px;font-weight:700;color:var(--brand)}
-.sig p{margin:0;font-size:16px;color:var(--fg-2)}
-.sig .seen{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);font-size:14px;color:var(--fg-2)}
-.sig .seen b{display:block;font-family:var(--f-d);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg);margin-bottom:4px}
-.v-beauty{background:linear-gradient(160deg,#FDEDEA,#E6F4FB)}
-.v-beauty i{position:absolute;left:50%;width:62%;height:26%;border-radius:40%;transform:translateX(-50%);border:1px solid #fff;background:linear-gradient(90deg,rgba(255,255,255,.9),rgba(255,255,255,.35));box-shadow:0 10px 24px rgba(120,90,90,.12);animation:layer 7s ease-in-out infinite}
-.v-beauty i:nth-child(1){top:12%}.v-beauty i:nth-child(2){top:37%;animation-delay:-2.3s;background:linear-gradient(90deg,rgba(245,190,176,.75),rgba(255,255,255,.3))}.v-beauty i:nth-child(3){top:62%;animation-delay:-4.6s;background:linear-gradient(90deg,rgba(120,200,235,.7),rgba(255,255,255,.3))}
-@keyframes layer{50%{transform:translateX(-46%) translateY(-6px)}}
-.v-flavor{background:#F5F3EE;display:grid;grid-template-columns:repeat(8,1fr);gap:5px;padding:12px;align-content:center}
-.v-flavor i{border-radius:50%;aspect-ratio:1;animation:pop 6s ease-in-out infinite}
-@keyframes pop{0%,100%{transform:scale(.72)}50%{transform:scale(1)}}
-.v-sense{background:linear-gradient(180deg,#DFF3FB,#F6FBFD)}
-.v-sense svg{position:absolute;inset:0;width:100%;height:100%}
-.v-sense path{fill:none;stroke-width:2.5;stroke-linecap:round}
-.v-well{background:linear-gradient(180deg,#FFF0DF,#EAF5FB)}
-.v-well .sun,.v-well .dot{position:absolute;left:50%;bottom:-85%;width:100%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%}
-.v-well .sun{border:2px dashed rgba(7,28,60,.18)}
-.v-well .dot{animation:spin 16s linear infinite}
-.v-well .dot::after{content:"";position:absolute;left:50%;top:-11px;width:22px;height:22px;border-radius:50%;background:var(--orange);box-shadow:0 0 30px var(--orange);transform:translateX(-50%)}
-@keyframes spin{from{transform:translateX(-50%) rotate(-70deg)}to{transform:translateX(-50%) rotate(290deg)}}
-
-/* ======================= MAP ======================= */
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-.filt{font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.06em;padding:9px 16px;border-radius:99px;border:2px solid var(--line);color:var(--fg-2);transition:all .25s}
-.filt:hover{color:var(--fg);border-color:var(--fg-3)}
-.filt.on{background:#fff;color:var(--ink);border-color:#fff}
-.map-grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:stretch}
-.map-stage{position:relative;width:100%;aspect-ratio:144/54;align-self:center}
-.map-stage canvas{position:absolute;inset:0;width:100%;height:100%}
-.hot{position:absolute;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;transition:opacity .3s}
-.hot::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--c,#fff);box-shadow:0 0 0 4px rgba(255,255,255,.12),0 0 18px var(--c,#fff);transition:transform .25s}
-.hot:hover::before,.hot.on::before{transform:scale(1.5)}
-.hot.dim{opacity:.18}
-.hot .nm{position:absolute;left:24px;top:50%;transform:translateY(-50%);white-space:nowrap;font-family:var(--f-d);font-weight:700;font-size:13px;color:#fff;opacity:0;transition:opacity .25s;pointer-events:none;text-shadow:0 1px 8px #031634,0 0 2px #031634}
-.hot:hover .nm,.hot.on .nm{opacity:1}
-.hot.home::before{background:var(--orange);box-shadow:0 0 0 5px rgba(245,130,32,.25),0 0 24px var(--orange)}
-.hot.home .nm{opacity:1}
-.map-card{padding:26px;display:flex;flex-direction:column;gap:12px}
-.map-card .sw{height:72px;border-radius:16px}
-.map-card h3{margin:0;font-family:var(--f-d);font-weight:800;font-stretch:108%;font-size:38px;letter-spacing:-.03em;line-height:1}
-.map-card .cue-l{font-family:var(--f-d);font-weight:700;font-size:14px;letter-spacing:.04em;color:#5CCBF5;line-height:1.5}
-.map-card .teach{font-family:var(--f-d);font-weight:700;font-size:22px;line-height:1.2;letter-spacing:-.01em;margin:0}
-.map-card .links{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
-.tag{font-family:var(--f-d);font-weight:700;font-size:12px;letter-spacing:.04em;padding:6px 11px;border-radius:99px;border:1.5px solid var(--line);color:var(--fg-2);white-space:nowrap}
-
-/* ======================= ANCHOR / SPECTRUM ======================= */
-.spectrum{user-select:none;touch-action:pan-y}
-.spec-track{position:relative;margin:78px 0 70px;touch-action:none}
-.spec-bar{position:relative;height:84px;border-radius:99px;overflow:hidden;background:linear-gradient(90deg,#D4ECF7 0%,#CDEFE0 28%,#BFEFD5 34%,#EAF6B8 52%,#FFE0BF 66%,#FFB79F 78%,#EF5B3F 100%)}
-.spec-zone{position:absolute;top:0;bottom:0;display:flex;align-items:center;padding:0 24px;font-family:var(--f-d);font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:rgba(7,28,60,.55)}
-.spec-zone.sweet{left:28%;width:44%;border-left:3px solid #fff;border-right:3px solid #fff;color:var(--ink)}
-.spec-tick{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
-.spec-tick.up{bottom:calc(100% + 8px)}
-.spec-tick.down{top:calc(100% + 8px);flex-direction:column-reverse}
-.spec-tick b{font-family:var(--f-d);font-weight:700;font-size:15px;color:var(--fg-2);transition:color .25s}
-.spec-tick i{width:2px;height:14px;background:var(--fg-3);border-radius:2px}
-.spec-tick.on b{color:var(--brand)}
-.spec-dot{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 0 2px rgba(7,28,60,.12);pointer-events:none}
-.spec-handle{position:absolute;top:0;height:84px;width:84px;transform:translateX(-50%);display:grid;place-items:center;cursor:grab;z-index:3}
-.spec-handle:active{cursor:grabbing}
-.spec-orb{width:76px;height:76px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#fff 40%,#E8F6FC);border:4px solid var(--orange);box-shadow:0 14px 34px rgba(7,28,60,.25)}
-.spec-ends{display:flex;justify-content:space-between;font-family:var(--f-d);font-weight:800;font-size:clamp(20px,1.8vw,30px);letter-spacing:-.02em}
-.spec-read{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;margin-top:30px;padding:28px 32px}
-.spec-read .d-m{margin-top:8px}
-.formula{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:16px;align-items:stretch;margin-top:clamp(36px,6vh,60px)}
-.formula .f{padding:26px;display:flex;flex-direction:column;gap:8px}
-.formula .op{align-self:center;font-family:var(--f-d);font-size:54px;font-weight:800;color:var(--orange)}
-
-/* ======================= WHITE SPACE ======================= */
-.ws-ctrl{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 22px}
-.ws-btn{font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.03em;padding:10px 16px;border-radius:99px;border:2px solid var(--line);color:var(--fg-2);transition:all .25s}
-.ws-btn:hover{color:#fff;border-color:rgba(255,255,255,.5)}
-.ws-btn.on{background:#fff;color:var(--ink);border-color:#fff}
-.ws-btn.warn.on{background:var(--coral);border-color:var(--coral);color:#fff}
-.ws-read{min-height:150px;display:flex;flex-direction:column;gap:10px}
-.ws-read .mono{font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
-.ws-read .d-s{font-family:var(--f-d);font-weight:800}
-.instrument{width:100%;max-width:640px;justify-self:center;overflow:visible}
-.instrument text{font-family:var(--f-d);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;fill:rgba(255,255,255,.66)}
-.instrument .big{font-size:16px;letter-spacing:0;text-transform:none;fill:#fff;font-weight:800}
-
-/* ======================= PLATFORMS ======================= */
-.plat-index{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.plat-index a{padding:24px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:transform .3s var(--ease)}
-.plat-index a:hover{transform:translateY(-4px)}
-.plat-index .n{font-family:var(--f-d);font-weight:800;font-size:15px;color:var(--orange)}
-.plat .num{font-family:var(--f-d);font-weight:800;font-size:14px;letter-spacing:.14em;color:var(--orange)}
-.plat h2{margin:14px 0 18px}
-.plat .def{font-family:var(--f-d);font-weight:700;font-size:clamp(22px,2vw,32px);line-height:1.18;letter-spacing:-.015em;max-width:24ch;margin:0 0 26px}
-.plat dl{display:grid;grid-template-columns:120px 1fr;gap:12px 18px;margin:0;max-width:540px}
-.plat dt{font-family:var(--f-d);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3);padding-top:4px}
-.plat dd{margin:0;font-size:17px}
-.plat-vis{position:relative;width:100%;max-width:580px;aspect-ratio:1;justify-self:center}
-.nf-core{position:absolute;left:50%;top:50%;width:26%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#CFEFE3 45%,#5FC4A2);box-shadow:0 0 70px rgba(95,196,162,.55);display:grid;place-items:center;text-align:center}
-.nf-core span{font-family:var(--f-d);font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#083B2D;line-height:1.1}
-.nf-ring{position:absolute;inset:4%;border-radius:50%;border:2px solid rgba(7,28,60,.1);will-change:transform}
-.nf-ring.b{inset:20%}
-.nf-s{position:absolute;width:0;height:0}
-.nf-s b{position:absolute;display:flex;flex-direction:column;align-items:center;gap:6px;transform:translate(-50%,-50%)}
-.nf-s i{display:block;width:clamp(36px,4.4vw,62px);aspect-ratio:1;border-radius:50%;box-shadow:inset 0 -6px 14px rgba(0,0,0,.12),0 10px 24px rgba(7,28,60,.12)}
-.nf-s em{font-style:normal;font-family:var(--f-d);font-weight:700;font-size:12px;color:var(--ink);white-space:nowrap;background:#fff;padding:3px 8px;border-radius:99px}
-.wave-chart svg{width:100%;height:100%;overflow:visible}
-.wave-chart .ln{fill:none;stroke-width:4;stroke-linecap:round;stroke-dasharray:1400;stroke-dashoffset:1400;transition:stroke-dashoffset 2.4s var(--ease)}
-.wave-chart.in .ln{stroke-dashoffset:0}
-.wave-chart .ln.b{transition-delay:.35s}.wave-chart .ln.c{transition-delay:.7s}
-.wave-chart text{font-family:var(--f-d);font-weight:700;font-size:13px;letter-spacing:.04em;fill:rgba(255,255,255,.7)}
-.dial{position:absolute;inset:6%;border-radius:50%;background:conic-gradient(from 180deg,#1B2B5C 0deg,#2C4A8E 50deg,#FFB58A 90deg,#FFE3B0 120deg,#CDEFFB 180deg,#FFEAC4 240deg,#FF9A6B 275deg,#5A4C9A 300deg,#1B2B5C 340deg);box-shadow:0 30px 70px rgba(60,40,80,.18)}
-.dial::after{content:"";position:absolute;inset:18%;border-radius:50%;background:#FFF9F4;box-shadow:inset 0 0 0 1px rgba(7,28,60,.06)}
-.dial-center{position:absolute;inset:26%;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;color:var(--ink)}
-.dial-center .t{font-family:var(--f-d);font-weight:700;font-size:15px;letter-spacing:.08em;color:rgba(7,28,60,.6)}
-.dial-center .n{font-family:var(--f-d);font-weight:800;font-stretch:108%;font-size:clamp(26px,2.6vw,42px);letter-spacing:-.03em;line-height:1}
-.dial-center .f{font-family:var(--f-d);font-weight:800;font-size:15px;color:var(--orange-d)}
-.dial-center .l{font-size:15px;color:rgba(7,28,60,.7);max-width:20ch}
-.moment{position:absolute;z-index:3;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;display:grid;place-items:center}
-.moment::before{content:"";width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(7,28,60,.2);transition:all .25s}
-.moment.on::before{width:20px;height:20px;background:var(--orange);box-shadow:0 0 0 5px #fff}
-.moment span{position:absolute;top:calc(100% - 4px);font-family:var(--f-d);font-weight:700;font-size:12px;white-space:nowrap;color:var(--ink);background:#fff;padding:2px 8px;border-radius:99px}
-.pyr svg{width:100%;height:100%;overflow:visible}
-.pyr text{font-family:var(--f-d);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;fill:rgba(255,236,220,.7)}
-.pyr .pn{font-size:22px;letter-spacing:-.01em;text-transform:none;fill:#FFF3E8;font-weight:800}
-
-/* ======================= CONCEPT SHOWCASE ======================= */
-.six-row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(10px,1.4vw,20px)}
-.six-row a{display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;padding:14px 14px 18px}
-.six-row .mini{aspect-ratio:1;border-radius:50%;overflow:hidden;transition:transform .4s var(--ease)}
-.six-row a:hover .mini{transform:scale(1.04)}
-.six-row .nm{font-family:var(--f-d);font-weight:800;font-size:clamp(16px,1.3vw,21px);line-height:1.08;letter-spacing:-.015em}
-.six-row .st{font-family:var(--f-d);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3)}
-.show{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding-inline:var(--gut)}
-.stage{position:sticky;top:0;height:100vh;display:grid;place-items:center;transition:background-color .9s}
-.stage-in{position:relative;width:min(40vw,76vh);aspect-ratio:1}
-.stage canvas{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;box-shadow:0 40px 100px rgba(7,28,60,.22)}
-.bottles{position:absolute;left:58%;top:50%;height:112%;aspect-ratio:200/500;transform:translate(-50%,-50%)}
-.bottles .bottle{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 34px 34px rgba(0,0,0,.28))}
-.stage-meta{position:absolute;left:0;right:0;bottom:-54px;display:flex;justify-content:center;gap:10px;align-items:center}
-.pip{width:10px;height:10px;border-radius:50%;background:currentColor;opacity:.25;transition:all .35s}
-.pip.on{opacity:1;width:30px;border-radius:99px;background:var(--orange)}
-.step{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-block:120px;padding-left:clamp(0px,2vw,40px)}
-.step .c-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.status{font-family:var(--f-d);font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:7px 13px;border-radius:99px;border:2px solid currentColor;display:inline-flex;gap:8px;align-items:center}
-.status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--orange)}
-.step h2{margin:18px 0 12px;font-size:clamp(46px,5.4vw,100px)}
-.kw{font-family:var(--f-d);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);line-height:1.7}
-.feels{font-family:var(--f-d);font-weight:700;font-size:clamp(22px,1.9vw,32px);line-height:1.2;letter-spacing:-.015em;margin:22px 0 26px;max-width:26ch}
-.arc{display:flex;flex-direction:column;margin-bottom:22px;border-left:3px solid var(--acc);padding-left:20px;gap:12px}
-.arc div{font-size:17px;line-height:1.4}
-.arc b{display:inline-block;min-width:118px;font-family:var(--f-d);font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3)}
-.c-foot{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:22px;padding:22px}
-.c-foot h4{margin:0 0 6px;font-family:var(--f-d);font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--brand)}
-.c-foot p{margin:0;font-size:15.5px;line-height:1.5;color:var(--fg-2)}
-.c-foot .tags{display:flex;gap:6px;flex-wrap:wrap}
-.wild-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.wild-card{padding:24px;display:flex;flex-direction:column;gap:10px}
-.wild-card .sw{height:90px;border-radius:14px}
-.wild-card h3{margin:0;font-family:var(--f-d);font-weight:800;font-size:26px;letter-spacing:-.02em}
-
-/* ======================= TASTING ======================= */
-.timeline{position:relative;display:grid;grid-template-columns:1fr 1.5fr 1.5fr 1fr;margin-bottom:18px}
-.tl{position:relative;padding:20px 18px 18px 0;border-top:4px solid var(--line);transition:border-color .3s}
-.tl.on{border-color:var(--orange)}
-.tl .lab{color:var(--brand)}
-.tl h3{margin:8px 0 4px;font-family:var(--f-d);font-weight:800;font-size:clamp(24px,2vw,34px);letter-spacing:-.02em}
-.tl p{margin:0;font-size:16px;color:var(--fg-2)}
-.tl-head{position:absolute;top:-9px;left:0;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 6px rgba(245,130,32,.2);transition:left .2s linear;opacity:0}
-.tl-head.run{opacity:1}
-.timer{display:flex;gap:18px;align-items:center;margin-bottom:36px;flex-wrap:wrap}
-.timer .clock{font-family:var(--f-d);font-weight:800;font-size:40px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;min-width:3.4ch}
-.btn{font-family:var(--f-d);font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;padding:14px 22px;border-radius:99px;background:var(--orange);color:#fff;transition:transform .25s var(--ease),background .25s}
-.btn:hover{transform:translateY(-2px);background:var(--orange-d)}
-.btn.ghost{background:transparent;color:var(--fg);border:2px solid var(--line)}
-.btn.ghost:hover{border-color:var(--fg-3);background:transparent}
-.score-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:22px;align-items:start}
-.scorecard,.board{padding:28px}
-.samples{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.sample{padding:10px 14px;border-radius:14px;border:2px solid var(--line);display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:92px;text-align:left;transition:all .25s}
-.sample .code{font-family:var(--f-d);font-weight:800;font-size:22px;font-variant-numeric:tabular-nums}
-.sample .sn{font-size:12.5px;color:var(--fg-2);white-space:nowrap}
-.sample .done{font-family:var(--f-d);font-weight:700;font-size:10.5px;letter-spacing:.06em;color:var(--orange-d)}
-.sample.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-.sample.on .sn{color:rgba(255,255,255,.75)}
-.sample.on .done{color:#FFB066}
-.dim{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
-.dim label{font-size:17px;font-weight:700}
-.dim label small{display:block;font-size:13.5px;font-weight:500;color:var(--fg-2)}
-.dots{display:flex;gap:6px}
-.dots button{width:38px;height:38px;border-radius:50%;border:2px solid var(--line);font-family:var(--f-d);font-weight:800;font-size:15px;color:var(--fg-2);transition:all .2s}
-.dots button:hover{border-color:var(--blue)}
-.dots button.on{background:var(--blue);border-color:var(--blue);color:#fff}
-.oneword{display:flex;gap:14px;align-items:center;padding-top:14px;border-top:1px solid var(--line)}
-.oneword input{flex:1;min-width:0;border:0;border-bottom:2px solid var(--line);background:transparent;padding:8px 0;font-family:var(--f-d);font-weight:800;font-size:24px}
-.oneword input:focus{outline:none;border-color:var(--orange)}
-.board{display:flex;flex-direction:column;gap:14px}
-.bar-row{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 44px;gap:12px;align-items:center;font-size:15px;font-weight:600}
-.bar-row .track{height:12px;border-radius:99px;background:var(--line);overflow:hidden}
-.bar-row .fill{height:100%;border-radius:99px;transition:width .6s var(--ease)}
-.bar-row .v{font-family:var(--f-d);font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
-.bar-row.empty{opacity:.45}
-.board-actions{display:flex;gap:8px;flex-wrap:wrap}
-
-/* ======================= DECISION ======================= */
-.three-q{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:clamp(36px,6vh,60px)}
-.three-q > div{padding:26px}
-.three-q .d-s{margin:8px 0}
-.three-q p{margin:0;font-size:16px;color:var(--fg-2)}
-.venn{position:relative;width:100%;max-width:600px;aspect-ratio:1;justify-self:center}
-.venn .c{position:absolute;width:58%;aspect-ratio:1;border-radius:50%;mix-blend-mode:screen;display:flex;padding:9%}
-.venn .c span{font-family:var(--f-d);font-weight:800;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:#fff}
-.venn .c1{left:21%;top:2%;background:radial-gradient(circle,rgba(0,163,224,.5),rgba(0,163,224,.18));border:2px solid rgba(92,203,245,.7);justify-content:center;align-items:flex-start}
-.venn .c2{left:2%;top:36%;background:radial-gradient(circle,rgba(126,211,33,.42),rgba(126,211,33,.14));border:2px solid rgba(126,211,33,.6);align-items:flex-end}
-.venn .c3{left:40%;top:36%;background:radial-gradient(circle,rgba(245,130,32,.45),rgba(245,130,32,.15));border:2px solid rgba(245,130,32,.7);align-items:flex-end;justify-content:flex-end}
-.venn .core{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);font-family:var(--f-d);font-weight:800;font-size:clamp(18px,1.8vw,28px);color:#fff;pointer-events:none}
-.vdot{position:absolute;transform:translate(-50%,-50%);transition:left .9s var(--ease),top .9s var(--ease);display:flex;flex-direction:column;align-items:center;gap:4px;z-index:3;pointer-events:none}
-.vdot.wait{flex-direction:row;transform:translate(-7px,-50%);gap:8px}
-.vdot i{width:16px;height:16px;border-radius:50%;background:var(--c);border:2px solid #fff}
-.vdot.adv i{width:22px;height:22px;box-shadow:0 0 0 5px rgba(255,255,255,.2),0 0 20px var(--c)}
-.vdot span{font-family:var(--f-d);font-weight:700;font-size:12px;white-space:nowrap;color:#fff;text-shadow:0 1px 6px #031634}
-.checks{display:flex;flex-direction:column;margin-top:22px}
-.chk{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}
-.chk .nm{font-family:var(--f-d);font-weight:800;font-size:22px;letter-spacing:-.015em;display:flex;align-items:center;gap:10px}
-.chk .nm i{width:12px;height:12px;border-radius:50%;background:var(--c);flex:none}
-.pills{display:flex;gap:6px}
-.pill{font-family:var(--f-d);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;border-radius:99px;border:2px solid var(--line);color:var(--fg-2);transition:all .2s}
-.pill.on{background:#fff;color:var(--ink);border-color:#fff}
-.adv-btn{font-family:var(--f-d);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:8px 14px;border-radius:99px;border:2px dashed rgba(255,255,255,.4);color:var(--fg-2);transition:all .2s;white-space:nowrap}
-.adv-btn.on{background:var(--orange);border:2px solid var(--orange);color:#fff}
-.dec-count{display:flex;gap:16px;align-items:baseline;margin-top:22px;flex-wrap:wrap}
-.dec-count .n{font-family:var(--f-d);font-size:64px;font-weight:800;line-height:1;color:var(--orange)}
-.plat-pick{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-
-/* ======================= TRAVEL ======================= */
-.travel-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:stretch}
-.kit{padding:26px;display:flex;flex-direction:column;gap:12px}
-.kit svg{width:100%;height:auto;display:block}
-.kit h3{margin:0;font-family:var(--f-d);font-weight:800;font-size:30px;letter-spacing:-.02em}
-.fold .pa,.fold .pc{transition:transform 1.1s var(--ease);transform-box:fill-box}
-.fold .pa{transform-origin:100% 50%}.fold .pc{transform-origin:0% 50%}
-.kit.folded .fold .pa,.kit.folded .fold .pc{transform:scaleX(-.02)}
-
-/* ======================= ASSIGN ======================= */
-.arcflow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.arcflow div{padding:16px 0 0;border-top:4px solid rgba(255,255,255,.25);display:flex;flex-direction:column;gap:2px}
-.arcflow div.on{border-color:var(--orange)}
-.arcflow div:not(.on) .d-s{opacity:.6}
-.short{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,2fr);gap:22px;align-items:start}
-.short .col{padding:26px;display:flex;flex-direction:column;gap:12px}
-.short h3{margin:0;font-family:var(--f-d);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2);display:flex;justify-content:space-between}
-.slot{display:flex;flex-direction:column;gap:4px;padding:14px 0;border-top:1px solid var(--line)}
-.slot .mono,.lead-row .mono{font-family:var(--f-d);font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3)}
-.slot.empty .d-s{opacity:.45}
-.lead-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1.3fr) minmax(0,.8fr);gap:14px;align-items:end;padding:16px 0;border-top:1px solid var(--line)}
-.lead-row .d-s{display:flex;align-items:center;gap:10px}
-.lead-row .d-s i{width:12px;height:12px;border-radius:50%;background:var(--c);flex:none}
-.field{display:flex;flex-direction:column;gap:4px;min-width:0}
-.field label{font-family:var(--f-d);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3)}
-.field input,.field select{width:100%;min-width:0;background:transparent;border:0;border-bottom:2px solid var(--line);padding:7px 0;font-size:16px;font-weight:600;color:var(--fg)}
-.field select option{color:var(--ink)}
-.field input:focus,.field select:focus{outline:none;border-color:var(--orange)}
-.finale{display:flex;justify-content:space-between;align-items:end;gap:36px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:36px}
-.toast{position:fixed;z-index:80;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;background:var(--navy);color:#fff;font-family:var(--f-d);font-weight:700;font-size:14px;padding:13px 20px;border-radius:99px;transition:all .35s var(--ease);pointer-events:none}
-.toast.on{opacity:1;transform:translate(-50%,0)}
-
-/* ======================= NOTES ======================= */
-.notes{position:fixed;inset:0;z-index:90;background:#fff;overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 80px) var(--gut) 80px;color:var(--ink)}
-.notes .wrap{max-width:1160px}
-.notes section{padding:36px 0;border-top:1px solid rgba(7,28,60,.12);display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px}
-.notes section > h3{margin:0;font-family:var(--f-d);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-d)}
-.notes p,.notes li{max-width:68ch;color:rgba(7,28,60,.8)}
-.notes ul{padding-left:18px;margin:0}
-.notes .close{position:fixed;top:calc(env(safe-area-inset-top,0px) + 20px);right:var(--gut);z-index:91}
-.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
-.swatches div{border-radius:14px;overflow:hidden;border:1px solid rgba(7,28,60,.1);font-family:var(--f-d);font-weight:700;font-size:12px}
-.swatches i{display:block;height:64px}
-.swatches span{display:block;padding:8px 10px}
-
-/* ======================= responsive ======================= */
-@media (min-width:1101px){.scene,.show{padding-right:calc(var(--gut) + 40px)}}
-@media (max-width:1100px){
-  .signals{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .map-grid{grid-template-columns:minmax(0,1fr)}
-  .travel-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-  .travel-grid > :first-child{grid-column:1/-1}
-  .six-row{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .rail{display:none}
-}
-@media (max-width:860px){
-  .hero-grid,.split,.head2,.spec-read,.score-grid,.short,.c-foot{grid-template-columns:minmax(0,1fr)}
-  .hero-stage{width:min(80%,340px)}
-  .labx-grid{grid-template-columns:minmax(0,1fr)}
-  .labx-out{grid-template-columns:120px minmax(0,1fr)}
-  .three,.three-q,.wild-row,.travel-grid{grid-template-columns:minmax(0,1fr)}
-  .agenda,.plat-index,.arcflow{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .formula{grid-template-columns:minmax(0,1fr)}
-  .formula .op{text-align:center;line-height:.8}
-  .timeline{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-  .lead-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-  .lead-row > :first-child{grid-column:1/-1}
-  .chapter,.keys,.lockup .ff,.lockup .x,#notesBtn{display:none!important}
-  .notes section{grid-template-columns:minmax(0,1fr)}
-  /* showcase: bottle pinned on top, copy scrolls underneath */
-  .show{grid-template-columns:minmax(0,1fr);padding-inline:0}
-  .stage{height:46vh;z-index:3;padding-top:56px}
-  .stage-in{width:min(70vw,36vh)}
-  .stage-meta{bottom:-30px}
-  .step{min-height:90vh;padding:40px var(--gut) 80px}
-  .spec-tick b{font-size:12px}
-  .arc b{display:block;margin-bottom:2px}
-}
-@media (max-width:520px){
-  .signals,.six-row{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .dots button{width:34px;height:34px}
-  .dim,.chk{grid-template-columns:minmax(0,1fr)}
-  .bar-row{grid-template-columns:minmax(0,100px) minmax(0,1fr) 36px}
-  .spec-tick.up b,.spec-tick.down b{writing-mode:vertical-rl;transform:rotate(180deg)}
-  .nav-r .fs{display:none}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important;scroll-behavior:auto!important}
-}
-@media print{
-  #bg,.nav,.rail,.keys,.progress,.intro,.marquee,.timer,.board-actions,.notes .close{display:none!important}
-  body{background:#fff}
-  .scene,.step{min-height:auto;break-before:page;padding-block:40px}
-  [data-tone="dark"]{background:#0A2A5C;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .stage{position:relative;height:auto}
-  .js .rv{opacity:1!important;transform:none!important}
-}
+@media (max-width: 520px) { .cup { width: 74px; height: 74px; font-size: 16px; } .rate { grid-template-columns: minmax(0, 1fr); } .own { grid-template-columns: 1fr 1fr; } }
 </style>
 </head>
 <body data-tone="light">
-<div id="bg" aria-hidden="true"></div>
+<canvas id="world" aria-hidden="true"></canvas>
 <div class="progress" id="progress" aria-hidden="true"></div>
-
-<header class="nav">
-  <a class="lockup" href="#open" aria-label="TheraBreath Flavor Playbook, back to start">
-    <img class="tb-logo" src="assets/therabreath-logo.png" alt="TheraBreath" width="116" height="30"><span class="x">×</span><span class="ff">The Flavor Factory</span>
-  </a>
-  <div class="nav-r">
-    <span class="chapter" id="chapter">Frame</span>
-    <a class="pill-btn" href="deck/" style="color:inherit;text-decoration:none">Deck</a>
-    <button class="pill-btn" id="notesBtn" type="button">Notes</button>
-    <button class="pill-btn fs" id="fsBtn" type="button">Present</button>
-  </div>
+<header class="bar">
+  <div class="lock"><img src="assets/therabreath-logo.png" alt="TheraBreath" width="108" height="28"><span class="x">×</span><span class="ff">The Flavor Factory</span></div>
+  <div style="display:flex;align-items:center;gap:16px"><span class="where" id="where" aria-live="polite"></span><a class="btn-s" href="deck/">Deck</a></div>
 </header>
-<nav class="rail" id="rail" aria-label="Chapters"></nav>
-<div class="keys" aria-hidden="true">← → to move · F full screen</div>
 
 <main>
-
-<!-- ============ HERO ============ -->
-<section class="scene hero" id="open" data-bg="#E6F6FD" data-glow="#FFFFFF" data-tone="light" data-phase="Welcome" data-title="Welcome" data-stop>
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <div class="hero-meta rv"><span>TheraBreath Flavor Playbook</span><span>Mon · Nov 9, 2026 · 10:00 AM</span><span>Darwin · Church &amp; Dwight HQ</span></div>
-      <h1 class="d d-xxl rv d1">Expand what <span class="fresh">fresh<svg viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M5,22 C80,6 190,4 295,16"/></svg></span> can feel like.</h1>
-      <p class="lede rv d2">A working session to define TheraBreath’s flavor playbook, for near-term product innovation and long-term franchise growth. From The Flavor Factory, a family-owned flavor house in Norco, California.</p>
-      <div class="tune rv d3">Fresh can feel <b id="tune">cool</b></div>
-    </div>
-    <div class="hero-stage rv d2" aria-hidden="true">
-      <div class="halo"></div>
-      <div class="tilt" id="heroTilt"><div id="heroBottle"></div></div>
-    </div>
-  </div>
+<!-- HERO -->
+<section class="w hero" id="open" data-world="oxygen" data-title="Welcome">
   <div class="wrap">
-    <div class="agenda" id="agenda"></div>
-  </div>
-</section>
-
-<!-- ============ WHO WE ARE ============ -->
-<section class="scene" id="us" data-bg="#FFFFFF" data-glow="#FDECEA" data-tone="light" data-phase="Welcome" data-title="Who we are" data-stop>
-  <div class="wrap us-grid">
     <div>
-      <span class="eyebrow rv">Who we are</span>
-      <h2 class="d d-l rv d1" style="margin-top:20px">A family-owned flavor house <span class="hl">in Norco, California.</span></h2>
-      <p class="lede rv d2" style="margin-top:22px">We make custom liquid and powder flavors, including for oral care. We’re small on purpose: you work directly with the people formulating your flavor, and samples come back fast.</p>
-      <div class="todo rv d3">To add: team photo, plus the names and roles of who’s coming</div>
+      <div class="meta"><span class="mono">TheraBreath Flavor Playbook</span><span class="mono">Mon · Nov 9 · 10:00 AM · Darwin</span></div>
+      <h1 class="mega" data-kin="ch"><span class="ln">The future</span><span class="ln">of <span class="hl">fresh.</span></span></h1>
+      <p class="lede rv" style="--d:.5s">Six new flavor worlds for TheraBreath, each one built to survive the oxygen in the bottle.</p>
     </div>
-    <div class="us-list">
-      <div class="card rv"><b>Custom, from the bench</b><p>Every flavor is built for the product it goes into, in liquid or powder.</p></div>
-      <div class="card rv d1"><b>Oral care is part of what we do</b><p>It’s one of the industries we already make flavors for.</p></div>
-      <div class="card rv d2"><b>Low minimum orders</b><p>Small pilot batches keep testing a new flavor affordable.</p></div>
-      <div class="card rv d3"><b>Fast turnaround</b><p>Most orders ship within 3–5 business days.</p></div>
+    <div class="hero-bottle rv" style="--d:.3s" id="heroBottle">
+      <svg class="ring" viewBox="0 0 500 500" aria-hidden="true"><defs><path id="ringP" d="M250,250 m-205,0 a205,205 0 1,1 410,0 a205,205 0 1,1 -410,0"/></defs><text font-family="JetBrains Mono, monospace" font-weight="700" font-size="15" letter-spacing="7" fill="#0A4F8A"><textPath href="#ringP">POWERED BY OXYGEN · SIX NEW WORLDS OF FRESH · POWERED BY OXYGEN · SIX NEW WORLDS OF FRESH ·</textPath></text></svg>
     </div>
   </div>
-  <div class="wrap path rv">
-    <span class="lab">How a concept gets from today to a shelf</span>
-    <ol><li><b>Bench samples</b><span>built in your base</span></li><li><b>Stability</b><span>tested in your system</span></li><li><b>Sensory</b><span>panel and refinement</span></li><li><b>Scale-up</b><span>for production</span></li></ol>
-  </div>
+  <div class="cue"><i></i>Scroll</div>
 </section>
 
-<!-- ============ OBJECTIVES ============ -->
-<section class="scene" id="goal" data-bg="#0A2A5C" data-glow="#0F4C86" data-tone="dark" data-phase="Welcome" data-title="The objective" data-stop style="min-height:auto">
-  <div class="wrap">
-    <span class="eyebrow rv">The objective for today</span>
-    <h2 class="d d-xl rv d1" style="margin-top:20px">Together, define <span class="hl">a flavor playbook.</span></h2>
-    <p class="lede rv d2" style="margin-top:22px">For near-term product innovation and long-term franchise growth, built around the four objectives in Ross’s invite.</p>
-    <div class="objs" id="objs"></div>
-  </div>
-</section>
-
-<!-- ============ OPPORTUNITY ============ -->
-<section class="scene" id="opportunity" data-bg="#FFFFFF" data-glow="#E6F6FD" data-tone="light" data-phase="Trends" data-title="Opportunity" data-stop>
-  <div class="wrap">
-    <span class="eyebrow rv">The opportunity</span>
-    <h2 class="d d-xl rv d1" style="margin-top:20px">The benefit is familiar.<br><span class="hl">The flavor can do more.</span></h2>
-    <div class="three">
-      <figure class="card photo rv"><img src="assets/therabreath-rinses.jpg" alt="TheraBreath Fresh Breath Oral Rinse in Invigorating Icy Mint, Rainforest Mint and Mild Mint" loading="lazy"><figcaption class="lab">The shelf today: one orange cap, three mints</figcaption></figure>
-      <div class="card rv">
-        <svg class="ring" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="#1F8A66"/><circle cx="42" cy="42" r="36" fill="none" stroke="#006649" stroke-width="6"/></svg>
-        <span class="lab" style="color:var(--brand)">Owned today</span><h3 class="d d-m">Trust</h3>
-        <p>Gentle, effective, non-burning freshness. TheraBreath already owns it, and it stays at the center.</p>
-      </div>
-      <div class="card rv d1">
-        <svg class="ring" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="rgba(7,28,60,.12)" stroke-width="6"/><path d="M42,6 A36,36 0 0 1 42,78" fill="none" stroke="#F58220" stroke-width="6" stroke-linecap="round"/><circle cx="42" cy="42" r="20" fill="#FFE6D1"/></svg>
-        <span class="lab" style="color:var(--orange-d)">The opportunity</span><h3 class="d d-m">Character</h3>
-        <p>Flavor gives people a reason to notice the product and remember it.</p>
-      </div>
-      <div class="card rv d2">
-        <svg class="ring" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="#7ED321" stroke-width="6" stroke-dasharray="8 7" stroke-linecap="round"/><path d="M30,44 l8,8 l16,-18" fill="none" stroke="#5AA80F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="lab" style="color:#4E9A0C">The payoff</span><h3 class="d d-m">Repeat use</h3>
-        <p>An experience people enjoy is one they choose again tomorrow.</p>
-      </div>
-    </div>
-    <div class="flow rv"><span>Notice</span><i>→</i><span>Remember</span><i>→</i><span>Choose</span><i>→</i><span>Enjoy</span><i>→</i><span>Come back</span></div>
-  </div>
-</section>
-
-<!-- ============ SIGNALS ============ -->
-<section class="scene" id="signals" data-bg="#F2F9FC" data-glow="#FFF3E8" data-tone="light" data-phase="Trends" data-title="Signals" data-stop>
-  <div class="wrap">
-    <div class="head2">
-      <div><span class="eyebrow rv">Objective 01 · Trends</span>
-        <h2 class="d d-l rv d1" style="margin-top:20px">Trends shaping <span class="hl">the future of oral care.</span></h2></div>
-      <p class="body rv d2">Flavor, sensory and consumer trends we see across the categories we make flavors for, from beverages to nutraceuticals. They are shaping what people expect a rinse to feel like.</p>
-    </div>
-    <div class="signals">
-      <article class="sig card rv"><div class="vis v-beauty"><i></i><i></i><i></i></div><span class="tt" style="--tc:#FDECEA;--tf:#B23A2A">Consumer trend</span><div class="word">Beauty</div><h3>Personal-care rituals</h3><p>Oral care is joining the skincare shelf as one more step in a self-care routine.</p><div class="seen"><b>Where we see it</b>Layered skincare routines, bathroom “shelfies”, oral care sold beside serums.</div></article>
-      <article class="sig card rv d1"><div class="vis v-flavor" id="vFlavor"></div><span class="tt" style="--tc:#FFF3E0;--tf:#C85F0E">Flavor trend</span><div class="word">Flavor</div><h3>A broader vocabulary</h3><p>People now taste yuzu, shiso and cardamom in drinks, snacks and wellness shots every week.</p><div class="seen"><b>Where we see it</b>Zero-proof bars, functional beverages, global menus, fine fragrance.</div></article>
-      <article class="sig card rv d2"><div class="vis v-sense"><svg viewBox="0 0 300 150" preserveAspectRatio="none" id="vSense"></svg></div><span class="tt" style="--tc:#E6F6FD;--tf:#0072BC">Sensory trend</span><div class="word">Sensation</div><h3>Sensory proof</h3><p>People want an effect they can feel and describe. That is how they know it works.</p><div class="seen"><b>Where we see it</b>Cooling skincare, tingling lip products, “you can feel it working” claims.</div></article>
-      <article class="sig card rv d3"><div class="vis v-well"><div class="sun"></div><div class="dot"></div></div><span class="tt" style="--tc:#FDECEA;--tf:#B23A2A">Consumer trend</span><div class="word">Wellness</div><h3>Everyday wellness</h3><p>Products earn a place in the day: morning energy, midday reset, evening calm.</p><div class="seen"><b>Where we see it</b>Sleep and hydration rituals, adaptogen drinks, “night” versions of everything.</div></article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ MAP ============ -->
-<section class="scene" id="map" data-bg="#062150" data-glow="#0B3F7E" data-tone="dark" data-phase="Territories" data-title="Flavor map" data-stop>
-  <div class="wrap">
-    <div class="head2" style="margin-bottom:28px">
-      <div><span class="eyebrow rv">Objective 02 · Territories</span>
-        <h2 class="d rv d1" style="margin-top:20px;font-size:clamp(34px,3.9vw,70px)">Flavor culture is much bigger than <span class="hl">mint.</span></h2></div>
-      <p class="body rv d2">Places our flavorists look for ideas. We’re not suggesting twelve launches. It’s a reminder of how much room there is beyond mint. Tap a point.</p>
-    </div>
-    <div class="filters rv" id="mapFilters" role="group" aria-label="Filter by platform">
-      <button class="filt on" data-f="all" type="button">All signals</button>
-      <button class="filt" data-f="newfresh" type="button">New Fresh</button>
-      <button class="filt" data-f="sensory" type="button">Sensory Proof</button>
-      <button class="filt" data-f="ritual" type="button">Ritual by Time</button>
-      <button class="filt" data-f="elevated" type="button">Elevated Escape</button>
-    </div>
-    <div class="map-grid">
-      <div class="map-stage rv" id="mapStage"><canvas id="mapCanvas" aria-label="Dot map of the world showing flavor cue regions"></canvas></div>
-      <aside class="map-card card rv d1" id="mapCard" aria-live="polite"></aside>
-    </div>
-  </div>
-</section>
-
-<!-- ============ ANCHOR ============ -->
-<section class="scene" id="anchor" data-bg="#ECF8F1" data-glow="#FFFFFF" data-tone="light" data-phase="Territories" data-title="Portfolio" data-stop>
-  <div class="wrap">
-    <span class="eyebrow rv">Portfolio reality</span>
-    <h2 class="d d-xl rv d1" style="margin-top:20px">Mint is an anchor,<br><span class="hl">not the whole map.</span></h2>
-    <div class="spectrum rv" id="spectrum">
-      <div class="spec-track" id="specTrack">
-        <div class="spec-bar" id="specBar">
-          <div class="spec-zone" style="left:0;width:28%">Expected</div>
-          <div class="spec-zone sweet">Worth remembering</div>
-          <div class="spec-zone" style="left:72%;width:28%;justify-content:flex-end;color:#fff">Novelty</div>
-        </div>
-        <div id="specTicks"></div>
-        <div class="spec-handle" id="specHandle" role="slider" tabindex="0" aria-label="Familiar to exploratory" aria-valuemin="0" aria-valuemax="100" aria-valuenow="48"><div class="spec-orb"></div></div>
-      </div>
-      <div class="spec-ends"><span>← Familiar</span><span>Exploratory →</span></div>
-      <p class="small" style="margin:10px 0 0">Placements are our flavorists’ read, not measured data. We’ll test them in the tasting.</p>
-      <div class="spec-read card">
-        <div><span class="lab" id="specZone" style="color:var(--brand)">Worth remembering</span><div class="d d-m" id="specName">Arctic Yuzu</div></div>
-        <p class="body" id="specLine" style="font-size:20px">Familiar enough to trust, different enough to remember.</p>
-      </div>
-    </div>
-    <div class="formula">
-      <div class="f card rv"><span class="lab" style="color:var(--brand)">Keep</span><span class="d d-s">One familiar freshness cue</span><span class="small">Cooling, a clean finish, a thread of mint.</span></div>
-      <div class="op" aria-hidden="true">+</div>
-      <div class="f card rv d1"><span class="lab" style="color:var(--brand)">Change</span><span class="d d-s">One thing people notice</span><span class="small">A fruit, a botanical, a warmth, a moment.</span></div>
-      <div class="op" aria-hidden="true">=</div>
-      <div class="f card rv d2"><span class="lab" style="color:var(--brand)">Get</span><span class="d d-s">Familiar · Fresh · Distinct</span><span class="small">Something people trust and still talk about.</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ WHITE SPACE ============ -->
-<section class="scene" id="whitespace" data-bg="#0A2A5C" data-glow="#0F4C86" data-tone="dark" data-phase="Territories" data-title="White space" data-stop>
-  <div class="wrap split">
+<!-- WHO WE ARE -->
+<section class="w who" id="us" data-world="oxygen" data-title="Who we are" style="min-height:auto">
+  <div class="wrap grid-2">
     <div>
-      <span class="eyebrow rv">The white space</span>
-      <h2 class="d d-l rv d1" style="margin-top:20px">Stretch one dimension <span class="hl">at a time.</span></h2>
-      <p class="body rv d2" style="margin-top:22px">Each spoke runs from what oral care usually is (center) to where it could go (edge). Classic mint sits near the center. Strong concepts pull hard on one or two spokes. The shapes are our read, not measured data.</p>
-      <div class="ws-ctrl rv d3" id="wsCtrl" role="group" aria-label="Choose a concept to plot"></div>
-      <div class="ws-read" id="wsRead" aria-live="polite"></div>
+      <span class="eyebrow">Who we are</span>
+      <h2 class="display" data-kin style="margin-top:16px">Hello from <span class="hl">Norco.</span></h2>
+      <p class="lede rv">We’re The Flavor Factory, a family flavor house from Norco, California. We spend our days at the bench getting flavor to behave in whatever base it has to live in. For TheraBreath, that base runs on oxygen.</p>
+      <div class="todo rv" style="margin-top:24px">To add: team photo, plus who’s coming</div>
     </div>
-    <svg class="instrument rv" id="instrument" viewBox="-90 -40 700 620" role="img" aria-label="Sensory diagram with seven spokes"></svg>
-  </div>
-</section>
-
-<!-- ============ PLATFORMS ============ -->
-<section class="scene" id="platforms" data-bg="#FFFFFF" data-glow="#FFF1E4" data-tone="light" data-phase="Territories" data-title="Platforms" data-stop>
-  <div class="wrap stack" style="gap:36px">
-    <span class="eyebrow rv">Four innovation platforms</span>
-    <h2 class="d d-xl rv d1">Four places<br><span class="hl">TheraBreath could grow.</span></h2>
-    <p class="lede rv d2">We’d rather help build a few lines that last than chase one-off flavors. Each platform could carry several launches, and every concept belongs to at least one.</p>
-    <div class="plat-index">
-      <a class="card rv" href="#p-newfresh"><span class="n">01</span><span class="d d-s">New Fresh</span><span class="small">Fresh beyond mint</span></a>
-      <a class="card rv d1" href="#p-sensory"><span class="n">02</span><span class="d d-s">Sensory Proof</span><span class="small">Fresh you can feel</span></a>
-      <a class="card rv d2" href="#p-ritual"><span class="n">03</span><span class="d d-s">Ritual by Time</span><span class="small">Fresh for the moment</span></a>
-      <a class="card rv d3" href="#p-elevated"><span class="n">04</span><span class="d d-s">Elevated Escape</span><span class="small">Fresh as a small luxury</span></a>
+    <div class="bench">
+      <div class="rv"><svg viewBox="0 0 48 48" fill="none" stroke="#006649" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22 24 9l16 13v17H8z"/><path d="M20 39V28h8v11"/></svg><b>Family</b><span>Run by a family, in Norco, California.</span></div>
+      <div class="rv" style="--d:.1s"><svg viewBox="0 0 48 48" fill="none" stroke="#F58025" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6h12M20 6v12L9 38a3 3 0 0 0 3 4h24a3 3 0 0 0 3-4L28 18V6"/><path d="M14 30h20"/></svg><b>Bench-first</b><span>Every flavor built for the base it goes into.</span></div>
+      <div class="rv" style="--d:.2s"><svg viewBox="0 0 48 48" fill="none" stroke="#00A3E0" stroke-width="3"><circle cx="18" cy="28" r="9"/><circle cx="33" cy="16" r="6"/><circle cx="35" cy="34" r="4"/></svg><b>Oxygen-ready</b><span>Six new flavors made for sodium chlorite.</span></div>
     </div>
   </div>
 </section>
 
-<section class="scene" id="p-newfresh" data-bg="#EEF8E4" data-glow="#FFFBD9" data-tone="light" data-phase="Territories" data-title="New Fresh" data-stop>
-  <div class="wrap split plat">
+<!-- THE MORNING -->
+<section class="w" id="morning" data-world="studio" data-title="The morning">
+  <div class="wrap morning">
     <div>
-      <span class="num rv">PLATFORM 01</span>
-      <h2 class="d d-xl rv d1">New Fresh</h2>
-      <p class="def rv d2">Expand what fresh tastes like, well beyond peppermint.</p>
-      <dl class="rv d3"><dt>Cues</dt><dd>Bright fruit, citrus peel, tea, cool greens, soft herbs, botanicals.</dd><dt>Promise</dt><dd>The same clean TheraBreath finish, reached by a new route.</dd><dt>Concepts</dt><dd>Arctic Yuzu · Green Tea Cucumber · Grapefruit Rose Mint</dd></dl>
+      <span class="eyebrow">Monday, November 9 · 10:00 AM · Darwin</span>
+      <h2 class="display" data-kin style="margin-top:16px">Two hours. <span class="hl">One playbook.</span></h2>
+      <p class="lede rv">Ross asked for four things. The morning is built around them, then lunch.</p>
+      <div class="objs" id="objs"></div>
     </div>
-    <div class="plat-vis rv" aria-hidden="true"><div class="nf-ring" id="nfA"></div><div class="nf-ring b" id="nfB"></div><div class="nf-core"><span>Mint<br>anchor</span></div></div>
+    <div id="dial"></div>
   </div>
 </section>
 
-<section class="scene" id="p-sensory" data-bg="#03264A" data-glow="#005E97" data-tone="dark" data-phase="Territories" data-title="Sensory Proof" data-stop>
-  <div class="wrap split plat">
-    <div>
-      <span class="num rv">PLATFORM 02</span>
-      <h2 class="d d-xl rv d1">Sensory Proof</h2>
-      <p class="def rv d2">Flavor and sensation that make freshness something you can feel happening.</p>
-      <dl class="rv d3"><dt>Cues</dt><dd>Cooling bloom, bright top note, contrast, a flavor that evolves, a long clean finish.</dd><dt>Guardrail</dt><dd>Intensity without burn. Gentleness is the proof point, never the trade-off.</dd><dt>Concepts</dt><dd>Arctic Yuzu · Ginger Lime</dd></dl>
-    </div>
-    <div class="plat-vis wave-chart rv" id="wave" aria-hidden="true">
-      <svg viewBox="0 0 520 520"><g transform="translate(20,70)">
-        <line x1="0" y1="360" x2="480" y2="360" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
-        <text x="0" y="390">0s</text><text x="100" y="390">5s</text><text x="296" y="390">30s</text><text x="432" y="390">60s+</text>
-        <text x="0" y="-22">INTENSITY THROUGH THE RINSE · ILLUSTRATIVE</text>
-        <path class="ln a" stroke="#F58220" d="M0,350 C40,340 60,70 110,60 S190,190 260,240 S400,300 480,320"/>
-        <path class="ln b" stroke="#5CCBF5" d="M0,355 C80,350 120,230 200,120 S330,80 380,130 S450,210 480,220"/>
-        <path class="ln c" stroke="#FFFFFF" stroke-dasharray="6 8" d="M0,358 C120,356 200,330 280,290 S420,180 480,170"/>
-        <circle cx="110" cy="60" r="7" fill="#F58220"/><text x="126" y="56" style="fill:#FFB066">Bright opening</text>
-        <circle cx="330" cy="92" r="7" fill="#5CCBF5"/><text x="346" y="86" style="fill:#5CCBF5">Cooling bloom</text>
-        <circle cx="480" cy="170" r="7" fill="#fff"/><text x="372" y="156" style="fill:#fff">Clean linger</text>
-      </g></svg>
-    </div>
-  </div>
-</section>
+<!-- TRENDS -->
+<section id="trends" data-world="spectrum" data-title="Trends"></section>
 
-<section class="scene" id="p-ritual" data-bg="#FFF0E3" data-glow="#FFFFFF" data-tone="light" data-phase="Territories" data-title="Ritual by Time" data-stop>
-  <div class="wrap split plat">
-    <div>
-      <span class="num rv">PLATFORM 03</span>
-      <h2 class="d d-xl rv d1">Ritual by Time</h2>
-      <p class="def rv d2">Different moments of the day call for different kinds of fresh.</p>
-      <dl class="rv d3"><dt>Cues</dt><dd>Morning lift, midday reset, after coffee, before going out, wind-down.</dd><dt>Promise</dt><dd>Oral care that behaves like a personal ritual, not a chore.</dd><dt>Concepts</dt><dd>Green Tea Cucumber · Ginger Lime · Chamomile Vanilla Mint</dd></dl>
-    </div>
-    <div class="plat-vis rv" id="dialWrap">
-      <div class="dial" aria-hidden="true"></div>
-      <div class="dial-center" aria-live="polite"><span class="t" id="dT">6:30 AM</span><span class="n" id="dN">Wake</span><span class="f" id="dF">Arctic Yuzu</span><span class="l" id="dL">A bright, cold start.</span></div>
-    </div>
-  </div>
-</section>
+<!-- THE BASE -->
+<section id="base" data-title="The base"></section>
 
-<section class="scene" id="p-elevated" data-bg="#2A1916" data-glow="#5A3325" data-tone="dark" data-phase="Territories" data-title="Elevated Escape" data-stop>
-  <div class="wrap split plat">
-    <div>
-      <span class="num rv">PLATFORM 04</span>
-      <h2 class="d d-xl rv d1">Elevated Escape</h2>
-      <p class="def rv d2">Premium flavor worlds borrowed from fragrance, spa, tea and zero-proof bars.</p>
-      <dl class="rv d3"><dt>Cues</dt><dd>Fragrance structure, hospitality, culinary pairings, global botanicals.</dd><dt>Promise</dt><dd>A small daily luxury that is still clean and alcohol-free.</dd><dt>Concepts</dt><dd>Grapefruit Rose Mint · Pear Cardamom Mint</dd></dl>
-    </div>
-    <div class="plat-vis pyr rv" aria-hidden="true">
-      <svg viewBox="0 0 540 520">
-        <defs>
-          <linearGradient id="py1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC08A" stop-opacity=".75"/><stop offset="1" stop-color="#F58220" stop-opacity=".45"/></linearGradient>
-          <linearGradient id="py2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2A0A0" stop-opacity=".55"/><stop offset="1" stop-color="#9E5A55" stop-opacity=".4"/></linearGradient>
-          <linearGradient id="py3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD6BC" stop-opacity=".5"/><stop offset="1" stop-color="#2C5A48" stop-opacity=".45"/></linearGradient>
-        </defs>
-        <polygon points="190,40 250,170 130,170" fill="url(#py1)" stroke="rgba(255,236,220,.6)" stroke-width="2"/>
-        <polygon points="126,178 254,178 313,308 67,308" fill="url(#py2)" stroke="rgba(255,236,220,.5)" stroke-width="2"/>
-        <polygon points="63,316 317,316 377,446 3,446" fill="url(#py3)" stroke="rgba(255,236,220,.45)" stroke-width="2"/>
-        <text x="270" y="112">Top · opening</text><text class="pn" x="270" y="140">grapefruit, pear</text>
-        <text x="332" y="240">Heart · development</text><text class="pn" x="332" y="268">rose, cardamom</text>
-        <text x="392" y="372">Base · finish</text><text class="pn" x="392" y="400">clean mint</text>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- ============ TASTING ============ -->
-<section class="scene" id="tasting" data-bg="#F2F9FC" data-glow="#FFF3E8" data-tone="light" data-phase="Taste" data-title="Tasting" data-stop>
+<!-- TERRITORIES -->
+<section class="w" id="territories" data-world="aura" data-title="Territories">
   <div class="wrap">
-    <div class="head2" style="margin-bottom:40px">
-      <div><span class="eyebrow rv">The tasting</span>
-        <h2 class="d d-l rv d1" style="margin-top:20px">Taste <span class="hl">the whole rinse.</span></h2></div>
-      <p class="body rv d2">Every sample is coded, so nobody knows which concept they’re tasting. Follow each one from the first second to tomorrow morning. “Do I like it?” is only one of four questions.</p>
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px">
+      <div><span class="eyebrow"><b>02</b>Territories</span><h2 class="display" data-kin style="margin-top:14px">Where fresh <span class="hl">could go.</span></h2></div>
+      <p class="small rv" style="max-width:36ch;margin:0">Today’s shelf lives in the top-left corner. Six new worlds and three wildcards spread into the white space. The positions are our read.</p>
     </div>
-    <div class="timeline rv" id="timeline">
-      <div class="tl-head" id="tlHead"></div>
-      <div class="tl" data-s="0"><span class="lab">0 – 5 s</span><h3>Opening</h3><p>What happens immediately?</p></div>
-      <div class="tl" data-s="1"><span class="lab">5 – 60 s</span><h3>Development</h3><p>How does it evolve while rinsing?</p></div>
-      <div class="tl" data-s="2"><span class="lab">1 – 3 min</span><h3>Finish</h3><p>What remains after you spit?</p></div>
-      <div class="tl" data-s="3"><span class="lab">Tomorrow</span><h3>Repeat</h3><p>Would I use this again?</p></div>
-    </div>
-    <div class="timer rv">
-      <button class="btn" id="rinseBtn" type="button">Start guided rinse</button>
-      <span class="clock" id="clock">0:00</span>
-      <span class="small" id="rinseCue" style="font-size:17px">Everyone sips together. We call out each stage.</span>
-    </div>
-    <div class="score-grid">
-      <div class="scorecard card rv">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
-          <span class="lab" style="color:var(--fg-3)">Room score · blind codes</span>
-          <button class="pill-btn" id="revealBtn" type="button" style="font-size:11px">Reveal names</button>
-        </div>
-        <div class="samples" id="samples" role="tablist" aria-label="Samples"></div>
-        <div id="dims"></div>
-        <div class="oneword"><span class="lab" style="color:var(--fg-3)">One word</span><input id="oneWord" type="text" placeholder="…" maxlength="28" aria-label="One word for this sample"></div>
-      </div>
-      <div class="board card rv d1">
-        <span class="lab" style="color:var(--fg-3)">Live board · average of seven</span>
-        <div id="boardRows" style="display:flex;flex-direction:column;gap:12px"></div>
-        <div class="board-actions"><button class="btn ghost" id="copyScores" type="button">Copy scores</button><button class="btn ghost" id="resetScores" type="button">Clear</button></div>
-        <p class="small" style="margin:0">Scores stay on this device. Nothing is sent anywhere.</p>
-      </div>
-    </div>
+    <div id="map" class="rv"></div>
+    <div class="plats" id="plats"></div>
   </div>
 </section>
 
-<!-- ============ CONCEPTS ============ -->
-<section class="scene" id="concepts" data-bg="#F2F9FC" data-glow="#FFFFFF" data-tone="light" data-phase="Taste" data-title="The reveal" data-stop>
-  <div class="wrap stack" style="gap:40px">
-    <span class="eyebrow rv">The reveal</span>
-    <h2 class="d d-xl rv d1">What you <span class="hl">just tasted.</span></h2>
-    <p class="lede rv d2">Six concepts entered. Three advance. Here’s what was behind each code. All names are working names.</p>
-    <div class="six-row" id="sixRow"></div>
-  </div>
-</section>
-<div class="show" id="show">
-  <div class="stage" id="stage">
-    <div class="stage-in">
-      <canvas id="art" aria-hidden="true"></canvas>
-      <div class="bottles" id="bottles" aria-hidden="true"></div>
-      <div class="stage-meta" id="pips"></div>
-    </div>
-  </div>
-  <div class="steps" id="steps"></div>
-</div>
-
-<section class="scene" id="wildcards" data-bg="#FFFFFF" data-glow="#EAF7FD" data-tone="light" data-phase="Taste" data-title="Wildcards" data-stop style="min-height:auto">
-  <div class="wrap split" style="align-items:start">
-    <div><span class="eyebrow rv">Also on our bench</span><h2 class="d d-m rv d1" style="margin-top:18px">Three more our flavorists want you to try.</h2></div>
-    <div class="wild-row" id="wildRow"></div>
-  </div>
-</section>
-
-<!-- ============ FLAVOR LAB ============ -->
-<section class="scene" id="lab" data-bg="#0A2A5C" data-glow="#0F4C86" data-tone="dark" data-phase="Create" data-title="Flavor Lab" data-stop>
-  <div class="wrap labx-grid">
-    <div>
-      <span class="eyebrow rv">Objective 03 · Create</span>
-      <h2 class="d d-l rv d1" style="margin-top:20px">Build a concept <span class="hl">for a new moment.</span></h2>
-      <p class="body rv d2" style="margin-top:20px">Try a combination live. Pick the freshness cue we keep and the one thing we change, then the moment and the consumer it’s for. If it’s one we’ve already built, you’ll see it. If not, it goes into the playbook.</p>
-      <div class="labx-step rv d2"><span class="lab">1 · Keep</span><div class="chips" id="labKeep" role="group" aria-label="Freshness cue to keep"></div></div>
-      <div class="labx-step rv d3"><span class="lab">2 · Change</span><div class="chips" id="labChange" role="group" aria-label="One thing to change"></div></div>
-      <div class="labx-step rv d3"><span class="lab">3 · When</span><div class="chips" id="labWhenC" role="group" aria-label="Occasion"></div></div>
-      <div class="labx-step rv d3"><span class="lab">4 · For whom</span><div class="chips" id="labWhoC" role="group" aria-label="Consumer"></div></div>
-    </div>
-    <div class="labx-out rv d1">
-      <div class="labx-bottle" id="labBottle"></div>
-      <div class="labx-card card" aria-live="polite">
-        <span class="match" id="labMatch">One of today’s six</span>
-        <span class="lab" style="color:var(--fg-3)">Your concept</span>
-        <div class="nm" id="labName"></div>
-        <div class="fl" id="labFlavor"></div>
-                <dl><dt>When</dt><dd id="labWhen"></dd><dt>For</dt><dd id="labWho"></dd><dt>Platform</dt><dd id="labPlat"></dd><dt>Stretches</dt><dd id="labAxis"></dd><dt>Watch-out</dt><dd id="labWatch"></dd></dl>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ DECIDE ============ -->
-<section class="scene" id="decide" data-bg="#062150" data-glow="#0B3F7E" data-tone="dark" data-phase="Playbook" data-title="Decide" data-stop>
+<!-- TASTING -->
+<section class="w" id="tasting" data-world="ripple" data-title="Tasting">
   <div class="wrap">
-    <span class="eyebrow rv">Objective 04 · Pipeline · the three checks</span>
-    <h2 class="d d-l rv d1" style="margin:20px 0 36px">Brand Fit × Technical Reality × <span class="hl">Consumer Desire</span></h2>
-    <div class="three-q">
-      <div class="card rv"><span class="lab" style="color:#5CCBF5">01 · Brand</span><div class="d d-s">Does it fit the brand?</div><p>Could TheraBreath credibly own this, gentle and dentist-formulated?</p></div>
-      <div class="card rv d1"><span class="lab" style="color:#9BE35A">02 · Technical</span><div class="d d-s">Can we make it?</div><p>Will the flavor hold up in TheraBreath’s oxidizing, alcohol-free system over shelf life?</p></div>
-      <div class="card rv d2"><span class="lab" style="color:#FFB066">03 · Consumer</span><div class="d d-s">Will people choose it?</div><p>Is it appealing, easy to understand, different, and something people will buy again?</p></div>
+    <span class="eyebrow">The tasting</span>
+    <h2 class="display" data-kin style="margin-top:14px">Taste first. <span class="hl">Names later.</span></h2>
+    <p class="lede rv" style="margin-top:20px">Seven coded cups: six new flavors and today’s TheraBreath. Score each one across the whole rinse, then we reveal.</p>
+    <div class="stages rv">
+      <div class="stg" style="--c:#00A3E0"><span class="t">0–5 seconds</span><b>Opening</b><span>What happens first?</span></div>
+      <div class="stg" style="--c:#12A0A6"><span class="t">5–60 seconds</span><b>Development</b><span>How does it change?</span></div>
+      <div class="stg" style="--c:#006649"><span class="t">1–3 minutes</span><b>Finish</b><span>What stays with you?</span></div>
+      <div class="stg" style="--c:#F58025"><span class="t">Tomorrow</span><b>Repeat</b><span>Would you use it again?</span></div>
     </div>
-    <div class="split" style="align-items:center">
-      <div class="venn rv" id="venn">
-        <div class="c c1"><span>Brand fit</span></div><div class="c c2"><span>Technical reality</span></div><div class="c c3"><span>Consumer desire</span></div>
-        <div class="core">Advance</div>
-      </div>
-      <div class="rv d1">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-          <span class="lab" style="color:var(--fg-2)">Mark each check the room agrees on</span>
-          <button class="pill-btn" id="suggestBtn" type="button" style="font-size:11px">Suggest from tasting</button>
-        </div>
-        <div class="checks" id="checks"></div>
-        <div class="dec-count"><span class="n" id="advN">0</span><span class="lab" style="color:var(--fg-2)">of 3 concepts advancing</span></div>
-        <div style="margin-top:18px"><span class="lab" style="color:var(--fg-2)">Choose two platforms to build in</span><div class="plat-pick" id="platPick"></div></div>
-      </div>
-    </div>
+    <div class="cups" id="cups" role="group" aria-label="Choose a sample to score"></div>
+    <div class="rate" id="rate"></div>
+    <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:12px;align-items:center"><a class="btn" href="#reveal">Reveal the six</a><span class="small">Scores stay in this browser.</span></div>
   </div>
 </section>
 
-<!-- ============ PIPELINE ============ -->
-<section class="scene" id="pipeline" data-bg="#F2F9FC" data-glow="#FFFFFF" data-tone="light" data-phase="Playbook" data-title="Pipeline" data-stop style="min-height:auto">
+<!-- REVEAL -->
+<section class="w" id="reveal" data-world="finale" data-tone="dark" data-title="The reveal">
+  <div class="wrap" style="text-align:center">
+    <span class="eyebrow">The reveal</span>
+    <h2 class="mega" data-kin="ch" style="margin-top:18px;font-size:clamp(60px,11vw,200px)"><span class="ln">Six new</span><span class="ln">worlds.</span></h2>
+    <p class="lede rv" style="margin:24px auto 0">Every name follows TheraBreath’s own pattern. Every flavor is built for sodium chlorite.</p>
+    <div id="lineup"></div>
+  </div>
+</section>
+
+<!-- THE SIX WORLDS -->
+<div id="worlds"></div>
+
+<!-- WILDCARDS -->
+<section class="w" id="wild" data-world="aura" data-title="Wildcards">
   <div class="wrap">
-    <div class="head2">
-      <div><span class="eyebrow rv">Objective 04 · Pipeline</span>
-        <h2 class="d d-l rv d1" style="margin-top:20px">From near-term launches <span class="hl">to long-term growth.</span></h2></div>
-      <p class="body rv d2">Our starting read, placed by how close each direction sits to today’s rinse. The room moves the cards, and adds what came out of Create.</p>
-    </div>
-    <div class="hzs" id="hzs"></div>
+    <span class="eyebrow">Three more from the bench</span>
+    <h2 class="display" data-kin style="margin-top:14px">Wildcards, <span class="hl">if we want to push.</span></h2>
+    <div id="portals"></div>
   </div>
 </section>
 
-<!-- ============ TRAVEL ============ -->
-<section class="scene" id="travel" data-bg="#E6F6FD" data-glow="#FFFFFF" data-tone="light" data-phase="Playbook" data-title="Beyond the bottle" data-stop style="min-height:auto">
-  <div class="wrap travel-grid">
-    <div class="stack" style="justify-content:center">
-      <span class="eyebrow rv">Long-term · across the franchise</span>
-      <h2 class="d d-m rv d1">Beyond the bottle: a TheraBreath travel kit.</h2>
-      <p class="body rv d2">One example of carrying flavor across the franchise and into a new occasion: a travel kit that goes through airport security and still feels like TheraBreath.</p>
-      <span class="lab rv d3" style="color:var(--brand)">Liquids ≤ 3.4 oz / 100 mL · one quart-size bag</span>
-    </div>
-    <div class="kit card rv d1" id="zipKit">
-      <span class="lab" style="color:var(--orange-d)">Concept A</span><h3>Zip &amp; Go</h3>
-      <svg viewBox="0 0 400 260" aria-label="Clear zip pouch holding five travel items">
-        <defs><linearGradient id="pouch" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#D6EEF9" stop-opacity=".8"/></linearGradient></defs>
-        <rect x="20" y="40" width="360" height="200" rx="26" fill="url(#pouch)" stroke="#8CCBE8" stroke-width="2"/>
-        <rect x="20" y="40" width="360" height="22" rx="11" fill="#00A3E0"/><line x1="40" y1="51" x2="360" y2="51" stroke="#fff" stroke-dasharray="3 4"/><circle cx="352" cy="51" r="7" fill="#F58220"/>
-        <g transform="translate(50,82)" font-family="Archivo, Arial" font-weight="800">
-          <rect x="0" y="26" width="48" height="112" rx="10" fill="#9ED8F2" stroke="#0072BC" stroke-width="1.5"/><rect x="7" y="0" width="34" height="28" rx="4" fill="#F58220"/><rect x="5" y="64" width="38" height="42" rx="4" fill="#fff"/><text x="24" y="89" font-size="7" text-anchor="middle" fill="#0072BC">RINSE</text>
-          <path d="M70,138 L70,42 Q70,26 86,26 L100,26 Q116,26 116,42 L116,138 Z" fill="#fff" stroke="#0072BC" stroke-width="1.5"/><rect x="80" y="8" width="26" height="20" rx="3" fill="#F58220"/><text x="93" y="86" font-size="7" text-anchor="middle" fill="#0072BC" transform="rotate(-90 93 86)">TOOTHPASTE</text>
-          <rect x="140" y="4" width="12" height="134" rx="6" fill="#fff" stroke="#0072BC" stroke-width="1.5"/><rect x="138" y="4" width="16" height="32" rx="4" fill="#00A3E0"/>
-          <rect x="176" y="54" width="38" height="84" rx="12" fill="#E4F4FB" stroke="#0072BC" stroke-width="1.5"/><rect x="186" y="36" width="18" height="20" rx="4" fill="#F58220"/><text x="195" y="100" font-size="7" text-anchor="middle" fill="#0072BC">SPRAY</text>
-          <rect x="236" y="78" width="54" height="60" rx="14" fill="#fff" stroke="#0072BC" stroke-width="1.5"/><circle cx="263" cy="108" r="12" fill="none" stroke="#F58220" stroke-width="3"/><text x="263" y="152" font-size="7" text-anchor="middle" fill="#0072BC">FLOSS</text>
-        </g>
-      </svg>
-      <p class="small" style="margin:0">A clear, flat-bottomed pouch that stands up in a hotel bathroom and goes straight through security.</p>
-    </div>
-    <div class="kit card rv d2" id="foldKit">
-      <span class="lab" style="color:var(--orange-d)">Concept B</span><h3>Fold &amp; Go</h3>
-      <svg viewBox="0 0 400 260" class="fold" aria-label="Tri-fold case that opens flat">
-        <rect class="pa" x="30" y="50" width="110" height="170" rx="16" fill="#D9F0FA" stroke="#0072BC" stroke-width="1.5"/>
-        <rect x="145" y="50" width="110" height="170" rx="16" fill="#fff" stroke="#0072BC" stroke-width="1.5"/>
-        <rect class="pc" x="260" y="50" width="110" height="170" rx="16" fill="#D9F0FA" stroke="#0072BC" stroke-width="1.5"/>
-        <rect x="165" y="84" width="30" height="110" rx="8" fill="#9ED8F2" stroke="#0072BC" stroke-width="1.5"/><rect x="169" y="68" width="22" height="18" rx="3" fill="#F58220"/>
-        <rect x="205" y="72" width="30" height="126" rx="14" fill="#fff" stroke="#0072BC" stroke-width="1.5"/>
-        <text x="200" y="212" font-size="10" text-anchor="middle" fill="#0072BC" font-family="Archivo, Arial" font-weight="800">TheraBreath</text>
-      </svg>
-      <button class="btn ghost" id="foldBtn" type="button" style="align-self:flex-start">Fold it</button>
-      <p class="small" style="margin:0">A slim tri-fold that closes to the size of a passport and lies flat when open.</p>
+<!-- CREATE -->
+<section class="w" id="create" data-world="studio" data-title="Create">
+  <div class="wrap">
+    <span class="eyebrow"><b>03</b>Create</span>
+    <h2 class="display" data-kin style="margin-top:14px">Build a concept <span class="hl">for a new moment.</span></h2>
+    <div class="builder">
+      <div>
+        <div class="step"><span class="mono">1 · Pick a world</span><div class="chips" id="cWorld"></div></div>
+        <div class="step"><span class="mono">2 · Pick a moment</span><div class="chips" id="cWhen"></div></div>
+        <div class="step"><span class="mono">3 · Pick a person</span><div class="chips" id="cWho"></div></div>
+      </div>
+      <div class="ccard" aria-live="polite">
+        <div class="scene"><canvas id="cScene" aria-hidden="true"></canvas><div id="cBottle"></div></div>
+        <div class="body"><p class="sent" id="cSent"></p>
+          <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap"><button class="btn" type="button" id="cAdd">Add to the playbook</button></div>
+          <ul class="ideas" id="cIdeas"></ul></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ ASSIGN ============ -->
-<section class="scene" id="assign" data-bg="#004E38" data-glow="#0A7A58" data-tone="dark" data-phase="Playbook" data-title="Draft playbook" data-stop>
-  <div class="wrap stack" style="gap:clamp(32px,5vh,56px)">
-    <div class="arcflow rv">
-      <div><span class="lab">01</span><span class="d d-s">Trends</span></div>
-      <div><span class="lab">02</span><span class="d d-s">Territories</span></div>
-      <div><span class="lab">03</span><span class="d d-s">Concepts</span></div>
-      <div class="on"><span class="lab" style="color:#FFB066">04</span><span class="d d-s">Pipeline</span></div>
+<!-- PIPELINE -->
+<section class="w" id="pipeline" data-world="river" data-title="Pipeline">
+  <div class="wrap">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px">
+      <div><span class="eyebrow"><b>04</b>Pipeline</span><h2 class="display" data-kin style="margin-top:14px">Now, next <span class="hl">and later.</span></h2></div>
+      <p class="small rv" style="max-width:34ch;margin:0">Our starting read, by how close each flavor sits to today’s base. Tap a bottle to move it along.</p>
     </div>
-    <div><span class="eyebrow rv" style="color:#fff">What we leave with</span><h2 class="d d-xl rv d1" style="margin-top:20px">The draft playbook.</h2></div>
-    <div class="short">
-      <div class="col card rv"><h3><span>Trends to act on</span><span>01</span></h3><div id="shortTrends" style="display:flex;flex-direction:column;gap:10px"></div><h3 style="margin-top:14px"><span>Priority territories</span><span>02</span></h3><div id="shortPlat"></div></div>
-      <div class="col card rv d1"><h3><span>Near-term concepts · owner · next action</span><span>03 · 04</span></h3><div id="shortLeads"></div></div>
-    </div>
-    <div class="finale rv">
-      <div><p class="d d-m" style="margin:0 0 12px">Familiar enough to trust.<br>Different enough to remember.</p>
-        <span class="lab" style="color:var(--fg-2)">The Flavor Factory · Norco, California · for TheraBreath · November 9, 2026 · Darwin</span></div>
-      <button class="btn" id="copyPlan" type="button">Copy the draft playbook</button>
-    </div>
+    <div class="lanes" id="lanes"></div>
   </div>
 </section>
 
+<!-- DRAFT PLAYBOOK -->
+<section class="w" id="playbook" data-world="aura" data-title="Draft playbook">
+  <div class="wrap">
+    <span class="eyebrow">What we leave with</span>
+    <h2 class="display" data-kin style="margin-top:14px">The draft <span class="hl">playbook.</span></h2>
+    <div class="pbk">
+      <div class="pcol">
+        <h3><span>Trends to act on</span><span>01</span></h3>
+        <div id="pTrends"></div>
+        <h3><span>Priority territories · pick two</span><span>02</span></h3>
+        <div class="chips" id="pPlats"></div>
+      </div>
+      <div class="pcol">
+        <h3><span>The three checks</span><span>03</span></h3>
+        <table class="checks" id="pChecks"></table>
+        <h3><span>Near-term owners</span><span>04</span></h3>
+        <div id="pOwners"></div>
+      </div>
+    </div>
+    <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:12px;align-items:center"><button class="btn" type="button" id="copy">Copy the draft playbook</button><span class="small">Everything here is saved in this browser only.</span></div>
+  </div>
+</section>
+
+<!-- FINALE -->
+<section class="w" id="finale" data-world="finale" data-tone="dark" data-title="Thank you">
+  <div class="wrap" style="text-align:center">
+    <h2 class="display" data-kin>Familiar enough to trust.<br><span class="hl">Different enough to remember.</span></h2>
+    <div id="lineup2"></div>
+    <p class="mono" style="margin-top:36px;color:var(--fg2)">The Flavor Factory × TheraBreath · November 9, 2026 · Darwin</p>
+  </div>
+</section>
 </main>
-
-<!-- ============ NOTES ============ -->
-<div class="notes" id="notes" hidden role="dialog" aria-modal="true" aria-labelledby="notesTitle">
-  <button class="pill-btn close" id="notesClose" type="button">Close · Esc</button>
-  <div class="wrap">
-    <span class="eyebrow">Notes for the presenting team</span>
-    <h2 class="d d-l" id="notesTitle" style="margin:18px 0 10px">How this experience works</h2>
-    <section><h3>What this is</h3><div>
-      <p>The in-room companion to the deck, and the leave-behind afterwards. It holds the tools we use during the session: the blind scorecard and rinse timer, the Flavor Lab (our Create tool), the decision board, the pipeline and the draft playbook.</p>
-      <p>The session runs 10:00 AM to noon in Darwin, then lunch. The order follows the four objectives in Ross Conroy’s invite: trends, territories, concepts, pipeline. Within that, we taste blind first, then reveal what was behind each code, then create and decide. Don’t open the reveal section before the tasting.</p>
-    </div></section>
-    <section><h3>Type</h3><div>
-      <p><span style="font-family:var(--f-d);font-weight:800;font-stretch:112%;font-size:34px;letter-spacing:-.03em">Archivo ExtraBold, expanded</span><br>Headlines. Heavy, wide and confident, and readable from the back of the room.</p>
-      <p><span style="font-weight:700;font-size:22px">Figtree</span><br>Body copy at 18–20 px, medium weight, high contrast.</p>
-    </div></section>
-    <section><h3>Colour</h3><div><p>TheraBreath blue and navy carry the brand. The orange of the cap is the one accent: it marks what is active, chosen or next. Each flavor and platform adds its own world colour behind the content. Coral means overreach and appears only there.</p><div class="swatches" id="swatches"></div></div></section>
-    <section><h3>Presenting</h3><div><ul>
-      <li>← → or Page Up / Down moves one screen. F goes full screen. N opens these notes.</li>
-      <li>Tasting scores, checks and owners are saved in this browser only. Use “Copy the draft playbook” for the follow-up email.</li>
-      <li>Print (⌘P) gives a one-scene-per-page takeaway.</li>
-      <li>The companion slide deck lives at <a href="deck/">deck/</a> (27 slides, speaker notes, presenter view with P). A PDF export is in <code>dist/</code>.</li>
-      <li>The logo and product photo are official artwork in <code>assets/</code>. The concept bottles are drawn to match the current rinse label system.</li>
-    </ul></div></section>
-  </div>
-</div>
 <div class="toast" id="toast" role="status"></div>
+
 <script src="assets/playbook-core.js"></script>
+<script src="assets/worlds.js"></script>
 <script>
 (() => {
 "use strict";
-document.documentElement.classList.add("js");
-const $ = (s, r = document) => r.querySelector(s);
-const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-const lerp = (a, b, t) => a + (b - a) * t;
-const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const { SESSION, OBJECTIVES, AGENDA, HORIZONS, CREATE, hex, rgba, rng, PLATS, CONCEPTS, CONTROL, STATUS, REGIONS, HOME, GRID, SPECTRUM, AXES, BASE, SHAPES, MOMENTS, WILD, DIMS, ACTIONS, bottle, setBottle, conceptBottleOpts, splitName, ART } = window.TBCore;
-const SAMPLES = [...CONCEPTS, CONTROL];
-const byId = id => SAMPLES.find(c => c.id === id);
-document.body.insertAdjacentHTML("afterbegin", window.TBCore.logoSymbol("assets/therabreath-logo.png"));
-document.getElementById("agenda").innerHTML = AGENDA.map((a, i) => `<div class="card rv${i % 4 ? " d" + (i % 4) : ""}"><span class="lab">${a.t} – ${a.e}</span><b>${a.h}</b><small>${a.w}</small>${a.o ? `<span class="o">Objective 0${a.o}</span>` : ""}</div>`).join("");
-document.getElementById("agenda").insertAdjacentHTML("afterend", `<div class="agenda-foot rv">12:00 · Lunch, provided by Church &amp; Dwight</div>`);
-document.getElementById("objs").innerHTML = OBJECTIVES.map((o, i) => `<div class="card rv${i ? " d" + i : ""}"><span class="n">${o.n}</span><h3>${o.h}</h3><p>${o.line}</p><div class="out"><b>We leave with</b>${o.out}</div></div>`).join("");
-document.getElementById("hzs").innerHTML = HORIZONS.map((h, i) => `<div class="hzc card rv${i ? " d" + i : ""}" style="--c:${h.c}"><span class="k">${h.h}</span><h3>${h.w}</h3><p>${h.p}</p><div class="cz">${CONCEPTS.filter(c => c.horizon === h.k).map(c => `<span style="--cc:${c.acc}"><i></i>${c.flavor}<small>${c.when}</small></span>`).join("")}${h.k === "long" ? WILD.map(w => `<span style="--cc:${w.sw[1]}"><i></i>${w.flavor}<small>wildcard</small></span>`).join("") : ""}</div></div>`).join("");
+const T = window.TBCore, UI = window.WorldsUI, $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)], esc = UI.esc;
+const { CONCEPTS, WILD, CONTROL, DIMS, PLATS, PLAT_LINES, OBJECTIVES, HORIZONS, CREATE, ACTIONS } = T;
+UI.logo("assets/therabreath-logo.png");
 
-/* ------------------------------------------------------------------ state */
-const KEY = "tb-flavor-playbook-2026";
-let S = { scores: {}, words: {}, checks: {}, advance: [], platforms: [], assign: {}, trends: ["", ""], reveal: false, cur: "yuzu" };
+/* saved state (this browser only) */
+const KEY = "tb-playbook-v3";
+let S = { scores: {}, cur: CONCEPTS[0].code, pick: { world: "frost", when: CREATE.occasions[0], who: CREATE.consumers[0] }, ideas: [], hz: {}, checks: {}, trends: ["", ""], plats: [], owners: {} };
 try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch (e) {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
-let toastT;
-const toast = msg => { const t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2400); };
-const copy = (text, ok) => {
-  const done = () => toast(ok);
-  const fallback = () => { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (e) { toast("Select and copy manually"); } ta.remove(); };
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+const toast = m => { const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("on"), 1800); };
+const byId = id => CONCEPTS.find(c => c.id === id) || WILD.find(w => w.id === id);
+
+/* hero + static pieces */
+$("#heroBottle").insertAdjacentHTML("afterbegin", UI.iconicBottle());
+const SHORT = ["What’s shaping oral care", "Where fresh could go, and what survives oxygen", "New moments, new people", "Now, next and later"];
+$("#objs").innerHTML = OBJECTIVES.map((o, i) => `<div class="obj rv" style="--d:${i * .08}s"><span class="n">${o.n}</span><h3>${esc(o.h)}</h3><p>${SHORT[i]}</p></div>`).join("");
+UI.dial($("#dial"));
+UI.trendTrack($("#trends"));
+UI.chemScene($("#base"));
+UI.map($("#map"));
+$("#plats").innerHTML = Object.keys(PLATS).map((k, i) => `<div class="plat rv" style="--d:${i * .06}s"><b>${PLATS[k]}</b><span>${PLAT_LINES[k]}</span></div>`).join("");
+UI.lineup($("#lineup"));
+UI.sixWorlds($("#worlds"), { codes: true });
+UI.portals($("#portals"), WILD);
+UI.lineup($("#lineup2"));
+
+/* tasting scorecard */
+const codes = [...CONCEPTS.map(c => c.code), CONTROL.code].sort();
+const renderCups = () => { $("#cups").innerHTML = codes.map(c => { const sc = S.scores[c] || {}; const done = DIMS.every(d => sc[d[0]]); return `<button type="button" class="cup${c === S.cur ? " on" : ""}${done ? " done" : ""}" data-code="${c}" aria-pressed="${c === S.cur}">${c}<small>${c === CONTROL.code ? "" : "SAMPLE"}</small></button>`; }).join(""); };
+const renderRate = () => {
+  const sc = S.scores[S.cur] || {};
+  $("#rate").innerHTML = `<div class="who2"><span class="mono">Scoring</span><b>${S.cur}</b><span>1 = not at all · 5 = absolutely</span></div>` + DIMS.map(([k, l, q]) => `<div class="dim"><label>${l}</label><small>${q}</small><div class="dots5" role="group" aria-label="${l}">${[1, 2, 3, 4, 5].map(v => `<button type="button" data-k="${k}" data-v="${v}" class="${sc[k] === v ? "on" : ""}" aria-pressed="${sc[k] === v}">${v}</button>`).join("")}</div></div>`).join("");
 };
+$("#cups").addEventListener("click", e => { const b = e.target.closest(".cup"); if (!b) return; S.cur = b.dataset.code; save(); renderCups(); renderRate(); });
+$("#rate").addEventListener("click", e => { const b = e.target.closest("button[data-k]"); if (!b) return; (S.scores[S.cur] = S.scores[S.cur] || {})[b.dataset.k] = +b.dataset.v; save(); renderRate(); renderCups(); });
+renderCups(); renderRate();
 
-const conceptBottle = c => bottle(conceptBottleOpts(c));
-const ICONIC = { liq: ["#4FB3E6", "#1A78C0"], band: "#6CC3EA", flavor: "Invigorating Icy Mint" };
-$("#heroBottle").outerHTML = bottle(ICONIC);
-
-
-/* ------------------------------------------------------------------ concept markup */
-const hlLast = n => { const w = n.split(" "); const l = w.pop(); return (w.length ? w.join(" ") + " " : "") + `<span class="hl">${l}</span>`; };
-$("#steps").innerHTML = CONCEPTS.map(c => `<article class="step" id="c-${c.id}" data-concept="${c.id}" data-bg="${c.bg}" data-glow="${c.glow}" data-tone="${c.tone}" data-phase="Taste" data-title="${c.name}" data-stop style="--acc:${c.acc}">
-  <div class="c-meta rv"><span class="lab" style="color:var(--fg-3)">Concept ${c.n} / 06</span><span class="status">Sample ${c.code}</span></div>
-  <h2 class="d rv d1">${hlLast(c.name)}</h2>
-  <div class="flv rv d1">${c.flavor} · ${c.tag}</div>
-  <div class="kw rv d1">${c.kw.join(" · ")}</div>
-  <p class="feels rv d2">${c.feels}</p>
-  <div class="arc rv d2"><div><b>Opening</b>${c.arc[0]}</div><div><b>Development</b>${c.arc[1]}</div><div><b>Finish</b>${c.arc[2]}</div></div>
-  <div class="c-foot card rv d3">
-    <div><h4>Formulation note</h4><p>${c.note}</p></div>
-    <div><h4>Platforms</h4><div class="tags">${c.plat.map(p => `<span class="tag">${PLATS[p]}</span>`).join("")}</div><h4 style="margin-top:14px">Stay clear of</h4><p>${c.avoid}</p></div>
-  </div></article>`).join("");
-$("#bottles").innerHTML = conceptBottle(CONCEPTS[0]);
-$("#pips").innerHTML = CONCEPTS.map(c => `<span class="pip" title="${c.name}"></span>`).join("");
-$("#sixRow").innerHTML = CONCEPTS.map(c => `<a class="card" href="#c-${c.id}"><div class="mini"><canvas data-mini="${c.id}" width="320" height="320" style="width:100%;height:100%;display:block"></canvas></div><span class="st">${c.n} · Sample ${c.code}</span><span class="nm">${c.name}</span><span class="fl">${c.flavor}</span></a>`).join("");
-$("#wildRow").innerHTML = WILD.map(w => `<div class="wild-card card rv"><div class="sw" style="background:linear-gradient(120deg,${w.sw[0]},${w.sw[1]})"></div><span class="lab" style="color:var(--fg-3)">${PLATS[w.plat]}</span><h3>${w.name}</h3><span class="lab" style="color:var(--brand);margin-top:-4px">${w.flavor}</span><p class="small" style="margin:0">${w.line}</p></div>`).join("");
-
-/* ------------------------------------------------------------------ observers */
-/* split headlines into words that rise out of a mask */
-const kinetic = el => {
-  let k = 0;
-  const word = () => { const w = document.createElement("span"), i = document.createElement("span"); w.className = "w"; i.className = "wi"; i.style.setProperty("--k", k++); w.appendChild(i); return [w, i]; };
-  const walk = parent => [...parent.childNodes].forEach(n => {
-    if (n.nodeType === 3) {
-      const frag = document.createDocumentFragment();
-      n.textContent.split(/(\s+)/).forEach(p => { if (!p) return; if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(" ")); return; } const [w, i] = word(); i.textContent = p; frag.appendChild(w); });
-      n.replaceWith(frag);
-    } else if (n.nodeType === 1 && n.tagName !== "BR") {
-      if (n.classList.contains("fresh")) { const [w, i] = word(); n.replaceWith(w); i.appendChild(n); } else walk(n);
-    }
-  });
-  walk(el); el.classList.add("kin");
+/* create */
+const worlds = [...CONCEPTS, ...WILD];
+const scene = UI.mini($("#cScene"), S.pick.world);
+const pickRow = (el, items, key, dot) => { el.innerHTML = items.map(it => { const v = typeof it === "string" ? it : it.id, l = typeof it === "string" ? it : it.name; return `<button type="button" class="pick${S.pick[key] === v ? " on" : ""}" data-v="${esc(v)}" style="${dot && it.acc ? "--c:" + it.acc : ""}">${dot ? "<i></i>" : ""}${esc(l)}</button>`; }).join(""); };
+const renderCreate = () => {
+  pickRow($("#cWorld"), worlds, "world", true); pickRow($("#cWhen"), CREATE.occasions, "when"); pickRow($("#cWho"), CREATE.consumers, "who");
+  const w = byId(S.pick.world) || CONCEPTS[0]; scene.key = w.id;
+  $("#cBottle").innerHTML = T.bottle({ liq: w.liquid || w.sw, band: w.acc, flavor: w.name, sub: w.flavor });
+  $("#cSent").innerHTML = `<b>${esc(w.name)}</b> for <b>${esc(S.pick.who.toLowerCase())}</b>, made for <b>${esc(S.pick.when.toLowerCase())}</b>.`;
+  $("#cIdeas").innerHTML = S.ideas.map((d, i) => `<li style="--c:${(byId(d.world) || CONCEPTS[0]).acc}"><i></i><span><b>${esc((byId(d.world) || CONCEPTS[0]).name)}</b> · ${esc(d.who)} · ${esc(d.when)}</span><button type="button" data-rm="${i}" aria-label="Remove">×</button></li>`).join("");
 };
-if (!REDUCED) $$("h1.d.rv, h2.d.rv").forEach(kinetic);
-const reveal = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); if (e.target.classList.contains("kin")) setTimeout(() => e.target.classList.add("done"), 2200); reveal.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px", threshold: .06 });
-$$(".rv").forEach(el => reveal.observe(el));
-const visible = new Set();
-const visIO = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)), { threshold: .01 });
-const waveIO = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("in", e.isIntersecting)), { threshold: .3 });
-waveIO.observe($("#wave"));
+["cWorld", "cWhen", "cWho"].forEach((id, i) => $("#" + id).addEventListener("click", e => { const b = e.target.closest(".pick"); if (!b) return; S.pick[["world", "when", "who"][i]] = b.dataset.v; save(); renderCreate(); }));
+$("#cAdd").addEventListener("click", () => { S.ideas.push({ ...S.pick }); save(); renderCreate(); toast("Added to the playbook"); });
+$("#cIdeas").addEventListener("click", e => { const b = e.target.closest("[data-rm]"); if (!b) return; S.ideas.splice(+b.dataset.rm, 1); save(); renderCreate(); });
+renderCreate();
 
-/* ------------------------------------------------------------------ world changes */
-const bgLayer = $("#bg"), stage = $("#stage"), show = $("#show");
-const mobile = matchMedia("(max-width: 860px)");
-const rail = $("#rail");
-const railItems = $$("[data-stop][data-title]");
-const phases = ["Welcome", "Trends", "Territories", "Taste", "Create", "Playbook"];
-rail.innerHTML = phases.map(ph => `<div class="ph" data-ph="${ph}"><span class="ph-l">${ph.toUpperCase()}</span>${railItems.filter(s => s.dataset.phase === ph).map(s => `<a href="#${s.id}" data-for="${s.id}" aria-label="${s.dataset.title}"><span>${s.dataset.title}</span></a>`).join("")}</div>`).join("");
-let activeEl = null, showConcept = () => {};
-function setActive(el) {
-  if (el === activeEl) return;
-  activeEl = el;
-  bgLayer.style.setProperty("--bg1", el.dataset.bg);
-  bgLayer.style.setProperty("--bg2", el.dataset.glow || el.dataset.bg);
-  document.body.dataset.tone = el.dataset.tone || "light";
-  $("#chapter").textContent = `${el.dataset.phase} · ${el.dataset.title}`;
-  $(".keys").style.opacity = el.id === "open" ? "" : "0";
-  $$("a", rail).forEach(a => a.classList.toggle("on", a.dataset.for === el.id));
-  $$(".ph", rail).forEach(p => p.classList.toggle("on", p.dataset.ph === el.dataset.phase));
-  if (el.dataset.concept) showConcept(el.dataset.concept);
-}
-const activeIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) setActive(e.target); }), { rootMargin: "-49% 0px -50% 0px" });
-$$("[data-bg]").forEach(el => activeIO.observe(el));
-bgLayer.style.setProperty("--bg1", "#E6F6FD");
-
-/* scroll velocity makes the liquid slosh and the marquee lean */
-let slosh = 0, lastY = scrollY, lastSet = 0;
-const root = document.documentElement;
-(function sloshLoop() {
-  const dy = scrollY - lastY; lastY = scrollY;
-  slosh = slosh * .88 + clamp(-dy * .35, -14, 14) * .12;
-  if (Math.abs(slosh - lastSet) > .05) { root.style.setProperty("--slosh", slosh.toFixed(2)); root.style.setProperty("--skew", slosh.toFixed(2)); lastSet = slosh; }
-  requestAnimationFrame(sloshLoop);
-})();
-let ticking = false;
-const prog = $("#progress");
-addEventListener("scroll", () => {
-  if (ticking) return; ticking = true;
-  requestAnimationFrame(() => { const max = document.documentElement.scrollHeight - innerHeight; prog.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`; ticking = false; });
-}, { passive: true });
-
-/* ------------------------------------------------------------------ hero tuner */
-(() => {
-  const words = ["cool", "bright", "calm", "electric", "warm", "layered", "like a ritual", "like yours"];
-  let i = 0; const el = $("#tune");
-  if (REDUCED) return;
-  setInterval(() => { el.style.opacity = 0; setTimeout(() => { i = (i + 1) % words.length; el.textContent = words[i]; el.style.opacity = 1; }, 400); }, 2200);
-})();
-
-/* ------------------------------------------------------------------ signals minis */
-(() => {
-  const cols = ["#E6F04A", "#9CC5A1", "#F2B5B0", "#F4C98A", "#7FC8A6", "#C9B28A", "#9FE0FF", "#E0703C", "#B9B7E0", "#D9EC7A", "#F1E3B8", "#5E9E6A", "#E86F5C", "#8FD0E0", "#A89A5C", "#F7C6C0"];
-  $("#vFlavor").innerHTML = Array.from({ length: 32 }, (_, i) => `<i style="background:${cols[(i * 7) % cols.length]};animation-delay:${-(i * .37) % 6}s"></i>`).join("");
-  const svg = $("#vSense");
-  const mk = (amp, per, y, ph) => { let d = ""; for (let x = 0; x <= 600; x += 4) d += (x ? "L" : "M") + x + "," + (y + Math.sin(x / per * Math.PI * 2 + ph) * amp * (0.4 + 0.6 * Math.sin(x / 600 * Math.PI))).toFixed(1); return d; };
-  svg.innerHTML = [["#0072BC", 26, 150, 75, 0], ["#00A3E0", 18, 100, 75, 1], ["#F58220", 12, 75, 75, 2]].map(([c, a, p, y, ph], i) =>
-    `<path d="${mk(a, p, y, ph)}" stroke="${c}" opacity="${.9 - i * .2}" style="animation:sense ${6 + i * 2}s linear infinite"/>`).join("");
-  const st = document.createElement("style"); st.textContent = "@keyframes sense{from{transform:translateX(0)}to{transform:translateX(-300px)}}"; document.head.appendChild(st);
-})();
-
-
-
-/* ------------------------------------------------------------------ flavor map */
-(() => {
-  const stageEl = $("#mapStage"), cv = $("#mapCanvas"), ctx = cv.getContext("2d"), card = $("#mapCard");
-  const bits = GRID.rows.map(r => r.split("").map(ch => parseInt(ch, 16).toString(2).padStart(4, "0")).join(""));
-  const cells = []; bits.forEach((row, y) => { for (let x = 0; x < GRID.W; x++) if (row[x] === "1") cells.push([x, y]); });
-  const toXY = (lon, lat) => [(lon + 180) / 360 * GRID.W, (GRID.top - lat) / (GRID.top - GRID.bot) * GRID.H];
-  const home = toXY(HOME.lon, HOME.lat);
-  const base = document.createElement("canvas"), bctx = base.getContext("2d");
-  let sel = REGIONS[0], filt = "all", w = 0, h = 0, dpr = 1, near = [];
-  REGIONS.forEach(r => {
-    const [x, y] = toXY(r.lon, r.lat);
-    const b = document.createElement("button"); b.type = "button"; b.className = "hot"; b.style.left = x / GRID.W * 100 + "%"; b.style.top = y / GRID.H * 100 + "%"; b.style.setProperty("--c", r.sw[0]);
-    b.innerHTML = `<span class="nm">${r.name}</span>`; b.setAttribute("aria-label", `${r.name}, ${r.country}`);
-    b.addEventListener("click", () => select(r)); r.el = b; stageEl.appendChild(b);
-  });
-  const hm = document.createElement("div"); hm.className = "hot home"; hm.style.left = home[0] / GRID.W * 100 + "%"; hm.style.top = home[1] / GRID.H * 100 + "%"; hm.innerHTML = `<span class="nm">Ewing, NJ · the room</span>`; stageEl.appendChild(hm);
-  function select(r) {
-    sel = r;
-    const [sx, sy] = toXY(r.lon, r.lat);
-    near = cells.map(([x, y]) => [x, y, Math.hypot(x - sx, (y - sy) * 1.2)]).filter(c => c[2] < 11);
-    REGIONS.forEach(x => x.el.classList.toggle("on", x === r));
-    card.innerHTML = `<div class="sw" style="background:linear-gradient(135deg,${r.sw[0]},${r.sw[1]})"></div>
-      <span class="lab" style="color:var(--fg-3)">${r.country}</span><h3>${r.name}</h3>
-      <div class="cue-l">${r.cue}</div><p class="small" style="margin:0">${r.line}</p><p class="teach">${r.teach}</p>
-      <div class="links">${r.links.map(id => `<span class="tag" style="border-color:${r.sw[0]};color:#fff">${byId(id).flavor}</span>`).join("")}${r.plat.map(p => `<span class="tag">${PLATS[p]}</span>`).join("")}</div>`;
-    paint(performance.now() / 1000);
-  }
-  $$("#mapFilters .filt").forEach(b => b.addEventListener("click", () => {
-    filt = b.dataset.f; $$("#mapFilters .filt").forEach(x => x.classList.toggle("on", x === b));
-    REGIONS.forEach(r => r.el.classList.toggle("dim", filt !== "all" && !r.plat.includes(filt)));
-    if (filt !== "all" && !sel.plat.includes(filt)) select(REGIONS.find(r => r.plat.includes(filt))); else paint(performance.now() / 1000);
-  }));
-  function size() {
-    const r = stageEl.getBoundingClientRect(); dpr = Math.min(devicePixelRatio || 1, 2); w = r.width; h = r.height;
-    cv.width = base.width = Math.max(1, w * dpr); cv.height = base.height = Math.max(1, h * dpr);
-    const cw = w / GRID.W, ch = h / GRID.H, rad = Math.min(cw, ch) * .28;
-    bctx.setTransform(dpr, 0, 0, dpr, 0, 0); bctx.clearRect(0, 0, w, h); bctx.fillStyle = "rgba(255,255,255,.2)";
-    cells.forEach(([x, y]) => { bctx.beginPath(); bctx.arc((x + .5) * cw, (y + .5) * ch, rad, 0, 6.283); bctx.fill(); });
-  }
-  const bez = (a, b, c, t) => [(1 - t) * (1 - t) * a[0] + 2 * (1 - t) * t * b[0] + t * t * c[0], (1 - t) * (1 - t) * a[1] + 2 * (1 - t) * t * b[1] + t * t * c[1]];
-  function paint(time) {
-    if (!w) return;
-    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); ctx.drawImage(base, 0, 0);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const cw = w / GRID.W, ch = h / GRID.H, col = sel.sw[0];
-    near.forEach(([x, y, d]) => { const k = (1 - d / 11) * (.7 + .3 * Math.sin(time * 2 - d * .6)); ctx.fillStyle = rgba(col, .15 + k * .8); ctx.beginPath(); ctx.arc((x + .5) * cw, (y + .5) * ch, Math.min(cw, ch) * (.28 + k * .14), 0, 6.283); ctx.fill(); });
-    const H = [home[0] * cw, home[1] * ch];
-    REGIONS.forEach(r => {
-      if (filt !== "all" && !r.plat.includes(filt)) return;
-      const [x, y] = toXY(r.lon, r.lat), A = [x * cw, y * ch], dist = Math.hypot(A[0] - H[0], A[1] - H[1]);
-      const C = [(A[0] + H[0]) / 2, Math.min(A[1], H[1]) - dist * .32], on = r === sel;
-      ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.quadraticCurveTo(C[0], C[1], H[0], H[1]);
-      ctx.strokeStyle = on ? rgba(r.sw[0], .85) : "rgba(255,255,255,.1)"; ctx.lineWidth = on ? 2 : 1; ctx.stroke();
-      if (on) for (let j = 0; j < 3; j++) { const [px, py] = bez(A, C, H, (time * .35 + j / 3) % 1); ctx.fillStyle = r.sw[0]; ctx.beginPath(); ctx.arc(px, py, 3.5, 0, 6.283); ctx.fill(); }
-    });
-  }
-  size(); addEventListener("resize", () => { size(); paint(performance.now() / 1000); });
-  visIO.observe(stageEl);
-  const loop = now => { if (visible.has(stageEl) && !REDUCED) paint(now / 1000); requestAnimationFrame(loop); };
-  requestAnimationFrame(loop);
-  select(sel);
-})();
-
-/* ------------------------------------------------------------------ spectrum */
-(() => {
-  const track = $("#specTrack"), bar = $("#specBar"), hd = $("#specHandle"), ticks = $("#specTicks");
-  let ci = 0;
-  ticks.innerHTML = SPECTRUM.map((s, i) => s.c
-    ? `<div class="spec-tick ${ci++ % 2 ? "down" : "up"}" data-i="${i}" style="left:${s.v}%"><b>${s.name}</b><i></i></div>`
-    : "").join("");
-  let v = 48;
-  const set = (nv, snap) => {
-    v = clamp(nv, 0, 100);
-    let best = SPECTRUM[0], bd = 1e9; SPECTRUM.forEach(s => { const d = Math.abs(s.v - v); if (d < bd) { bd = d; best = s; } });
-    if (snap && bd < 4) v = best.v;
-    hd.style.left = v + "%"; hd.setAttribute("aria-valuenow", Math.round(v));
-    const zone = v < 28 ? "Expected" : v <= 72 ? "Worth remembering" : "Novelty";
-    $("#specZone").textContent = zone; $("#specZone").style.color = v > 72 ? "var(--coral)" : v < 28 ? "var(--fg-3)" : "var(--brand)";
-    $("#specName").textContent = best.name;
-    $("#specLine").textContent = best.line || "Familiar enough to trust, different enough to remember.";
-    $$(".spec-tick", ticks).forEach(t => t.classList.toggle("on", +t.dataset.i === SPECTRUM.indexOf(best)));
-  };
-  const fromX = x => { const r = bar.getBoundingClientRect(); return (x - r.left) / r.width * 100; };
-  let drag = false;
-  track.addEventListener("pointerdown", e => { drag = true; track.setPointerCapture(e.pointerId); set(fromX(e.clientX)); });
-  track.addEventListener("pointermove", e => { if (drag) set(fromX(e.clientX)); });
-  track.addEventListener("pointerup", e => { if (drag) { drag = false; set(fromX(e.clientX), true); } });
-  hd.addEventListener("keydown", e => { if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); set(v + (e.key === "ArrowRight" ? 2 : -2)); } });
-  set(v);
-})();
-
-/* ------------------------------------------------------------------ white space instrument */
-(() => {
-  const svg = $("#instrument"), C = 260, R = 210, N = AXES.length;
-  const ang = i => i / N * Math.PI * 2 - Math.PI / 2;
-  const pt = (i, v) => [C + Math.cos(ang(i)) * R * v, C + Math.sin(ang(i)) * R * v];
-  const poly = vals => vals.map((v, i) => pt(i, v).map(n => n.toFixed(1)).join(",")).join(" ");
-  let html = "";
-  [.25, .5, .75, 1].forEach(k => html += `<polygon points="${poly(Array(N).fill(k))}" fill="none" stroke="rgba(234,242,246,${k === 1 ? .28 : .1})"/>`);
-  AXES.forEach((a, i) => {
-    const [x, y] = pt(i, 1); html += `<line x1="${C}" y1="${C}" x2="${x}" y2="${y}" stroke="rgba(234,242,246,.16)"/>`;
-    const [lx, ly] = pt(i, 1.12); const cx = Math.cos(ang(i));
-    const anchor = cx > .25 ? "start" : cx < -.25 ? "end" : "middle";
-    html += `<text class="big" x="${lx}" y="${ly}" text-anchor="${anchor}">${a[0]}</text><text x="${lx}" y="${ly + 15}" text-anchor="${anchor}">${a[1]}</text>`;
-  });
-  html += `<polygon id="wsBase" points="${poly(BASE)}" fill="rgba(234,242,246,.1)" stroke="rgba(234,242,246,.55)" stroke-dasharray="3 4"/>`;
-  html += `<polygon id="wsShape" points="${poly(BASE)}" fill="rgba(230,240,74,.18)" stroke="#E6F04A" stroke-width="1.6" stroke-linejoin="round"/>`;
-  html += AXES.map((_, i) => `<circle class="wsv" r="4" cx="${C}" cy="${C}" fill="#E6F04A"/>`).join("");
-  html += `<text x="${C}" y="${C + 4}" text-anchor="middle" style="fill:rgba(234,242,246,.55)">classic mint</text>`;
-  svg.innerHTML = html;
-  const shape = $("#wsShape"), dots = $$(".wsv", svg);
-  let curV = BASE.slice(), anim;
-  const opts = [...CONCEPTS.map(c => ({ id: c.id, name: c.flavor, col: c.acc })), { id: "all", name: "Change everything", col: "#E8745E" }];
-  $("#wsCtrl").innerHTML = opts.map(o => `<button type="button" class="ws-btn${o.id === "all" ? " warn" : ""}" data-id="${o.id}">${o.name}</button>`).join("");
-  const show = id => {
-    const o = opts.find(x => x.id === id), tgt = SHAPES[id], from = curV.slice(), t0 = performance.now();
-    $$("#wsCtrl .ws-btn").forEach(b => b.classList.toggle("on", b.dataset.id === id));
-    const col = id === "all" ? "#E8745E" : (o.col === "#E6D3A2" ? "#E6D3A2" : o.col);
-    shape.setAttribute("stroke", col); shape.setAttribute("fill", rgba(col, .2)); dots.forEach(d => d.setAttribute("fill", col));
-    if (id === "all") shape.setAttribute("stroke-dasharray", "6 5"); else shape.removeAttribute("stroke-dasharray");
-    cancelAnimationFrame(anim);
-    const step = now => {
-      const k = clamp((now - t0) / 900, 0, 1), e = 1 - Math.pow(1 - k, 3);
-      curV = from.map((v, i) => lerp(v, tgt[i], e));
-      shape.setAttribute("points", poly(curV)); dots.forEach((d, i) => { const [x, y] = pt(i, curV[i]); d.setAttribute("cx", x); d.setAttribute("cy", y); });
-      if (k < 1) anim = requestAnimationFrame(step);
-    };
-    anim = requestAnimationFrame(step);
-    const diffs = tgt.map((v, i) => [v - BASE[i], i]).sort((a, b) => b[0] - a[0]);
-    const stretched = diffs.filter(d => d[0] > .35).map(d => AXES[d[1]][0]);
-    const held = AXES.filter((a, i) => !stretched.includes(a[0])).map(a => a[0].toLowerCase());
-    $("#wsRead").innerHTML = id === "all"
-      ? `<span class="mono" style="color:var(--coral)">Overreach</span><div class="d d-s">Everything changes at once, so nothing is left to trust.</div><p class="small" style="margin:0">This is where novelty lives. People try it once.</p>`
-      : `<span class="mono" style="color:${col}">${o.name}</span><div class="d d-s">Stretches ${stretched.join(" + ")}.</div><p class="small" style="margin:0">Holds close to home on ${held.join(", ")}.</p>`;
-  };
-  $("#wsCtrl").addEventListener("click", e => { const b = e.target.closest(".ws-btn"); if (b) show(b.dataset.id); });
-  show("yuzu");
-})();
-
-/* ------------------------------------------------------------------ new fresh orbit */
-(() => {
-  const A = [["Yuzu", "#E6F04A"], ["Sencha", "#9CC5A1"], ["Cucumber", "#CFE9D6"], ["Grapefruit", "#F2A596"], ["Pear", "#E5E0A6"], ["Lemongrass", "#D9EC7A"]];
-  const B = [["Shiso", "#7FB08A"], ["Rose", "#F2B5B0"], ["Spearmint", "#7CC7AE"], ["Chamomile", "#F2DE8A"]];
-  const place = (ring, list, off) => ring.innerHTML = list.map(([n, c], i) => {
-    const a = i / list.length * Math.PI * 2 + off;
-    return `<div class="nf-s" style="left:${50 + Math.cos(a) * 50}%;top:${50 + Math.sin(a) * 50}%"><b><i style="background:radial-gradient(circle at 35% 30%,#fff,${c} 55%,${c})"></i><em>${n}</em></b></div>`;
-  }).join("");
-  const rA = $("#nfA"), rB = $("#nfB");
-  place(rA, A, -Math.PI / 2); place(rB, B, Math.PI / 4);
-  const vis = rA.parentNode; visIO.observe(vis);
-  const spin = (ring, deg) => { ring.style.transform = `rotate(${deg}deg)`; $$(".nf-s b", ring).forEach(b => b.style.transform = `translate(-50%,-50%) rotate(${-deg}deg)`); };
-  const t0 = performance.now();
-  const loop = now => { if (visible.has(vis) && !REDUCED) { const t = (now - t0) / 1000; spin(rA, t * 6); spin(rB, -t * 8); } requestAnimationFrame(loop); };
-  requestAnimationFrame(loop);
-})();
-
-/* ------------------------------------------------------------------ ritual dial */
-(() => {
-  const wrap = $("#dialWrap"); let idx = 0, user = false;
-  MOMENTS.forEach((m, i) => {
-    const th = (180 + m.h * 15) * Math.PI / 180;
-    const b = document.createElement("button"); b.type = "button"; b.className = "moment";
-    b.style.left = 50 + 44 * Math.sin(th) + "%"; b.style.top = 50 - 44 * Math.cos(th) + "%";
-    b.innerHTML = `<span>${m.name}</span>`; b.setAttribute("aria-label", `${m.t} ${m.name}`);
-    b.addEventListener("click", () => { user = true; show(i); }); wrap.appendChild(b);
-  });
-  const show = i => {
-    idx = i; const m = MOMENTS[i];
-    $$(".moment", wrap).forEach((b, j) => b.classList.toggle("on", j === i));
-    $("#dT").textContent = m.t; $("#dN").textContent = m.name; $("#dF").textContent = m.flavor; $("#dL").textContent = m.line;
-  };
-  show(0); visIO.observe(wrap);
-  setInterval(() => { if (!user && visible.has(wrap) && !REDUCED) show((idx + 1) % MOMENTS.length); }, 3600);
-})();
-
-
-
-/* ------------------------------------------------------------------ concept showcase */
-(() => {
-  const cv = $("#art"), ctx = cv.getContext("2d"), stageIn = $(".stage-in", stage);
-  const states = {}; CONCEPTS.forEach((c, i) => states[c.id] = ART[c.id].init(rng(101 + i * 17)));
-  const morph = $("#bottles .bottle"), pips = $$("#pips .pip");
-  let shown = CONCEPTS[0].id, mt;
-  let cur = CONCEPTS[0].id, prev = null, mix = 1, w = 0, h = 0, last = performance.now(), t = 8;
-  const size = () => { const r = stageIn.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 1.5); w = r.width; h = r.height; cv.width = Math.max(1, w * d); cv.height = Math.max(1, h * d); ctx.setTransform(d, 0, 0, d, 0, 0); };
-  size(); addEventListener("resize", size);
-  const mark = id => {
-    const i = CONCEPTS.findIndex(c => c.id === id), c = CONCEPTS[i];
-    if (morph && id !== shown) {
-      morph.classList.add("drain"); clearTimeout(mt);
-      mt = setTimeout(() => { setBottle(morph, conceptBottleOpts(c)); shown = id; requestAnimationFrame(() => morph.classList.remove("drain")); }, REDUCED ? 0 : 560);
-    }
-    pips.forEach((p, j) => p.classList.toggle("on", j === i));
-    show.setAttribute("data-tone", c.tone);
-    stage.style.backgroundColor = mobile.matches ? c.bg : "";
-  };
-  showConcept = id => { if (id === cur) return; prev = cur; cur = id; mix = 0; mark(id); };
-  mark(cur);
-  visIO.observe(stage);
-  const draw = () => {
-    if (prev && mix < 1) { ART[prev].draw(ctx, w, h, t, states[prev]); ctx.globalAlpha = mix; }
-    ART[cur].draw(ctx, w, h, t, states[cur]); ctx.globalAlpha = 1;
-  };
-  draw();
-  const loop = now => {
-    const dt = Math.min(.05, (now - last) / 1000); last = now;
-    if (visible.has(stage) && w) { t += REDUCED ? dt * .05 : dt; mix = Math.min(1, mix + dt / .7); draw(); }
-    requestAnimationFrame(loop);
-  };
-  requestAnimationFrame(loop);
-  $$("canvas[data-mini]").forEach((c, i) => { const a = ART[c.dataset.mini]; a.draw(c.getContext("2d"), c.width, c.height, 11 + i, a.init(rng(900 + i))); });
-})();
-
-/* ------------------------------------------------------------------ tasting */
-(() => {
-  const samplesEl = $("#samples"), dimsEl = $("#dims"), word = $("#oneWord"), rows = $("#boardRows");
-  const avg = id => { const s = S.scores[id] || {}; const v = DIMS.map(d => s[d[0]]).filter(Boolean); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0; };
-  const renderSamples = () => {
-    samplesEl.innerHTML = SAMPLES.map(c => { const n = Object.keys(S.scores[c.id] || {}).length;
-      return `<button type="button" role="tab" class="sample${S.cur === c.id ? " on" : ""}" data-id="${c.id}" aria-selected="${S.cur === c.id}"><span class="code">${c.code}</span><span class="sn">${S.reveal ? c.name : (c.id === "control" ? "Control" : "Sample")}</span><span class="done">${n ? n + "/7 scored" : "&nbsp;"}</span></button>`; }).join("");
-    $("#revealBtn").textContent = S.reveal ? "Hide names" : "Reveal names";
-  };
-  const renderDims = () => {
-    const s = S.scores[S.cur] || {};
-    dimsEl.innerHTML = DIMS.map(([k, l, q]) => `<div class="dim"><label>${l}<small>${q}</small></label><div class="dots" role="group" aria-label="${l}">${[1, 2, 3, 4, 5].map(v => `<button type="button" data-k="${k}" data-v="${v}" class="${s[k] === v ? "on" : ""}" aria-pressed="${s[k] === v}">${v}</button>`).join("")}</div></div>`).join("");
-    word.value = S.words[S.cur] || "";
-  };
-  const renderBoard = () => {
-    const list = SAMPLES.map(c => ({ c, a: avg(c.id) })).sort((x, y) => y.a - x.a);
-    rows.innerHTML = list.map(({ c, a }) => `<div class="bar-row${a ? "" : " empty"}"><span>${S.reveal ? c.name : c.code + (c.id === "control" ? " · Control" : "")}</span><div class="track"><div class="fill" style="width:${a / 5 * 100}%;background:${c.acc}"></div></div><span class="v">${a ? a.toFixed(1) : "–"}</span></div>`).join("");
-  };
-  const all = () => { renderSamples(); renderDims(); renderBoard(); };
-  samplesEl.addEventListener("click", e => { const b = e.target.closest(".sample"); if (!b) return; S.cur = b.dataset.id; save(); renderSamples(); renderDims(); });
-  dimsEl.addEventListener("click", e => { const b = e.target.closest("button[data-k]"); if (!b) return; const s = S.scores[S.cur] = S.scores[S.cur] || {}; const v = +b.dataset.v; if (s[b.dataset.k] === v) delete s[b.dataset.k]; else s[b.dataset.k] = v; save(); renderDims(); renderSamples(); renderBoard(); window.dispatchEvent(new Event("tb:scores")); });
-  word.addEventListener("input", () => { S.words[S.cur] = word.value; save(); });
-  $("#revealBtn").addEventListener("click", () => { S.reveal = !S.reveal; save(); renderSamples(); renderBoard(); });
-  $("#copyScores").addEventListener("click", () => {
-    const txt = ["TheraBreath Flavor Playbook · tasting scores · Nov 9, 2026", "", ...SAMPLES.map(c => { const s = S.scores[c.id] || {}; return `${c.code} ${c.name}: avg ${avg(c.id) ? avg(c.id).toFixed(1) : "–"} | ` + DIMS.map(d => `${d[1]} ${s[d[0]] || "–"}`).join(", ") + (S.words[c.id] ? ` | “${S.words[c.id]}”` : ""); })].join("\n");
-    copy(txt, "Scores copied");
-  });
-  let armed = 0;
-  $("#resetScores").addEventListener("click", e => {
-    if (Date.now() - armed > 3000) { armed = Date.now(); e.currentTarget.textContent = "Tap again to clear"; setTimeout(() => e.currentTarget && (e.currentTarget.textContent = "Clear"), 3000); return; }
-    S.scores = {}; S.words = {}; save(); all(); e.currentTarget.textContent = "Clear"; toast("Scores cleared"); window.dispatchEvent(new Event("tb:scores"));
-  });
-  all();
-  // guided rinse
-  const tls = $$(".tl"), head = $("#tlHead"), clock = $("#clock"), cue = $("#rinseCue"), btn = $("#rinseBtn");
-  const CUES = ["Opening. First impression: say one word out loud.", "Development. Keep rinsing. Is it changing? Cooler? Brighter?", "Spit. Finish: what is left behind?", "Repeat. Would you want this tomorrow morning? Score it now."];
-  let timer = null, start = 0;
-  const stop = () => { clearInterval(timer); timer = null; btn.textContent = "Start guided rinse"; };
-  btn.addEventListener("click", () => {
-    if (timer) { stop(); head.classList.remove("run"); tls.forEach(t => t.classList.remove("on")); clock.textContent = "0:00"; cue.textContent = "Everyone sips together. We call out each stage."; return; }
-    start = Date.now(); btn.textContent = "Stop"; head.classList.add("run");
-    timer = setInterval(() => {
-      const s = (Date.now() - start) / 1000;
-      const st = s < 5 ? 0 : s < 60 ? 1 : s < 180 ? 2 : 3;
-      const spans = [[0, 5], [5, 60], [60, 180]];
-      const tl = tls[Math.min(st, 3)];
-      const frac = st < 3 ? (s - spans[st][0]) / (spans[st][1] - spans[st][0]) : 0;
-      head.style.left = (tl.offsetLeft + frac * tl.offsetWidth) + "px";
-      tls.forEach((x, i) => x.classList.toggle("on", i <= st));
-      clock.textContent = `${Math.floor(Math.min(s, 180) / 60)}:${String(Math.floor(Math.min(s, 180) % 60)).padStart(2, "0")}`;
-      cue.textContent = CUES[st];
-      if (st === 3) stop();
-    }, 200);
-  });
-  window.__avg = avg;
-})();
-
-/* ------------------------------------------------------------------ decision */
-const renderAssign = (() => {
-  const plat = $("#shortPlat"), leads = $("#shortLeads"), trends = $("#shortTrends");
-  if (!Array.isArray(S.trends)) S.trends = ["", ""];
-  trends.innerHTML = [0, 1].map(i => `<input class="trend-in" data-i="${i}" aria-label="Trend to act on ${i + 1}" placeholder="Trend ${i + 1}" value="${(S.trends[i] || "").replace(/"/g, "&quot;")}">`).join("");
-  trends.addEventListener("input", e => { const i = e.target.dataset.i; if (i == null) return; S.trends[i] = e.target.value; save(); });
-  const render = () => {
-    const ps = S.platforms.slice(0, 2);
-    plat.innerHTML = [0, 1].map(i => ps[i] ? `<div class="slot"><span class="mono" style="color:var(--fg-soft)">Platform ${i + 1}</span><span class="d d-s">${PLATS[ps[i]]}</span></div>` : `<div class="slot empty"><span class="mono" style="color:var(--fg-soft)">Platform ${i + 1}</span><span class="d d-s">Chosen in the room</span></div>`).join("");
-    const ad = S.advance.slice(0, 3);
-    leads.innerHTML = [0, 1, 2].map(i => {
-      const c = ad[i] && byId(ad[i]); const key = c ? c.id : "slot" + i; const a = S.assign[key] || {};
-      return `<div class="lead-row" style="--c:${c ? c.acc : "transparent"}">
-        <span class="d d-s" style="${c ? "" : "opacity:.4;font-style:italic"}">${c ? `<i></i>${c.name}` : "Lead concept " + (i + 1)}</span>
-        <div class="field"><label for="own-${i}">Owner</label><input id="own-${i}" data-key="${key}" data-f="owner" value="${(a.owner || "").replace(/"/g, "&quot;")}" placeholder="Name"></div>
-        <div class="field"><label for="act-${i}">Next action</label><select id="act-${i}" data-key="${key}" data-f="action">${ACTIONS.map((x, j) => `<option${(a.action || ACTIONS[i === 0 ? 0 : i === 1 ? 1 : 3]) === x ? " selected" : ""}>${x}</option>`).join("")}</select></div>
-        <div class="field"><label for="due-${i}">By</label><input id="due-${i}" type="date" data-key="${key}" data-f="date" value="${a.date || ""}"></div>
-      </div>`;
-    }).join("");
-  };
-  leads.addEventListener("input", e => { const el = e.target; if (!el.dataset.key) return; (S.assign[el.dataset.key] = S.assign[el.dataset.key] || {})[el.dataset.f] = el.value; save(); });
-  leads.addEventListener("change", e => { const el = e.target; if (!el.dataset.key) return; (S.assign[el.dataset.key] = S.assign[el.dataset.key] || {})[el.dataset.f] = el.value; save(); });
-  $("#copyPlan").addEventListener("click", () => {
-    const ps = S.platforms.slice(0, 2).map(p => PLATS[p]); const ad = S.advance.slice(0, 3);
-    const tr = (S.trends || []).filter(Boolean);
-    const lines = ["TheraBreath Flavor Playbook · draft", "Church & Dwight HQ, Ewing, NJ · Darwin · November 9, 2026", "", "01 Trends to act on: " + (tr.length ? tr.join("; ") : "to be agreed"), "02 Priority territories: " + (ps.length ? ps.join(" + ") : "to be chosen"), "", "03/04 Near-term concepts:"];
-    [0, 1, 2].forEach(i => { const c = ad[i] && byId(ad[i]); const key = c ? c.id : "slot" + i; const a = S.assign[key] || {};
-      lines.push(`${i + 1}. ${c ? c.name : "(open)"} · owner: ${a.owner || "TBD"} · next: ${a.action || ACTIONS[i === 0 ? 0 : i === 1 ? 1 : 3]}${a.date ? " · by " + a.date : ""}`); });
-    lines.push("", "Pipeline (starting read):");
-    HORIZONS.forEach(h => lines.push(`${h.h}: ${CONCEPTS.filter(c => c.horizon === h.k).map(c => c.flavor).join(", ") || "from Create"}`));
-    lines.push("", "Familiar enough to trust. Different enough to remember.");
-    copy(lines.join("\n"), "Draft playbook copied");
-  });
-  render(); return render;
-})();
-
-(() => {
-  const venn = $("#venn"), checks = $("#checks");
-  const POS = { "": [3, 3], "f": [50, 17], "m": [15, 78], "c": [85, 78], "fm": [34, 47], "fc": [66, 47], "mc": [50, 82], "fmc": [50, 57] };
-  CONCEPTS.forEach(c => { const d = document.createElement("div"); d.className = "vdot"; d.style.setProperty("--c", c.acc); d.innerHTML = `<i></i><span>${c.name}</span>`; c.dot = d; venn.appendChild(d); });
-  const keyOf = id => { const k = S.checks[id] || {}; return (k.fit ? "f" : "") + (k.make ? "m" : "") + (k.choose ? "c" : ""); };
-  const render = () => {
-    const groups = {};
-    CONCEPTS.forEach(c => { const k = keyOf(c.id); (groups[k] = groups[k] || []).push(c); });
-    Object.entries(groups).forEach(([k, list]) => list.forEach((c, i) => {
-      const [x, y] = POS[k]; const off = k === "" ? [0, i * 6.5] : [0, (i - (list.length - 1) / 2) * 7.5];
-      c.dot.classList.toggle("wait", k === "");
-      c.dot.style.left = x + off[0] + "%"; c.dot.style.top = y + off[1] + "%";
-      c.dot.classList.toggle("adv", S.advance.includes(c.id));
-    }));
-    checks.innerHTML = CONCEPTS.map(c => { const k = S.checks[c.id] || {};
-      return `<div class="chk" style="--c:${c.acc}"><span class="nm"><i></i>${c.name}</span>
-      <div class="pills">${[["fit", "Fit"], ["make", "Make"], ["choose", "Choose"]].map(([f, l]) => `<button type="button" class="pill${k[f] ? " on" : ""}" data-id="${c.id}" data-f="${f}" aria-pressed="${!!k[f]}">${l}</button>`).join("")}</div>
-      <button type="button" class="adv-btn${S.advance.includes(c.id) ? " on" : ""}" data-adv="${c.id}" aria-pressed="${S.advance.includes(c.id)}">${S.advance.includes(c.id) ? "Advancing" : "Advance"}</button></div>`; }).join("");
-    $("#advN").textContent = S.advance.length;
-    $("#platPick").innerHTML = Object.entries(PLATS).map(([id, n]) => `<button type="button" class="pill${S.platforms.includes(id) ? " on" : ""}" data-plat="${id}" aria-pressed="${S.platforms.includes(id)}">${n}</button>`).join("");
-    renderAssign();
-  };
-  checks.addEventListener("click", e => {
-    const p = e.target.closest(".pill"); const a = e.target.closest(".adv-btn");
-    if (p) { const k = S.checks[p.dataset.id] = S.checks[p.dataset.id] || {}; k[p.dataset.f] = !k[p.dataset.f]; }
-    if (a) { const id = a.dataset.adv; if (S.advance.includes(id)) S.advance = S.advance.filter(x => x !== id); else if (S.advance.length >= 3) { toast("Three advance. Remove one first."); return; } else S.advance.push(id); }
-    if (p || a) { save(); render(); }
-  });
-  $("#platPick").addEventListener("click", e => { const b = e.target.closest("[data-plat]"); if (!b) return; const id = b.dataset.plat;
-    if (S.platforms.includes(id)) S.platforms = S.platforms.filter(x => x !== id); else if (S.platforms.length >= 2) { toast("Two platforms. Remove one first."); return; } else S.platforms.push(id);
-    save(); render(); });
-  $("#suggestBtn").addEventListener("click", () => {
-    let n = 0;
-    CONCEPTS.forEach(c => { const s = S.scores[c.id]; if (!s) return; const k = S.checks[c.id] = S.checks[c.id] || {};
-      if (s.fit) { k.fit = s.fit >= 4; n++; }
-      const des = ["li", "re", "me"].map(d => s[d]).filter(Boolean); if (des.length) k.choose = des.reduce((a, b) => a + b, 0) / des.length >= 3.5; });
-    save(); render(); toast(n ? "Fit and Choose suggested from tasting" : "No tasting scores yet");
-  });
-  render();
-})();
-
-/* ------------------------------------------------------------------ travel fold */
-$("#foldBtn").addEventListener("click", e => { const k = $("#foldKit"); k.classList.toggle("folded"); e.currentTarget.textContent = k.classList.contains("folded") ? "Open it" : "Fold it"; });
-
-
-
-/* ------------------------------------------------------------------ opening pour */
-(() => {
-  const intro = $("#intro"); if (!intro) return;
-  let seen = false; try { seen = sessionStorage.getItem("tb-intro") === "1"; } catch (e) {}
-  if (REDUCED || seen || (location.hash && location.hash !== "#open")) { intro.remove(); return; }
-  root.classList.add("intro-on"); document.body.style.overflow = "hidden";
-  const timers = [[250, "i1"], [950, "i2"], [1700, "i3"], [3300, "end"]].map(([t, c]) => setTimeout(() => c === "end" ? end() : intro.classList.add(c), t));
-  let ended = false;
-  function end() {
-    if (ended) return; ended = true; timers.forEach(clearTimeout);
-    intro.classList.add("i4"); root.classList.remove("intro-on"); document.body.style.overflow = "";
-    try { sessionStorage.setItem("tb-intro", "1"); } catch (e) {}
-    setTimeout(() => intro.remove(), 1000);
-  }
-  $("#introSkip").addEventListener("click", end);
-  addEventListener("keydown", end, { once: true }); addEventListener("wheel", end, { once: true, passive: true }); addEventListener("touchstart", end, { once: true, passive: true });
-})();
-
-/* ------------------------------------------------------------------ tilt: hero bottle follows the pointer, cards lean */
-(() => {
-  if (REDUCED || matchMedia("(hover: none)").matches) return;
-  const hero = $("#heroTilt"), stageEl = $(".hero-stage");
-  stageEl.parentElement.addEventListener("pointermove", e => { const r = stageEl.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; hero.style.transform = `perspective(900px) rotateY(${x * 22}deg) rotateX(${-y * 12}deg) translateX(${x * 14}px)`; });
-  stageEl.parentElement.addEventListener("pointerleave", () => hero.style.transform = "");
-})();
-
-/* ------------------------------------------------------------------ flavor lab */
-(() => {
-  const KEEP = [
-    { id: "icy", label: "Icy blast", word: "Polar", col: "#7FD0F2", fam: 4, desc: "an icy blast" },
-    { id: "clean", label: "Clean finish", word: "Clear", col: "#BDE6EE", fam: 5, desc: "a clean, crisp finish" },
-    { id: "soft", label: "Soft mint", word: "Hush", col: "#A9DCC4", fam: 4, desc: "a soft mint base" }
-  ];
-  const CHANGE = [
-    { id: "yuzu", label: "Yuzu", noun: "Spark", col: "#E2EE4A", band: "#B6C41A", dis: 4, plat: "New Fresh · Sensory Proof", axis: "Experiential, Adventurous", watch: "Citral fades in oxidizing systems. Build brightness from stable top notes." },
-    { id: "cucumber", label: "Cucumber", noun: "Stream", col: "#9FD6A6", band: "#3C9A68", dis: 3, plat: "New Fresh · Ritual by Time", axis: "Calming, Ritual", watch: "Green notes are volatile. A quiet spearmint backbone protects them." },
-    { id: "ginger", label: "Ginger", noun: "Wire", col: "#F2B866", band: "#E07A1F", dis: 5, plat: "Sensory Proof", axis: "Warming, Experiential", watch: "Keep pungency well below burn and let cooling lead." },
-    { id: "rose", label: "Rose", noun: "Hour", col: "#F6A898", band: "#DD5E4A", dis: 4, plat: "Elevated Escape", axis: "Elevated, Layered", watch: "Use a green, geranium-leaning rose to stay clear of soap." },
-    { id: "cardamom", label: "Cardamom", noun: "Reserve", col: "#D9CF86", band: "#8E7B3A", dis: 4, plat: "Elevated Escape", axis: "Layered, Elevated", watch: "Its natural cineole bridges straight to mint." },
-    { id: "chamomile", label: "Chamomile", noun: "Moon", col: "#E6D59C", band: "#B89A4A", dis: 3, plat: "Ritual by Time", axis: "Calming, Ritual", watch: "Keep sweetness low so the finish reads clean." },
-    { id: "hinoki", label: "Hinoki", noun: "Forest", col: "#A9C9A0", band: "#5E8A62", dis: 5, plat: "Elevated Escape", axis: "Elevated, Adventurous", watch: "Woody notes need spearmint lift to stay fresh." },
-    { id: "salt", label: "Sea salt", noun: "Tide", col: "#CFE9EE", band: "#2E8FA8", dis: 5, plat: "Sensory Proof", axis: "Experiential", watch: "Salinity reads as sensation. Keep it bright, never savory." }
-  ];
-  const MATCH = { "icy|yuzu": "yuzu", "clean|cucumber": "gtc", "icy|ginger": "ginger", "clean|rose": "grapefruit", "soft|cardamom": "pear", "soft|chamomile": "chamomile" };
-  let keep = KEEP[0], change = CHANGE[0];
-  const chip = (o, grp) => `<button type="button" class="chipb" data-g="${grp}" data-id="${o.id}" style="--c:${o.col}"><i></i>${o.label}</button>`;
-  $("#labKeep").innerHTML = KEEP.map(o => chip(o, "k")).join("");
-  $("#labChange").innerHTML = CHANGE.map(o => chip(o, "c")).join("");
-  const OCC = CREATE.occasions.map(t => ({ id: t, label: t, col: "#F58025" })), WHO = CREATE.consumers.map(t => ({ id: t, label: t, col: "#00A3E0" }));
-  let when = OCC[0], who = WHO[0];
-  $("#labWhenC").innerHTML = OCC.map(o => chip(o, "w")).join("");
-  $("#labWhoC").innerHTML = WHO.map(o => chip(o, "p")).join("");
-  $("#labBottle").innerHTML = bottle({ liq: [change.col, keep.col], band: change.band, flavor: "Polar Light", sub: "Arctic Yuzu" });
-  const lb = $("#labBottle .bottle");
-  const meter = (el, n) => el.innerHTML = [1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("");
-  let t;
-  const render = animate => {
-    $$("#lab .chipb").forEach(b => b.classList.toggle("on", ({ k: keep, c: change, w: when, p: who })[b.dataset.g].id === b.dataset.id));
-    $("#labWhen").textContent = when.label; $("#labWho").textContent = who.label;
-    const m = MATCH[keep.id + "|" + change.id], c = m && CONCEPTS.find(x => x.id === m);
-    const name = c ? c.name : change.label;
-    const apply = () => {
-      setBottle(lb, { liq: c ? c.liquid : [change.col, keep.col], band: c ? c.acc : change.band, flavor: name, sub: change.label });
-      const nm = $("#labName"); nm.textContent = name; nm.classList.remove("swap"); void nm.offsetWidth; nm.classList.add("swap");
-      $("#labFlavor").textContent = c ? c.flavor : `on ${keep.desc} · not yet built`;
-      $("#labMatch").classList.toggle("on", !!c);
-      $("#labPlat").textContent = change.plat; $("#labAxis").textContent = change.axis; $("#labWatch").textContent = change.watch;
-      lb.classList.remove("drain");
-    };
-    if (!animate || REDUCED) return apply();
-    lb.classList.add("drain"); clearTimeout(t); t = setTimeout(() => requestAnimationFrame(apply), 560);
-  };
-  $("#lab").addEventListener("click", e => { const b = e.target.closest(".chipb"); if (!b) return; const g = b.dataset.g; if (g === "w" || g === "p") { if (g === "w") when = OCC.find(o => o.id === b.dataset.id); else who = WHO.find(o => o.id === b.dataset.id); render(false); return; } if (g === "k") keep = KEEP.find(o => o.id === b.dataset.id); else change = CHANGE.find(o => o.id === b.dataset.id); render(true); });
-  render(false);
-})();
-
-/* ------------------------------------------------------------------ notes */
-(() => {
-  const sw = [["Ink", "#071C3C"], ["Navy", "#0A2A5C"], ["TheraBreath green", "#006649"], ["Icy blue", "#00A3E0"], ["Deep blue", "#0072BC"], ["Cap orange", "#F58220"], ["Overreach", "#EF5B3F"]];
-  $("#swatches").innerHTML = sw.map(([n, c]) => `<div><i style="background:${c}"></i><span>${n}<br>${c}</span></div>`).join("") +
-    CONCEPTS.map(c => `<div><i style="background:linear-gradient(120deg,${c.bg},${c.liquid[1]})"></i><span>${c.name}</span></div>`).join("");
-  const notes = $("#notes");
-  const open = () => { notes.hidden = false; $("#notesClose").focus(); };
-  const close = () => { notes.hidden = true; $("#notesBtn").focus(); };
-  $("#notesBtn").addEventListener("click", open); $("#notesClose").addEventListener("click", close);
-  window.__notes = { open, close, el: notes };
-})();
-
-/* ------------------------------------------------------------------ presenting */
-const fs = () => { const d = document; if (!d.fullscreenElement) { const p = d.documentElement.requestFullscreen && d.documentElement.requestFullscreen(); p && p.catch && p.catch(() => {}); } else d.exitFullscreen && d.exitFullscreen(); };
-$("#fsBtn").addEventListener("click", fs);
-const go = dir => {
-  const ys = $$("[data-stop]").map(el => el.getBoundingClientRect().top + scrollY).sort((a, b) => a - b), y = scrollY;
-  const target = dir > 0 ? ys.find(v => v > y + 8) : [...ys].reverse().find(v => v < y - 8);
-  if (target !== undefined) scrollTo({ top: target, behavior: REDUCED ? "auto" : "smooth" });
+/* pipeline */
+const hzOf = d => S.hz[d.id] || d.horizon || "long";
+const renderLanes = () => {
+  $("#lanes").innerHTML = HORIZONS.map(h => `<div class="lane" style="--c:${h.c}"><span class="k">${h.h}</span><h3>${esc(h.w)}</h3><p>${esc(h.p)}</p><div class="bots">${worlds.filter(d => hzOf(d) === h.k).map(d => `<button type="button" class="lb${d.liquid ? "" : " wild"}" data-id="${d.id}" title="Move ${esc(d.name)} along">${T.bottle({ liq: d.liquid || d.sw, band: d.acc, flavor: d.name, sub: d.flavor })}<span>${esc(d.name)}</span></button>`).join("")}</div></div>`).join("");
 };
-addEventListener("keydown", e => {
-  const n = window.__notes;
-  if (e.key === "Escape" && !n.el.hidden) { n.close(); return; }
-  if (e.target.closest("input,select,textarea,[role=slider]") || e.metaKey || e.ctrlKey || e.altKey || !n.el.hidden) return;
-  if (e.key === " " && e.target.closest("button,a")) return;
-  if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); go(1); }
-  else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); go(-1); }
-  else if (e.key === "f" || e.key === "F") fs();
-  else if (e.key === "n" || e.key === "N") n.open();
+$("#lanes").addEventListener("click", e => { const b = e.target.closest(".lb"); if (!b) return; const d = byId(b.dataset.id), order = HORIZONS.map(h => h.k); S.hz[d.id] = order[(order.indexOf(hzOf(d)) + 1) % 3]; save(); renderLanes(); });
+renderLanes();
+
+/* draft playbook */
+const renderPB = () => {
+  $("#pTrends").innerHTML = [0, 1].map(i => `<input class="in2" data-i="${i}" placeholder="Trend ${i + 1}" aria-label="Trend to act on ${i + 1}" value="${esc(S.trends[i] || "")}">`).join("");
+  $("#pPlats").innerHTML = Object.keys(PLATS).map(k => `<button type="button" class="pick${S.plats.includes(k) ? " on" : ""}" data-k="${k}">${PLATS[k]}</button>`).join("");
+  $("#pChecks").innerHTML = `<thead><tr><th>Flavor</th><th>Brand</th><th>Make</th><th>Choose</th><th></th></tr></thead><tbody>${CONCEPTS.map(c => { const k = S.checks[c.id] || {}; const all = k.b && k.m && k.c; return `<tr><td><span class="nm" style="--c:${c.acc}"><i></i>${esc(c.name)}</span></td>${["b", "m", "c"].map(f => `<td><button type="button" class="tg${k[f] ? " on" : ""}" data-id="${c.id}" data-f="${f}" aria-pressed="${!!k[f]}" aria-label="${f}">${k[f] ? "✓" : ""}</button></td>`).join("")}<td><span class="star${all ? " on" : ""}">★</span></td></tr>`; }).join("")}</tbody>`;
+  const adv = CONCEPTS.filter(c => { const k = S.checks[c.id] || {}; return k.b && k.m && k.c; });
+  const list = (adv.length ? adv : CONCEPTS.filter(c => hzOf(c) === "near")).slice(0, 3);
+  $("#pOwners").innerHTML = list.map((c, i) => { const o = S.owners[c.id] || {}; return `<div class="own"><b>${esc(c.name)}</b><input data-id="${c.id}" data-f="owner" placeholder="Owner" aria-label="Owner for ${esc(c.name)}" value="${esc(o.owner || "")}"><select data-id="${c.id}" data-f="action" aria-label="Next action for ${esc(c.name)}">${ACTIONS.map(a => `<option${(o.action || ACTIONS[i]) === a ? " selected" : ""}>${a}</option>`).join("")}</select><input type="date" data-id="${c.id}" data-f="date" aria-label="Due date for ${esc(c.name)}" value="${esc(o.date || "")}"></div>`; }).join("") + `<p class="small" style="margin:6px 0 0">${adv.length ? "Showing the flavors that cleared all three checks." : "Showing the near-term flavors until the room ticks the checks."}</p>`;
+};
+$("#pTrends").addEventListener("input", e => { S.trends[e.target.dataset.i] = e.target.value; save(); });
+$("#pPlats").addEventListener("click", e => { const b = e.target.closest("[data-k]"); if (!b) return; const k = b.dataset.k; S.plats = S.plats.includes(k) ? S.plats.filter(x => x !== k) : [...S.plats, k].slice(-2); save(); renderPB(); });
+$("#pChecks").addEventListener("click", e => { const b = e.target.closest(".tg"); if (!b) return; const k = S.checks[b.dataset.id] = S.checks[b.dataset.id] || {}; k[b.dataset.f] = !k[b.dataset.f]; save(); renderPB(); });
+const ownIn = e => { const el = e.target; if (!el.dataset.id) return; (S.owners[el.dataset.id] = S.owners[el.dataset.id] || {})[el.dataset.f] = el.value; save(); };
+$("#pOwners").addEventListener("input", ownIn); $("#pOwners").addEventListener("change", ownIn);
+renderPB();
+$("#copy").addEventListener("click", () => {
+  const avg = code => { const sc = S.scores[code] || {}, v = DIMS.map(d => sc[d[0]]).filter(Boolean); return v.length ? (v.reduce((a, b) => a + b, 0) / v.length).toFixed(1) : "–"; };
+  const L = ["TheraBreath Flavor Playbook · draft", `${T.SESSION.place} · ${T.SESSION.room} · November 9, 2026`, "",
+    "01 Trends to act on: " + (S.trends.filter(Boolean).join("; ") || "to be agreed"),
+    "02 Priority territories: " + (S.plats.map(k => PLATS[k]).join(" + ") || "to be chosen"), "",
+    "Tasting (average of this browser's scores):", ...CONCEPTS.map(c => `  ${c.code} ${c.name}: ${avg(c.code)}`), `  ${CONTROL.code} control: ${avg(CONTROL.code)}`, "",
+    "03 Three checks (brand · make · choose):", ...CONCEPTS.map(c => { const k = S.checks[c.id] || {}; return `  ${c.name}: ${k.b ? "✓" : "–"} ${k.m ? "✓" : "–"} ${k.c ? "✓" : "–"}`; }), "",
+    "04 Pipeline:", ...HORIZONS.map(h => `  ${h.h}: ${worlds.filter(d => hzOf(d) === h.k).map(d => d.name).join(", ") || "–"}`), "",
+    "Owners:", ...Object.keys(S.owners).map(id => { const o = S.owners[id]; return `  ${(byId(id) || { name: id }).name}: ${o.owner || "TBD"} · ${o.action || ""}${o.date ? " · by " + o.date : ""}`; }), "",
+    "Concepts from Create:", ...(S.ideas.length ? S.ideas.map(d => `  ${(byId(d.world) || { name: d.world }).name} for ${d.who}, at ${d.when}`) : ["  –"])];
+  const txt = L.join("\n");
+  const fallback = () => { const ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (e) {} ta.remove(); toast("Draft playbook copied"); };
+  if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => toast("Draft playbook copied"), fallback); else fallback();
 });
+
+UI.start();
 })();
 </script>
 </body>

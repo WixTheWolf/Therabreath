@@ -2,8 +2,8 @@
 
 A 15-second motion piece (1920 × 1080, 30 fps) for the TheraBreath pre-read page, built with [Remotion](https://remotion.dev).
 
-- **Scenes** (`src/scenes/`): Drop → Fresh can feel… → Bottle refills through six flavors → Flavor mosaic ("Tasted blind.") → Taste / Choose / Assign → "See you on November 9."
-- **Shared data**: flavors, the bottle drawing and the generative flavor art come from `../assets/playbook-core.js`, the same file the site and deck use.
+- **Scenes** (`src/scenes/`): Drop → Fresh can feel… → the bottle refills through six flavor worlds, each poured in behind it on the beat → world mosaic ("Tasted blind.") → Trends / Territories / Concepts / Pipeline → "See you on November 9."
+- **Shared data**: the six flavors, the bottle drawing and the animated flavor worlds come from `../assets/playbook-core.js`, the same file the site and deck use.
 - **Sound**: original music (120 BPM) and sound effects synthesized from scratch in `scripts/make-audio.mjs`, so no third-party samples or licences are involved. Every cut lands on the beat grid (one beat = 15 frames).
 
 ```bash
