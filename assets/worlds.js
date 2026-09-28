@@ -294,5 +294,102 @@
     $$("canvas", host).forEach((c, i) => UI.mini(c, items[i].id, i * 5));
   };
 
+
+  /* ---------------------------------------------------------------- trend radar */
+  // Qualitative radar: three lenses as sectors, maturity as rings (inner = mainstream).
+  // Shape per lens + numbered labels, so identity never relies on colour alone.
+  const shapeOf = { flavor: "circle", sensory: "square", consumer: "triangle" };
+  const blipSvg = (lens, x, y, r, col, n) => {
+    const sh = shapeOf[lens];
+    const m = sh === "circle" ? `<circle cx="${x}" cy="${y}" r="${r}"/>` : sh === "square" ? `<rect x="${x - r * .9}" y="${y - r * .9}" width="${r * 1.8}" height="${r * 1.8}" rx="4"/>` : `<path d="M${x},${y - r * 1.1} L${x + r * 1.05},${y + r * .75} L${x - r * 1.05},${y + r * .75} Z"/>`;
+    return `<g class="shape" fill="${col}" stroke="#fff" stroke-width="2">${m}</g><text x="${x}" y="${y + 4.5}" text-anchor="middle" class="bn">${n}</text>`;
+  };
+  UI.shapeIcon = (lens, col, size = 14) => `<svg width="${size}" height="${size}" viewBox="0 0 20 20" aria-hidden="true">${blipSvg(lens, 10, 10, 7, col, "").replace(/<text[^>]*><\/text>/, "")}</svg>`;
+  UI.trendRadar = (host, o = {}) => {
+    const L = T.LENSES, D = T.TREND_DEEP, keys = Object.keys(L);
+    const C = 300, R = [0, 118, 205, 285];
+    let rings = "", secs = "", blips = "";
+    [3, 2, 1].forEach(k => rings += `<circle cx="${C}" cy="${C}" r="${R[k]}" class="ring r${k}"/>`);
+    keys.forEach((k, i) => {
+      const a0 = -Math.PI / 2 + i * Math.PI * 2 / 3, x = C + Math.cos(a0) * R[3], y = C + Math.sin(a0) * R[3];
+      secs += `<line x1="${C}" y1="${C}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" class="spoke"/>`;
+      const am = a0 + Math.PI / 3, lx = C + Math.cos(am) * (R[3] + 34), ly = C + Math.sin(am) * (R[3] + 34);
+      secs += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" class="sec-l" fill="${L[k].c}">${L[k].h.toUpperCase()}</text>`;
+    });
+    T.STAGES.forEach((st, k) => secs += `<text x="${C + 6}" y="${C - (R[k] + R[k + 1]) / 2 + 4}" class="ring-l">${st.toUpperCase()}</text>`);
+    D.forEach((d, n) => {
+      const li = keys.indexOf(d.lens), same = D.filter(x => x.lens === d.lens && x.stage === d.stage), j = same.indexOf(d);
+      const a = -Math.PI / 2 + li * Math.PI * 2 / 3 + Math.PI * 2 / 3 * ((j + 1) / (same.length + 1)) + (d.stage === 0 ? .05 : 0);
+      const rr = (R[d.stage] + R[d.stage + 1]) / 2 + (same.length > 2 ? (j % 2 ? 14 : -14) : 0);
+      const x = C + Math.cos(a) * rr, y = C + Math.sin(a) * rr;
+      blips += `<g class="blip" data-i="${n}" data-lens="${d.lens}" tabindex="0" role="button" aria-label="${esc(d.h)}, ${esc(L[d.lens].h)} trend, ${T.STAGES[d.stage]}"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="24" fill="transparent"/>${blipSvg(d.lens, +x.toFixed(1), +y.toFixed(1), 14, L[d.lens].c, n + 1)}</g>`;
+    });
+    host.classList.add("radar-wrap");
+    host.innerHTML = `<div class="radar-top"><div class="chips" role="group" aria-label="Filter by lens"><button type="button" class="pick on" data-f="all">All 12</button>${keys.map(k => `<button type="button" class="pick" data-f="${k}">${UI.shapeIcon(k, L[k].c)}${L[k].h}</button>`).join("")}</div><span class="mono" style="color:var(--fg3)">Tap a trend · rings show maturity, our read</span></div>
+      <div class="radar-grid"><svg class="radar" viewBox="-40 -30 680 660" role="img" aria-label="Trend radar: twelve trends across flavor, sensory and consumer lenses, placed by maturity">${rings}${secs}${blips}</svg>
+      <div class="tdetail" aria-live="polite"></div></div>
+      <details class="tlist"><summary class="mono">See all 12 as a list</summary><ol>${D.map(d => `<li><b>${esc(d.h)}</b> · ${esc(L[d.lens].h)} · ${T.STAGES[d.stage]}. ${esc(d.what)}</li>`).join("")}</ol></details>`;
+    const det = $(".tdetail", host), svg = $("svg", host);
+    const show = n => {
+      const d = D[n], l = L[d.lens];
+      $$(".blip", host).forEach(b => b.classList.toggle("on", +b.dataset.i === n));
+      det.style.setProperty("--c", l.c);
+      det.innerHTML = `<div class="tdh"><span class="chip">${UI.shapeIcon(d.lens, l.c)}${l.h} trend</span><span class="chip"><i style="--c:${["#006649", "#F58025", "#8E6BD8"][d.stage]}"></i>${T.STAGES[d.stage]}</span><span class="mono" style="color:var(--fg3)">${String(n + 1).padStart(2, "0")} / 12</span></div>
+        <h3 class="h2" style="margin-top:14px">${esc(d.h)}</h3><p class="lede" style="font-size:clamp(17px,1.35vw,20px);margin-top:10px;max-width:none">${esc(d.what)}</p>
+        <div class="tcols"><div><span class="mono">Where we see it</span><ul>${d.signals.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div><div><span class="mono">What it means for TheraBreath</span><p>${esc(d.tb)}</p></div></div>
+        <div class="tq"><span class="mono">Let’s discuss</span><p>${esc(d.q)}</p></div>
+        <div class="chips" style="margin-top:14px">${d.flavors.map(f => `<span class="chip"><i style="--c:${l.c}"></i>${esc(f)}</span>`).join("")}</div>`;
+    };
+    svg.addEventListener("click", e => { const b = e.target.closest(".blip"); if (b) show(+b.dataset.i); });
+    svg.addEventListener("keydown", e => { const b = e.target.closest(".blip"); if (b && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); show(+b.dataset.i); } });
+    $(".radar-top .chips", host).addEventListener("click", e => {
+      const b = e.target.closest("[data-f]"); if (!b) return; const f = b.dataset.f;
+      $$(".radar-top .pick", host).forEach(x => x.classList.toggle("on", x === b));
+      $$(".blip", host).forEach(x => x.classList.toggle("dim", f !== "all" && x.dataset.lens !== f));
+      if (f !== "all") show(D.findIndex(d => d.lens === f));
+    });
+    show(o.start || 0);
+  };
+
+  /* ---------------------------------------------------------------- future rail */
+  UI.futureRail = host => {
+    host.classList.add("future");
+    host.innerHTML = `<div class="frail">${T.FUTURE.map((f, i) => `<article class="fcard rv" style="--d:${i * .07}s"><span class="yr">${f.when}</span><h3>${esc(f.h)}</h3><p>${esc(f.line)}</p><div class="ftb"><span class="mono">For TheraBreath</span>${esc(f.tb)}</div></article>`).join("")}</div>`;
+  };
+
+  /* ---------------------------------------------------------------- flavor passport */
+  UI.passport = host => {
+    host.classList.add("passport");
+    host.innerHTML = T.WILD.map((w, i) => `<button type="button" class="stamp rv" style="--d:${(i % 3) * .08}s;--c:${w.acc};--rot:${[-3, 2, -1.5, 2.5, -2, 1.5, -2.5, 3, -1][i]}deg" aria-pressed="false" aria-label="${esc(w.name)}: tap for details">
+      <span class="face s-front"><span class="disc"><canvas aria-hidden="true"></canvas></span><span class="org mono">${esc(w.origin)}</span><b>${esc(w.name)}</b><span class="ln">${esc(w.line)}</span><span class="diff d-${w.diff.toLowerCase()}">${w.diff}</span></span>
+      <span class="face s-back"><span class="mono">The trend</span><span class="tr">${esc(w.trend)}</span><span class="mono">Built for sodium chlorite</span><span class="ch">${esc(w.chem)}</span><span class="mono">Bench difficulty · ${w.diff}</span><span class="stampmark">${esc(w.origin.split(" · ")[0])}</span></span></button>`).join("");
+    $$("canvas", host).forEach((c, i) => UI.mini(c, T.WILD[i].id, i * 2));
+    host.addEventListener("click", e => { const b = e.target.closest(".stamp"); if (!b) return; const on = !b.classList.contains("flip"); b.classList.toggle("flip", on); b.setAttribute("aria-pressed", on); });
+  };
+
+  /* ---------------------------------------------------------------- spin the wheel */
+  UI.wheel = (host, onLand) => {
+    const all = [...T.CONCEPTS.map(c => ({ id: c.id, name: c.name, acc: c.acc, liq: c.liquid, sub: c.flavor, line: c.tag, kind: "One of the six" })), ...T.WILD.map(w => ({ id: w.id, name: w.name, acc: w.acc, liq: w.sw, sub: w.flavor, line: w.line, kind: "Wildcard · " + w.origin }))];
+    const N = all.length, C = 250, R = 236;
+    const seg = all.map((d, i) => {
+      const a0 = i / N * Math.PI * 2 - Math.PI / 2, a1 = (i + 1) / N * Math.PI * 2 - Math.PI / 2, am = (a0 + a1) / 2;
+      const p0 = [C + Math.cos(a0) * R, C + Math.sin(a0) * R], p1 = [C + Math.cos(a1) * R, C + Math.sin(a1) * R];
+      const tx = C + Math.cos(am) * R * .6, ty = C + Math.sin(am) * R * .6, deg = am * 180 / Math.PI;
+      return `<path d="M${C},${C} L${p0[0].toFixed(1)},${p0[1].toFixed(1)} A${R},${R} 0 0 1 ${p1[0].toFixed(1)},${p1[1].toFixed(1)} Z" fill="${d.acc}" stroke="#fff" stroke-width="3"/><text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" transform="rotate(${deg.toFixed(1)} ${tx.toFixed(1)} ${ty.toFixed(1)})" text-anchor="middle" dominant-baseline="middle" class="wl">${esc(d.name.replace(" Mint", ""))}</text>`;
+    }).join("");
+    host.classList.add("wheel");
+    host.innerHTML = `<div class="wheel-stage"><div class="pointer" aria-hidden="true"></div><svg viewBox="0 0 500 500" class="wsvg" aria-hidden="true"><g class="rot">${seg}<circle cx="${C}" cy="${C}" r="54" fill="#fff"/><circle cx="${C}" cy="${C}" r="44" fill="#F58025"/></g></svg><button type="button" class="spin" aria-label="Spin the flavor wheel">SPIN</button></div>`;
+    const g = $(".rot", host); let angle = 0, busy = false;
+    $(".spin", host).addEventListener("click", () => {
+      if (busy) return; busy = true;
+      const k = Math.floor(Math.random() * N), target = 360 - (k + .5) / N * 360;
+      const turns = REDUCED ? 0 : 5;
+      angle = angle - (angle % 360) + turns * 360 + target;
+      g.style.transition = REDUCED ? "none" : "transform 4.2s cubic-bezier(.12,.8,.12,1)";
+      g.style.transform = `rotate(${angle}deg)`;
+      setTimeout(() => { busy = false; onLand && onLand(all[k]); }, REDUCED ? 50 : 4300);
+    });
+    return all;
+  };
   window.WorldsUI = UI;
 })();

@@ -144,6 +144,28 @@
 <!-- TRENDS -->
 <section id="trends" data-world="spectrum" data-title="Trends"></section>
 
+<!-- TREND RADAR -->
+<section class="w" id="radar" data-world="aura" data-title="Trend radar">
+  <div class="wrap">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px">
+      <div><span class="eyebrow"><b>01</b>Trends · the deep dive</span><h2 class="display" data-kin style="margin-top:14px">Twelve trends, <span class="hl">three lenses.</span></h2></div>
+      <p class="small rv" style="max-width:40ch;margin:0">What people want to taste, what they want to feel, and how they use oral care. Placed by how mature we think each one is, from mainstream in the middle to emerging at the edge.</p>
+    </div>
+    <div id="radarBox"></div>
+    <div class="lenses" id="lenses"></div>
+  </div>
+</section>
+
+<!-- FUTURE -->
+<section class="w" id="future" data-world="lab" data-tone="dark" data-title="Future trends">
+  <div class="wrap">
+    <span class="eyebrow"><b>01</b>Trends · what’s next</span>
+    <h2 class="display" data-kin style="margin-top:14px">2027 to 2030: <span class="hl">where it’s heading.</span></h2>
+    <p class="lede rv">Six shifts we expect to shape oral care flavor over the next few years, and what each could mean for TheraBreath.</p>
+    <div id="futureBox"></div>
+  </div>
+</section>
+
 <!-- THE BASE -->
 <section id="base" data-title="The base"></section>
 
@@ -193,9 +215,23 @@
 <!-- WILDCARDS -->
 <section class="w" id="wild" data-world="aura" data-title="Wildcards">
   <div class="wrap">
-    <span class="eyebrow">Three more from the bench</span>
-    <h2 class="display" data-kin style="margin-top:14px">Wildcards, <span class="hl">if we want to push.</span></h2>
-    <div id="portals"></div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px">
+      <div><span class="eyebrow">Flavor passport · nine wildcards</span><h2 class="display" data-kin style="margin-top:14px">Around the world <span class="hl">in nine rinses.</span></h2></div>
+      <p class="small rv" style="max-width:36ch;margin:0">Each wildcard comes from a real trend and a real culture, and each is built for sodium chlorite. Tap a stamp to turn it over.</p>
+    </div>
+    <div id="passport"></div>
+  </div>
+</section>
+
+<!-- SPIN -->
+<section class="w" id="spin" data-world="oxygen" data-title="Spin the wheel">
+  <div class="wrap">
+    <span class="eyebrow">Warm-up game</span>
+    <h2 class="display" data-kin style="margin-top:14px">Spin for <span class="hl">a flavor.</span></h2>
+    <p class="lede rv">Fifteen flavors, one wheel. Spin, and pitch where it lands in 30 seconds: who it’s for, and when they’d use it.</p>
+    <div class="spinbox"><div id="wheel"></div>
+      <div class="result" id="result" aria-live="polite"><canvas id="rScene" aria-hidden="true"></canvas><div class="rb" id="rBottle"></div><div class="rt"><span class="mono" id="rKind" style="color:var(--orange-d)">Ready when you are</span><b id="rName">Give it a spin</b><p id="rLine">The wheel holds the six new flavors and all nine wildcards.</p></div></div>
+    </div>
   </div>
 </section>
 
@@ -293,7 +329,27 @@ UI.map($("#map"));
 $("#plats").innerHTML = Object.keys(PLATS).map((k, i) => `<div class="plat rv" style="--d:${i * .06}s"><b>${PLATS[k]}</b><span>${PLAT_LINES[k]}</span></div>`).join("");
 UI.lineup($("#lineup"));
 UI.sixWorlds($("#worlds"), { codes: true });
-UI.portals($("#portals"), WILD);
+UI.passport($("#passport"));
+UI.trendRadar($("#radarBox"));
+$("#lenses").innerHTML = Object.keys(T.LENSES).map(k => { const l = T.LENSES[k]; return `<div class="lens rv" style="--c:${l.c}"><h3>${UI.shapeIcon(k, l.c, 18)}${l.h}</h3><p>${l.q}</p><ol>${T.TREND_DEEP.filter(d => d.lens === k).map(d => `<li>${esc(d.h)}<span>${T.STAGES[d.stage]}</span></li>`).join("")}</ol></div>`; }).join("");
+UI.futureRail($("#futureBox"));
+/* spin the wheel */
+(() => {
+  const scene = UI.mini($("#rScene"), "oxygen");
+  $("#rBottle").innerHTML = UI.iconicBottle();
+  const confetti = () => {
+    if (UI.REDUCED) return;
+    const cv = document.createElement("canvas"); cv.className = "confetti"; cv.width = innerWidth; cv.height = innerHeight; document.body.appendChild(cv);
+    const c = cv.getContext("2d"), cols = ["#F58025", "#00A3E0", "#7ED321", "#D9577A", "#FFD166"], P = Array.from({ length: 120 }, (_, i) => ({ x: innerWidth / 2, y: innerHeight * .45, vx: (Math.random() - .5) * 16, vy: -Math.random() * 16 - 4, r: 4 + Math.random() * 6, c: cols[i % 5], a: Math.random() * 6 }));
+    let f = 0; const step = () => { c.clearRect(0, 0, cv.width, cv.height); P.forEach(p => { p.vy += .45; p.x += p.vx; p.y += p.vy; p.a += .2; c.save(); c.translate(p.x, p.y); c.rotate(p.a); c.fillStyle = p.c; c.fillRect(-p.r, -p.r / 2, p.r * 2, p.r); c.restore(); }); if (++f < 110) requestAnimationFrame(step); else cv.remove(); }; step();
+  };
+  UI.wheel($("#wheel"), d => {
+    scene.key = d.id;
+    $("#rBottle").innerHTML = T.bottle({ liq: d.liq, band: d.acc, flavor: d.name, sub: d.sub });
+    $("#rKind").textContent = d.kind; $("#rName").textContent = d.name; $("#rLine").textContent = d.line + " Who is it for, and when?";
+    const r = $("#result"); r.classList.remove("pop"); void r.offsetWidth; r.classList.add("pop"); confetti();
+  });
+})();
 UI.lineup($("#lineup2"));
 
 /* tasting scorecard */

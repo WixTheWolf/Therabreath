@@ -40,7 +40,13 @@ Named the way TheraBreath names its own flavors (Invigorating Mint, Rainforest M
 | Rosewater Mint | Rosewater | Phenylethyl alcohol, menthone, menthol | Stable alcohol instead of fragile rose terpenes |
 | Orchard Mint | Crisp green apple | Hexyl acetate, ethyl 2-methylbutyrate, menthol | Saturated esters, no green-apple aldehydes |
 
-Wildcards: Sage Mint, Watermelon Mint, Cedar Mint. What the base breaks down, and why we avoided it: citral (lemon, lime), cinnamaldehyde, vanillin, eugenol (clove), nonadienal (cucumber, melon).
+Nine wildcards, each from a real trend and culture (bench difficulty in brackets): Sage Mint (easy), Watermelon Mint (medium), Cedar Mint (medium), Matcha Mint, Japan (medium), Hibiscus Mint, Senegal/Mexico/Caribbean (medium), Lychee Mint, Guangdong/Southeast Asia (medium), Pistachio Mint, Middle East/Sicily (stretch), Birch Mint, Nordics (easy), Mango Chili Mint, Mexico (stretch).
+
+## Trend research
+
+`TREND_DEEP` in `assets/playbook-core.js` holds twelve trends across three lenses (flavor, sensory, consumer), each with a maturity stage (mainstream, rising, emerging), where we see it, what it means for TheraBreath and a question for the room. `FUTURE` holds six 2027–2030 shifts. Stages are our judgment, not measured data. The site and pre-read show them on an interactive trend radar; the deck gives each lens its own slide.
+
+What the base breaks down, and why we avoided it: citral (lemon, lime), cinnamaldehyde, vanillin, eugenol (clove), nonadienal (cucumber, melon).
 
 ## Pre-read (send before the meeting)
 
@@ -61,12 +67,12 @@ Wildcards: Sage Mint, Watermelon Mint, Cedar Mint. What the base breaks down, an
 
 ## Workshop deck
 
-- `deck/index.html`: 23 slides, 1920 × 1080, each in its own animated world. Welcome → Trends → the base (sodium chlorite) → Territory map → Tasting and scorecard → Reveal → one slide per flavor world → Wildcards → Create → Three checks → Decision board → Pipeline → Draft playbook → Close.
+- `deck/index.html`: 31 slides, 1920 × 1080, built as a workshop around Ross's four objectives. Each objective has an opener with its question, the content, and a "Let's discuss" slide with prompts. Trends: radar, a slide per lens, 2027–2030, discussion and a dot vote. Territories: one rule from the bench, the white-space map, six new worlds, nine wildcards, four platforms, a short taste break, discussion. Concepts: a day of occasions, six consumer segments, the Create exercise. Pipeline: three checks, now/next/later, where flavor could travel across the franchise, discussion, draft playbook, close.
 - Keys: ← → / space to move, **G** overview, **N** speaker notes, **P** presenter view (current and next slide, notes, timer, synced), **F** full screen, **B** blank. Slide numbers deep-link (`deck/#12`).
 - `dist/TheraBreath_Flavor_Playbook_Deck.pdf` is the PDF export. Regenerate with `node scripts/export-deck-pdf.js` (needs `playwright-core` and a local Chrome; see the script header).
 - Fonts are self-hosted in `assets/fonts/` (Bricolage Grotesque, Figtree, JetBrains Mono, Archivo).
 
 ## Workshop web experience
 
-- `index.html`: the in-room tool and leave-behind. Scroll through the worlds; tools along the way: the blind scorecard (seven cups), the concept builder (pick a world, a moment and a person), the pipeline (tap a bottle to move it between near-term, next and long-term), and the draft playbook (trends, two territories, the three checks, owners). "Copy the draft playbook" puts it all on the clipboard. Everything is saved in the presenting browser only.
+- `index.html`: the in-room tool and leave-behind. Scroll through the worlds; tools along the way: an interactive trend radar (filter by lens, tap a trend), 2027–2030 future trends, a flavor passport of nine wildcard stamps that flip over, a spin-the-wheel warm-up game, the blind scorecard (seven cups), the concept builder (pick a world, a moment and a person), the pipeline (tap a bottle to move it between near-term, next and long-term), and the draft playbook (trends, two territories, the three checks, owners). "Copy the draft playbook" puts it all on the clipboard. Everything is saved in the presenting browser only.
 - `assets/` holds the official TheraBreath logo and product photo. The concept bottles are drawn in code to match the current rinse label and read "Concept mockup · not a product".
