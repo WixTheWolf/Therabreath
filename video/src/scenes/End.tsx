@@ -45,7 +45,9 @@ export const End: React.FC = () => {
           <Img src={staticFile("img/therabreath-logo.png")} style={{ height: 58 }} />
         </div>
         <span style={{ fontFamily: DISPLAY, fontSize: 46, color: "rgba(255,255,255,.7)" }}>×</span>
-        <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 50, color: "#fff", letterSpacing: "-0.01em" }}>The Flavor Factory</span>
+        <div style={{ background: "#fff", borderRadius: 16, padding: "12px 22px", display: "flex" }}>
+          <Img src={staticFile("img/tff-logo.png")} style={{ height: 58 }} />
+        </div>
       </div>
       <div style={{ position: "absolute", left: 0, right: 0, top: 150, textAlign: "center", fontFamily: MONO, fontWeight: 700, fontSize: 28, letterSpacing: "0.2em", color: "#fff",
         opacity: interpolate(f, [30, 40], [0, 0.9], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }}>

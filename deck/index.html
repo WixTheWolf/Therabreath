@@ -145,6 +145,42 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .p90 b{font:800 44px/1.05 var(--f-d);letter-spacing:-.02em;margin-top:14px}
 .p90 p{margin:0;font:500 24px/1.42 var(--f-b);color:var(--fg2)}
 
+/* ---------- key visuals (Higgsfield) + 3D (assets/lab3d.js) ---------- */
+.kvbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transform:scale(1.07);transition:transform 16s cubic-bezier(.2,.6,.2,1)}
+.slide.on .kvbg{transform:scale(1)}
+.kvshade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(4,14,32,.9) 0%,rgba(4,14,32,.66) 38%,rgba(4,14,32,.16) 74%,rgba(4,14,32,0) 100%)}
+.kvshade.all{background:linear-gradient(180deg,rgba(4,14,32,.72),rgba(4,14,32,.88))}
+.kvcap{position:absolute;right:130px;top:112px;z-index:3;font:700 12px var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.72);background:rgba(4,14,32,.3);padding:7px 12px;border-radius:99px}
+.slide[data-kv] .onum{color:#FFB066;text-shadow:0 20px 60px rgba(0,0,0,.35)}
+.slide[data-kv] .mega,.slide[data-kv] .display{text-shadow:0 10px 50px rgba(0,0,0,.3)}
+.lab-host{position:absolute;pointer-events:none}
+.lab-host>.lab3d,.lab-host>.lab3d-shot{position:absolute;inset:0;width:100%;height:100%;display:block}
+.s-title>div:first-child{position:relative;z-index:2}
+.hero-bt .lab-host{left:calc(50% - 590px);top:calc(50% - 540px);width:1180px;height:1080px;z-index:-1}
+.has-3d .hero-bt .bottle,.has-3d .hero-bt .ring{visibility:hidden}
+.byline .tff-by{height:54px;width:auto;background:#fff;padding:8px 14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,30,60,.12)}
+.six3d{position:relative;margin-top:auto;display:flex;flex-direction:column}
+.six3d .lab-host{position:relative;width:100%;height:520px}
+.six6cap{display:none;grid-template-columns:repeat(6,1fr);gap:18px;margin-top:6px}
+.has-3d .six3d .six6{display:none}
+.has-3d .six6cap{display:grid}
+.six6cap div{text-align:center;padding:14px 12px;border-radius:20px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22)}
+.six6cap b{display:block;font:800 26px var(--f-d);letter-spacing:-.02em;line-height:1;color:#fff}
+.six6cap span{display:block;margin-top:6px;font:600 16px/1.3 var(--f-b);color:rgba(255,255,255,.88)}
+.six6cap em{display:none;margin-top:6px;font:700 11.5px var(--f-m);letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:rgba(255,255,255,.62)}
+.close3d{position:relative;width:100%;height:560px;margin-top:6px}
+.has-3d .close3d+.lineup{display:none}
+.w9 .dz img{width:130px;height:130px;object-fit:cover;display:block}
+.dbook{overflow:hidden}
+.dbook .dbimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:40% 50%;z-index:0;transform:scale(1.06)}
+.dbook::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(7,28,60,.9) 0%,rgba(7,28,60,.62) 40%,rgba(7,28,60,.5) 62%,rgba(7,28,60,.72) 100%)}
+.dbook p{text-shadow:0 2px 14px rgba(0,0,0,.45)}
+.dbook>*:not(.dbimg){position:relative;z-index:2}
+.photo{position:relative;margin:0;border-radius:30px;overflow:hidden;box-shadow:0 30px 70px rgba(7,28,60,.22)}
+.photo img{display:block;width:100%;height:100%;object-fit:cover}
+.photo .cap{position:absolute;left:18px;bottom:16px;font:700 12px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(4,14,32,.42);padding:7px 12px;border-radius:99px}
+.print .kvbg{transform:none;transition:none}
+
 /* ---------- agenda ---------- */
 .s-agenda{display:grid;grid-template-columns:1fr 720px;gap:60px;height:100%;align-items:center;padding-top:130px;padding-bottom:100px}
 .alist{display:flex;flex-direction:column;margin-top:30px}
@@ -384,7 +420,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .w9 canvas{width:130px;height:130px;display:block}
 .w9 .org{display:block;font:700 12px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
 .w9 b{display:block;font:800 30px var(--f-d);letter-spacing:-.02em;line-height:1.02;margin:4px 0}
-.w9 .tr{display:block;font:500 16px/1.35 var(--f-b);color:var(--fg2)}
+.w9 .tr{display:block;font:500 16px/1.35 var(--f-b);color:var(--fg2);background:none;border-radius:0;box-shadow:none;overflow:visible}
 .w9 .df{display:inline-block;margin-top:8px;padding:4px 10px;border-radius:99px;font:800 11px var(--f-m);letter-spacing:.12em;text-transform:uppercase}
 .d-easy{background:#DDF5E8;color:#0A5E3B}.d-medium{background:#FFF0D9;color:#8A4B06}.d-stretch{background:#F8E1EA;color:#8C1E45}
 .plat4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:auto}
@@ -482,9 +518,10 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
       <div class="meta b"><span>TheraBreath Flavor Playbook</span><span>Nov 9, 2026 · 10:00 AM · Darwin</span></div>
       <h1 class="mega"><span class="ln"><span>The future</span></span><span class="ln"><span style="--k:1">of <em>fresh.</em></span></span></h1>
       <p class="lede b">A working session to build TheraBreath’s flavor playbook: trends, territories, concepts and a pipeline.</p>
-      <div class="byline b"><span class="lab">Presented by</span><b>The Flavor Factory</b><i class="sep"></i>Church &amp; Dwight HQ, Ewing, NJ</div>
+      <div class="byline b"><span class="lab">Presented by</span><img class="tff-by" src="../assets/brand/tff-logo.webp" alt="The Flavor Factory"><i class="sep"></i>Church &amp; Dwight HQ, Ewing, NJ</div>
     </div>
     <div class="hero-bt b" id="heroBt">
+      <div class="lab-host" data-lab="stage" data-cycle="3400" aria-hidden="true"></div>
       <svg class="ring" viewBox="0 0 500 500" aria-hidden="true"><defs><path id="ringP" d="M250,250 m-205,0 a205,205 0 1,1 410,0 a205,205 0 1,1 -410,0"/></defs><text font-family="JetBrains Mono, monospace" font-weight="700" font-size="15" letter-spacing="7" fill="#0A4F8A"><textPath href="#ringP">POWERED BY OXYGEN · SIX NEW WORLDS OF FRESH · POWERED BY OXYGEN · SIX NEW WORLDS OF FRESH ·</textPath></text></svg>
     </div>
   </div>
@@ -500,10 +537,13 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
       <p class="lede b" style="margin-top:34px">We’re The Flavor Factory, a family flavor house from Norco, California. We spend our days at the bench getting flavor to behave in whatever base it has to live in. For TheraBreath, that base runs on oxygen.</p>
       <div class="todo b" style="margin-top:34px">To add: team photo, plus the names and roles of who’s here today</div>
     </div>
+    <div style="display:flex;flex-direction:column;gap:22px">
+    <figure class="photo b" style="height:430px"><img src="../assets/visuals/kv-lab.webp" alt=""><span class="cap">Illustration</span></figure>
     <div class="bench">
       <div class="card b"><svg viewBox="0 0 48 48" fill="none" stroke="#006649" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22 24 9l16 13v17H8z"/><path d="M20 39V28h8v11"/></svg><b>Family</b><span>Run by a family, in Norco, California.</span></div>
       <div class="card b"><svg viewBox="0 0 48 48" fill="none" stroke="#F58025" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6h12M20 6v12L9 38a3 3 0 0 0 3 4h24a3 3 0 0 0 3-4L28 18V6"/><path d="M14 30h20"/></svg><b>Bench-first</b><span>Every flavor built for the base it goes into.</span></div>
       <div class="card b"><svg viewBox="0 0 48 48" fill="none" stroke="#00A3E0" stroke-width="3"><circle cx="18" cy="28" r="9"/><circle cx="33" cy="16" r="6"/><circle cx="35" cy="34" r="4"/></svg><b>Oxygen-ready</b><span>Six new flavors made for sodium chlorite.</span></div>
+    </div>
     </div>
   </div>
   <aside class="notes">A quick word on who we are, for anyone meeting us for the first time. We’re a family flavor house from Norco, California. Our work happens at the bench: getting a flavor to behave in the base it has to live in. For TheraBreath that base is an oxygenating sodium chlorite rinse, and that shaped everything we’re about to show you.</aside>
@@ -543,7 +583,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 </section>
 
 <!-- ================= 01 TRENDS ================= -->
-<section class="slide" data-world="spectrum" data-tone="light" data-bg="#FBEFDC" data-sec="Trends" data-title="01 · Trends">
+<section class="slide" data-kv="trends" data-tone="dark" data-bg="#FBEFDC" data-sec="Trends" data-title="01 · Trends">
   <div class="pad s-open">
     <div class="onum b">01</div>
     <div><span class="eyebrow b">Objective 01 · Trends</span><h2 class="mega" style="font-size:190px"><span class="ln"><span>What’s shaping</span></span><span class="ln"><span style="--k:1"><em>oral care?</em></span></span></h2>
@@ -608,7 +648,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 </section>
 
 <!-- ================= 02 TERRITORIES ================= -->
-<section class="slide" data-world="aura" data-tone="light" data-bg="#FFF3E6" data-sec="Territories" data-title="02 · Territories">
+<section class="slide" data-kv="territories" data-tone="dark" data-bg="#FFF3E6" data-sec="Territories" data-title="02 · Territories">
   <div class="pad s-open">
     <div class="onum b">02</div>
     <div><span class="eyebrow b">Objective 02 · Territories</span><h2 class="mega" style="font-size:190px"><span class="ln"><span>Where could</span></span><span class="ln"><span style="--k:1"><em>fresh go?</em></span></span></h2>
@@ -617,7 +657,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
   <aside class="notes">Objective two: territories. Where could TheraBreath’s flavor go that competitors can’t easily follow? First, the one rule the base sets, then the map, then the flavors.</aside>
 </section>
 
-<section class="slide" data-world="lab" data-tone="dark" data-bg="#071A40" data-sec="Territories" data-title="One rule from the bench">
+<section class="slide" data-kv="oxygen" data-kvshade="all" data-tone="dark" data-bg="#071A40" data-sec="Territories" data-title="One rule from the bench">
   <div class="pad">
     <span class="eyebrow b"><b>02</b>Territories · one rule</span>
     <h2 class="display b">Built to survive <em>oxygen.</em></h2>
@@ -645,7 +685,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
   <div class="pad">
     <span class="eyebrow b"><b>02</b>Territories · six new worlds</span>
     <h2 class="display b" style="font-size:92px">Six new worlds, <em>named like TheraBreath.</em></h2>
-    <div class="six6" id="six6"></div>
+    <div class="six3d b"><div class="lab-host" data-lab="lineup" data-params='{"dist":13.8,"lookY":0.62,"camY":1.1,"lineGap":3.2,"sphR":11.5}' aria-hidden="true"></div><div class="six6cap" id="six6cap"></div><div class="six6" id="six6"></div></div>
   </div>
   <aside class="notes">Six new flavor worlds, each named the way TheraBreath names its flavors. Frost Mint for intensity without burn. Coastal Mint for mint-fatigued adults. Cardamom Mint, the after-dinner freshener. Coconut Mint, soft and smooth for the evening. Rosewater Mint, a small luxury for beauty shoppers. Orchard Mint, crisp apple that’s easy to love. Each has a who and a when. You’ll taste them blind in a few minutes.</aside>
 </section>
@@ -687,7 +727,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 </section>
 
 <!-- ================= 03 CONCEPTS ================= -->
-<section class="slide" data-world="rosewater" data-tone="light" data-bg="#FDEAEE" data-sec="Concepts" data-title="03 · Concepts">
+<section class="slide" data-kv="concepts" data-tone="dark" data-bg="#FDEAEE" data-sec="Concepts" data-title="03 · Concepts">
   <div class="pad s-open">
     <div class="onum b">03</div>
     <div><span class="eyebrow b">Objective 03 · Concepts</span><h2 class="mega" style="font-size:190px"><span class="ln"><span>New moments,</span></span><span class="ln"><span style="--k:1"><em>new people.</em></span></span></h2>
@@ -725,7 +765,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 </section>
 
 <!-- ================= 04 PIPELINE ================= -->
-<section class="slide" data-world="river" data-tone="light" data-bg="#EEF7F3" data-sec="Pipeline" data-title="04 · Pipeline">
+<section class="slide" data-kv="pipeline" data-tone="dark" data-bg="#EEF7F3" data-sec="Pipeline" data-title="04 · Pipeline">
   <div class="pad s-open">
     <div class="onum b">04</div>
     <div><span class="eyebrow b">Objective 04 · Pipeline</span><h2 class="mega" style="font-size:190px"><span class="ln"><span>From ideas</span></span><span class="ln"><span style="--k:1"><em>to a pipeline.</em></span></span></h2>
@@ -790,7 +830,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 
 <section class="slide" data-world="studio" data-tone="light" data-bg="#FBF6EF" data-sec="Playbook" data-title="The Flavor Playbook">
   <div class="pad s-book">
-    <div class="dbook b"><span class="m">TheraBreath × The Flavor Factory</span><b>The Flavor<br><em>Playbook</em></b><i></i><p>Near-term innovation.<br>Long-term franchise growth.</p><span class="m foot">Drafted together · Nov 9, 2026</span></div>
+    <div class="dbook b"><img class="dbimg" src="../assets/visuals/kv-playbook.webp" alt=""><span class="m">TheraBreath × The Flavor Factory</span><b>The Flavor<br><em>Playbook</em></b><i></i><p>Near-term innovation.<br>Long-term franchise growth.</p><span class="m foot">Drafted together · Nov 9, 2026</span></div>
     <div>
       <span class="eyebrow b">The ultimate playbook · our proposal</span>
       <h2 class="display b" style="font-size:84px">Six chapters. <em>One plan.</em></h2>
@@ -812,7 +852,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 <section class="slide" data-world="finale" data-tone="dark" data-bg="#0B72C0" data-sec="Thank you" data-title="Familiar enough to trust">
   <div class="pad" style="text-align:center;align-items:center">
     <h2 class="display b" style="font-size:96px;margin-top:10px">Familiar enough to trust.<br><em>Different enough to remember.</em></h2>
-    <div class="lineup" id="lineup2"></div>
+    <div class="lab-host close3d" data-lab="lineup" data-params='{"dist":18.5,"lookY":0.6}' aria-hidden="true"></div><div class="lineup" id="lineup2"></div>
     <div class="nexts b"><span class="chip"><i></i>We send the written playbook</span><span class="chip"><i style="--c:#7EE3AE"></i>Bench samples for the near-term leads</span><span class="chip"><i style="--c:#5CCBF5"></i>Stability in the real base</span></div>
   </div>
   <aside class="notes">Familiar enough to trust, different enough to remember. Next steps from us: the written playbook, bench samples for the near-term leads, and stability in the real base. Thank you, and enjoy lunch.</aside>
@@ -830,6 +870,7 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
 </div>
 
 <script src="../assets/playbook-core.js"></script>
+<script src="../assets/lab3d.js"></script>
 <script>
 (() => {
 "use strict";
@@ -912,7 +953,7 @@ $("#cav").textContent = CHEM.caveat;
     ${CONCEPTS.map(c => `<div class="orb" style="${pos(c.map)};--c1:${c.liquid[0]};--c2:${c.acc};--s:84px"><i></i><b>${esc(c.name)}</b></div>`).join("")}`;
 })();
 $("#six6").innerHTML = CONCEPTS.map(c => `<div class="w6 b"><canvas data-art="${c.id}" aria-hidden="true"></canvas><div class="w6t"><b>${esc(c.name)}</b><span>${esc(c.tag)}</span><em>For ${esc(c.who.toLowerCase())} · ${esc(c.when.toLowerCase())}</em></div></div>`).join("");
-$("#wild9").innerHTML = WILD.map(w => `<div class="w9 b" style="--c:${w.acc}"><div class="dz"><canvas data-art="${w.id}" aria-hidden="true"></canvas></div><div><span class="org">${esc(w.origin)}</span><b>${esc(w.name)}</b><span class="tr">${esc(w.trend)}</span><span class="df d-${w.diff.toLowerCase()}">${w.diff}</span></div></div>`).join("");
+$("#wild9").innerHTML = WILD.map(w => `<div class="w9 b" style="--c:${w.acc}"><div class="dz"><img src="../assets/visuals/wc-${w.id}.webp" alt=""></div><div><span class="org">${esc(w.origin)}</span><b>${esc(w.name)}</b><span class="tr">${esc(w.trend)}</span><span class="df d-${w.diff.toLowerCase()}">${w.diff}</span></div></div>`).join("");
 $("#plat4").innerHTML = Object.keys(PLATS).map((k, i) => { const fl = [...CONCEPTS.filter(c => c.plat[0] === k), ...WILD.filter(w => w.plat === k)]; return `<div class="p4 card b"><span class="n">0${i + 1}</span><h3>${PLATS[k]}</h3><p>${PLAT_LINES[k]}</p><div class="chips">${fl.map(f => `<span class="chip"><i style="--c:${f.acc}"></i>${esc(f.name)}</span>`).join("")}</div></div>`; }).join("");
 $("#cups7").innerHTML = [...CONCEPTS.map(c => c.code).sort(), CONTROL.code].map(c => `<span class="cup">${c}${c === CONTROL.code ? "<small>Today</small>" : ""}</span>`).join("");
 // concepts
@@ -928,6 +969,7 @@ const FMT_FITS = { "Oral rinse": ["Frost Mint", "Coastal Mint", "Orchard Mint"],
 $("#fmts").innerHTML = FORMATS.map((f, i) => `<div class="fm card b"><span class="n">0${i + 1}</span><h3>${esc(f)}</h3><div class="chips">${(FMT_FITS[f] || []).map(n => { const k = [...CONCEPTS, ...WILD].find(x => x.name === n); return `<span class="chip"><i style="--c:${k ? k.acc : "#F58025"}"></i>${esc(n)}</span>`; }).join("")}</div></div>`).join("");
 $("#leads").innerHTML = `<div class="hd">Lead</div><div class="hd">Owner</div><div class="hd">First test</div><div class="hd">By</div>` + [1, 2, 3].map(n => `<div class="cell n">${n}<div class="write"></div></div><div class="cell"><div class="write"></div></div><div class="cell"><div class="write"></div></div><div class="cell"><div class="write"></div></div>`).join("");
 $("#acts").innerHTML = ACTIONS.map(a => `<span class="chip"><i></i>${a}</span>`).join("");
+$("#six6cap").innerHTML = CONCEPTS.map(c => `<div><b>${esc(c.name)}</b><span>${esc(c.tag)}</span><em>${esc(c.who)} · ${esc(c.when)}</em></div>`).join("");
 $("#lineup2").innerHTML = CONCEPTS.map(c => `<div class="bt b">${cb(c)}<span>${esc(c.name)}</span></div>`).join("");
 
 /* ------------------------------------------------------------ chrome, builds */
@@ -937,10 +979,33 @@ slides.forEach((s, i) => {
   s.style.setProperty("--bgc", s.dataset.bg);
   const first = i === 0;
   s.insertAdjacentHTML("beforeend", `<div class="chrome" aria-hidden="true">
-    <div class="lock"><img src="../assets/therabreath-logo.png" alt=""><span class="x">×</span><span class="ff">The Flavor Factory</span></div>
+    <div class="lock"><img src="../assets/therabreath-logo.png" alt=""><span class="x">×</span><img class="tff" src="../assets/brand/tff-logo.webp" alt=""></div>
     ${first ? "" : `<div class="sec"><b>●</b> ${s.dataset.sec}</div><div class="foot">TheraBreath Flavor Playbook · November 9, 2026</div><div class="num">${String(i + 1).padStart(2, "0")} / ${N}</div>`}</div>`);
   $$(".b", s).forEach((el, k) => el.style.setProperty("--i", k));
 });
+
+/* ------------------------------------------------------------ key visuals */
+slides.forEach(s => {
+  if (!s.dataset.kv) return;
+  s.insertAdjacentHTML("afterbegin", `<img class="kvbg" src="../assets/visuals/kv-${s.dataset.kv}.webp" alt=""><div class="kvshade ${s.dataset.kvshade || ""}"></div><span class="kvcap">AI-generated illustration</span>`);
+});
+
+/* ------------------------------------------------------------ 3D flavor world (one renderer, moved to the slide on screen) */
+let lab = null;
+const labHosts = slides.map(s => $("[data-lab]", s));
+if (window.Lab3D && Lab3D.supported() && MODE !== "embed" && MODE !== "presenter" && !params.has("no3d")) {
+  lab = Lab3D.create(document.createElement("canvas"), { base: "../assets/", logo: "../assets/therabreath-logo.png", worlds: CONCEPTS, preserve: MODE === "print", still: MODE === "print", static: MODE === "print", autostart: MODE !== "print", dpr: MODE === "print" ? 1.5 : 0, maxPixels: MODE === "print" ? 4e6 : params.has("lowgl") ? 3e5 : 0 });
+  if (lab) document.documentElement.classList.add("has-3d");
+}
+const hostOpts = h => { let p = {}; try { p = JSON.parse(h.dataset.params || "{}"); } catch (e) {} return { instant: true, params: p }; };
+function lab3dFor(i) {
+  if (!lab) return;
+  const h = labHosts[i];
+  if (!h) { lab.cycle(0); lab.stop(); return; }
+  lab.attach(h, h.dataset.lab, hostOpts(h));
+  lab.cycle(h.dataset.cycle ? +h.dataset.cycle : 0);
+  lab.start();
+}
 
 /* ------------------------------------------------------------ worlds */
 let scale = 1;
@@ -964,6 +1029,7 @@ function go(i, from) {
   i = Math.max(0, Math.min(N - 1, i));
   slides.forEach((s, k) => s.classList.toggle("on", k === i));
   cur = i; drawSlide(slides[i], performance.now() / 1000);
+  lab3dFor(i);
   $("#progress").style.transform = `scaleX(${(i + 1) / N})`;
   if (MODE !== "embed" && location.hash !== "#" + (i + 1)) history.replaceState(null, "", "#" + (i + 1));
   const np = $("#notesPanel"); if (!np.hidden) np.innerHTML = `<b>${i + 1} · ${slides[i].dataset.title}</b>${$("aside.notes", slides[i]).textContent}`;
@@ -976,6 +1042,24 @@ if (MODE === "print") {
   slides.forEach(s => { s.classList.add("on"); drawSlide(s, 9); });
   // flatten each world to a JPEG so the PDF stays small
   [...worlds, ...minis].forEach(o => { const img = new Image(); img.src = o.cv.toDataURL("image/jpeg", .84); img.className = o.cv.className; img.style.cssText = `width:${o.cv.offsetWidth || o.w}px;height:${o.cv.offsetHeight || o.h}px;display:block;` + (o.cv.classList.contains("bgw") ? "position:absolute;inset:0;" : ""); img.alt = ""; o.cv.replaceWith(img); });
+  // 3D slides: render each once and keep it as an image, then tell the exporter we're done
+  (async () => {
+    if (lab) {
+      await lab.ready;
+      if (document.fonts) await document.fonts.ready;
+      for (let i = 0; i < slides.length; i++) {
+        const h = labHosts[i]; if (!h) continue;
+        lab.attach(h, h.dataset.lab, hostOpts(h));
+        await new Promise(r => setTimeout(r, 120));
+        lab.renderNow(); lab.renderNow();
+        const img = new Image(); img.className = "lab3d-shot"; img.alt = ""; img.src = lab.snapshot("image/webp", .94);
+        h.appendChild(img);
+      }
+      lab.canvas.remove();
+    }
+    document.documentElement.dataset.ready = "1";
+  })();
+
 } else if (MODE === "presenter") {
   buildPresenter();
 } else {

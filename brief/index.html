@@ -57,7 +57,7 @@
 <canvas id="world" aria-hidden="true"></canvas>
 <div class="progress" id="progress" aria-hidden="true"></div>
 <header class="bar">
-  <div class="lock"><img src="../assets/therabreath-logo.png" alt="TheraBreath" width="108" height="28"><span class="x">×</span><span class="ff">The Flavor Factory</span></div>
+  <div class="lock"><img src="../assets/therabreath-logo.png" alt="TheraBreath" width="108" height="28"><span class="x">×</span><img class="ff tff" src="../assets/brand/tff-logo.webp" alt="The Flavor Factory" width="127" height="28"></div>
   <div style="display:flex;align-items:center;gap:16px"><span class="where" id="where" aria-live="polite"></span><span class="btn-s">Pre-read</span></div>
 </header>
 
@@ -78,6 +78,7 @@
       <div class="count rv" style="--d:.8s" id="count" aria-live="off"><span class="n" id="days">–</span><span class="t" id="daysT">days until<br>we meet<small>Nov 9 · 10:00 AM ET</small></span></div>
     </div>
     <div class="hero-bottle rv" style="--d:.3s" id="heroBottle">
+      <div class="lab-host" data-lab="hero" data-cycle="3600" aria-hidden="true"></div>
       <svg class="ring" viewBox="0 0 500 500" aria-hidden="true"><defs><path id="ringP" d="M250,250 m-205,0 a205,205 0 1,1 410,0 a205,205 0 1,1 -410,0"/></defs><text font-family="JetBrains Mono, monospace" font-weight="700" font-size="15" letter-spacing="7" fill="#0A4F8A"><textPath href="#ringP">POWERED BY OXYGEN · SIX NEW WORLDS OF FRESH · POWERED BY OXYGEN · SIX NEW WORLDS OF FRESH ·</textPath></text></svg>
     </div>
   </div>
@@ -104,10 +105,13 @@
       <p class="lede rv">We’re The Flavor Factory, a family flavor house from Norco, California. We spend our days at the bench getting flavor to behave in whatever base it has to live in. For TheraBreath, that base runs on oxygen.</p>
       <div class="todo rv" style="margin-top:24px">To add: team photo, plus who’s coming</div>
     </div>
+    <div>
+    <figure class="photo rv"><img src="../assets/visuals/kv-lab-sm.webp" srcset="../assets/visuals/kv-lab-sm.webp 960w, ../assets/visuals/kv-lab.webp 1920w" sizes="(max-width: 980px) 100vw, 45vw" alt="" loading="lazy" decoding="async"><span class="cap">Illustration</span></figure>
     <div class="bench">
       <div class="rv"><svg viewBox="0 0 48 48" fill="none" stroke="#006649" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22 24 9l16 13v17H8z"/><path d="M20 39V28h8v11"/></svg><b>Family</b><span>Run by a family, in Norco, California.</span></div>
       <div class="rv" style="--d:.1s"><svg viewBox="0 0 48 48" fill="none" stroke="#F58025" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6h12M20 6v12L9 38a3 3 0 0 0 3 4h24a3 3 0 0 0 3-4L28 18V6"/><path d="M14 30h20"/></svg><b>Bench-first</b><span>Every flavor built for the base it goes into.</span></div>
       <div class="rv" style="--d:.2s"><svg viewBox="0 0 48 48" fill="none" stroke="#00A3E0" stroke-width="3"><circle cx="18" cy="28" r="9"/><circle cx="33" cy="16" r="6"/><circle cx="35" cy="34" r="4"/></svg><b>Oxygen-ready</b><span>Six new flavors made for sodium chlorite.</span></div>
+    </div>
     </div>
   </div>
 </section>
@@ -135,6 +139,17 @@
   </div>
 </section>
 
+<!-- VISTA · Trends -->
+<section class="vista" data-world="spectrum" data-tone="dark" data-title="Trends">
+  <img class="pv" src="../assets/visuals/kv-trends.webp" srcset="../assets/visuals/kv-trends-sm.webp 960w, ../assets/visuals/kv-trends.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
+  <span class="cap">AI-generated illustration</span>
+  <div class="wrap">
+    <span class="eyebrow"><b>01</b>Trends</span>
+    <h2 class="display" data-kin>What’s shaping <span class="hl">oral care.</span></h2>
+    <p class="rv">Twelve trends across flavor, sensory and consumer, and where they’re heading through 2030. Our read, from the bench and the categories we make flavors for.</p>
+  </div>
+</section>
+
 <!-- TRENDS -->
 <section id="trends" data-world="spectrum" data-title="Trends"></section>
 
@@ -158,8 +173,30 @@
   </div>
 </section>
 
+<!-- VISTA · The one rule -->
+<section class="vista" data-world="lab" data-tone="dark" data-title="The one rule">
+  <img class="pv" src="../assets/visuals/kv-oxygen.webp" srcset="../assets/visuals/kv-oxygen-sm.webp 960w, ../assets/visuals/kv-oxygen.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
+  <span class="cap">AI-generated illustration</span>
+  <div class="wrap">
+    <span class="eyebrow">The one rule</span>
+    <h2 class="display" data-kin>Built to survive <span class="hl">oxygen.</span></h2>
+    <p class="rv">Sodium chlorite releases oxygen, and oxygen breaks down fragile flavor molecules. Every flavor here is built from the ones that survive.</p>
+  </div>
+</section>
+
 <!-- THE BASE -->
 <section id="base" data-title="The base"></section>
+
+<!-- VISTA · A world of flavor -->
+<section class="vista" data-world="finale" data-tone="dark" data-title="A world of flavor">
+  <img class="pv" src="../assets/visuals/kv-hero.webp" srcset="../assets/visuals/kv-hero-sm.webp 960w, ../assets/visuals/kv-hero.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
+  <span class="cap">AI-generated illustration</span>
+  <div class="wrap">
+    <span class="eyebrow">A world of flavor</span>
+    <h2 class="display" data-kin>Six new worlds <span class="hl">of fresh.</span></h2>
+    <p class="rv">Each one a place with its own taste, feel and moment. All six are built for sodium chlorite.</p>
+  </div>
+</section>
 
 <!-- REVEAL -->
 <section class="w" id="six" data-world="finale" data-tone="dark" data-title="Six new worlds">
@@ -167,6 +204,7 @@
     <span class="eyebrow">A first look</span>
     <h2 class="mega" data-kin="ch" style="margin-top:18px;font-size:clamp(60px,11vw,200px)"><span class="ln">Six new</span><span class="ln">worlds.</span></h2>
     <p class="lede rv" style="margin:24px auto 0">Named the way TheraBreath names its flavors. Built for sodium chlorite. Scroll through each world.</p>
+    <div class="lab-host lineup3d" data-lab="lineup" data-params='{"dist":18.5}' data-mparams='{"dist":27}' aria-hidden="true"></div>
     <div id="lineup"></div>
   </div>
 </section>
@@ -221,6 +259,17 @@
   </div>
 </section>
 
+<!-- VISTA · The Flavor Playbook -->
+<section class="vista" data-world="studio" data-tone="dark" data-title="The Flavor Playbook">
+  <img class="pv" src="../assets/visuals/kv-playbook.webp" srcset="../assets/visuals/kv-playbook-sm.webp 960w, ../assets/visuals/kv-playbook.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
+  <span class="cap">AI-generated illustration</span>
+  <div class="wrap">
+    <span class="eyebrow">The Flavor Playbook</span>
+    <h2 class="display" data-kin>Everything, <span class="hl">in one book.</span></h2>
+    <p class="rv">Six chapters that answer Ross’s four objectives, drafted together in the room and written up afterwards.</p>
+  </div>
+</section>
+
 <!-- OUTCOME -->
 <section class="w" id="outcome" data-world="aura" data-title="What we’ll leave with">
   <div class="wrap">
@@ -238,6 +287,7 @@
   <div class="wrap">
     <h2 class="mega" data-kin="ch" style="font-size:clamp(56px,10vw,180px)"><span class="ln">See you</span><span class="ln"><span class="hl">Nov 9.</span></span></h2>
     <p class="lede rv">10:00 AM in Darwin, Church &amp; Dwight HQ. Questions before the day, or anything we should know? Reply to the email this link came in and we’ll take care of it.</p>
+    <div class="lab-host lineup3d" data-lab="stage" data-cycle="3200" data-mparams='{"dist":22}' aria-hidden="true"></div>
     <div id="lineup2"></div>
     <p class="mono" style="margin-top:36px;color:var(--fg2)">The Flavor Factory for TheraBreath</p>
   </div>
@@ -246,6 +296,7 @@
 
 <script src="../assets/playbook-core.js"></script>
 <script src="../assets/worlds.js"></script>
+<script src="../assets/lab3d.js"></script>
 <script>
 (() => {
 "use strict";
@@ -275,7 +326,7 @@ UI.sixWorlds($("#worlds"), { label: "World" });
 UI.lineup($("#lineup2"));
 UI.trendRadar($("#radarBox"));
 UI.futureRail($("#futureBox"));
-UI.passport($("#passport"));
+UI.passport($("#passport"), { img: "../assets/visuals/" });
 $("#hzs").innerHTML = T.HORIZONS.map((h, i) => `<div class="hzc rv" style="--c:${h.c};--d:${i * .1}s"><span class="k">${h.h}</span><h3>${esc(h.w)}</h3><p>${esc(h.p)}</p></div>`).join("");
 $("#outs").innerHTML = T.OBJECTIVES.map(o => `<span class="chip"><i></i>${o.n} · ${esc(o.out)}</span>`).join("") + `<span class="chip"><i style="--c:#006649"></i>An owner and a date for every next step</span>`;
 
@@ -289,6 +340,8 @@ $("#outs").innerHTML = T.OBJECTIVES.map(o => `<span class="chip"><i></i>${o.n} �
   v.addEventListener("ended", () => fr.classList.remove("playing"));
 })();
 
+UI.lab({ base: "../assets/", logo: "../assets/therabreath-logo.png" });
+UI.vistas();
 UI.start();
 })();
 </script>

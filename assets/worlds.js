@@ -127,7 +127,7 @@
     const C = o.concepts || T.CONCEPTS;
     const pops = Array.from({ length: 12 }, (_, i) => { const a = i / 12 * Math.PI * 2; return `<i class="pop" style="--bx:${Math.cos(a) * (140 + (i % 3) * 50)}px;--by:${Math.sin(a) * (180 + (i % 2) * 60)}px"></i>`; }).join("");
     host.classList.add("six");
-    host.innerHTML = `<div class="six-track" aria-hidden="true"><div class="six-bottle"><div class="bt">${UI.conceptBottle(C[0])}${pops}</div></div></div>` + C.map((c, i) => {
+    host.innerHTML = `<div class="six-track" aria-hidden="true"><div class="six-bottle"><div class="lab-host" data-lab="worlds" data-sx="0.25" data-mx="0.18" data-my="0.24" data-mparams='{"dist":26}'></div><div class="bt">${UI.conceptBottle(C[0])}${pops}</div></div></div>` + C.map((c, i) => {
       const [w1, ...rest] = c.name.split(" "), w2 = rest.join(" ");
       return `<section class="fw" data-world="${c.id}" data-tone="${c.tone}" data-title="${esc(c.name)}" id="w-${c.id}" style="--acc:${c.hi}">
         <div class="fw-pin">
@@ -148,6 +148,7 @@
     const swap = () => {
       if (busy || want === shown) return;
       busy = true; const target = want; bw.classList.add("drain");
+      if (UI.lab3d) UI.lab3d.setWorld(target);
       setTimeout(() => {
         T.setBottle(svg(), T.conceptBottleOpts(C[target])); shown = target;
         bw.classList.remove("drain"); bw.classList.remove("slosh", "burst"); void bw.offsetWidth; bw.classList.add("slosh", "burst");
@@ -160,7 +161,7 @@
       update(y) {
         const mid = y + VH * .5; let k = 0;
         fTops.forEach((tp, i) => { if (tp <= mid) k = i; });
-        if (k !== want) { want = k; swap(); }
+        if (k !== want) { want = k; UI.sixWant = k; swap(); }
         fws.forEach((f, i) => {
           const rel = (y - fTops[i]) / VH;
           if (rel > -1.2 && rel < 1.6) {
@@ -358,12 +359,12 @@
   };
 
   /* ---------------------------------------------------------------- flavor passport */
-  UI.passport = host => {
+  UI.passport = (host, o = {}) => {
     host.classList.add("passport");
     host.innerHTML = T.WILD.map((w, i) => `<button type="button" class="stamp rv" style="--d:${(i % 3) * .08}s;--c:${w.acc};--rot:${[-3, 2, -1.5, 2.5, -2, 1.5, -2.5, 3, -1][i]}deg" aria-pressed="false" aria-label="${esc(w.name)}: tap for details">
-      <span class="face s-front"><span class="disc"><canvas aria-hidden="true"></canvas></span><span class="org mono">${esc(w.origin)}</span><b>${esc(w.name)}</b><span class="ln">${esc(w.line)}</span><span class="diff d-${w.diff.toLowerCase()}">${w.diff}</span></span>
+      <span class="face s-front"><span class="disc">${o.img ? `<img src="${o.img}wc-${w.id}.webp" alt="" loading="lazy" decoding="async">` : `<canvas aria-hidden="true"></canvas>`}</span><span class="org mono">${esc(w.origin)}</span><b>${esc(w.name)}</b><span class="ln">${esc(w.line)}</span><span class="diff d-${w.diff.toLowerCase()}">${w.diff}</span></span>
       <span class="face s-back"><span class="mono">The trend</span><span class="tr">${esc(w.trend)}</span><span class="mono">Built for sodium chlorite</span><span class="ch">${esc(w.chem)}</span><span class="mono">Bench difficulty · ${w.diff}</span><span class="stampmark">${esc(w.origin.split(" · ")[0])}</span></span></button>`).join("");
-    $$("canvas", host).forEach((c, i) => UI.mini(c, T.WILD[i].id, i * 2));
+    if (!o.img) $$("canvas", host).forEach((c, i) => UI.mini(c, T.WILD[i].id, i * 2));
     host.addEventListener("click", e => { const b = e.target.closest(".stamp"); if (!b) return; const on = !b.classList.contains("flip"); b.classList.toggle("flip", on); b.setAttribute("aria-pressed", on); });
   };
 
@@ -425,5 +426,65 @@
     });
     return all;
   };
+  /* ---------------------------------------------------------------- 3D flavor world (assets/lab3d.js)
+     One WebGL renderer for the page. Every [data-lab] element is a place it
+     can live; the canvas moves to whichever one is most on screen. */
+  UI.lab = (o = {}) => {
+    const hosts = $$("[data-lab]");
+    if (!hosts.length || !window.Lab3D || !Lab3D.supported() || /[?&](print|no3d)/.test(location.search)) return null;
+    const low = /[?&]lowgl/.test(location.search);
+    const lab = Lab3D.create(document.createElement("canvas"), { base: o.base || "assets/", logo: o.logo, worlds: T.CONCEPTS, maxPixels: low ? 2.5e5 : 0 });
+    if (!lab) return null;
+    UI.lab3d = lab;
+    document.documentElement.classList.add("has-3d");
+    const mob = () => innerWidth <= 980;
+    const opts = el => {
+      const d = el.dataset, m = mob();
+      let params = {};
+      try { params = JSON.parse((m && d.mparams) || d.params || "{}"); } catch (e) {}
+      return { shiftX: +((m ? d.mx : d.sx) || 0), shiftY: +((m ? d.my : d.sy) || 0), params };
+    };
+    let active = null;
+    const ratio = new Map();
+    const use = el => {
+      if (!el) return;
+      const again = el === active, seen = active && (ratio.get(active) || 0) > 0;
+      active = el;
+      // glide between hosts that share the screen; jump straight to the layout otherwise
+      lab.attach(el, el.dataset.lab, Object.assign(opts(el), { instant: !again && !seen }));
+      if (!again) lab.cycle(el.dataset.cycle ? +el.dataset.cycle : 0);
+      if (!again && el.dataset.lab === "worlds") lab.setWorld(UI.sixWant || 0, { instant: true });
+    };
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => ratio.set(e.target, e.isIntersecting ? e.intersectionRatio : 0));
+      let best = null, br = 0; ratio.forEach((r, el) => { if (r > br) { br = r; best = el; } });
+      if (best && best !== active) use(best);
+    }, { threshold: [0, .05, .15, .3, .5, .7, .9] });
+    hosts.forEach(h => io.observe(h));
+    addEventListener("resize", () => { clearTimeout(UI._lz); UI._lz = setTimeout(() => active && lab.attach(active, active.dataset.lab, opts(active)), 160); });
+    const hero = hosts.find(h => h.dataset.lab === "hero");
+    if (hero) UI.onScroll({ measure() {}, update(y) { if (active === hero) lab.setProgress(clamp(y / (VH || 1))); } });
+    use(hosts[0]);
+    return lab;
+  };
+
+  /* ---------------------------------------------------------------- vistas: full-bleed key visuals with depth */
+  UI.vistas = () => {
+    const ps = $$(".vista");
+    if (!ps.length) return;
+    let tops = [];
+    UI.onScroll({
+      measure() { tops = ps.map(p => { const r = p.getBoundingClientRect(); return [r.top + scrollY, r.height]; }); },
+      update(y) {
+        ps.forEach((p, i) => {
+          const [t, h] = tops[i] || [0, 1], rel = (y + VH - t) / (VH + h);
+          if (rel < -.1 || rel > 1.1) return;
+          const k = clamp(rel);
+          p.style.setProperty("--pk", k.toFixed(3));
+        });
+      }
+    });
+  };
+
   window.WorldsUI = UI;
 })();

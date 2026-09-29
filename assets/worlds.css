@@ -464,3 +464,46 @@ body[data-tone="dark"] .bar .where { background: rgba(4, 16, 40, .35); }
   .plan { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) { .bgrid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------------------------------------------------------------- 3D flavor world (lab3d) */
+.lab-host { position: absolute; pointer-events: none; }
+.lab-host > .lab3d { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hero .wrap > div:first-child { position: relative; z-index: 2; }
+.hero-bottle .lab-host { left: 50%; top: 50%; width: min(1240px, 86vw); height: min(100vh, 1000px); transform: translate(-50%, -50%); z-index: -1; }
+.has-3d .hero-bottle .bottle { visibility: hidden; }
+.has-3d .hero-bottle .ring { display: none; }
+.six-bottle .lab-host { inset: 0; }
+.has-3d .six-bottle .bt { display: none; }
+.has-3d .six-track { z-index: 0; }
+.has-3d .six .fw { z-index: 1; }
+.lab-host.lineup3d { position: relative; width: min(1400px, 100%); height: min(62vh, 600px); margin: clamp(10px, 3vh, 30px) auto 0; }
+.has-3d .lineup3d + .lineup { display: none; }
+@media (max-width: 980px) {
+  .hero-bottle .lab-host { width: 100vw; height: 74vh; }
+  .lab-host.lineup3d { height: 46vh; }
+}
+
+/* ---------------------------------------------------------------- brand */
+.lock img.tff { width: auto; height: 40px; }
+.tff-logo { display: block; width: auto; height: 34px; }
+
+/* ---------------------------------------------------------------- vistas: a window into the next world */
+.vista { position: relative; min-height: 92vh; display: flex; align-items: flex-end; overflow: hidden; margin: clamp(8px, 2vh, 24px) clamp(10px, 2vw, 28px); border-radius: clamp(24px, 3vw, 46px); isolation: isolate; color: #fff; box-shadow: 0 40px 90px rgba(7, 28, 60, .22); --pk: .5; }
+.vista .pv { position: absolute; left: 0; top: -9%; width: 100%; height: 118%; object-fit: cover; z-index: -2; transform: translate3d(0, calc((var(--pk) - .5) * -9%), 0) scale(calc(1.14 - var(--pk) * .14)); will-change: transform; }
+.vista::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(4, 14, 32, 0) 34%, rgba(4, 14, 32, .5) 66%, rgba(4, 14, 32, .82) 100%); }
+.vista .wrap { width: 100%; padding: 0 clamp(22px, 4vw, 72px) clamp(36px, 8vh, 96px); }
+.vista .eyebrow { color: rgba(255, 255, 255, .88); }
+.vista .eyebrow b { background: #fff; color: var(--ink); }
+.vista h2 { color: #fff; margin-top: 14px; max-width: 16ch; text-shadow: 0 6px 40px rgba(0, 0, 0, .25); }
+.vista h2 .hl { color: #A8F0CB; }
+.vista p { color: rgba(255, 255, 255, .9); max-width: 46ch; margin: 18px 0 0; font-size: clamp(17px, 1.5vw, 21px); }
+.vista .cap { position: absolute; right: clamp(16px, 2vw, 28px); bottom: clamp(14px, 2vw, 24px); font-family: var(--f-m); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255, 255, 255, .72); background: rgba(4, 14, 32, .28); padding: 6px 10px; border-radius: 99px; backdrop-filter: blur(6px); }
+.vista.top { align-items: flex-start; }
+.vista.top::after { background: linear-gradient(0deg, rgba(4, 14, 32, 0) 38%, rgba(4, 14, 32, .55) 72%, rgba(4, 14, 32, .78) 100%); }
+.vista.top .wrap { padding: clamp(40px, 9vh, 110px) clamp(22px, 4vw, 72px) 0; }
+.photo { position: relative; margin: 0; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 70px rgba(7, 28, 60, .2); aspect-ratio: 16 / 10; }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo .cap { position: absolute; left: 14px; bottom: 12px; font-family: var(--f-m); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #fff; background: rgba(4, 14, 32, .4); padding: 6px 10px; border-radius: 99px; backdrop-filter: blur(6px); }
+.stamp .disc img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 980px) { .vista { min-height: 78vh; } }
+@media print { .vista { break-inside: avoid; box-shadow: none; } .lab-host { display: none !important; } }

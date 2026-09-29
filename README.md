@@ -58,16 +58,24 @@ What the base breaks down, and why we avoided it: citral (lemon, lime), cinnamal
 
 `video/` is a Remotion project for the 32-second cinematic reel: the ask, twelve trends on the beat, six flavor worlds, nine passport-stamped wildcards and the playbook reveal, with original synthesized music and sound effects. It uses twelve unbranded Higgsfield clips when they have been fetched (`node scripts/fetch-clips.mjs`) and falls back to the animated canvas worlds otherwise. Rendered MP4, WebM and poster are in `brief/media/`. See `video/README.md`.
 
+## 3D flavor world and Higgsfield visuals
+
+- `lab3d/src/lab3d.js` (three.js) builds to `assets/lab3d.js` (`cd lab3d && npm i && npm run build`). It renders a glass TheraBreath-style bottle whose liquid drains and refills per flavor, the five spheres from The Flavor Factory logo, six floating flavor islands and fresh mint. One WebGL canvas per page moves to whichever `[data-lab]` host is on screen (hero, six worlds, lineup, stage). Pages fall back to the 2D bottle when WebGL is unavailable. `?no3d` turns it off; `?lowgl` renders at low resolution for testing.
+- `assets/models/`: the six islands and the mint sprig, made with Higgsfield (image, then Tripo image-to-3D) and compressed with gltf-transform (WebP textures, meshopt), about 3.8 MB in total.
+- `assets/visuals/`: Higgsfield key visuals (hero archipelago, trends, territories, concepts, pipeline, playbook, Norco lab, oxygen), island renders and nine wildcard photos. All are AI-generated illustrations and are labeled as such on the pages.
+- `assets/brand/`: The Flavor Factory logo (color and reversed), from the supplied PDF.
+- Site and pre-read: 3D hero and six-worlds, 3D lineup and finale, full-bleed "vista" sections between chapters, photo passport stamps.
+- Deck: 3D title, six worlds and close slides, key-visual section openers, the pop-up playbook cover. `node scripts/export-deck-pdf.js` serves the deck locally, captures the 3D slides, and prints the PDF; `python3 scripts/compress-pdf.py` then shrinks it (about 9 MB).
+
 ## Still to add (red dashed boxes on the pages)
 
-- The Flavor Factory logo file (header lockups still use typed text)
 - Team photo, plus names and roles of who is attending
 - Flavorist sign-off on the six formulations and the who/when hypotheses
 - Decision on whether to keep the working names
 
 ## Workshop deck
 
-- `deck/index.html`: 34 slides, 1920 × 1080, built as a workshop around Ross's four objectives. It opens with what TheraBreath asked for (Ross's ask and the four things he asked us to bring). Each objective has an opener with its question, the content, and a "Let's discuss" slide with prompts. Trends: radar, a slide per lens, 2027–2030, discussion and a dot vote. Territories: one rule from the bench, the white-space map, six new worlds, nine wildcards, four platforms, a short taste break, discussion. Concepts: a day of occasions, six consumer segments, the Create exercise. Pipeline: three checks, now/next/later, where flavor could travel across the franchise, discussion, draft playbook, the ultimate playbook (six chapters, each tied to an objective), a proposed 30/60/90 plan, close.
+- `deck/index.html`: 34 slides (3D on the title, six worlds and close slides), 1920 × 1080, built as a workshop around Ross's four objectives. It opens with what TheraBreath asked for (Ross's ask and the four things he asked us to bring). Each objective has an opener with its question, the content, and a "Let's discuss" slide with prompts. Trends: radar, a slide per lens, 2027–2030, discussion and a dot vote. Territories: one rule from the bench, the white-space map, six new worlds, nine wildcards, four platforms, a short taste break, discussion. Concepts: a day of occasions, six consumer segments, the Create exercise. Pipeline: three checks, now/next/later, where flavor could travel across the franchise, discussion, draft playbook, the ultimate playbook (six chapters, each tied to an objective), a proposed 30/60/90 plan, close.
 - Keys: ← → / space to move, **G** overview, **N** speaker notes, **P** presenter view (current and next slide, notes, timer, synced), **F** full screen, **B** blank. Slide numbers deep-link (`deck/#12`).
 - `dist/TheraBreath_Flavor_Playbook_Deck.pdf` is the PDF export. Regenerate with `node scripts/export-deck-pdf.js` (needs `playwright-core` and a local Chrome; see the script header).
 - Fonts are self-hosted in `assets/fonts/` (Bricolage Grotesque, Figtree, JetBrains Mono, Archivo).
