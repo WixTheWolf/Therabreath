@@ -3,343 +3,145 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TheraBreath Flavor Playbook · Pre-read</title>
-<meta name="description" content="Before we meet on November 9: six new flavor worlds for TheraBreath, built to survive sodium chlorite. From The Flavor Factory.">
-<meta name="theme-color" content="#0A63B5">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='18' y='4' width='28' height='16' rx='4' fill='%23F58025'/%3E%3Cpath d='M20 22h24v6c9 2 12 8 12 16v12a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6V44c0-8 3-14 12-16z' fill='%2300A3E0'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../assets/fonts/fonts.css">
-<link rel="stylesheet" href="../assets/worlds.css">
-<style>
-.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(22px, 3.5vh, 34px); }
-.facts .chip { background: rgba(255, 255, 255, .8); color: var(--ink); font-size: 12px; }
-.count { display: flex; align-items: flex-end; gap: 16px; margin-top: clamp(22px, 3.5vh, 36px); }
-.count .n { font-family: var(--f-d); font-weight: 800; font-size: clamp(64px, 7vw, 116px); line-height: .8; letter-spacing: -.012em; color: var(--orange); font-variant-numeric: tabular-nums; font-stretch: 80%; }
-.count .t { font-family: var(--f-d); font-weight: 800; font-size: clamp(18px, 1.6vw, 24px); line-height: 1.1; padding-bottom: 4px; }
-.count .t small { display: block; font-family: var(--f-m); font-weight: 700; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg2); margin-top: 4px; }
-/* reel */
-.reel-sec { min-height: auto; padding-top: 0; }
-.reel-frame { position: relative; border-radius: 34px; overflow: hidden; background: #071C3C; box-shadow: 0 40px 100px rgba(7, 28, 60, .35), 0 0 0 8px rgba(255, 255, 255, .5); aspect-ratio: 16 / 9; }
-.reel-frame video { display: block; width: 100%; height: 100%; object-fit: cover; }
-.reel-play { position: absolute; left: 50%; top: 50%; width: 124px; height: 124px; margin: -62px 0 0 -62px; border: 0; border-radius: 50%; background: var(--orange); box-shadow: 0 20px 50px rgba(0, 0, 0, .35), 0 0 0 12px rgba(245, 128, 37, .25); transition: transform .3s var(--ease), opacity .3s; }
-.reel-play:hover { transform: scale(1.07); }
-.reel-play span { position: absolute; left: 50%; top: 50%; margin: -22px 0 0 -12px; border-style: solid; border-width: 22px 0 22px 36px; border-color: transparent transparent transparent #fff; }
-.reel-frame.playing .reel-play { opacity: 0; pointer-events: none; }
-.reel-cap { margin-top: 16px; display: flex; justify-content: space-between; gap: 16px; }
-/* prep */
-.tips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: clamp(26px, 4vh, 44px); }
-.tip { padding: 22px 20px 24px; border-radius: 26px; background: rgba(255, 255, 255, .8); border: 1px solid var(--line); }
-.tip .ic { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: var(--bg, #FFF1E4); }
-.tip .ic svg { width: 26px; height: 26px; }
-.tip h3 { margin: 16px 0 6px; font-family: var(--f-d); font-weight: 800; font-size: 22px; letter-spacing: 0; line-height: 1.1; }
-.tip p { margin: 0; font-size: 15.5px; color: var(--fg2); }
-/* questions */
-.qlist { margin-top: clamp(24px, 4vh, 40px); }
-.q { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 26px 0; border-top: 1px solid var(--line); }
-.q .n { font-family: var(--f-d); font-weight: 800; font-size: clamp(56px, 6vw, 92px); line-height: .8; color: #FFB066; font-stretch: 80%; letter-spacing: -.012em; }
-.q h3 { margin: 0; font-family: var(--f-d); font-weight: 800; font-size: clamp(24px, 2.6vw, 40px); letter-spacing: -.01em; line-height: 1.08; }
-.q p { margin: 8px 0 0; color: var(--fg2); }
-/* outcome */
-.hzs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: clamp(26px, 4vh, 44px); }
-.hzc { padding: 26px; border-radius: 28px; background: rgba(255, 255, 255, .82); border: 1px solid var(--line); border-top: 8px solid var(--c); }
-.hzc .k { font-family: var(--f-m); font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--c); }
-.hzc h3 { margin: 8px 0 6px; font-family: var(--f-d); font-weight: 800; font-size: clamp(24px, 2.2vw, 32px); letter-spacing: 0; line-height: 1.05; }
-.hzc p { margin: 0; font-size: 15.5px; color: var(--fg2); }
-.outs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.outs .chip { background: #fff; color: var(--ink); }
-.close-sec { text-align: center; }
-.close-sec .lede { margin: 26px auto 0; }
-@media (max-width: 980px) { .tips { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hzs { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 560px) { .tips { grid-template-columns: minmax(0, 1fr); } .q { grid-template-columns: 64px minmax(0, 1fr); gap: 14px; } }
-@media print { .reel-sec { display: none; } }
-</style>
+<title>Pre-brief · The Future of Freshness</title>
+<meta name="description" content="Your pre-brief for The Future of Freshness: a TheraBreath Flavor Playbook workshop with The Flavor Factory. Monday, November 9, 2026, Church & Dwight.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F5F8F9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230B6B4F'/%3E%3Cpath d='M20 38c4-14 16-18 26-18-2 12-10 22-26 18z' fill='%23BFE6D2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../freshness/fonts/fonts.css">
+<link rel="stylesheet" href="brief.css">
 </head>
-<body data-tone="light">
-<canvas id="world" aria-hidden="true"></canvas>
-<div class="progress" id="progress" aria-hidden="true"></div>
-<header class="bar">
-  <div class="lock"><img src="../assets/therabreath-logo.png" alt="TheraBreath" width="108" height="28"><span class="x">×</span><img class="ff tff" src="../assets/brand/tff-logo.webp" alt="The Flavor Factory" width="127" height="28"></div>
-  <div style="display:flex;align-items:center;gap:16px"><span class="where" id="where" aria-live="polite"></span><span class="btn-s">Pre-read</span></div>
+<body>
+
+<header class="cover">
+  <video class="cv" autoplay muted loop playsinline poster="../freshness/media/opening-poster.jpg"><source src="../freshness/media/loop.webm" type="video/webm"><source src="../freshness/media/loop.mp4" type="video/mp4"></video>
+  <div class="cv-shade"></div>
+  <div class="cv-top"><div class="brand"><img src="../freshness/brand/therabreath-logo.png" alt="TheraBreath"><span>×</span><img src="../freshness/brand/tff-logo.webp" alt="The Flavor Factory"></div><span class="kick light">Pre-brief · Please read before the session</span></div>
+  <div class="cv-in">
+    <p class="kick light">You're invited</p>
+    <h1>The Future<br>of Freshness</h1>
+    <p class="cv-s">A TheraBreath Flavor Playbook workshop</p>
+    <ul class="facts">
+      <li><b>Monday, November 9, 2026</b><span>10:00 AM – 12:00 PM ET</span></li>
+      <li><b>Darwin room</b><span>Church &amp; Dwight</span></li>
+      <li><b>Two hours</b><span>Six flavors to taste</span></li>
+    </ul>
+    <button type="button" class="play" data-film>▶&nbsp; Watch the 30-second film</button>
+  </div>
 </header>
 
 <main>
-<!-- HERO -->
-<section class="w hero" id="open" data-world="oxygen" data-title="Before we meet">
-  <div class="wrap">
-    <div>
-      <div class="meta"><span class="mono">Pre-read · TheraBreath Flavor Playbook</span></div>
-      <h1 class="mega" data-kin="ch"><span class="ln">The future</span><span class="ln">of <span class="hl">fresh.</span></span></h1>
-      <p class="lede rv" style="--d:.5s">Thank you for hosting us. Ross asked for a session on growing TheraBreath through flavor. Here’s a first look: six new flavor worlds, each one built to survive the oxygen in the bottle.</p>
-      <div class="facts rv" style="--d:.65s">
-        <span class="chip"><i style="--c:#F58025"></i>Monday, November 9, 2026</span>
-        <span class="chip"><i style="--c:#00A3E0"></i>10:00 AM – 12:00 PM ET</span>
-        <span class="chip"><i style="--c:#006649"></i>Darwin · Church &amp; Dwight HQ, Ewing, NJ</span>
-        <span class="chip"><i style="--c:#7ED321"></i>Lunch provided</span>
+  <section class="letter">
+    <div class="col">
+      <span class="kick">A note from The Flavor Factory</span>
+      <p class="big">Dear TheraBreath team,</p>
+      <p>For decades, freshness in oral care has meant one thing: mint. Cold, clean, strong. It has served the category well. But the people who buy TheraBreath now live in a much bigger world of flavor. They order yuzu spritzes, drink matcha, choose skincare by the botanical, and wind down with chamomile.</p>
+      <p>On November 9 we'd like to show you what we see coming, let you taste six directions we've built for an oxygen-based rinse, and then hand the pen to you. By noon, we'll have written the TheraBreath Flavor Playbook <em>together</em>.</p>
+      <p>This pre-brief takes about five minutes. The only homework is at the end: tell us what your freshness feels like.</p>
+      <p class="sign">With thanks,<br><b>The Flavor Factory team</b></p>
+    </div>
+  </section>
+
+  <section class="idea">
+    <div class="col wide">
+      <span class="kick">The idea in one line</span>
+      <h2>Freshness is evolving.</h2>
+      <p class="lede">Consumers now understand freshness through a far broader sensory vocabulary. The next era of oral care won't come from another mint. It will come from designing different kinds of freshness for different people, moments and needs.</p>
+      <div class="vocab"></div>
+    </div>
+  </section>
+
+  <section class="qs">
+    <div class="col wide">
+      <span class="kick">Why we're meeting · the four questions you asked us</span>
+      <div class="q4"></div>
+    </div>
+  </section>
+
+  <section class="agenda">
+    <div class="col wide">
+      <span class="kick">The two hours</span>
+      <h2>Teach. Show. Taste. Discuss. Decide.</h2>
+      <p class="lede">Nobody lectures for 45 minutes. We alternate: a little context, then the flavors, then your judgment.</p>
+      <ol class="tl"></ol>
+    </div>
+  </section>
+
+  <section class="sealed">
+    <div class="col wide">
+      <span class="kick">What you'll taste</span>
+      <h2>Six territories. Six sealed flavors.</h2>
+      <p class="lede">Each territory is a direction freshness could take, with a hero concept built for TheraBreath's rinse base. The names stay sealed until you taste them. Tap a card for a hint.</p>
+      <div class="cards"></div>
+    </div>
+  </section>
+
+  <section class="work" id="homework">
+    <div class="col wide work-grid">
+      <div>
+        <span class="kick">Your five minutes of homework</span>
+        <h2>What does your freshness feel like?</h2>
+        <p class="lede">Halfway through the session we'll stop presenting and ask the room to vote on these same five lines. Set your own answer now, save it, and bring your instinct into the room.</p>
+        <div class="sliders"></div>
+        <p class="say"></p>
+        <div class="acts"><button type="button" class="btn dark" id="save">Save my freshness profile</button><button type="button" class="btn ghost" id="reset">Start again</button></div>
+        <p class="fine">Your answers stay on your device. Nothing is sent anywhere.</p>
       </div>
-      <div class="count rv" style="--d:.8s" id="count" aria-live="off"><span class="n" id="days">–</span><span class="t" id="daysT">days until<br>we meet<small>Nov 9 · 10:00 AM ET</small></span></div>
+      <div class="orb-card" id="orbcard">
+        <canvas class="orb" width="560" height="560"></canvas>
+        <p class="oc-k">My freshness profile</p>
+        <p class="oc-s"></p>
+        <p class="oc-f">The Future of Freshness · November 9, 2026</p>
+      </div>
     </div>
-    <div class="hero-bottle rv" style="--d:.3s" id="heroBottle">
-      <div class="lab-host" data-lab="hero" data-cycle="3600" aria-hidden="true"></div>
-      <svg class="ring" viewBox="0 0 500 500" aria-hidden="true"><defs><path id="ringP" d="M250,250 m-205,0 a205,205 0 1,1 410,0 a205,205 0 1,1 -410,0"/></defs><text font-family="JetBrains Mono, monospace" font-weight="700" font-size="15" letter-spacing="7" fill="#0A4F8A"><textPath href="#ringP">POWERED BY OXYGEN · SIX NEW WORLDS OF FRESH · POWERED BY OXYGEN · SIX NEW WORLDS OF FRESH ·</textPath></text></svg>
+  </section>
+
+  <section class="think">
+    <div class="col wide">
+      <span class="kick">Three things to think about</span>
+      <div class="three">
+        <div><b>01</b><p>When did a flavor last surprise you, in a drink, a dessert or a skincare product? What made it feel <em>new</em> rather than strange?</p></div>
+        <div><b>02</b><p>At what moments of the day do you want freshness to feel different? Is there a moment TheraBreath doesn't own yet?</p></div>
+        <div><b>03</b><p>How adventurous can TheraBreath be before it stops feeling like TheraBreath?</p></div>
+      </div>
     </div>
-  </div>
-  <div class="cue"><i></i>Read on</div>
-</section>
+  </section>
 
-<!-- REEL -->
-<section class="w reel-sec" data-world="oxygen" data-title="The reel" aria-label="30-second preview">
-  <div class="wrap">
-    <div class="reel-frame rv">
-      <video id="reel" poster="media/flavor-playbook-reel-poster.jpg" playsinline preload="metadata" controls><source src="media/flavor-playbook-reel.mp4" type="video/mp4"><source src="media/flavor-playbook-reel.webm" type="video/webm"></video>
-      <button class="reel-play" id="reelPlay" type="button" aria-label="Play the 30-second preview with sound"><span></span></button>
+  <section class="tasting">
+    <div class="col wide tasting-grid">
+      <div>
+        <span class="kick">About the tasting</span>
+        <h2>The palate is the presentation.</h2>
+      </div>
+      <ul class="notes">
+        <li><b>Six flavor concepts</b><span>Each is prepared in a rinse base and served in small cups. These are flavor explorations, not finished products.</span></li>
+        <li><b>Rinse, then expectorate</b><span>Swish for a few seconds and spit. Water and plain crackers will be on the table between samples.</span></li>
+        <li><b>Come with a clean palate</b><span>If you can, skip coffee and mint gum in the hour before we start.</span></li>
+        <li><b>Tell us about sensitivities</b><span>If you have allergies or would rather not taste, let us know ahead of time. There's plenty to do without tasting.</span></li>
+      </ul>
     </div>
-    <div class="reel-cap"><span class="mono" style="color:var(--fg2)">30 seconds · sound on</span><span class="mono" style="color:var(--fg2)">Original music and sound</span></div>
-  </div>
-</section>
+  </section>
 
-<!-- WHO WE ARE -->
-<section class="w who" id="us" data-world="oxygen" data-title="Who we are" style="min-height:auto">
-  <div class="wrap grid-2">
-    <div>
-      <span class="eyebrow">Who we are</span>
-      <h2 class="display" data-kin style="margin-top:16px">Hello from <span class="hl">Norco.</span></h2>
-      <p class="lede rv">We’re The Flavor Factory, a family flavor house from Norco, California. We spend our days at the bench getting flavor to behave in whatever base it has to live in. For TheraBreath, that base runs on oxygen.</p>
-      <div class="todo rv" style="margin-top:24px">To add: team photo, plus who’s coming</div>
+  <section class="close">
+    <div class="col">
+      <h2>See you on November 9.</h2>
+      <p class="lede">Monday, 10:00 AM – 12:00 PM ET · Darwin room · Church &amp; Dwight</p>
+      <div class="acts center"><a class="btn dark" href="../">Explore the world of freshness</a><button type="button" class="btn ghost" id="print">Save this brief as a PDF</button></div>
+      <div class="brand foot"><img src="../freshness/brand/therabreath-logo.png" alt="TheraBreath"><span>×</span><img src="../freshness/brand/tff-logo.webp" alt="The Flavor Factory"></div>
     </div>
-    <div>
-    <figure class="photo rv"><img src="../assets/visuals/kv-lab-sm.webp" srcset="../assets/visuals/kv-lab-sm.webp 960w, ../assets/visuals/kv-lab.webp 1920w" sizes="(max-width: 980px) 100vw, 45vw" alt="" loading="lazy" decoding="async"></figure>
-    <div class="bench">
-      <div class="rv"><svg viewBox="0 0 48 48" fill="none" stroke="#006649" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22 24 9l16 13v17H8z"/><path d="M20 39V28h8v11"/></svg><b>Family</b><span>Run by a family, in Norco, California.</span></div>
-      <div class="rv" style="--d:.1s"><svg viewBox="0 0 48 48" fill="none" stroke="#F58025" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6h12M20 6v12L9 38a3 3 0 0 0 3 4h24a3 3 0 0 0 3-4L28 18V6"/><path d="M14 30h20"/></svg><b>Bench-first</b><span>Every flavor built for the base it goes into.</span></div>
-      <div class="rv" style="--d:.2s"><svg viewBox="0 0 48 48" fill="none" stroke="#00A3E0" stroke-width="3"><circle cx="18" cy="28" r="9"/><circle cx="33" cy="16" r="6"/><circle cx="35" cy="34" r="4"/></svg><b>Oxygen-ready</b><span>Six new flavors made for sodium chlorite.</span></div>
-    </div>
-    </div>
-  </div>
-</section>
-
-<!-- WHAT THERABREATH ASKED FOR -->
-<section class="w" id="ask" data-world="aura" data-title="What you asked for">
-  <div class="wrap">
-    <span class="eyebrow">What TheraBreath asked for</span>
-    <h2 class="display" data-kin style="margin-top:14px">You asked for a <span class="hl">playbook.</span></h2>
-    <p class="lede rv">Four objectives, one outcome. Here is how each one maps to what you’ll walk out with.</p>
-    <div id="askMap"></div>
-  </div>
-</section>
-
-
-<section class="w" id="morning" data-world="studio" data-title="The morning">
-  <div class="wrap morning">
-    <div>
-      <span class="eyebrow">Why we’re coming</span>
-      <h2 class="display" data-kin style="margin-top:16px">Two hours. <span class="hl">One playbook.</span></h2>
-      <p class="lede rv">Ross’s invite sets four objectives. Together they make a flavor playbook for near-term launches and long-term franchise growth.</p>
-      <div class="objs" id="objs"></div>
-    </div>
-    <div id="dial"></div>
-  </div>
-</section>
-
-<!-- VISTA · Trends -->
-<section class="vista" data-world="spectrum" data-tone="dark" data-title="Trends">
-  <img class="pv" src="../assets/visuals/kv-trends.webp" srcset="../assets/visuals/kv-trends-sm.webp 960w, ../assets/visuals/kv-trends.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
-  <div class="wrap">
-    <span class="eyebrow"><b>01</b>Trends</span>
-    <h2 class="display" data-kin>What’s shaping <span class="hl">oral care.</span></h2>
-    <p class="rv">Twelve trends across flavor, sensory and consumer, and where they’re heading through 2030. Our read, from the bench and the categories we make flavors for.</p>
-  </div>
-</section>
-
-<!-- TRENDS -->
-<section id="trends" data-world="spectrum" data-title="Trends"></section>
-
-<!-- TREND RADAR -->
-<section class="w" id="radar" data-world="aura" data-title="Trend radar">
-  <div class="wrap">
-    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px">
-      <div><span class="eyebrow"><b>01</b>Trends · the deep dive</span><h2 class="display" data-kin style="margin-top:14px">Twelve trends, <span class="hl">three lenses.</span></h2></div>
-      <p class="small rv" style="max-width:40ch;margin:0">What people want to taste, what they want to feel, and how they use oral care. Tap any trend: we’ll open the session with the ones you think matter most.</p>
-    </div>
-    <div id="radarBox"></div>
-  </div>
-</section>
-
-<!-- FUTURE -->
-<section class="w" id="future" data-world="lab" data-tone="dark" data-title="Future trends">
-  <div class="wrap">
-    <span class="eyebrow"><b>01</b>Trends · what’s next</span>
-    <h2 class="display" data-kin style="margin-top:14px">2027 to 2030: <span class="hl">where it’s heading.</span></h2>
-    <div id="futureBox"></div>
-  </div>
-</section>
-
-<!-- VISTA · The one rule -->
-<section class="vista" data-world="lab" data-tone="dark" data-title="The one rule">
-  <img class="pv" src="../assets/visuals/kv-oxygen.webp" srcset="../assets/visuals/kv-oxygen-sm.webp 960w, ../assets/visuals/kv-oxygen.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
-  <div class="wrap">
-    <span class="eyebrow">The one rule</span>
-    <h2 class="display" data-kin>Built to survive <span class="hl">oxygen.</span></h2>
-    <p class="rv">Sodium chlorite releases oxygen, and oxygen breaks down fragile flavor molecules. Every flavor here is built from the ones that survive.</p>
-  </div>
-</section>
-
-<!-- THE BASE -->
-<section id="base" data-title="The base"></section>
-
-<!-- VISTA · A world of flavor -->
-<section class="vista" data-world="finale" data-tone="dark" data-title="A world of flavor">
-  <img class="pv" src="../assets/visuals/kv-hero.webp" srcset="../assets/visuals/kv-hero-sm.webp 960w, ../assets/visuals/kv-hero.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
-  <div class="wrap">
-    <span class="eyebrow">A world of flavor</span>
-    <h2 class="display" data-kin>Six new worlds <span class="hl">of fresh.</span></h2>
-    <p class="rv">Each one a place with its own taste, feel and moment. All six are built for sodium chlorite.</p>
-  </div>
-</section>
-
-<!-- REVEAL -->
-<section class="w" id="six" data-world="finale" data-tone="dark" data-title="Six new worlds">
-  <div class="wrap" style="text-align:center">
-    <span class="eyebrow">A first look</span>
-    <h2 class="mega" data-kin="ch" style="margin-top:18px;font-size:clamp(60px,11vw,200px)"><span class="ln">Six new</span><span class="ln">worlds.</span></h2>
-    <p class="lede rv" style="margin:24px auto 0">Named the way TheraBreath names its flavors. Built for sodium chlorite. Scroll through each world.</p>
-    <div class="lab-host lineup3d" data-lab="lineup" data-params='{"dist":18.5}' data-mparams='{"dist":27}' aria-hidden="true"></div>
-    <div id="lineup"></div>
-  </div>
-</section>
-
-<!-- THE SIX WORLDS -->
-<div id="worlds"></div>
-
-<!-- WILDCARDS -->
-<section class="w" id="wild" data-world="aura" data-title="Wildcards">
-  <div class="wrap">
-    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px">
-      <div><span class="eyebrow">Flavor passport · nine wildcards</span><h2 class="display" data-kin style="margin-top:14px">Around the world <span class="hl">in nine rinses.</span></h2></div>
-      <p class="small rv" style="max-width:36ch;margin:0">If the room wants to push further. Each one comes from a real trend and a real culture. Tap a stamp to turn it over.</p>
-    </div>
-    <div id="passport"></div>
-  </div>
-</section>
-
-<!-- PREP -->
-<section class="w" id="prep" data-world="ripple" data-title="Getting ready">
-  <div class="wrap">
-    <span class="eyebrow">Getting ready to taste</span>
-    <h2 class="display" data-kin style="margin-top:14px">You’ll taste all six <span class="hl">blind.</span></h2>
-    <p class="lede rv">In coded cups, beside today’s TheraBreath. See if you can tell which world is which. Four small things make the tasting more accurate for everyone.</p>
-    <div class="tips">
-      <div class="tip rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#C85F0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M3 3l18 18"/></svg></span><h3>Skip coffee and mint for an hour</h3><p>Coffee, gum and mouthwash linger and mask what you taste.</p></div>
-      <div class="tip rv" style="--d:.08s;--bg:#E6F6FD"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#0072BC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3H9z"/><path d="M8 6h8l1 3v10a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9z"/><path d="M3 3l18 18"/></svg></span><h3>Go easy on fragrance</h3><p>Perfume and cologne carry across a room and change how a rinse smells.</p></div>
-      <div class="tip rv" style="--d:.16s;--bg:#E4F4EC"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#006649" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><circle cx="12" cy="16.5" r=".6" fill="#006649"/></svg></span><h3>Tell us about sensitivities</h3><p>Let us know about allergies before the day and we’ll plan around them.</p></div>
-      <div class="tip rv" style="--d:.24s"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#C85F0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span><h3>Bring honest reactions</h3><p>There are no right answers. Your first impression is the most useful thing you can give us.</p></div>
-    </div>
-    <div class="stages rv">
-      <div class="stg" style="--c:#00A3E0"><span class="t">0–5 seconds</span><b>Opening</b><span>What happens first?</span></div>
-      <div class="stg" style="--c:#12A0A6"><span class="t">5–60 seconds</span><b>Development</b><span>How does it change?</span></div>
-      <div class="stg" style="--c:#006649"><span class="t">1–3 minutes</span><b>Finish</b><span>What stays with you?</span></div>
-      <div class="stg" style="--c:#F58025"><span class="t">Tomorrow</span><b>Repeat</b><span>Would you use it again?</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- QUESTIONS -->
-<section class="w" id="questions" data-world="lab" data-tone="dark" data-title="Four questions">
-  <div class="wrap">
-    <span class="eyebrow">Before you arrive</span>
-    <h2 class="display" data-kin style="margin-top:14px">Four questions <span class="hl">to sit with.</span></h2>
-    <p class="lede rv">No homework, just a head start. We’ll open the session with your answers.</p>
-    <div class="qlist">
-      <div class="q rv"><span class="n">01</span><div><h3>Which flavor, sensory or consumer trends are you already seeing?</h3><p>In oral care or anywhere else: food, drink, beauty, wellness.</p></div></div>
-      <div class="q rv"><span class="n">02</span><div><h3>Which consumers and moments is TheraBreath not reaching yet?</h3><p>Think about who, and when in their day.</p></div></div>
-      <div class="q rv"><span class="n">03</span><div><h3>Where in the franchise could flavor drive the most growth?</h3><p>The rinse, another format, or something TheraBreath doesn’t make yet.</p></div></div>
-      <div class="q rv"><span class="n">04</span><div><h3>What should never change about how TheraBreath feels?</h3><p>The one thing any new flavor has to protect.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- VISTA · The Flavor Playbook -->
-<section class="vista" data-world="studio" data-tone="dark" data-title="The Flavor Playbook">
-  <img class="pv" src="../assets/visuals/kv-playbook.webp" srcset="../assets/visuals/kv-playbook-sm.webp 960w, ../assets/visuals/kv-playbook.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
-  <div class="wrap">
-    <span class="eyebrow">The Flavor Playbook</span>
-    <h2 class="display" data-kin>Everything, <span class="hl">in one book.</span></h2>
-    <p class="rv">Six chapters that answer Ross’s four objectives, drafted together in the room and written up afterwards.</p>
-  </div>
-</section>
-
-<!-- OUTCOME -->
-<section class="w" id="outcome" data-world="aura" data-title="What we’ll leave with">
-  <div class="wrap">
-    <span class="eyebrow">What we’ll leave with</span>
-    <h2 class="display" data-kin style="margin-top:14px">A draft <span class="hl">flavor playbook.</span></h2>
-    <p class="lede rv">We build it together in the room. Afterwards we write it up and send it to everyone who was there. Here’s the shape we propose.</p>
-    <div id="bookBox"></div>
-    <div class="hzs" id="hzs"></div>
-    <div class="outs rv" id="outs"></div>
-  </div>
-</section>
-
-<!-- CLOSE -->
-<section class="w close-sec" id="close" data-world="finale" data-tone="dark" data-title="See you there">
-  <div class="wrap">
-    <h2 class="mega" data-kin="ch" style="font-size:clamp(56px,10vw,180px)"><span class="ln">See you</span><span class="ln"><span class="hl">Nov 9.</span></span></h2>
-    <p class="lede rv">10:00 AM in Darwin, Church &amp; Dwight HQ. Questions before the day, or anything we should know? Reply to the email this link came in and we’ll take care of it.</p>
-    <div class="lab-host lineup3d" data-lab="stage" data-cycle="3200" data-mparams='{"dist":22}' aria-hidden="true"></div>
-    <div id="lineup2"></div>
-    <p class="mono" style="margin-top:36px;color:var(--fg2)">The Flavor Factory for TheraBreath</p>
-  </div>
-</section>
+  </section>
 </main>
 
-<script src="../assets/playbook-core.js"></script>
-<script src="../assets/worlds.js"></script>
-<script src="../assets/lab3d.js"></script>
-<script>
-(() => {
-"use strict";
-const T = window.TBCore, UI = window.WorldsUI, $ = (s, r = document) => r.querySelector(s), esc = UI.esc;
-UI.logo("../assets/therabreath-logo.png");
+<div class="film" id="film" hidden>
+  <button type="button" class="film-x" aria-label="Close">×</button>
+  <video controls playsinline preload="none" poster="../freshness/media/opening-poster.jpg">
+    <source src="../freshness/media/opening.webm" type="video/webm">
+    <source src="../freshness/media/opening.mp4" type="video/mp4">
+  </video>
+</div>
 
-/* countdown: whole days until Monday, November 9, 2026 */
-(() => {
-  const now = new Date(), day = new Date(2026, 10, 9);
-  const d = Math.round((new Date(day.getFullYear(), day.getMonth(), day.getDate()) - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 864e5);
-  if (d > 1) $("#days").textContent = d;
-  else if (d === 1) { $("#days").textContent = "1"; $("#daysT").innerHTML = "day until<br>we meet<small>Nov 9 · 10:00 AM ET</small>"; }
-  else if (d === 0) { $("#days").textContent = "Today"; $("#daysT").innerHTML = "<small>10:00 AM ET · Darwin</small>"; }
-  else $("#count").hidden = true;
-})();
-
-$("#heroBottle").insertAdjacentHTML("afterbegin", UI.iconicBottle());
-const SHORT = ["What’s shaping oral care", "Where fresh could go, and what survives oxygen", "New moments, new people", "Now, next and later"];
-$("#objs").innerHTML = T.OBJECTIVES.map((o, i) => `<div class="obj rv" style="--d:${i * .08}s"><span class="n">${o.n}</span><h3>${esc(o.h)}</h3><p>${SHORT[i]}</p></div>`).join("");
-UI.dial($("#dial"));
-UI.askMap($("#askMap"));
-UI.book($("#bookBox"));
-UI.trendTrack($("#trends"));
-UI.chemScene($("#base"));
-UI.lineup($("#lineup"));
-UI.sixWorlds($("#worlds"), { label: "World" });
-UI.lineup($("#lineup2"));
-UI.trendRadar($("#radarBox"));
-UI.futureRail($("#futureBox"));
-UI.passport($("#passport"), { img: "../assets/visuals/" });
-$("#hzs").innerHTML = T.HORIZONS.map((h, i) => `<div class="hzc rv" style="--c:${h.c};--d:${i * .1}s"><span class="k">${h.h}</span><h3>${esc(h.w)}</h3><p>${esc(h.p)}</p></div>`).join("");
-$("#outs").innerHTML = T.OBJECTIVES.map(o => `<span class="chip"><i></i>${o.n} · ${esc(o.out)}</span>`).join("") + `<span class="chip"><i style="--c:#006649"></i>An owner and a date for every next step</span>`;
-
-/* reel: big play button, sound on */
-(() => {
-  const v = $("#reel"), b = $("#reelPlay"), fr = v && v.parentElement;
-  if (!v) return;
-  v.controls = false;
-  b.addEventListener("click", () => { v.muted = false; if (v.ended) v.currentTime = 0; const p = v.play(); p && p.catch(() => {}); });
-  v.addEventListener("play", () => { fr.classList.add("playing"); v.controls = true; });
-  v.addEventListener("ended", () => fr.classList.remove("playing"));
-})();
-
-UI.lab({ base: "../assets/", logo: "../assets/therabreath-logo.png" });
-UI.vistas();
-UI.start();
-})();
-</script>
+<script src="../freshness/js/data.js"></script>
+<script src="../freshness/js/world.js"></script>
+<script src="brief.js"></script>
 </body>
 </html>

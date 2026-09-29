@@ -47,3 +47,8 @@ Answers are stored in the browser (localStorage) on the presenting machine, so r
 - Photography was generated with Higgsfield (GPT Image 2.5).
 - Fonts are self-hosted: Inter Tight, Figtree, JetBrains Mono and Archivo (SIL OFL).
 - The map is a dot rendering of Natural Earth land data.
+
+## The opening film
+- `media/opening.mp4` (and `.webm`) is the 30-second opening film with its score. It is the first screen of the presentation: press → to play.
+- `media/loop.mp4` is a silent version without text, used behind the site and pre-brief heroes.
+- The source is the `Opening` composition in `video/src/Opening.tsx`, built from nine Higgsfield Seedance clips with an ElevenLabs Music score.

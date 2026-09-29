@@ -73,6 +73,17 @@
   const chipRow = (a, cls = "chips") => `<div class="${cls}">${a.map(x => `<span>${esc(x)}</span>`).join("")}</div>`;
   const tvars = t => `--paper:${t.paper};--ink:${t.ink};--acc:${t.acc};--accInk:${t.accInk};--soft:${t.soft}`;
 
+  /* ---------- the film */
+  scene({
+    id: "film", ch: 0, tag: "Show", title: "The film", cls: "dark s-film", builds: 1,
+    bg: `<video class="film-v" preload="auto" playsinline poster="media/opening-poster.jpg"><source src="media/opening.webm" type="video/webm"><source src="media/opening.mp4" type="video/mp4"></video><div class="film-shade"></div>`,
+    html: () => `<div class="film-cue" data-bo="1"><span class="k">TheraBreath × The Flavor Factory</span><b>The Future of Freshness</b><em>Press → to play the film</em></div>`,
+    init(el) { this.v = $(".film-v", el); this.v.addEventListener("click", () => { if (this.v.paused) go(cur, 1); else this.v.pause(); }); },
+    step(el, b) { const v = this.v; if (!v) return; if (b >= 1 && el.classList.contains("on") && !EMBED) { v.currentTime = 0; v.play().catch(() => { v.muted = true; v.play(); }); } else { v.pause(); if (!b) v.currentTime = 0; } },
+    leave() { this.v && this.v.pause(); },
+    notes: ["The 30-second opening film. Lights down, press → to play.", "It ends on the title; press → again to continue."]
+  });
+
   /* ---------- prologue */
   scene({
     id: "open", ch: 0, tag: "Teach", title: "The Future of Freshness", cls: "light s-open",
