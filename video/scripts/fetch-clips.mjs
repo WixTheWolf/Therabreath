@@ -2,7 +2,7 @@
 // and records which clips are present in src/clips.ts. Scenes fall back to the
 // generative canvas world for any clip that is missing, so the reel always renders.
 //
-//   node scripts/fetch-clips.mjs
+//   NODE_USE_ENV_PROXY=1 node scripts/fetch-clips.mjs   (behind a proxy, Node needs the env var)
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const list = JSON.parse(readFileSync(new URL("./clips.json", import.meta.url)));
