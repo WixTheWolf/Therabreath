@@ -26,7 +26,7 @@ export const Playbook: React.FC = () => {
             return (
               <div key={o.k} style={{ display: "flex", alignItems: "baseline", gap: 30, height: 190, opacity: l >= 0 ? 1 : 0 }}>
                 <span style={{ fontFamily: MONO, fontWeight: 800, fontSize: 40, color: COLS[i] }}>{o.n}</span>
-                <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 170, letterSpacing: "-0.03em", lineHeight: 1, color: C.ink,
+                <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 170, letterSpacing: "-0.015em", lineHeight: 1, color: C.ink,
                   display: "inline-block", transformOrigin: "0 60%",
                   scale: `${interpolate(l, [0, 6], [1.6, 1], { ...cl, easing: out })}`, rotate: `${interpolate(l, [0, 6], [-5, 0], { ...cl, easing: out })}deg` }}>
                   {o.h}
@@ -45,7 +45,7 @@ export const Playbook: React.FC = () => {
             rotate: `${interpolate(book, [0, 1], [-14, -3])}deg`, scale: `${0.6 + 0.4 * book}`,
             background: `linear-gradient(160deg, #0F3A74 0%, ${C.ink} 70%)`, boxShadow: "30px 50px 90px rgba(7,28,60,.4), inset 18px 0 0 rgba(255,255,255,.08)", padding: "70px 56px", color: "#fff" }}>
             <div style={{ fontFamily: MONO, fontWeight: 700, fontSize: 22, letterSpacing: "0.2em", color: C.mint }}>THERABREATH × THE FLAVOR FACTORY</div>
-            <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 122, letterSpacing: "-0.035em", lineHeight: 0.9, marginTop: 30 }}>
+            <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 122, letterSpacing: "-0.02em", lineHeight: 0.9, marginTop: 30 }}>
               The Flavor<br /><span style={{ color: C.mint }}>Playbook</span>
             </div>
             <div style={{ height: 10, width: 200, borderRadius: 99, background: C.orange, marginTop: 36 }} />
@@ -66,7 +66,7 @@ export const Playbook: React.FC = () => {
               <div key={ch.n} style={{ display: "flex", alignItems: "center", gap: 16, height: 76, marginBottom: 10, borderRadius: "0 18px 18px 0", padding: "0 22px",
                 background: ch.c, color: "#fff", translate: `${(1 - p) * -380}px 0px`, opacity: p, boxShadow: "0 12px 26px rgba(7,28,60,.18)" }}>
                 <span style={{ fontFamily: MONO, fontWeight: 800, fontSize: 22 }}>{ch.n}</span>
-                <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 29, letterSpacing: "-0.015em", whiteSpace: "nowrap" }}>{ch.h}</span>
+                <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 29, letterSpacing: "-0.005em", whiteSpace: "nowrap" }}>{ch.h}</span>
               </div>
             );
           })}

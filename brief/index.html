@@ -13,7 +13,7 @@
 .facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(22px, 3.5vh, 34px); }
 .facts .chip { background: rgba(255, 255, 255, .8); color: var(--ink); font-size: 12px; }
 .count { display: flex; align-items: flex-end; gap: 16px; margin-top: clamp(22px, 3.5vh, 36px); }
-.count .n { font-family: var(--f-d); font-weight: 800; font-size: clamp(64px, 7vw, 116px); line-height: .8; letter-spacing: -.04em; color: var(--orange); font-variant-numeric: tabular-nums; font-stretch: 80%; }
+.count .n { font-family: var(--f-d); font-weight: 800; font-size: clamp(64px, 7vw, 116px); line-height: .8; letter-spacing: -.02em; color: var(--orange); font-variant-numeric: tabular-nums; font-stretch: 80%; }
 .count .t { font-family: var(--f-d); font-weight: 800; font-size: clamp(18px, 1.6vw, 24px); line-height: 1.1; padding-bottom: 4px; }
 .count .t small { display: block; font-family: var(--f-m); font-weight: 700; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg2); margin-top: 4px; }
 /* reel */
@@ -30,19 +30,19 @@
 .tip { padding: 22px 20px 24px; border-radius: 26px; background: rgba(255, 255, 255, .8); border: 1px solid var(--line); }
 .tip .ic { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: var(--bg, #FFF1E4); }
 .tip .ic svg { width: 26px; height: 26px; }
-.tip h3 { margin: 16px 0 6px; font-family: var(--f-d); font-weight: 800; font-size: 22px; letter-spacing: -.015em; line-height: 1.1; }
+.tip h3 { margin: 16px 0 6px; font-family: var(--f-d); font-weight: 800; font-size: 22px; letter-spacing: -.005em; line-height: 1.1; }
 .tip p { margin: 0; font-size: 15.5px; color: var(--fg2); }
 /* questions */
 .qlist { margin-top: clamp(24px, 4vh, 40px); }
 .q { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 26px 0; border-top: 1px solid var(--line); }
-.q .n { font-family: var(--f-d); font-weight: 800; font-size: clamp(56px, 6vw, 92px); line-height: .8; color: #FFB066; font-stretch: 80%; letter-spacing: -.04em; }
-.q h3 { margin: 0; font-family: var(--f-d); font-weight: 800; font-size: clamp(24px, 2.6vw, 40px); letter-spacing: -.025em; line-height: 1.08; }
+.q .n { font-family: var(--f-d); font-weight: 800; font-size: clamp(56px, 6vw, 92px); line-height: .8; color: #FFB066; font-stretch: 80%; letter-spacing: -.02em; }
+.q h3 { margin: 0; font-family: var(--f-d); font-weight: 800; font-size: clamp(24px, 2.6vw, 40px); letter-spacing: -.015em; line-height: 1.08; }
 .q p { margin: 8px 0 0; color: var(--fg2); }
 /* outcome */
 .hzs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: clamp(26px, 4vh, 44px); }
 .hzc { padding: 26px; border-radius: 28px; background: rgba(255, 255, 255, .82); border: 1px solid var(--line); border-top: 8px solid var(--c); }
 .hzc .k { font-family: var(--f-m); font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--c); }
-.hzc h3 { margin: 8px 0 6px; font-family: var(--f-d); font-weight: 800; font-size: clamp(24px, 2.2vw, 32px); letter-spacing: -.02em; line-height: 1.05; }
+.hzc h3 { margin: 8px 0 6px; font-family: var(--f-d); font-weight: 800; font-size: clamp(24px, 2.2vw, 32px); letter-spacing: -.01em; line-height: 1.05; }
 .hzc p { margin: 0; font-size: 15.5px; color: var(--fg2); }
 .outs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 .outs .chip { background: #fff; color: var(--ink); }
@@ -106,7 +106,7 @@
       <div class="todo rv" style="margin-top:24px">To add: team photo, plus who’s coming</div>
     </div>
     <div>
-    <figure class="photo rv"><img src="../assets/visuals/kv-lab-sm.webp" srcset="../assets/visuals/kv-lab-sm.webp 960w, ../assets/visuals/kv-lab.webp 1920w" sizes="(max-width: 980px) 100vw, 45vw" alt="" loading="lazy" decoding="async"><span class="cap">Illustration</span></figure>
+    <figure class="photo rv"><img src="../assets/visuals/kv-lab-sm.webp" srcset="../assets/visuals/kv-lab-sm.webp 960w, ../assets/visuals/kv-lab.webp 1920w" sizes="(max-width: 980px) 100vw, 45vw" alt="" loading="lazy" decoding="async"></figure>
     <div class="bench">
       <div class="rv"><svg viewBox="0 0 48 48" fill="none" stroke="#006649" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22 24 9l16 13v17H8z"/><path d="M20 39V28h8v11"/></svg><b>Family</b><span>Run by a family, in Norco, California.</span></div>
       <div class="rv" style="--d:.1s"><svg viewBox="0 0 48 48" fill="none" stroke="#F58025" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6h12M20 6v12L9 38a3 3 0 0 0 3 4h24a3 3 0 0 0 3-4L28 18V6"/><path d="M14 30h20"/></svg><b>Bench-first</b><span>Every flavor built for the base it goes into.</span></div>
@@ -142,7 +142,6 @@
 <!-- VISTA · Trends -->
 <section class="vista" data-world="spectrum" data-tone="dark" data-title="Trends">
   <img class="pv" src="../assets/visuals/kv-trends.webp" srcset="../assets/visuals/kv-trends-sm.webp 960w, ../assets/visuals/kv-trends.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
-  <span class="cap">AI-generated illustration</span>
   <div class="wrap">
     <span class="eyebrow"><b>01</b>Trends</span>
     <h2 class="display" data-kin>What’s shaping <span class="hl">oral care.</span></h2>
@@ -176,7 +175,6 @@
 <!-- VISTA · The one rule -->
 <section class="vista" data-world="lab" data-tone="dark" data-title="The one rule">
   <img class="pv" src="../assets/visuals/kv-oxygen.webp" srcset="../assets/visuals/kv-oxygen-sm.webp 960w, ../assets/visuals/kv-oxygen.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
-  <span class="cap">AI-generated illustration</span>
   <div class="wrap">
     <span class="eyebrow">The one rule</span>
     <h2 class="display" data-kin>Built to survive <span class="hl">oxygen.</span></h2>
@@ -190,7 +188,6 @@
 <!-- VISTA · A world of flavor -->
 <section class="vista" data-world="finale" data-tone="dark" data-title="A world of flavor">
   <img class="pv" src="../assets/visuals/kv-hero.webp" srcset="../assets/visuals/kv-hero-sm.webp 960w, ../assets/visuals/kv-hero.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
-  <span class="cap">AI-generated illustration</span>
   <div class="wrap">
     <span class="eyebrow">A world of flavor</span>
     <h2 class="display" data-kin>Six new worlds <span class="hl">of fresh.</span></h2>
@@ -262,7 +259,6 @@
 <!-- VISTA · The Flavor Playbook -->
 <section class="vista" data-world="studio" data-tone="dark" data-title="The Flavor Playbook">
   <img class="pv" src="../assets/visuals/kv-playbook.webp" srcset="../assets/visuals/kv-playbook-sm.webp 960w, ../assets/visuals/kv-playbook.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
-  <span class="cap">AI-generated illustration</span>
   <div class="wrap">
     <span class="eyebrow">The Flavor Playbook</span>
     <h2 class="display" data-kin>Everything, <span class="hl">in one book.</span></h2>

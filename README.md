@@ -40,7 +40,7 @@ Named the way TheraBreath names its own flavors (Invigorating Mint, Rainforest M
 | Rosewater Mint | Rosewater | Phenylethyl alcohol, menthone, menthol | Stable alcohol instead of fragile rose terpenes |
 | Orchard Mint | Crisp green apple | Hexyl acetate, ethyl 2-methylbutyrate, menthol | Saturated esters, no green-apple aldehydes |
 
-Nine wildcards, each from a real trend and culture (bench difficulty in brackets): Sage Mint (easy), Watermelon Mint (medium), Cedar Mint (medium), Matcha Mint, Japan (medium), Hibiscus Mint, Senegal/Mexico/Caribbean (medium), Lychee Mint, Guangdong/Southeast Asia (medium), Pistachio Mint, Middle East/Sicily (stretch), Birch Mint, Nordics (easy), Mango Chili Mint, Mexico (stretch).
+Nine wildcards, each from a real trend and culture (bench difficulty in brackets): Sage Mint (easy), Dragon Fruit Mint, Vietnam/Central America (medium), Cedar Mint (medium), Matcha Mint, Japan (medium), Hibiscus Mint, Senegal/Mexico/Caribbean (medium), Lychee Mint, Guangdong/Southeast Asia (medium), Pistachio Mint, Middle East/Sicily (stretch), Birch Mint, Nordics (easy), Mango Chili Mint, Mexico (stretch).
 
 ## Trend research
 

@@ -32,7 +32,7 @@ const Card: React.FC<{ i: number }> = ({ i }) => {
         </span>
       </div>
       <div style={{ position: "absolute", left: 150, right: 150, bottom: 150, overflow: "hidden", paddingBottom: 8 }}>
-        <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 112, letterSpacing: "-0.035em", lineHeight: 1, color: "#fff",
+        <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 112, letterSpacing: "-0.02em", lineHeight: 1, color: "#fff",
           translate: `${interpolate(f, [0, 5], [-40, 0], { ...cl, easing: out })}px ${interpolate(f, [0, 5], [100, 0], { ...cl, easing: out })}%` }}>
           {t.h}
         </div>

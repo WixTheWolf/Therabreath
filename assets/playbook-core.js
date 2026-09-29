@@ -105,7 +105,7 @@
   const CONTROL = { id: "control", name: "TheraBreath Fresh Breath", code: "150", acc: "#00A3E0" };
   const WILD = [
     { id: "sage", name: "Sage Mint", flavor: "Garden sage", origin: "Mediterranean", trend: "Herbal wellness and garden botanicals", plat: "elevated", line: "Soft garden herbs and cool mint.", chem: "Camphor, borneol and cineole are all saturated. We’d build it thujone-free.", diff: "Easy", horizon: "long", sw: ["#E3EDDC", "#8FAE8A"], acc: "#7E9C7A", map: { x: .56, y: .3 } },
-    { id: "watermelon", name: "Watermelon Mint", flavor: "Juicy watermelon", origin: "Everywhere, every summer", trend: "Juicy fruit for younger palates", plat: "newfresh", line: "Juicy and bright, made for younger users.", chem: "Built on the marine ketone and saturated esters, without the melon aldehydes.", diff: "Medium", horizon: "long", sw: ["#FFD0D8", "#F26F86"], acc: "#EE4F6A", map: { x: .4, y: .66 } },
+    { id: "dragonfruit", name: "Dragon Fruit Mint", flavor: "Pink dragon fruit", origin: "Vietnam · Central America", trend: "Refresher drinks and pitaya bowls: bright fruit that looks as good as it tastes", plat: "newfresh", line: "Juicy, softly tropical and bright pink, made for younger users.", chem: "Built on saturated fruity esters with a soft berry lift, without the fragile melon or citrus aldehydes.", diff: "Medium", horizon: "long", sw: ["#FFC9E2", "#D6247A"], acc: "#C81F6E", map: { x: .4, y: .66 } },
     { id: "cedar", name: "Cedar Mint", flavor: "Cedarwood & spearmint", origin: "Pacific Northwest · Japan", trend: "Forest bathing and woody wellness", plat: "elevated", line: "A walk in the woods. Forest bathing, in a rinse.", chem: "Cedrol is a saturated alcohol and one of the most stable woody notes.", diff: "Medium", horizon: "long", sw: ["#DCE8D6", "#4E7A5E"], acc: "#4E7A5E", map: { x: .86, y: .3 } },
     { id: "matcha", name: "Matcha Mint", flavor: "Stone-ground matcha", origin: "Uji, Japan", trend: "The matcha boom, from café lattes to skincare", plat: "newfresh", line: "Grassy, gently savory green tea with a cool finish.", chem: "Built on stable green esters and menthol. We leave out the fragile leafy aldehydes.", diff: "Medium", horizon: "next", sw: ["#DDEBC0", "#6E9B3A"], acc: "#5C8A2E", map: { x: .5, y: .5 } },
     { id: "hibiscus", name: "Hibiscus Mint", flavor: "Tart hibiscus", origin: "Senegal · Mexico · the Caribbean", trend: "Floral-tart drinks: bissap, agua de jamaica, sorrel, mocktails", plat: "elevated", line: "Bright, cranberry-like tartness with a floral lift.", chem: "The flavor comes from stable esters. Hibiscus’s natural red would fade, so the rinse stays clear.", diff: "Medium", horizon: "next", sw: ["#F7C3D0", "#B3264F"], acc: "#B3264F", map: { x: .72, y: .8 } },
@@ -163,7 +163,7 @@
     { id: "texture", lens: "sensory", stage: 2, h: "Mouthfeel and hydration", what: "Slick, hydrating and “glass-smooth” mouthfeel matters, especially for dry mouth and older consumers.", signals: ["Hydration claims across categories", "Dry-mouth awareness", "Texture-first launches in beverages"], tb: "A flavor that feels soothing and hydrating could reach dry-mouth and sensitive users.", q: "Is there a TheraBreath line built around comfort, not just freshness?", flavors: ["Coconut Mint", "Sage Mint"] },
     { id: "selfcare", lens: "consumer", stage: 1, h: "Oral care as self-care", what: "Oral care is moving onto the beauty shelf: designed packaging, rituals and routines people post about.", signals: ["Bathroom “shelfies”", "Beauty retailers carrying oral care", "Design-led oral care brands"], tb: "Flavor is the easiest way to make a rinse feel like part of a self-care routine.", q: "Where should TheraBreath show up in a self-care routine?", flavors: ["Rosewater Mint", "Hibiscus Mint"] },
     { id: "dayparts", lens: "consumer", stage: 1, h: "Rituals by time of day", what: "Morning and night versions of everything: energizing AM, calming PM, and moments in between.", signals: ["AM/PM skincare and supplements", "Sleep and wind-down products", "After-coffee and after-meal occasions"], tb: "Different moments call for different flavors. A pair can double the reasons to reach for the bottle.", q: "Which moment of the day is TheraBreath missing?", flavors: ["Frost Mint", "Coconut Mint", "Cardamom Mint"] },
-    { id: "social", lens: "consumer", stage: 1, h: "Discovery on social", what: "Flavors go viral on social before they reach the shelf, and limited drops create urgency.", signals: ["Viral flavor moments", "Limited-edition drops", "Creator-led taste tests"], tb: "A limited-edition flavor could test demand fast and give people something to talk about.", q: "Would a limited-edition drop fit TheraBreath?", flavors: ["Pistachio Mint", "Mango Chili Mint", "Watermelon Mint"] },
+    { id: "social", lens: "consumer", stage: 1, h: "Discovery on social", what: "Flavors go viral on social before they reach the shelf, and limited drops create urgency.", signals: ["Viral flavor moments", "Limited-edition drops", "Creator-led taste tests"], tb: "A limited-edition flavor could test demand fast and give people something to talk about.", q: "Would a limited-edition drop fit TheraBreath?", flavors: ["Pistachio Mint", "Mango Chili Mint", "Dragon Fruit Mint"] },
     { id: "sober", lens: "consumer", stage: 2, h: "Sober-curious and clean label", what: "Zero-proof drinks, no dyes and short ingredient lists: sophistication without alcohol.", signals: ["Zero-proof bars and brands", "Dye-free reformulations", "Clean-label claims"], tb: "TheraBreath is already alcohol-free. Grown-up flavors make that feel premium, not medicinal.", q: "How premium could an alcohol-free rinse feel?", flavors: ["Hibiscus Mint", "Cedar Mint"] }
   ];
   const FUTURE = [
@@ -178,8 +178,8 @@
     { h: "Strong-but-gentle seekers", need: "Maximum freshness, zero burn.", fits: ["Frost Mint", "Birch Mint"], c: "#2EA8E6" },
     { h: "Mint-fatigued adults", need: "Something new that still feels clean.", fits: ["Coastal Mint", "Cardamom Mint", "Matcha Mint"], c: "#12A0A6" },
     { h: "Self-care and beauty shoppers", need: "A routine that feels like a treat.", fits: ["Rosewater Mint", "Hibiscus Mint", "Lychee Mint"], c: "#D9577A" },
-    { h: "Flavor-curious Gen Z", need: "Discovery, novelty, something to share.", fits: ["Mango Chili Mint", "Pistachio Mint", "Watermelon Mint"], c: "#E2562E" },
-    { h: "Families and first-timers", need: "Easy to love from the first rinse.", fits: ["Orchard Mint", "Watermelon Mint"], c: "#2F8A3A" },
+    { h: "Flavor-curious Gen Z", need: "Discovery, novelty, something to share.", fits: ["Mango Chili Mint", "Pistachio Mint", "Dragon Fruit Mint"], c: "#E2562E" },
+    { h: "Families and first-timers", need: "Easy to love from the first rinse.", fits: ["Orchard Mint", "Dragon Fruit Mint"], c: "#2F8A3A" },
     { h: "Sensitive and dry mouth, 50+", need: "Comfort, hydration and gentleness.", fits: ["Coconut Mint", "Sage Mint"], c: "#A8773F" }
   ];
   const OCCASIONS = [
@@ -552,16 +552,22 @@
       for (let i = 0; i < 20; i++) leaf(c, H(i + 1400) * w, H(i + 1401) * h, (70 + H(i + 1402) * 70) * S, H(i + 1403) * 6 + Math.sin(t * .5 + i) * .1, `rgba(${110 + H(i) * 40 | 0},${145 + H(i + 1) * 30 | 0},${120},.55)`, "rgba(255,255,255,.4)");
       fill(c, w, h, lin(c, 0, h * .6, 0, h, [[0, "rgba(255,255,255,0)"], [1, "rgba(255,255,255,.35)"]]));
     } },
-    watermelon: { tone: "dark", draw(c, w, h, t) {
+    dragonfruit: { tone: "dark", draw(c, w, h, t) {
       const S = sc(w, h);
-      fill(c, w, h, lin(c, 0, 0, 0, h, [[0, "#FF9DAE"], [1, "#E8455F"]]));
+      fill(c, w, h, lin(c, 0, 0, 0, h, [[0, "#FF8CC6"], [1, "#C2186B"]]));
       const R = w * 1.4, cx = w * .5, cy = h + R - h * .16;
-      [["#2F8A3F", 0], ["#4CAF5A", 18 * S], ["#F4FFE9", 34 * S]].forEach(([col, d]) => { c.beginPath(); c.arc(cx, cy, R - d, 0, TAU); c.fillStyle = col; c.fill(); });
-      c.beginPath(); c.arc(cx, cy, R - 44 * S, 0, TAU); c.fillStyle = "#F25A70"; c.fill();
-      for (let i = 0; i < 34; i++) {
-        const x = H(i + 1500) * w, y = H(i + 1501) * h * .8 + Math.sin(t * .6 + i) * 6 * S;
-        c.save(); c.translate(x, y); c.rotate(H(i + 1502) * 6 + t * .1); c.beginPath(); c.ellipse(0, 0, 5 * S, 9 * S, 0, 0, TAU); c.fillStyle = "#2B1A14"; c.fill();
-        c.beginPath(); c.ellipse(-1.5 * S, -3 * S, 1.2 * S, 2.5 * S, 0, 0, TAU); c.fillStyle = "rgba(255,255,255,.4)"; c.fill(); c.restore();
+      // pink skin with green-tipped scales, then magenta flesh
+      c.beginPath(); c.arc(cx, cy, R, 0, TAU); c.fillStyle = "#F0428F"; c.fill();
+      for (let i = 0; i < 26; i++) {
+        const a = -Math.PI / 2 + (i - 13) * .045, x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R;
+        c.save(); c.translate(x, y); c.rotate(a + Math.PI / 2 + Math.sin(t * .6 + i) * .05);
+        c.beginPath(); c.moveTo(-14 * S, 0); c.quadraticCurveTo(0, -46 * S, 16 * S, -54 * S); c.quadraticCurveTo(6 * S, -18 * S, 14 * S, 0); c.closePath();
+        c.fillStyle = "#E8337E"; c.fill(); c.beginPath(); c.arc(15 * S, -52 * S, 5 * S, 0, TAU); c.fillStyle = "#8BC34A"; c.fill(); c.restore();
+      }
+      c.beginPath(); c.arc(cx, cy, R - 22 * S, 0, TAU); c.fillStyle = "#D61F72"; c.fill();
+      for (let i = 0; i < 90; i++) {
+        const x = H(i + 1500) * w, y = H(i + 1501) * h * .82 + Math.sin(t * .6 + i) * 5 * S;
+        c.beginPath(); c.ellipse(x, y, 2.6 * S, 3.6 * S, H(i + 1502) * 6, 0, TAU); c.fillStyle = "#1E0F14"; c.fill();
       }
       bubbleField(c, w, h, t, 18, ["#FFFFFF"], S * .8);
     } },

@@ -24,7 +24,7 @@ const Stamp: React.FC<{ i: number }> = ({ i }) => {
         border: `8px solid #fff`, outline: `3px solid #fff`, outlineOffset: 10, borderRadius: 36, padding: "34px 64px 38px", textAlign: "center",
         background: `linear-gradient(135deg, ${w.acc}E6, ${w.acc}B3)`, color: "#fff", boxShadow: "0 40px 90px rgba(0,0,0,.45)", minWidth: 900 }}>
         <div style={{ fontFamily: MONO, fontWeight: 800, fontSize: 24, letterSpacing: "0.22em" }}>WILDCARD {String(i + 1).padStart(2, "0")}/09 · {HZ[w.horizon]}</div>
-        <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 150, letterSpacing: "-0.03em", lineHeight: 1, marginTop: 10, textTransform: "uppercase" }}>{w.name}</div>
+        <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 150, letterSpacing: "-0.015em", lineHeight: 1, marginTop: 10, textTransform: "uppercase" }}>{w.name}</div>
         <div style={{ fontFamily: MONO, fontWeight: 700, fontSize: 28, letterSpacing: "0.12em", marginTop: 12 }}>✈ {w.origin.toUpperCase()}</div>
       </div>
       <div style={{ position: "absolute", left: 150, right: 150, bottom: 160, textAlign: "center", fontFamily: BODY, fontWeight: 700, fontSize: 38, color: "#fff",

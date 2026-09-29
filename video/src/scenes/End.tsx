@@ -17,7 +17,7 @@ export const End: React.FC = () => {
       ))}
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         scale: `${interpolate(f, [0, 60], [1.08, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}` }}>
-        <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 110, letterSpacing: "-0.025em", color: "#fff", lineHeight: 1,
+        <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 110, letterSpacing: "-0.015em", color: "#fff", lineHeight: 1,
           opacity: interpolate(f, [2, 8], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
           translate: `0px ${interpolate(f, [2, 12], [40, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}px` }}>
           See you on
@@ -25,7 +25,7 @@ export const End: React.FC = () => {
         <div style={{ display: "flex", marginTop: 6 }}>
           {LINE.map((ch, i) => (
             <span key={i} style={{ display: "inline-block", overflow: "hidden", paddingBottom: 16 }}>
-              <span style={{ display: "inline-block", fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 250, letterSpacing: "-0.03em", lineHeight: 1,
+              <span style={{ display: "inline-block", fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 250, letterSpacing: "-0.015em", lineHeight: 1,
                 color: C.mint, whiteSpace: "pre",
                 translate: `0px ${interpolate(f - 4 - i * 1.5, [0, 10], [110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: out })}%` }}>
                 {ch}

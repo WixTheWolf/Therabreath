@@ -26,7 +26,7 @@ export const Ask: React.FC = () => {
           const hot = HOT.has(w.toLowerCase());
           return (
             <span key={i} style={{ overflow: "hidden", paddingBottom: 8 }}>
-              <span style={{ display: "inline-block", fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 96, letterSpacing: "-0.03em", lineHeight: 1.02,
+              <span style={{ display: "inline-block", fontFamily: DISPLAY, fontWeight: 800, fontStretch: "90%", fontSize: 96, letterSpacing: "-0.015em", lineHeight: 1.02,
                 color: hot ? C.ink : "#fff", background: hot ? C.mint : "transparent", padding: hot ? "0 14px" : 0, borderRadius: 14,
                 translate: `0px ${interpolate(f - at, [0, 8], [110, 0], { ...cl, easing: out })}%` }}>
                 {w}
@@ -43,7 +43,7 @@ export const Ask: React.FC = () => {
             <div key={o.k} style={{ flex: 1, borderRadius: 26, padding: "26px 30px", background: "rgba(255,255,255,.1)", border: `3px solid ${COLS[i]}`,
               backdropFilter: "blur(8px)", opacity: Math.min(1, p * 2), scale: `${0.7 + 0.3 * p}`, translate: `0px ${(1 - p) * 60}px` }}>
               <div style={{ fontFamily: MONO, fontWeight: 700, fontSize: 24, color: COLS[i], letterSpacing: "0.12em" }}>{o.n}</div>
-              <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 64, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.05 }}>{o.h}</div>
+              <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 64, color: "#fff", letterSpacing: "-0.01em", lineHeight: 1.05 }}>{o.h}</div>
               <div style={{ fontFamily: BODY, fontWeight: 600, fontSize: 26, color: "rgba(255,255,255,.8)", marginTop: 6 }}>{o.out}</div>
             </div>
           );

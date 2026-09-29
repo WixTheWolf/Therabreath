@@ -35,7 +35,7 @@ const Name: React.FC<{ i: number }> = ({ i }) => {
         FLAVOR WORLD · No. {c.code}
       </div>
       <div style={{ overflow: "hidden", marginTop: 22, paddingBottom: 8 }}>
-        <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 210, letterSpacing: "-0.03em", lineHeight: 0.86, textTransform: "uppercase", translate: up(2) }}>{w1}</div>
+        <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 210, letterSpacing: "-0.015em", lineHeight: 0.86, textTransform: "uppercase", translate: up(2) }}>{w1}</div>
       </div>
       <div style={{ overflow: "hidden", paddingBottom: 8 }}>
         <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 210, letterSpacing: "0.01em", lineHeight: 0.86, textTransform: "uppercase",

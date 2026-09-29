@@ -22,7 +22,7 @@ export const Open: React.FC = () => {
       <div style={{ position: "absolute", left: 150, bottom: 220 }}>
         {LINES.map((l) => (
           <div key={l.w} style={{ overflow: "hidden", paddingBottom: 12 }}>
-            <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 150, letterSpacing: "-0.035em", lineHeight: 0.95,
+            <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontStretch: "88%", fontSize: 150, letterSpacing: "-0.02em", lineHeight: 0.95,
               color: l.mint ? C.mint : "#fff", translate: `0px ${interpolate(f - l.at, [0, 10], [110, 0], { ...cl, easing: out })}%` }}>
               {l.w}
             </div>
