@@ -18,9 +18,9 @@
 .cup.on { box-shadow: 0 0 0 4px var(--orange), 0 16px 30px rgba(245, 128, 37, .3); }
 .cup.done::after { content: "✓"; position: absolute; right: -2px; top: -2px; width: 26px; height: 26px; border-radius: 50%; background: var(--green); color: #fff; font-size: 14px; display: grid; place-items: center; }
 .rate { margin-top: 26px; padding: clamp(18px, 2.5vw, 30px); border-radius: 28px; background: rgba(255, 255, 255, .78); border: 1px solid var(--line); display: grid; grid-template-columns: 220px repeat(4, minmax(0, 1fr)); gap: 18px; align-items: start; }
-.rate .who2 b { display: block; font-family: var(--f-d); font-weight: 800; font-size: 44px; letter-spacing: -.015em; line-height: 1; }
+.rate .who2 b { display: block; font-family: var(--f-d); font-weight: 800; font-size: 44px; letter-spacing: -.01em; line-height: 1; }
 .rate .who2 span { font-size: 14.5px; color: var(--fg2); }
-.dim label { display: block; font-family: var(--f-d); font-weight: 800; font-size: 19px; letter-spacing: -.005em; }
+.dim label { display: block; font-family: var(--f-d); font-weight: 800; font-size: 19px; letter-spacing: 0; }
 .dim small { display: block; font-size: 13.5px; color: var(--fg2); min-height: 38px; }
 .dots5 { display: flex; gap: 6px; margin-top: 8px; }
 .dots5 button { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid rgba(7, 28, 60, .22); background: #fff; font-family: var(--f-m); font-weight: 700; font-size: 13px; }
@@ -29,7 +29,7 @@
 .builder { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(20px, 3vw, 44px); margin-top: clamp(26px, 4vh, 44px); align-items: start; }
 .step { margin-bottom: 22px; }
 .step .mono { display: block; margin-bottom: 10px; color: var(--fg2); }
-.pick { display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 99px; border: 1.5px solid var(--line); background: rgba(255, 255, 255, .7); font-family: var(--f-d); font-weight: 700; font-size: 16px; letter-spacing: -.005em; transition: transform .2s var(--ease), background .2s, border-color .2s; }
+.pick { display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 99px; border: 1.5px solid var(--line); background: rgba(255, 255, 255, .7); font-family: var(--f-d); font-weight: 700; font-size: 16px; letter-spacing: 0; transition: transform .2s var(--ease), background .2s, border-color .2s; }
 .pick i { width: 12px; height: 12px; border-radius: 50%; background: var(--c, var(--orange)); }
 .pick:hover { transform: translateY(-2px); }
 .pick.on { background: var(--ink); color: #fff; border-color: var(--ink); }
@@ -38,7 +38,7 @@
 .ccard canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .ccard .scene .bottle { position: absolute; left: 50%; bottom: -40px; height: 330px; width: auto; transform: translateX(-50%); filter: drop-shadow(0 24px 24px rgba(0, 20, 50, .3)); }
 .ccard .body { padding: 26px 28px 28px; }
-.ccard .sent { font-family: var(--f-d); font-weight: 700; font-size: clamp(22px, 2.1vw, 30px); line-height: 1.15; letter-spacing: -.01em; margin: 0; }
+.ccard .sent { font-family: var(--f-d); font-weight: 700; font-size: clamp(22px, 2.1vw, 30px); line-height: 1.15; letter-spacing: 0; margin: 0; }
 .ccard .sent b { font-weight: 800; color: var(--orange-d); }
 .ccard .ideas { margin: 18px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow: auto; }
 .ccard .ideas li { display: flex; gap: 10px; align-items: center; font-size: 15px; padding: 10px 12px; border-radius: 14px; background: #F6F1EA; }
@@ -48,7 +48,7 @@
 .lanes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: clamp(24px, 4vh, 40px); }
 .lane { border-radius: 30px; padding: 22px 20px 20px; background: rgba(255, 255, 255, .72); border: 1px solid var(--line); border-top: 8px solid var(--c); min-height: 360px; }
 .lane .k { font-family: var(--f-m); font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--c); }
-.lane h3 { margin: 6px 0 4px; font-family: var(--f-d); font-weight: 800; font-size: 26px; letter-spacing: -.01em; line-height: 1.05; }
+.lane h3 { margin: 6px 0 4px; font-family: var(--f-d); font-weight: 800; font-size: 26px; letter-spacing: 0; line-height: 1.05; }
 .lane p { margin: 0 0 16px; font-size: 14.5px; color: var(--fg2); }
 .lane .bots { display: flex; flex-wrap: wrap; gap: 10px; }
 .lb { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 86px; border: 0; background: none; padding: 6px 0; border-radius: 16px; transition: transform .3s var(--ease), background .2s; }
