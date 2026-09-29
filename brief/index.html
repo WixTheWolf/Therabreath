@@ -85,13 +85,13 @@
 </section>
 
 <!-- REEL -->
-<section class="w reel-sec" data-world="oxygen" data-title="15 seconds" aria-label="15-second preview">
+<section class="w reel-sec" data-world="oxygen" data-title="The reel" aria-label="30-second preview">
   <div class="wrap">
     <div class="reel-frame rv">
       <video id="reel" poster="media/flavor-playbook-reel-poster.jpg" playsinline preload="metadata" controls><source src="media/flavor-playbook-reel.mp4" type="video/mp4"><source src="media/flavor-playbook-reel.webm" type="video/webm"></video>
-      <button class="reel-play" id="reelPlay" type="button" aria-label="Play the 15-second preview with sound"><span></span></button>
+      <button class="reel-play" id="reelPlay" type="button" aria-label="Play the 30-second preview with sound"><span></span></button>
     </div>
-    <div class="reel-cap"><span class="mono" style="color:var(--fg2)">15 seconds · sound on</span><span class="mono" style="color:var(--fg2)">Original music and sound</span></div>
+    <div class="reel-cap"><span class="mono" style="color:var(--fg2)">30 seconds · sound on</span><span class="mono" style="color:var(--fg2)">Original music and sound</span></div>
   </div>
 </section>
 
@@ -112,7 +112,17 @@
   </div>
 </section>
 
-<!-- THE MORNING -->
+<!-- WHAT THERABREATH ASKED FOR -->
+<section class="w" id="ask" data-world="aura" data-title="What you asked for">
+  <div class="wrap">
+    <span class="eyebrow">What TheraBreath asked for</span>
+    <h2 class="display" data-kin style="margin-top:14px">You asked for a <span class="hl">playbook.</span></h2>
+    <p class="lede rv">Four objectives, one outcome. Here is how each one maps to what you’ll walk out with.</p>
+    <div id="askMap"></div>
+  </div>
+</section>
+
+
 <section class="w" id="morning" data-world="studio" data-title="The morning">
   <div class="wrap morning">
     <div>
@@ -216,7 +226,8 @@
   <div class="wrap">
     <span class="eyebrow">What we’ll leave with</span>
     <h2 class="display" data-kin style="margin-top:14px">A draft <span class="hl">flavor playbook.</span></h2>
-    <p class="lede rv">We build it together in the room. Afterwards we write it up and send it to everyone who was there.</p>
+    <p class="lede rv">We build it together in the room. Afterwards we write it up and send it to everyone who was there. Here’s the shape we propose.</p>
+    <div id="bookBox"></div>
     <div class="hzs" id="hzs"></div>
     <div class="outs rv" id="outs"></div>
   </div>
@@ -255,6 +266,8 @@ $("#heroBottle").insertAdjacentHTML("afterbegin", UI.iconicBottle());
 const SHORT = ["What’s shaping oral care", "Where fresh could go, and what survives oxygen", "New moments, new people", "Now, next and later"];
 $("#objs").innerHTML = T.OBJECTIVES.map((o, i) => `<div class="obj rv" style="--d:${i * .08}s"><span class="n">${o.n}</span><h3>${esc(o.h)}</h3><p>${SHORT[i]}</p></div>`).join("");
 UI.dial($("#dial"));
+UI.askMap($("#askMap"));
+UI.book($("#bookBox"));
 UI.trendTrack($("#trends"));
 UI.chemScene($("#base"));
 UI.lineup($("#lineup"));

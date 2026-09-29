@@ -111,6 +111,40 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .kick{margin-top:30px;font:800 32px var(--f-d);letter-spacing:-.015em;display:flex;align-items:center;gap:16px}
 .kick i{width:12px;height:12px;border-radius:50%;background:var(--orange)}
 
+/* ---------- the ask / the playbook ---------- */
+.s-ask{justify-content:center}
+.askq{margin:0 0 50px;font:800 76px/1.02 var(--f-d);letter-spacing:-.03em;max-width:1500px}
+.askq em{font-style:normal;color:#A8F0CB}
+.askq cite{display:block;margin-top:22px;font:700 18px var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--fg2);font-style:normal}
+.bring4{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.bring4 .card{padding:28px 28px 30px;border-top:6px solid var(--orange);display:flex;flex-direction:column;gap:10px}
+.bring4 .m{font:700 14px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:#A8F0CB}
+.bring4 b{font:800 34px/1.05 var(--f-d);letter-spacing:-.02em}
+.bring4 span:last-child{font:500 21px/1.4 var(--f-b);color:var(--fg2)}
+.s-book{display:grid;grid-template-columns:560px 1fr;gap:70px;align-items:center;height:100%}
+.dbook{position:relative;height:720px;border-radius:14px 30px 30px 14px;padding:60px 52px;display:flex;flex-direction:column;gap:18px;color:#fff;background:linear-gradient(160deg,#0F3A74,#071C3C 70%);box-shadow:30px 50px 90px rgba(7,28,60,.35),inset 20px 0 0 rgba(255,255,255,.07);transform:rotate(-3deg)}
+.dbook .m{font:700 16px var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:#A8F0CB}
+.dbook b{font:800 118px/.9 var(--f-d);letter-spacing:-.04em;margin-top:14px}
+.dbook em{font-style:normal;color:#A8F0CB}
+.dbook i{display:block;width:180px;height:10px;border-radius:99px;background:var(--orange)}
+.dbook p{margin:0;font:600 28px/1.35 var(--f-b);color:rgba(255,255,255,.85)}
+.dbook .foot{margin-top:auto;color:rgba(255,255,255,.7)}
+.chap6{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:36px}
+.chap6 .card{padding:22px 26px;border-left:10px solid var(--c);display:flex;flex-direction:column;gap:6px}
+.chap6 .top{display:flex;align-items:baseline;gap:14px}
+.chap6 .n{font:800 18px var(--f-m);color:var(--c)}
+.chap6 b{font:800 34px/1.05 var(--f-d);letter-spacing:-.02em}
+.chap6 p{margin:0;font:500 19px/1.38 var(--f-b);color:var(--fg2)}
+.chap6 .o{font:700 13px var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.p90{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:auto;padding-top:70px}
+.p90::before{content:"";position:absolute;left:0;right:0;top:28px;height:8px;border-radius:99px;background:linear-gradient(90deg,var(--orange),#00A3E0,var(--green))}
+.p90 .card{position:relative;padding:34px 32px 36px;display:flex;flex-direction:column;gap:12px;min-height:400px}
+.p90 .card::before{content:"";position:absolute;left:32px;top:-56px;width:36px;height:36px;border-radius:50%;background:#fff;border:8px solid var(--c)}
+.p90 .d{font:800 150px/.8 var(--f-d);letter-spacing:-.05em;color:var(--c);font-stretch:80%}
+.p90 .d small{font:700 20px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--fg2);margin-left:10px}
+.p90 b{font:800 44px/1.05 var(--f-d);letter-spacing:-.02em;margin-top:14px}
+.p90 p{margin:0;font:500 24px/1.42 var(--f-b);color:var(--fg2)}
+
 /* ---------- agenda ---------- */
 .s-agenda{display:grid;grid-template-columns:1fr 720px;gap:60px;height:100%;align-items:center;padding-top:130px;padding-bottom:100px}
 .alist{display:flex;flex-direction:column;margin-top:30px}
@@ -486,6 +520,15 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
   <aside class="notes">Ross’s invite set four objectives, and the morning is built around them. First, identify the flavor, sensory and consumer trends shaping oral care. Second, explore new flavor territories and sensory experiences that strengthen TheraBreath’s edge. Third, generate concepts that create new usage occasions, reach new consumers and expand the portfolio. Fourth, build a pipeline of platforms, flavor directions and white space for growth across the franchise. Together those four make the playbook.</aside>
 </section>
 
+<section class="slide" data-world="lab" data-tone="dark" data-bg="#071A40" data-sec="Welcome" data-title="What you asked for">
+  <div class="pad s-ask">
+    <span class="eyebrow b">What TheraBreath asked for</span>
+    <blockquote class="askq b" id="askQ"></blockquote>
+    <div class="bring4" id="bring4"></div>
+  </div>
+  <aside class="notes">This is the ask, in Ross’s words: a flavor playbook that informs near-term innovation and long-term franchise growth. You asked us to bring four things. Flavor development: six new worlds and nine wildcards, all built for sodium chlorite. Consumer and market observations from the categories we flavor. Trend insights: twelve trends and where they go through 2030. And innovation capabilities: bench samples, stability and sensory, fast.</aside>
+</section>
+
 <!-- 04 · AGENDA -->
 <section class="slide" data-world="studio" data-tone="light" data-bg="#FBF6EF" data-sec="Welcome" data-title="10:00 to noon, then lunch">
   <div class="pad s-agenda">
@@ -745,6 +788,27 @@ html.print,html.print body{overflow:visible;height:auto;background:#fff}
   <aside class="notes">One line per objective. The trends we act on. The two territories. The near-term leads with owners and first tests. We’ll write it up and send it to everyone here.</aside>
 </section>
 
+<section class="slide" data-world="studio" data-tone="light" data-bg="#FBF6EF" data-sec="Playbook" data-title="The Flavor Playbook">
+  <div class="pad s-book">
+    <div class="dbook b"><span class="m">TheraBreath × The Flavor Factory</span><b>The Flavor<br><em>Playbook</em></b><i></i><p>Near-term innovation.<br>Long-term franchise growth.</p><span class="m foot">Drafted together · Nov 9, 2026</span></div>
+    <div>
+      <span class="eyebrow b">The ultimate playbook · our proposal</span>
+      <h2 class="display b" style="font-size:84px">Six chapters. <em>One plan.</em></h2>
+      <div class="chap6" id="chap6"></div>
+    </div>
+  </div>
+  <aside class="notes">Here is what the finished playbook looks like. Six chapters, each answering one of Ross’s objectives. Trend Compass and Territory Map. The Flavor Portfolio, with the six worlds and nine wildcards. The Occasion and Consumer Map. The Innovation Pipeline. And an Action Plan with owners, first tests and how we will know it is working. Today we draft it together; we write it up afterwards.</aside>
+</section>
+
+<section class="slide" data-world="river" data-tone="light" data-bg="#EEF7F3" data-sec="Playbook" data-title="The first 90 days">
+  <div class="pad">
+    <span class="eyebrow b">After today · proposed</span>
+    <h2 class="display b">From playbook <em>to product.</em></h2>
+    <div class="p90" id="p90"></div>
+  </div>
+  <aside class="notes">A proposed plan for the first ninety days. In thirty days you have the written playbook and first bench samples of the top-voted flavors. By sixty, a stability readout in the sodium chlorite base and an expert sensory panel. By ninety, a consumer screen of the finalists and a go or no-go for the first launch. We will agree the owners and dates together.</aside>
+</section>
+
 <section class="slide" data-world="finale" data-tone="dark" data-bg="#0B72C0" data-sec="Thank you" data-title="Familiar enough to trust">
   <div class="pad" style="text-align:center;align-items:center">
     <h2 class="display b" style="font-size:96px;margin-top:10px">Familiar enough to trust.<br><em>Different enough to remember.</em></h2>
@@ -792,6 +856,12 @@ const shapeSvg = (lens, x, y, r, col, n) => {
 const icon = (lens, col, sz = 20) => `<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" aria-hidden="true">${shapeSvg(lens, 12, 12, 8, col)}</svg>`;
 $("#heroBt").insertAdjacentHTML("afterbegin", bottle({ liq: ["#4FB3E6", "#1A78C0"], band: "#6CC3EA", flavor: "Invigorating Icy Mint" }));
 $("#objs").innerHTML = OBJECTIVES.map(o => `<div class="obj card b"><span class="n">${o.n}</span><h3>${esc(o.h)}</h3><p>${esc(o.line)}</p><div class="out"><b>We leave with</b>${esc(o.out)}</div></div>`).join("");
+
+const { PLAYBOOK } = T;
+$("#askQ").innerHTML = `“A <em>flavor playbook</em> that informs near-term innovation and long-term franchise growth.”<cite>${esc(PLAYBOOK.from)}</cite>`;
+$("#bring4").innerHTML = PLAYBOOK.bring.map((b, i) => `<div class="card b"><span class="m">You asked us to bring · 0${i + 1}</span><b>${esc(b.h)}</b><span>${esc(b.p)}</span></div>`).join("");
+$("#chap6").innerHTML = PLAYBOOK.chapters.map(c => { const ob = OBJECTIVES.find(x => x.k === c.o); return `<div class="card b" style="--c:${c.c}"><div class="top"><span class="n">${c.n}</span><b>${esc(c.h)}</b></div><p>${esc(c.p)}</p><span class="o">Objective ${ob.n} · ${esc(ob.h)}</span></div>`; }).join("");
+$("#p90").innerHTML = PLAYBOOK.plan.map((s, i) => `<div class="card b" style="--c:${["#F58025", "#00A3E0", "#006649"][i]}"><span class="d">${s.d}<small>days</small></span><b>${esc(s.h)}</b><p>${esc(s.p)}</p></div>`).join("");
 $("#alist").innerHTML = AGENDA.map(a => `<div class="ai b"><span class="t">${a.t}–${a.e}</span><div><b>${esc(a.h)}</b><span class="w">${esc(a.w)}</span></div>${a.o ? `<span class="chip"><i></i>Objective 0${a.o}</span>` : "<span></span>"}</div>`).join("") + `<div class="ai b"><span class="t">12:00</span><div><b>Lunch</b><span class="w">Thank you, Church &amp; Dwight.</span></div><span></span></div>`;
 (() => {
   const cols = ["#0A2A5C", "#E9B949", "#12A0A6", "#2EA8E6", "#D9577A", "#F58025"], mins = a => { const [h, m] = a.split(":").map(Number); return h * 60 + m; };

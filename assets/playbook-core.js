@@ -114,6 +114,36 @@
     { id: "birch", name: "Birch Mint", flavor: "Nordic birch", origin: "Finland · Sweden", trend: "Sauna, cold plunge and Nordic wellness", plat: "sensory", line: "Cool, woody-sweet and bracing, like a sauna whisk and cold air.", chem: "Birch’s character is methyl salicylate, a stable ester oral care already trusts.", diff: "Easy", horizon: "near", sw: ["#F1F1EA", "#6F8A7A"], acc: "#4F6F63", map: { x: .3, y: .16 } },
     { id: "mangochili", name: "Mango Chili Mint", flavor: "Mango & gentle chili", origin: "Mexico", trend: "Swicy: sweet meets heat, from chamoy to hot honey", plat: "sensory", line: "Ripe mango, a soft wave of warmth, then cool mint.", chem: "Mango from lactones and esters. Warmth from a stable warming agent rather than chili extract.", diff: "Stretch", horizon: "long", sw: ["#FFD68A", "#E2562E"], acc: "#E2562E", map: { x: .95, y: .56 } }
   ];
+  // What TheraBreath asked for (Ross’s invite), what we bring, and the playbook they leave with. Our proposal.
+  const PLAYBOOK = {
+    ask: "A flavor playbook that informs near-term innovation and long-term franchise growth.",
+    from: "Ross Conroy · Church & Dwight",
+    bring: [
+      { h: "Flavor development", p: "Six new worlds and nine wildcards, all built for sodium chlorite." },
+      { h: "Consumer & market observations", p: "What we see across the categories we flavor, beyond oral care." },
+      { h: "Trend insights", p: "Twelve trends across flavor, sensory and consumer, plus 2027–2030." },
+      { h: "Innovation capabilities", p: "Bench samples, stability work and sensory, fast." }
+    ],
+    wants: [
+      { k: "trends", want: "Know what’s shaping oral care", leave: "The trends worth acting on, ranked by the room" },
+      { k: "territories", want: "Find new flavor and sensory worlds", leave: "The territories to prioritize, and why" },
+      { k: "concepts", want: "Reach new occasions and consumers", leave: "Concepts with a clear who and when" },
+      { k: "pipeline", want: "See growth from near-term to long-term", leave: "A pipeline of platforms and white space" }
+    ],
+    chapters: [
+      { n: "01", h: "Trend Compass", o: "trends", p: "The trends that matter for TheraBreath, how fast they’re moving, and what each one means for the brand.", c: "#D9771E" },
+      { n: "02", h: "Territory Map", o: "territories", p: "Where TheraBreath plays today, where it could go, and the one rule: it has to work in sodium chlorite.", c: "#1B86C9" },
+      { n: "03", h: "Flavor Portfolio", o: "territories", p: "Six worlds and nine wildcards, each with a name, a reason to exist and a chemistry read.", c: "#006649" },
+      { n: "04", h: "Occasion & Consumer Map", o: "concepts", p: "Who each flavor is for and when they reach for it, from the morning rush to wind-down.", c: "#B23A76" },
+      { n: "05", h: "Innovation Pipeline", o: "pipeline", p: "Platforms and flavor directions placed on now, next and later, with the white space marked.", c: "#F58025" },
+      { n: "06", h: "Action Plan", o: "pipeline", p: "Owners, first tests and how we’ll know it’s working, so the playbook turns into product.", c: "#0A2A5C" }
+    ],
+    plan: [
+      { d: "30", h: "Playbook in hand", p: "The written playbook from the room, plus first bench samples of the top-voted flavors." },
+      { d: "60", h: "Proof it holds", p: "Stability readout in the sodium chlorite base, and an expert sensory panel." },
+      { d: "90", h: "Ready to decide", p: "A consumer screen of the finalists, and a go / no-go for the first launch." }
+    ]
+  };
   const LENSES = {
     flavor: { h: "Flavor", c: "#D9771E", q: "What people want to taste" },
     sensory: { h: "Sensory", c: "#1B86C9", q: "What people want to feel" },
@@ -698,7 +728,7 @@
   const ART = {};
   Object.keys(WORLDS).forEach(k => { ART[k] = { init: () => ({}), draw: WORLDS[k].draw, tone: WORLDS[k].tone }; });
 
-  const TB = { LENSES, STAGES, TREND_DEEP, FUTURE, SEGMENTS, OCCASIONS, FORMATS, SESSION, OBJECTIVES, AGENDA, HORIZONS, CREATE, PLATS, PLAT_LINES, TRENDS, TREND_LIST, CONCEPTS, CONTROL, WILD, TODAY, CHEM, DIMS, ACTIONS,
+  const TB = { PLAYBOOK, LENSES, STAGES, TREND_DEEP, FUTURE, SEGMENTS, OCCASIONS, FORMATS, SESSION, OBJECTIVES, AGENDA, HORIZONS, CREATE, PLATS, PLAT_LINES, TRENDS, TREND_LIST, CONCEPTS, CONTROL, WILD, TODAY, CHEM, DIMS, ACTIONS,
     hex, rgba, rng, bottle, setBottle, conceptBottleOpts, logoSymbol, ART, WORLDS };
   if (typeof module === "object" && module.exports) module.exports = TB;
   else root.TBCore = TB;

@@ -5,7 +5,7 @@
 //   node scripts/make-audio.mjs   ->  public/audio/*.wav
 //
 // Grid: 120 BPM, one beat = 0.5 s = 15 frames at 30 fps. The groove starts at
-// 1.5 s (frame 45), the build runs 11.5-13 s, the final hit lands at 13 s (frame 390).
+// 3 s (frame 90), the build runs 27-29 s, the final hit lands at 29 s (frame 870).
 import { mkdirSync, writeFileSync } from "node:fs";
 
 const SR = 48000;
@@ -120,7 +120,7 @@ function reverb([L, R], wet = 0.25, size = 1) {
 }
 
 /* ------------------------------------------------------------ music */
-const DUR = 15.2, BEAT = 0.5, START = 1.5, BUILD = 11.5, HIT = 13.0;
+const DUR = 32.2, BEAT = 0.5, START = 3.0, BUILD = 27.0, HIT = 29.0, BARS = 12, FADE = 31.0;
 const beatT = (b) => START + b * BEAT;
 const music = buf(DUR);
 const drums = buf(DUR);
@@ -132,29 +132,29 @@ const CH = [
   { root: 35, pad: [59, 63, 66, 71], arp: [75, 71, 66, 71, 78, 75, 71, 66] },
 ];
 
-// intro 0-1.5: low pad swell, filtered shut, opening up
-mix(music, 0, pad([52, 59, 64, 68], 1.7, 700), 0.8);
-// groove 1.5-11.5: five bars
-for (let bar = 0; bar < 5; bar++) {
+// intro 0-3: low pad swell, filtered shut, opening up
+mix(music, 0, pad([52, 59, 64, 68], 3.2, 700), 0.8);
+// groove 3-27: twelve bars, the arp brightening after the ask
+for (let bar = 0; bar < BARS; bar++) {
   const c = CH[bar % 4], t0 = beatT(bar * 4);
   mix(music, t0, pad(c.pad, 2.05, 2400), 0.55);
   for (let s = 0; s < 8; s++) mix(music, t0 + s * 0.25, bass(c.root + (s % 4 === 3 ? 12 : 0), 0.24), 0.55);
-  for (let s = 0; s < 16; s++) mix(music, t0 + s * 0.125, pluck(c.arp[s % 8], 0.28, bar < 2 ? 0.7 : 1), 0.2, s % 2 ? 0.45 : -0.45);
+  for (let s = 0; s < 16; s++) mix(music, t0 + s * 0.125, pluck(c.arp[s % 8] + (bar >= 8 && s % 8 === 4 ? 12 : 0), 0.28, bar < 2 ? 0.7 : 1), 0.2, s % 2 ? 0.45 : -0.45);
 }
-// build 11.5-13: B chord, rising filter, arp doubling up
+// build 27-29: B chord, rising filter, arp doubling up
 { const c = CH[3];
-  mix(music, BUILD, pad(c.pad.concat([83]), 1.55, 900), 0.5);
-  for (let s = 0; s < 24; s++) { const t = BUILD + s * 0.0625; mix(music, t, pluck(c.arp[s % 8] + (s > 15 ? 12 : 0), 0.14, 0.4 + s / 24), 0.16 + s * 0.004, s % 2 ? 0.5 : -0.5); }
-  for (let s = 0; s < 6; s++) mix(music, BUILD + s * 0.25, bass(c.root, 0.22), 0.45);
+  mix(music, BUILD, pad(c.pad.concat([83]), 2.05, 900), 0.5);
+  for (let s = 0; s < 32; s++) { const t = BUILD + s * 0.0625; mix(music, t, pluck(c.arp[s % 8] + (s > 15 ? 12 : 0), 0.14, 0.4 + s / 32), 0.16 + s * 0.003, s % 2 ? 0.5 : -0.5); }
+  for (let s = 0; s < 8; s++) mix(music, BUILD + s * 0.25, bass(c.root, 0.22), 0.45);
 }
-// final hit 13.0: E chord, big and open, ringing out
+// final hit 29.0: E chord, big and open, ringing out
 mix(music, HIT, pad([52, 64, 68, 71, 76, 80, 83], 2.2, 3200), 0.75);
 mix(music, HIT, bass(28, 1.6), 0.7);
 [76, 80, 83, 88].forEach((n, k) => mix(music, HIT + k * 0.06, pluck(n, 1.4, 1), 0.22, k % 2 ? 0.5 : -0.5));
 reverb(music, 0.28, 1.1);
 
 // drums
-for (let b = 0; b < 20; b++) {
+for (let b = 0; b < BARS * 4; b++) {
   const t = beatT(b);
   mix(drums, t, kick(0.45, b === 0 ? 1.4 : 1), b === 0 ? 1.1 : 0.9);
   if (b % 2 === 1) mix(drums, t, clap(), 0.55);
@@ -162,7 +162,7 @@ for (let b = 0; b < 20; b++) {
   if (b >= 4) { mix(drums, t + 0.125, hat(), 0.14, -0.3); mix(drums, t + 0.375, hat(), 0.14, -0.3); }
 }
 // snare roll through the build: 8ths -> 16ths -> 32nds
-{ let t = BUILD, k = 0; while (t < HIT - 0.01) { const step = t < 12.0 ? 0.25 : t < 12.5 ? 0.125 : 0.0625; mix(drums, t, snare(0.12), 0.25 + (t - BUILD) * 0.3); t += step; k++; } }
+{ let t = BUILD, k = 0; while (t < HIT - 0.01) { const step = t < BUILD + 1 ? 0.25 : t < BUILD + 1.5 ? 0.125 : 0.0625; mix(drums, t, snare(0.12), 0.25 + (t - BUILD) * 0.3); t += step; k++; } }
 mix(drums, HIT, kick(0.9, 1.6), 1.3);
 // crash
 { const x = new Float32Array(2.2 * SR); for (let i = 0; i < x.length; i++) x[i] = rnd() * Math.exp(-(i / SR) * 2.2); mix(drums, HIT, svf(x, 6000, 0.6, "hp"), 0.45); }
@@ -170,7 +170,7 @@ reverb(drums, 0.12, 0.7);
 
 // sum drums into music, master fade
 for (let i = 0; i < music[0].length; i++) {
-  const t = i / SR, fade = t > 14.2 ? Math.max(0, 1 - (t - 14.2) / 0.95) : 1;
+  const t = i / SR, fade = t > FADE ? Math.max(0, 1 - (t - FADE) / 1.15) : 1;
   music[0][i] = (music[0][i] + drums[0][i]) * fade; music[1][i] = (music[1][i] + drums[1][i]) * fade;
 }
 writeWav("music.wav", music, 0.95);

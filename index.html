@@ -128,6 +128,16 @@
   </div>
 </section>
 
+<!-- WHAT THERABREATH ASKED FOR -->
+<section class="w" id="ask" data-world="aura" data-title="What you asked for">
+  <div class="wrap">
+    <span class="eyebrow">What TheraBreath asked for</span>
+    <h2 class="display" data-kin style="margin-top:14px">You asked for a <span class="hl">playbook.</span></h2>
+    <p class="lede rv">Four objectives, one outcome. Here is how each one maps to what you walk out with.</p>
+    <div id="askMap"></div>
+  </div>
+</section>
+
 <!-- THE MORNING -->
 <section class="w" id="morning" data-world="studio" data-title="The morning">
   <div class="wrap morning">
@@ -267,6 +277,16 @@
   </div>
 </section>
 
+<!-- THE PLAYBOOK -->
+<section class="w" id="book" data-world="studio" data-title="The playbook">
+  <div class="wrap">
+    <span class="eyebrow">The ultimate playbook</span>
+    <h2 class="display" data-kin style="margin-top:14px">Six chapters. <span class="hl">One plan.</span></h2>
+    <p class="lede rv">Everything from the morning goes into one book. Tap a chapter to open it.</p>
+    <div id="bookBox"></div>
+  </div>
+</section>
+
 <!-- DRAFT PLAYBOOK -->
 <section class="w" id="playbook" data-world="aura" data-title="Draft playbook">
   <div class="wrap">
@@ -323,6 +343,8 @@ $("#heroBottle").insertAdjacentHTML("afterbegin", UI.iconicBottle());
 const SHORT = ["What’s shaping oral care", "Where fresh could go, and what survives oxygen", "New moments, new people", "Now, next and later"];
 $("#objs").innerHTML = OBJECTIVES.map((o, i) => `<div class="obj rv" style="--d:${i * .08}s"><span class="n">${o.n}</span><h3>${esc(o.h)}</h3><p>${SHORT[i]}</p></div>`).join("");
 UI.dial($("#dial"));
+UI.askMap($("#askMap"));
+UI.book($("#bookBox"));
 UI.trendTrack($("#trends"));
 UI.chemScene($("#base"));
 UI.map($("#map"));

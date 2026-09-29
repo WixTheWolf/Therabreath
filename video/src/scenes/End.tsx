@@ -1,7 +1,8 @@
 import { AbsoluteFill, Easing, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
-import { C, DISPLAY, BODY } from "../theme";
+import { C, DISPLAY, BODY, MONO } from "../theme";
+import { Grade } from "./Shot";
 
-// 390-450 (local 0-60): the hit. "See you November 9." with bubbles rising through the liquid.
+// 870-960 (local 0-90): the hit. "See you November 9." with bubbles rising through the liquid.
 const out = Easing.bezier(0.16, 1, 0.3, 1);
 const BUBBLES = Array.from({ length: 34 }, (_, i) => ({ x: (i * 53) % 1920, s: 8 + ((i * 29) % 30), sp: 6 + ((i * 17) % 9), d: (i * 41) % 900 }));
 const LINE = "November 9.".split("");
@@ -46,6 +47,11 @@ export const End: React.FC = () => {
         <span style={{ fontFamily: DISPLAY, fontSize: 46, color: "rgba(255,255,255,.7)" }}>×</span>
         <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 50, color: "#fff", letterSpacing: "-0.01em" }}>The Flavor Factory</span>
       </div>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 150, textAlign: "center", fontFamily: MONO, fontWeight: 700, fontSize: 28, letterSpacing: "0.2em", color: "#fff",
+        opacity: interpolate(f, [30, 40], [0, 0.9], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }}>
+        BRING YOUR PALATE · LEAVE WITH A PLAYBOOK
+      </div>
+      <Grade />
       {/* impact flash */}
       <AbsoluteFill style={{ background: "#fff", opacity: interpolate(f, [0, 8], [0.85, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }} />
     </AbsoluteFill>

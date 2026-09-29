@@ -50,13 +50,13 @@ What the base breaks down, and why we avoided it: citral (lemon, lime), cinnamal
 
 ## Pre-read (send before the meeting)
 
-- `brief/index.html`: the scrolling pre-read. Hero with the session facts and a countdown, the 15-second reel, who we are, the four objectives with an agenda dial, the trends (a pinned horizontal track), the sodium chlorite scene (molecules survive or fade as an oxygen front sweeps across), the six flavor worlds with the pinned refilling bottle, tasting prep, four questions, and the draft playbook we'll leave with.
+- `brief/index.html`: the scrolling pre-read. Hero with the session facts and a countdown, the 30-second reel, who we are, what TheraBreath asked for (the ask, each objective mapped to what you leave with, and what we bring), the four objectives with an agenda dial, the trends (a pinned horizontal track), the sodium chlorite scene (molecules survive or fade as an oxygen front sweeps across), the six flavor worlds with the pinned refilling bottle, tasting prep, four questions, and the playbook we'll leave with: an interactive six-chapter book and a proposed 30/60/90 plan.
 - The six names are shown, but not which coded cup is which, so the tasting stays blind.
 - Share the deployed URL ending in `/brief/`. It does not link to the workshop site or deck.
 
 ## Pre-read reel
 
-`video/` is a Remotion project for the 15-second reel (original synthesized music and sound effects, cuts on the beat). The bottle scene pours each flavor world in behind the bottle on the beat, using the same world renderers as the pages. Rendered MP4, WebM and poster are in `brief/media/`. See `video/README.md`.
+`video/` is a Remotion project for the 32-second cinematic reel: the ask, twelve trends on the beat, six flavor worlds, nine passport-stamped wildcards and the playbook reveal, with original synthesized music and sound effects. It uses twelve unbranded Higgsfield clips when they have been fetched (`node scripts/fetch-clips.mjs`) and falls back to the animated canvas worlds otherwise. Rendered MP4, WebM and poster are in `brief/media/`. See `video/README.md`.
 
 ## Still to add (red dashed boxes on the pages)
 
@@ -67,12 +67,12 @@ What the base breaks down, and why we avoided it: citral (lemon, lime), cinnamal
 
 ## Workshop deck
 
-- `deck/index.html`: 31 slides, 1920 × 1080, built as a workshop around Ross's four objectives. Each objective has an opener with its question, the content, and a "Let's discuss" slide with prompts. Trends: radar, a slide per lens, 2027–2030, discussion and a dot vote. Territories: one rule from the bench, the white-space map, six new worlds, nine wildcards, four platforms, a short taste break, discussion. Concepts: a day of occasions, six consumer segments, the Create exercise. Pipeline: three checks, now/next/later, where flavor could travel across the franchise, discussion, draft playbook, close.
+- `deck/index.html`: 34 slides, 1920 × 1080, built as a workshop around Ross's four objectives. It opens with what TheraBreath asked for (Ross's ask and the four things he asked us to bring). Each objective has an opener with its question, the content, and a "Let's discuss" slide with prompts. Trends: radar, a slide per lens, 2027–2030, discussion and a dot vote. Territories: one rule from the bench, the white-space map, six new worlds, nine wildcards, four platforms, a short taste break, discussion. Concepts: a day of occasions, six consumer segments, the Create exercise. Pipeline: three checks, now/next/later, where flavor could travel across the franchise, discussion, draft playbook, the ultimate playbook (six chapters, each tied to an objective), a proposed 30/60/90 plan, close.
 - Keys: ← → / space to move, **G** overview, **N** speaker notes, **P** presenter view (current and next slide, notes, timer, synced), **F** full screen, **B** blank. Slide numbers deep-link (`deck/#12`).
 - `dist/TheraBreath_Flavor_Playbook_Deck.pdf` is the PDF export. Regenerate with `node scripts/export-deck-pdf.js` (needs `playwright-core` and a local Chrome; see the script header).
 - Fonts are self-hosted in `assets/fonts/` (Bricolage Grotesque, Figtree, JetBrains Mono, Archivo).
 
 ## Workshop web experience
 
-- `index.html`: the in-room tool and leave-behind. Scroll through the worlds; tools along the way: an interactive trend radar (filter by lens, tap a trend), 2027–2030 future trends, a flavor passport of nine wildcard stamps that flip over, a spin-the-wheel warm-up game, the blind scorecard (seven cups), the concept builder (pick a world, a moment and a person), the pipeline (tap a bottle to move it between near-term, next and long-term), and the draft playbook (trends, two territories, the three checks, owners). "Copy the draft playbook" puts it all on the clipboard. Everything is saved in the presenting browser only.
+- `index.html`: the in-room tool and leave-behind. Scroll through the worlds; tools along the way: what TheraBreath asked for, an interactive trend radar (filter by lens, tap a trend), 2027–2030 future trends, a flavor passport of nine wildcard stamps that flip over, a spin-the-wheel warm-up game, the blind scorecard (seven cups), the concept builder (pick a world, a moment and a person), the pipeline (tap a bottle to move it between near-term, next and long-term), the six-chapter playbook book (tap a chapter tab) with the proposed 30/60/90 plan, and the draft playbook (trends, two territories, the three checks, owners). "Copy the draft playbook" puts it all on the clipboard. Everything is saved in the presenting browser only.
 - `assets/` holds the official TheraBreath logo and product photo. The concept bottles are drawn in code to match the current rinse label and read "Concept mockup · not a product".

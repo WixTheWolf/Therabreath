@@ -367,6 +367,40 @@
     host.addEventListener("click", e => { const b = e.target.closest(".stamp"); if (!b) return; const on = !b.classList.contains("flip"); b.classList.toggle("flip", on); b.setAttribute("aria-pressed", on); });
   };
 
+  /* ---------------------------------------------------------------- what TheraBreath asked for */
+  const OBJ_C = { trends: "#D9771E", territories: "#1B86C9", concepts: "#B23A76", pipeline: "#006649" };
+  UI.askMap = (host, o = {}) => {
+    const P = T.PLAYBOOK;
+    host.classList.add("ask");
+    host.innerHTML = `<blockquote class="askq rv"><span class="mono">The ask</span><p>“${esc(P.ask)}”</p><cite class="mono">${esc(P.from)}</cite></blockquote>
+      <div class="askrows">${P.wants.map((w, i) => { const ob = T.OBJECTIVES.find(x => x.k === w.k); return `<div class="askrow rv" style="--d:${i * .08}s;--c:${OBJ_C[w.k]}">
+        <span class="an">${ob.n}</span><b>${esc(ob.h)}</b><span class="aw"><span class="mono">You want to</span>${esc(w.want)}</span><span class="aa" aria-hidden="true"></span><span class="al"><span class="mono">You leave with</span>${esc(w.leave)}</span></div>`; }).join("")}</div>
+      ${o.bring === false ? "" : `<div class="bring"><span class="mono">What we bring to the room</span><div class="bgrid">${P.bring.map((b, i) => `<div class="bcard rv" style="--d:${i * .07}s"><b>${esc(b.h)}</b><span>${esc(b.p)}</span></div>`).join("")}</div></div>`}`;
+  };
+
+  /* ---------------------------------------------------------------- the playbook, as a book */
+  UI.book = host => {
+    const P = T.PLAYBOOK;
+    host.classList.add("book");
+    host.innerHTML = `<div class="bk">
+      <div class="bk-cover"><span class="mono">TheraBreath × The Flavor Factory</span><b>The Flavor<br><em>Playbook</em></b><i></i><p>Near-term innovation.<br>Long-term franchise growth.</p><span class="mono bk-foot">Drafted together · Nov 9, 2026</span></div>
+      <div class="bk-tabs" role="tablist" aria-label="Playbook chapters">${P.chapters.map((c, i) => `<button type="button" role="tab" class="bk-tab" style="--c:${c.c}" aria-selected="${i === 0}" data-i="${i}"><span class="mono">${c.n}</span>${esc(c.h)}</button>`).join("")}</div>
+      <div class="bk-page" role="tabpanel" aria-live="polite"></div>
+    </div>
+    <div class="plan">${P.plan.map((s, i) => `<div class="pstep rv" style="--d:${i * .1}s"><span class="pd">${s.d}<small>days</small></span><b>${esc(s.h)}</b><span>${esc(s.p)}</span></div>`).join("")}</div>
+    <p class="small bk-note">Our proposal for the six chapters and the first 90 days. We’ll shape it with you on the day.</p>`;
+    const page = $(".bk-page", host), tabs = $$(".bk-tab", host);
+    const show = i => {
+      const c = P.chapters[i], ob = T.OBJECTIVES.find(x => x.k === c.o);
+      tabs.forEach((t, k) => t.setAttribute("aria-selected", k === i));
+      page.style.setProperty("--c", c.c);
+      page.classList.remove("turn"); void page.offsetWidth; page.classList.add("turn");
+      page.innerHTML = `<span class="mono">Chapter ${c.n}</span><h3>${esc(c.h)}</h3><p>${esc(c.p)}</p><span class="bk-from mono">Answers objective ${ob.n} · ${esc(ob.h)}</span>`;
+    };
+    host.addEventListener("click", e => { const b = e.target.closest(".bk-tab"); if (b) show(+b.dataset.i); });
+    show(0);
+  };
+
   /* ---------------------------------------------------------------- spin the wheel */
   UI.wheel = (host, onLand) => {
     const all = [...T.CONCEPTS.map(c => ({ id: c.id, name: c.name, acc: c.acc, liq: c.liquid, sub: c.flavor, line: c.tag, kind: "One of the six" })), ...T.WILD.map(w => ({ id: w.id, name: w.name, acc: w.acc, liq: w.sw, sub: w.flavor, line: w.line, kind: "Wildcard · " + w.origin }))];
