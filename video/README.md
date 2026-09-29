@@ -10,7 +10,7 @@ A 32-second cinematic cut (1920 × 1080, 30 fps) for the TheraBreath pre-read pa
   5. **Wildcards** (19–25 s): nine wildcards stamped like a passport, with origin and trend.
   6. **Playbook** (25–29 s): Trends + Territories + Concepts + Pipeline = The Flavor Playbook, its six chapters and the 30/60/90 plan.
   7. **End** (29–32 s): "See you on November 9."
-- **Footage**: seventeen unbranded Higgsfield clips (Seedance 2.5, 1080p, no audio), listed in `scripts/clips.json`. `node scripts/fetch-clips.mjs` downloads them into `public/clips/` and records which are present in `src/clips.ts`. The clip files are git-ignored. Any shot without one falls back to the matching animated canvas world, so the reel always renders.
+- **Footage**: sixteen unbranded Higgsfield clips (Seedance 2.5, 1080p, no audio), listed in `scripts/clips.json`. `node scripts/fetch-clips.mjs` downloads them into `public/clips/` and records which are present in `src/clips.ts`. The clip files are git-ignored. Any shot without one falls back to the matching animated canvas world, so the reel always renders.
 - **Shared data**: flavors, wildcards, trends, objectives, the playbook chapters, the bottle and the animated worlds all come from `../assets/playbook-core.js`, the same file the site and deck use.
 - **Finish**: letterbox, vignette and moving film grain (`Grade` in `src/scenes/Shot.tsx`).
 - **Sound**: original music (120 BPM) and sound effects synthesized from scratch in `scripts/make-audio.mjs`, so there are no third-party samples or licences. Build from 27 s, final hit on 29 s.
