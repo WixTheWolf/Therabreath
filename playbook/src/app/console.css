@@ -1,0 +1,46 @@
+/* CONSOLE: dense, dark, legible at arm's length. */
+.console-page { min-height: 100dvh; background: #07121d; color: #F0EEE9; }
+.console { --bg: #07121d; background: #07121d; color: #F0EEE9; font: 400 15px/1.4 var(--sans); padding: 18px; display: flex; flex-direction: column; gap: 14px; max-width: 760px; margin: 0 auto; }
+.console.compact { height: 1080px; overflow-y: auto; max-width: none; padding: 22px; font-size: 17px; }
+.cx-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.cx-head b { font: 300 26px/1 var(--serif); }
+.cx-head code { font: 500 14px/1 var(--mono); letter-spacing: .16em; color: var(--accent); margin-left: 8px; }
+.cx-health { display: flex; align-items: center; gap: 8px; font: 500 12px/1 var(--mono); letter-spacing: .06em; color: var(--fg2); }
+.cx-health i { width: 9px; height: 9px; border-radius: 50%; }
+.cx-health.ok i { background: #5FD39A; box-shadow: 0 0 8px #5FD39A; }
+.cx-health.bad i { background: #F27A5E; box-shadow: 0 0 8px #F27A5E; animation: pulse 1s infinite; }
+.cx-now { padding: 18px; border-radius: 18px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); }
+.cx-now .k { font-size: 12px; }
+.cx-now h2 { font: 300 34px/1.05 var(--serif); margin: 8px 0 12px; }
+.cx-steps { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.cx-steps button { width: 36px; height: 36px; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); font: 500 13px/1 var(--mono); }
+.cx-steps button.done { background: rgba(143,224,240,.15); }
+.cx-steps button.on { background: var(--accent); color: #07121d; border-color: var(--accent); }
+.cx-notes { font: 400 16px/1.5 var(--sans); color: rgba(240,238,233,.85); padding: 12px 14px; border-radius: 12px; background: rgba(0,0,0,.25); border-left: 3px solid var(--accent); }
+.cx-nav { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-top: 14px; }
+.cx-nav button { padding: 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,.14); font: 500 17px/1 var(--sans); }
+.cx-nav button.primary { background: #F0EEE9; color: #07121d; border: 0; }
+.cx-box { padding: 14px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); display: flex; flex-direction: column; gap: 10px; }
+.cx-box .k { font-size: 12px; }
+.cx-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.cx-row button, .cx-row a { padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); font: 500 14px/1 var(--sans); text-decoration: none; }
+.cx-row button.on { background: var(--accent); color: #07121d; border-color: var(--accent); }
+.cx-row .danger { border-color: rgba(242,122,94,.5); color: #F27A5E; margin-left: auto; }
+.cx-sel { display: grid; grid-template-columns: 70px 1fr; gap: 10px; align-items: center; font-size: 14px; }
+.cx-sel select, .cx-item select { padding: 8px 10px; border-radius: 10px; background: #0d1d2c; border: 1px solid rgba(255,255,255,.14); color: #F0EEE9; font-size: 13px; }
+.cx-place { display: flex; flex-direction: column; gap: 6px; max-height: 360px; overflow-y: auto; }
+.cx-item { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; align-items: center; font-size: 14px; }
+.cx-people { display: flex; flex-wrap: wrap; gap: 6px; }
+.cx-people span { padding: 5px 10px; border-radius: 12px; background: rgba(143,224,240,.12); font-size: 13px; }
+.cx-people span.sim { background: rgba(255,255,255,.05); color: var(--fg3); font-style: italic; }
+.cx-people sup { font-size: 10px; margin-left: 3px; color: var(--accent); }
+.cx-join, .cx-survey { font: 400 12px/1.4 var(--mono); color: var(--fg3); word-break: break-all; }
+.cx-survey { max-width: 760px; margin: 0 auto; padding: 0 18px 30px; }
+.cx-list { display: flex; flex-direction: column; gap: 3px; }
+.cx-list button { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: baseline; text-align: left; padding: 9px 12px; border-radius: 10px; font-size: 14px; }
+.cx-list button .num { font-size: 16px; color: var(--fg3); }
+.cx-list button em { font: 500 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg3); font-style: normal; }
+.cx-list button b { font-weight: 400; }
+.cx-list button.done { opacity: .5; }
+.cx-list button.on { background: rgba(143,224,240,.16); box-shadow: inset 3px 0 0 var(--accent); }
+.cx-list button:hover { background: rgba(255,255,255,.05); }
