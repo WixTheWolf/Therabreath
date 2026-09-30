@@ -4,7 +4,7 @@ import { nudge } from '@/lib/server/broadcast';
 import { isAuthed, joinToken, COOKIE } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
-const PUBLIC_KINDS = new Set(['join', 'team', 'pick', 'rate', 'guess', 'concept', 'suggest', 'react', 'survey']);
+const PUBLIC_KINDS = new Set(['join', 'team', 'pick', 'rate', 'guess', 'concept', 'suggest', 'react', 'survey', 'dial', 'benchbase']);
 const clean = (c: string) => c.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ code: string }> }) {

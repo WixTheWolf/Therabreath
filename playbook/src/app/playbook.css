@@ -79,3 +79,6 @@
   .pb-doc.A4 .pb-page { width: 210mm; height: 297mm; min-height: 0; }
 }
 @media (max-width: 860px) { .pb-page { width: 100% !important; min-height: 0; padding: 36px 24px; } .pb-cover h1 { margin-top: 160px; font-size: 56px; } .pb-foot { position: static; margin-top: 30px; } }
+.pb-sig-row { display: grid; grid-template-columns: 170px 1fr; gap: 14px; align-items: center; margin: 4px 0 10px; padding: 8px; border-radius: 10px; background: #F4F8FA; }
+.pb-sig-row p { font: 400 11px/1.5 var(--sans); color: var(--fg2); margin-top: 4px; }
+.pb-sig-row .compass { --rule: rgba(11,27,43,.12); --rule2: rgba(11,27,43,.06); --fg3: rgba(11,27,43,.35); }

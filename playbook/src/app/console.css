@@ -44,3 +44,4 @@
 .cx-list button.done { opacity: .5; }
 .cx-list button.on { background: rgba(143,224,240,.16); box-shadow: inset 3px 0 0 var(--accent); }
 .cx-list button:hover { background: rgba(255,255,255,.05); }
+.cx-note { width: 100%; padding: 10px 12px; border-radius: 10px; background: #0d1d2c; border: 1px solid rgba(255,255,255,.14); color: #F0EEE9; font-size: 14px; }

@@ -2,7 +2,8 @@
 // CONSOLE: the facilitators' remote. Scenes, builds, notes, votes, timers, placements, simulator.
 import { useEffect, useState } from 'react';
 import { SCENES, EXECUTIVE } from '@/lib/scenes';
-import { MISSIONS, SIGNALS, TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, SEEDS, CODE, HORIZONS, ROLES, SEGMENTS, SURVEY } from '@/lib/content';
+import { MISSIONS, SIGNALS, TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, SEEDS, CODE, HORIZONS, ROLES, SEGMENTS, SURVEY, DIALS } from '@/lib/content';
+import { teamDials, baseTerritory, readouts } from '@/lib/bench';
 import { people, uid } from '@/lib/state';
 import { candidates, SEASONS } from './scenes/Build';
 import type { Ctx } from './StageApp';
@@ -34,15 +35,17 @@ export default function ConsolePanel({ sess, ctx, compact }: { sess: any; ctx: C
     const evs: any[] = sims.filter((p) => !s.participants[p.pid]).map((p, i) => ({ kind: 'join', pid: p.pid, data: { name: p.name, sim: true }, t: Date.now() + i }));
     sims.forEach((p, i) => {
       if (!s.participants[p.pid]?.team) evs.push({ kind: 'team', pid: p.pid, data: { team: (i % 3) + 1 } });
-      if (!s.survey[p.pid]) evs.push({ kind: 'survey', pid: p.pid, data: { name: p.name, consumer: pickN(SURVEY.consumer.options, 1)[0], moment: pickN(SURVEY.moment.options, 1)[0], veto: pickN(['Garlic', 'Pickle', 'Coffee', 'Bacon', 'Cilantro', 'Blue cheese'], 1)[0] } });
+      if (!s.survey[p.pid]) evs.push({ kind: 'survey', pid: p.pid, data: { name: p.name, consumer: pickN(SURVEY.consumer.options, 1)[0], moment: pickN(SURVEY.moment.options, 1)[0], veto: pickN(['Garlic', 'Pickle', 'Coffee', 'Bacon', 'Cilantro', 'Blue cheese'], 1)[0], profile: { adv: rnd(2, 5), cool: rnd(1, 5), bot: rnd(2, 5), exp: rnd(2, 5), occ: rnd(1, 5) } } });
       if (room.kind === 'pick') evs.push({ kind: 'pick', pid: p.pid, data: { key: room.key, value: pickN(SIGNALS.map((x) => x.id), room.max) } });
       if (room.kind === 'chips') { const o: Record<string, number> = {}; for (let k = 0; k < room.total; k++) { const id = pickN(TERRITORIES.map((x) => x.id), 1)[0]; o[id] = (o[id] || 0) + 1; } evs.push({ kind: 'pick', pid: p.pid, data: { key: room.key, value: o } }); }
       if (room.kind === 'dots') { const ids = candidates(s).slice(0, 8).map((x) => x.id); const o: Record<string, number> = {}; for (let k = 0; k < room.total; k++) { const id = pickN(ids, 1)[0]; o[id] = (o[id] || 0) + 1; } evs.push({ kind: 'pick', pid: p.pid, data: { key: room.key, value: o } }); }
-      if (room.kind === 'taste') SAMPLES.forEach((x) => evs.push({ kind: 'rate', pid: p.pid, data: { sample: x.code, appeal: rnd(2, 5), feels: rnd(2, 5), newness: rnd(1, 5), who: pickN(WHO_CHIPS, rnd(1, 2)), word: pickN(['Cozy', 'Bright', 'Clean', 'Surprising', 'Bold', 'Soft', 'Crisp', 'Warm', 'Grown-up', 'Fun'], 1)[0] } }));
+      if (room.kind === 'taste') SAMPLES.forEach((x) => evs.push({ kind: 'rate', pid: p.pid, data: { sample: x.code, appeal: rnd(2, 5), feels: rnd(2, 5), newness: rnd(1, 5), who: pickN(WHO_CHIPS, rnd(1, 2)), word: pickN(['Cozy', 'Bright', 'Clean', 'Surprising', 'Bold', 'Soft', 'Crisp', 'Warm', 'Grown-up', 'Fun'], 1)[0], guess: Math.random() < 0.5 ? x.territory : pickN(TERRITORIES.map((t) => t.id), 1)[0] } }));
       if (room.kind === 'guess') { const m = MOLECULES[Math.min(6, Math.floor(s.step / 2))]; evs.push({ kind: 'guess', pid: p.pid, data: { molecule: m.id, answer: Math.random() < 0.45 ? m.source : pickN(MOLECULES.map((x) => x.source), 1)[0] } }); }
+      if (room.kind === 'bench') { const d: Record<string, number> = {}; DIALS.forEach((x) => (d[x.id] = rnd(1, 5))); evs.push({ kind: 'dial', pid: p.pid, data: { team: (i % 3) + 1, dials: d } }); }
       if (room.kind === 'code') CODE.forEach((c) => evs.push({ kind: 'react', pid: p.pid, data: { target: 'code' + c.n, value: Math.random() < 0.8 ? 'keep' : 'edit' } }));
     });
-    if (room.kind === 'canvas' || scene.id === 'pitches') [1, 2, 3].forEach((team) => { const sd = SEEDS[team * 3]; evs.push({ kind: 'concept', data: { team, slot: 1, fields: { name: `${sd.name} (rehearsal)`, segment: SEGMENTS[team], occasion: sd.occasion, first: 'A bright opening', heart: sd.idea.split(':')[0].slice(0, 60), finish: 'A clean, cool finish', format: sd.format, incremental: sd.incremental, horizon: sd.horizon, sensation: ['Cooling linger'] } } }); });
+    if (room.kind === 'bench') [1, 2, 3].forEach((team) => evs.push({ kind: 'benchbase', data: { team, base: ['warmcool', 'fruit', 'botanical'][team - 1] } }));
+    if (room.kind === 'canvas' || room.kind === 'bench' || scene.id === 'pitches') [1, 2, 3].forEach((team) => { const sd = SEEDS[team * 3]; evs.push({ kind: 'concept', data: { team, slot: 1, fields: { name: `${sd.name} (rehearsal)`, segment: SEGMENTS[team], occasion: sd.occasion, first: 'A bright opening', heart: sd.idea.split(':')[0].slice(0, 60), finish: 'A clean, cool finish', format: sd.format, incremental: sd.incremental, horizon: sd.horizon, sensation: ['Cooling linger'] } } }); });
     sendMany(evs);
   };
 
@@ -84,6 +87,8 @@ export default function ConsolePanel({ sess, ctx, compact }: { sess: any; ctx: C
           <button onClick={() => send('timer', { action: 'stop' })}>Stop</button>
         </div>
       </section>
+
+      {scene.id === 'bench' && <BenchPanel s={s} send={send} team={Math.min(3, s.step + 1)} />}
 
       {scene.id === 'missions' && (
         <section className="cx-box">
@@ -144,5 +149,33 @@ export default function ConsolePanel({ sess, ctx, compact }: { sess: any; ctx: C
         ); })}
       </section>
     </div>
+  );
+}
+
+// Alex's controls: override any readout with a note, and lock the team's signature.
+function BenchPanel({ s, send, team }: { s: any; send: any; team: number }) {
+  const [note, setNote] = useState('');
+  const c = s.concepts[`t${team}-1`]; const b = s.bench[team];
+  const t = baseTerritory(s, team, c); const { avg, n } = teamDials(b);
+  const { list } = readouts(t, avg, b, c);
+  const OPTS: Record<string, string[]> = { stability: ['Low', 'Medium', 'High'], readiness: ['Proven today', 'Needs engineering', 'Screen first'], horizon: ['Now · 2027', 'Next · 2028', 'Future · 2029 to 2030'], format: ['Rinse · Toothpaste', 'Strip · Gum · Sachet', 'Rinse · Spray', 'Kids rinse · Toothpaste'] };
+  return (
+    <section className="cx-box">
+      <div className="k">The Bench · Team {team} · {n} phones · built on {t.hero}</div>
+      <input className="cx-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Alex's note for the next override (optional)" />
+      {list.map((r) => (
+        <div key={r.key} className="cx-item">
+          <span>{r.label}: <b>{r.override ? r.override.value : r.value}</b>{r.override ? ' (Alex)' : ''}</span>
+          <select value={r.override?.value || ''} onChange={(e) => send('override', { team, key: r.key, value: e.target.value, note: note || undefined })}>
+            <option value="">Rule of thumb</option>{(OPTS[r.key] || []).map((o) => <option key={o}>{o}</option>)}
+          </select>
+          <span />
+        </div>
+      ))}
+      <div className="cx-row">
+        <button className={b?.locked ? 'on' : ''} onClick={() => send('benchlock', { team, dials: b?.locked ? null : avg })}>{b?.locked ? 'Unlock signature' : 'Lock signature'}</button>
+        <select value={b?.base || ''} onChange={(e) => send('benchbase', { team, base: e.target.value })}>{[<option key="" value="">Base: auto</option>, ...TERRITORIES.map((x) => <option key={x.id} value={x.id}>{x.hero}</option>)]}</select>
+      </div>
+    </section>
   );
 }

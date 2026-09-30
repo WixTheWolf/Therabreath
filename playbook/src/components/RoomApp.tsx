@@ -1,9 +1,10 @@
 'use client';
 // ROOM: every phone in the room. One screen at a time, driven by the Stage scene.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
-import { SIGNALS, TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT } from '@/lib/content';
+import { SIGNALS, TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT, DIALS } from '@/lib/content';
+import { DEFAULT_DIALS, readouts } from '@/lib/bench';
 import { uid } from '@/lib/state';
 import { candidates } from './scenes/Build';
 
@@ -38,6 +39,7 @@ export default function RoomApp({ code, k }: { code: string; k: string }) {
     case 'canvas': body = <CanvasForm {...props} />; break;
     case 'dots': body = <DotsVote {...props} room={room} />; break;
     case 'placements': body = <Placements {...props} />; break;
+    case 'bench': body = <BenchPhone {...props} />; break;
     case 'code': body = <CodeReact {...props} />; break;
     case 'thanks': body = <div className="rm-center"><div className="rm-drop" /><h1 className="h2">Thank you, {me.name}.</h1><p className="rm-p">The Playbook v1.0 arrives within 8 business days.</p></div>; break;
     default: body = <div className="rm-center"><div className="rm-drop" /><div className="k">{scene.act}</div><h1 className="h3">{room.line || scene.title}</h1><p className="rm-p">Eyes up. Your phone lights up when the room needs you.</p></div>;
@@ -122,6 +124,8 @@ function Taste({ s, me, p, step }: P) {
       <Scale label="Newness" v={r.newness} set={(n) => setR({ ...r, newness: n })} />
       <div className="k" style={{ margin: '18px 0 10px' }}>Who is it for</div>
       <div className="rm-tags">{WHO_CHIPS.map((w) => <button key={w} className={r.who.includes(w) ? 'on' : ''} onClick={() => setR({ ...r, who: r.who.includes(w) ? r.who.filter((x: string) => x !== w) : [...r.who, w] })}>{w}</button>)}</div>
+      <div className="k" style={{ margin: '4px 0 10px' }}>Which territory do you think it is?</div>
+      <div className="rm-tags">{TERRITORIES.filter((t) => t.id !== 'ladder').map((t) => <button key={t.id} className={r.guess === t.id ? 'on' : ''} onClick={() => setR({ ...r, guess: t.id })}>{t.name}</button>)}</div>
       <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="One word for it" />
       <button className="rm-btn sticky" disabled={!ok} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
     </div>
@@ -239,6 +243,37 @@ function CodeReact({ s, me, p }: P) {
         </div>
       ); })}</div>
       <div className="rm-suggest" style={{ marginTop: 20 }}><input className="rm-input" value={edit === 0 ? txt : ''} onFocus={() => { setEdit(0); setTxt(''); }} onChange={(e) => setTxt(e.target.value)} placeholder="Add a rule we missed" /><button className="rm-btn" disabled={edit !== 0 || !txt.trim()} onClick={() => { p('react', { target: 'code-add-' + me.pid.slice(0, 6) + Date.now().toString(36), value: 'add', text: txt.slice(0, 140) }); setEdit(null); setTxt(''); }}>Add</button></div>
+    </div>
+  );
+}
+
+// The Bench: tune your team's sensory signature and see what it means on the bench.
+function BenchPhone({ s, me, p }: P) {
+  const team = s.participants[me.pid]?.team;
+  const mine = team ? s.bench[team]?.dials?.[me.pid] : undefined;
+  const [d, setD] = useState<Record<string, number>>(mine || DEFAULT_DIALS);
+  const timer = useRef<any>(null);
+  if (!team) return <Team s={s} me={me} p={p} step={0} />;
+  const b = s.bench[team]; const c = s.concepts[`t${team}-1`];
+  const base = TERRITORIES.find((t) => t.id === b?.base) || TERRITORIES[0];
+  const set = (id: string, v: number) => { const nd = { ...d, [id]: v }; setD(nd); clearTimeout(timer.current); timer.current = setTimeout(() => p('dial', { team, dials: nd }), 250); };
+  const { list, code } = readouts(base, d, b, c);
+  const warn = code.filter((x) => !x.ok);
+  return (
+    <div className="rm-pad bench-phone" style={{ ['--c2' as any]: base.palette[1] }}>
+      <div className="k">Team {team} · The Bench{b?.locked ? ' · locked' : ''}</div>
+      <h2 className="h3">{c?.name || 'Tune your concept'}</h2>
+      <div className="rm-field"><span>Built on</span><div className="rm-tags">{TERRITORIES.map((t) => <button key={t.id} className={base.id === t.id ? 'on' : ''} onClick={() => p('benchbase', { team, base: t.id })}>{t.hero}</button>)}</div></div>
+      {DIALS.map((x) => (
+        <label key={x.id} className="rm-dial">
+          <span><b>{x.l}</b><em className="num">{d[x.id]}</em></span>
+          <input type="range" min={1} max={5} step={1} value={d[x.id]} disabled={!!b?.locked} onChange={(e) => set(x.id, Number(e.target.value))} />
+          <small><i>{x.lo}</i><i>{x.hi}</i></small>
+        </label>
+      ))}
+      <div className="rm-readout">{list.slice(0, 2).concat(list.slice(3, 4)).map((r) => <div key={r.key} className={r.override ? 'ov' : r.tone}><span>{r.label}</span><b>{r.override ? r.override.value : r.value}</b></div>)}</div>
+      {warn.length > 0 && <div className="rm-warn">{warn.map((w) => <p key={w.n}><b>{w.t}</b> {w.why}</p>)}</div>}
+      <p className="rm-fine">Your dials join your team&rsquo;s on the big screen. The spread is the conversation.</p>
     </div>
   );
 }

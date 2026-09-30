@@ -1,12 +1,13 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import Light from '../Light';
+import { Compass } from './Hybrid';
 import { R, Enter, SceneProps, spectrumAt } from './ui';
 import { TERRITORIES, SAMPLES, WHO_CHIPS } from '@/lib/content';
 import { tallyPick, ranked, tasteSummary } from '@/lib/state';
 
 // Map positions: x = character (familiar to adventurous), y = intensity (gentle to bold). Our perspective, illustrative.
-const POS: Record<string, [number, number]> = { mint: [0.16, 0.55], botanical: [0.3, 0.3], fruit: [0.6, 0.4], warmcool: [0.78, 0.66], dessert: [0.7, 0.2], ladder: [0.3, 0.12], passport: [0.86, 0.42] };
+const POS: Record<string, [number, number]> = { mint: [0.16, 0.58], bright: [0.5, 0.74], botanical: [0.3, 0.3], warmcool: [0.8, 0.64], fruit: [0.62, 0.42], night: [0.7, 0.16], ladder: [0.3, 0.1] };
 
 // 23. The map
 export function MapScene({ step }: SceneProps) {
@@ -70,30 +71,42 @@ function World({ t }: { t: (typeof TERRITORIES)[number] }) {
   return <canvas ref={ref} width={1920} height={1080} className="world-cv" />;
 }
 
-export function Territory({ step, idx }: SceneProps) {
+export function Territory({ s, step, idx }: SceneProps) {
   const t = TERRITORIES[idx - 1];
+  const [stage, setStage] = useState(0);
+  useEffect(() => { const i = setInterval(() => setStage((x) => (x + 1) % 3), 2600); return () => clearInterval(i); }, []);
   return (
     <div className={'territory' + (t.dark ? ' dark' : '')} style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1], ['--c3' as any]: t.palette[2] }}>
-      {t.image && <img className="terr-img" src={t.image} alt="" />}
+      {t.image ? <img className="terr-img" src={t.image} alt="" /> : <div className="terr-img terr-noimg" />}
       <World t={t} />
       <div className="terr-veil" />
       <div className="pad terr-in">
-        <Enter i={0}><div className="k">Territory {t.n} of 7 · <span className="fit">{t.fit}</span></div></Enter>
-        <Enter i={1}><h2 className="hero terr-name">{t.name}</h2></Enter>
-        <Enter i={2}><p className="h3 it terr-promise">{t.promise}</p></Enter>
-        <R b={1} step={step} className="terr-card">
-          <div><span className="k">Why now</span><p>{t.why}</p></div>
-          <div><span className="k">Flavors</span><ul>{t.flavors.map((f) => <li key={f}>{f}</li>)}</ul></div>
-          <div><span className="k">Sensory signature</span><p>{t.signature}</p><span className="k" style={{ marginTop: 24, display: 'block' }}>Who</span><p>{t.who}</p>{t.fitNote && <p className="src" style={{ marginTop: 16 }}>{t.fitNote}</p>}</div>
-        </R>
+        <Enter i={0}><div className="k">Territory {t.n} of 7 · <span className="fit">{t.fit}</span> · {t.moment}</div></Enter>
+        <Enter i={1}><h2 className="terr-name">{t.name}</h2></Enter>
+        <Enter i={2}><div className="terr-hero it">{t.hero}</div></Enter>
+        <Enter i={3}><p className="terr-promise">{t.promise}</p></Enter>
+        <Enter i={4}>
+          <div className="terr-arc">
+            {t.arc.map((a, i) => <div key={a} className={i === stage ? 'on' : ''}><span className="k">{['First', 'Heart', 'Finish'][i]}</span><b>{a}</b><i style={{ height: `${20 + t.curve[i] * 70}px` }} /></div>)}
+          </div>
+        </Enter>
+        <R b={0} d={1400} step={step} className="terr-q"><span className="k">Question for the room</span><b>{t.q}</b></R>
       </div>
+      <div className={'terr-compass' + (step >= 1 ? ' up' : '')}>
+        <Compass prof={t.prof[stage]} color={t.palette[1]} size={440} stage={['First impression', 'Heart', 'Finish'][stage] + ' · grey: today\u2019s core mint'} />
+      </div>
+      <R b={1} step={step} className="terr-card">
+        <div><span className="k">Why now</span><p>{t.why}</p></div>
+        <div><span className="k">The family</span><ul>{t.flavors.map((f) => <li key={f}>{f}</li>)}</ul></div>
+        <div><span className="k">Sensory signature</span><p>{t.signature}</p><span className="k" style={{ marginTop: 18, display: 'block' }}>Who</span><p>{t.who}</p>{t.fitNote && <p className="src" style={{ marginTop: 12 }}>{t.fitNote}</p>}</div>
+      </R>
     </div>
   );
 }
 
 // 31. Blind tasting: heat map fills as phones score, then the names flip in.
 export function Tasting({ s, step }: SceneProps) {
-  const rows = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code) }));
+  const rows = SAMPLES.map((x) => { const g = Object.values(s.ratings[x.code] || {}).map((r) => r.guess).filter(Boolean); return { ...x, sum: tasteSummary(s, x.code), guessN: g.length, right: g.filter((v) => v === x.territory).length }; });
   const metrics: ['appeal' | 'feels' | 'newness', string][] = [['appeal', 'Appeal'], ['feels', 'Feels like TheraBreath'], ['newness', 'Newness']];
   const cell = (v: number) => { const a = Math.max(0, Math.min(1, (v - 1) / 4)); return { background: `color-mix(in oklab, var(--accent) ${Math.round(a * 85)}%, transparent)`, opacity: v ? 1 : 0.35 }; };
   const words = rows.flatMap((r) => r.sum.words.map((w) => ({ w, code: r.code })));
@@ -105,13 +118,13 @@ export function Tasting({ s, step }: SceneProps) {
         <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}<span>Who is it for</span></div>
         {rows.map((r) => (
           <div key={r.code} className="hrow">
-            <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{r.name}</span></div>
+            <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{r.name}{step >= 2 && r.guessN > 0 && <em className="hguess">{r.right} of {r.guessN} guessed {TERRITORIES.find((x) => x.id === r.territory)?.name}</em>}</span></div>
             {metrics.map(([k]) => <div key={k} className="hcell" style={cell(r.sum[k])}><b className="num">{r.sum[k] ? r.sum[k].toFixed(1) : ''}</b></div>)}
             <div className="hwho">{ranked(r.sum.who).slice(0, 3).map(([w, n]) => <span key={w}>{w} <b>{n}</b></span>)}</div>
           </div>
         ))}
       </div>
-      <R b={1} step={step} className="words">{words.slice(-24).map((x, i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 26 + ((i * 13) % 4) * 8 }}>{x.w}</span>)}{!words.length && <span className="empty">One word per sample arrives from the phones.</span>}</R>
+      <R b={1} step={step} className="words">{words.slice(-16).map((x, i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 24 + ((i * 13) % 4) * 6 }}>{x.w}</span>)}{!words.length && <span className="empty">One word per sample arrives from the phones.</span>}</R>
     </div>
   );
 }

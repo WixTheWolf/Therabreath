@@ -4,7 +4,9 @@ import { SCENES } from './scenes';
 export type Ev = { id: string; seq?: number; t: number; kind: string; pid?: string; data?: any };
 
 export type Participant = { pid: string; name: string; role?: string; team?: number; joined: number; sim?: boolean; paper?: boolean };
-export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string };
+export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string; guess?: string };
+export type Dials = Record<string, number>;
+export type Bench = { dials: Record<string, Dials>; base?: string; overrides: Record<string, { value: string; note?: string }>; locked?: Dials };
 export type Concept = { id: string; team: number; slot: number; name: string; segment: string; occasion: string; first: string; heart: string; finish: string; sensation: string[]; format: string; incremental: string; why: string; horizon: string; suggestions: { pid: string; text: string }[] };
 export type Placement = { horizon: string; role: string; t: number };
 
@@ -19,7 +21,8 @@ export type SessionState = {
   placements: Record<string, Placement>; // concept or seed id -> placement
   reactions: Record<string, Record<string, { v: string; text?: string }>>; // target -> pid -> reaction
   calendar: Record<string, string>; // concept id -> season
-  survey: Record<string, { name: string; consumer?: string; moment?: string; veto?: string }>;
+  bench: Record<string, Bench>; // team -> bench
+  survey: Record<string, { name: string; consumer?: string; moment?: string; veto?: string; profile?: Record<string, number> }>;
   timer: { running: boolean; endsAt: number; remaining: number; total: number };
   spotlight: { kind: string; ref: string } | null;
   paper: boolean; blank: boolean; sound: boolean;
@@ -28,7 +31,7 @@ export type SessionState = {
 
 export const initialState = (): SessionState => ({
   scene: 0, step: 0, participants: {}, votes: {}, ratings: {}, guesses: {}, concepts: {},
-  missions: ['m1', 'm2', 'm3'], placements: {}, reactions: {}, calendar: {}, survey: {},
+  missions: ['m1', 'm2', 'm3'], placements: {}, reactions: {}, calendar: {}, bench: {}, survey: {},
   timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, paper: false, blank: false, sound: false, lastEvent: 0,
 });
 
@@ -43,7 +46,7 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'goto': s.scene = Math.max(0, Math.min(SCENES.length - 1, d.scene)); s.step = Math.max(0, Math.min(SCENES[s.scene].builds, d.step || 0)); s.spotlight = null; break;
     case 'vote': { const v = vote(s, d.key); if (d.action === 'open') { v.open = true; v.locked = false; } if (d.action === 'lock') { v.open = false; v.locked = true; } if (d.action === 'reveal') { v.revealed = true; v.open = false; v.locked = true; } if (d.action === 'reset') s.votes[d.key] = { open: false, locked: false, revealed: false, picks: {} }; break; }
     case 'pick': { const v = vote(s, d.key); if (!v.locked || d.paper) v.picks[e.pid!] = d.value; break; }
-    case 'rate': (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word }; break;
+    case 'rate': (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess }; break;
     case 'guess': (s.guesses[d.molecule] ||= {})[e.pid!] = d.answer; break;
     case 'concept': { const id = `t${d.team}-${d.slot || 1}`; s.concepts[id] = { ...(s.concepts[id] || { suggestions: [] }), ...d.fields, id, team: d.team, slot: d.slot || 1 }; break; }
     case 'suggest': { const id = `t${d.team}-${d.slot || 1}`; const c = s.concepts[id] || ({ id, team: d.team, slot: d.slot || 1, suggestions: [] } as any); c.suggestions = [...(c.suggestions || []), { pid: e.pid!, text: String(d.text).slice(0, 140) }]; s.concepts[id] = c; break; }
@@ -51,7 +54,11 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'place': if (d.horizon) s.placements[d.ref] = { horizon: d.horizon, role: d.role || 'Expanders', t: e.t }; else delete s.placements[d.ref]; break;
     case 'react': (s.reactions[d.target] ||= {})[e.pid!] = { v: d.value, text: d.text }; break;
     case 'season': if (d.season) s.calendar[d.ref] = d.season; else delete s.calendar[d.ref]; break;
-    case 'survey': s.survey[e.pid!] = { name: d.name, consumer: d.consumer, moment: d.moment, veto: d.veto }; break;
+    case 'dial': { const b = (s.bench[d.team] ||= { dials: {}, overrides: {} }); b.dials[e.pid!] = d.dials; break; }
+    case 'benchbase': { const b = (s.bench[d.team] ||= { dials: {}, overrides: {} }); b.base = d.base; break; }
+    case 'override': { const b = (s.bench[d.team] ||= { dials: {}, overrides: {} }); if (d.value) b.overrides[d.key] = { value: d.value, note: d.note }; else delete b.overrides[d.key]; break; }
+    case 'benchlock': { const b = (s.bench[d.team] ||= { dials: {}, overrides: {} }); b.locked = d.dials || undefined; break; }
+    case 'survey': s.survey[e.pid!] = { name: d.name, consumer: d.consumer, moment: d.moment, veto: d.veto, profile: d.profile }; break;
     case 'timer': {
       const now = e.t;
       if (d.action === 'start') s.timer = { running: true, total: d.secs, remaining: d.secs, endsAt: now + d.secs * 1000 };

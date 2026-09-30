@@ -7,6 +7,9 @@ import { tallyPick, ranked, tasteSummary } from '@/lib/state';
 import { teamConcepts } from './scenes/CoCreate';
 import { candidates, SEASONS } from './scenes/Build';
 import { decisions } from './scenes/Close';
+import { teamDials, baseTerritory, compass, readouts } from '@/lib/bench';
+import { Compass } from './scenes/Hybrid';
+import { DIALS } from '@/lib/content';
 
 export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
   const { state: s, status } = useSession(code, { admin: true, interval: 2500 });
@@ -72,6 +75,9 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
           {concepts.length ? concepts.map((c) => (
             <div key={c.id} className="pb-concept">
               <div className="pb-c-head"><b>{c.name || 'Untitled concept'}</b><span>Team {c.team}{c.horizon ? ` · ${c.horizon}` : ''}{tallyPick(s, 'concepts')[c.id] ? ` · ${tallyPick(s, 'concepts')[c.id]} dots` : ''}</span></div>
+              {s.bench[c.team] && (() => { const b = s.bench[c.team]; const t = baseTerritory(s, c.team, c); const { avg } = teamDials(b); const { list } = readouts(t, avg, b, c); return (
+                <div className="pb-sig-row"><Compass prof={compass(t, avg)[1]} color={t.palette[1]} size={170} labels={false} /><div><div className="k">Sensory signature · built on {t.hero}</div><p>{DIALS.map((d) => `${d.l} ${avg[d.id].toFixed(1)}`).join(' · ')}</p><p>{list.map((r) => `${r.label}: ${r.override ? r.override.value + ' (Alex)' : r.value}`).join(' · ')}</p></div></div>
+              ); })()}
               <dl>{([['For', c.segment], ['When', c.occasion], ['First', c.first], ['Heart', c.heart], ['Finish', c.finish], ['Sensation', (c.sensation || []).join(', ')], ['Format', c.format], ['Why incremental', c.incremental], ['Why TheraBreath', c.why]] as [string, string][]).filter(([, v]) => v).map(([l, v]) => <div key={l}><dt>{l}</dt><dd>{v}</dd></div>)}</dl>
             </div>
           )) : <p className="pb-lede">Team concepts appear here as the canvases fill.</p>}

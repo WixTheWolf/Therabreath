@@ -5,6 +5,7 @@ import Light, { project } from '../Light';
 import { R, Enter, SceneProps, Src } from './ui';
 import { EVENT, JULY, OBJECTIVES, SURVEY } from '@/lib/content';
 import { people, ranked } from '@/lib/state';
+import Orb, { describe } from '../Orb';
 
 export function useQR(text: string) {
   const [svg, setSvg] = useState('');
@@ -132,12 +133,19 @@ export function Prework({ s, step }: SceneProps) {
         <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} /></R>
         <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} /></R>
       </div>
+      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">The room&rsquo;s freshness</span><p className="h3 it">{describe(roomProfile(answers), 'The room wants freshness that is')}</p></div></R>}
       <R b={2} step={step} className="vetoes">
         <div className="k">Flavors you would never approve</div>
         <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map((v, i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 30 + ((i * 17) % 5) * 6 }}>{v}</span>) : <span className="empty">Vetoes arrive from the pre-work survey.</span>}</div>
       </R>
     </div>
   );
+}
+
+function roomProfile(answers: any[]) {
+  const ps = answers.map((a) => a.profile).filter(Boolean); const out: Record<string, number> = {};
+  for (const k of ['adv', 'cool', 'bot', 'exp', 'occ']) out[k] = ps.length ? Math.round(ps.reduce((s, p) => s + (p[k] || 3), 0) / ps.length) : 3;
+  return out;
 }
 
 export function Thesis({ step }: SceneProps) {
