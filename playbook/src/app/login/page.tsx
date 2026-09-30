@@ -16,7 +16,7 @@ export default function Login() {
         <div className="k">TheraBreath × The Flavor Factory</div>
         <h1 className="h2">The Flavor<br /><span className="it">Playbook</span></h1>
         <p>Confidential. Enter the session password.</p>
-        <input type="password" autoFocus autoCapitalize="none" autoCorrect="off" spellCheck={false} value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Password" aria-label="Password" />
+        <input type="password" autoFocus autoComplete="current-password" autoCapitalize="none" autoCorrect="off" spellCheck={false} value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Password" aria-label="Password" />
         {err && <div className="gate-err">That is not it. Try again.</div>}
         <button disabled={busy || !pw}>{busy ? 'Checking' : 'Enter'}</button>
       </form>

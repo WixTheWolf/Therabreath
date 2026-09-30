@@ -1,6 +1,6 @@
 // Password gate and signed join tokens. Web Crypto only, so it runs in proxy and in route handlers.
 // The plain password is never stored: only its SHA-256. Set PLAYBOOK_PASSWORD to change it.
-const DEFAULT_HASH = '2be802e03fb1c9dc869b387b15be0c25779f75c7e1690b969b8057bd7f72c7dc';
+const DEFAULT_HASH = 'a47a1d697b3cf96db5d947f68a534e57ef7bd7fd48ebd3fda7070c7e9ec9e2a7';
 const enc = new TextEncoder();
 const hex = (b: ArrayBuffer) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
 
