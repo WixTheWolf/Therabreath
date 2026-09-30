@@ -10,3 +10,5 @@ jobs:
           node-version: 22
       - name: No em dashes or en dashes anywhere
         run: node playbook/design/scripts/check-dashes.mjs .
+      - name: Password gate and join link tests
+        run: node --experimental-strip-types --test playbook/tests/auth.test.mjs
