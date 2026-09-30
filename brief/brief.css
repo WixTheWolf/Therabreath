@@ -145,7 +145,12 @@ section { padding: clamp(70px, 12vh, 150px) 0; }
 }
 @media (max-width: 560px) { .q4, .three, .cards { grid-template-columns: 1fr; } }
 
+.print-only { display: none; }
 @media print {
+  .screen-only { display: none; }
+  .print-only { display: block; font: 400 17px/1.5 var(--f-b); color: var(--ink2); margin-top: 18px; padding: 14px 18px; border-radius: 14px; background: #EEF5F7; }
+  .sliders, .say { display: none !important; }
+  .work-grid { grid-template-columns: 1fr 1fr; }
   @page { size: letter; margin: 14mm; }
   body { background: #fff; }
   .cover { min-height: 0; height: 9.5in; page-break-after: always; }

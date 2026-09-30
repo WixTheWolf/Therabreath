@@ -62,5 +62,4 @@
   $(".film-x").addEventListener("click", close);
   film.addEventListener("click", e => { if (e.target === film) close(); });
   addEventListener("keydown", e => { if (e.key === "Escape" && !film.hidden) close(); });
-  $("#print").addEventListener("click", () => print());
 })();
