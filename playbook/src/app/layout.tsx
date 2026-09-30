@@ -1,6 +1,7 @@
 import './globals.css';
 import './stage.css';
 import './room.css';
+import './site.css';
 import './console.css';
 import './playbook.css';
 import type { Metadata, Viewport } from 'next';

@@ -9,4 +9,4 @@ export async function proxy(req: NextRequest) {
   url.searchParams.set('next', req.nextUrl.pathname + req.nextUrl.search);
   return NextResponse.redirect(url);
 }
-export const config = { matcher: ['/', '/stage/:path*', '/console/:path*', '/playbook/:path*', '/sessions/:path*'] };
+export const config = { matcher: ['/', '/host', '/stage/:path*', '/console/:path*', '/playbook/:path*', '/sessions/:path*'] };

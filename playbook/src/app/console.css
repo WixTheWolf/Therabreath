@@ -45,3 +45,14 @@
 .cx-list button.on { background: rgba(143,224,240,.16); box-shadow: inset 3px 0 0 var(--accent); }
 .cx-list button:hover { background: rgba(255,255,255,.05); }
 .cx-note { width: 100%; padding: 10px 12px; border-radius: 10px; background: #0d1d2c; border: 1px solid rgba(255,255,255,.14); color: #F0EEE9; font-size: 14px; }
+
+.cx-survey .k { font-size: 11px; margin: 10px 0 8px; }
+.cx-survey p { margin-bottom: 10px; }
+.cx-invite { display: block; margin: 10px 0; }
+.cx-invite span { display: block; margin-bottom: 6px; }
+.cx-invite textarea { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--rule); background: var(--panel); font: 400 13px var(--mono); }
+.cx-links { list-style: none; display: grid; gap: 6px; }
+.cx-links li { display: grid; grid-template-columns: 140px 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; border-radius: 10px; background: var(--panel); }
+.cx-links b { font: 500 13px var(--sans); color: var(--fg); }
+.cx-links button, .cx-copyall { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--rule); font: 500 12px var(--mono); color: var(--fg); }
+.cx-copyall { margin-top: 10px; }

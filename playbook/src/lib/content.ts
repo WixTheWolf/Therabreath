@@ -240,3 +240,37 @@ export const NEXT_STEPS = [
   { t: 'Prototypes', d: 'Development of the top 3 concepts in real TheraBreath bases.' },
   { t: 'Next session', d: 'A follow-up Playbook session in January 2027.' },
 ];
+
+// Freshness, designed: where the two worlds meet (site).
+export const SCIENCE = ['Volatile aromatics', 'Sensory perception', 'Cooling', 'Trigeminal sensations', 'Taste masking', 'Solubility', 'Stability', 'Oral-care systems'];
+export const IMAGINATION = ['Culture', 'Emotion', 'Consumer expectation', 'Food and beverage trends', 'Hospitality', 'Beauty', 'Wellness', 'Travel', 'Ritual'];
+
+// The atlas. Adoption stages are The Flavor Factory's read, not measured data.
+export const ATLAS_STAGES = ['Origin cuisine', 'Specialist menus', 'Cafe and cocktail culture', 'Mainstream food and drink', 'Personal care'];
+export type Region = { id: string; name: string; at: string; col: string; ing: [string, number][]; sensory: string; why: string; where: string; oral: string; terr: string | null };
+export const REGIONS: Region[] = [
+  { id: 'japan', name: 'Japan', at: 'japan', col: '#C9A400', ing: [['Yuzu', 4], ['Sudachi', 2], ['Matcha', 5], ['Shiso', 2]], sensory: 'Aromatic, high-lift citrus. Grassy, gently savory tea. Cool, herbal shiso.', why: 'Japanese food is one of the most familiar "foreign" cuisines in the US. Yuzu reads as citrus first and new second: adventure with a safety net.', where: 'Sparkling waters, craft cocktails, pastry, specialty coffee, J-beauty skincare and fine fragrance.', oral: 'Arctic Yuzu · Sudachi Fresh · Green Tea Yuzu', terr: 'bright' },
+  { id: 'asia', name: 'East and Southeast Asia', at: 'asia', col: '#4F8A5B', ing: [['Jasmine tea', 4], ['Calamansi', 2], ['Pandan', 2]], sensory: 'Floral tea, sharp sweet-tart citrus and a soft, green warmth.', why: 'Bubble tea and Southeast Asian restaurants have made tea-led, floral-green flavors everyday for younger consumers.', where: 'Bubble and fruit teas, bakeries and desserts, cocktail menus, ready-to-drink teas.', oral: 'Calamansi Mint · Jasmine Cucumber Mint · soft green freshness', terr: 'botanical' },
+  { id: 'med', name: 'Mediterranean', at: 'med', col: '#C0715F', ing: [['Bergamot', 5], ['Blood orange', 4], ['Basil', 4], ['Orange blossom', 3]], sensory: 'Sunlit, aromatic citrus, green herbs and restrained florals.', why: 'Earl Grey, spritz culture and the Mediterranean diet made these notes feel natural and good for you. Bergamot is the backbone of classic cologne.', where: 'Aperitivo and spritz menus, botanical gin, fine fragrance, herb-led cooking.', oral: 'Bergamot Mint · Grapefruit Rose Mint · herbal freshness', terr: 'botanical' },
+  { id: 'mideast', name: 'Middle East', at: 'mideast', col: '#8A6FB0', ing: [['Rose', 5], ['Cardamom', 3], ['Mint tea', 4], ['Saffron', 2]], sensory: 'Aromatic warmth, soft florals and cooling mint tea.', why: 'Cardamom has moved from the spice rack to the coffee bar, and rose has long been a beauty ingredient. Mint tea gives both a familiar, fresh bridge.', where: 'Cafe menus (cardamom buns, rose lattes), pastry, fragrance, wellness teas.', oral: 'Pear Cardamom Mint · Grapefruit Rose Mint', terr: 'fruit' },
+  { id: 'latam', name: 'Latin America', at: 'latam', col: '#6E9B2E', ing: [['Lime', 5], ['Passion fruit', 4], ['Hibiscus', 3], ['Chili-lime', 4]], sensory: 'Bright, juicy and tart, with botanical notes and hot-meets-fresh contrast.', why: 'Aguas frescas and chili-lime snacks taught US consumers to love bright acidity and the contrast of heat with freshness.', where: 'Aguas frescas, sparkling waters, cocktails, snacks and candy.', oral: 'Ginger Lime · Lime Mint · hibiscus freshness', terr: 'warmcool' },
+  { id: 'cafe', name: 'Western cafe culture', at: 'nyc', col: '#1B75BB', ing: [['Matcha latte', 5], ['Cardamom bun', 3], ['Lavender latte', 3], ['Yuzu tonic', 3]], sensory: 'Layered, composed and seasonal.', why: 'Cafes are where global ingredients get translated for mainstream palates, one layered drink at a time.', where: 'Specialty coffee, ready-to-drink beverages, bakery menus, social feeds.', oral: 'The lesson for oral care: people now expect composed flavors, not single notes.', terr: null },
+];
+
+// Pre-brief: three things to think about before November 9. [CONFIRM copy with Matt]
+export const THINK = [
+  'The last flavor outside oral care that surprised you, and where you met it.',
+  'The moment in your day when your mouth feels least fresh.',
+  'What would make a 25-year-old who has never bought TheraBreath pick it up.',
+];
+
+// The morning, one line per act (pre-brief and site).
+export const AGENDA: [string, string][] = [
+  ['10:00', 'The film, and why freshness is bigger than mint'],
+  ['10:10', 'The Signals: what is changing'],
+  ['10:30', 'Flavor School, and a molecule flight'],
+  ['10:44', 'The Territories: seven worlds and a blind tasting'],
+  ['11:07', 'The Moments: teams build concepts, then engineer them on The Bench'],
+  ['11:41', 'The Playbook: what we do first, next and later'],
+  ['11:54', 'The Playbook you built, with your name on it'],
+];
