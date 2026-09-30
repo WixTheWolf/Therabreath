@@ -4,7 +4,7 @@ This repository contains a generated, print-ready 18-page US Letter portrait PDF
 
 ## Deliverable
 
-- `dist/therabreath_capabilities_workshop_booklet.pdf` — final 18-page vector PDF booklet.
+- `dist/therabreath_capabilities_workshop_booklet.pdf`: final 18-page vector PDF booklet.
 
 ## Design System
 
@@ -25,7 +25,7 @@ The command writes the PDF to `dist/therabreath_capabilities_workshop_booklet.pd
 
 The site, pre-read, deck and reel share one idea: every flavor is its own animated world. As you scroll (or advance a slide) the next world pours in over the last, and the TheraBreath bottle drains and refills with each flavor. The worlds, the six flavors, the sodium chlorite chemistry and the session details live in `assets/playbook-core.js`, so one edit updates every piece. `assets/worlds.js` and `assets/worlds.css` hold the scroll engine and styles shared by the site and the pre-read.
 
-Session (from Ross Conroy's invite, Sep 24, 2026): Monday, November 9, 2026, 10:00 AM – 12:00 PM ET, room Darwin, Church & Dwight HQ, Ewing, NJ, lunch provided. Four objectives: trends, territories, concepts, pipeline. Agenda: 10:00 Welcome → 10:10 Trends → 10:30 Territories → 10:50 Taste (blind) → 11:20 Create → 11:40 Playbook → 12:00 lunch.
+Session (from Ross Conroy's invite, Sep 24, 2026): Monday, November 9, 2026, 10:00 AM to 12:00 PM ET, room Darwin, Church & Dwight HQ, Ewing, NJ, lunch provided. Four objectives: trends, territories, concepts, pipeline. Agenda: 10:00 Welcome → 10:10 Trends → 10:30 Territories → 10:50 Taste (blind) → 11:20 Create → 11:40 Playbook → 12:00 lunch.
 
 ## The six flavors (working names, not trademark-screened)
 
@@ -44,7 +44,7 @@ Nine wildcards, each from a real trend and culture (bench difficulty in brackets
 
 ## Trend research
 
-`TREND_DEEP` in `assets/playbook-core.js` holds twelve trends across three lenses (flavor, sensory, consumer), each with a maturity stage (mainstream, rising, emerging), where we see it, what it means for TheraBreath and a question for the room. `FUTURE` holds six 2027–2030 shifts. Stages are our judgment, not measured data. The site and pre-read show them on an interactive trend radar; the deck gives each lens its own slide.
+`TREND_DEEP` in `assets/playbook-core.js` holds twelve trends across three lenses (flavor, sensory, consumer), each with a maturity stage (mainstream, rising, emerging), where we see it, what it means for TheraBreath and a question for the room. `FUTURE` holds six 2027 to 2030 shifts. Stages are our judgment, not measured data. The site and pre-read show them on an interactive trend radar; the deck gives each lens its own slide.
 
 What the base breaks down, and why we avoided it: citral (lemon, lime), cinnamaldehyde, vanillin, eugenol (clove), nonadienal (cucumber, melon).
 
@@ -75,12 +75,12 @@ What the base breaks down, and why we avoided it: citral (lemon, lime), cinnamal
 
 ## Workshop deck
 
-- `deck/index.html`: 34 slides (3D on the title, six worlds and close slides), 1920 × 1080, built as a workshop around Ross's four objectives. It opens with what TheraBreath asked for (Ross's ask and the four things he asked us to bring). Each objective has an opener with its question, the content, and a "Let's discuss" slide with prompts. Trends: radar, a slide per lens, 2027–2030, discussion and a dot vote. Territories: one rule from the bench, the white-space map, six new worlds, nine wildcards, four platforms, a short taste break, discussion. Concepts: a day of occasions, six consumer segments, the Create exercise. Pipeline: three checks, now/next/later, where flavor could travel across the franchise, discussion, draft playbook, the ultimate playbook (six chapters, each tied to an objective), a proposed 30/60/90 plan, close.
+- `deck/index.html`: 34 slides (3D on the title, six worlds and close slides), 1920 × 1080, built as a workshop around Ross's four objectives. It opens with what TheraBreath asked for (Ross's ask and the four things he asked us to bring). Each objective has an opener with its question, the content, and a "Let's discuss" slide with prompts. Trends: radar, a slide per lens, 2027 to 2030, discussion and a dot vote. Territories: one rule from the bench, the white-space map, six new worlds, nine wildcards, four platforms, a short taste break, discussion. Concepts: a day of occasions, six consumer segments, the Create exercise. Pipeline: three checks, now/next/later, where flavor could travel across the franchise, discussion, draft playbook, the ultimate playbook (six chapters, each tied to an objective), a proposed 30/60/90 plan, close.
 - Keys: ← → / space to move, **G** overview, **N** speaker notes, **P** presenter view (current and next slide, notes, timer, synced), **F** full screen, **B** blank. Slide numbers deep-link (`deck/#12`).
 - `dist/TheraBreath_Flavor_Playbook_Deck.pdf` is the PDF export. Regenerate with `node scripts/export-deck-pdf.js` (needs `playwright-core` and a local Chrome; see the script header).
 - Fonts are self-hosted in `assets/fonts/` (Bricolage Grotesque, Figtree, JetBrains Mono, Archivo).
 
 ## Workshop web experience
 
-- `index.html`: the in-room tool and leave-behind. Scroll through the worlds; tools along the way: what TheraBreath asked for, an interactive trend radar (filter by lens, tap a trend), 2027–2030 future trends, a flavor passport of nine wildcard stamps that flip over, a spin-the-wheel warm-up game, the blind scorecard (seven cups), the concept builder (pick a world, a moment and a person), the pipeline (tap a bottle to move it between near-term, next and long-term), the six-chapter playbook book (tap a chapter tab) with the proposed 30/60/90 plan, and the draft playbook (trends, two territories, the three checks, owners). "Copy the draft playbook" puts it all on the clipboard. Everything is saved in the presenting browser only.
+- `index.html`: the in-room tool and leave-behind. Scroll through the worlds; tools along the way: what TheraBreath asked for, an interactive trend radar (filter by lens, tap a trend), 2027 to 2030 future trends, a flavor passport of nine wildcard stamps that flip over, a spin-the-wheel warm-up game, the blind scorecard (seven cups), the concept builder (pick a world, a moment and a person), the pipeline (tap a bottle to move it between near-term, next and long-term), the six-chapter playbook book (tap a chapter tab) with the proposed 30/60/90 plan, and the draft playbook (trends, two territories, the three checks, owners). "Copy the draft playbook" puts it all on the clipboard. Everything is saved in the presenting browser only.
 - `assets/` holds the official TheraBreath logo and product photo. The concept bottles are drawn in code to match the current rinse label and read "Concept mockup · not a product".

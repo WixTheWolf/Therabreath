@@ -6,7 +6,7 @@ window.FF = (() => {
     sub: "A TheraBreath Flavor Playbook",
     date: "November 9, 2026",
     place: "Church & Dwight · Darwin room",
-    time: "10:00 AM – 12:00 PM ET"
+    time: "10:00 AM to 12:00 PM ET"
   };
 
   const CHAPTERS = {

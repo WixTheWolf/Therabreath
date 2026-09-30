@@ -33,7 +33,7 @@ An interactive workshop experience for The Flavor Factory × TheraBreath / Churc
   - Keep the console on your laptop and drag the display window to the projector.
   - Both windows stay in sync, and so do votes.
 - **Shortcuts:**
-  - Y: Your turn. 1–4: chapters. G: all screens.
+  - Y: Your turn. 1 to 4: chapters. G: all screens.
   - N: notes. Z: undo. B: blank. F: full screen.
 - **Rehearsal data** loads a believable set of votes. **Reset workshop** clears everything before the real session.
 - **Export answers** downloads everything as JSON. **Print the playbook** prints the final screen as a 16:9 page (save as PDF).

@@ -18,7 +18,7 @@ This folder is confidential and is excluded from the existing public deployments
     - the dichroic spectrum in the empty space
   - `motion.html?m=<arrival|gap>&d=<a|b>` steps a motion test frame by frame.
 - `img/`: brand logos from the existing repo, plus generated look-target photography (Higgsfield, GPT Image 2.5).
-- `fonts/`: Fraunces, Geist and Geist Mono (SIL OFL), self-hosted.
+- `fonts/`: Newsreader, Geist and Geist Mono (SIL OFL), self-hosted.
 - `out/`: rendered frames, motion tests and the pack PDF.
 - `scripts/`:
   - `shot.cjs`: screenshot one frame

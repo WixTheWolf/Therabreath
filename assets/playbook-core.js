@@ -13,7 +13,7 @@
 
   /* ---------------------------------------------------------------- session */
   /* From Ross Conroy's invite (Sep 24, 2026). Keep every page in step with these. */
-  const SESSION = { day: "Monday, November 9, 2026", short: "Mon, Nov 9", time: "10:00 AM – 12:00 PM ET", room: "Darwin", place: "Church & Dwight HQ · Ewing, NJ", lunch: "Lunch provided", start: "2026-11-09T15:00:00Z" };
+  const SESSION = { day: "Monday, November 9, 2026", short: "Mon, Nov 9", time: "10:00 AM to 12:00 PM ET", room: "Darwin", place: "Church & Dwight HQ · Ewing, NJ", lunch: "Lunch provided", start: "2026-11-09T15:00:00Z" };
   const OBJECTIVES = [
     { k: "trends", n: "01", h: "Trends", line: "Identify the flavor, sensory and consumer trends shaping the future of oral care.", out: "The trends worth acting on" },
     { k: "territories", n: "02", h: "Territories", line: "Explore new flavor territories and sensory experiences that strengthen TheraBreath’s edge.", out: "The territories to prioritize" },
@@ -121,7 +121,7 @@
     bring: [
       { h: "Flavor development", p: "Six new worlds and nine wildcards, all built for sodium chlorite." },
       { h: "Consumer & market observations", p: "What we see across the categories we flavor, beyond oral care." },
-      { h: "Trend insights", p: "Twelve trends across flavor, sensory and consumer, plus 2027–2030." },
+      { h: "Trend insights", p: "Twelve trends across flavor, sensory and consumer, plus 2027 to 2030." },
       { h: "Innovation capabilities", p: "Bench samples, stability work and sensory, fast." }
     ],
     wants: [

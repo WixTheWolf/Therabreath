@@ -232,9 +232,9 @@
     <h2 class="display" data-kin style="margin-top:14px">Taste first. <span class="hl">Names later.</span></h2>
     <p class="lede rv" style="margin-top:20px">Seven coded cups: six new flavors and today’s TheraBreath. Score each one across the whole rinse, then we reveal.</p>
     <div class="stages rv">
-      <div class="stg" style="--c:#00A3E0"><span class="t">0–5 seconds</span><b>Opening</b><span>What happens first?</span></div>
-      <div class="stg" style="--c:#12A0A6"><span class="t">5–60 seconds</span><b>Development</b><span>How does it change?</span></div>
-      <div class="stg" style="--c:#006649"><span class="t">1–3 minutes</span><b>Finish</b><span>What stays with you?</span></div>
+      <div class="stg" style="--c:#00A3E0"><span class="t">0 to 5 seconds</span><b>Opening</b><span>What happens first?</span></div>
+      <div class="stg" style="--c:#12A0A6"><span class="t">5 to 60 seconds</span><b>Development</b><span>How does it change?</span></div>
+      <div class="stg" style="--c:#006649"><span class="t">1 to 3 minutes</span><b>Finish</b><span>What stays with you?</span></div>
       <div class="stg" style="--c:#F58025"><span class="t">Tomorrow</span><b>Repeat</b><span>Would you use it again?</span></div>
     </div>
     <div class="cups" id="cups" role="group" aria-label="Choose a sample to score"></div>
@@ -502,15 +502,15 @@ const ownIn = e => { const el = e.target; if (!el.dataset.id) return; (S.owners[
 $("#pOwners").addEventListener("input", ownIn); $("#pOwners").addEventListener("change", ownIn);
 renderPB();
 $("#copy").addEventListener("click", () => {
-  const avg = code => { const sc = S.scores[code] || {}, v = DIMS.map(d => sc[d[0]]).filter(Boolean); return v.length ? (v.reduce((a, b) => a + b, 0) / v.length).toFixed(1) : "–"; };
+  const avg = code => { const sc = S.scores[code] || {}, v = DIMS.map(d => sc[d[0]]).filter(Boolean); return v.length ? (v.reduce((a, b) => a + b, 0) / v.length).toFixed(1) : "-"; };
   const L = ["TheraBreath Flavor Playbook · draft", `${T.SESSION.place} · ${T.SESSION.room} · November 9, 2026`, "",
     "01 Trends to act on: " + (S.trends.filter(Boolean).join("; ") || "to be agreed"),
     "02 Priority territories: " + (S.plats.map(k => PLATS[k]).join(" + ") || "to be chosen"), "",
     "Tasting (average of this browser's scores):", ...CONCEPTS.map(c => `  ${c.code} ${c.name}: ${avg(c.code)}`), `  ${CONTROL.code} control: ${avg(CONTROL.code)}`, "",
-    "03 Three checks (brand · make · choose):", ...CONCEPTS.map(c => { const k = S.checks[c.id] || {}; return `  ${c.name}: ${k.b ? "✓" : "–"} ${k.m ? "✓" : "–"} ${k.c ? "✓" : "–"}`; }), "",
-    "04 Pipeline:", ...HORIZONS.map(h => `  ${h.h}: ${worlds.filter(d => hzOf(d) === h.k).map(d => d.name).join(", ") || "–"}`), "",
+    "03 Three checks (brand · make · choose):", ...CONCEPTS.map(c => { const k = S.checks[c.id] || {}; return `  ${c.name}: ${k.b ? "✓" : "-"} ${k.m ? "✓" : "-"} ${k.c ? "✓" : "-"}`; }), "",
+    "04 Pipeline:", ...HORIZONS.map(h => `  ${h.h}: ${worlds.filter(d => hzOf(d) === h.k).map(d => d.name).join(", ") || "-"}`), "",
     "Owners:", ...Object.keys(S.owners).map(id => { const o = S.owners[id]; return `  ${(byId(id) || { name: id }).name}: ${o.owner || "TBD"} · ${o.action || ""}${o.date ? " · by " + o.date : ""}`; }), "",
-    "Concepts from Create:", ...(S.ideas.length ? S.ideas.map(d => `  ${(byId(d.world) || { name: d.world }).name} for ${d.who}, at ${d.when}`) : ["  –"])];
+    "Concepts from Create:", ...(S.ideas.length ? S.ideas.map(d => `  ${(byId(d.world) || { name: d.world }).name} for ${d.who}, at ${d.when}`) : ["  -"])];
   const txt = L.join("\n");
   const fallback = () => { const ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (e) {} ta.remove(); toast("Draft playbook copied"); };
   if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => toast("Draft playbook copied"), fallback); else fallback();

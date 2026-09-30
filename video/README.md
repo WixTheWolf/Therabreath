@@ -3,13 +3,13 @@
 A 32-second cinematic cut (1920 × 1080, 30 fps) for the TheraBreath pre-read page, built with [Remotion](https://remotion.dev).
 
 - **Scenes** (`src/scenes/`), every one starting on a bar of the music:
-  1. **Open** (0–3 s): one drop in extreme macro; "What does fresh taste like next?"
-  2. **Ask** (3–7 s): what TheraBreath asked for, in Ross’s words, then the four objectives on the beat.
-  3. **Trends** (7–13 s): twelve trends, one per beat, each tagged with its lens and stage.
-  4. **Worlds** (13–19 s): six flavor worlds pour in over each other while the bottle refills.
-  5. **Wildcards** (19–25 s): nine wildcards stamped like a passport, with origin and trend.
-  6. **Playbook** (25–29 s): Trends + Territories + Concepts + Pipeline = The Flavor Playbook, its six chapters and the 30/60/90 plan.
-  7. **End** (29–32 s): "See you on November 9."
+  1. **Open** (0 to 3 s): one drop in extreme macro; "What does fresh taste like next?"
+  2. **Ask** (3 to 7 s): what TheraBreath asked for, in Ross’s words, then the four objectives on the beat.
+  3. **Trends** (7 to 13 s): twelve trends, one per beat, each tagged with its lens and stage.
+  4. **Worlds** (13 to 19 s): six flavor worlds pour in over each other while the bottle refills.
+  5. **Wildcards** (19 to 25 s): nine wildcards stamped like a passport, with origin and trend.
+  6. **Playbook** (25 to 29 s): Trends + Territories + Concepts + Pipeline = The Flavor Playbook, its six chapters and the 30/60/90 plan.
+  7. **End** (29 to 32 s): "See you on November 9."
 - **Footage**: sixteen unbranded Higgsfield clips (Seedance 2.5, 1080p, no audio), listed in `scripts/clips.json`. `node scripts/fetch-clips.mjs` downloads them into `public/clips/` and records which are present in `src/clips.ts`. The clip files are git-ignored. Any shot without one falls back to the matching animated canvas world, so the reel always renders.
 - **Shared data**: flavors, wildcards, trends, objectives, the playbook chapters, the bottle and the animated worlds all come from `../assets/playbook-core.js`, the same file the site and deck use.
 - **Finish**: letterbox, vignette and moving film grain (`Grade` in `src/scenes/Shot.tsx`).

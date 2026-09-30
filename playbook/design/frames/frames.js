@@ -144,8 +144,8 @@ async function map() {
       <line x1="${X(0.30)}" y1="${Y(0.66)}" x2="${X(0.40)}" y2="${Y(0.76)}" stroke="rgba(${fg},.4)"/>
       <text x="${X(0.41)}" y="${Y(0.77) + 6}">11 adult rinse flavors. All mint.</text>
     </g>
-    <text x="${X(0.74)}" y="${Y(0.27) - 6}" text-anchor="middle" font-family="Fraunces" font-style="italic" font-weight="300" font-size="44" style="font-variation-settings:'opsz' 144,'SOFT' 100,'WONK' 1" fill="rgba(${fg},.95)">This is where</text>
-    <text x="${X(0.74)}" y="${Y(0.27) + 46}" text-anchor="middle" font-family="Fraunces" font-style="italic" font-weight="300" font-size="44" style="font-variation-settings:'opsz' 144,'SOFT' 100,'WONK' 1" fill="rgba(${fg},.95)">the next 86% live.</text>
+    <text x="${X(0.74)}" y="${Y(0.27) - 6}" text-anchor="middle" font-family="Newsreader" font-style="italic" font-weight="300" font-size="44" style="font-variation-settings:'opsz' 144" fill="rgba(${fg},.95)">This is where</text>
+    <text x="${X(0.74)}" y="${Y(0.27) + 46}" text-anchor="middle" font-family="Newsreader" font-style="italic" font-weight="300" font-size="44" style="font-variation-settings:'opsz' 144" fill="rgba(${fg},.95)">the next 86% live.</text>
   </svg>`;
   add(svg);
 }
