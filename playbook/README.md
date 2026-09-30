@@ -18,7 +18,7 @@ An alternate to The Future of Freshness. Confidential: password protected, noind
 
 Every tap is an event in an append-only log; every surface folds the same log into the same state (`src/lib/state.ts`).
 
-* **Store.** Postgres when `POSTGRES_URL_NON_POOLING`, `POSTGRES_URL` or `DATABASE_URL` is set (the table creates itself). Without one the store is in memory, which is fine locally but **not on Vercel**, where each function instance has its own memory. Connect Supabase (or Neon) to the Vercel project before rehearsing there.
+* **Store.** Postgres when `POSTGRES_URL` (pooled, preferred), `DATABASE_URL` or `POSTGRES_URL_NON_POOLING` is set (the table creates itself). Without one the store is in memory, which is fine locally but **not on Vercel**, where each function instance has its own memory. Connect Supabase (or Neon) to the Vercel project before rehearsing there.
 * **Realtime.** Polling always runs. With `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` set, Supabase Realtime broadcast nudges every screen instantly.
 * **Offline.** Taps are queued in a local outbox and sent when the network comes back.
 

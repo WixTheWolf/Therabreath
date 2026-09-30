@@ -9,6 +9,13 @@ test('wrong or empty passwords fail against the built-in hash', async () => {
   for (const p of ['', ' ', 'password', 'TB1109', 'therabreath']) assert.equal(await auth.checkPassword(p), false);
 });
 
+test('case and surrounding spaces are ignored', async () => {
+  process.env.PLAYBOOK_PASSWORD = 'Rehearsal-Only';
+  try {
+    for (const p of ['rehearsal-only', 'REHEARSAL-ONLY', '  Rehearsal-only ']) assert.equal(await auth.checkPassword(p), true);
+  } finally { delete process.env.PLAYBOOK_PASSWORD; }
+});
+
 test('PLAYBOOK_PASSWORD replaces the built-in password', async () => {
   process.env.PLAYBOOK_PASSWORD = 'rehearsal-only';
   try {

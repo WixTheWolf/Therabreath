@@ -3,7 +3,7 @@
 import postgres from 'postgres';
 import type { Ev } from '../state';
 
-const url = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL || process.env.DATABASE_URL;
+const url = process.env.POSTGRES_URL || process.env.DATABASE_URL || process.env.POSTGRES_URL_NON_POOLING;
 type Row = Ev & { seq: number; code: string };
 const g = globalThis as any;
 const sql: any = url ? (g.__pbsql ||= postgres(url, { prepare: false, max: 3, idle_timeout: 20, ssl: url.includes('localhost') ? false : 'require' })) : null;
