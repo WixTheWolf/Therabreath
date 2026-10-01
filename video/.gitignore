@@ -7,3 +7,5 @@ dist
 out
 public/clips/*.mp4
 public/opening/*.mp4
+public/race/clips/
+public/race/ref/
