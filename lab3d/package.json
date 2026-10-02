@@ -1,0 +1,12 @@
+{
+  "name": "tb-lab3d",
+  "private": true,
+  "description": "The 3D flavor-world scene (three.js) used by the site, pre-read and deck. Builds to ../assets/lab3d.js.",
+  "scripts": {
+    "build": "esbuild src/lab3d.js --bundle --minify --format=iife --global-name=Lab3D --target=es2019 --outfile=../assets/lab3d.js --legal-comments=none"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "three": "^0.170.0"
+  }
+}

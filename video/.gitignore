@@ -1,0 +1,15 @@
+node_modules
+dist
+.DS_Store
+.env
+
+# Ignore the output video from Git but not videos you import into src/.
+out
+public/clips/*.mp4
+public/opening/*.mp4
+public/race/clips/
+public/race/ref/
+public/race/audio/raw4/
+public/race/audio/raw4m/
+public/race/audio/raw6/
+public/race/audio/raw7/
