@@ -1,22 +1,45 @@
-# The Flavor Factory × TheraBreath Capabilities Workshop Booklet
+# Future of Freshness - TheraBreath Flavor Playbook
 
-This repository contains a generated, print-ready 18-page US Letter portrait PDF booklet for **The Flavor Factory × Church & Dwight / TheraBreath Capabilities Workshop | July 2026**.
+**The Flavor Factory x TheraBreath / Church & Dwight**  
+**Monday, November 9, 2026 | 10:00 AM to 12:00 PM ET | Darwin room | Church & Dwight, New Jersey**
 
-## Deliverable
+This repository is now centered on the **Future of Freshness** workshop for November 9, 2026.
 
-- `dist/therabreath_capabilities_workshop_booklet.pdf` — final 18-page vector PDF booklet.
+The July capabilities workshop is historical context. The November session is about **growth through flavor innovation**: what is changing in freshness, where TheraBreath can lead, which flavor territories deserve attention, and how the best ideas move into a practical innovation pipeline.
 
-## Design System
+## November workshop goals
 
-- Page size: US Letter portrait, 8.5 × 11 inches.
-- Palette: TheraBreath blue `#00A3E0`, mint green `#7ED321`, dark navy body text, and white/pale backgrounds.
-- Typography intent: Montserrat-style bold headings and Open-Sans-style clean sans body text, implemented with dependency-free PDF core sans-serif fonts for reliable generation in restricted environments.
-- Production details: consistent page numbers, thin blue/mint footer rule, confidential footer text, molecule/water-droplet accents, concept-card pages, scoring table, and QR-code placeholder.
+1. **Trends** - identify the flavor, sensory, and consumer shifts that matter for oral care.
+2. **Territories** - explore where freshness can go beyond traditional mint.
+3. **Concepts** - turn promising territories into ideas tied to consumers and occasions.
+4. **Pipeline** - prioritize what moves now, next, and later.
 
-## Regenerate
+## Headline flavor directions
 
-```bash
-python3 build_booklet.py
-```
+The current Future of Freshness concept directions are:
 
-The command writes the PDF to `dist/therabreath_capabilities_workshop_booklet.pdf`.
+- **Arctic Yuzu**
+- **Green Tea Cucumber**
+- **Ginger Lime**
+- **Grapefruit Rose Mint**
+- **Pear Cardamom Mint**
+- **Chamomile Vanilla Mint**
+
+These are working innovation directions, not final product names, claims, or commercial formulations. Final sample selection and formula feasibility remain subject to flavorist review and stability work in the actual TheraBreath base.
+
+## Current development
+
+The full November workshop build is being developed in **PR #4**, including:
+
+- the Future of Freshness presentation
+- the opening film and Flavor Race edits
+- the pre-brief
+- the live Flavor Playbook app
+- tasting and co-creation tools
+- workshop deck and leave-behind materials
+
+The files currently on `main` that generate the July 2026 capabilities booklet are **legacy material** and should not be treated as the current November workshop direction.
+
+## Important privacy note
+
+The workshop materials are customer-specific. The live experience is designed with password protection and noindex controls, but the **GitHub repository itself is currently public**.
