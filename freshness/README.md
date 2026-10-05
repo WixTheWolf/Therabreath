@@ -1,54 +1,79 @@
 # The Future of Freshness
 
-An interactive workshop experience for The Flavor Factory × TheraBreath / Church & Dwight, built as the digital centerpiece of the two-hour session on November 9, 2026. It is a static site with no build step: open `index.html` from any web server.
+**The Flavor Factory x TheraBreath / Church & Dwight**  
+**Monday, November 9, 2026 | 10:00 AM to 12:00 PM ET | Darwin room | Church & Dwight, New Jersey**
+
+This folder contains the Future of Freshness presentation experience for the November 9 workshop. It is the clearest narrative reference for the session's six headline flavor directions and the broader idea that freshness can become bigger than mint without losing TheraBreath's clean, credible identity.
+
+The experience is a static site with no build step. Open `index.html` from a web server.
+
+## The six headline directions
+
+- **Arctic Yuzu** - bright global citrus with a cold, modern finish.
+- **Green Tea Cucumber** - clean green wellness, calm and hydrating in character.
+- **Ginger Lime** - energetic warm-meets-cool contrast.
+- **Grapefruit Rose Mint** - restrained citrus and floral lift for an adult, premium profile.
+- **Pear Cardamom Mint** - grown-up fruit with aromatic spice.
+- **Chamomile Vanilla Mint** - softer evening freshness and ritual.
+
+These are working innovation directions, not final product names, claims, or commercial formulations.
 
 ## The story
 
-- **Prologue:** freshness is evolving, science × imagination, and Ross Conroy's four questions.
+- **Prologue:** freshness is evolving, science x imagination, and the four workshop objectives.
 - **01 The Signals: what's changing?**
   - Six shifts.
-  - Five signals, each followed signal → human need → oral-care implication → TheraBreath opportunity.
-  - A flavor atlas showing where each ingredient sits on its path from origin cuisine to personal care.
+  - Signals move from trend -> human need -> oral-care implication -> TheraBreath opportunity.
+  - A flavor atlas shows how ingredients travel from culture and food into broader consumer experience.
 - **02 The Territories: what could freshness become?**
-  - The Freshness Universe: six axes you can switch live.
-  - Six territories, each with its world, an insight and a tasting screen:
-    - Arctic Yuzu: one concept, a whole platform.
-    - Green Tea Cucumber: permission TheraBreath already has, expanded.
-    - Ginger Lime: contrast creates freshness.
-    - Grapefruit Rose Mint: restraint.
-    - Pear Cardamom Mint: adjacency vs. white space.
-    - Chamomile Vanilla Mint: the flavor clock.
-  - The Freshness Compass and ingredient → liquid → sensation → bottle.
-- **Your turn:** the room votes on five tensions, and a live form and sentence show the sensory direction. Then dot voting on territories.
-- **03 The Moments: where can flavor create growth?** Wake, Reset, Connect, Restore, Escape, and the Flavor Passport.
-- **04 The Playbook: what do we do with all of this?** Idea → experience → formula, three horizons, next actions, the assembled playbook, then "Built together."
+  - The Freshness Universe.
+  - The six headline flavor directions.
+  - The Freshness Compass: ingredient -> liquid -> sensation -> bottle.
+- **Your turn:** live discussion and voting on sensory direction and territory priorities.
+- **03 The Moments: where can flavor create growth?**
+  - Wake, Reset, Connect, Restore, Escape, and other usage occasions.
+- **04 The Playbook: what do we do with all of this?**
+  - Idea -> experience -> formula.
+  - Prioritize now, next, and later.
+  - Assign next actions and build the working playbook.
 
 ## Running the room
 
-- **Present / Workshop** (P / W):
-  - Presenter mode is clean and advances with arrows, Space or a clicker.
-  - Workshop mode adds the dock, room notes, undo, drag-between-horizons and vote removal (right-click).
-- **Tasting mode** (T): only the six tasting screens.
-- **Presenter console:** ⋯ menu → Open presenter console. It shows speaker notes, what's next, a timer, room notes and the tools below.
-  - Keep the console on your laptop and drag the display window to the projector.
-  - Both windows stay in sync, and so do votes.
-- **Shortcuts:**
-  - Y: Your turn. 1 to 4: chapters. G: all screens.
-  - N: notes. Z: undo. B: blank. F: full screen.
-- **Rehearsal data** loads a believable set of votes. **Reset workshop** clears everything before the real session.
-- **Export answers** downloads everything as JSON. **Print the playbook** prints the final screen as a 16:9 page (save as PDF).
+- **Present / Workshop** (P / W)
+  - Presenter mode is clean and advances with arrows, Space, or a clicker.
+  - Workshop mode adds the dock, notes, undo, voting, and interactive tools.
+- **Tasting mode** (T)
+  - Jumps directly to the tasting screens.
+- **Presenter console**
+  - Open from the menu for notes, timer, room notes, and workshop controls.
+- **Shortcuts**
+  - Y: Your turn.
+  - 1 to 4: chapters.
+  - G: all screens.
+  - N: notes.
+  - Z: undo.
+  - B: blank.
+  - F: full screen.
+- **Rehearsal data**
+  - Use for testing only. Reset before the live session.
+- **Export answers**
+  - Downloads workshop responses as JSON.
+- **Print the playbook**
+  - Prints the final screen for PDF capture.
 
-Answers are stored in the browser (localStorage) on the presenting machine, so run the session from one laptop.
+Answers are stored in the presenting browser, so rehearse and run the session from the intended presentation machine.
 
 ## Notes
 
-- The compass profiles and adoption paths are The Flavor Factory's conceptual read, labeled on screen as such. They are not panel or market data.
-- Concept bottles are labeled "Concept exploration" and are not proposed packaging.
-- Photography was generated with Higgsfield (GPT Image 2.5).
-- Fonts are self-hosted: Inter Tight, Figtree, JetBrains Mono and Archivo (SIL OFL).
-- The map is a dot rendering of Natural Earth land data.
+- Compass profiles, adoption paths, and sensory curves are conceptual workshop tools unless explicitly sourced.
+- Concept bottles are explorations, not proposed packaging.
+- Final flavor feasibility requires flavorist review and stability work in the actual TheraBreath base.
+- Photography was generated with Higgsfield.
+- Fonts are self-hosted.
+- The map uses Natural Earth land data.
 
-## The opening film
-- `media/opening.mp4` (and `.webm`) is the 30-second opening film with its score. It is the first screen of the presentation: press → to play.
-- `media/loop.mp4` is a silent version without text, used behind the site and pre-brief heroes.
-- The source is the `Opening` composition in `video/src/Opening.tsx`, built from nine Higgsfield Seedance clips with an ElevenLabs Music score.
+## Opening film
+
+- `media/opening.mp4` and `media/opening.webm` contain the opening film.
+- `media/loop.mp4` is the silent hero loop.
+- The source composition lives in `video/src/Opening.tsx`.
