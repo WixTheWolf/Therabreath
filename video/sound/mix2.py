@@ -9,7 +9,9 @@ import numpy as np
 import soundfile as sf
 from numpy.lib.stride_tricks import sliding_window_view
 from scipy.signal import butter, sosfilt, lfilter, fftconvolve, resample_poly
-if os.environ.get("CUT") == "13":
+if os.environ.get("CUT") == "12.1":
+    from events12_1 import MUSIC_AUTO, MUSIC_CUTS
+elif os.environ.get("CUT") == "13":
     from events13 import MUSIC_AUTO, MUSIC_CUTS
 elif os.environ.get("CUT") == "12":
     from events12 import MUSIC_AUTO, MUSIC_CUTS
@@ -182,7 +184,8 @@ def main(pic, mus, sfx, vo, dst):
     mix = M + X + V * 1.12
     if PRESENT:
         k = float(os.environ.get('RIDE', 1.0))
-        mix = room_ride(mix, up=0.58 * k, down=0.6 * k, max_up=9.0 * k, max_down=6.0 * k)
+        kd = float(os.environ.get('RIDE_DOWN', k))              # how hard loud passages are held back (defaults to RIDE)
+        mix = room_ride(mix, up=0.58 * k, down=0.6 * kd, max_up=9.0 * k, max_down=6.0 * kd)
     L0 = lufs(mix); G = db(TARGET - L0); mix *= G
     if os.environ.get('STEMS'):                      # the processed stems at mix level, for the review passes
         for tag, s in (('music', M), ('sfx', X), ('vo', V * 1.12)):
