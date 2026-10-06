@@ -59,8 +59,15 @@ M, X, V = load(mus), load(sfx), load(vo)
 n = max(len(M), len(X), len(V))
 M, X, V = [np.pad(s, ((0, n - len(s)), (0, 0))) for s in (M, X, V)]
 
-# dialogue
+# dialogue: level each line toward the same loudness first (slow rider, +/-6 dB), then shape and compress
 V = sosfilt(butter(2, 90, "hp", fs=SR, output="sos"), V, axis=0)
+lv = env_db(V, block=48 * 8)                      # 8 ms blocks
+act = lv > -45
+ride = np.where(act, np.clip(-21 - lv, -6, 6), 0.0)
+# hold the rider through short gaps so it does not pump between words
+for i in range(1, len(ride)):
+    if not act[i] and act[i - 1]: ride[i] = ride[i - 1]
+V = V * to_audio_rate(smooth(np.repeat(ride, 8), 120, 400), len(V))[:, None]
 b, a = peaking(3200, 2.5, 1.0); V = lfilter(b, a, V, axis=0)
 V = compress(V, -26, 3.0, 8, 140, makeup=3.0)
 
@@ -73,6 +80,7 @@ key = env_db(V)
 on = np.clip((key + 50) / 14, 0, 1)            # 0 below -50 dB, 1 above -36 dB
 g_wide = smooth(-3.5 * on, 40, 450)
 g_mid = smooth(-6.0 * on, 40, 450)
+bm, am = peaking(300, -1.5, 0.8); M = lfilter(bm, am, M, axis=0)     # less mud under the voices
 lowM = sosfilt(butter(2, 250, "lp", fs=SR, output="sos"), M, axis=0)
 highM = sosfilt(butter(2, 4000, "hp", fs=SR, output="sos"), M, axis=0)
 midM = M - lowM - highM

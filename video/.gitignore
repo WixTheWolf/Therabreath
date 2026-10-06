@@ -13,3 +13,9 @@ public/race/audio/raw4/
 public/race/audio/raw4m/
 public/race/audio/raw6/
 public/race/audio/raw7/
+public/race/clips/m/
+.env.local
+.env.*.local
+public/race/audio/rawmn/
+public/race/audio/rawmn2/
+public/race/audio/licensed/
