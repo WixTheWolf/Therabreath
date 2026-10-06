@@ -1,0 +1,44 @@
+{
+ "folder": "c30e7be0-3b51-4fc5-8107-19f1a450677b",
+ "images": {
+  "kv_hero": "662064ab-9502-4ece-a3a3-f17a3b18f2ac",
+  "kv_trends": "f3aed08b-8250-4aa9-ad78-bd43ae422fa1",
+  "kv_territories": "d554bb00-61c5-4d52-b34d-63479ded9d9e",
+  "kv_concepts": "d45dcd5a-02bf-485f-aedc-f2b709bbc8da",
+  "kv_pipeline": "dd8f1cb7-f660-48a5-9576-317ec9f91e9b",
+  "kv_playbook": "a72d3fa9-888f-4297-b718-787e2bc7874d",
+  "kv_lab": "796a57f9-2ea1-4024-b8c7-2cb35ad2455f",
+  "kv_oxygen": "25b7a983-f677-4dc5-9b6a-c76436b5ce93",
+  "isl_frost": "2c337406-2fbe-4daa-8abb-112e4c7b42bd",
+  "isl_coastal": "fe36cbc2-b526-48f6-b897-ffd0fa9dfd7f",
+  "isl_cardamom": "441a5d1b-56d1-42f5-8ace-be87c146c10c",
+  "isl_coconut": "3556e5e6-4cce-4ae1-a978-feb364b6ba40",
+  "isl_rosewater": "e3e523bf-e70c-4f6f-a1e1-43db0a20279f",
+  "isl_orchard": "ff9b2990-1b7e-4006-9fd3-d9a7d368a834",
+  "mint": "ed374097-7064-45be-bef0-c456ddebb300",
+  "wc_sage": "193b817f-4765-431f-9a68-4ea368c283ce",
+  "wc_watermelon": "9a63ce40-ba1d-467c-b145-a8c6b5ae494a",
+  "wc_cedar": "ed828f56-a886-4133-8d3c-da781f192643",
+  "wc_matcha": "a6d52399-7e49-4d52-a072-a46fd14910af",
+  "wc_hibiscus": "a6c01c9b-f927-4f47-b26e-67965c8fcb8b",
+  "wc_lychee": "860f21d2-2e56-4927-a80e-d5e38edc46df",
+  "wc_pistachio": "dfc96b8e-f2c6-4a07-914b-9b44d2176908",
+  "wc_birch": "ec23665a-bb76-4970-b3e8-ee49b4693ca8",
+  "wc_mangochili": "ecd45533-7ec4-42a4-8158-a3e9597ba70e"
+ },
+ "videos": {
+  "coconut": "a2c83349-ae5d-4b16-b2ce-84f4041f5411",
+  "sage": "d061bbeb-664b-4b68-a500-6ddd840c0c6c",
+  "watermelon": "15190f35-d888-435d-9e86-9201cf9a407f",
+  "cedar": "af79764b-2ec4-4a83-81f9-864f47bcd014"
+ },
+ "models": {
+  "frost": "13a5454c-e09b-4806-8abc-70f4966678bb",
+  "coastal": "a2c420d5-80b7-423d-ab70-f9eb937a4596",
+  "cardamom": "33d9c2ea-bd30-4bc4-bc8b-fcbc5a18f21e",
+  "coconut": "4404305f-0140-45de-a4ad-8b89e50c8a10",
+  "rosewater": "892557f1-1134-450f-9b22-c97f313fea20",
+  "orchard": "5f810f8b-72f0-46ca-8374-a2afde4ae9d1",
+  "mint": "96598a86-ca4b-4c6f-9886-2f57c5afd5b6"
+ }
+}
