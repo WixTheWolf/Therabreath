@@ -2,7 +2,8 @@
 
 ## State
 - V12.2, the team-screening cut with the director's notes on V12.1: `src/FlavorRaceV12_2.tsx` (registered in `src/Root.tsx` as FlavorRaceV12-2). 2:27.2.
-- V12.2 review copy: `docs/session/flavor-race-v12.2-review.mp4` (720p, 1.45 Mbps, AAC 160k). The review copy and its mix readings land in the next commit (the picture and the music stem are rendering).
+- V12.2 review copy: `docs/session/flavor-race-v12.2-review.mp4` (720p, 1.45 Mbps, AAC 160k).
+- The editable Premiere timeline of V12.2: `premiere/V12.2/` (one FCP7 XML for File > Import, and every file it uses in `media/`). How to open it, the track layout and the shots that need care: `premiere/README.md`.
 - V12.1 (`src/FlavorRaceV12_1.tsx`, `docs/session/flavor-race-v12.1-review.mp4`) is unchanged and stays for comparison. V13 (`src/FlavorRaceV13.tsx`) was the wrong direction and stays only for reference.
 - Clips are force-added under `public/race/clips/` (the folder is otherwise ignored). New for V12.2, all in `v122/`:
   - `v122_droplet.mp4`, `v122_window.mp4`, `v122_mc_erupts.mp4`: the three Seedance 2.5 clips the director approved (job ids in the ledger, `docs/session/hf-v13-jobs.json`).
@@ -40,14 +41,20 @@
 - Music stem: `npx remotion render src/index.ts FlavorRaceV12-2 out/race122_music.wav --codec=wav --props='{"stem":"music"}'`. Run renders one at a time (memory); the music stem takes about 10 minutes.
 - VO stem: the same Remotion command with `"vo"`, or place the two lines at the composition's frame-rounded cue times at gain 0.62 (what V12.2 did).
 - SFX: `cd sound && python3 cues12_2.py ../out/race122_sfx.wav`
-- Mix: `CUT=12.2 PRESENT=1 RIDE=1.3 RIDE_DOWN=0.3 TARGET=-16 CEIL=-1.2 STEMS=1 python3 mix2.py ../out/race122_pic.mp4 ../out/race122_music.wav ../out/race122_sfx.wav ../out/race122_vo.wav ../out/race122_final.mp4`. With `STEMS=1` the processed stems are written next to the output as `<output>_music.wav` and so on, so never give the output the same prefix as the input stems.
+- Mix: `CUT=12.2 PRESENT=1 RIDE=1.7 RIDE_DOWN=0.45 TARGET=-16 CEIL=-1.5 STEMS=1 python3 mix2.py ../out/race122_pic.mp4 ../out/race122_music.wav ../out/race122_sfx.wav ../out/race122_vo.wav ../out/race122_final.mp4`. With `STEMS=1` the processed stems are written next to the output as `<output>_music.wav` and so on, so never give the output the same prefix as the input stems.
 - Review copy: two-pass x264 at 1450k from the master, `scale=1280:720:flags=lanczos:in_range=pc:out_range=tv,format=yuv420p`, audio from `<output>_mix.wav` as AAC 160k, `-movflags +faststart`.
+- Premiere package (after the picture render and the mix with `STEMS=1`): `python3 premiere/bake_shots.py FlavorRaceV12_2 premiere/V12.2` (every shot framed as the film shows it, with 1 s handles that stop where the source cuts to another shot; about 15 minutes, or name shot ids to re-bake only those), `python3 premiere/build_media.py FlavorRaceV12_2 premiere/V12.2 out/race122_final` (graphics and stems; about 5 minutes), `python3 premiere/make_xml.py premiere/V12.2 --root C:/FlavorRace/V12.2`.
 
 ## Mix notes
-- Pending the V12.2 mix (V12.1 used `RIDE=1.3 RIDE_DOWN=0.3`: the rider lifts quiet passages and holds the launch back only a little).
+- V12.2 is mixed with `RIDE=1.7 RIDE_DOWN=0.45 CEIL=-1.5` (V12.1 used 1.3 and 0.3). The stronger rider keeps the loudness range where V12.1's was (10.1 LU on mix2's meter; it rose to 10.8 at 1.3 and 0.3 once the robot tail was cut short), and the lower ceiling leaves room for the AAC encode (the review copy peaked at -0.7 dBTP with -1.2).
+- Readings (ffmpeg ebur128): the 24-bit mix is -16.7 LUFS integrated, 9.8 LU loudness range, -1.5 dBTP; the review copy is -16.8 LUFS, 9.8 LU, -1.3 dBTP. mix2's own meter reads the same mix at -16.1 LUFS (its K-weighting is an approximation, so `TARGET` lands about 0.6 LU quieter on a standard meter).
+- The robot tail is cut before the black: the arm, the clink and the crystals stop by robot+5.25 s, so the hush before the end card is silent (below -115 dBFS).
+- With `STEMS=1`, mix2 writes the stems after the level rider and before the limiter, so the three stems sum to the mix before limiting (the Premiere package relies on this).
 
 ## Known nits
-- Pending the silent picture pass on the V12.2 master.
+- Generated footage carries garbled in-scene text: the launch button's label, the gauge's mirrored dial lettering and the wall sign in `v122_mc_erupts`. The framing keeps each one out of frame or under the letterbox, so a re-cut has to keep it (the Premiere sequence has a marker on each). The Mission Control room shots and the touchscreen show the same screen text, wall sign and jacket lettering as in V12.
+- `v122_window` has glowing blobs on the rockets' noses for its first 1.5 s; the cut starts at 1.6 s.
+- The Premiere package leaves out the moving film grain.
 
 ## Seedance ideas (not generated; each needs approval)
 - The lamp banks (the reveal, 4 s, about $4.55): a stadium lamp bank slamming on row by row, cut in as two half-second inserts so each THUNK is seen. It interrupts the continuous wide, so try it as an alternate.

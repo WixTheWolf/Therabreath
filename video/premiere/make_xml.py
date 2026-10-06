@@ -1,6 +1,6 @@
 # The editable Premiere timeline for a Flavor Race cut, as Final Cut Pro 7 XML (Premiere: File > Import).
 # It builds one bin with the sequence, every shot (baked by bake_shots.py with handles, sorted into bins by act), the
-# graphics (build_graphics.sh), the sound stems and the final mix, and marks the shots that need care when re-cut.
+# graphics and the sound stems with the final mix (build_media.py), and marks the shots that need care when re-cut.
 # Every file sits flat in <package>/media, so if Premiere asks for one file, pointing it at that folder relinks the rest.
 # usage (from video/): python3 premiere/make_xml.py premiere/V12.2 [--root C:/FlavorRace/V12.2]
 import json, os, sys, wave
@@ -21,11 +21,13 @@ ACTS = [('black0', '1 The surprise'), ('tbpush', '2 Show off'), ('padcold', '3 L
         ('sees', '5 Discovery'), ('life', '6 The comeback'), ('approach', '7 The Moon'), ('homeward', '8 Home')]
 # shots that need care when they are re-cut (sequence markers)
 FLAGS = [
-    ('label', 'Framing hides the gantry', 'Cropped hard to the right (zoom 1.35) so the gantry stays out of the macros.'),
+    ('label', 'Framing hides the gantry', 'Cropped hard to the right (zoom 1.35) so the gantry stays out of the macros. The tail handle tilts down to the fins and the smoke, which the opening never shows.'),
     ('gauge', 'Framing hides mirrored lettering', 'Zoomed 1.42 from the top so the dial lettering stays under the letterbox.'),
     ('button', 'Button label is garbled', 'Starts with the glove already on the button and cuts before the finger lifts (4.65 s into the source). Extending either end shows the garbled label or the lift.'),
-    ('window', 'Generated shot: keep the head', 'Seedance clip. Before 1.6 s of the source the rockets have glowing blobs on their noses, so do not extend the head past the handle.'),
+    ('window', 'Generated shot: keep the head', 'Seedance clip. For the first 1.5 s of the source the rockets have glowing blobs on their noses, and the head handle shows them: do not extend the head.'),
     ('crowd', 'Composite: second tower', 'The second launch tower is composited from the same footage. Keep the crop: wider framing shows a face at the left edge.'),
+    ('tbfire', 'Tail runs on into space', 'Past the out-point the source flies on past the camera into space (a morph, not a cut). Extend the tail only a few frames.'),
+    ('edge', 'Keep the rival close', 'The rival edges ahead by about a length. In the tail handle it pulls far ahead, which the notes on V12.1 ruled out.'),
     ('mcerupt', 'Generated shot: wall sign', 'Seedance clip. Zoomed 1.13 from the bottom so the garbled wall sign stays under the letterbox.'),
     ('reel', 'Reversed footage', 'The rival pull-away played backwards, so the gap closes. Exhaust runs in reverse if held long.'),
     ('approach', 'Music is silent here', 'The score cuts on the descent and returns on the flag wide. The effects stem carries the landing.'),
@@ -55,7 +57,7 @@ def afile(fid, name, frames, depth):
             f'<samplerate>48000</samplerate></samplecharacteristics><channelcount>2</channelcount></audio></media></file>')
 
 
-files = {}          # file id -> full definition (written once, in the bins)
+files = {}          # file id -> full definition (written once, where the sequence first uses it)
 masters = []        # (bin path, clip xml)
 items = {'V1': [], 'V2': [], 'V3': [], 'V4': [], 'A1': [], 'A2': [], 'A3': [], 'A4': []}
 
@@ -102,7 +104,11 @@ for g in gfx['elements']:
     master(mid, g['label'], fid, g['frames'], 'video', ('Graphics',))
     track = 'V3' if g['id'].startswith('flash') else 'V4' if g['id'] == 'letterbox' else 'V2'
     start = g['start']; end = min(start + g['frames'], TOTAL)
-    vitem(track, f"clipitem-{g['id']}", mid, fid, g['label'], g['frames'], start, end, 0, end - start, alpha='straight')
+    if not g.get('alpha', True):       # an opaque card covers only the black under it (in the film its faint last frame
+        under = next(s for s in cut['segments'] if s['start'] <= start < s['end'])     # can overlap the next shot)
+        assert under['kind'] in ('black', 'end'), (g['id'], under['id'])
+        end = min(end, under['end'])
+    vitem(track, f"clipitem-{g['id']}", mid, fid, g['label'], g['frames'], start, end, 0, end - start, alpha='straight' if g.get('alpha', True) else 'none')
 # the sound: the three stems (A1 VO, A2 effects, A3 music) and the final mix for reference (A4, disabled)
 for k, (tr, a) in enumerate(zip(('A1', 'A2', 'A3', 'A4'), snd['tracks'])):
     fid, mid = f"file-{a['id']}", f"masterclip-{a['id']}"
@@ -126,7 +132,7 @@ def track_xml(name, extra=''):
     return f'<track{extra}>' + ''.join(r[1] for r in rows) + '<enabled>TRUE</enabled><locked>FALSE</locked></track>'
 
 
-# files are defined in full the first time they appear (in the bins), referenced by id afterwards
+# files are defined in full the first time they appear (in the sequence), referenced by id afterwards
 seen = set()
 def with_files(x):
     out = x
@@ -151,7 +157,6 @@ def bin_xml(path_prefix):
     return out
 
 
-bins = bin_xml(())
 markers = ''.join(f'<marker><comment>{escape(c)}</comment><name>{escape(n)}</name><in>{seg[i]["start"]}</in><out>-1</out></marker>'
                   for i, n, c in FLAGS if i in seg)
 vfmt = (f'<format><samplecharacteristics>{rate()}<width>1920</width><height>1080</height><anamorphic>FALSE</anamorphic>'
@@ -162,8 +167,11 @@ sequence = (f'<sequence id="sequence-1"><name>{escape(NAME)}</name><duration>{TO
             f'<audio><numOutputChannels>2</numOutputChannels><format><samplecharacteristics><depth>24</depth><samplerate>48000</samplerate>'
             f'</samplecharacteristics></format>' + ''.join(track_xml(t, stereo) for t in ('A1', 'A2', 'A3', 'A4')) + '</audio></media>'
             f'{markers}</sequence>')
+# the sequence comes first, so every file is fully described where the timeline first uses it; the bins reference them
+sequence = with_files(sequence)
+bins = bin_xml(())
 xml = ('<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE xmeml>\n<xmeml version="4"><bin><name>' + escape(NAME) + '</name><children>'
-       + bins + '<bin><name>Sequences</name><children>' + with_files(sequence) + '</children></bin></children></bin></xmeml>\n')
+       + '<bin><name>Sequences</name><children>' + sequence + '</children></bin>' + bins + '</children></bin></xmeml>\n')
 dst = os.path.join(PKG, f'THE_FLAVOR_RACE_{VERSION}.xml')
 open(dst, 'w').write(xml)
 print(dst, len(xml), 'bytes;', len(files), 'files;', sum(len(v) for v in items.values()), 'clips on the timeline;', len(trans), 'dissolves;',

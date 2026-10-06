@@ -4,9 +4,10 @@ import { EpicTitle } from "./epic";
 import { EndCard, Flash, Super, loadFonts } from "./FlavorRaceV12_2";
 
 /* THE FLAVOR RACE V12.2's graphics on their own, with transparency, for the editable Premiere timeline. Every element
-   plays back to back in FlavorRaceGraphics (GRAPHICS gives each one's frame range); premiere/build_graphics.sh renders
-   it as PNG frames and cuts it into one QuickTime Animation file (with alpha) per element. FlavorRaceFrame is the
-   film's vignette and letterbox as one still layer (the moving grain is not included). */
+   plays back to back in FlavorRaceGraphics (GRAPHICS gives each one's frame range); premiere/build_media.py renders
+   it as PNG frames and cuts it into one file per element (QuickTime Animation with alpha over picture, H.264 for the
+   two cards on black). FlavorRaceFrame is the film's vignette and letterbox as one still layer (the moving grain is
+   not included). */
 export const GRAPHICS: { id: string; frames: number; el: (dur: number) => React.ReactNode }[] = [
   { id: "title", frames: 75, el: (d) => <EpicTitle lines={["THE FLAVOR RACE"]} dur={d} size={230} over hold /> },
   { id: "super_norco", frames: 84, el: (d) => <Super dur={d} a="NORCO, CALIFORNIA" b="THE FLAVOR FACTORY · MISSION CONTROL" /> },

@@ -1,8 +1,9 @@
 # The graphics and sound for the editable Premiere timeline of a Flavor Race cut.
 # Graphics: FlavorRaceGraphics (src/FlavorRaceGraphics.tsx) is rendered once as PNG frames with transparency and cut
-# into one QuickTime Animation file (alpha) per element; FlavorRaceFrame (the vignette and letterbox) becomes one long
-# layer. Each element is placed where the cut's composition places it (PLACE mirrors FlavorRaceV12_2.tsx; the script
-# stops if the composition no longer contains the same placement).
+# into one file per element: QuickTime Animation (alpha) for what plays over picture, H.264 for the full-frame cards on
+# black; FlavorRaceFrame (the vignette and letterbox) becomes one long layer. Each element is placed where the cut's
+# composition places it (PLACE mirrors FlavorRaceV12_2.tsx; the script stops if the composition no longer contains the
+# same placement), and every file is checked to be exactly as many frames long as the XML will say.
 # Sound: the final mix's processed stems (mix2.py with STEMS=1), 24-bit, trimmed by a common TRIM_DB so they cannot clip
 # when summed without the mix's limiter, plus the final mix itself as a reference.
 # usage (from video/): python3 premiere/build_media.py FlavorRaceV12_2 premiere/V12.2 out/race122_final [--sound-only]
@@ -43,11 +44,17 @@ for k, (sid, off, _) in PLACE.items():
         pat = f't("{sid}", {off})' if off else f't("{sid}")'
         assert pat in src, (k, pat)
 
+OPAQUE = {'card_partners', 'endcard'}          # full-frame cards on black: no transparency needed
 gsrc = open(os.path.join(VIDEO, 'src', 'FlavorRaceGraphics.tsx')).read()
 ELEMS = [(i, int(n)) for i, n in re.findall(r'\{ id: "(\w+)", frames: (\d+),', gsrc)]
 
 def run(cmd, **kw):
     print('$', ' '.join(cmd[:6]), '...', flush=True); subprocess.run(cmd, check=True, cwd=VIDEO, **kw)
+
+def count(path):                   # frames in a video file, so every element is exactly as long as the XML says
+    r = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-count_packets', '-show_entries', 'stream=nb_read_packets',
+                        '-of', 'csv=p=0', path], capture_output=True, text=True, check=True, cwd=VIDEO)
+    return int(r.stdout.strip())
 
 def render_graphics():
     shutil.rmtree(TMP, ignore_errors=True); os.makedirs(TMP)
@@ -60,13 +67,24 @@ def render_graphics():
         d = os.path.join(TMP, gid); os.makedirs(d)
         for j in range(n): os.link(frames[at + j], os.path.join(d, f'{j:05d}.png'))
         at += n
-        name = f'G_{gid}.mov'
-        run(['ffmpeg', '-v', 'error', '-y', '-framerate', str(FPS), '-i', os.path.join(d, '%05d.png'), '-c:v', 'qtrle', '-pix_fmt', 'argb', os.path.join(MEDIA, name)])
+        seq = os.path.join(d, '%05d.png')
+        if gid in OPAQUE:          # cards over black: opaque H.264; premultiplying by alpha composites them over black, so their fades survive
+            name = f'G_{gid}.mp4'  # (not overlay on a color source: that inserted bare black frames and ran 2 frames long)
+            run(['ffmpeg', '-v', 'error', '-y', '-framerate', str(FPS), '-i', seq, '-vf',
+                 'format=gbrap,premultiply=inplace=1,scale=out_color_matrix=bt709:out_range=tv,format=yuv420p', '-frames:v', str(n),
+                 '-c:v', 'libx264', '-crf', '16', '-g', '15', '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709',
+                 '-movflags', '+faststart', os.path.join(MEDIA, name)])
+        else:                      # over picture: QuickTime Animation with alpha
+            name = f'G_{gid}.mov'
+            run(['ffmpeg', '-v', 'error', '-y', '-framerate', str(FPS), '-i', seq, '-c:v', 'qtrle', '-pix_fmt', 'argb', os.path.join(MEDIA, name)])
+        assert count(os.path.join(MEDIA, name)) == n, (name, count(os.path.join(MEDIA, name)), n)
         sid, off, label = PLACE[gid]
-        out.append({'id': gid, 'label': label, 'file': name, 'frames': n, 'start': f(V.t(sid, off))})
+        out.append({'id': gid, 'label': label, 'file': name, 'frames': n, 'start': f(V.t(sid, off)), 'alpha': gid not in OPAQUE})
+    # one still frame for the whole film: a keyframe every 10 s keeps the file small and quick to scrub
     run(['ffmpeg', '-v', 'error', '-y', '-loop', '1', '-framerate', str(FPS), '-i', os.path.join(TMP, 'frame.png'), '-frames:v', str(TOTAL),
-         '-c:v', 'qtrle', '-pix_fmt', 'argb', os.path.join(MEDIA, 'G_letterbox.mov')])
-    out.append({'id': 'letterbox', 'label': 'G letterbox and vignette', 'file': 'G_letterbox.mov', 'frames': TOTAL, 'start': 0})
+         '-c:v', 'qtrle', '-pix_fmt', 'argb', '-g', '300', os.path.join(MEDIA, 'G_letterbox.mov')])
+    assert count(os.path.join(MEDIA, 'G_letterbox.mov')) == TOTAL
+    out.append({'id': 'letterbox', 'label': 'G letterbox and vignette', 'file': 'G_letterbox.mov', 'frames': TOTAL, 'start': 0, 'alpha': True})
     json.dump({'elements': out}, open(os.path.join(PKG, 'graphics.json'), 'w'), indent=1)
     shutil.rmtree(TMP, ignore_errors=True)
     return out
