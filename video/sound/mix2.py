@@ -9,7 +9,9 @@ import numpy as np
 import soundfile as sf
 from numpy.lib.stride_tricks import sliding_window_view
 from scipy.signal import butter, sosfilt, lfilter, fftconvolve, resample_poly
-if os.environ.get("CUT") == "12":
+if os.environ.get("CUT") == "13":
+    from events13 import MUSIC_AUTO, MUSIC_CUTS
+elif os.environ.get("CUT") == "12":
     from events12 import MUSIC_AUTO, MUSIC_CUTS
 elif os.environ.get("CUT") == "11":
     from events11 import MUSIC_AUTO, MUSIC_CUTS
@@ -147,9 +149,13 @@ def main(pic, mus, sfx, vo, dst):
     M = M * automation(MUSIC_AUTO, n)[:, None]
     gate = np.ones(n); throw = np.zeros_like(M)
     ir = ir_room(2.6, pre=0.02, er=[(0.03, -8), (0.07, -11)], lp_hz=6000, seed=21)
-    for tc, reopen, tail, g in MUSIC_CUTS:
+    for cut in MUSIC_CUTS:
+        tc, reopen, tail, g = cut[:4]
+        rin = cut[4] if len(cut) > 4 else 0.0                      # optional ramp back in, so a reopen never clicks
         i, j, f = int(tc * SR), int(reopen * SR), int(0.04 * SR)
         gate[i:i + f] *= np.cos(np.linspace(0, np.pi / 2, f)) ** 2; gate[i + f:j] = 0
+        if rin > 0:
+            r = int(rin * SR); gate[j:j + r] *= np.sin(np.linspace(0, np.pi / 2, r)) ** 2
         k = int(0.6 * SR); seg = M[i - k:i] * (np.linspace(0, 1, k) ** 2)[:, None]
         wet = np.stack([fftconvolve(seg[:, c], ir[:, c]) for c in range(2)], 1)[k:k + int(tail * SR)]
         wet *= (np.cos(np.linspace(0, np.pi / 2, len(wet))) ** 2)[:, None]
@@ -175,7 +181,8 @@ def main(pic, mus, sfx, vo, dst):
 
     mix = M + X + V * 1.12
     if PRESENT:
-        mix = room_ride(mix)
+        k = float(os.environ.get('RIDE', 1.0))
+        mix = room_ride(mix, up=0.58 * k, down=0.6 * k, max_up=9.0 * k, max_down=6.0 * k)
     L0 = lufs(mix); G = db(TARGET - L0); mix *= G
     if os.environ.get('STEMS'):                      # the processed stems at mix level, for the review passes
         for tag, s in (('music', M), ('sfx', X), ('vo', V * 1.12)):
