@@ -116,17 +116,22 @@ def limiter(x, ceil_db, la_ms=5, rel_ms=120):
     return np.clip(y, -ceil, ceil), g.min()
 
 
-def room_ride(x, pivot=None, up=0.58, down=0.6, max_up=9.0, max_down=6.0, floor=-50.0):
+def room_ride(x, **kw):
     # Slow loudness rider on the whole mix: short-term level (3 s) pulled toward the film's own integrated level.
     # Quiet passages come up (never true silence: below `floor` nothing is lifted), loud ones come down a little.
     # Attack and release of seconds, so it reads as a mixer's hand on the fader, not compression.
+    return x * ride_gain(x, **kw)[:, None]
+
+
+def ride_gain(x, pivot=None, up=0.58, down=0.6, max_up=9.0, max_down=6.0, floor=-50.0):
+    # the rider's gain curve for mix x (linear, one value per sample)
     pivot = lufs(x) if pivot is None else pivot
     l, _ = block_loudness(x, 3.0, 0.1)
     g = np.where(l < pivot, np.minimum((pivot - l) * up, max_up), -np.minimum((l - pivot) * down, max_down))
     g = np.where(l < floor, np.minimum(g, np.clip((l - floor + 10) * up, 0, max_up)), g)
     g = smooth(np.repeat(g, 100), 900, 1600)                      # 1 kHz control rate
     tt = np.arange(len(g)) / 1000 + 1.5                           # block centres
-    return x * db(np.interp(np.arange(len(x)) / SR, tt, g))[:, None]
+    return db(np.interp(np.arange(len(x)) / SR, tt, g))
 
 
 def automation(points, n):
@@ -184,14 +189,16 @@ def main(pic, mus, sfx, vo, dst):
     X = compress(X, top - 7, 2.5, 1, 90)
 
     mix = M + X + V * 1.12
+    rg = np.ones(n)
     if PRESENT:
         k = float(os.environ.get('RIDE', 1.0))
         kd = float(os.environ.get('RIDE_DOWN', k))              # how hard loud passages are held back (defaults to RIDE)
-        mix = room_ride(mix, up=0.58 * k, down=0.6 * kd, max_up=9.0 * k, max_down=6.0 * kd)
+        rg = ride_gain(mix, up=0.58 * k, down=0.6 * kd, max_up=9.0 * k, max_down=6.0 * kd)
+        mix = mix * rg[:, None]
     L0 = lufs(mix); G = db(TARGET - L0); mix *= G
-    if os.environ.get('STEMS'):                      # the processed stems at mix level, for the review passes
+    if os.environ.get('STEMS'):                      # the processed stems at mix level (after the rider, before the limiter)
         for tag, s in (('music', M), ('sfx', X), ('vo', V * 1.12)):
-            sf.write(dst.rsplit('.', 1)[0] + f'_{tag}.wav', (s * G).astype(np.float32), SR, subtype='FLOAT')
+            sf.write(dst.rsplit('.', 1)[0] + f'_{tag}.wav', (s * rg[:, None] * G).astype(np.float32), SR, subtype='FLOAT')
     mix, gr = limiter(mix, CEIL)
     L1 = lufs(mix); r, stmax = lra(mix)
     tp = 20 * np.log10(true_peak_env(mix).max())

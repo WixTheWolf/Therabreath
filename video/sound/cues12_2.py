@@ -434,12 +434,12 @@ P('14_HOME_ENGINE_SPINDOWN_V1', HOME + 0.1, -21, fo=0.5, until=T('robot', 0.6), 
 # glass on the tray, a small musical smile. The score is gone by then, so the quiet holds it.
 P('05_HUSH_RELAY_CLICK_V1', HATCH - 0.03, -24, align='onset', env='lawn', send=-12)
 P('05_PRE_VALVE_ACTUATE_V2', HATCH, -23, trim=(0.05, 1.5), hpf=900, lpf=9000, fo=0.6, env='lawn', send=-10)
-P('14_HOME_ROBOT_ARM_V1', ARM, -24, fo=0.15, pan=-0.15, env='lawn', send=-14)
+P('14_HOME_ROBOT_ARM_V1', ARM, -24, until=T('robot', 5.0), fo=0.4, pan=-0.15, env='lawn', send=-14)
 P('14_HOME_GLASS_CLINK_V1', ARM + 0.9, -27, rate=0.944, align='onset', env='lawn', send=-12)
 P('14_HOME_SERVO_HESITATE_V2', SETTLE - 0.7, -30, hpf=2500, fo=0.1, pan=-0.1, env='lawn', send=-14)
-P('14_HOME_GLASS_CLINK_V2', SETTLE, -25, rate=0.944, env='lawn', send=-12)
-for k, (fq, g) in enumerate([(1396.9, -31), (1760.0, -32), (2093.0, -31)]):            # a small musical smile
-    P(crystal(fq, 1.4, seed=51 + k), SETTLE + 0.1 + 0.09 * k, g, width=1.4, env='lawn', send=-10, tag='smile')
+P('14_HOME_GLASS_CLINK_V2', SETTLE, -25, rate=0.944, until=T('robot', 5.2), fo=0.3, env='lawn', send=-12)
+for k, (fq, g) in enumerate([(1396.9, -31), (1760.0, -32), (2093.0, -31)]):            # a small musical smile, gone before the black
+    P(crystal(fq, 0.9, seed=51 + k), SETTLE + 0.1 + 0.09 * k, g, until=T('robot', 5.25), fo=0.3, width=1.4, env='lawn', send=-10, tag='smile')
 M.kill('lawn', T('hush'), 0.05)
 # the end card: one sung crystal tone with the score's final gesture
 P('15_END_CRYSTAL_TONE_V1', ENDTONE, -21, align='onset', width=1.4, env='vast:d', send=-4)

@@ -28,7 +28,7 @@ const IVORY = "#F4EDE0";
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
 let loaded = false;
-const loadFonts = () => {
+export const loadFonts = () => {
   if (loaded || typeof document === "undefined") return;
   loaded = true;
   [
@@ -160,7 +160,7 @@ const ClipLayer: React.FC<{ sg: Extract<Seg, { kind: "clip" }> }> = ({ sg }) => 
 
 // One clean end card: the line resolves quietly (no slam, no embers), then TheraBreath × The Flavor Factory, large, on white
 const METAL = "linear-gradient(180deg, #FFFFFF 0%, #F7EEDD 34%, #C9A46A 50%, #FFF4DE 62%, #A7834F 100%)";
-const EndCard: React.FC<{ dur: number }> = ({ dur }) => {
+export const EndCard: React.FC<{ dur: number }> = ({ dur }) => {
   const fr = useCurrentFrame();
   const ease = Easing.bezier(0.16, 1, 0.3, 1);
   const tIn = interpolate(fr, [0, f(0.8)], [0, 1], { ...clamp, easing: ease });
@@ -184,7 +184,7 @@ const EndCard: React.FC<{ dur: number }> = ({ dur }) => {
   );
 };
 
-const Flash: React.FC<{ warm?: boolean; k?: number }> = ({ warm, k = 0.75 }) => {
+export const Flash: React.FC<{ warm?: boolean; k?: number }> = ({ warm, k = 0.75 }) => {
   const fr = useCurrentFrame();
   return <AbsoluteFill style={{ background: warm ? "#FFB060" : "#fff", opacity: interpolate(fr, [0, 2, 9], [0, k, 0], clamp), mixBlendMode: "screen" }} />;
 };
@@ -207,7 +207,7 @@ const Grain: React.FC = () => {
 };
 
 // Location super, bottom left, mono, like a mission log
-const Super: React.FC<{ dur: number; a: string; b: string }> = ({ dur, a, b }) => {
+export const Super: React.FC<{ dur: number; a: string; b: string }> = ({ dur, a, b }) => {
   const fr = useCurrentFrame();
   const o = interpolate(fr, [0, 10, dur - 10, dur], [0, 1, 1, 0], clamp);
   const n = Math.floor(interpolate(fr, [4, 34], [0, a.length], clamp));
