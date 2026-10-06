@@ -1,51 +1,57 @@
-# THE FLAVOR RACE: session handoff (after V12.1)
+# THE FLAVOR RACE: session handoff (after V12.2)
 
 ## State
-- V12.1, the team-screening cut: `src/FlavorRaceV12_1.tsx` (registered in `src/Root.tsx` as FlavorRaceV12-1). 2:19.4.
-- V12.1 review copy: `docs/session/flavor-race-v12.1-review.mp4` (720p, 1.45 Mbps, AAC 160k). Mix on `mix2.py`'s meter: -16.1 LUFS integrated, LRA 10.1 LU, -1.2 dBTP (ffmpeg `ebur128` reads the review copy at -16.9 LUFS, LRA 9.5 LU, -1.0 dBTP).
-- V12.1 is built on V12 with the favorite Version 4 sequences put back, from the director's V12.1 polish brief (below). V13 (`src/FlavorRaceV13.tsx`) was the wrong direction (it cut favorite scenes) and stays only for reference. V12 is unchanged.
-- Clips are force-added under `public/race/clips/` (the folder is otherwise ignored). Recovered from the Higgsfield library for V12.1 (job id in brackets):
-  - `s11_hq.mp4` (e6315e7c): the landing at home that V12 used but the repo was missing.
-  - `k/n01_beauty.mp4` (0c4f52fd): the cap and stripe macros, and the engine cluster.
-  - `k/n17_macro1.mp4` (2412dd59): the frosted valve with cold vapor.
-  - `k/n21_glass.mp4` (4167700d): the firing-room window (V12.1 uses 12.4 to 14.7, the push toward the glass).
-  - `k/n22_crowd.mp4` (aea82b08): the fans.
-  - `s06_land_fix.mp4` (41723d26): Version 4's Moon landing with the locked cap.
-  - `v121/gauge.mp4` (b4d0ba10): the pressure gauge.
-  - The burner close-up the brief names (305c7cea) is `k/n18_nozzle.mp4`, byte for byte.
-- Sound engine: `sound/cues12_1.py` (SFX stem), `sound/events12_1.py` (music automation and the silences), `sound/mix2.py` (`CUT=12.1`). New library WAVs in `sound/lib`: `x_crowd`, `x_applause` and the radio takes used for distant chatter (converted from `public/race/audio`).
-- Higgsfield: `higgsfield/seedance.py` (Seedance 2.5 image-to-video with a spend ledger in `docs/session/hf-v13-jobs.json`). No credits were spent on V12.1; about $41 of the $100 balance is spent (all on V13).
+- V12.2, the team-screening cut with the director's notes on V12.1: `src/FlavorRaceV12_2.tsx` (registered in `src/Root.tsx` as FlavorRaceV12-2). 2:27.2.
+- V12.2 review copy: `docs/session/flavor-race-v12.2-review.mp4` (720p, 1.45 Mbps, AAC 160k). The review copy and its mix readings land in the next commit (the picture and the music stem are rendering).
+- V12.1 (`src/FlavorRaceV12_1.tsx`, `docs/session/flavor-race-v12.1-review.mp4`) is unchanged and stays for comparison. V13 (`src/FlavorRaceV13.tsx`) was the wrong direction and stays only for reference.
+- Clips are force-added under `public/race/clips/` (the folder is otherwise ignored). New for V12.2, all in `v122/`:
+  - `v122_droplet.mp4`, `v122_window.mp4`, `v122_mc_erupts.mp4`: the three Seedance 2.5 clips the director approved (job ids in the ledger, `docs/session/hf-v13-jobs.json`).
+  - `fans2.mp4`: the fans in front of both launch towers. No generation: `scripts/fans_two_towers.py` composites a second tower and glow into `k/n22_crowd` from a mirrored, time-offset copy of the same footage, kept behind the crowd by a luminance matte.
+  - `m1_reel.mp4`: `v11/m1_pullaway` 0.3 to 1.9 s played in reverse, so the gap closes (TheraBreath reels the rival in). `ffmpeg -ss 0.3 -t 1.6 -i public/race/clips/v11/m1_pullaway.mp4 -vf "reverse,setpts=PTS-STARTPTS" -an -c:v libx264 -preset slow -crf 14 -pix_fmt yuv420p public/race/clips/v122/m1_reel.mp4`
+  - `moon_stand.mp4`: the new Moon landing shot, the 1080p Seedance final (7e918801) of draft 2512a280: TheraBreath standing on the Moon, Earth rising behind it.
+  - `850bde0e.mp4`: both rockets dead level, the rival's red light and one puff (the V11 pick, recovered from the Higgsfield library).
+- Sound engine: `sound/cues12_2.py` (SFX stem), `sound/events12_2.py` (music automation and the silences), `sound/mix2.py` (`CUT=12.2`).
+- Higgsfield: `higgsfield/seedance.py` (Seedance 2.5 image-to-video with a spend ledger; `HF_OUT` picks the clip folder). V12.2 spent $14.79 by the ledger's published rates (three 1080p clips); about $55.75 of the $100 is spent in total.
 
-## The V12.1 brief, and what the cut does with it
-- Opening, the surprise (7 s): only macro photography of what looks like an ordinary TheraBreath bottle: white plastic catching the light as the ribbed cap slides in (`v11/02b1b193` 0 to 1.04 at 0.72x), the cap beaded with cold (`n01_beauty` 1.7), condensation over the orange stripe (`n01_beauty` 6.0), the label (`02b1b193` 2.35 to 2.95, cropped so the gantry stays out). No engines, legs, fins, gantry or full bottle. Sound: a distant machine hum, droplets, tiny ice cracks, a far vent, radio chatter so far away it never becomes words.
-- First reveal: the wide silhouette held 2.0 s (`h/s10_reveal` 0 to 0.8 at 0.4x), then the lights as three events: bank (THUNK), bank (THUNK), every bank at once (measured off the clip at 1.06, 2.86 and 4.04 s), and the lit image holds 3.8 s after the blast. The score wakes on the first bank.
-- Show off: hero push, umbilical release, frosted valve, the competitor, the engine cluster, THE FLAVOR RACE, Mission Control (Norco), the partnership card.
-- Launch, in the brief's order: the count drives the cuts (three on the pad, two on the gauge, one on the button), then the burner close-up in near silence (metal ticks, fuel pressure, igniter chatter, a low spool, WHUMP on the white bloom); the pad erupts from above; both bottles leave the pad together (3.8 s, the music's lift-off peak); the firing-room window (the roar through thick glass: no highs, the pane buzzing, the room, consoles, radio); the fans (the roar far off, wind, yelling, the cheer, carried half a second over the cut); straight back to the rockets with the full roar. The sound and the music drop away at the edge of space.
-- Discovery, arranged with purpose: what TheraBreath sees, one botanical (yuzu), the lab (citrus, FLAVOR LAB super), one liquid macro (the drop), the aroma, the formulation (the fuel cell), Mission Control leans in and sends it, the transmission, the relight. The rival only coughs; it is never destroyed.
-- The Moon, cause before effect: the landing (V4's `s06_land_fix`: descent, flame on the regolith, touchdown, dust), the foot, the pole close-up (servo, ratchet, CHK), and only then the wide: the planted flag with Earth behind, held 3.15 s (the shot is still until 0.96 s, so it plays at 0.3x), then the lift-off at real speed. The music is silent from the touchdown and rises gently on the wide. The flag wide (`w/c7_flag`) is no longer used, so the result is never shown before the action. The late rival lands on the score's last accent (127.3 s).
-- Ending: home (Ewing), six glasses in a quiet room (`v13/t2_tasting`, the gloved hand sets down the sixth), the music gone, a calm voice: "Would you like to taste it?" (`v10_robot_taste`), a second on the glasses, one second of black and silence, then TASTE THE FUTURE with both logos, held 6 s, the score's final gesture under it.
+## The notes on V12.1, and what V12.2 does with them
+- Seedance clips 1 to 3, cut in:
+  - The droplet (opening): replaces the stripe macro. One cold droplet slides down across the orange stripe while cold vapor drifts through (`v122_droplet` 1.8 to 4.0 s). Sound: condensation beads, a tiny wet glide, the vapor breathing past, and the drop landing somewhere far below.
+  - Rockets beyond the glass (firing room): both rockets climb past the top of the window on twin columns of fire, cropped in (`v122_window` from 1.6 s, zoom 1.16 to 1.22). The take's first 1.5 s show glowing blobs on the noses, so the cut starts after them. The roar through thick glass, the pane rattling and the radio chatter are unchanged.
+  - Mission Control erupts (the relight): seen from behind, the team springs up with arms high as the wall screen flares green (`v122_mc_erupts` 1.05 to 2.55 s, zoomed 1.13 from the bottom so the garbled wall sign stays under the letterbox).
+- The fans (1.7 s), cropped in to show two rockets: `fans2` at zoom 1.33 to 1.37 shows both launch towers, each glowing at the base, the fans shielding their eyes and then cheering.
+- The Moon landing: `s06_land_fix` is gone. The Higgsfield history has no Seedance 2.0 model (every Seedance job is 2.5), and the only other Seedance landing is that one, so V12.2 uses the existing Seedance shot of TheraBreath on the Moon (`moon_stand`, shifted down 80 px so the whole cap clears the letterbox). The Moon now runs: the descent in silence, the foot touches down ("The Flavor has landed"), TheraBreath standing on the Moon with Earth rising, the pole close-up, and only then the planted-flag wide (also shifted down, so the cap is whole).
+- Back in: tea, cucumber and rose petals (V12's beats: 0.6, 0.7 and 0.5 s, with V12's grades and sounds), the prism (1.6 s, its shimmer and one high glass note), the black-smoke sputter (`w/s6_comp` 6.7 to 8.2 s), and the robot arm with the six clear samples (`v12/g7_robot`, V12's hatch, arm, clinks, servo hesitation and the small musical smile), which replaces the six-glass tasting.
+- Taken out: the VO "Would you like to taste it?" The ending is the robot arm in the quiet, the score fading under it, black, then the end card.
+- The launch button: `k/n02_mctense` 4.06 to 4.60 s at 0.75x. The glove is already on the button (the garbled label never shows) and the shot cuts before the finger lifts (4.65 s).
+- The race:
+  - Before the choice, the rival never gets far: it edges ahead by about a length (`m1_pullaway` 0.4 to 1.15 s; V12.1 ran on until it was a dot at the Moon).
+  - After the relight, the comeback builds to the end, cut on the score's half-bars (0.75 s) so the cutting quickens with the music: the relight, Mission Control erupts, TheraBreath at full throttle, it reels the rival in (the gap visibly closes), dead level as the rival's red light comes on and it coughs one puff, the side profile as TheraBreath's nose inches ahead (0.75 s), the surge past (held 2.25 s), the rival sputters black smoke, and TheraBreath is a bright star at the Moon while the rival flickers in the foreground. The score's drive is cut on the descent to the Moon and its throw rings out over the silence.
+  - Sound: TheraBreath's clean thrust runs the whole chase and climbs in pitch; the rival's rough idle grows as it is reeled in and falls away after the surge; a sub and a deep push of air on the surge; the sputter carries into the last shot as little flickering coughs.
+
+## The V12.1 brief (still in force)
+- Opening, the surprise (6.6 s of macros): plastic and the ribbed cap, the cap beaded with cold, the droplet across the stripe, the label. No engines, legs, fins, gantry or full bottle.
+- First reveal: the silhouette held 2.0 s, then the lights as three events (bank, bank, blast), the lit image held 3.8 s.
+- Launch order: the count drives the cuts, the burner close-up in near silence, the pad erupts, both bottles leave the pad together, the firing-room window, the fans, back to the rockets, silence at the edge of space.
+- The Moon: cause before effect, the result never shown before the action. The late rival lands on the score's last accent (127.3 s).
+- Ending: six samples, silence, black, TASTE THE FUTURE with TheraBreath × The Flavor Factory, held 6 s.
 
 ## Commands
-- Picture: `npx remotion render src/index.ts FlavorRaceV12-1 out/race121_pic.mp4 --muted --concurrency=3 --props='{"stem":"none"}'`
-- Stems: `npx remotion render src/index.ts FlavorRaceV12-1 out/race121_music.wav --codec=wav --props='{"stem":"music"}'`, then `"vo"`. Run renders one at a time (memory); each audio stem takes about 10 minutes.
-- SFX: `cd sound && python3 cues12_1.py ../out/race121_sfx.wav`
-- Mix: `CUT=12.1 PRESENT=1 RIDE=1.3 RIDE_DOWN=0.3 TARGET=-16 CEIL=-1.2 STEMS=1 python3 mix2.py ../out/race121_pic.mp4 ../out/race121_music.wav ../out/race121_sfx.wav ../out/race121_vo.wav ../out/race121_final.mp4`. With `STEMS=1` the processed stems are written next to the output as `<output>_music.wav` and so on, so never give the output the same prefix as the input stems.
+- Picture: `npx remotion render src/index.ts FlavorRaceV12-2 out/race122_pic.mp4 --muted --concurrency=3 --props='{"stem":"none"}'`
+- Music stem: `npx remotion render src/index.ts FlavorRaceV12-2 out/race122_music.wav --codec=wav --props='{"stem":"music"}'`. Run renders one at a time (memory); the music stem takes about 10 minutes.
+- VO stem: the same Remotion command with `"vo"`, or place the two lines at the composition's frame-rounded cue times at gain 0.62 (what V12.2 did).
+- SFX: `cd sound && python3 cues12_2.py ../out/race122_sfx.wav`
+- Mix: `CUT=12.2 PRESENT=1 RIDE=1.3 RIDE_DOWN=0.3 TARGET=-16 CEIL=-1.2 STEMS=1 python3 mix2.py ../out/race122_pic.mp4 ../out/race122_music.wav ../out/race122_sfx.wav ../out/race122_vo.wav ../out/race122_final.mp4`. With `STEMS=1` the processed stems are written next to the output as `<output>_music.wav` and so on, so never give the output the same prefix as the input stems.
 - Review copy: two-pass x264 at 1450k from the master, `scale=1280:720:flags=lanczos:in_range=pc:out_range=tv,format=yuv420p`, audio from `<output>_mix.wav` as AAC 160k, `-movflags +faststart`.
 
 ## Mix notes
-- The presentation rider lifts quiet passages (RIDE) and holds loud ones back (RIDE_DOWN, new, defaults to RIDE so older cuts mix as before). V13's `RIDE=1.6` pulled the sustained liftoff down by about 6 dB, so the long show-off drone ended up nearly as loud as the launch. V12.1 uses `RIDE=1.3 RIDE_DOWN=0.3`: the liftoff (-9.7 LUFS over the shot) and the pad eruption (-9.0) are the loudest moments, the firing room drops to -17.5, the crowd -15.9, the full roar returns at -11.7, the opening macros stay at -29.8 and the edge of space at -40.2.
-- Measured silences in the processed music stem: digital silence through the count and the burner, at the edge of space, from the Moon touchdown to the flag wide, around the question and on the black before the card (the whole mix is -115 dBFS there).
-- The VO stem was placed in Python with the composition's exact cue times (frame-rounded starts, gain 0.62) instead of a 10-minute Remotion render; the Remotion command above produces the same stem.
+- Pending the V12.2 mix (V12.1 used `RIDE=1.3 RIDE_DOWN=0.3`: the rider lifts quiet passages and holds the launch back only a little).
 
 ## Known nits
-- The button shot (`k/n02_mctense` from 4.0) still shows the garbled button label for about two frames before the glove covers it. Starting at 4.08 removes it; fold it into the next picture render.
+- Pending the silent picture pass on the V12.2 master.
 
 ## Seedance ideas (not generated; each needs approval)
-Each starts from a frame of approved footage and replaces a segment at the same length, so only the picture re-renders (about 20 minutes) and the sound stays valid. Start frames are cheap to pull again from the clips named.
-- The droplet (opening, 5 s, about $5.69): from `k/n01_beauty` at 6.4 s, cropped to the stripe so no label text shows. One cold droplet breaks loose and slides down across the orange stripe while a wisp of cold vapor drifts through. Adds the two opening details no existing take has.
-- Rockets beyond the glass (firing room, 4 s, about $4.55): from `k/n21_glass` at 14.6 s. The two bottle rockets visibly climb past the window frame on bright flames while the camera pushes toward the glass.
-- Mission Control erupts (the relight, 4 s, about $4.55): from `h/mc_ff` at 6.6 s. Seen from behind, the team straightens and throws their arms up as the big screen flares green. A human payoff for the discovery, like the fans at the launch.
-- Optional, the lamp banks (the reveal, 4 s, about $4.55): a stadium lamp bank slamming on row by row, cut in as two half-second inserts so each THUNK is seen. It interrupts the continuous wide, so try it as an alternate.
+- The lamp banks (the reveal, 4 s, about $4.55): a stadium lamp bank slamming on row by row, cut in as two half-second inserts so each THUNK is seen. It interrupts the continuous wide, so try it as an alternate.
+- A cleaner rockets-beyond-the-glass take (4 s, about $4.55), if the team wants the rockets' first second too: the same prompt from a start frame without the two pad glows, so nothing rides up on the noses.
 
 ## Standing rules
 No em or en dashes (`node playbook/scripts/check-dashes.mjs video/src video/sound video/docs`). No faces. Locked hero bottle (white, short ribbed orange cap). Rival labelled only COMPETITOR. Real logos unaltered. On-screen text as overlay only. No product claims. The Mr. Blue Sky file stays private and uncommitted. Ask before spending credits.

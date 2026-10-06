@@ -9,7 +9,9 @@ import numpy as np
 import soundfile as sf
 from numpy.lib.stride_tricks import sliding_window_view
 from scipy.signal import butter, sosfilt, lfilter, fftconvolve, resample_poly
-if os.environ.get("CUT") == "12.1":
+if os.environ.get("CUT") == "12.2":
+    from events12_2 import MUSIC_AUTO, MUSIC_CUTS
+elif os.environ.get("CUT") == "12.1":
     from events12_1 import MUSIC_AUTO, MUSIC_CUTS
 elif os.environ.get("CUT") == "13":
     from events13 import MUSIC_AUTO, MUSIC_CUTS

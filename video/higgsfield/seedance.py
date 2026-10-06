@@ -5,14 +5,14 @@
 # usage (from video/):
 #   python3 higgsfield/seedance.py upload <image>                       -> prints the public URL
 #   python3 higgsfield/seedance.py submit <name> <spec.json>            -> queues one take, logs it
-#   python3 higgsfield/seedance.py wait <name> [<name> ...]             -> polls, downloads public/race/clips/v13/<name>.mp4
+#   python3 higgsfield/seedance.py wait <name> [<name> ...]             -> polls, downloads public/race/clips/$HF_OUT/<name>.mp4 (HF_OUT defaults to v13)
 #   python3 higgsfield/seedance.py ledger                               -> what was spent
 # spec.json: {"image_url": ..., "prompt": ..., "duration": 4, "resolution": "1080p", "end_image_url": optional}
 import json, os, subprocess, sys, time
 
 VIDEO = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 LEDGER = os.path.join(VIDEO, 'docs', 'session', 'hf-v13-jobs.json')
-OUTDIR = os.path.join(VIDEO, 'public', 'race', 'clips', 'v13')
+OUTDIR = os.path.join(VIDEO, 'public', 'race', 'clips', os.environ.get('HF_OUT', 'v13'))
 BASE = os.environ.get('HF_BASE', 'https://platform.higgsfield.ai')
 MODEL = 'bytedance/seedance-2.5/image-to-video'
 USD_PER_S = {'480p': 0.2056, '720p': 0.4622, '1080p': 1.1372}   # the estimate endpoint's published rates

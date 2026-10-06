@@ -131,6 +131,54 @@
    "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/799d9fb7-1e8a-4786-9e0d-3c1f80181aeb.mp4",
    "file": "public/race/clips/v13/f1_flicker.mp4",
    "completed": "2026-10-06T01:35:00Z"
+  },
+  "v122_droplet": {
+   "request_id": "18a733ca-01ff-4e5a-b1c5-7c2b8482c5be",
+   "status": "completed",
+   "input": {
+    "duration": 5,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/e3c44f40-9b62-4d13-bd68-13c812350aad.png",
+    "prompt": "Photorealistic extreme macro, locked camera with a very slow push-in. A cold white plastic surface beaded with fine condensation, with a wide orange stripe across the middle. One plump water droplet just above the orange stripe breaks loose and slides slowly down across the orange stripe, gathering the small beads in its path and leaving a clear wet trail behind it. A thin wisp of cold white vapor drifts slowly across the surface from the left and fades away. Cool, soft light, shallow depth of field. Keep the surface, the stripe and the lighting exactly as in the image. No text, no letters, no logos, no hands, no new objects."
+   },
+   "est_usd": 5.69,
+   "submitted": "2026-10-06T13:23:50Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/71950beb-3831-4f59-b28d-1abff2bfce5f.mp4",
+   "file": "public/race/clips/v122/v122_droplet.mp4",
+   "completed": "2026-10-06T13:30:36Z"
+  },
+  "v122_window": {
+   "request_id": "bbde8b93-222e-411f-9f76-8d752d57b942",
+   "status": "completed",
+   "input": {
+    "duration": 4,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/c7317ab0-36f3-476c-ab37-a45a38ccec4e.png",
+    "prompt": "Photorealistic, cinematic night scene, very slow push toward the glass. A dim launch firing room: three engineers in white shirts and headsets at their consoles, seen only from behind, facing a tall window of thick glass. Beyond the glass, two bottle-shaped rockets, one white and one amber, lift off side by side from the two bright glows on the pad and climb steadily up and out past the top of the window frame on long brilliant flames, trailing smoke. The orange glow on the glass flickers and builds, washing over the room and the men's shoulders. The men stay still and keep facing the window. Keep the room, the window frame, the consoles and the men exactly as in the image. No faces, no one turns around, no text."
+   },
+   "est_usd": 4.55,
+   "submitted": "2026-10-06T13:23:51Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/189ebdfc-bc21-47ce-96b5-93c53dd233be.mp4",
+   "file": "public/race/clips/v122/v122_window.mp4",
+   "completed": "2026-10-06T13:29:29Z"
+  },
+  "v122_mc_erupts": {
+   "request_id": "7dbe4dd0-c492-49cb-9d40-b3f65c70bd2b",
+   "status": "completed",
+   "input": {
+    "duration": 4,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/e5f662fa-c2a8-4458-9fe3-da8ecc7f8468.png",
+    "prompt": "Photorealistic, cinematic. A dark mission control room seen from behind the rows of consoles: the team in black jackets sit facing the giant wall screens, seen only from behind. Suddenly they all spring up from their chairs and throw their arms high in the air, celebrating, fists pumping, while the giant wall screen ahead flares with bright green light. Slight handheld camera energy. Everyone keeps facing the screens, away from the camera, seen only from behind. Keep the room, the consoles and the screens exactly as in the image. No faces, no one turns around, no new text."
+   },
+   "est_usd": 4.55,
+   "submitted": "2026-10-06T13:23:52Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/053a9b23-2e5a-486f-bcd9-7c1234d34410.mp4",
+   "file": "public/race/clips/v122/v122_mc_erupts.mp4",
+   "completed": "2026-10-06T13:29:47Z"
   }
  }
 }
