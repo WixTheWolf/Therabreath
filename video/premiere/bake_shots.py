@@ -1,8 +1,10 @@
 # Bake every shot of a Flavor Race cut into its own 1080p30 file, framed exactly as the film shows it (clip speed,
-# push-in about its origin, vertical shift, camera shake, colour grade), with up to 1 s handles at both ends, for the
-# editable Premiere timeline. A handle stops where the source clip cuts to another shot, so extending a shot in the
-# timeline never flashes a frame of a different shot. The maths follows ClipLayer in src/FlavorRaceV12_2.tsx: the source is fitted to cover
-# 1920x1080, then translate(dx, dy + ty) scale(z) about the origin. Zoom holds its first and last value in the handles.
+# push-in about its origin, vertical shift, camera shake, colour grade, blurred region), with up to 1 s handles at both
+# ends, for the editable Premiere timeline. A handle stops where the source clip cuts to another shot, so extending a
+# shot in the timeline never flashes a frame of a different shot. The maths follows ClipLayer in src/FlavorRaceV12_2.tsx
+# and src/FlavorRaceV14.tsx: the source is fitted to cover 1920x1080, then translate(dx, dy + ty) scale(z) about the
+# origin; blurred regions are a blurred copy of the shot per strength, each seen through the union of its soft
+# elliptical masks, all moving with the shot. Zoom holds its first and last value in the handles.
 # usage (from video/): python3 premiere/bake_shots.py FlavorRaceV12_2 premiere/V12.2 [id,id,...]   (ids: re-bake only those)
 # writes <out>/media/S<nn>_<id>.mp4 and <out>/shots.json (the cut list the XML is built from)
 import json, math, os, re, subprocess, sys
@@ -16,11 +18,24 @@ f = lambda s: math.floor(s * FPS + 0.5)        # Math.round, as in the compositi
 
 
 def segments(comp):
+    # the SEGS list of the composition: one object per segment (it may span lines and hold a nested object, and a grade
+    # may name a string constant of the file)
     src = open(os.path.join(VIDEO, 'src', comp + '.tsx')).read()
-    body = src[src.index('const SEGS: Seg[] = ['):src.index('\n];', src.index('const SEGS: Seg[] = ['))]
+    consts = dict(re.findall(r'^const (\w+) = ("[^"\n]*");', src, re.M))
+    a = src.index('const SEGS: Seg[] = [') + len('const SEGS: Seg[] = [')
+    body = re.sub(r'//[^\n]*', '', src[a:src.index('\n];', a)])
+    objs, depth = [], 0
+    for i, ch in enumerate(body):
+        if ch == '{':
+            if depth == 0: s0 = i
+            depth += 1
+        elif ch == '}':
+            depth -= 1
+            if depth == 0: objs.append(body[s0:i + 1])
     out = []
-    for obj in re.findall(r'\{ id: .*?\}(?=,)', body):
-        js = re.sub(r'(?<=[{,]) (\w+):', r' "\1":', obj)
+    for obj in objs:
+        js = re.sub(r'(?<=[{,]) (\w+):', r' "\1":', re.sub(r'\s+', ' ', obj))
+        js = re.sub(r'(?<=": )([A-Z_][A-Z0-9_]*)(?=[ ,}])', lambda m: consts[m.group(1)], js)
         out.append(json.loads(js))
     return out
 
@@ -84,6 +99,9 @@ def bake(sg, start, end, at, dst, head=HANDLE, tail=HANDLE):
     k_of = lambda u: min(nfr - 1, max(0, math.floor(tsrc(u) * sfps + 1e-6)))
     s = max(W / sw, H / sh); cx, cy = (W - s * sw) / 2, (H - s * sh) / 2
     O = np.array([ox * W, oy * H])
+    bl = sg.get('blur', [])
+    strengths = list(dict.fromkeys(b['px'] for b in bl))           # in order of first use, as the composition stacks them
+    if bl: gy, gx = np.mgrid[0:H, 0:W].astype(np.float32) + 0.5
     dec = subprocess.Popen(['ffmpeg', '-v', 'error', '-i', path, '-frames:v', str(k_of(ue_ - 1) + 1),
                             '-vf', 'scale=in_color_matrix=bt709,format=rgb24', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'],
                            stdout=subprocess.PIPE)
@@ -112,6 +130,17 @@ def bake(sg, start, end, at, dst, head=HANDLE, tail=HANDLE):
         M = np.array([[a, 0, b[0]], [0, a, b[1]]], np.float64)
         img = cv2.warpAffine(frame, M, (W, H), flags=cv2.INTER_LANCZOS4 | cv2.WARP_INVERSE_MAP,
                              borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0))
+        if bl:                     # blur(px) through radial-gradient(ellipse w/2 h/2 at x y, #000 60%, transparent 100%) layers,
+            out = img.astype(np.float32)                              # all in the layer's own pixels, so scaled with it
+            for px in strengths:
+                keep = np.ones((H, W), np.float32)                    # mask layers add: 1 - product of (1 - alpha)
+                for b in (b for b in bl if b['px'] == px):
+                    c = T + O + z * (np.array([b['x'], b['y']]) - O)
+                    rho = np.sqrt(((gx - c[0]) / (z * b['w'] / 2)) ** 2 + ((gy - c[1]) / (z * b['h'] / 2)) ** 2)
+                    keep *= 1 - np.clip((1.0 - rho) / 0.4, 0, 1)
+                al = (1 - keep)[..., None]
+                out = out * (1 - al) + cv2.GaussianBlur(img, (0, 0), px * z).astype(np.float32) * al
+            img = (out + 0.5).astype(np.uint8)
         if 'grade' in sg: img = css_grade(img, sg['grade'])
         enc.stdin.write(img.tobytes())
     dec.stdout.close(); dec.wait(); enc.stdin.close(); enc.wait()

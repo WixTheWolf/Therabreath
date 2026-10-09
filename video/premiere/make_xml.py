@@ -3,24 +3,27 @@
 # graphics and the sound stems with the final mix (build_media.py), and marks the shots that need care when re-cut.
 # Every file sits flat in <package>/media, so if Premiere asks for one file, pointing it at that folder relinks the rest.
 # usage (from video/): python3 premiere/make_xml.py premiere/V12.2 [--root C:/FlavorRace/V12.2]
+#                      python3 premiere/make_xml.py premiere/V14 [--root C:/FlavorRace/V14]
 import json, os, sys, wave
 from xml.sax.saxutils import escape
 
 PKG = sys.argv[1]
-ROOT = (sys.argv[sys.argv.index('--root') + 1] if '--root' in sys.argv else 'C:/FlavorRace/V12.2').replace(':', '%3a', 1)
+VERSION = os.path.basename(os.path.normpath(PKG))                 # e.g. V12.2
+ROOT = (sys.argv[sys.argv.index('--root') + 1] if '--root' in sys.argv else f'C:/FlavorRace/{VERSION}').replace(':', '%3a', 1)
 FPS = 30
 cut = json.load(open(os.path.join(PKG, 'shots.json')))
 gfx = json.load(open(os.path.join(PKG, 'graphics.json')))
 snd = json.load(open(os.path.join(PKG, 'sound.json')))
-VERSION = os.path.basename(os.path.normpath(PKG))                 # e.g. V12.2
 NAME = f'THE FLAVOR RACE {VERSION} (editable)'
 TOTAL = cut['frames']
 seg = {s['id']: s for s in cut['segments']}
 
-ACTS = [('black0', '1 The surprise'), ('tbpush', '2 Show off'), ('padcold', '3 Launch'), ('side', '4 The race'),
-        ('sees', '5 Discovery'), ('life', '6 The comeback'), ('approach', '7 The Moon'), ('homeward', '8 Home')]
-# shots that need care when they are re-cut (sequence markers)
-FLAGS = [
+# per cut: the bins the shots are sorted into (the segment each act starts on) and the shots that need care when they
+# are re-cut (sequence markers)
+ACTS = {}; FLAGS = {}
+ACTS['FlavorRaceV12_2'] = [('black0', '1 The surprise'), ('tbpush', '2 Show off'), ('padcold', '3 Launch'), ('side', '4 The race'),
+                           ('sees', '5 Discovery'), ('life', '6 The comeback'), ('approach', '7 The Moon'), ('homeward', '8 Home')]
+FLAGS['FlavorRaceV12_2'] = [
     ('label', 'Framing hides the gantry', 'Cropped hard to the right (zoom 1.35) so the gantry stays out of the macros. The tail handle tilts down to the fins and the smoke, which the opening never shows.'),
     ('gauge', 'Framing hides mirrored lettering', 'Zoomed 1.42 from the top so the dial lettering stays under the letterbox.'),
     ('button', 'Button label is garbled', 'Starts with the glove already on the button and cuts before the finger lifts (4.65 s into the source). Extending either end shows the garbled label or the lift.'),
@@ -34,6 +37,25 @@ FLAGS = [
     ('stand', 'New Moon landing shot', 'Seedance 7e918801, shifted down 80 px so the whole cap clears the letterbox.'),
     ('robot', 'Six samples, then silence', 'The score has faded by +3.6 s; the tray settles at +4.1 s in the quiet.'),
 ]
+ACTS['FlavorRaceV14'] = [('black0', '1 The reveal'), ('padcold', '2 Launch'), ('side', '3 The race'), ('field', '4 The flavor field'),
+                         ('droplets', '5 The Flavor Factory'), ('intake', '6 To the Moon'), ('approach', '7 The Moon'), ('sunlight', '8 Home')]
+FLAGS['FlavorRaceV14'] = [
+    ('standoff', 'Framing hides a generated logo', 'Zoomed 1.28 from the top and shifted down 118 px, so a truck lettered with a generated copy of The Flavor Factory logo (bottom left) sits under the letterbox. Keep the framing.'),
+    ('padcold', 'Framing hides a generated logo', 'The same truck as on the face-off, kept under the letterbox the same way (zoom 1.28 from the top, down 118 px).'),
+    ('tblabel', 'Framing hides a misspelled line', 'Zoomed 1.13 from the top and shifted down 118 px, so the generated line under the wordmark (it reads HEALTHY HOUTH) sits under the letterbox.'),
+    ('droplets', 'Softened in place', 'The misspelled line under the wordmark is blurred in place (four soft regions, baked into the shot at fixed positions). In the handles the bottle drifts, so check the line stays covered if you extend it.'),
+    ('lab', 'Softened in place', 'The beaker carries generated print (a logo, a nonsense word, wrong graduations); it is blurred in place.'),
+    ('transmit', 'Framing hides a mangled name', 'Zoomed 1.07 from the top and shifted down 118 px, so a garbled TheraBreath name on the front of the box sits under the letterbox. The badge at the top right is blurred in place.'),
+    ('receive', 'Softened in place', 'The misspelled line beside the wordmark is blurred in place.'),
+    ('hatch', 'Ends before the flag opens', 'From 23.3 s into the source the flag shows a garbled wordmark and the camera pulls back; the shot ends at 23.25 s, so do not extend the tail. A sticker on the latch is blurred in place.'),
+    ('moonwide', 'V12 Moon shots, graded to match', 'The flag wide, the lift-off and the late rival are the V12 shots, cooled and desaturated to match the new grey regolith. The flag wide plays at 0.26x.'),
+    ('approach', 'Music is silent here', 'The score cuts on the cut to the Moon and returns on the flag wide. The effects stem carries the descent and the landing.'),
+    ('porthole', 'Music is silent here', 'The edge of space: the score stops here and comes back on the downbeat of the race.'),
+    ('sunlight', 'Softened in place; keep the tail', 'The misspelled line under the wordmark is blurred in place. About 0.2 s past the out-point the rival flies into frame beside TheraBreath, which the story rules out (it is still on the Moon): do not extend the tail.'),
+    ('samples', 'Product bottle softened', 'The generated product bottle carries garbled print and a fake organic seal; both are blurred in place (the seal harder). The score has faded by +3.0 s; the sixth sample is set down at +4.05 s in the quiet.'),
+    ('rack', 'Keep the tail', 'Shortly after the out-point the bottle comes into focus with its garbled print, and the source ends on a generated title card. Do not extend the tail.'),
+]
+ACTS, FLAGS = ACTS[cut['comp']], FLAGS[cut['comp']]
 
 
 def rate():
