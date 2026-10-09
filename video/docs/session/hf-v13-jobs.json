@@ -1,0 +1,184 @@
+{
+ "model": "bytedance/seedance-2.5/image-to-video",
+ "base": "https://platform.higgsfield.ai",
+ "jobs": {
+  "p1_particles": {
+   "request_id": "505822b9-cd14-4e5b-8d04-c1a0f27b0aab",
+   "status": "completed",
+   "input": {
+    "duration": 5,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/ed1cfe5e-46ef-4d36-a303-98dc29620d41.png",
+    "prompt": "Photorealistic IMAX space shot, locked camera with a very slow drift. The white bottle-rocket hangs in silence above Earth, its engine bells dark and cold. Tiny luminous aroma particles float slowly up past the engine bells and along the hull: soft glowing motes of citrus gold, pale green, blush pink and warm cream, like pollen in a sunbeam, swirling gently and catching the sunlight. The rocket stays still with its engines off. Keep the rocket exactly as in the image: white hull, orange stripes on the fins, the same cluster of engine bells and landing struts. No ice crystals, no cubes, no smoke, no flames, no text, no people."
+   },
+   "est_usd": 5.69,
+   "submitted": "2026-10-06T01:19:56Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/92c931e7-3f5c-4c4d-a744-d990ed3f6b7f.mp4",
+   "file": "public/race/clips/v13/p1_particles.mp4",
+   "completed": "2026-10-06T01:23:33Z"
+  },
+  "r1_reignite": {
+   "request_id": "77230548-1bfd-46be-bef5-f406930792af",
+   "status": "completed",
+   "input": {
+    "duration": 4,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/ed1cfe5e-46ef-4d36-a303-98dc29620d41.png",
+    "prompt": "Photorealistic IMAX space shot, locked camera. The white bottle-rocket hangs above Earth with its engine bells dark. The engines reignite cleanly, the center bell first and then the rest: each bell warms and fires a steady, clean blue-white flame with a pale white core, and the plumes stretch down toward Earth. The rocket starts to move forward, slowly pulling up and away from the camera. Keep the rocket exactly as in the image: white hull, orange stripes on the fins, the same cluster of engine bells and landing struts. No smoke, no sparks, no debris, no green or colored light, no ice crystals, no text, no people."
+   },
+   "est_usd": 4.55,
+   "submitted": "2026-10-06T01:19:56Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/c923cc6d-7825-4a1b-b52b-4cf510e5a7ef.mp4",
+   "file": "public/race/clips/v13/r1_reignite.mp4",
+   "completed": "2026-10-06T01:24:25Z"
+  },
+  "o1_overtake": {
+   "request_id": "f53a5f30-e413-416e-a5a9-f642624fea60",
+   "status": "completed",
+   "input": {
+    "duration": 5,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/26a5abc8-56a5-463f-a267-efb493324e53.png",
+    "prompt": "Photorealistic IMAX space shot from behind two bottle-rockets climbing over Earth toward the Moon. The camera travels with the amber COMPETITOR rocket on the right. The white TheraBreath rocket on the left throttles up: its engines burn brighter with the same clean blue-white exhaust, and it surges forward, overtaking the COMPETITOR and shrinking toward the Moon. The COMPETITOR keeps its pace and falls behind. Both exhausts stay clean blue-white. Keep both rockets, their caps and labels exactly as in the image. No green, no colored glow, no smoke, no explosion, no new text, no people."
+   },
+   "est_usd": 5.69,
+   "submitted": "2026-10-06T01:19:57Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/c54df23e-e102-4a16-83f9-4faf458defd1.mp4",
+   "file": "public/race/clips/v13/o1_overtake.mp4",
+   "completed": "2026-10-06T01:29:43Z"
+  },
+  "t2_tasting": {
+   "request_id": "c2511e17-8427-46e0-8b59-e9bfd06dee5e",
+   "status": "completed",
+   "input": {
+    "duration": 5,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/cb594bc8-d6e3-4a9d-9249-ac1e4bad8d72.png",
+    "prompt": "Photorealistic close-up on a sunlit laboratory bench. Five small clear tasting glasses of clear liquid stand in a row on the stone countertop. A hand in a black nitrile glove enters from the right and gently sets a sixth identical glass down at the right end of the row, completing a neat row of six evenly spaced glasses, then withdraws out of frame. A tiny ripple settles in the sixth glass. The camera pushes in very slowly. Warm golden-hour light, soft reflections on the countertop, test tubes and flasks softly out of focus behind. Exactly six glasses at the end. Only the gloved hand, no faces, no text, no labels."
+   },
+   "est_usd": 5.69,
+   "submitted": "2026-10-06T01:19:58Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/e2ea1632-1b2a-41f3-ad8a-4bcb6f638513.mp4",
+   "file": "public/race/clips/v13/t2_tasting.mp4",
+   "completed": "2026-10-06T01:25:48Z"
+  },
+  "c1_cutoff": {
+   "request_id": "5edcc1ca-1e77-41a4-9b5e-280261cbdd12",
+   "status": "completed",
+   "input": {
+    "duration": 4,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/b7c4fb61-1de7-4d7a-b5bc-d2acf72a4a8a.png",
+    "end_image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/ed1cfe5e-46ef-4d36-a303-98dc29620d41.png",
+    "prompt": "Photorealistic IMAX space shot, locked camera. The white bottle-rocket climbs above Earth on a cluster of bright blue-white engine flames. The engines throttle down and shut off one by one: the flames shrink and fade, the bells glow orange as they cool, then go dark. The rocket drifts on in silence. Keep the rocket exactly as in the image: white hull, orange stripes on the fins, the same cluster of engine bells and landing struts. No ice crystals, no cubes, no particles, no smoke, no sparks, no text, no people."
+   },
+   "est_usd": 4.55,
+   "submitted": "2026-10-06T01:25:28Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/2ff17c2e-b408-4ac8-a6c0-d8bfca3a0720.mp4",
+   "file": "public/race/clips/v13/c1_cutoff.mp4",
+   "completed": "2026-10-06T01:30:46Z"
+  },
+  "r2_reignite": {
+   "request_id": "a9ba1c7e-29ce-46c0-9ab8-77de9303646d",
+   "status": "completed",
+   "input": {
+    "duration": 4,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/ed1cfe5e-46ef-4d36-a303-98dc29620d41.png",
+    "end_image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/b7c4fb61-1de7-4d7a-b5bc-d2acf72a4a8a.png",
+    "prompt": "Photorealistic IMAX space shot, locked camera. The white bottle-rocket drifts above Earth with its engine bells dark and cold. The engines reignite: each nozzle flashes white, then a translucent blue-white exhaust plume blooms out of every bell and settles into a steady, clean burn, exactly like a real rocket engine firing in vacuum. Keep the rocket exactly as in the image: white hull, orange stripes on the fins, the same cluster of engine bells and landing struts. No smoke, no sparks, no debris, no green or colored light, no ice crystals, no text, no people."
+   },
+   "est_usd": 4.55,
+   "submitted": "2026-10-06T01:27:25Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/e1449db5-5001-4ee0-af8a-eefe9db77e1d.mp4",
+   "file": "public/race/clips/v13/r2_reignite.mp4",
+   "completed": "2026-10-06T01:30:31Z"
+  },
+  "p2_particles": {
+   "request_id": "617ab88a-186d-4971-ad62-132c17d1a64f",
+   "status": "completed",
+   "input": {
+    "duration": 5,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/ed1cfe5e-46ef-4d36-a303-98dc29620d41.png",
+    "prompt": "Photorealistic IMAX space shot, locked camera. The white bottle-rocket hangs in silence above Earth, engines dark. A slow, luminous stream of aroma drifts in from the right of frame and flows past the engine bells: hundreds of soft glowing motes in distinct colors, citrus gold, fresh green, blush pink, warm amber and pale cream, some close to the lens as large soft-focus bokeh, like pollen lit by the sun. The stream curls gently around the rocket and drifts on to the left. The rocket does not move. Keep the rocket exactly as in the image: white hull, orange stripes on the fins, the same cluster of engine bells and landing struts. No sparks, no ice crystals, no smoke, no flames, no text, no people."
+   },
+   "est_usd": 5.69,
+   "submitted": "2026-10-06T01:27:26Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/85d34ae6-03db-46b3-a901-d1ee79a161cb.mp4",
+   "file": "public/race/clips/v13/p2_particles.mp4",
+   "completed": "2026-10-06T01:33:25Z"
+  },
+  "f1_flicker": {
+   "request_id": "aae8a89a-e25f-413c-a62c-7ed77a753989",
+   "status": "completed",
+   "input": {
+    "duration": 4,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/f2aa2362-e205-44dc-8bd0-436c23a6847b.png",
+    "prompt": "Photorealistic IMAX space shot. The camera travels just behind the amber COMPETITOR bottle-rocket above Earth; far ahead, the white TheraBreath rocket is a small bright point of clean exhaust heading for the Moon. The COMPETITOR's engines falter: its blue-white exhaust flames flicker, cut out and stutter back on unevenly, twice, and it starts to fall behind, sinking slightly lower in frame as the gap grows. No smoke, no fire, no explosion, no debris, no sparks. Keep the COMPETITOR exactly as in the image: amber body, dark ribbed cap, white COMPETITOR label, fins and engines. No new text, no people."
+   },
+   "est_usd": 4.55,
+   "submitted": "2026-10-06T01:31:32Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/799d9fb7-1e8a-4786-9e0d-3c1f80181aeb.mp4",
+   "file": "public/race/clips/v13/f1_flicker.mp4",
+   "completed": "2026-10-06T01:35:00Z"
+  },
+  "v122_droplet": {
+   "request_id": "18a733ca-01ff-4e5a-b1c5-7c2b8482c5be",
+   "status": "completed",
+   "input": {
+    "duration": 5,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/e3c44f40-9b62-4d13-bd68-13c812350aad.png",
+    "prompt": "Photorealistic extreme macro, locked camera with a very slow push-in. A cold white plastic surface beaded with fine condensation, with a wide orange stripe across the middle. One plump water droplet just above the orange stripe breaks loose and slides slowly down across the orange stripe, gathering the small beads in its path and leaving a clear wet trail behind it. A thin wisp of cold white vapor drifts slowly across the surface from the left and fades away. Cool, soft light, shallow depth of field. Keep the surface, the stripe and the lighting exactly as in the image. No text, no letters, no logos, no hands, no new objects."
+   },
+   "est_usd": 5.69,
+   "submitted": "2026-10-06T13:23:50Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/71950beb-3831-4f59-b28d-1abff2bfce5f.mp4",
+   "file": "public/race/clips/v122/v122_droplet.mp4",
+   "completed": "2026-10-06T13:30:36Z"
+  },
+  "v122_window": {
+   "request_id": "bbde8b93-222e-411f-9f76-8d752d57b942",
+   "status": "completed",
+   "input": {
+    "duration": 4,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/c7317ab0-36f3-476c-ab37-a45a38ccec4e.png",
+    "prompt": "Photorealistic, cinematic night scene, very slow push toward the glass. A dim launch firing room: three engineers in white shirts and headsets at their consoles, seen only from behind, facing a tall window of thick glass. Beyond the glass, two bottle-shaped rockets, one white and one amber, lift off side by side from the two bright glows on the pad and climb steadily up and out past the top of the window frame on long brilliant flames, trailing smoke. The orange glow on the glass flickers and builds, washing over the room and the men's shoulders. The men stay still and keep facing the window. Keep the room, the window frame, the consoles and the men exactly as in the image. No faces, no one turns around, no text."
+   },
+   "est_usd": 4.55,
+   "submitted": "2026-10-06T13:23:51Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/189ebdfc-bc21-47ce-96b5-93c53dd233be.mp4",
+   "file": "public/race/clips/v122/v122_window.mp4",
+   "completed": "2026-10-06T13:29:29Z"
+  },
+  "v122_mc_erupts": {
+   "request_id": "7dbe4dd0-c492-49cb-9d40-b3f65c70bd2b",
+   "status": "completed",
+   "input": {
+    "duration": 4,
+    "resolution": "1080p",
+    "generate_audio": false,
+    "image_url": "https://d3snorpfx4xhv8.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/e5f662fa-c2a8-4458-9fe3-da8ecc7f8468.png",
+    "prompt": "Photorealistic, cinematic. A dark mission control room seen from behind the rows of consoles: the team in black jackets sit facing the giant wall screens, seen only from behind. Suddenly they all spring up from their chairs and throw their arms high in the air, celebrating, fists pumping, while the giant wall screen ahead flares with bright green light. Slight handheld camera energy. Everyone keeps facing the screens, away from the camera, seen only from behind. Keep the room, the consoles and the screens exactly as in the image. No faces, no one turns around, no new text."
+   },
+   "est_usd": 4.55,
+   "submitted": "2026-10-06T13:23:52Z",
+   "video_url": "https://d3u0tzju9qaucj.cloudfront.net/c95aa17d-d46a-4d15-b1a5-296ee5f41a9a/053a9b23-2e5a-486f-bcd9-7c1234d34410.mp4",
+   "file": "public/race/clips/v122/v122_mc_erupts.mp4",
+   "completed": "2026-10-06T13:29:47Z"
+  }
+ }
+}
