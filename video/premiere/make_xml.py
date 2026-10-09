@@ -40,6 +40,9 @@ FLAGS['FlavorRaceV12_2'] = [
 ACTS['FlavorRaceV14'] = [('black0', '1 The reveal'), ('padcold', '2 Launch'), ('side', '3 The race'), ('field', '4 The flavor field'),
                          ('droplets', '5 The Flavor Factory'), ('intake', '6 To the Moon'), ('approach', '7 The Moon'), ('sunlight', '8 Home')]
 FLAGS['FlavorRaceV14'] = [
+    ('label', 'Keep the tail', 'The wordmark close-up ends before the line under it comes up; in the tail handle a misspelled version of it (HEALTHY HEATH) is in plain view.'),
+    ('liftoff', 'Keep the head', 'The head handle shows a pad worker in the foreground (seen from behind). The film starts after they are gone.'),
+    ('climb', 'Keep the head', 'The head handle shows a pad worker in an orange suit beside the rocket (seen from behind). The film starts after the camera clears them.'),
     ('standoff', 'Framing hides a generated logo', 'Zoomed 1.28 from the top and shifted down 118 px, so a truck lettered with a generated copy of The Flavor Factory logo (bottom left) sits under the letterbox. Keep the framing.'),
     ('padcold', 'Framing hides a generated logo', 'The same truck as on the face-off, kept under the letterbox the same way (zoom 1.28 from the top, down 118 px).'),
     ('tblabel', 'Framing hides a misspelled line', 'Zoomed 1.13 from the top and shifted down 118 px, so the generated line under the wordmark (it reads HEALTHY HOUTH) sits under the letterbox.'),
@@ -94,12 +97,12 @@ def master(mid, name, fid, frames, kind, bin_path):
                               f'<media>{track}</media></clip>'))
 
 
-def vitem(track, iid, mid, fid, name, frames, start, end, cin, cout, alpha='none', enabled=True):
+def vitem(track, iid, mid, fid, name, frames, start, end, cin, cout, alpha='none', enabled=True, blend=None):
     items[track].append((start, f'<clipitem id="{iid}"><masterclipid>{mid}</masterclipid><name>{escape(name)}</name>'
                                 f'<enabled>{"TRUE" if enabled else "FALSE"}</enabled><duration>{frames}</duration>{rate()}'
                                 f'<start>{start}</start><end>{end}</end><in>{cin}</in><out>{cout}</out>'
                                 f'<alphatype>{alpha}</alphatype><pixelaspectratio>square</pixelaspectratio><anamorphic>FALSE</anamorphic>'
-                                f'<file id="{fid}"/></clipitem>'))
+                                f'<file id="{fid}"/>' + (f'<compositemode>{blend}</compositemode>' if blend else '') + '</clipitem>'))
 
 
 def aitem(track, iid, mid, fid, name, frames, enabled=True):
@@ -130,7 +133,8 @@ for g in gfx['elements']:
         under = next(s for s in cut['segments'] if s['start'] <= start < s['end'])     # can overlap the next shot)
         assert under['kind'] in ('black', 'end'), (g['id'], under['id'])
         end = min(end, under['end'])
-    vitem(track, f"clipitem-{g['id']}", mid, fid, g['label'], g['frames'], start, end, 0, end - start, alpha='straight' if g.get('alpha', True) else 'none')
+    vitem(track, f"clipitem-{g['id']}", mid, fid, g['label'], g['frames'], start, end, 0, end - start, alpha='straight' if g.get('alpha', True) else 'none',
+          blend='screen' if g['id'].startswith('flash') else None)      # the film screens its flashes over the picture
 # the sound: the three stems (A1 VO, A2 effects, A3 music) and the final mix for reference (A4, disabled)
 for k, (tr, a) in enumerate(zip(('A1', 'A2', 'A3', 'A4'), snd['tracks'])):
     fid, mid = f"file-{a['id']}", f"masterclip-{a['id']}"
