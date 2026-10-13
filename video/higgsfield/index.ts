@@ -15,7 +15,8 @@ async function main(): Promise<number> {
     console.error("HF_CREDENTIALS is not set. Add it to video/.env.local as HF_CREDENTIALS=key-id:key-secret.");
     return 2;
   }
-  config({ credentials: process.env.HF_CREDENTIALS });
+  // The key in the cloud environment authenticates on platform.higgsfield.ai (api.higgsfield.ai answers 401 for it).
+  config({ credentials: process.env.HF_CREDENTIALS, baseURL: process.env.HF_BASE ?? "https://platform.higgsfield.ai" });
 
   let result;
   try {
