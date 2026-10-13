@@ -4,14 +4,16 @@
 # Every file sits flat in <package>/media, so if Premiere asks for one file, pointing it at that folder relinks the rest.
 # usage (from video/): python3 premiere/make_xml.py premiere/V12.2 [--root C:/FlavorRace/V12.2]
 #                      python3 premiere/make_xml.py premiere/V14 [--root C:/FlavorRace/V14]
+#                      python3 premiere/make_xml.py premiere/V15 [--root C:/FlavorRace/V15]
+# The sequence runs at the cut's own frame rate (shots.json: 30 fps for V12.2 and V14, 24 fps for V15).
 import json, os, sys, wave
 from xml.sax.saxutils import escape
 
 PKG = sys.argv[1]
 VERSION = os.path.basename(os.path.normpath(PKG))                 # e.g. V12.2
 ROOT = (sys.argv[sys.argv.index('--root') + 1] if '--root' in sys.argv else f'C:/FlavorRace/{VERSION}').replace(':', '%3a', 1)
-FPS = 30
 cut = json.load(open(os.path.join(PKG, 'shots.json')))
+FPS = cut['fps']
 gfx = json.load(open(os.path.join(PKG, 'graphics.json')))
 snd = json.load(open(os.path.join(PKG, 'sound.json')))
 NAME = f'THE FLAVOR RACE {VERSION} (editable)'
@@ -57,6 +59,24 @@ FLAGS['FlavorRaceV14'] = [
     ('sunlight', 'Softened in place; keep the tail', 'The misspelled line under the wordmark is blurred in place. About 0.2 s past the out-point the rival flies into frame beside TheraBreath, which the story rules out (it is still on the Moon): do not extend the tail.'),
     ('samples', 'Product bottle softened', 'The generated product bottle carries garbled print and a fake organic seal; both are blurred in place (the seal harder). The score has faded by +3.0 s; the sixth sample is set down at +4.05 s in the quiet.'),
     ('rack', 'Keep the tail', 'Shortly after the out-point the bottle comes into focus with its garbled print, and the source ends on a generated title card. Do not extend the tail.'),
+]
+ACTS['FlavorRaceV15'] = [('macro1', '1 The surprise'), ('ignite', '2 Launch'), ('side', '3 The race'), ('search', '4 Discovery'),
+                         ('descent', '5 The Moon'), ('orbit2', '6 Home'), ('stgflag', '7 The stinger')]
+FLAGS['FlavorRaceV15'] = [
+    ('macro1', 'Keep the tail', 'Past the out-point the camera reaches the line under the wordmark, which reads FRESI FREATH HEALTHY HOXLITY. Do not extend the tail.'),
+    ('every', 'Title in the picture', 'EVERY CATEGORY HAS A RACE is part of the generated shot, not an overlay. It is spelled correctly; to change it, rebuild it as an overlay.'),
+    ('button', 'Repaired clip: label lifted', 'The button\'s label reads LHARNCT in the source; it is lifted off frame by frame (scripts/fix_text.py). The repair covers the shot plus 1 frame of head and 4 of tail; past those the source label shows.'),
+    ('mc1', 'Logo patches, tracked', 'The wall sign and the operator\'s jacket carry the real Flavor Factory logo (the generated copy had a mangled R), tracked to the camera and baked in. Outside the frames the film uses the track holds still, so check the patches if you extend the shot.'),
+    ('hull', 'Softened in place, tracked', 'The misspelled line under the wordmark (HEALTHY HOUTH) is blurred by a region that follows the bottle. Outside the frames the film uses the region holds still, so check the line stays covered if you extend the shot.'),
+    ('px26', 'Stand-in from the proxy', 'Shot 26 of the director\'s edit: its source is not in the Higgsfield library, so it plays upscaled from the director\'s review proxy and is softer than its neighbours. No handles. Replace it when the original arrives.'),
+    ('px27', 'Stand-in from the proxy', 'Shot 27 of the director\'s edit, upscaled from the review proxy like the shot before it. No handles. Replace it when the original arrives.'),
+    ('warn', 'Stand-in from the proxy; faces', 'Shot 31 of the director\'s edit, upscaled from the review proxy (no handles; replace it when the original arrives). It opens on about 1.6 s of a vintage control room where two men are seen in profile, against the no-faces rule: the director\'s call.'),
+    ('life', 'Repaired clip: short handles', 'The misspelled small print under the wordmark (FREBS HZEATH ... ORAL RINGE) is lifted off frame by frame (scripts/fix_text.py). The repair covers the shot plus 6 frames, so there is no head handle and only a short tail.'),
+    ('follow', 'Title in the picture', 'FOLLOW? OR LEAD? is part of the generated shot, not an overlay. It is spelled correctly.'),
+    ('monitors', 'Repaired clip: short handles', 'Both screen headers read THEABRRTH ONE in the source; they are reset as THERABREATH ONE, tracked to the screens (scripts/fix_text.py). The repair covers the shot plus 5 frames, so there is no head handle and only a short tail.'),
+    ('cdsign', 'Generated logo', 'The Church & Dwight headquarters sign is a generated version of their logo, not the real mark. Worth a brand check before the film goes outside the team.'),
+    ('pitch', 'Music is silent here', 'The edge of space: the score stops here and comes back on the race\'s downbeat at the chase.'),
+    ('descent', 'Music is silent here', 'The score stops on the descent and returns on the flag wide. The effects stem carries the landing.'),
 ]
 ACTS, FLAGS = ACTS[cut['comp']], FLAGS[cut['comp']]
 
@@ -127,7 +147,7 @@ for g in gfx['elements']:
     fid, mid = f"file-{g['id']}", f"masterclip-{g['id']}"
     files[fid] = vfile(fid, g['file'], g['frames'])
     master(mid, g['label'], fid, g['frames'], 'video', ('Graphics',))
-    track = 'V3' if g['id'].startswith('flash') else 'V4' if g['id'] == 'letterbox' else 'V2'
+    track = 'V3' if g['id'].startswith('flash') else 'V4' if g['id'] in ('letterbox', 'vignette') else 'V2'
     start = g['start']; end = min(start + g['frames'], TOTAL)
     if not g.get('alpha', True):       # an opaque card covers only the black under it (in the film its faint last frame
         under = next(s for s in cut['segments'] if s['start'] <= start < s['end'])     # can overlap the next shot)

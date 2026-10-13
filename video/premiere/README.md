@@ -1,40 +1,55 @@
 # THE FLAVOR RACE: editable Premiere timelines
 
-Two cuts of THE FLAVOR RACE are here as Premiere Pro timelines you can re-cut by hand, each as one import file and every file it uses:
+Three cuts of THE FLAVOR RACE are here as Premiere Pro timelines you can re-cut by hand, each as one import file and every file it uses:
+- `V15/`: V15, the final cut: the director's edit of 12 October 2026, conformed and finished (3:03.6, 75 shots, 24 fps).
 - `V14/`: V14, cut from the clips generated on 6 October 2026 (2:33.2, 55 shots).
 - `V12.2/`: V12.2, the team-screening cut (2:27.2, 64 shots).
 
 ## Open one in Premiere
-The steps use V14; for V12.2 read `V12.2` for `V14`.
+The steps use V14; for V15 or V12.2 read `V15` or `V12.2` for `V14`.
 1. Copy the `V14` folder to `C:\FlavorRace\`, so the media sits in `C:\FlavorRace\V14\media`. (Anywhere else works too: see step 3.)
 2. Open your project (for example `THERABREATH_FLAVOR_RACE.prproj`) and choose **File > Import**, then pick `C:\FlavorRace\V14\THE_FLAVOR_RACE_V14.xml`. Premiere adds one bin, `THE FLAVOR RACE V14 (editable)`, and changes nothing else in the project.
 3. If the folder is somewhere else, Premiere asks to link media: select the first file, choose **Locate**, open the `media` folder and pick that file. With **Relink others automatically** on, it finds the rest in the same folder.
-4. Open the sequence `THE FLAVOR RACE V14 (editable)` in the `Sequences` bin. It is 1920x1080, 30 fps, 48 kHz stereo.
+4. Open the sequence `THE FLAVOR RACE V14 (editable)` in the `Sequences` bin. It is 1920x1080, 48 kHz stereo, at 30 fps for V14 and V12.2 and 24 fps for V15 (the rate its sources were generated at, so every source frame plays once).
 
 ## What is on the timeline
-| Track | V14 | V12.2 |
-| --- | --- | --- |
-| V1 | Every shot (55), `S01 hull` to `S55 rack` in film order, all hard cuts | Every shot (64), `S01 sheen` to `S64 robot` in film order, with the 0.5 s dissolve into `S31 sees` |
-| V2 | The title, the two location supers (transparent, each on its soft shadow), the partners card and the TASTE THE FUTURE end card (full frame, over black) | The title and the supers (transparent), the partners card and the end card (full frame, over black) |
-| V3 | The three light flashes (lights, eruption, relight) | The three light flashes (lights, ignition, relight) |
-| V4 | The letterbox (118 px bars) and the vignette, one long transparent layer | The same |
-| A1 | VO stem (the count, "The Flavor has landed") | The same |
-| A2 | Effects stem (the full sound design) | The same |
-| A3 | Music stem (the score as placed and shaped in the mix) | The same |
-| A4 | The final mix, for reference only: its clip is disabled, so enable it to compare | The same |
+| Track | V15 | V14 | V12.2 |
+| --- | --- | --- | --- |
+| V1 | Every shot (75), `S01 macro1` to `S75 stglate` in film order, all hard cuts | Every shot (55), `S01 hull` to `S55 rack` in film order, all hard cuts | Every shot (64), `S01 sheen` to `S64 robot` in film order, with the 0.5 s dissolve into `S31 sees` |
+| V2 | The two location supers (MISSION CONTROL and THE FLAVOR FACTORY, transparent, each on its soft shadow) and THE FUTURE OF FRESHNESS end card (full frame, over black) | The title, the two location supers (transparent, each on its soft shadow), the partners card and the TASTE THE FUTURE end card (full frame, over black) | The title and the supers (transparent), the partners card and the end card (full frame, over black) |
+| V3 | The two light flashes (eruption, relight) | The three light flashes (lights, eruption, relight) | The three light flashes (lights, ignition, relight) |
+| V4 | The vignette, one long transparent layer (V15 is full 16:9, with no letterbox) | The letterbox (118 px bars) and the vignette, one long transparent layer | The same |
+| A1 | VO stem (the count, "The Flavor has landed") | The same | The same |
+| A2 | Effects stem (the full sound design) | The same | The same |
+| A3 | Music stem (the score as placed and shaped in the mix) | The same | The same |
+| A4 | The final mix, for reference only: its clip is disabled, so enable it to compare | The same | The same |
 
-The stems are each mix's own processed stems (after the level rider, before the final limiter), all lowered by the same amount so they cannot clip when they play together without that limiter: 2.5 dB for V14, 5 dB for V12.2. Raised by that amount and limited, together they are the mix: for the final export, put a Hard Limiter on the Mix track with Input Boost set to that amount and Maximum Amplitude -1.5 dB. The reference mix on A4 is at the film's full level (V14 -16.8 LUFS, V12.2 -16.7 LUFS), so it plays louder than the stems; mute A1 to A3 when you compare.
+The stems are each mix's own processed stems (after the level rider, before the final limiter), all lowered by the same amount so they cannot clip when they play together without that limiter: 4.5 dB for V15, 2.5 dB for V14, 5 dB for V12.2. Raised by that amount and limited, together they are the mix: for the final export, put a Hard Limiter on the Mix track with Input Boost set to that amount and Maximum Amplitude -1.5 dB. The reference mix on A4 is at the film's full level (V15 -16.0 LUFS, V14 -16.8 LUFS, V12.2 -16.7 LUFS), so it plays louder than the stems; mute A1 to A3 when you compare.
 
 ## How the shots were prepared
-- Each shot is its own file (`media/S<nn>_<name>.mp4`), framed exactly as the film shows it: the clip speed, the slow push-in and its anchor point, the vertical shift on the Moon shots, the camera shake on the launch, the colour grades (the tea and rose shots in V12.2, the reused Moon shots in V14) and V14's blurred regions are built in. Nothing on the timeline needs effects to look right.
+- Each shot is its own file (`media/S<nn>_<name>.mp4`), framed exactly as the film shows it: the clip speed, the slow push-in and its anchor point, the vertical shift on the Moon shots, the camera shake on the launch, the colour grades (the tea and rose shots in V12.2, the reused Moon shots in V14), V14's blurred regions and V15's repairs (the real Flavor Factory logo tracked onto the Mission Control sign and jacket, the tracked blur on the hull's small print) are built in. V15's other repairs (the close-up's small print, the monitors' headers, the launch button's label) are in their repaired clips. Nothing on the timeline needs effects to look right.
 - Every shot has up to 1 second of handle at both ends, so you can trim, extend, slip and reorder freely. A handle is shorter where the source clip ends or cuts to another shot, so extending a shot never flashes a frame of a different one. In the handles the push-in holds its first or last size.
 - Some generated clips change angle partway through a shot (in V12.2: `S12 standoff`, `S19 liftoff`, `S30 choice`, `S55 foot`, `S61 homeward` and `S62 descent` among them). The film keeps those changes, so trimming such a shot can drop one of its angles.
 - To change a shot's speed or framing, or to use other parts of a clip, the original full-length clips are in `video/public/race/clips/` (drag that folder into the Project panel; Premiere makes a bin per subfolder).
 - Each effects stem is designed to its own picture: when you move shots, cut the effects with them, or ask for a new sound pass after the picture is locked.
 - The graphics are separate files on V2 to V4: the title, the supers, the flashes and the letterbox are QuickTime Animation with transparency; the two cards are H.264 over black (they only ever play over black). Each is exactly as long as in the film, except that the partners card stops at the end of its black: in the film its last, almost faded frame lies over the next shot's first frame.
 - The flashes on V3 are set to the Screen blend mode, as the film blends them; if a Premiere version drops that on import, set Effect Controls > Opacity > Blend Mode to Screen on the three flash clips.
+- V15 has no letterbox (its frame is full 16:9): its V4 is the vignette alone, and its two flashes and two supers are the only graphics over picture.
 - Keep the letterbox layer on V4 switched on: the shots are baked full frame, and on several V14 shots the bars are what hide generated text (the truck lettering on the pad wides, the line under the wordmark, the name on the transmitter).
 - Not included: the moving film grain (it is on top of everything in the film and is purely cosmetic).
+
+## Shots to treat with care: V15
+The sequence has a marker on each of these:
+- `S01 macro1`: keep the tail; past the out-point the camera reaches the line under the wordmark, which reads FRESI FREATH HEALTHY HOXLITY.
+- `S03 every` and `S48 follow`: EVERY CATEGORY HAS A RACE and FOLLOW? OR LEAD? are part of the generated shots, not overlays. Both are spelled correctly; to change either, rebuild it as an overlay.
+- `S07 mc1`: the wall sign and the operator's jacket carry the real Flavor Factory logo, tracked to the camera and baked in. Outside the frames the film uses the track holds still, so check the patches if you extend the shot (the tail is short anyway: the source cuts there).
+- `S10 button`: the label (LHARNCT in the source) is lifted off frame by frame in `v15/n02_button_fix`; the repair covers the shot plus 1 frame of head and 4 of tail.
+- `S18 hull`: the misspelled line under the wordmark (HEALTHY HOUTH) is blurred by a region that follows the bottle; outside the film's frames it holds still.
+- `S24 px26`, `S25 px27`, `S28 warn`: stand-ins upscaled from the director's review proxy (no handles); replace them when the originals arrive. `S28 warn` opens on about 1.6 s of a vintage control room where two men are seen in profile, against the no-faces rule: the director's call.
+- `S46 life` and `S58 monitors`: repaired clips (the close-up's misspelled small print lifted off; the monitors' THEABRRTH ONE reset as THERABREATH ONE). Each covers the shot plus a few frames, so there is no head handle and only a short tail.
+- `S69 cdsign`: the Church & Dwight headquarters sign is a generated version of their logo, not the real mark.
+- `S19 pitch` and `S50 descent`: the music is silent by design, from the pitch-over to the race's downbeat and from the descent to the flag wide.
+- Some in-points sit exactly on a source cut, so their head or tail handles are short or empty: `S26 rivaleng` ends on the source's cut into the pull-away, `S27 rivalaway`, `S43 transferbtn` and `S68 flagpole` start on one.
 
 ## Shots to treat with care: V14
 The sequence has a marker on each of these, so they show in the Markers panel:
@@ -75,4 +90,4 @@ python3 premiere/bake_shots.py FlavorRaceV14 premiere/V14
 python3 premiere/build_media.py FlavorRaceV14 premiere/V14 out/race14_final
 python3 premiere/make_xml.py premiere/V14 --root C:/FlavorRace/V14
 ```
-For V12.2: `FlavorRaceV12_2`, `premiere/V12.2`, `out/race122_final` and `--root C:/FlavorRace/V12.2`. `--root` is the folder the XML expects the package in; Premiere relinks from anywhere else.
+For V15: `FlavorRaceV15`, `premiere/V15`, `out/race15_final` and `--root C:/FlavorRace/V15` (the scripts take the frame rate, 24 fps, from the composition). For V12.2: `FlavorRaceV12_2`, `premiere/V12.2`, `out/race122_final` and `--root C:/FlavorRace/V12.2`. `--root` is the folder the XML expects the package in; Premiere relinks from anywhere else.

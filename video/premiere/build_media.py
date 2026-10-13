@@ -1,14 +1,16 @@
 # The graphics and sound for the editable Premiere timeline of a Flavor Race cut.
 # Graphics: the cut's graphics composition (src/FlavorRaceGraphics.tsx) is rendered once as PNG frames with transparency
 # and cut into one file per element: QuickTime Animation (alpha) for what plays over picture, H.264 for the full-frame
-# cards on black; FlavorRaceFrame (the vignette and letterbox) becomes one long layer. Each element is placed where the
-# cut's composition places it (CUTS mirrors FlavorRaceV12_2.tsx and FlavorRaceV14.tsx; the script stops if the
-# composition no longer contains the same placement), and every file is checked to be exactly as many frames long as
-# the XML will say.
+# cards on black; the cut's frame composition (FlavorRaceFrame: the vignette and letterbox; FlavorRaceFrame15: V15's
+# vignette alone) becomes one long layer. Each element is placed where the cut's composition places it (CUTS mirrors
+# FlavorRaceV12_2.tsx, FlavorRaceV14.tsx and FlavorRaceV15.tsx; the script stops if the composition no longer contains
+# the same placement), and every file is checked to be exactly as many frames long as the XML will say. Everything is at
+# the cut's own frame rate (30 fps for V12.2 and V14, 24 fps for V15).
 # Sound: the final mix's processed stems (mix2.py with STEMS=1), 24-bit, trimmed by a common TRIM_DB so they cannot clip
 # when summed without the mix's limiter, plus the final mix itself as a reference.
 # usage (from video/): python3 premiere/build_media.py FlavorRaceV12_2 premiere/V12.2 out/race122_final [--sound-only]
 #                      python3 premiere/build_media.py FlavorRaceV14 premiere/V14 out/race14_final
+#                      python3 premiere/build_media.py FlavorRaceV15 premiere/V15 out/race15_final
 import glob, json, math, os, re, shutil, subprocess, sys
 import numpy as np
 import soundfile as sf
@@ -18,14 +20,14 @@ VIDEO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(VIDEO, 'sound'))
 from timeline import Cut
 
-FPS = 30
+FPS = int(re.search(r'^const FPS = (\d+);', open(os.path.join(VIDEO, 'src', COMP + '.tsx')).read(), re.M).group(1))
 f = lambda s: math.floor(s * FPS + 0.5)
 V = Cut(COMP); TOTAL = f(V.TOTAL)
 MEDIA = os.path.join(PKG, 'media'); os.makedirs(MEDIA, exist_ok=True)
 TMP = os.path.join(VIDEO, 'out', 'premiere_gfx')
 
-# per cut: the graphics composition, its list in FlavorRaceGraphics.tsx, and where the cut places each graphic
-# (segment, offset, label)
+# per cut: the graphics composition, its list in FlavorRaceGraphics.tsx, where the cut places each graphic (segment,
+# offset, label), and the frame layer (composition, id, label, file)
 CUTS = {
     'FlavorRaceV12_2': ('FlavorRaceGraphics', 'GRAPHICS', {
         'title': ('standoff', 0.1, 'G title THE FLAVOR RACE'),
@@ -37,7 +39,7 @@ CUTS = {
         'flash_lights': ('lights', 3.24, 'G flash every bank (35%)'),
         'flash_ignition': ('padign', 0.0, 'G flash ignition'),
         'flash_relight': ('life', 1.0, 'G flash relight (warm)'),
-    }),
+    }, ('FlavorRaceFrame', 'letterbox', 'G letterbox and vignette', 'G_letterbox.mov')),
     'FlavorRaceV14': ('FlavorRaceGraphicsV14', 'GRAPHICS14', {
         'title': ('standoff', 0.1, 'G title THE FLAVOR RACE'),
         'card_partners': ('partners', 0.0, 'G card THERABREATH + THE FLAVOR FACTORY'),
@@ -47,9 +49,16 @@ CUTS = {
         'flash_lights': ('lights', 4.59, 'G flash every bank (35%)'),
         'flash_ignition': ('erupt', 0.0, 'G flash eruption'),
         'flash_relight': ('reignite', 0.75, 'G flash relight (warm)'),
-    }),
+    }, ('FlavorRaceFrame', 'letterbox', 'G letterbox and vignette', 'G_letterbox.mov')),
+    'FlavorRaceV15': ('FlavorRaceGraphicsV15', 'GRAPHICS15', {
+        'super_mc': ('mc1', 0.1, 'G super MISSION CONTROL'),
+        'super_lab': ('pipette', 0.1, 'G super THE FLAVOR FACTORY, FLAVOR LAB'),
+        'endcard': ('end', 0.0, "G end card THE FUTURE OF FRESHNESS"),
+        'flash_erupt': ('erupt', 0.0, 'G flash eruption'),
+        'flash_relight': ('relight', 0.06, 'G flash relight (warm)'),
+    }, ('FlavorRaceFrame15', 'vignette', 'G vignette', 'G_vignette.mov')),
 }
-GCOMP, GLIST, PLACE = CUTS[COMP]
+GCOMP, GLIST, PLACE, (FCOMP, FID, FLABEL, FFILE) = CUTS[COMP]
 src = open(os.path.join(VIDEO, 'src', COMP + '.tsx')).read()
 for k, (sid, off, _) in PLACE.items():
     if k == 'endcard':
@@ -75,7 +84,7 @@ def count(path):                   # frames in a video file, so every element is
 def render_graphics():
     shutil.rmtree(TMP, ignore_errors=True); os.makedirs(TMP)
     run(['npx', 'remotion', 'render', 'src/index.ts', GCOMP, os.path.join(TMP, 'seq'), '--sequence', '--image-format=png', '--concurrency=2'])
-    run(['npx', 'remotion', 'still', 'src/index.ts', 'FlavorRaceFrame', os.path.join(TMP, 'frame.png'), '--image-format=png'])
+    run(['npx', 'remotion', 'still', 'src/index.ts', FCOMP, os.path.join(TMP, 'frame.png'), '--image-format=png'])
     frames = sorted(glob.glob(os.path.join(TMP, 'seq', '*.png')))
     assert len(frames) == sum(n for _, n in ELEMS), (len(frames), sum(n for _, n in ELEMS))
     out, at = [], 0
@@ -98,9 +107,9 @@ def render_graphics():
         out.append({'id': gid, 'label': label, 'file': name, 'frames': n, 'start': f(V.t(sid, off)), 'alpha': gid not in OPAQUE})
     # one still frame for the whole film: a keyframe every 10 s keeps the file small and quick to scrub
     run(['ffmpeg', '-v', 'error', '-y', '-loop', '1', '-framerate', str(FPS), '-i', os.path.join(TMP, 'frame.png'), '-frames:v', str(TOTAL),
-         '-c:v', 'qtrle', '-pix_fmt', 'argb', '-g', '300', os.path.join(MEDIA, 'G_letterbox.mov')])
-    assert count(os.path.join(MEDIA, 'G_letterbox.mov')) == TOTAL
-    out.append({'id': 'letterbox', 'label': 'G letterbox and vignette', 'file': 'G_letterbox.mov', 'frames': TOTAL, 'start': 0, 'alpha': True})
+         '-c:v', 'qtrle', '-pix_fmt', 'argb', '-g', str(10 * FPS), os.path.join(MEDIA, FFILE)])
+    assert count(os.path.join(MEDIA, FFILE)) == TOTAL
+    out.append({'id': FID, 'label': FLABEL, 'file': FFILE, 'frames': TOTAL, 'start': 0, 'alpha': True})
     json.dump({'elements': out}, open(os.path.join(PKG, 'graphics.json'), 'w'), indent=1)
     shutil.rmtree(TMP, ignore_errors=True)
     return out

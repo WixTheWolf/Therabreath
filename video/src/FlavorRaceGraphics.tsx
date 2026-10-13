@@ -3,12 +3,14 @@ import { AbsoluteFill, Sequence } from "remotion";
 import { EpicTitle } from "./epic";
 import { EndCard, Flash, Super, loadFonts } from "./FlavorRaceV12_2";
 import { Super14 } from "./FlavorRaceV14";
+import { EndCard15, Super15 } from "./FlavorRaceV15";
 
 /* THE FLAVOR RACE's graphics on their own, with transparency, for the editable Premiere timeline: V12.2's in
-   FlavorRaceGraphics (GRAPHICS), V14's in FlavorRaceGraphicsV14 (GRAPHICS14). Every element plays back to back (the
-   list gives each one's frame range); premiere/build_media.py renders it as PNG frames and cuts it into one file per
-   element (QuickTime Animation with alpha over picture, H.264 for the two cards on black). FlavorRaceFrame is the
-   film's vignette and letterbox as one still layer (the moving grain is not included). */
+   FlavorRaceGraphics (GRAPHICS), V14's in FlavorRaceGraphicsV14 (GRAPHICS14), V15's in FlavorRaceGraphicsV15
+   (GRAPHICS15, at V15's 24 fps). Every element plays back to back (the list gives each one's frame range);
+   premiere/build_media.py renders it as PNG frames and cuts it into one file per element (QuickTime Animation with
+   alpha over picture, H.264 for the cards on black). FlavorRaceFrame is the film's vignette and letterbox as one still
+   layer, FlavorRaceFrame15 V15's vignette alone (its frame is full 16:9); the moving grain is not included. */
 type Graphic = { id: string; frames: number; el: (dur: number) => React.ReactNode };
 export const GRAPHICS: Graphic[] = [
   { id: "title", frames: 75, el: (d) => <EpicTitle lines={["THE FLAVOR RACE"]} dur={d} size={230} over hold /> },
@@ -31,8 +33,16 @@ export const GRAPHICS14: Graphic[] = [
   { id: "flash_ignition", frames: 9, el: () => <Flash /> },
   { id: "flash_relight", frames: 10, el: () => <Flash warm /> },
 ];
+export const GRAPHICS15: Graphic[] = [
+  { id: "super_mc", frames: 59, el: (d) => <Super15 dur={d} a="MISSION CONTROL" b="THE FLAVOR FACTORY · NORCO, CALIFORNIA" /> },
+  { id: "super_lab", frames: 74, el: (d) => <Super15 dur={d} a="THE FLAVOR FACTORY" b="NORCO, CALIFORNIA · FLAVOR LAB" /> },
+  { id: "endcard", frames: 120, el: (d) => <EndCard15 dur={d} /> },
+  { id: "flash_erupt", frames: 8, el: () => <Flash /> },
+  { id: "flash_relight", frames: 8, el: () => <Flash warm /> },
+];
 export const GRAPHICS_FRAMES = GRAPHICS.reduce((a, g) => a + g.frames, 0);
 export const GRAPHICS14_FRAMES = GRAPHICS14.reduce((a, g) => a + g.frames, 0);
+export const GRAPHICS15_FRAMES = GRAPHICS15.reduce((a, g) => a + g.frames, 0);
 
 const Graphics: React.FC<{ list: Graphic[] }> = ({ list }) => {
   loadFonts();
@@ -53,6 +63,7 @@ const Graphics: React.FC<{ list: Graphic[] }> = ({ list }) => {
 };
 export const FlavorRaceGraphics: React.FC = () => <Graphics list={GRAPHICS} />;
 export const FlavorRaceGraphicsV14: React.FC = () => <Graphics list={GRAPHICS14} />;
+export const FlavorRaceGraphicsV15: React.FC = () => <Graphics list={GRAPHICS15} />;
 
 // The vignette and the 118 px letterbox from the film's Grain layer, without the grain
 export const FlavorRaceFrame: React.FC = () => (
@@ -61,4 +72,9 @@ export const FlavorRaceFrame: React.FC = () => (
     <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: 118, background: "#000" }} />
     <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 118, background: "#000" }} />
   </AbsoluteFill>
+);
+
+// V15's vignette from its Grain layer, without the grain (no letterbox: the frame is full 16:9)
+export const FlavorRaceFrame15: React.FC = () => (
+  <AbsoluteFill style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0) 58%, rgba(0,0,0,.32) 100%)" }} />
 );

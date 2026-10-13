@@ -1,6 +1,69 @@
-# THE FLAVOR RACE: session handoff (after V14)
+# THE FLAVOR RACE: session handoff (after V15)
 
 ## State
+- V15, the final cut: the director's own edit of 12 October 2026 (a 3:04 review proxy of 77 shots, with the flavor montage and the sound unfinished), conformed shot for shot to the full-resolution sources and finished: `src/FlavorRaceV15.tsx` (registered in `src/Root.tsx` as FlavorRaceV15). 3:03.6, 4,406 frames at 24 fps, 75 shots.
+- V15 review copy: `docs/session/flavor-race-v15-review.mp4` (720p, two-pass 1.1 Mbps so it stays under 30 MB, AAC 160k).
+- The editable Premiere timeline of V15: `premiere/V15/THE_FLAVOR_RACE_V15.xml` with 85 files in `media/` (about 445 MB: the 75 shots with up to 1 s handles, the supers, the end card, the two flashes, the vignette, the three stems and the reference mix; 14 markers; 24 fps). How to open it and the shots that need care: `premiere/README.md`.
+- Clips, force-added under `public/race/clips/v15/`:
+  - 24 Higgsfield clips the director's edit uses, named by the first 8 characters of their job id. 15 are trimmed to the span the cut uses plus 1 s handles, cut on whole seconds (the composition's `from` values are the originals' minus whole seconds); the other 9 are the originals.
+  - `px26`, `px27`, `px31`: the director's shots 26, 27 and 31 (two race angles and the warning light, at 0:55, 0:59 and 1:07). Their sources are not in the Higgsfield library (the library's 225 videos were matched frame by frame, and 18 uploads would not download), so they play from the director's review proxy, upscaled to 1080p (lanczos, light unsharp, CRF 14, no audio). Replace them when the originals arrive. Shot 35 (at 1:17) was also missing; the new montage replaces it.
+  - `g5_life_fix`, `n02_monitors_fix`: two repaired clips (below).
+- Tracks and patches for the repairs: `public/race/v15/` (the Mission Control sign and jacket patches with their tracks, and the tracks for the hull, the close-up and the monitors).
+- Sound engine: `sound/music15.py` (the music stem, placed from the score files on their own clocks), `sound/cues15.py` (the SFX stem, 225 cues), `sound/events15.py` (music automation and the silences), `sound/vo15.py` (the VO stem), `sound/mix2.py` (`CUT=15`).
+- Higgsfield: V15 spent no credits.
+- V14 and everything before it are unchanged and stay for comparison.
+
+## V15: the director's edit, and what V15 does with it
+- Kept exactly: the structure, the shot order and the cut points of the director's edit, with its personality and spectacle (the opening macro surprise, EVERY CATEGORY HAS A RACE, the stadium lights, Mission Control at The Flavor Factory, the crowd, FOLLOW? OR LEAD?, the trip home to Church & Dwight, and the competitor finally landing on the Moon after the end card).
+- From V14 and the V12.1 brief: a score cut to picture, a sound for every beat, the silences, the flag continuity (the pole goes in before the flag is seen), the end card, and the mix targets.
+- Chapters:
+  1. The surprise: macros of what looks like an ordinary giant bottle, EVERY CATEGORY HAS A RACE, the silhouettes and the stadium lights, the rival, the hero cap, Mission Control, the cap in the cold, the count, the burner.
+  2. Launch: ignition, the crowd, both rockets leave together, the long lens, the onboard look back, the hull, the pitch-over.
+  3. The race: neck and neck, the competitor commits and pulls away, and TheraBreath's warning light comes on.
+  4. Discovery and the montage: The Flavor Factory searches; the engines go quiet; nine flavor shots on the score's beats (tea, cucumber and tea, coconut, watermelon, lime, cucumber, mint, chamomile, yuzu), then the pipette, the glove, FLAVOR TRANSFER READY, the world's flavors in orbit, the transfer; TheraBreath comes alive and the engines relight on the score's return (103.4 s); FOLLOW? OR LEAD?; it overtakes for the Moon.
+  5. The Moon: the descent in silence, the footpad ("The Flavor has landed"), TheraBreath on the Moon, the pole, and only then the flag wide (the clean "TheraBreath / THE FUTURE OF FLAVOR" flag), the Earthrise.
+  6. Home: The Flavor Factory sees it, the lift-off for home, re-entry, down through the clouds to New Jersey, the campus, Church & Dwight headquarters, the landing, six samples, the tasting, silence, black, THE FUTURE OF FRESHNESS / LET'S TASTE WHAT'S NEXT. with both logos.
+  7. The stinger: back on the Moon, the competitor finally arrives.
+- Taken out of the director's edit: the shot that spells the rival's label wrong (the pull-away runs on instead), and the director's slow motion on the first Mission Control shot (its time went to the cap in the cold).
+- Frame-level repairs (a cut detector run over the whole picture, every hit checked by eye; every cut point stays where the director put it): the transfer button's in-point moves 1 frame later (its first frame was the fuel coupling from the shot before it in the source), the flagpole's 5 frames later (a wide of a campus building), the eruption's 1 frame earlier (its last frame was the lift-off's first, so that frame played twice), and the rival's engine shot now ends on the source's own cut into the pull-away (5 frames of the pull-away played twice).
+- For the director to decide: the warning beat (`px31`, 1:07.6) opens on about 1.6 s of a vintage control room where two men are seen in profile, before the warning light. The standing rule is no faces. Cutting it would move every later cut off the score's beats, so V15 keeps it as the director cut it; the alternatives are a no-face shot of the same length, or the warning light from earlier in its source once the original arrives.
+
+## Generated text in the V15 clips, and what the cut does with it
+- The Mission Control wall sign and the operator's jacket (`h/mc_ff`) wore a generated copy of The Flavor Factory wordmark with a mangled R. Each now carries the real logo, tracked to the camera (`scripts/track_sign.py` finds a partial affine per frame with ORB and RANSAC; `scripts/make_sign_patch.py` builds the patch: a panel in the sign's finish, or the jacket with its generated lettering inpainted, and the real `public/img/tff-logo.png` on it). The logo's black lettering is set in the sign's cream and the jacket's grey, with its coloured dots kept, so it reads on a dark surface; if the brand has an official reversed logo, swap it in.
+- The hull shot (`v14/8fed7431`): the small print under the wordmark reads HEALTHY HOUTH, so it is softened by a tracked blur (`soften` on the segment: feathered ellipses placed in source pixels and moved by `label_track_hull.json`).
+- The close-up as TheraBreath comes alive (`v12/g5_life`): the small print reads FREBS HZEATH. HEALTHY HOUTHE / ORAL RINGE, so it is lifted off the label frame by frame (`scripts/fix_text.py life`: the dark strokes in a tracked band under the stripe are inpainted from the label around them, so the glow rising through the bottle stays its own). The label reads TheraBreath alone.
+- The Flavor Factory's monitors (`k/n02_mctense`): both screen headers read THEABRRTH ONE, so `scripts/fix_text.py monitors` inpaints them and sets THERABREATH ONE in their place, tracked to the screens.
+- The launch button (`k/n02_mctense`): its label reads LHARNCT on the shot's first frame, before the glove covers it, and in fragments under the glove. `scripts/fix_text.py button` lifts the letters off: white strokes inside the band the label is printed in (moving down as the button is pressed), filled from the red around them only, with the acrylic cover's long straight edges kept. The button reads blank.
+- The Mission Control sign track lost the sign on the shot's last frame (the patch slipped and the generated ORY showed beside it); the track carries its motion on over that frame instead.
+- Spelled correctly and left as they are, but part of the generated picture rather than overlays (the standing rule is overlay-only text; they are the director's picks): EVERY CATEGORY HAS A RACE (`v15/b92b53de`), FOLLOW? OR LEAD? (`v15/58279c55`) and FLAVOR TRANSFER READY on the button (`v15/7e9b6135`).
+- The Church & Dwight headquarters sign (`v15/5b518a71`) is a generated version of their logo, not the real mark: worth a brand check before the film goes outside the team.
+- Everywhere else the small print reads the director's tagline correctly (FRESH BREATH, HEALTHY MOUTH / ORAL RINSE); on the umbilical and the end of the chase it is partly garbled but too small and brief to read.
+
+## Commands (V15)
+- Repairs (from `video/`):
+  - Mission Control: `python3 scripts/track_sign.py public/race/clips/h/mc_ff.mp4 0.333 3.40 60,20,560,250 public/race/v15/sign_track_mc1.json` and `... 0.333 2.958 240,690,670,850 public/race/v15/jacket_track_mc1.json`; the patches from the frame at 0.333 s (`ffmpeg -ss 0.333 -i public/race/clips/h/mc_ff.mp4 -frames:v 1 ref.png`) with `python3 scripts/make_sign_patch.py ref.png public/race/v15/sign_patch_mc.png sign` and `... jacket_patch_mc.png jacket`.
+  - Hull: `python3 scripts/track_sign.py public/race/clips/v14/8fed7431.mp4 1.278 5.45 420,300,800,560 public/race/v15/label_track_hull.json`
+  - Close-up: `python3 scripts/track_sign.py public/race/clips/v12/g5_life.mp4 0 2.0 560,280,1300,660 public/race/v15/label_track_life.json`, then `python3 scripts/fix_text.py life public/race/clips/v12/g5_life.mp4 0 48 public/race/clips/v15/g5_life_fix.mp4 public/race/v15/label_track_life.json`
+  - Monitors: `python3 scripts/track_sign.py public/race/clips/k/n02_mctense.mp4 2.655 4.2 180,140,1720,640 public/race/v15/screens_track_mc.json`, then `python3 scripts/fix_text.py monitors public/race/clips/k/n02_mctense.mp4 64 36 public/race/clips/v15/n02_monitors_fix.mp4 public/race/v15/screens_track_mc.json`
+  - Launch button: `python3 scripts/fix_text.py button public/race/clips/k/n02_mctense.mp4 95 23 public/race/clips/v15/n02_button_fix.mp4`
+- Picture: `npx remotion render src/index.ts FlavorRaceV15 out/race15_pic.mp4 --muted --concurrency=3 --crf=14` (about 17 minutes). The delivered master was the first render with nine stretches re-rendered after their repairs (`--frames=440-502`, `635-652`, `778-796`, `968-1066`, `1517-1621`, `2216-2251`, `2353-2394`, `3096-3126`, `3587-3634`) and spliced in frame for frame in one encode; a fresh render gives the same picture.
+- Stems (from `video/sound`): `python3 music15.py ../out/race15_music.wav`, `python3 cues15.py ../out/race15_sfx.wav`, `python3 vo15.py ../out/race15_vo.wav`.
+- Mix: `CUT=15 PRESENT=1 RIDE=1.7 RIDE_DOWN=0.45 TARGET=-15.2 CEIL=-1.5 STEMS=1 python3 mix2.py ../out/race15_pic.mp4 ../out/race15_music.wav ../out/race15_sfx.wav ../out/race15_vo.wav ../out/race15_final.mp4`. On this mix mix2's meter reads 0.8 LU hotter than ffmpeg's ebur128, so `TARGET=-15.2` lands at -16.0 LUFS.
+- Review copy: two-pass x264 at 1100k from the picture, `scale=1280:720:flags=lanczos:in_range=pc:out_range=tv,format=yuv420p`, tagged `-color_range tv -colorspace smpte170m -color_primaries bt709 -color_trc bt709` (Remotion encodes with the BT.601 matrix, and ffmpeg's scaler keeps it, so the tag must say so), audio from `out/race15_final_mix.wav` as AAC 160k, `-movflags +faststart`.
+- Premiere package: `python3 premiere/bake_shots.py FlavorRaceV15 premiere/V15`, `python3 premiere/build_media.py FlavorRaceV15 premiere/V15 out/race15_final`, `python3 premiere/make_xml.py premiere/V15 --root C:/FlavorRace/V15`.
+
+## Mix notes (V15)
+- The score (`v12_flavor_score`) plays in sections on its own clock, never stretched (`music15.py`): the dark opening swells as the pad floods with light and stops on the cut to the cap in the cold (the count, the spark and the bloom play in silence); one unbroken run from the ignition, with the lift-off swell (36.0 s) on both rockets clearing the pad, the race's downbeat (51.0 s) on the chase, the quiet glass section under the search and the montage (cut on its beats), and its rise into the return (103.4 s) as the engines relight; the warm section from the flag wide; the V12 finale from the clouds, its main theme opening on the campus and fading under the tasting; and the score's final gesture (150.0 s) on the end card.
+- The silences (`events15.py`): the edge of space (from the pitch-over to the chase) and the Moon (from the descent to the flag wide); the hush before the card is silent.
+- Readings (ffmpeg ebur128): the 24-bit mix is -16.0 LUFS integrated, 9.3 LU loudness range, -1.5 dBTP; the review copy is -16.1 LUFS, 9.2 LU, -1.1 dBTP.
+
+## Known nits (V15)
+- `px26`, `px27` and `px31` are upscaled from the director's proxy, so they are softer than the shots around them, and `px31` opens on two faces in profile (above).
+- The repaired close-up, monitors and button clips cover only a few frames past the cut, so their handles are short (no head handle on the close-up or the monitors, one frame on the button). On the button's tail handle the acrylic edge shows a small step where the label was lifted.
+- The tracks hold their first and last values outside the frames the film uses, so in a handle a patch or a softened region can slip off the surface it covers (the Premiere markers say where).
+- The Premiere package leaves out the moving film grain.
+
+## V14 (the previous cut)
 - V14, cut from the 19 clips the director generated in Higgsfield on 6 October 2026: `src/FlavorRaceV14.tsx` (registered in `src/Root.tsx` as FlavorRaceV14). 2:33.2.
 - V14 review copy: `docs/session/flavor-race-v14-review.mp4` (720p, 1.45 Mbps, AAC 160k).
 - The editable Premiere timelines: `premiere/V14/` and `premiere/V12.2/` (one FCP7 XML each for File > Import, and every file it uses in `media/`). How to open them, the track layout and the shots that need care: `premiere/README.md`.

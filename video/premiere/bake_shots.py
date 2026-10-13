@@ -1,10 +1,12 @@
-# Bake every shot of a Flavor Race cut into its own 1080p30 file, framed exactly as the film shows it (clip speed,
-# push-in about its origin, vertical shift, camera shake, colour grade, blurred region), with up to 1 s handles at both
-# ends, for the editable Premiere timeline. A handle stops where the source clip cuts to another shot, so extending a
-# shot in the timeline never flashes a frame of a different shot. The maths follows ClipLayer in src/FlavorRaceV12_2.tsx
-# and src/FlavorRaceV14.tsx: the source is fitted to cover 1920x1080, then translate(dx, dy + ty) scale(z) about the
-# origin; blurred regions are a blurred copy of the shot per strength, each seen through the union of its soft
-# elliptical masks, all moving with the shot. Zoom holds its first and last value in the handles.
+# Bake every shot of a Flavor Race cut into its own 1080p file at the cut's frame rate, framed exactly as the film shows
+# it (clip speed, push-in about its origin, vertical shift, camera shake, colour grade, blurred region, logo patch), with
+# up to 1 s handles at both ends, for the editable Premiere timeline. A handle stops where the source clip cuts to another
+# shot, so extending a shot in the timeline never flashes a frame of a different shot. The maths follows ClipLayer in
+# src/FlavorRaceV12_2.tsx, src/FlavorRaceV14.tsx and src/FlavorRaceV15.tsx: the source is fitted to cover 1920x1080, then
+# translate(dx, dy + ty) scale(z) about the origin; blurred regions are a blurred copy of the shot per strength, each seen
+# through the union of its soft elliptical masks, all moving with the shot. V15's softened regions (soften) place those
+# ellipses by a per-frame track, and its logo patches (patches) are images moved by a per-frame track, both in the
+# source's pixels. Zoom holds its first and last value in the handles, and so do the tracks.
 # usage (from video/): python3 premiere/bake_shots.py FlavorRaceV12_2 premiere/V12.2 [id,id,...]   (ids: re-bake only those)
 # writes <out>/media/S<nn>_<id>.mp4 and <out>/shots.json (the cut list the XML is built from)
 import json, math, os, re, subprocess, sys
@@ -12,16 +14,23 @@ import numpy as np
 import cv2
 
 VIDEO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FPS, W, H = 30, 1920, 1080
-HANDLE = 30                                    # frames of handle on each side, where the source has them
+W, H = 1920, 1080
+FPS = 30                                       # set from the composition (its const FPS) by segments()
+ZOOM = [1.0, 1.035]                            # the composition's default push-in, likewise
 f = lambda s: math.floor(s * FPS + 0.5)        # Math.round, as in the composition
 
 
 def segments(comp):
-    # the SEGS list of the composition: one object per segment (it may span lines and hold a nested object, and a grade
-    # may name a string constant of the file)
+    # the SEGS list of the composition: one object per segment (it may span lines and hold nested objects and arrays, a
+    # grade may name a string constant of the file, and a track may name a JSON file the composition imports); also
+    # sets the composition's frame rate and default push-in
+    global FPS, ZOOM
     src = open(os.path.join(VIDEO, 'src', comp + '.tsx')).read()
+    FPS = int(re.search(r'^const FPS = (\d+);', src, re.M).group(1))
+    ZOOM = [float(v) for v in re.search(r'sg\.zoom \|\| \[([\d.]+), ([\d.]+)\]', src).groups()]
     consts = dict(re.findall(r'^const (\w+) = ("[^"\n]*");', src, re.M))
+    for name, path in re.findall(r'^import (\w+) from "\.\./(public/[^"]+\.json)";', src, re.M):
+        consts[name] = json.dumps(json.load(open(os.path.join(VIDEO, path))))
     a = src.index('const SEGS: Seg[] = [') + len('const SEGS: Seg[] = [')
     body = re.sub(r'//[^\n]*', '', src[a:src.index('\n];', a)])
     objs, depth = [], 0
@@ -79,11 +88,12 @@ def cuts(path):
     return sorted(found)
 
 
-def bake(sg, start, end, at, dst, head=HANDLE, tail=HANDLE):
+def bake(sg, start, end, at, dst, head=None, tail=None):
+    head = FPS if head is None else head; tail = FPS if tail is None else tail   # up to 1 s of handle each side
     path = os.path.join(VIDEO, 'public', 'race', 'clips', sg['clip'] + '.mp4')
     sw, sh, sfps, nfr = probe(path)
     rate, x = sg.get('rate', 1.0), sg.get('x', 0.0)
-    z0, z1 = sg.get('zoom', [1.0, 1.035])
+    z0, z1 = sg.get('zoom', ZOOM)
     ox, oy = ((float(v) / 100 for v in re.findall(r'([\d.]+)%', sg['origin'])) if 'origin' in sg else (0.5, 0.5))
     ty = sg.get('ty', 0.0)
     seq0 = f(at - x)                                   # the composition's Sequence starts here (local frame u = 0)
@@ -99,9 +109,25 @@ def bake(sg, start, end, at, dst, head=HANDLE, tail=HANDLE):
     k_of = lambda u: min(nfr - 1, max(0, math.floor(tsrc(u) * sfps + 1e-6)))
     s = max(W / sw, H / sh); cx, cy = (W - s * sw) / 2, (H - s * sh) / 2
     O = np.array([ox * W, oy * H])
-    bl = sg.get('blur', [])
+    so = sg.get('soften')
+    bl = sg.get('blur', []) or ([{'px': so['px']}] if so else [])
     strengths = list(dict.fromkeys(b['px'] for b in bl))           # in order of first use, as the composition stacks them
     if bl: gy, gx = np.mgrid[0:H, 0:W].astype(np.float32) + 0.5
+    patches = []                   # (RGBA image in source pixels, its per-frame track)
+    for pt in sg.get('patches', []):
+        im = cv2.imread(os.path.join(VIDEO, 'public', 'race', 'v15', pt['img'] + '.png'), cv2.IMREAD_UNCHANGED)
+        im = cv2.cvtColor(im, cv2.COLOR_BGRA2RGBA).astype(np.float32)
+        im[..., :3] *= im[..., 3:] / 255           # premultiplied, so resampling never pulls in the colour of clear pixels
+        patches.append((im, pt['track']['frames']))
+
+    def ellipses(u):
+        # every blurred region at local frame u, in the layer's own pixels: (centre x, centre y, half width, half height, px)
+        if not so:
+            return [(b['x'], b['y'], b['w'] / 2, b['h'] / 2, b['px']) for b in bl]
+        a_, b_, c_, d_, tx, ty_ = so['track']['frames'][min(max(u, 0), len(so['track']['frames']) - 1)]
+        k = so['sw']; s_ = W / k; oy_ = -(so['sh'] * s_ - H) / 2; r = math.hypot(a_, b_) * s_
+        return [((a_ * x0 + c_ * y0 + tx) * s_, (b_ * x0 + d_ * y0 + ty_) * s_ + oy_, so['rx'] * r, so['ry'] * r, so['px'])
+                for x0, y0 in so['spots']]
     dec = subprocess.Popen(['ffmpeg', '-v', 'error', '-i', path, '-frames:v', str(k_of(ue_ - 1) + 1),
                             '-vf', 'scale=in_color_matrix=bt709,format=rgb24', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'],
                            stdout=subprocess.PIPE)
@@ -134,13 +160,23 @@ def bake(sg, start, end, at, dst, head=HANDLE, tail=HANDLE):
             out = img.astype(np.float32)                              # all in the layer's own pixels, so scaled with it
             for px in strengths:
                 keep = np.ones((H, W), np.float32)                    # mask layers add: 1 - product of (1 - alpha)
-                for b in (b for b in bl if b['px'] == px):
-                    c = T + O + z * (np.array([b['x'], b['y']]) - O)
-                    rho = np.sqrt(((gx - c[0]) / (z * b['w'] / 2)) ** 2 + ((gy - c[1]) / (z * b['h'] / 2)) ** 2)
+                for ex, ey, rx, ry, _ in (e for e in ellipses(u) if e[4] == px):
+                    c = T + O + z * (np.array([ex, ey]) - O)
+                    rho = np.sqrt(((gx - c[0]) / (z * rx)) ** 2 + ((gy - c[1]) / (z * ry)) ** 2)
                     keep *= 1 - np.clip((1.0 - rho) / 0.4, 0, 1)
                 al = (1 - keep)[..., None]
                 out = out * (1 - al) + cv2.GaussianBlur(img, (0, 0), px * z).astype(np.float32) * al
             img = (out + 0.5).astype(np.uint8)
+        for pim, trk in patches:   # LogoPatch: matrix(a, b, c, d, tx, ty) about 0 0, in a box scaled W / source width and
+            a_, b_, c_, d_, tx, ty_ = trk[min(max(u, 0), len(trk) - 1)]      # centred vertically, all inside the layer
+            k = W / pim.shape[1]; top = -(H * k - H) / 2
+            L = np.array([[k * a_, k * c_, k * tx], [k * b_, k * d_, k * ty_ + top]])   # patch pixel -> layer
+            A = np.vstack([z * L[:, :2], [0, 0]])[:2]; t_ = T + O + z * (L[:, 2] - O)     # layer -> output
+            A = np.hstack([A, t_[:, None]])
+            A[:, 2] += A[:, 0] * 0.5 + A[:, 1] * 0.5 - 0.5             # pixel centres
+            pw = cv2.warpAffine(pim, A, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0, 0))
+            al = pw[..., 3:] / 255
+            img = np.clip(img.astype(np.float32) * (1 - al) + pw[..., :3] + 0.5, 0, 255).astype(np.uint8)
         if 'grade' in sg: img = css_grade(img, sg['grade'])
         enc.stdin.write(img.tobytes())
     dec.stdout.close(); dec.wait(); enc.stdin.close(); enc.wait()
