@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { R, Enter, SceneProps } from './ui';
-import { MISSIONS, SEEDS, TERRITORIES } from '@/lib/content';
+import { MISSIONS, SEEDS, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
 import { people, tallyPick, ranked, SessionState, Concept } from '@/lib/state';
 
 const terr = (id: string) => TERRITORIES.find((t) => t.id === id)!;
-export const teamConcepts = (s: SessionState) => [1, 2, 3].map((team) => s.concepts[`t${team}-1`]).filter(Boolean) as Concept[];
+export const teamConcepts = (s: SessionState) => [1, 2].map((team) => s.concepts[`t${team}-1`]).filter(Boolean) as Concept[];
 
 // 33. Mission briefing: three mixed teams.
 export function Missions({ s }: SceneProps) {
@@ -13,9 +13,9 @@ export function Missions({ s }: SceneProps) {
   return (
     <div className="pad missions">
       <Enter i={0}><div className="k">Co-create · mission briefing</div></Enter>
-      <Enter i={1}><h2 className="h1">Three teams. <span className="it">Three missions.</span></h2></Enter>
+      <Enter i={1}><h2 className="h1">Two teams. <span className="it">Two missions.</span></h2></Enter>
       <div className="mcards">
-        {[1, 2, 3].map((team, i) => {
+        {[1, 2].map((team, i) => {
           const m = MISSIONS.find((x) => x.id === s.missions[team - 1]) || MISSIONS[i];
           const crew = ps.filter((p) => p.team === team);
           return (
@@ -73,7 +73,7 @@ export function Canvas({ s }: SceneProps) {
     <div className="pad canvas">
       <Enter i={0}><div className="k">Co-create · the Concept Canvas · 15 minutes</div></Enter>
       <div className="canvas-grid">
-        {[1, 2, 3].map((team) => {
+        {[1, 2].map((team) => {
           const c = s.concepts[`t${team}-1`]; const m = MISSIONS.find((x) => x.id === s.missions[team - 1]);
           const filled = c ? fields.filter(([k]) => (c as any)[k]).length + (c.name ? 1 : 0) : 0;
           return (
@@ -94,7 +94,7 @@ export function Canvas({ s }: SceneProps) {
 
 // 36. Pitches: each concept becomes a poster in its territory colors.
 export function Poster({ c, big, dots }: { c: Concept; big?: boolean; dots?: number }) {
-  const t = TERRITORIES.find((x) => (c.why || '').toLowerCase().includes(x.name.toLowerCase())) || TERRITORIES[(c.team + 1) % 7];
+  const t = TERRITORIES.find((x) => (c.why || '').toLowerCase().includes(x.name.toLowerCase())) || TERRITORIES[(c.team + 1) % TERRITORIES.length];
   return (
     <div className={'poster' + (big ? ' big' : '')} style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1], ['--c3' as any]: t.palette[2] }}>
       <div className="po-light" />

@@ -1,7 +1,7 @@
 'use client';
 import Light from '../Light';
 import { R, Enter, SceneProps } from './ui';
-import { EVENT, SIGNALS, TERRITORIES, CODE, NEXT_STEPS } from '@/lib/content';
+import { EVENT, SHIFTS, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, CODE, NEXT_STEPS } from '@/lib/content';
 import { SessionState, people, tallyPick, ranked } from '@/lib/state';
 import { candidates } from './Build';
 
@@ -19,7 +19,7 @@ export function decisions(s: SessionState) {
 export function Assemble({ s, step }: SceneProps) {
   const d = decisions(s);
   const pages = [
-    { k: 'Chapter 1', t: 'Signals', l: d.sig.map((x) => x.title) },
+    { k: 'Chapter 1', t: 'Signals', l: SHIFTS.map((x) => x.b) },
     { k: 'Chapter 2', t: 'Territories', l: d.ter.map((x) => x.name) },
     { k: 'Chapter 3', t: 'Concepts', l: d.top.map((x) => x.name) },
     { k: 'Chapter 4', t: 'Pipeline', l: d.placed.slice(0, 4).map((x) => `${s.placements[x.id].horizon} · ${x.name}`) },
@@ -58,7 +58,7 @@ export function Next({ step }: SceneProps) {
       <Enter i={0}><div className="k">What happens next</div></Enter>
       <Enter i={1}><h2 className="h1">Thank you for building this <span className="it">with us.</span></h2></Enter>
       <div className="steps">
-        {NEXT_STEPS.map((n, i) => <R key={n.t} b={i + 1} step={step} className="nstep"><span className="num">0{i + 1}</span><b className="h3">{n.t}</b><p>{n.d}</p><em className="src">[CONFIRM date]</em></R>)}
+        {NEXT_STEPS.map((n, i) => <R key={n.t} b={i + 1} step={step} className="nstep"><span className="num">0{i + 1}</span><b className="h3">{n.t}</b><p>{n.d}</p></R>)}
       </div>
     </div>
   );
@@ -74,7 +74,7 @@ export function Lunch({ s }: SceneProps) {
       <div className="lunch-in">
         <div className="k">TheraBreath × The Flavor Factory</div>
         <h1 className="hero center">Lunch.</h1>
-        <p className="sub it center">The Playbook v1.0 arrives within 8 business days.</p>
+        <p className="sub it center">Three directions. Clear owners. Agreed next steps.</p>
       </div>
     </div>
   );

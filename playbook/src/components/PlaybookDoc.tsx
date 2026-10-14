@@ -2,7 +2,7 @@
 // PLAYBOOK: the document the room builds, live. Prints to A4 or US Letter as a clean PDF.
 import { useEffect, useState } from 'react';
 import { useSession } from '@/lib/useSession';
-import { EVENT, SIGNALS, TERRITORIES, SAMPLES, SEEDS, HORIZONS, ROLES, CODE, NEXT_STEPS, SOURCES, OBJECTIVES } from '@/lib/content';
+import { EVENT, SHIFTS, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, SEEDS, HORIZONS, ROLES, CODE, NEXT_STEPS, SOURCES, OBJECTIVES } from '@/lib/content';
 import { tallyPick, ranked, tasteSummary } from '@/lib/state';
 import { teamConcepts } from './scenes/CoCreate';
 import { candidates, SEASONS } from './scenes/Build';
@@ -51,10 +51,8 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
         <section className="pb-page">
           <div className="k">Chapter 1 · Signals</div>
           <h2>What is changing</h2>
-          <p className="pb-lede">The room chose the three signals that matter most for TheraBreath.</p>
-          <div className="pb-sig">{SIGNALS.map((x) => { const top = d.sig.some((y) => y.id === x.id); return (
-            <div key={x.id} className={top ? 'top' : ''}><span className="n">0{x.n}</span><div><b>{x.title}</b><p>{x.so}</p><small>{x.proofs.map((p) => SOURCES[p.src]).filter((v, i, a) => a.indexOf(v) === i).join('; ')}</small></div><em>{sigT[x.id] || 0}</em></div>
-          ); })}</div>
+          <p className="pb-lede">Three discussion hypotheses informed the tasting; these are not validated consumer findings.</p>
+          <div className="pb-sig">{SHIFTS.map((x, i) => <div key={x.a}><span className="n">0{i + 1}</span><div><b>{x.a} → {x.b}</b><p>{x.d}</p></div></div>)}</div>
         </section>
 
         <section className="pb-page">
@@ -64,8 +62,8 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
             <div key={id} className={i < 3 && n > 0 ? 'top' : ''} style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1] }}><i /><div><b>{t.name}</b><p>{t.promise}</p><small>{t.fit}{t.fitNote ? `: ${t.fitNote}` : ''}</small></div><em>{n}</em></div>
           ); })}</div>
           <h3>Blind tasting</h3>
-          <table className="pb-table"><thead><tr><th>Sample</th><th>Appeal</th><th>Feels like TheraBreath</th><th>Newness</th><th>Tasters</th><th>Words</th></tr></thead>
-            <tbody>{SAMPLES.map((x) => { const r = tasteSummary(s, x.code); return <tr key={x.code}><td><b>{x.code}</b> {x.name}</td><td>{r.n ? r.appeal.toFixed(1) : ''}</td><td>{r.n ? r.feels.toFixed(1) : ''}</td><td>{r.n ? r.newness.toFixed(1) : ''}</td><td>{r.n || ''}</td><td>{r.words.slice(0, 5).join(', ')}</td></tr>; })}</tbody></table>
+          <table className="pb-table"><thead><tr><th>Sample</th><th>Appeal</th><th>Feels like TheraBreath</th><th>Newness</th><th>Tasters</th><th>Words / advance</th></tr></thead>
+            <tbody>{SAMPLES.map((x) => { const r = tasteSummary(s, x.code); return <tr key={x.code}><td><b>{x.code}</b> {x.name}</td><td>{r.n ? r.appeal.toFixed(1) : ''}</td><td>{r.n ? r.feels.toFixed(1) : ''}</td><td>{r.n ? r.newness.toFixed(1) : ''}</td><td>{r.n || ''}</td><td>{r.words.slice(0, 5).join(', ')}{Object.values(s.ratings[x.code] || {}).filter(v => v.advance === 'Yes').length > 0 && <small> · {Object.values(s.ratings[x.code] || {}).filter(v => v.advance === 'Yes').length} advance</small>}</td></tr>; })}</tbody></table>
           <p className="pb-note">Scores are 1 to 5, averaged across tasters in the room.</p>
         </section>
 
@@ -90,8 +88,9 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
           <h2>What we do first, next and later</h2>
           <table className="pb-board"><thead><tr><th />{HORIZONS.map((h) => <th key={h.id}>{h.label}<small>{h.when}</small></th>)}</tr></thead>
             <tbody>{ROLES.map((r) => <tr key={r.id}><th>{r.id}<small>{r.job}</small></th>{HORIZONS.map((h) => <td key={h.id}>{d.placed.filter((x) => s.placements[x.id].horizon === h.id && s.placements[x.id].role === r.id).map((x) => { const rx = Object.values(s.reactions['place-' + x.id] || {}) as any[]; const ch = rx.filter((y) => y.v === 'challenge').length; return <div key={x.id} className="pb-pc">{x.name}{ch ? <small> {ch} challenged</small> : null}</div>; })}</td>)}</tr>)}</tbody></table>
-          <h3>The 2027 flavor calendar</h3>
-          <div className="pb-cal">{SEASONS.map((se) => <div key={se.id} style={{ ['--c' as any]: se.hue }}><b>{se.id}</b><small>{se.when}</small>{items.filter((x) => s.calendar[x.id] === se.id).map((x) => <span key={x.id}>{x.name}</span>)}</div>)}</div>
+          <h3>Development commitments</h3>
+          {d.placed.length ? d.placed.map(x => { const c = s.commitments[x.id] || {}; return <div className="pb-concept" key={x.id}><b>{x.name}</b><dl>{[['TFF owner', c.owner], ['C&D reviewer', c.reviewer], ['Intended base', c.base], ['Next sample action', c.action], ['Evaluation date', c.date]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value || 'To agree'}</dd></div>)}</dl></div>; }) : <p>Choose and place priority concepts to build the development briefs.</p>}
+
         </section>
 
         <section className="pb-page">
@@ -100,7 +99,7 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
           <ol className="pb-code">{CODE.map((c) => { const r = codeRx(c.n); const edits = r.filter((x) => x.v === 'edit'); return <li key={c.n}><span className="n">{c.n}</span><div><b>{c.t}</b><p>{c.d}</p>{r.length > 0 && <small>{r.filter((x) => x.v === 'keep').length} keep · {edits.length} edit{edits.filter((x) => x.text).map((x, i) => <span key={i}> · &ldquo;{x.text}&rdquo;</span>)}</small>}</div></li>; })}</ol>
           {!!additions.length && <><h3>Rules the room added</h3><ul className="pb-seeds">{additions.map((a, i) => <li key={i}>{a}</li>)}</ul></>}
           <h3>What happens next</h3>
-          <ol className="pb-next">{NEXT_STEPS.map((n) => <li key={n.t}><b>{n.t}</b> {n.d} <em>[CONFIRM date]</em></li>)}</ol>
+          <ol className="pb-next">{NEXT_STEPS.map((n) => <li key={n.t}><b>{n.t}</b> {n.d}</li>)}</ol>
         </section>
 
         <section className="pb-page pb-sources">

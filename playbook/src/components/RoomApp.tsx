@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
-import { SIGNALS, TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT, DIALS } from '@/lib/content';
+import { SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT, DIALS } from '@/lib/content';
 import { DEFAULT_DIALS, readouts } from '@/lib/bench';
 import { uid } from '@/lib/state';
 import { candidates } from './scenes/Build';
@@ -119,13 +119,16 @@ function Taste({ s, me, p, step }: P) {
     <div className="rm-pad">
       <div className="rm-tabs">{SAMPLES.map((x) => <button key={x.code} className={(cur === x.code ? 'on' : '') + (done(x.code) ? ' done' : '')} onClick={() => setCur(x.code)}>{x.code}</button>)}</div>
       <h2 className="h3">Sample {cur}{step >= 2 ? <span className="it"> · {SAMPLES.find((x) => x.code === cur)!.name}</span> : null}</h2>
+      {step >= 2 && <p>{SAMPLES.find(x => x.code === cur)?.note}</p>}
+      {cur === 'D' && step < 2 && <label>What fruit notes do you recognize?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Write your guesses before the reveal" /></label>}
       <Scale label="Appeal" v={r.appeal} set={(n) => setR({ ...r, appeal: n })} />
       <Scale label="Feels like TheraBreath" v={r.feels} set={(n) => setR({ ...r, feels: n })} />
       <Scale label="Newness" v={r.newness} set={(n) => setR({ ...r, newness: n })} />
       <div className="k" style={{ margin: '18px 0 10px' }}>Who is it for</div>
       <div className="rm-tags">{WHO_CHIPS.map((w) => <button key={w} className={r.who.includes(w) ? 'on' : ''} onClick={() => setR({ ...r, who: r.who.includes(w) ? r.who.filter((x: string) => x !== w) : [...r.who, w] })}>{w}</button>)}</div>
       <div className="k" style={{ margin: '4px 0 10px' }}>Which territory do you think it is?</div>
-      <div className="rm-tags">{TERRITORIES.filter((t) => t.id !== 'ladder').map((t) => <button key={t.id} className={r.guess === t.id ? 'on' : ''} onClick={() => setR({ ...r, guess: t.id })}>{t.name}</button>)}</div>
+      <div className="rm-tags">{TERRITORIES.map((t) => <button key={t.id} className={r.guess === t.id ? 'on' : ''} onClick={() => setR({ ...r, guess: t.id })}>{t.name}</button>)}</div>
+      <div className="k">Would you advance this direction?</div><div className="rm-tags">{['Yes', 'Maybe', 'No'].map(v => <button key={v} className={r.advance === v ? 'on' : ''} onClick={() => setR({ ...r, advance: v })}>{v}</button>)}</div>
       <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="One word for it" />
       <button className="rm-btn sticky" disabled={!ok} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
     </div>
@@ -152,7 +155,7 @@ function Team({ s, me, p }: P) {
   return (
     <div className="rm-pad">
       <h2 className="h3">Pick your team.</h2>
-      <div className="rm-list">{[1, 2, 3].map((n) => { const m = MISSIONS.find((x) => x.id === s.missions[n - 1]); return <button key={n} className={'rm-opt tall' + (t === n ? ' on' : '')} onClick={() => p('team', { team: n })}><span className="num">{n}</span><div><b>Team {n}</b><small>{m?.title}</small></div></button>; })}</div>
+      <div className="rm-list">{[1, 2].map((n) => { const m = MISSIONS.find((x) => x.id === s.missions[n - 1]); return <button key={n} className={'rm-opt tall' + (t === n ? ' on' : '')} onClick={() => p('team', { team: n })}><span className="num">{n}</span><div><b>Team {n}</b><small>{m?.title}</small></div></button>; })}</div>
     </div>
   );
 }

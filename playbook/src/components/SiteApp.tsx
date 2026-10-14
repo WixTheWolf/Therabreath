@@ -8,10 +8,10 @@ import FilmModal from './FilmModal';
 import { useSession } from '@/lib/useSession';
 import { tallyPick, ranked } from '@/lib/state';
 import { compass, curve, readouts, DEFAULT_DIALS } from '@/lib/bench';
-import { EVENT, VOCAB, SHIFTS, TERRITORIES, DAYPARTS, DIALS, SCIENCE, IMAGINATION, REGIONS, ATLAS_STAGES, AGENDA, OBJECTIVES } from '@/lib/content';
+import { EVENT, PRIMARY_TERRITORIES, SAMPLES, VOCAB, SHIFTS, TERRITORIES, DAYPARTS, DIALS, SCIENCE, IMAGINATION, REGIONS, ATLAS_STAGES, AGENDA, OBJECTIVES } from '@/lib/content';
 import { WORLD, WORLD_DOTS } from '@/lib/worldmap';
 
-const LIVE_CODE = 'TB1109';
+const LIVE_CODE = 'TB1109V2';
 const clamp = (x: number, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const ease = (x: number) => 1 - Math.pow(1 - clamp(x), 3);
 
@@ -42,7 +42,7 @@ function useReveal() {
   }, []);
 }
 
-const NAV = [['hero', 'Film'], ['vocab', 'Vocabulary'], ['worlds', 'Two worlds'], ['shifts', 'Shifts'], ['territories', 'Territories'], ['atlas', 'Atlas'], ['clock', 'Clock'], ['bench', 'The Bench'], ['close', 'The morning']];
+const NAV = [['hero', 'Film'], ['platforms', 'Platforms'], ['flight', 'Tasting'], ['close', 'The morning'], ['explore', 'Explore']];
 
 export default function SiteApp() {
   const { state: s } = useSession(LIVE_CODE, { interval: 8000 });
@@ -71,14 +71,9 @@ export default function SiteApp() {
       </nav>
 
       <Hero onFilm={() => setFilm(true)} live={live} />
-      <Vocab />
-      <Worlds />
-      <ShiftTrack />
-      <Worlds7 live={live} rank={rank} tally={tally} />
-      <Atlas />
-      <FlavorClock />
-      <PocketBench />
+      <WorkshopOverview />
       <Close live={live} />
+      <details id="explore" className="st-explore"><summary>Explore further: vocabulary, flavor atlas, clock and The Bench</summary><p>Optional inspiration before or after the workshop. These tools illustrate ideas; they do not validate formulas or consumer demand.</p><Vocab /><Worlds /><ShiftTrack /><Worlds7 live={live} rank={rank} tally={tally} /><Atlas /><FlavorClock /><PocketBench /></details>
 
       {film && <FilmModal onClose={() => setFilm(false)} />}
     </main>
@@ -93,10 +88,10 @@ function Hero({ onFilm, live }: { onFilm: () => void; live: boolean }) {
       <div className="st-hero-in">
         <div className="st-k">{EVENT.date} · {EVENT.time} ET · {EVENT.room} room</div>
         <h1>The Future<br /><em>of Freshness</em></h1>
-        <p>What should TheraBreath taste like next? Two hours, twelve people, one Playbook.{live ? ' The session is live.' : ''}</p>
+        <p>What should TheraBreath taste like next? Two hours. Four platforms. Three directions to develop.{live ? ' The session is live.' : ''}</p>
         <div className="st-cta">
-          <button className="st-play" onClick={onFilm}><span className="st-tri" />Play the film <small>30 seconds · sound on</small></button>
-          <a className="st-ghost" href="#vocab">Scroll to begin</a>
+          <button className="st-play" onClick={onFilm}><span className="st-tri" />Play the film <small>Opening film · sound on</small></button>
+          <a className="st-ghost" href="#platforms">Explore the workshop</a>
         </div>
       </div>
       <div className="st-cue"><i /></div>
@@ -170,7 +165,7 @@ function ShiftTrack() {
   return (
     <section id="shifts" ref={ref} className="st-tall" style={{ height: '360vh' }}>
       <div className="st-stick st-shifts">
-        <div className="st-k st-top">03 · Six shifts · what is changing</div>
+        <div className="st-k st-top">03 · Three shifts · what is changing</div>
         <div className="st-track" ref={track} style={{ transform: `translateX(${-p * Math.max(0, w)}px)` }}>
           <div className="st-shift intro"><h2>What people<br />expect from<br /><em>fresh</em> is moving.</h2><p>Keep scrolling. Watch each old idea give way.</p></div>
           {SHIFTS.map((x, i) => {
@@ -185,7 +180,7 @@ function ShiftTrack() {
               </div>
             );
           })}
-          <div className="st-shift outro"><h2>Six shifts.<br /><em>Seven worlds</em><br />to answer them.</h2></div>
+          <div className="st-shift outro"><h2>Three shifts.<br /><em>Four platforms</em><br />to answer them.</h2></div>
         </div>
         <div className="st-meter"><i style={{ width: `${p * 100}%` }} /></div>
       </div>
@@ -204,11 +199,11 @@ function Worlds7({ live, rank, tally }: { live: boolean; rank: string[]; tally: 
     return () => io.disconnect();
   }, []);
   useEffect(() => { if (!auto) return; const t = setInterval(() => setStage((x) => (x + 1) % 3), 2400); return () => clearInterval(t); }, [auto]);
-  const t = TERRITORIES[i];
+  const t = PRIMARY_TERRITORIES[i];
   return (
     <section id="territories" className="st-terr">
       <div className="st-terr-vis" style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1] }}>
-        {TERRITORIES.map((x, j) => x.image ? <img key={x.id} src={x.image} alt="" className={j === i ? 'on' : ''} /> : <div key={x.id} className={'st-noimg' + (j === i ? ' on' : '')} style={{ background: `radial-gradient(circle at 40% 40%, ${x.palette[0]}, ${x.palette[1]} 55%, ${x.palette[2] || x.palette[1]})` }} />)}
+        {PRIMARY_TERRITORIES.map((x, j) => x.image ? <img key={x.id} src={x.image} alt="" className={j === i ? 'on' : ''} /> : <div key={x.id} className={'st-noimg' + (j === i ? ' on' : '')} style={{ background: `radial-gradient(circle at 40% 40%, ${x.palette[0]}, ${x.palette[1]} 55%, ${x.palette[2] || x.palette[1]})` }} />)}
         <div className="st-terr-veil" />
         <div className="st-terr-cmp">
           <Compass prof={t.prof[stage]} color={t.palette[1]} size={440} />
@@ -219,8 +214,8 @@ function Worlds7({ live, rank, tally }: { live: boolean; rank: string[]; tally: 
         </div>
       </div>
       <div className="st-terr-list">
-        <div className="st-terr-head st-rise"><div className="st-k">04 · Seven territories</div><h2>Seven places<br />flavor <em>can go.</em></h2><p>Scroll through each world. Tap First, Heart or Finish to see how it moves in the mouth.</p></div>
-        {TERRITORIES.map((x, j) => {
+        <div className="st-terr-head st-rise"><div className="st-k">04 · Four platforms</div><h2>Four places<br />flavor <em>can go.</em></h2><p>Scroll through each world. Tap First, Heart or Finish to see how it moves in the mouth.</p></div>
+        {PRIMARY_TERRITORIES.map((x, j) => {
           const r = rank.indexOf(x.id);
           return (
             <article key={x.id} data-i={j} className={'st-terr-panel' + (j === i ? ' on' : '')} style={{ ['--c1' as any]: x.palette[0], ['--c2' as any]: x.palette[1] }}>
@@ -340,7 +335,7 @@ function PocketBench() {
     <section id="bench" className="st-bench">
       <div className="st-bench-head st-rise">
         <div className="st-k">07 · From idea to formula</div>
-        <h2>On November 9 each team <em>engineers</em> its idea on The Bench.<br />Try it now.</h2>
+        <h2>Explore a <em>sensory brief</em> on The Bench.<br />Optional inspiration.</h2>
         <ol className="st-steps">{['A consumer moment', 'A sensory brief', 'The Bench', 'The Flavor Factory lab'].map((x, k) => <li key={x} className={k === 2 ? 'on' : ''}><span>0{k + 1}</span>{x}</li>)}</ol>
       </div>
       <div className="st-bench-grid">
@@ -367,7 +362,7 @@ function PocketBench() {
           </div>
         </div>
       </div>
-      <div className="st-src">Illustrative rules of thumb, reviewed with The Flavor Factory&rsquo;s flavorists [CONFIRM with Alex]. No formulas, codes or usage levels, ever.</div>
+      <div className="st-src">Illustrative rules of thumb, pending flavorist review. Not a formula, stability test or clinical assessment. No formulas, codes or usage levels, ever.</div>
     </section>
   );
 }
@@ -384,4 +379,19 @@ function Close({ live }: { live: boolean }) {
       <footer className="st-foot">Confidential and private · TheraBreath × The Flavor Factory</footer>
     </section>
   );
+}
+
+
+function WorkshopOverview() {
+  return <>
+    <section id="platforms" className="ws-section">
+      <div className="st-k">The question for Princeton</div><h2>Where can flavor take<br /><em>TheraBreath next?</em></h2>
+      <p className="ws-lead">Four opportunity platforms. Real development work at the center. Taste, challenge and choose what deserves the next round.</p>
+      <div className="ws-grid">{PRIMARY_TERRITORIES.map(t => <article className="ws-card" key={t.id} style={{ borderTopColor: t.palette[1] }}><span className="st-k">0{t.n} · Opportunity platform</span><h3>{t.name}</h3><p>{t.promise}</p><strong>{t.q}</strong><small>{t.fitNote}</small></article>)}</div>
+    </section>
+    <section id="flight" className="ws-section ws-flight"><div className="st-k">10:30 · The tasting flight</div><h2>Taste first.<br /><em>Decide together.</em></h2><p className="ws-lead">A proposed six-sample flight built around Ryan’s herbal and kids work. Final lineup and base readiness are confirmed with Ryan before the workshop.</p>
+      <div className="ws-grid">{SAMPLES.map(x => <article className="ws-card" key={x.code}><span className="ws-code">{x.code}</span><h3>{x.code === 'D' ? 'The mystery moment' : x.name}</h3><p>{x.code === 'D' ? 'Taste. Write down your fruit guesses. Then reveal and discuss whether discovery can become part of the routine.' : x.code === 'F' ? 'A proposed second kids direction. Berry Blast and Shirley Temple remain alternatives.' : x.note}</p><small>{x.status}</small></article>)}</div>
+      <div className="ws-outcome"><span className="st-k">The output</span><h3>Three directions worth developing.</h3><p>For each: a consumer, a sensory brief, a TFF owner, a C&D reviewer, an intended base and an agreed next evaluation date.</p><p>Workshop scores reflect this room’s reactions. Consumer appeal and technical readiness still need validation.</p></div>
+    </section>
+  </>;
 }

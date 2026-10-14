@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Light from '../Light';
 import { Compass } from './Hybrid';
 import { R, Enter, SceneProps, spectrumAt } from './ui';
-import { TERRITORIES, SAMPLES, WHO_CHIPS } from '@/lib/content';
+import { PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS } from '@/lib/content';
 import { tallyPick, ranked, tasteSummary } from '@/lib/state';
 
 // Map positions: x = character (familiar to adventurous), y = intensity (gentle to bold). Our perspective, illustrative.
@@ -16,8 +16,8 @@ export function MapScene({ step }: SceneProps) {
     <div className="pad map">
       <div className="map-copy">
         <Enter i={0}><div className="k">The Territory Flight · the map</div></Enter>
-        <Enter i={1}><h2 className="h1">Seven places<br />flavor <span className="it">can go.</span></h2></Enter>
-        <R b={2} step={step}><p className="lede" style={{ maxWidth: 440, marginTop: 36 }}>The gentle, adventurous corner is where the next 86% live.</p></R>
+        <Enter i={1}><h2 className="h1">Four platforms<br />flavor <span className="it">can go.</span></h2></Enter>
+        <R b={2} step={step}><p className="lede" style={{ maxWidth: 440, marginTop: 36 }}>Four questions to explore. Today’s samples help us decide where to develop next.</p></R>
         <div className="src" style={{ marginTop: 40 }}>Our perspective, illustrative.</div>
       </div>
       <div className="map-plot" style={{ width: W, height: H }}>
@@ -81,9 +81,9 @@ export function Territory({ s, step, idx }: SceneProps) {
       <World t={t} />
       <div className="terr-veil" />
       <div className="pad terr-in">
-        <Enter i={0}><div className="k">Territory {t.n} of 7 · <span className="fit">{t.fit}</span> · {t.moment}</div></Enter>
+        <Enter i={0}><div className="k">Platform {t.n} of 4 · <span className="fit">{t.fit}</span> · {t.moment}</div></Enter>
         <Enter i={1}><h2 className="terr-name">{t.name}</h2></Enter>
-        <Enter i={2}><div className="terr-hero it">{t.hero}</div></Enter>
+        <Enter i={2}><div className="terr-hero it">A direction to explore together</div></Enter>
         <Enter i={3}><p className="terr-promise">{t.promise}</p></Enter>
         <Enter i={4}>
           <div className="terr-arc">
@@ -97,7 +97,7 @@ export function Territory({ s, step, idx }: SceneProps) {
       </div>
       <R b={1} step={step} className="terr-card">
         <div><span className="k">Why now</span><p>{t.why}</p></div>
-        <div><span className="k">The family</span><ul>{t.flavors.map((f) => <li key={f}>{f}</li>)}</ul></div>
+        <div><span className="k">The opportunity</span><p>{t.q}</p><p>Sample details revealed after tasting.</p></div>
         <div><span className="k">Sensory signature</span><p>{t.signature}</p><span className="k" style={{ marginTop: 18, display: 'block' }}>Who</span><p>{t.who}</p>{t.fitNote && <p className="src" style={{ marginTop: 12 }}>{t.fitNote}</p>}</div>
       </R>
     </div>
@@ -109,22 +109,23 @@ export function Tasting({ s, step }: SceneProps) {
   const rows = SAMPLES.map((x) => { const g = Object.values(s.ratings[x.code] || {}).map((r) => r.guess).filter(Boolean); return { ...x, sum: tasteSummary(s, x.code), guessN: g.length, right: g.filter((v) => v === x.territory).length }; });
   const metrics: ['appeal' | 'feels' | 'newness', string][] = [['appeal', 'Appeal'], ['feels', 'Feels like TheraBreath'], ['newness', 'Newness']];
   const cell = (v: number) => { const a = Math.max(0, Math.min(1, (v - 1) / 4)); return { background: `color-mix(in oklab, var(--accent) ${Math.round(a * 85)}%, transparent)`, opacity: v ? 1 : 0.35 }; };
+  const mysteryGuesses = Object.values(s.ratings.D || {}).map(r => r.fruitGuess).filter(Boolean);
   const words = rows.flatMap((r) => r.sum.words.map((w) => ({ w, code: r.code })));
   return (
     <div className="pad tasting">
-      <Enter i={0}><div className="k">Blind tasting · samples A to D · {Math.max(0, ...rows.map((r) => r.sum.n))} tasters</div></Enter>
+      <Enter i={0}><div className="k">Blind tasting · proposed samples A to F · {Math.max(0, ...rows.map((r) => r.sum.n))} tasters</div></Enter>
       <Enter i={1}><h2 className="h2">Taste first. <span className="it">Names later.</span></h2></Enter>
       <div className="heat">
         <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}<span>Who is it for</span></div>
         {rows.map((r) => (
           <div key={r.code} className="hrow">
-            <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{r.name}{step >= 2 && r.guessN > 0 && <em className="hguess">{r.right} of {r.guessN} guessed {TERRITORIES.find((x) => x.id === r.territory)?.name}</em>}</span></div>
+            <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{r.name}{step >= 2 && <small style={{ display: 'block', fontSize: 15 }}>{r.note}</small>}{step >= 2 && r.guessN > 0 && <em className="hguess">{r.right} of {r.guessN} guessed {TERRITORIES.find((x) => x.id === r.territory)?.name}</em>}</span></div>
             {metrics.map(([k]) => <div key={k} className="hcell" style={cell(r.sum[k])}><b className="num">{r.sum[k] ? r.sum[k].toFixed(1) : ''}</b></div>)}
             <div className="hwho">{ranked(r.sum.who).slice(0, 3).map(([w, n]) => <span key={w}>{w} <b>{n}</b></span>)}</div>
           </div>
         ))}
       </div>
-      <R b={1} step={step} className="words">{words.slice(-16).map((x, i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 24 + ((i * 13) % 4) * 6 }}>{x.w}</span>)}{!words.length && <span className="empty">One word per sample arrives from the phones.</span>}</R>
+      <R b={1} step={step} className="words">{mysteryGuesses.length > 0 && <span style={{ fontSize: 20 }}>Mystery guesses: {mysteryGuesses.join(' · ')}</span>}{words.slice(-16).map((x, i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 24 + ((i * 13) % 4) * 6 }}>{x.w}</span>)}{!words.length && <span className="empty">One word per sample arrives from the phones.</span>}</R>
     </div>
   );
 }
