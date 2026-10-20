@@ -56,6 +56,7 @@
 .rm-tags button { padding: 10px 14px; border-radius: 20px; border: 1px solid var(--rule); font: 400 15px/1 var(--sans); }
 .rm-tags button.on { background: var(--accent-soft); border-color: var(--accent); }
 .rm-reveal { margin-top: 18px; padding: 16px; border-radius: 14px; background: var(--panel2); font: 400 17px/1.4 var(--sans); }
+.rm-note { font: 400 15px/1.4 var(--sans); color: var(--fg2); margin: -6px 0 14px; }
 .rm-field { display: block; margin-bottom: 14px; }
 .rm-field > span { display: block; font: 500 12px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg2); margin-bottom: 8px; }
 .rm-field input, .rm-field textarea, .rm-field select { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--rule); background: var(--panel2); font: 400 17px/1.35 var(--sans); outline: none; resize: vertical; }

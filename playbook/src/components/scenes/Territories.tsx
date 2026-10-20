@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Light from '../Light';
 import { Compass } from './Hybrid';
 import { R, Enter, SceneProps, spectrumAt } from './ui';
-import { TERRITORIES, SAMPLES, WHO_CHIPS } from '@/lib/content';
+import { TERRITORIES, SAMPLES, SAMPLE_RANGE, WHO_CHIPS } from '@/lib/content';
 import { tallyPick, ranked, tasteSummary } from '@/lib/state';
 
 // Map positions: x = character (familiar to adventurous), y = intensity (gentle to bold). Our perspective, illustrative.
@@ -112,13 +112,13 @@ export function Tasting({ s, step }: SceneProps) {
   const words = rows.flatMap((r) => r.sum.words.map((w) => ({ w, code: r.code })));
   return (
     <div className="pad tasting">
-      <Enter i={0}><div className="k">Blind tasting · samples A to D · {Math.max(0, ...rows.map((r) => r.sum.n))} tasters</div></Enter>
+      <Enter i={0}><div className="k">Blind tasting · samples {SAMPLE_RANGE} · {Math.max(0, ...rows.map((r) => r.sum.n))} tasters</div></Enter>
       <Enter i={1}><h2 className="h2">Taste first. <span className="it">Names later.</span></h2></Enter>
       <div className="heat">
         <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}<span>Who is it for</span></div>
         {rows.map((r) => (
           <div key={r.code} className="hrow">
-            <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{r.name}{step >= 2 && r.guessN > 0 && <em className="hguess">{r.right} of {r.guessN} guessed {TERRITORIES.find((x) => x.id === r.territory)?.name}</em>}</span></div>
+            <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{r.name}<em className="hnote">{r.line} · {r.note}</em>{step >= 2 && r.guessN > 0 && <em className="hguess">{r.right} of {r.guessN} guessed {TERRITORIES.find((x) => x.id === r.territory)?.name}</em>}</span></div>
             {metrics.map(([k]) => <div key={k} className="hcell" style={cell(r.sum[k])}><b className="num">{r.sum[k] ? r.sum[k].toFixed(1) : ''}</b></div>)}
             <div className="hwho">{ranked(r.sum.who).slice(0, 3).map(([w, n]) => <span key={w}>{w} <b>{n}</b></span>)}</div>
           </div>

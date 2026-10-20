@@ -167,12 +167,15 @@ export const DIALS = [
   { id: 'tingle', l: 'Tingle', lo: 'None', hi: 'Electric' },
 ];
 
-export const SAMPLES = [
-  { code: 'A', name: 'Frosted Star Anise Mint', territory: 'warmcool' },
-  { code: 'B', name: 'Black Currant Frost', territory: 'fruit' },
-  { code: 'C', name: 'Spring Garden', territory: 'botanical', note: 'cucumber, spearmint, green tea' },
-  { code: 'D', name: 'Glacier Spearmint Extra Mild', territory: 'mint' },
+// The flight Ryan is making for the day. A is confirmed; B is the likely second
+// herbal sample; C is the likely kids rinse. Kids alternates if C changes:
+// Berry Blast, Shirley Temple, Bomb Pop. Names and notes stay hidden until the reveal.
+export const SAMPLES: { code: string; name: string; territory: string; line: string; note: string }[] = [
+  { code: 'A', name: 'Immunity Mint', territory: 'botanical', line: 'Plant Powered Herbal Line', note: 'Ginger, lemon, peppermint' },
+  { code: 'B', name: 'Blossom Mint', territory: 'botanical', line: 'Plant Powered Herbal Line', note: 'Grapefruit, lavender, spearmint, wintergreen' },
+  { code: 'C', name: 'Mystery Flavor', territory: 'ladder', line: 'Kids Rinse', note: 'Apple, grape, cherry, strawberry, lemon' },
 ];
+export const SAMPLE_RANGE = SAMPLES.length > 1 ? `${SAMPLES[0].code} to ${SAMPLES[SAMPLES.length - 1].code}` : SAMPLES[0]?.code || '';
 export const WHO_CHIPS = ['Gen Z', 'Mild-seekers', 'Families', '55+', 'Dry mouth', 'International', 'Me'];
 
 export const MOLECULES = [
