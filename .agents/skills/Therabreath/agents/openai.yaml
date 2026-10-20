@@ -1,0 +1,6 @@
+interface:
+  display_name: "Therabreath"
+  short_description: "Repo-specific patterns and workflows for Therabreath"
+  default_prompt: "Use the Therabreath repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true

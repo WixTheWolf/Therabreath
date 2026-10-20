@@ -1,0 +1,351 @@
+# Instincts generated from https://github.com/WixTheWolf/Therabreath
+# Generated: 2026-06-22T20:25:54.206Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: Therabreath-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/WixTheWolf/Therabreath
+---
+
+# Therabreath Commit Length
+
+## Action
+
+Keep commit messages concise (~37 characters)
+
+## Evidence
+
+- Average commit message length: 37 chars
+- Based on 9 commits
+
+---
+id: Therabreath-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/WixTheWolf/Therabreath
+---
+
+# Therabreath Naming Files
+
+## Action
+
+Use snake_case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: snake_case
+
+---
+id: Therabreath-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/WixTheWolf/Therabreath
+---
+
+# Therabreath Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: Therabreath-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/WixTheWolf/Therabreath
+---
+
+# Therabreath Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: Therabreath-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/WixTheWolf/Therabreath
+---
+
+# Therabreath Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: Therabreath-workflow-update-workshop-site-content
+trigger: "when doing update workshop site content"
+confidence: 0.75
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/WixTheWolf/Therabreath
+---
+
+# Therabreath Workflow Update Workshop Site Content
+
+## Action
+
+Follow the update-workshop-site-content workflow:
+1. Edit index.html to update content, layout, or styling.
+2. Optionally update 404.html or README.md if changes affect site navigation or documentation.
+3. Commit the changes.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~5x per month
+- Files: index.html, 404.html, README.md
+
+---
+id: Therabreath-workflow-regenerate-or-update-booklet
+trigger: "when doing regenerate or update booklet"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/WixTheWolf/Therabreath
+---
+
+# Therabreath Workflow Regenerate Or Update Booklet
+
+## Action
+
+Follow the regenerate-or-update-booklet workflow:
+1. Edit build_booklet.py to change booklet generation logic or content.
+2. Regenerate dist/therabreath_capabilities_workshop_booklet.pdf.
+3. Update README.md if documentation changes.
+4. Commit the changes.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: build_booklet.py, dist/therabreath_capabilities_workshop_booklet.pdf, README.md
+
+---
+id: therabreath-instinct-file-naming
+trigger: "When creating a new file in the repository"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: WixTheWolf/Therabreath
+---
+
+# Therabreath Instinct File Naming
+
+## Action
+
+Name the file using snake_case format
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.files
+- Consistent with existing files
+
+---
+id: therabreath-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: WixTheWolf/Therabreath
+---
+
+# Therabreath Instinct Function Naming
+
+## Action
+
+Name the function using camelCase format
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.functions
+
+---
+id: therabreath-instinct-class-naming
+trigger: "When defining a new class"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: WixTheWolf/Therabreath
+---
+
+# Therabreath Instinct Class Naming
+
+## Action
+
+Name the class using PascalCase format
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.classes
+
+---
+id: therabreath-instinct-constant-naming
+trigger: "When defining a constant value"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: WixTheWolf/Therabreath
+---
+
+# Therabreath Instinct Constant Naming
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE format
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.constants
+
+---
+id: therabreath-instinct-import-style
+trigger: "When importing modules in Python files"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: WixTheWolf/Therabreath
+---
+
+# Therabreath Instinct Import Style
+
+## Action
+
+Use relative imports
+
+## Evidence
+
+- Pattern in codeStyle.importStyle
+
+---
+id: therabreath-instinct-export-style
+trigger: "When exporting functions or classes"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: WixTheWolf/Therabreath
+---
+
+# Therabreath Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in codeStyle.exportStyle
+
+---
+id: therabreath-instinct-test-location
+trigger: "When adding or updating tests"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: WixTheWolf/Therabreath
+---
+
+# Therabreath Instinct Test Location
+
+## Action
+
+Place test files in a separate directory from source code
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation
+
+---
+id: therabreath-instinct-commit-format
+trigger: "When writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: WixTheWolf/Therabreath
+---
+
+# Therabreath Instinct Commit Format
+
+## Action
+
+Use concise, imperative sentences without prefixes
+
+## Evidence
+
+- Seen in commits: 'Add Vercel static landing page', 'Refine TheraBreath booklet design'
+- Pattern in commits.type: freeform, no prefixes
+
+---
+id: therabreath-instinct-update-workshop-site-content
+trigger: "When someone wants to adjust the copy, layout, or branding of the main workshop site"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: WixTheWolf/Therabreath
+---
+
+# Therabreath Instinct Update Workshop Site Content
+
+## Action
+
+Edit index.html to update content, layout, or styling; optionally update 404.html or README.md if changes affect site navigation or documentation; commit the changes
+
+## Evidence
+
+- Workflow: update-workshop-site-content
+- Files involved: index.html, 404.html, README.md
+- Seen in commit examples: 'Refine workshop site typography and copy', 'Align workshop site with Therabreath brand voice'
+
+---
+id: therabreath-instinct-regenerate-update-booklet
+trigger: "When someone wants to update the workshop booklet's content or appearance"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: WixTheWolf/Therabreath
+---
+
+# Therabreath Instinct Regenerate Update Booklet
+
+## Action
+
+Edit build_booklet.py to change booklet generation logic or content; regenerate dist/therabreath_capabilities_workshop_booklet.pdf; update README.md if documentation changes; commit the changes
+
+## Evidence
+
+- Workflow: regenerate-or-update-booklet
+- Files involved: build_booklet.py, dist/therabreath_capabilities_workshop_booklet.pdf, README.md
+- Seen in commit examples: 'Refine TheraBreath booklet design', 'Replace booklet with minimal workshop site'
+
