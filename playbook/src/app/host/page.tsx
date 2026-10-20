@@ -3,15 +3,15 @@
 import { useState } from 'react';
 
 export default function Home() {
-  const [code, setCode] = useState('TB1109');
-  const c = code.toUpperCase().replace(/[^A-Z0-9]/g, '') || 'TB1109';
+  const [code, setCode] = useState('TB1109V2');
+  const c = code.toUpperCase().replace(/[^A-Z0-9]/g, '') || 'TB1109V2';
   return (
     <main className="home" data-theme="b">
       <div className="home-in">
         <div className="k">TheraBreath × The Flavor Factory · November 9, 2026</div>
         <h1 className="hero" style={{ fontSize: 120 }}>The Flavor<br /><span className="it">Playbook</span></h1>
         <label className="home-code"><span>Session code</span><input value={code} onChange={(e) => setCode(e.target.value)} maxLength={12} /></label>
-        <p className="home-note">Use <b>TB1109</b> on the day. Any other code is a clean rehearsal session.</p>
+        <p className="home-note">Use <b>TB1109V2</b> on the day. Any other code is a clean rehearsal session.</p>
         <div className="home-grid">
           <a href={`/stage/${c}`}><b>Stage</b><span>The room display. Full screen on the projector or LED.</span></a>
           <a href={`/console/${c}`}><b>Console</b><span>Matt and Ryan. Scenes, votes, timers, notes, simulator.</span></a>

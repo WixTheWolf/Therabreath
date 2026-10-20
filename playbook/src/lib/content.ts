@@ -127,6 +127,15 @@ export const TERRITORIES: Territory[] = [
   { id: 'ladder', n: 7, name: 'The Mint Ladder', hero: 'Sour Apple Chill', promise: 'A flavor journey that keeps families in TheraBreath for life, from first rinse to first job.', why: 'TheraBreath already wins kids with organic-flavored, dye-free rinses; the gap is the tween and teen years.', flavors: ['Kids: Strawberry Splash, Wacky Watermelon, Bubblegum Blast', 'Tween Bridge: Sour Apple Chill, Blue Raspberry Frost', 'Teen: Watermelon Mint, Black Currant Frost', 'Adult: Icy Mint'], signature: 'Sweetness steps down and cooling steps up with every rung.', who: 'Parents, kids 6 to 12, tweens and teens with braces.', fit: 'Proven today', fitNote: 'Kids flavors proven; tween flavors need engineering', palette: ['#F2677B', '#F4B860', '#BFE9F2'], warmth: 0.5, arc: ['Sour green apple', 'Gentle sweetness', 'A first real chill'], curve: [0.9, 0.5, 0.6], moment: 'The braces years', q: 'At what age should mint take over?', opts: ['9', '12', '15'], prof: [[2, 3.5, 2, 3.5, 3.5, 0, 1.5, 2.5, 2], [2.5, 3, 2, 3, 3, 0, 1, 3, 2.5], [3.5, 2, 1, 2, 2, 0, 1, 3, 3]], risk: 2, riskWhy: 'Fruit and sour notes need balancing; dye-free is already the rule.' },
 ];
 
+// Four primary platforms for the November 9 live workshop. Legacy worlds remain available in the exploration tools.
+const platform = (id: string, changes: Partial<Territory>): Territory => ({ ...TERRITORIES.find(t => t.id === id)!, ...changes });
+export const PRIMARY_TERRITORIES: Territory[] = [
+  platform('warmcool', { n: 1, name: 'Plant-Powered Freshness', hero: 'Ginger Lemon Mint + Blossom Mint', promise: 'Explore botanical freshness through citrus, herbs and the contrast of warmth and cool.', why: 'Ryan is developing two complementary herbal directions for this workshop.', flavors: ['Ginger, Lemon, Peppermint', 'Grapefruit, Lavender, Spearmint, Wintergreen'], signature: 'Bright citrus, aromatic herbs, a fresh mint finish. Sensory targets to evaluate.', who: 'Adults looking for a new botanical freshness experience.', fit: 'Screen first', fitNote: 'Development concepts. Base compatibility and final sample readiness to be confirmed by Ryan.', image: '/img/gingerlime.webp', arc: ['Bright citrus', 'Botanical character', 'Mint finish'], moment: 'Everyday discovery', q: 'Which botanical direction feels right for TheraBreath?', opts: ['Ginger citrus', 'Floral citrus', 'Both'] }),
+  platform('bright', { n: 2, name: 'Global Brightness', promise: 'Familiar citrus opens a door to new flavor experiences.', why: 'A proposed direction to discuss alongside the current lab work.', fit: 'Screen first', fitNote: 'Exploration concept; tasting availability is not yet confirmed.', q: 'Where can citrus take freshness beyond another mint?' }),
+  platform('botanical', { n: 3, name: 'Modern Clean', promise: 'Explore green, gentle freshness for people who find mouthwash too intense.', why: 'A proposed sensory direction, to be tested with consumers and in the intended base.', fit: 'Screen first', fitNote: 'Exploration concept; tasting availability is not yet confirmed.', q: 'Can gentle feel unmistakably fresh?' }),
+  platform('ladder', { n: 4, name: 'Next-Generation Kids', hero: 'Mystery Flavor', promise: 'Flavor makes the routine: playful discovery that invites curiosity.', why: 'Ryan is developing new kids rinse options. Mystery Flavor is the leading candidate.', flavors: ['Mystery Flavor', 'Berry Blast', 'Shirley Temple', 'Frozen-pop profile'], signature: 'A playful fruit blend; evaluate sweetness, finish and age-appropriate appeal.', who: 'Kids and families; consumer appeal remains a hypothesis.', fit: 'Screen first', fitNote: 'Mystery Flavor is most likely. Second kids sample to be selected with Ryan.', arc: ['Guess', 'Discover', 'Discuss'], moment: 'The daily routine', q: 'Could a recurring mystery flavor make the routine more engaging?', opts: ['Advance', 'Explore further', 'Not yet'] }),
+];
+
 // The freshness vocabulary: "Mint" is where it starts, not where it ends.
 export const VOCAB = [
   { w: 'Brightness', d: 'The lift of citrus and aromatic top notes.' }, { w: 'Cooling', d: 'Not a taste: a sensation on the mouth\'s cold receptors.' },
@@ -140,12 +149,9 @@ export const VOCAB = [
 ];
 
 export const SHIFTS = [
-  { a: 'Hygiene', b: 'Wellness', d: 'From a chore that prevents problems to a routine that makes people feel good.' },
-  { a: 'Generic mint', b: 'Composed flavor', d: 'Mint becomes one ingredient in a designed flavor, not the whole idea.' },
-  { a: 'Maximum burn', b: 'Chosen intensity', d: 'Stronger stops being the only proof that it\'s working.' },
-  { a: 'Functional rinse', b: 'Enjoyable ritual', d: 'When people enjoy a routine, they keep it.' },
-  { a: 'Domestic vocabulary', b: 'Global flavor culture', d: 'People know yuzu, matcha and cardamom from menus.' },
-  { a: 'One sensory cue', b: 'A designed experience', d: 'Cooling, brightness, tingle and finish, designed together over time.' },
+  { a: 'Generic mint', b: 'Composed flavor', d: 'A hypothesis to explore: mint can anchor citrus, herbs and botanical character.' },
+  { a: 'Maximum intensity', b: 'Chosen intensity', d: 'Explore whether gentler green profiles broaden the invitation to freshness.' },
+  { a: 'Daily chore', b: 'Enjoyable routine', d: 'Could playful flavor discovery make kids more interested in their routine? Test the idea.' },
 ];
 
 // The flavor clock: the same person wants a different freshness at 7 AM and at 10 PM.
@@ -167,15 +173,14 @@ export const DIALS = [
   { id: 'tingle', l: 'Tingle', lo: 'None', hi: 'Electric' },
 ];
 
-// The flight Ryan is making for the day. A is confirmed; B is the likely second
-// herbal sample; C is the likely kids rinse. Kids alternates if C changes:
-// Berry Blast, Shirley Temple, Bomb Pop. Names and notes stay hidden until the reveal.
-export const SAMPLES: { code: string; name: string; territory: string; line: string; note: string }[] = [
-  { code: 'A', name: 'Immunity Mint', territory: 'botanical', line: 'Plant Powered Herbal Line', note: 'Ginger, lemon, peppermint' },
-  { code: 'B', name: 'Blossom Mint', territory: 'botanical', line: 'Plant Powered Herbal Line', note: 'Grapefruit, lavender, spearmint, wintergreen' },
-  { code: 'C', name: 'Mystery Flavor', territory: 'ladder', line: 'Kids Rinse', note: 'Apple, grape, cherry, strawberry, lemon' },
+export const SAMPLES = [
+  { code: 'A', name: 'Ginger Lemon Mint', territory: 'warmcool', note: 'Ginger, Lemon, Peppermint', status: 'Lead development candidate' },
+  { code: 'B', name: 'Blossom Mint', territory: 'warmcool', note: 'Grapefruit, Lavender, Spearmint, Wintergreen', status: 'Possible second herbal sample' },
+  { code: 'C', name: 'Arctic Yuzu', territory: 'bright', note: 'Global citrus exploration', status: 'Proposed; sample availability to confirm' },
+  { code: 'D', name: 'Mystery Flavor', territory: 'ladder', note: 'Apple, Grape, Cherry, Strawberry, Lemon', status: 'Most likely kids sample' },
+  { code: 'E', name: 'Green Tea Cucumber', territory: 'botanical', note: 'Gentle green exploration', status: 'Proposed; sample availability to confirm' },
+  { code: 'F', name: 'Frozen-Pop Exploration', territory: 'ladder', note: 'Second kids direction; profile to confirm with Ryan', status: 'Proposed selection; Berry Blast and Shirley Temple remain alternatives' },
 ];
-export const SAMPLE_RANGE = SAMPLES.length > 1 ? `${SAMPLES[0].code} to ${SAMPLES[SAMPLES.length - 1].code}` : SAMPLES[0]?.code || '';
 export const WHO_CHIPS = ['Gen Z', 'Mild-seekers', 'Families', '55+', 'Dry mouth', 'International', 'Me'];
 
 export const MOLECULES = [
@@ -189,28 +194,17 @@ export const MOLECULES = [
 ];
 
 export const MISSIONS = [
-  { id: 'm1', title: 'Gen Z self-care ritualists × the pre-social moment', segment: 'Gen Z self-care ritualists', occasion: 'Before going out' },
-  { id: 'm2', title: 'Families × the kids-to-tween graduation (the braces years)', segment: 'Families and kids to tweens', occasion: 'The braces years' },
-  { id: 'm3', title: 'GLP-1 and 55+ consumers × all-day comfort and dry mouth', segment: 'GLP-1 and dry mouth', occasion: 'All day' },
+  { id: 'm1', title: 'Adults: advance a winning freshness direction', segment: 'Adults seeking new freshness experiences', occasion: 'A daily moment chosen by the team' },
+  { id: 'm2', title: 'Kids and families: make flavor part of the experience', segment: 'Kids and families', occasion: 'The daily oral-care routine' },
 ];
 
 export type Seed = { id: string; n: number; name: string; idea: string; territory: string; segment: string; occasion: string; format: string; horizon: 'Now' | 'Next' | 'Future'; incremental: string };
-export const SEEDS: Seed[] = [
-  { id: 's1', n: 1, name: 'Frosted Star Anise Mint', idea: 'A winter limited edition: warm, sweet star anise wrapped in cool mint frost.', territory: 'warmcool', segment: 'Adventurous adults', occasion: 'Holiday social season', format: 'Rinse and sachet', horizon: 'Now', incremental: 'Seasonal news that earns a display.' },
-  { id: 's2', n: 2, name: 'Spring Garden', idea: 'Cucumber, spearmint and green tea for a spring limited edition.', territory: 'botanical', segment: 'Wellness-minded adults', occasion: 'Spring', format: 'Rinse and toothpaste', horizon: 'Now', incremental: 'Recruits "mouthwash is too harsh" non-users.' },
-  { id: 's3', n: 3, name: 'Black Currant Frost', idea: 'Tart cassis, a green leaf note, an icy finish.', territory: 'fruit', segment: 'Mild-seekers and Gen Z', occasion: 'Every day', format: 'Rinse', horizon: 'Now', incremental: 'A fruit mint made for adults.' },
-  { id: 's4', n: 4, name: 'The Intensity Dial', idea: 'Make intensity a visible choice across the core mints, 1 to 4 frost marks from Extra Mild to Arctic.', territory: 'mint', segment: 'Everyone', occasion: 'Every day', format: 'Pack and naming system', horizon: 'Now', incremental: 'Turns "too strong" objections into trial.' },
-  { id: 's5', n: 5, name: 'Pocket Flight', idea: 'A sachet variety pack of four flavors for sampling, events and retailer exclusives.', territory: 'mint', segment: 'The unconverted 86%', occasion: 'On the go', format: 'Sachet', horizon: 'Now', incremental: 'The cheapest possible trial for the 86%.' },
-  { id: 's6', n: 6, name: 'Layer Your Fresh', idea: 'Named toothpaste and rinse pairings, borrowed from fragrance layering.', territory: 'mint', segment: 'Gen Z', occasion: 'Regimen', format: 'Paste plus rinse', horizon: 'Now', incremental: 'More items per household.' },
-  { id: 's7', n: 7, name: 'Morning Reset and Night Reset', idea: 'A day and night duo: bright citrus spearmint with a light tingle, and a calmer night signature.', territory: 'botanical', segment: 'Ritual builders', occasion: 'Wake-up and wind-down', format: 'Rinse duo', horizon: 'Next', incremental: 'Two occasions, two bottles.' },
-  { id: 's8', n: 8, name: 'Hydra Comfort', idea: 'Cucumber melon mint with a gently salivating tart edge, soft cooling and zero bitterness.', territory: 'botanical', segment: 'GLP-1 users, 55+, dry mouth', occasion: 'All day', format: 'Rinse, spray, lozenge', horizon: 'Next', incremental: 'A fast-growing group with a daily need. Benefit language set by C&D clinical and regulatory.' },
-  { id: 's9', n: 9, name: 'The Tween Bridge', idea: 'Dye-free Sour Apple Chill and Blue Raspberry Frost for ages 9 to 13 and the braces years.', territory: 'ladder', segment: 'Families', occasion: 'The braces years', format: 'Kids rinse and toothpaste', horizon: 'Next', incremental: 'Stops the drop-off between kids flavors and adult mint.' },
-  { id: 's10', n: 10, name: 'After-Coffee Reset', idea: 'A roasted cacao whisper, a sweet cream note and a brisk spearmint finish.', territory: 'night', segment: 'Commuters and office workers', occasion: 'After coffee', format: 'Sachet and strip', horizon: 'Next', incremental: 'A daily occasion no oral care brand owns.' },
-  { id: 's11', n: 11, name: 'Signature Cool', idea: 'A proprietary TheraBreath sensory signature: fast onset, long linger, no burn, in every format.', territory: 'mint', segment: 'Everyone', occasion: 'Every use', format: 'Platform', horizon: 'Future', incremental: 'TheraBreath feels like TheraBreath, the way a sonic logo sounds like a brand.' },
-  { id: 's12', n: 12, name: 'Passport Series', idea: 'Regional editions for priority international markets, and travel-inspired US drops.', territory: 'bright', segment: 'International consumers', occasion: 'Travel', format: 'Platform', horizon: 'Future', incremental: 'Growth in 50+ countries.' },
-  { id: 's13', n: 13, name: 'Collaboration Drops', idea: 'Flavor collaborations with culture partners, including Church & Dwight family crossovers [CONFIRM appetite].', territory: 'night', segment: 'Gen Z', occasion: 'Limited editions', format: 'Platform', horizon: 'Future', incremental: 'News, reach and trial.' },
-  { id: 's14', n: 14, name: 'Dessert, Then Fresh', idea: 'A limited collection, Toasted Coconut Mint and Cacao Mint, that starts indulgent and finishes clean.', territory: 'night', segment: 'Gen Z and young adults', occasion: 'Treat moments', format: 'Toothpaste and gum first', horizon: 'Future', incremental: 'A new reason to buy a second flavor.' },
-];
+export const SEEDS: Seed[] = SAMPLES.map((sample, i) => ({
+  id: 'workshop-' + sample.code, n: i + 1, name: sample.name, idea: sample.note,
+  territory: sample.territory, segment: sample.territory === 'ladder' ? 'Kids and families' : 'Adults',
+  occasion: 'To define together', format: sample.territory === 'ladder' ? 'Kids rinse' : 'Rinse',
+  horizon: 'Next', incremental: 'Workshop hypothesis: define the consumer, portfolio role and reason to believe.',
+}));
 
 export const SENSORY = ['Cooling onset', 'Cooling linger', 'Tingle', 'Gentle warmth', 'Salivating', 'Sparkle and fizz', 'Smooth mouthfeel', 'Aroma burst', 'Bitterness masking', 'Sugar-free sweetness', 'Long finish'];
 export const FORMATS = ['Rinse', 'Toothpaste', 'Sachet', 'Strip', 'Spray', 'Lozenge', 'Gum', 'Kids rinse'];
@@ -239,9 +233,9 @@ export const OCCASIONS = [
 ];
 
 export const NEXT_STEPS = [
-  { t: 'Playbook v1.0', d: 'Delivered within 8 business days.' },
-  { t: 'Prototypes', d: 'Development of the top 3 concepts in real TheraBreath bases.' },
-  { t: 'Next session', d: 'A follow-up Playbook session in January 2027.' },
+  { t: 'Choose three directions', d: 'Agree the consumer, occasion and sensory changes for each.' },
+  { t: 'Assign development briefs', d: 'Record a TFF owner, C&D reviewer, intended base and next sample action.' },
+  { t: 'Set the next review', d: 'Agree sample and evaluation dates together before leaving Princeton.' },
 ];
 
 // Freshness, designed: where the two worlds meet (site).
@@ -269,11 +263,14 @@ export const THINK = [
 
 // The morning, one line per act (pre-brief and site).
 export const AGENDA: [string, string][] = [
-  ['10:00', 'The film, and why freshness is bigger than mint'],
-  ['10:10', 'The Signals: what is changing'],
-  ['10:30', 'Flavor School, and a molecule flight'],
-  ['10:44', 'The Territories: seven worlds and a blind tasting'],
-  ['11:07', 'The Moments: teams build concepts, then engineer them on The Bench'],
-  ['11:41', 'The Playbook: what we do first, next and later'],
-  ['11:54', 'The Playbook you built, with your name on it'],
+  ['10:00', 'Opening film + the question: what should TheraBreath taste like next?'],
+  ['10:07', 'Three shifts that inform today’s concepts'],
+  ['10:20', 'Four opportunity platforms'],
+  ['10:30', 'Blind tasting + Mystery Flavor discovery'],
+  ['11:00', 'Interpret the results + prioritize platforms'],
+  ['11:15', 'Two teams build development concepts'],
+  ['11:35', 'Pitch + vote'],
+  ['11:47', 'Now / Next / Future + owners and next sample dates'],
+  ['11:57', 'The Flavor Playbook: what we take back to Norco'],
+  ['12:00', 'Workshop closes'],
 ];

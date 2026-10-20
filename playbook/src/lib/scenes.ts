@@ -20,7 +20,7 @@ export type Scene = { id: string; n: number; act: string; chapter: number; theme
 
 const W = (line?: string): RoomMode => ({ kind: 'watch', line });
 
-export const SCENES: Scene[] = [
+const SCENE_CATALOG: Scene[] = [
   { id: 'arrival', n: 0, act: 'Pre-show', chapter: -1, theme: 'b', builds: 0, title: 'Arrival', notes: 'Loop from 9:15. Names rise into the drop as people join. Invite everyone to scan the QR.', room: W('Welcome. We start at 10:00.') },
   { id: 'film', n: 0, act: 'Opening', chapter: -1, theme: 'b', builds: 0, title: 'The film', notes: 'Lights down, sound up. 30 seconds. Let it land before anyone speaks.', room: W('Eyes up. The film is starting.') },
   { id: 'title', n: 1, act: 'Opening', chapter: -1, theme: 'b', builds: 0, title: 'The Flavor Playbook', notes: 'Dan welcomes the room. Thank Ross for the invitation. Two hours, one document by noon.', room: W() },
@@ -43,7 +43,7 @@ export const SCENES: Scene[] = [
   { id: 'molecules', n: 22, act: 'Act II · Flavor School', chapter: 1, theme: 'b', builds: 13, title: 'Molecule flight', minutes: 2, notes: 'Hand out the vials. Phones guess the source before each reveal. Step through the seven molecules. [CONFIRM set with Alex]', room: { kind: 'guess' } },
   { id: 'map', n: 23, act: 'Act III · The Territory Flight', chapter: 1, theme: 'a', builds: 2, title: 'The map', minutes: 2, notes: 'Intensity by character. Our perspective, illustrative. The gentle, adventurous quadrant glows: this is where the next 86% live.', room: W() },
   ...[1, 2, 3, 4, 5, 6, 7].map((k): Scene => ({ id: `territory${k}`, n: 23 + k, act: 'Act III · The Territory Flight', chapter: 1, theme: k === 4 ? 'b' : 'a', builds: 1, title: `Territory ${k}`, minutes: 1.5, notes: 'Twenty seconds of world, then the card. Pass the aroma jar for this territory.', room: W('Territory ' + k + ' of 7') })),
-  { id: 'tasting', n: 31, act: 'Act III · The Territory Flight', chapter: 1, theme: 'b', builds: 2, title: 'Blind tasting', minutes: 8, notes: 'Samples A to C from Ryan: two Plant Powered Herbal Line rinses and one Kids Rinse. Phones score each. Watch the heat map fill. Step 2 reveals the names, flavor notes and who guessed the territory.', room: { kind: 'taste' } },
+  { id: 'tasting', n: 31, act: 'Act III · The Territory Flight', chapter: 1, theme: 'b', builds: 2, title: 'Blind tasting', minutes: 8, notes: 'Samples A to D. Phones score each. Watch the heat map fill. Step 2 reveals the names with the liquid flip.', room: { kind: 'taste' } },
   { id: 'chips', n: 32, act: 'Act III · The Territory Flight', chapter: 1, theme: 'a', builds: 1, title: 'Territory vote', minutes: 3, notes: 'Five chips each. Territories grow as chips land. Lock, then the ranking goes into Chapter 2.', room: { kind: 'chips', key: 'territories', total: 5, prompt: 'Place 5 chips on the territories you want in the Playbook.' } },
   { id: 'clock', n: 32, act: 'Act IV · Co-create', chapter: 2, theme: 'b', builds: 5, title: 'The flavor clock', minutes: 2, notes: 'The same person wants a different freshness at 7 AM and at 10 PM. Step through the five moments. Which moment is TheraBreath missing? The pre-work already told us.', room: W('The flavor clock') },
   { id: 'missions', n: 33, act: 'Act IV · Co-create', chapter: 2, theme: 'a', builds: 1, title: 'Mission briefing', minutes: 2, notes: 'Three mixed teams, C&D and TFF together. Phones pick a team. Missions can be changed on Console.', room: { kind: 'team' } },
@@ -60,7 +60,22 @@ export const SCENES: Scene[] = [
   { id: 'lunch', n: 43, act: 'Close', chapter: -1, theme: 'b', builds: 0, title: 'Lunch', notes: 'Ambient loop in the colors of the chosen territories.', room: { kind: 'thanks' } },
 ];
 
-SCENES.forEach((sc, i) => { sc.n = i; });
-
+const LIVE_ORDER = ['arrival', 'film', 'title', 'brief', 'shifts', 'map', 'territory1', 'territory2', 'territory3', 'territory4', 'tasting', 'chips', 'missions', 'canvas', 'pitches', 'dots', 'pipeline', 'assemble', 'next', 'lunch'];
+const LIVE_NOTES: Record<string, Partial<Scene>> = {
+  film: { notes: '10:00. Play the opening film, then ask: where does TheraBreath go next? Finish the opening by 10:07.' },
+  brief: { builds: 4, notes: 'One outcome: choose three directions and agree concrete development briefs. No company-history presentation.' },
+  shifts: { title: 'Three shifts', builds: 3, minutes: 13, notes: '10:07 to 10:20. Chosen intensity, composed flavor, enjoyable routine. Discuss hypotheses, not proven consumer demand.' },
+  map: { title: 'Four opportunity platforms', minutes: 2, notes: '10:20. Plant-Powered Freshness, Global Brightness, Modern Clean, Next-Generation Kids. Four questions, not seven lectures.' },
+  tasting: { minutes: 30, notes: '10:30 to 11:00. Proposed A to F flight; Ryan must confirm final availability and base before rehearsal. Score only samples served. Reserve D for Mystery Flavor: collect fruit guesses before step 2 reveals the blend. Rinse and pause between samples. These are workshop reactions, not consumer validation.' },
+  chips: { minutes: 15, title: 'Interpret + prioritize', notes: '11:00 to 11:15. Discuss appeal, brand fit, newness and audience. Then place five chips across the four platforms. What changes would make the best ideas advance?' },
+  missions: { minutes: 5, notes: '11:15. Two mixed teams. One adult freshness mission and one kids/family mission. Start from today’s tasting results.' },
+  canvas: { minutes: 15, notes: '11:20 to 11:35. One concept per team. Specify the consumer, occasion, sensory target and reason to add it to the portfolio.' },
+  pitches: { builds: 1, minutes: 8, notes: '11:35. Two teams, four minutes each. Describe who it is for, why TheraBreath, and what should change in the next sample.' },
+  dots: { minutes: 4, notes: '11:43. Vote to select approximately three directions for development.' },
+  pipeline: { minutes: 10, notes: '11:47 to 11:57. Agree Now / Next / Future. For each priority, record TFF owner, C&D reviewer, base, next sample action and evaluation date in the commitment fields.' },
+  assemble: { minutes: 1, notes: '11:57. The Playbook built together in Princeton. Review the chosen directions.' },
+  next: { minutes: 2, notes: '11:58 to noon. Read back the owners, sample actions and dates. Here is what we are taking back to Norco.' },
+};
+export const SCENES: Scene[] = LIVE_ORDER.map((id, n) => ({ ...SCENE_CATALOG.find(s => s.id === id)!, ...LIVE_NOTES[id], ...(id.startsWith('territory') ? { title: ['Plant-Powered Freshness', 'Global Brightness', 'Modern Clean', 'Next-Generation Kids'][Number(id.slice(-1)) - 1], notes: '10:20 to 10:30. Introduce the platform question in two minutes. Keep sample names and profiles for the tasting reveal.', room: W('Opportunity platform ' + id.slice(-1) + ' of 4') } : {}), n }));
 export const sceneIndex = (id: string) => SCENES.findIndex((s) => s.id === id);
-export const EXECUTIVE = ['thesis', 'gap', 'portfolio', 'market', 'signalvote', 'chips', 'dots', 'next'];
+export const EXECUTIVE = ['title', 'map', 'tasting', 'chips', 'pipeline', 'next'];

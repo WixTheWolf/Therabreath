@@ -4,7 +4,7 @@ import { SCENES } from './scenes';
 export type Ev = { id: string; seq?: number; t: number; kind: string; pid?: string; data?: any };
 
 export type Participant = { pid: string; name: string; role?: string; team?: number; joined: number; sim?: boolean; paper?: boolean };
-export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string; guess?: string };
+export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string; guess?: string; fruitGuess?: string; advance?: string };
 export type Dials = Record<string, number>;
 export type Bench = { dials: Record<string, Dials>; base?: string; overrides: Record<string, { value: string; note?: string }>; locked?: Dials };
 export type Concept = { id: string; team: number; slot: number; name: string; segment: string; occasion: string; first: string; heart: string; finish: string; sensation: string[]; format: string; incremental: string; why: string; horizon: string; suggestions: { pid: string; text: string }[] };
@@ -20,6 +20,7 @@ export type SessionState = {
   missions: string[]; // mission id per team (index 0..2)
   placements: Record<string, Placement>; // concept or seed id -> placement
   reactions: Record<string, Record<string, { v: string; text?: string }>>; // target -> pid -> reaction
+  commitments: Record<string, { owner?: string; reviewer?: string; base?: string; action?: string; date?: string }>;
   calendar: Record<string, string>; // concept id -> season
   bench: Record<string, Bench>; // team -> bench
   survey: Record<string, { name: string; consumer?: string; moment?: string; veto?: string; profile?: Record<string, number> }>;
@@ -31,7 +32,7 @@ export type SessionState = {
 
 export const initialState = (): SessionState => ({
   scene: 0, step: 0, participants: {}, votes: {}, ratings: {}, guesses: {}, concepts: {},
-  missions: ['m1', 'm2', 'm3'], placements: {}, reactions: {}, calendar: {}, bench: {}, survey: {},
+  missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {},
   timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, paper: false, blank: false, sound: false, lastEvent: 0,
 });
 
@@ -46,13 +47,14 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'goto': s.scene = Math.max(0, Math.min(SCENES.length - 1, d.scene)); s.step = Math.max(0, Math.min(SCENES[s.scene].builds, d.step || 0)); s.spotlight = null; break;
     case 'vote': { const v = vote(s, d.key); if (d.action === 'open') { v.open = true; v.locked = false; } if (d.action === 'lock') { v.open = false; v.locked = true; } if (d.action === 'reveal') { v.revealed = true; v.open = false; v.locked = true; } if (d.action === 'reset') s.votes[d.key] = { open: false, locked: false, revealed: false, picks: {} }; break; }
     case 'pick': { const v = vote(s, d.key); if (!v.locked || d.paper) v.picks[e.pid!] = d.value; break; }
-    case 'rate': (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess }; break;
+    case 'rate': (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess, fruitGuess: d.fruitGuess, advance: d.advance }; break;
     case 'guess': (s.guesses[d.molecule] ||= {})[e.pid!] = d.answer; break;
     case 'concept': { const id = `t${d.team}-${d.slot || 1}`; s.concepts[id] = { ...(s.concepts[id] || { suggestions: [] }), ...d.fields, id, team: d.team, slot: d.slot || 1 }; break; }
     case 'suggest': { const id = `t${d.team}-${d.slot || 1}`; const c = s.concepts[id] || ({ id, team: d.team, slot: d.slot || 1, suggestions: [] } as any); c.suggestions = [...(c.suggestions || []), { pid: e.pid!, text: String(d.text).slice(0, 140) }]; s.concepts[id] = c; break; }
     case 'mission': s.missions[d.team - 1] = d.mission; break;
     case 'place': if (d.horizon) s.placements[d.ref] = { horizon: d.horizon, role: d.role || 'Expanders', t: e.t }; else delete s.placements[d.ref]; break;
     case 'react': (s.reactions[d.target] ||= {})[e.pid!] = { v: d.value, text: d.text }; break;
+    case 'commitment': s.commitments[d.ref] = { ...(s.commitments[d.ref] || {}), ...d.fields }; break;
     case 'season': if (d.season) s.calendar[d.ref] = d.season; else delete s.calendar[d.ref]; break;
     case 'dial': { const b = (s.bench[d.team] ||= { dials: {}, overrides: {} }); b.dials[e.pid!] = d.dials; break; }
     case 'benchbase': { const b = (s.bench[d.team] ||= { dials: {}, overrides: {} }); b.base = d.base; break; }

@@ -90,7 +90,7 @@ export function Vocab({ step }: SceneProps) {
 export function Shifts({ step }: SceneProps) {
   return (
     <div className="pad shifts">
-      <Enter i={0}><div className="k">Act I · Six shifts in how people think about fresh</div></Enter>
+      <Enter i={0}><div className="k">Act I · Three shifts in how people think about fresh</div></Enter>
       <Enter i={1}><h2 className="h2">Oral care is changing <span className="it">what it means to be fresh.</span></h2></Enter>
       <div className="shift-grid">
         {SHIFTS.map((x, i) => (

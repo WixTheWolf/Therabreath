@@ -134,9 +134,8 @@ Each territory gets:
 
 Passport (regional editions) becomes the "travel" lens on Territory 2 and a Future-horizon platform, so the flight stays at seven worlds.
 
-### 6.3 The blind tasting: Ryan's samples
-Plant Powered Herbal Line: A · Immunity Mint (ginger, lemon, peppermint), confirmed · B · Blossom Mint (grapefruit, lavender, spearmint, wintergreen), likely.
-Brand-New Kids Rinse: C · Mystery Flavor (apple, grape, cherry, strawberry, lemon), most likely. Alternates: Berry Blast, Shirley Temple, Bomb Pop.
+### 6.3 The blind tasting: four samples
+A · Frosted Star Anise Mint · B · Black Currant Frost · C · Spring Garden (cucumber, spearmint, green tea) · D · Glacier Spearmint Extra Mild.
 
 [CONFIRM with Alex which four can be made in a representative base by the date, and the dispensing plan: cups, order and palate cleansers.]
 
