@@ -120,7 +120,7 @@ function Taste({ s, me, p, step }: P) {
       <div className="rm-tabs">{SAMPLES.map((x) => <button key={x.code} className={(cur === x.code ? 'on' : '') + (done(x.code) ? ' done' : '')} onClick={() => setCur(x.code)}>{x.code}</button>)}</div>
       <h2 className="h3">Sample {cur}{step >= 2 ? <span className="it"> · {SAMPLES.find((x) => x.code === cur)!.name}</span> : null}</h2>
       {step >= 2 && <p>{SAMPLES.find(x => x.code === cur)?.note}</p>}
-      {cur === 'D' && step < 2 && <label>What fruit notes do you recognize?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Write your guesses before the reveal" /></label>}
+      {cur === 'C' && step < 2 && <label>What fruit notes do you recognize?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Write your guesses before the reveal" /></label>}
       <Scale label="Appeal" v={r.appeal} set={(n) => setR({ ...r, appeal: n })} />
       <Scale label="Feels like TheraBreath" v={r.feels} set={(n) => setR({ ...r, feels: n })} />
       <Scale label="Newness" v={r.newness} set={(n) => setR({ ...r, newness: n })} />

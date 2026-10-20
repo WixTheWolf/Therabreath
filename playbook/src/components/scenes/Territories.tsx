@@ -109,11 +109,11 @@ export function Tasting({ s, step }: SceneProps) {
   const rows = SAMPLES.map((x) => { const g = Object.values(s.ratings[x.code] || {}).map((r) => r.guess).filter(Boolean); return { ...x, sum: tasteSummary(s, x.code), guessN: g.length, right: g.filter((v) => v === x.territory).length }; });
   const metrics: ['appeal' | 'feels' | 'newness', string][] = [['appeal', 'Appeal'], ['feels', 'Feels like TheraBreath'], ['newness', 'Newness']];
   const cell = (v: number) => { const a = Math.max(0, Math.min(1, (v - 1) / 4)); return { background: `color-mix(in oklab, var(--accent) ${Math.round(a * 85)}%, transparent)`, opacity: v ? 1 : 0.35 }; };
-  const mysteryGuesses = Object.values(s.ratings.D || {}).map(r => r.fruitGuess).filter(Boolean);
+  const mysteryGuesses = Object.values(s.ratings.C || {}).map(r => r.fruitGuess).filter(Boolean);
   const words = rows.flatMap((r) => r.sum.words.map((w) => ({ w, code: r.code })));
   return (
     <div className="pad tasting">
-      <Enter i={0}><div className="k">Blind tasting · proposed samples A to F · {Math.max(0, ...rows.map((r) => r.sum.n))} tasters</div></Enter>
+      <Enter i={0}><div className="k">Blind tasting · samples A to D · {Math.max(0, ...rows.map((r) => r.sum.n))} tasters</div></Enter>
       <Enter i={1}><h2 className="h2">Taste first. <span className="it">Names later.</span></h2></Enter>
       <div className="heat">
         <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}<span>Who is it for</span></div>
