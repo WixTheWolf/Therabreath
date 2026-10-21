@@ -34,15 +34,17 @@ export function Climb({ step }: SceneProps) {
 // 7. The gap: 65 vs 14. The empty space fills with light.
 const GLASS_CAM = { pos: [0, 1.3, 10.8], target: [0, 0.98, 0], fov: 24, shift: [0.36, 0.0] };
 export function Gap({ step }: SceneProps) {
-  const [t0] = useState(() => performance.now());
+  // The labels count up with the glasses, from the glasses' first drawn frame.
+  const [t0, setT0] = useState(0);
   const ease = (x: number) => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
   const [lab, setLab] = useState([0, 0]);
-  useEffect(() => { let r = 0; const f = () => { const t = (performance.now() - t0) / 1000; setLab([Math.round(65 * ease((t - 0.4) / 2.6)), Math.round(14 * ease((t - 0.4) / 2.6))]); if (t < 3.2) r = requestAnimationFrame(f); }; r = requestAnimationFrame(f); return () => cancelAnimationFrame(r); }, [t0]);
+  useEffect(() => { const id = setTimeout(() => setT0((v) => v || performance.now()), 8000); return () => clearTimeout(id); }, []);
+  useEffect(() => { if (!t0) return; let r = 0; const f = () => { const t = (performance.now() - t0) / 1000; setLab([Math.round(65 * ease((t - 0.4) / 2.6)), Math.round(14 * ease((t - 0.4) / 2.6))]); if (t < 3.2) r = requestAnimationFrame(f); }; r = requestAnimationFrame(f); return () => cancelAnimationFrame(r); }, [t0]);
   const [x0, y0] = project([-0.95, 0, 0.9], GLASS_CAM), [x1, y1] = project([0.95, 0, 0.9], GLASS_CAM), [tx, ty] = project([1.61, 1.55, 0], GLASS_CAM);
   const stepRef = step;
   return (
     <>
-      <Light scene="glasses" theme="a" camera={GLASS_CAM} frame={(t) => ({ fill: [Math.max(0.001, 0.65 * ease((t - 0.4) / 2.6)), Math.max(0.001, 0.14 * ease((t - 0.4) / 2.6))], glow: stepRef >= 1 ? 1 : 0 })} />
+      <Light scene="glasses" theme="a" camera={GLASS_CAM} frame={(t) => ({ fill: [Math.max(0.001, 0.65 * ease((t - 0.4) / 2.6)), Math.max(0.001, 0.14 * ease((t - 0.4) / 2.6))], glow: stepRef >= 1 ? 1 : 0 })} onStart={() => setT0(performance.now())} />
       <div className="gap-copy">
         <div className="k">The gap · household penetration</div>
         <R b={1} step={step}><h1 className="h1"><span className="it">86</span> of every 100 US households have not met TheraBreath yet.</h1></R>

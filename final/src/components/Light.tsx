@@ -15,12 +15,15 @@ type Props = {
   quality?: number;
   still?: boolean;
   extra?: any;
+  onStart?: () => void; // called on the first drawn frame
 };
 
-export default function Light({ scene, theme, camera, width = 1920, height = 1080, frame, className, style, fallback, quality = 0.75, still, extra }: Props) {
+export default function Light({ scene, theme, camera, width = 1920, height = 1080, frame, className, style, fallback, quality = 0.75, still, extra, onStart }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef(frame);
   frameRef.current = frame;
+  const startRef = useRef(onStart);
+  startRef.current = onStart;
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -28,26 +31,49 @@ export default function Light({ scene, theme, camera, width = 1920, height = 108
     let scale = quality;
     const size = () => { c.width = Math.round(width * scale); c.height = Math.round(height * scale); };
     size();
+    // Hidden until the first frame lands: the program compiles in the background, and an undrawn canvas is black.
+    c.style.opacity = '0';
     let L: any;
     try { L = createLight(c, { scene, theme, camera, ...(extra || {}) }); } catch { setFailed(true); return; }
-    let raf = 0, t0 = performance.now(), last = t0, slow = 0, fast = 0;
+    let raf = 0, t0 = 0, last = 0, slow = 0, fast = 0, shown = false;
     const loop = (now: number) => {
-      const dt = now - last; last = now;
-      if (dt > 45) { slow++; fast = 0; } else if (dt < 20) { fast++; slow = 0; }
-      if (slow > 20 && scale > 0.35) { scale = Math.max(0.35, scale * 0.8); size(); L = createLight(c, { scene, theme, camera, ...(extra || {}) }); slow = 0; }
-      if (fast > 240 && scale < quality) { scale = Math.min(quality, scale * 1.15); size(); L = createLight(c, { scene, theme, camera, ...(extra || {}) }); fast = 0; }
-      const t = (now - t0) / 1000;
-      L.render(t, { strips: 1, ...(frameRef.current?.(t) || {}) });
-      if (!still) raf = requestAnimationFrame(loop);
+      let drawn = false;
+      try { drawn = L.render(t0 ? (now - t0) / 1000 : 0, { strips: 1, ...(frameRef.current?.(t0 ? (now - t0) / 1000 : 0) || {}) }); } catch { setFailed(true); return; }
+      if (drawn) {
+        // The scene's clock starts on the first real frame, so fills and builds are not skipped while compiling.
+        if (!t0) { t0 = now; last = now; }
+        if (!shown) { shown = true; c.style.transition = 'opacity .5s ease'; c.style.opacity = '1'; startRef.current?.(); }
+        const dt = now - last; last = now;
+        if (dt > 45) { slow++; fast = 0; } else if (dt < 20) { fast++; slow = 0; }
+        // Resizing keeps the same program; render() reads the new size every frame.
+        if (slow > 20 && scale > 0.35) { scale = Math.max(0.35, scale * 0.8); size(); slow = 0; }
+        if (fast > 240 && scale < quality) { scale = Math.min(quality, scale * 1.15); size(); fast = 0; }
+        if (still) return;
+      }
+      raf = requestAnimationFrame(loop);
     };
     const vis = () => { cancelAnimationFrame(raf); if (document.visibilityState === 'visible') raf = requestAnimationFrame(loop); };
     raf = requestAnimationFrame(loop);
     document.addEventListener('visibilitychange', vis);
-    return () => { cancelAnimationFrame(raf); document.removeEventListener('visibilitychange', vis); };
+    return () => { cancelAnimationFrame(raf); document.removeEventListener('visibilitychange', vis); (L?.gl?.getExtension('WEBGL_lose_context') as any)?.loseContext(); };
   }, [scene, theme, width, height, quality, still, JSON.stringify(camera), JSON.stringify(extra)]);
 
   if (failed && fallback) return <img src={fallback} alt="" className={className} style={{ width, height, objectFit: 'cover', ...style }} />;
   return <canvas ref={ref} className={className} style={{ width, height, display: 'block', ...style }} />;
+}
+
+// Compile both light programs once, off screen and in the background, when the Stage opens. The GPU process
+// caches compiled programs, so the drop and the glasses appear at once later instead of compiling on a key press.
+export function prewarmLight() {
+  for (const scene of ['drop', 'glasses'] as const) {
+    try {
+      const c = document.createElement('canvas'); c.width = 8; c.height = 8;
+      const L: any = createLight(c, { scene, theme: 'a', camera: {} });
+      const done = () => (L.gl.getExtension('WEBGL_lose_context') as any)?.loseContext();
+      const poll = () => { try { if (L.render(0, { strips: 1 })) return done(); } catch { return done(); } setTimeout(poll, 250); };
+      setTimeout(poll, 250);
+    } catch {}
+  }
 }
 
 // Project a world point to stage pixels, matching the shader camera.

@@ -6,6 +6,7 @@ import { SCENES } from '@/lib/scenes';
 import { CHAPTERS } from '@/lib/content';
 import { SCENE_VIEWS } from './scenes';
 import ConsolePanel from './ConsolePanel';
+import { prewarmLight } from './Light';
 
 export type Ctx = { code: string; k: string; joinUrl: string; origin: string };
 
@@ -28,6 +29,7 @@ export default function StageApp({ code, k, withConsole }: { code: string; k: st
   const scene = SCENES[s.scene];
   const [origin, setOrigin] = useState('');
   useEffect(() => setOrigin(location.origin), []);
+  useEffect(() => { const id = setTimeout(prewarmLight, 1500); return () => clearTimeout(id); }, []);
   const ctx: Ctx = useMemo(() => ({ code, k, origin, joinUrl: `${origin}/j/${code}?k=${k}` }), [code, k, origin]);
 
   // keyboard: arrows and space step through builds and scenes; B blanks; F full screen

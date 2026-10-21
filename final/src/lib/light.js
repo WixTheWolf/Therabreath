@@ -451,14 +451,12 @@ void main(){
 }
 `;
 
+// Compile without asking for the status: asking blocks until the driver finishes, which on some
+// Windows GPUs takes seconds for these shaders. The status is read once the program reports ready.
 function compile(gl, type, src) {
   const s = gl.createShader(type);
   gl.shaderSource(s, src);
   gl.compileShader(s);
-  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-    const log = gl.getShaderInfoLog(s);
-    throw new Error('shader: ' + log);
-  }
   return s;
 }
 
@@ -471,17 +469,31 @@ export function createLight(canvas, cfg) {
   const gl = canvas.getContext('webgl2', { antialias: false, preserveDrawingBuffer: true, premultipliedAlpha: false, alpha: false });
   if (!gl) throw new Error('WebGL2 unavailable');
   const prog = gl.createProgram();
-  gl.attachShader(prog, compile(gl, gl.VERTEX_SHADER, VERT));
-  gl.attachShader(prog, compile(gl, gl.FRAGMENT_SHADER, cfg.scene === 'glasses' ? GLASSES : DROP));
+  const vs = compile(gl, gl.VERTEX_SHADER, VERT), fs = compile(gl, gl.FRAGMENT_SHADER, cfg.scene === 'glasses' ? GLASSES : DROP);
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
   gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
-  gl.useProgram(prog);
-  const buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-  const loc = gl.getAttribLocation(prog, 'aPos');
-  gl.enableVertexAttribArray(loc);
-  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  // KHR_parallel_shader_compile lets the driver build the program off the main thread; we poll it from render().
+  const par = gl.getExtension('KHR_parallel_shader_compile');
+  let ok = false;
+  function setup() {
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error('shader: ' + (gl.getShaderInfoLog(fs) || gl.getShaderInfoLog(vs) || gl.getProgramInfoLog(prog)));
+    gl.useProgram(prog);
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'aPos');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    setStatic();
+    ok = true;
+  }
+  function ready() {
+    if (ok) return true;
+    if (par && !gl.getProgramParameter(prog, par.COMPLETION_STATUS_KHR)) return false;
+    setup();
+    return true;
+  }
   const U = (n) => gl.getUniformLocation(prog, n);
   const f1 = (n, v) => { const l = U(n); if (l) gl.uniform1f(l, v); };
   const f2 = (n, v) => { const l = U(n); if (l) gl.uniform2fv(l, v); };
@@ -525,8 +537,11 @@ export function createLight(canvas, cfg) {
   }
   const state = {};
 
+  // Returns false until the program is ready, so callers can keep the canvas hidden until the first frame.
   function render(time = 0, opts = {}) {
+    if (!ready()) return false;
     gl.viewport(0, 0, canvas.width, canvas.height);
+    f2('uRes', [canvas.width, canvas.height]);
     f1('uTime', time);
     if (cfg.scene === 'glasses') {
       const g = state.glass; const fill = opts.fill || g.fill;
@@ -547,9 +562,11 @@ export function createLight(canvas, cfg) {
     for (let i = 0; i < strips; i++) {
       gl.scissor(0, i * hh, canvas.width, hh);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-      gl.finish();
+      // Strips keep one draw short on slow GPUs; a single strip needs no wait, so the main thread stays free.
+      if (strips > 1) gl.finish();
     }
     gl.disable(gl.SCISSOR_TEST);
+    return true;
   }
 
   // world point to CSS pixels (top left origin), matching the shader camera
@@ -564,6 +581,5 @@ export function createLight(canvas, cfg) {
     return [(nx + 1) / 2 * cssW, (1 - (ny + 1) / 2) * cssH];
   }
 
-  setStatic();
-  return { render, project, gl };
+  return { render, project, ready, gl };
 }

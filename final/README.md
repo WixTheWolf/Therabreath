@@ -54,7 +54,7 @@ Executive mode (Console) cuts the run to the gap, the signal vote, the tasting, 
 
 Every interaction is an event in one log, folded into session state (`src/lib/state.ts`).
 
-- **Store:** Postgres through the Supabase Vercel integration (`POSTGRES_URL`). Without it the app falls back to memory on one server instance, which is only for local rehearsal. Connect the integration to this project before November 9.
+- **Store:** the `flavor-playbook` Supabase project (`fof_events`), reached through the key-checked database functions `fof_list` and `fof_append`. The table has RLS on with no policies, so the public key alone cannot read or write it. A wipe is a `wipe` event, not a deletion. A `POSTGRES_URL` takes precedence if one is set; `STORE=memory` forces the in-memory store for local tests.
 - **Realtime:** polling always runs; Supabase Realtime (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`) makes cross-screen updates faster when it is configured.
 - **Offline:** phone taps queue locally and send when the connection returns.
 - **Password:** the built-in password hash is the same as the Playbook's; `PLAYBOOK_PASSWORD` overrides it. THE FLAVOR RACE film and its poster sit behind the password, since the film premieres in the room.

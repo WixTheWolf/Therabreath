@@ -5,6 +5,7 @@
 // so nothing tapped during a network drop is lost.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Ev, fold, uid } from './state';
+import { SUPABASE_URL, SUPABASE_KEY } from './supabase';
 
 type Opts = { k?: string; admin?: boolean; interval?: number };
 const OUTBOX = (code: string) => `pb-outbox-${code}`;
@@ -92,7 +93,7 @@ export function useSession(code: string, opts: Opts = {}) {
   // Supabase Realtime: subscribe once the server tells us the topic.
   const topic = (status as any).topic as string | undefined;
   useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL, key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const url = SUPABASE_URL, key = SUPABASE_KEY;
     if (!url || !key || !topic) return;
     let ch: any, client: any;
     import('@supabase/supabase-js').then(({ createClient }) => {

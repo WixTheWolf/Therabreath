@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { list, append, storeKind } from '@/lib/server/store';
 import { nudge } from '@/lib/server/broadcast';
+import { SUPABASE_URL } from '@/lib/supabase';
 import { isAuthed, joinToken, COOKIE } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
@@ -14,7 +15,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ code
   if (!authed && k !== (await joinToken(code))) return NextResponse.json({ error: 'forbidden' }, { status: 403 });
   const after = Number(req.nextUrl.searchParams.get('after') || 0);
   const events = await list(code, after);
-  return NextResponse.json({ events, store: storeKind(), topic: 'pb-' + (await joinToken(code)), realtime: !!process.env.NEXT_PUBLIC_SUPABASE_URL }, { headers: { 'Cache-Control': 'no-store' } });
+  return NextResponse.json({ events, store: storeKind(), topic: 'pb-' + (await joinToken(code)), realtime: !!SUPABASE_URL }, { headers: { 'Cache-Control': 'no-store' } });
 }
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ code: string }> }) {
