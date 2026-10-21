@@ -270,9 +270,12 @@ P('05_PRE_TURBINE_RIVAL_V1', T('rivaleng', 0.0), -20, lpf=2800, until=T('rivalaw
 P(sub_boom(1.6, 56, 30, 0.25, 0.6), T('rivaleng', 0.3), -17, tag='rival full thrust')
 P('09_RACE_RIVAL_PASS_V1', T('rivalaway', 0.6), -19, align='peak', lpf=3000, pan=0.4, tag='the rival pulls away')
 P(whoosh(2.2, 1400, 300, q=0.8, seed=98), T('rivalaway', 0.9), -24, width=1.3, panauto=[(T('rivalaway', 0.9), 0.2), (T('rivalaway', 2.9), 0.7)], tag='into the distance')
-# TheraBreath's warning light: a small worried alarm, the thrust sagging, a hull creak
-P('x4_alarm', T('warn', 0.15), -25, rate=0.84, lpf=2400, fi=0.03, loop=True, until=T('warn', 3.6), fo=0.4, space=True, tag='warning')
-P('12_FAIL_HULL_STRAIN_V1', T('warn', 1.0), -30, lpf=2000, fo=0.6, env='hull', send=-10)
+# the alarm: first the 1960s room's red beacon (its room tone back under it), then TheraBreath's own warning light: a
+# small worried alarm, the thrust sagging, a hull creak. The alarm leads over the beacon and settles on the hull light.
+P('04_CONTROL_ROOMTONE_V1', T('warn', -0.02), -22, norm='rms', fi=0.04, loop=True, hpf=60, until=T('warnlight', 0.02), fo=0.05, tag='the room again')
+P('x4_alarm', T('warn', 0.15), -25, rate=0.84, lpf=2400, fi=0.03, loop=True, until=T('warn', 3.6), fo=0.4, space=True, tag='warning',
+  auto=[(T('warn'), 14), (T('warnlight', -0.05), 14), (T('warnlight', 0.35), 2)])
+P('12_FAIL_HULL_STRAIN_V1', T('warnlight', 0.08), -30, lpf=2000, fo=0.6, env='hull', send=-10)
 P('08_SPACE_METAL_TICKS_V1', T('warn', 2.5), -31, hpf=1500, fo=0.3, env='hull', send=-12)
 
 # ---------------------------------------------------------------- IV. DISCOVERY

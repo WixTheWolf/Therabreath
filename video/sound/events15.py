@@ -11,6 +11,7 @@ PRESS = T('transferbtn', 0.55)    # FLAVOR TRANSFER READY
 MUSIC_AUTO = [
     (0.0, 0),
     (T('ignite', 0.2), -5), (T('crowd', -0.05), -5), (T('crowd', 0.1), -7), (T('erupt', -0.02), -7), (T('erupt', 0.08), 0),   # the eruption and the people lead; the score takes over as both clear the pad
+    (T('warn', -0.05), 0), (T('warn', 0.1), -5), (T('warnlight'), -5), (T('warnlight', 0.4), 0),   # the beacon's alarm reads
     (T('yuzu', 0.0), 0), (T('yuzu', 0.08), -2), (T('yuzu', 0.9), 0),         # the citrus split reads
     (DRIP - 0.1, 0), (DRIP, -3), (DRIP + 0.9, 0),                             # one drop in the lab
     (PRESS - 0.1, 0), (PRESS, -3), (PRESS + 0.8, 0),                          # the press
