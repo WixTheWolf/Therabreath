@@ -223,6 +223,17 @@ export const SENSORY = ['Cooling onset', 'Cooling linger', 'Tingle', 'Gentle war
 export const FORMATS = ['Rinse', 'Toothpaste', 'Sachet', 'Strip', 'Spray', 'Lozenge', 'Gum', 'Kids rinse'];
 export const SEGMENTS = ['The unconverted 86%', 'Mild-seekers', 'Gen Z self-care ritualists', 'Families and kids to tweens', '55+ longevity seekers', 'GLP-1 and dry mouth', 'Hispanic households', 'International consumers'];
 // No launch years: the room sets the sequence, C&D sets the calendar.
+// White space: the moments of the day by the consumers in the pre-work. TheraBreath's presence today is our read, to challenge in the room:
+// the morning and bedtime rinse for every consumer (the sink), and the dry mouth lozenge on the go. Everything else is open.
+export const WHITESPACE = {
+  moments: SURVEY.moment.options,
+  segments: SURVEY.consumer.options,
+  sink: ['Wake-up', 'Wind-down'],
+  extra: [['GLP-1 and dry mouth', 'On the go']] as [string, string][],
+  today: (segment: string, moment: string) => ['Wake-up', 'Wind-down'].includes(moment) || (segment === 'GLP-1 and dry mouth' && moment === 'On the go'),
+  read: 'Our read of where TheraBreath is present today, to challenge: the morning and bedtime rinse, and the dry mouth lozenge on the go.',
+};
+
 export const HORIZONS = [{ id: 'Now', label: 'Now', when: 'The next sample round' }, { id: 'Next', label: 'Next', when: 'After the first results' }, { id: 'Future', label: 'Later', when: 'Platforms to keep exploring' }];
 export const ROLES = [
   { id: 'Core', job: 'The always-on mints. Retain and carry the clinical claims.' },
@@ -279,11 +290,12 @@ export const THINK = [
 export const AGENDA: [string, string][] = [
   ['10:00', 'A short film, then your brief, your homework and one thesis'],
   ['10:10', 'Chapter 1 · The Signals: the growth math, the shelf, seven sourced signals, and you pick three'],
-  ['10:23', 'Flavor School: how cooling works and how flavor survives OXYD-8'],
-  ['10:31', 'Chapter 2 · The Territories: four platforms, then a blind tasting made in your bases'],
-  ['10:51', 'Loyal users and new consumers: where each sample lands'],
-  ['10:57', 'Chapter 3 · The Concepts: two teams build, tune on The Bench, pitch and vote'],
-  ['11:27', 'Chapter 4 · The Pipeline: Now, Next, Later, with owners and dates'],
-  ['11:37', 'The Flavor Playbook assembles, with your names on the cover'],
+  ['10:23', 'The white space: moments of the day by the consumers you named, from your own pre-work'],
+  ['10:26', 'Flavor School: how cooling works and how flavor survives OXYD-8'],
+  ['10:34', 'Chapter 2 · The Territories: four platforms, then a blind tasting made in your bases'],
+  ['10:54', 'Loyal users and new consumers: where each sample lands'],
+  ['11:00', 'Chapter 3 · The Concepts: two teams build, tune on The Bench, pitch and vote'],
+  ['11:30', 'Chapter 4 · The Pipeline: Now, Next, Later, with owners and dates'],
+  ['11:40', 'The Flavor Playbook assembles, with your names on the cover'],
   ['12:00', 'Lunch'],
 ];

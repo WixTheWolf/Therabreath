@@ -698,3 +698,31 @@
 .mc-q .k { display: block; margin-bottom: 6px; }
 .title-note { margin-top: 34px; font: 400 24px/1.4 var(--sans); color: var(--fg2); }
 .cloud sup { font-size: .5em; margin-left: 6px; color: var(--accent); font-style: normal; }
+
+/* White space: moments by consumers. */
+.wsp-head { position: relative; height: 120px; }
+.wsp-h { position: absolute; left: 0; top: 0; opacity: 0; transform: translateY(14px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.wsp-h.on { opacity: 1; transform: none; }
+.wsp-grid { position: absolute; left: 120px; top: 330px; width: 1180px; display: grid; grid-template-columns: 290px repeat(var(--cols), 1fr); grid-auto-rows: 58px; gap: 6px 6px; align-items: end; }
+.wsp-corner { height: 100%; }
+.wsp-col { position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 6px; height: 100%; padding: 0 2px 4px; font: 400 15px/1.15 var(--sans); color: var(--fg2); transition: color .6s; }
+.wsp-col i { display: block; width: 100%; height: 0; border-radius: 6px 6px 0 0; background: linear-gradient(0deg, var(--accent-soft), var(--accent)); transition: height .9s var(--ease); }
+.wsp-col .num, .wsp-row .num { font-size: 18px; color: var(--accent); }
+.wsp-col.top, .wsp-row.top { color: var(--fg); }
+.wsp-row { position: relative; display: flex; align-items: center; gap: 10px; height: 100%; padding-right: 14px; font: 400 17px/1.15 var(--sans); color: var(--fg2); transition: color .6s; }
+.wsp-row i { position: absolute; left: 0; bottom: 2px; height: 3px; width: 0; max-width: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent-soft), var(--accent)); transition: width .9s var(--ease); }
+.wsp-row span { flex: 1; }
+.wsp-cell { height: 100%; border-radius: 10px; border: 1px solid var(--rule); background: var(--panel2); transition: background .7s var(--ease), border-color .7s var(--ease), box-shadow .7s var(--ease), transform .7s var(--ease); transition-delay: calc(var(--i) * 6ms); }
+.wsp-cell.today { background: linear-gradient(135deg, var(--glacier), var(--accent)); border-color: transparent; }
+.wsp-cell.warm { border-color: rgba(244,184,96,.55); background: rgba(244,184,96,.10); }
+.wsp-cell.hot { background: radial-gradient(circle at 40% 35%, rgba(255,230,180,.95), rgba(244,184,96,.75) 60%, rgba(244,184,96,.55)); border-color: #F4B860; box-shadow: 0 0 40px rgba(244,184,96,.55); transform: scale(1.04); animation: pulseGlow 1.8s ease-in-out infinite; }
+.wsp-side { position: absolute; left: 1360px; right: 120px; top: 340px; display: flex; flex-direction: column; gap: 22px; }
+.wsp-note { display: grid; grid-template-columns: 22px 1fr; gap: 14px; align-items: start; font: 400 21px/1.4 var(--sans); color: var(--fg2); }
+.wsp-note i { width: 22px; height: 22px; border-radius: 6px; margin-top: 4px; }
+.wsp-note i.today { background: linear-gradient(135deg, var(--glacier), var(--accent)); }
+.wsp-note i.vote { background: var(--accent-soft); border: 2px solid var(--accent); box-sizing: border-box; }
+.wsp-note i.hot { background: #F4B860; box-shadow: 0 0 18px rgba(244,184,96,.6); }
+.wsp-note.hot { color: var(--fg); font: 300 28px/1.3 var(--serif); }
+.wsp-note.hot b { font-style: italic; font-weight: 300; }
+.wsp-obj { margin-top: 10px; padding: 22px 24px; border-radius: 18px; background: var(--panel2); border: 1px solid var(--rule); }
+.wsp-obj p { font: 300 24px/1.3 var(--serif); margin-top: 8px; }

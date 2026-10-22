@@ -37,6 +37,7 @@ const SCENE_CATALOG: Scene[] = [
   { id: 'shifts', n: 9, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 6, title: 'Six shifts', minutes: 2, notes: 'Each step flips one shift. Ask the room which one TheraBreath is already leading.', room: W('Six shifts') },
   ...[1, 2, 3, 4, 5, 6, 7].map((k): Scene => ({ id: `signal${k}`, n: 9 + k, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 2, title: `Signal ${k}`, minutes: 1.5, notes: 'Motion first, then the still for discussion. Read the headline, then the two proofs, then "so what".', room: W('Signal ' + k + ' of 7') })),
   { id: 'signalvote', n: 17, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 1, title: 'Live vote: three signals', minutes: 3, notes: 'Open the vote on Console. Pick the three signals that matter most. Lock, then reveal: the top three pulse and lock into Chapter 1.', room: { kind: 'pick', key: 'signals', max: 3, prompt: 'Pick the 3 signals that matter most for TheraBreath.' } },
+  { id: 'whitespace', n: 17, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 3, title: 'The white space', minutes: 3, notes: 'Moments across, consumers down. Build 1: where TheraBreath lives today (the sink, morning and night). Build 2: the room\'s pre-work answers. Build 3: the white space where their top moment and top consumer meet. Our read, to challenge.', room: W('White space') },
   { id: 'school', n: 18, act: 'Act II · Flavor School', chapter: 1, theme: 'b', builds: 3, title: 'What flavor really is', minutes: 2, notes: 'Alex leads. Taste on the tongue, aroma through the nose (including from the back of the mouth), feel through the trigeminal nerve. [CONFIRM wording with Alex]', room: W('Flavor School') },
   { id: 'cooling', n: 19, act: 'Act II · Flavor School', chapter: 1, theme: 'b', builds: 3, title: 'How cool works', minutes: 2, notes: 'Cooling has two jobs: the first impression and the last. Curves are illustrative. [CONFIRM with Alex]', room: W('Flavor School') },
   { id: 'oxyd', n: 20, act: 'Act II · Flavor School', chapter: 1, theme: 'b', builds: 3, title: 'Flavor in an oxidizing world', minutes: 2, notes: 'OXYD-8 is tough on odor-causing bacteria, which makes it a demanding home for flavor. Three levers. We don\'t just make it taste good. We make it survive. No formula details. [CONFIRM all copy with Alex]', room: W('Flavor School') },
@@ -64,12 +65,12 @@ const SCENE_CATALOG: Scene[] = [
 
 // FINAL run of show: Ross's four objectives as four chapters, the real samples at the center, a hard stop at noon.
 // Presenters: Dan opens and closes, Alex the market and share, Ryan Flavor School, the tasting and the Bench, Matt facilitates.
-// 28 scenes, about 95 minutes of content and 15 minutes of slack before the hard stop at noon.
+// 29 scenes, about 98 minutes of content and 12 minutes of slack before the hard stop at noon.
 // Cut from the first draft: the share line (folded into the gap), the portfolio constellation, seven separate signal scenes
 // (now one scene with seven builds), four platform scenes (now a build on the map), and the Flavor Code (it stays in the Playbook).
 const LIVE_ORDER = [
   'arrival', 'film', 'title', 'july', 'brief', 'prework', 'thesis',
-  'gap', 'market', 'signals', 'signalvote',
+  'gap', 'market', 'signals', 'signalvote', 'whitespace',
   'school', 'cooling', 'oxyd', 'anatomy', 'map', 'tasting', 'matrix', 'chips',
   'missions', 'canvas', 'bench', 'pitches', 'dots',
   'pipeline', 'assemble', 'next', 'lunch',
@@ -86,22 +87,23 @@ const LIVE_NOTES: Record<string, Partial<Scene>> = {
   market: { notes: '10:13. Alex. Factual and neutral: the shelf is now a flavor shelf, one limited edition at a time. The last build is the turn: TheraBreath started ahead of this race (alcohol-free, dye-free, OXYD-8, a kids line on shelf). The question is what keeps it ahead.' },
   signals: { minutes: 5, notes: '10:15 to 10:20. Alex. One scene, seven builds, about forty seconds each: the headline, two proofs, the so what. Ask which one surprises the R&D team. Do not read every proof aloud.' },
   signalvote: { notes: '10:20 to 10:23. Open the vote on Console. Three signals each. Lock, reveal, and the top three go into Chapter 1.' },
-  school: { notes: '10:23. Ryan. Taste on the tongue, aroma through the nose (including from the back of the mouth), feel through the trigeminal nerve. [CONFIRM wording with Ryan]' },
-  cooling: { notes: '10:25. Ryan. Cooling has two jobs: the first impression and the last. The curves are illustrative, for teaching.' },
-  oxyd: { minutes: 3, notes: '10:27. Ryan. The R&D moment. OXYD-8 is tough on odor-causing bacteria, which makes it a demanding home for flavor. Three levers. Public chemistry only, no formula details. [CONFIRM copy with Ryan]' },
-  anatomy: { minutes: 1, notes: '10:30. First impression, heart, finish, linger. However adventurous it starts, it must finish fresh.' },
-  map: { title: 'Four opportunity platforms', minutes: 4, notes: '10:31 to 10:35. Four platforms on the intensity by character map. Our perspective, illustrative. The gentle, adventurous corner is our hypothesis for where new consumers come in. Build 3 brings up the four platform cards: two carry today\'s samples, two are discussed on screen. One question per platform. Keep sample names for the reveal.' },
-  tasting: { minutes: 16, notes: '10:35 to 10:51. Ryan. A and B in the Fresh Breath base, C and D in the Kids base [CONFIRM with Ryan]. Phones score each sample. C is the mystery: collect fruit guesses before step 2 reveals the names. Rinse and pause between samples. Workshop reactions, not consumer validation.' },
-  matrix: { notes: '10:51. Ross asked for both: strengthen appeal with loyal users, and attract new consumers. Feels like TheraBreath runs across, newness runs up, appeal is size. Top right is where to develop first.' },
-  chips: { title: 'Platform vote', notes: '10:54. Five chips across the four platforms. Lock, then the ranking goes into Chapter 2.' },
-  missions: { notes: '10:57. Two mixed teams, C&D and TFF together: one adult mission, one kids and family mission. Start from the tasting results.' },
-  canvas: { minutes: 12, notes: '10:59 to 11:11. Start the 12-minute glass. One captain per team types; the others suggest. One concept per team: consumer, occasion, sensory target, why it is incremental.' },
-  bench: { builds: 1, minutes: 7, notes: '11:11 to 11:18. Ryan. Each team tunes its concept on six dials. The readouts are our starting read, from public literature; the room\'s read goes on top, and Ryan can override any line from Console. Lock the signature before pitches.' },
-  pitches: { builds: 1, minutes: 6, notes: '11:18 to 11:24. Two to three minutes per team. Who it is for, why only TheraBreath, what changes in the next sample.' },
-  dots: { minutes: 3, notes: '11:24. Three dots each. Dots rain onto the posters; the top concepts lock into Chapter 3.' },
-  pipeline: { minutes: 10, notes: '11:27 to 11:37. Place the directions on Now, Next, Later and a portfolio role. For each priority record the TFF owner, C&D reviewer, base, next sample action and evaluation date.' },
-  assemble: { notes: '11:37. The signature moment. Let the Playbook assemble and close on the cover with their names. The Flavor Code is in the document; it is not presented.' },
-  next: { minutes: 5, notes: '11:40 to 11:45. Read back owners, sample actions and dates. Playbook v1.0 within 8 business days. Dan closes: thank you for building this with us. Fifteen minutes of slack before noon. [CONFIRM dates]' },
+  whitespace: { notes: '10:23 to 10:26. Alex, then the room. Eight moments across, eight consumers down. TheraBreath lives at the sink: morning and night, plus the dry mouth lozenge on the go. Build 2 shows their own pre-work answers; build 3 lights the white space where the top moment meets the top consumer. Ask: is that the first direction, or a trap? This is objective 04\'s "white space", on one screen.' },
+  school: { notes: '10:26. Ryan. Taste on the tongue, aroma through the nose (including from the back of the mouth), feel through the trigeminal nerve. [CONFIRM wording with Ryan]' },
+  cooling: { notes: '10:28. Ryan. Cooling has two jobs: the first impression and the last. The curves are illustrative, for teaching.' },
+  oxyd: { minutes: 3, notes: '10:30. Ryan. The R&D moment. OXYD-8 is tough on odor-causing bacteria, which makes it a demanding home for flavor. Three levers. Public chemistry only, no formula details. [CONFIRM copy with Ryan]' },
+  anatomy: { minutes: 1, notes: '10:33. First impression, heart, finish, linger. However adventurous it starts, it must finish fresh.' },
+  map: { title: 'Four opportunity platforms', minutes: 4, notes: '10:34 to 10:38. Four platforms on the intensity by character map. Our perspective, illustrative. The gentle, adventurous corner is our hypothesis for where new consumers come in. Build 3 brings up the four platform cards: two carry today\'s samples, two are discussed on screen. One question per platform. Keep sample names for the reveal.' },
+  tasting: { minutes: 16, notes: '10:38 to 10:54. Ryan. A and B in the Fresh Breath base, C and D in the Kids base [CONFIRM with Ryan]. Phones score each sample. C is the mystery: collect fruit guesses before step 2 reveals the names. Rinse and pause between samples. Workshop reactions, not consumer validation.' },
+  matrix: { notes: '10:54. Ross asked for both: strengthen appeal with loyal users, and attract new consumers. Feels like TheraBreath runs across, newness runs up, appeal is size. Top right is where to develop first.' },
+  chips: { title: 'Platform vote', notes: '10:57. Five chips across the four platforms. Lock, then the ranking goes into Chapter 2.' },
+  missions: { notes: '11:00. Two mixed teams, C&D and TFF together: one adult mission, one kids and family mission. Start from the tasting results.' },
+  canvas: { minutes: 12, notes: '11:02 to 11:14. Start the 12-minute glass. One captain per team types; the others suggest. One concept per team: consumer, occasion, sensory target, why it is incremental.' },
+  bench: { builds: 1, minutes: 7, notes: '11:14 to 11:21. Ryan. Each team tunes its concept on six dials. The readouts are our starting read, from public literature; the room\'s read goes on top, and Ryan can override any line from Console. Lock the signature before pitches.' },
+  pitches: { builds: 1, minutes: 6, notes: '11:21 to 11:27. Two to three minutes per team. Who it is for, why only TheraBreath, what changes in the next sample.' },
+  dots: { minutes: 3, notes: '11:27. Three dots each. Dots rain onto the posters; the top concepts lock into Chapter 3.' },
+  pipeline: { minutes: 10, notes: '11:30 to 11:40. Place the directions on Now, Next, Later and a portfolio role. For each priority record the TFF owner, C&D reviewer, base, next sample action and evaluation date.' },
+  assemble: { notes: '11:40. The signature moment. Let the Playbook assemble and close on the cover with their names. The Flavor Code is in the document; it is not presented.' },
+  next: { minutes: 5, notes: '11:43 to 11:48. Read back owners, sample actions and dates. Playbook v1.0 within 8 business days. Dan closes: thank you for building this with us. Twelve minutes of slack before noon. [CONFIRM dates]' },
   lunch: { notes: '12:00. Hard stop. The room is ours through lunch; the loop runs in the colors they chose.' },
 };
 const PLATFORM_NAMES = ['Plant-Powered Freshness', 'Global Brightness', 'Modern Clean', 'Next-Generation Kids'];

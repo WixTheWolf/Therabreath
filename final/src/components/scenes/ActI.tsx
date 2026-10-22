@@ -1,8 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Light, { project } from '../Light';
 import { R, Enter, SceneProps, Src, clean } from './ui';
-import { CLIMB, GAP, PORTFOLIO, MARKET, SIGNALS, SOURCES } from '@/lib/content';
+import { CLIMB, GAP, PORTFOLIO, MARKET, SIGNALS, SOURCES, WHITESPACE, OBJECTIVES } from '@/lib/content';
 import { tallyPick, ranked } from '@/lib/state';
 
 // 6. The climb: a share line that draws itself.
@@ -188,6 +188,55 @@ export function SignalVote({ s, step }: SceneProps) {
         })}
       </div>
       {revealed && <div className="lock-note"><span className="k">Locked into Chapter 1</span></div>}
+    </div>
+  );
+}
+
+// White space: eight moments across, eight consumers down. Build 1 fills where TheraBreath lives today (the sink, morning and
+// night, plus the dry mouth lozenge on the go). Build 2 brings in the room's own pre-work answers as bars on the moments and
+// the consumers. Build 3 lights the open cells where the room's top moment and top consumer meet: the white space.
+export function WhiteSpace({ s, step }: SceneProps) {
+  const answers = Object.values(s.survey);
+  const count = (key: 'consumer' | 'moment') => { const t: Record<string, number> = {}; answers.forEach((a) => a[key] && (t[a[key]!] = (t[a[key]!] || 0) + 1)); return t; };
+  const mom = count('moment'), seg = count('consumer');
+  const topMom = ranked(mom).slice(0, 2).map((x) => x[0]), topSeg = ranked(seg).slice(0, 2).map((x) => x[0]);
+  const maxM = Math.max(1, ...Object.values(mom)), maxS = Math.max(1, ...Object.values(seg));
+  const voted = answers.length > 0;
+  const hot = (sg: string, m: string) => step >= 3 && !WHITESPACE.today(sg, m) && (voted ? topMom.includes(m) && topSeg.includes(sg) : !['Wake-up', 'Wind-down'].includes(m));
+  const warm = (sg: string, m: string) => step >= 3 && !WHITESPACE.today(sg, m) && voted && (topMom.includes(m) || topSeg.includes(sg));
+  const lead = voted && topSeg[0] && topMom[0] ? `${topSeg[0]} · ${topMom[0]}` : 'the day between the sinks';
+  return (
+    <div className="pad wsp">
+      <Enter i={0}><div className="k">White space · moments of the day by the consumers you named · our read, to challenge</div></Enter>
+      <div className="wsp-head">
+        <div className={'wsp-h' + (step < 3 ? ' on' : '')}><h2 className="h2">Where does TheraBreath <span className="it">live today?</span></h2></div>
+        <div className={'wsp-h' + (step >= 3 ? ' on' : '')}><h2 className="h2">The day happens <span className="it">between the sinks.</span></h2></div>
+      </div>
+      <div className="wsp-grid" style={{ ['--cols' as any]: WHITESPACE.moments.length }}>
+        <div className="wsp-corner" />
+        {WHITESPACE.moments.map((m) => (
+          <div key={m} className={'wsp-col' + (step >= 2 && topMom.includes(m) ? ' top' : '')}>
+            <i style={{ height: step >= 2 ? `${((mom[m] || 0) / maxM) * 44}px` : 0 }} />
+            <span>{m}</span>{step >= 2 && mom[m] ? <b className="num">{mom[m]}</b> : null}
+          </div>
+        ))}
+        {WHITESPACE.segments.map((sg, r) => (
+          <React.Fragment key={sg}>
+            <div className={'wsp-row' + (step >= 2 && topSeg.includes(sg) ? ' top' : '')}><span>{sg}</span>{step >= 2 && seg[sg] ? <b className="num">{seg[sg]}</b> : null}<i style={{ width: step >= 2 ? `${((seg[sg] || 0) / maxS) * 100}%` : 0 }} /></div>
+            {WHITESPACE.moments.map((m, c) => {
+              const today = WHITESPACE.today(sg, m);
+              return <div key={m} className={'wsp-cell' + (step >= 1 && today ? ' today' : '') + (hot(sg, m) ? ' hot' : warm(sg, m) ? ' warm' : '')} style={{ ['--i' as any]: r * WHITESPACE.moments.length + c }} />;
+            })}
+          </React.Fragment>
+        ))}
+      </div>
+      <div className="wsp-side">
+        <R b={1} step={step} className="wsp-note"><i className="today" /><span>Where TheraBreath is today: the sink, morning and night, and the dry mouth lozenge on the go.</span></R>
+        <R b={2} step={step} className="wsp-note"><i className="vote" /><span>{voted ? `${answers.length} pre-work answers: the consumer you most want to win, and the moment you say is missing.` : 'The room\u2019s pre-work answers land here: the consumer to win, the moment that is missing.'}</span></R>
+        <R b={3} step={step} className="wsp-note hot"><i className="hot" /><span>White space: <b>{lead}</b>. No TheraBreath flavor built for it yet.</span></R>
+        <R b={3} step={step} className="wsp-obj"><span className="k">Your objective 04</span><p>{OBJECTIVES[3].ask}</p></R>
+      </div>
+      <div className="src stage-src" style={{ position: 'absolute', left: 120, bottom: 118 }}>{WHITESPACE.read} Pre-work answers from this room.</div>
     </div>
   );
 }
