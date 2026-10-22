@@ -13,22 +13,18 @@ import { FlavorRaceV9, RACE9_FRAMES } from "./FlavorRaceV9";
 import { FlavorRaceV10, RACE10_FRAMES } from "./FlavorRaceV10";
 import { FlavorRaceV11, RACE11_FRAMES } from "./FlavorRaceV11";
 import { FlavorRaceV12, RACE12_FRAMES } from "./FlavorRaceV12";
-import { FlavorRaceV13, RACE13_FRAMES } from "./FlavorRaceV13";
-import { FlavorRaceV12_1, RACE12_1_FRAMES } from "./FlavorRaceV12_1";
-import { FlavorRaceV12_2, RACE12_2_FRAMES } from "./FlavorRaceV12_2";
-import { FlavorRaceV14, RACE14_FRAMES } from "./FlavorRaceV14";
-import { FlavorRaceV15, RACE15_FRAMES } from "./FlavorRaceV15";
-import { FlavorRaceFrame, FlavorRaceFrame15, FlavorRaceGraphics, FlavorRaceGraphicsV14, FlavorRaceGraphicsV15, GRAPHICS14_FRAMES, GRAPHICS15_FRAMES, GRAPHICS_FRAMES } from "./FlavorRaceGraphics";
 import { FlavorTrailerV9, TRAILER9_FRAMES } from "./FlavorTrailerV9";
 import { FlavorTrailerBlueSky, TRAILER_BLUESKY_FRAMES } from "./FlavorTrailerBlueSky";
 import { FlavorTrailer, TRAILER_FRAMES } from "./FlavorTrailer";
 import { MissionNext, MISSION_FRAMES } from "./MissionNext";
 import { FutureOfFreshness, FOF_FRAMES, FutureOfFreshnessLoop, FOF_LOOP_FRAMES } from "./FutureOfFreshness";
 import { FutureOfFreshnessV2, FOF2_FRAMES, FutureOfFreshnessV2Loop, FOF2_LOOP_FRAMES } from "./FutureOfFreshnessV2";
+import { FutureOfFreshnessV3, FOF3_FRAMES } from "./FutureOfFreshnessV3";
 import "./index.css";
 
 export const RemotionRoot: React.FC = () => (
   <>
+    <Composition id="FutureOfFreshnessV3" component={FutureOfFreshnessV3} durationInFrames={FOF3_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="FutureOfFreshnessV2" component={FutureOfFreshnessV2} durationInFrames={FOF2_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="FutureOfFreshnessV2Loop" component={FutureOfFreshnessV2Loop} durationInFrames={FOF2_LOOP_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="FutureOfFreshness" component={FutureOfFreshness} durationInFrames={FOF_FRAMES} fps={30} width={1920} height={1080} />
@@ -46,16 +42,6 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="FlavorRaceV10" component={FlavorRaceV10} durationInFrames={RACE10_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
     <Composition id="FlavorRaceV11" component={FlavorRaceV11} durationInFrames={RACE11_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
     <Composition id="FlavorRaceV12" component={FlavorRaceV12} durationInFrames={RACE12_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
-    <Composition id="FlavorRaceV13" component={FlavorRaceV13} durationInFrames={RACE13_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
-    <Composition id="FlavorRaceV12-1" component={FlavorRaceV12_1} durationInFrames={RACE12_1_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
-    <Composition id="FlavorRaceV12-2" component={FlavorRaceV12_2} durationInFrames={RACE12_2_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
-    <Composition id="FlavorRaceV14" component={FlavorRaceV14} durationInFrames={RACE14_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
-    <Composition id="FlavorRaceV15" component={FlavorRaceV15} durationInFrames={RACE15_FRAMES} fps={24} width={1920} height={1080} />
-    <Composition id="FlavorRaceGraphics" component={FlavorRaceGraphics} durationInFrames={GRAPHICS_FRAMES} fps={30} width={1920} height={1080} />
-    <Composition id="FlavorRaceGraphicsV14" component={FlavorRaceGraphicsV14} durationInFrames={GRAPHICS14_FRAMES} fps={30} width={1920} height={1080} />
-    <Composition id="FlavorRaceFrame" component={FlavorRaceFrame} durationInFrames={1} fps={30} width={1920} height={1080} />
-    <Composition id="FlavorRaceGraphicsV15" component={FlavorRaceGraphicsV15} durationInFrames={GRAPHICS15_FRAMES} fps={24} width={1920} height={1080} />
-    <Composition id="FlavorRaceFrame15" component={FlavorRaceFrame15} durationInFrames={1} fps={24} width={1920} height={1080} />
     <Composition id="FlavorTrailerV9" component={FlavorTrailerV9} durationInFrames={TRAILER9_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
     <Composition id="FlavorTrailerBlueSky" component={FlavorTrailerBlueSky} durationInFrames={TRAILER_BLUESKY_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
     <Composition id="MissionNext" component={MissionNext} durationInFrames={MISSION_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
