@@ -1,11 +1,13 @@
 import React from "react";
-import { AbsoluteFill, continueRender, delayRender, Easing, Img, interpolate, spring, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, continueRender, delayRender, Easing, Img, interpolate, OffthreadVideo, Sequence, spring, staticFile, useCurrentFrame } from "remotion";
 import voWordsRaw from "../public/fof4/vo_words.json";
 import linesRaw from "../public/fof4/lines.json";
 
 /* The Future of Freshness, V4 (88 seconds).
-   Fun and informative. No generated footage: everything on screen is drawn and animated here, in the palette of the
-   site (Cloud Dancer, ink, teal, and the four platform colors). A bright voice tells the story; the words on screen land
+   Fun and informative. The story is drawn and animated here, in the palette of the site (Cloud Dancer, ink, teal, and
+   the four platform colors); the generated footage from V2 and V3 comes back as windows at the sensory beats (the ice
+   that sweeps the burn away, the Norco lab, frost and bubbles in Flavor School, the four worlds inside the platform
+   circles, the real cups) and as the crown splash under the title. A bright voice tells the story; the words on screen land
    on the words she says (timings from the transcript in public/fof4/vo_words.json, lines placed by lines.json).
    Chapters: the burn, the want, the math (100 houses), hello, Norco, Ross's ask, November 9, Signals, Flavor School,
    Territories, four blind cups, Concepts, Pipeline, the Playbook, the title. Blind: no sample names or ingredients.
@@ -139,7 +141,7 @@ const tokenize = (text: string): Tok[] => {
     return tok;
   });
 };
-const Say: React.FC<{ text: string; after: number; out?: number; size?: number; weight?: number; style?: React.CSSProperties; align?: "left" | "center"; accent?: string; hiAt?: number[]; hiColors?: string[]; width?: number }> = ({ text, after, out, size = 64, weight = 300, style, align = "left", accent = TEAL, hiAt = [], hiColors = [ICE, GOLD], width }) => {
+const Say: React.FC<{ text: string; after: number; out?: number; size?: number; weight?: number; style?: React.CSSProperties; align?: "left" | "center"; accent?: string; hiAt?: number[]; hiColors?: string[]; width?: number; color?: string }> = ({ text, after, out, size = 64, weight = 300, style, align = "left", accent = TEAL, hiAt = [], hiColors = [ICE, GOLD], width, color }) => {
   const t = useT();
   if (t < after - 0.05) return null;
   const toks = tokenize(text);
@@ -147,7 +149,7 @@ const Say: React.FC<{ text: string; after: number; out?: number; size?: number; 
   const e = exitP(t, out, 0.3);
   if (e >= 1) return null;
   return (
-    <div style={{ position: "absolute", ...serif(size, weight), textAlign: align, width, opacity: 1 - e, transform: `translateY(${-e * 26}px)`, ...style }}>
+    <div style={{ position: "absolute", ...serif(size, weight), ...(color ? { color } : {}), textAlign: align, width, opacity: 1 - e, transform: `translateY(${-e * 26}px)`, ...style }}>
       {toks.map((tk, i) => {
         if (tk.br) return <br key={i} />;
         const t0 = times[i];
@@ -231,11 +233,6 @@ const Flame: React.FC<{ t: number; size?: number }> = ({ t, size = 300 }) => {
     </svg>
   );
 };
-const Wave: React.FC<{ width: number; color: string; amp?: number; period?: number; phase?: number; h?: number }> = ({ width, color, amp = 18, period = 140, phase = 0, h = 120 }) => {
-  const pts: string[] = [];
-  for (let x = 0; x <= width; x += 10) pts.push(`${x} ${h / 2 + amp * Math.sin((x / period) * Math.PI * 2 + phase)}`);
-  return <svg width={width} height={h} viewBox={`0 0 ${width} ${h}`}><path d={`M${pts.join(" L")} L${width} ${h} L0 ${h} Z`} fill={color} /></svg>;
-};
 const Snowflake: React.FC<{ size?: number; color?: string }> = ({ size = 70, color = TEAL }) => (
   <svg width={size} height={size} viewBox="-50 -50 100 100">
     {[0, 60, 120].map((a) => (
@@ -315,14 +312,6 @@ const Clock: React.FC<{ t: number; at: number; from: number; to: number; dur?: n
     </svg>
   );
 };
-const Beaker: React.FC<{ color: string; level: number; t: number; w?: number }> = ({ color, level, t, w = 120 }) => (
-  <svg width={w} height={w * 1.3} viewBox="0 0 100 130">
-    <path d="M30 6 V44 L8 108 a10 10 0 0 0 9 14 H83 a10 10 0 0 0 9 -14 L70 44 V6" fill="#fff" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-    <path d={`M${30 - (100 - level * 100) * 0.2} ${122 - level * 78} H${70 + (100 - level * 100) * 0.2} L89 112 a6 6 0 0 1 -6 6 H17 a6 6 0 0 1 -6 -6 Z`} fill={color} opacity={0.9} />
-    {[0, 1, 2].map((i) => { const p = ((t * 0.6 + i * 0.37) % 1); return <circle key={i} cx={38 + i * 12 + 4 * Math.sin(t * 3 + i)} cy={116 - p * 60} r={3 + i} fill="#fff" opacity={0.8 * (1 - p)} />; })}
-    <line x1={22} y1={6} x2={78} y2={6} stroke={INK} strokeWidth={3} strokeLinecap="round" />
-  </svg>
-);
 const Envelope: React.FC<{ open: number; w?: number }> = ({ open, w = 520 }) => {
   const h = w * 0.62;
   return (
@@ -364,6 +353,27 @@ const Shield: React.FC<{ size?: number; color?: string; draw: number }> = ({ siz
   <svg width={size} height={size * 1.15} viewBox="0 0 100 115"><path d="M50 4 L92 20 V58 C92 84 72 102 50 111 C28 102 8 84 8 58 V20 Z" fill="none" stroke={color} strokeWidth={4} strokeLinejoin="round" strokeDasharray="330" strokeDashoffset={330 * (1 - draw)} /></svg>
 );
 
+/* Clip: a window of real footage (the V2 and V3 generated shots), started at `at` so its own clock runs from there. */
+const Clip: React.FC<{ at: number; dir?: "fof2" | "fof3"; name: string; start?: number; dur?: number; rate?: number; style?: React.CSSProperties }> = ({ at, dir = "fof2", name, start = 0, dur = 4, rate = 1, style }) => (
+  <Sequence from={f(at)} durationInFrames={f(dur)} layout="none">
+    <OffthreadVideo src={staticFile(`${dir}/clips/${name}.mp4`)} muted startFrom={f(start)} playbackRate={rate} style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", objectFit: "cover", ...style }} />
+  </Sequence>
+);
+/* Window: a framed, outlined hole for a clip, with an optional tint so the footage sits in the palette. */
+const Window: React.FC<{ at: number; out?: number; x: number; y: number; w: number; h: number; r?: number | string; rot?: number; tint?: string; origin?: string; children: React.ReactNode }> = ({ at, out, x, y, w, h, r = 26, rot = 0, tint, origin = "50% 50%", children }) => (
+  <Pop at={at} out={out} x={x} y={y} rot={rot} origin={origin}>
+    <div style={{ position: "relative", width: w, height: h, borderRadius: r, overflow: "hidden", border: `3px solid ${INK}`, background: INK, boxShadow: "0 16px 40px rgba(11,27,43,.16)" }}>
+      {children}
+      {tint && <div style={{ position: "absolute", inset: 0, background: tint, mixBlendMode: "screen" }} />}
+    </div>
+  </Pop>
+);
+const wavePath = (width: number, h: number, amp: number, period: number, phase: number) => {
+  const pts: string[] = [];
+  for (let x = 0; x <= width; x += 10) pts.push(`${x} ${(h / 2 + amp * Math.sin((x / period) * Math.PI * 2 + phase)).toFixed(1)}`);
+  return `M${pts.join(" L")} L${width} ${h} L0 ${h} Z`;
+};
+
 /* ======================================================================
    Scenes. Every time comes from the voice (tw) or from lines.json (lineAt).
    ====================================================================== */
@@ -384,8 +394,9 @@ const SceneBurn: React.FC = () => {
         <Flame t={t} size={420} />
       </div>
       {sweep > 0 && sweep < 1 && (
-        <div style={{ position: "absolute", left: -600 + sweep * 2400, top: 250, opacity: 0.95 }}>
-          <Wave width={700} color={ICE} amp={26} h={560} period={260} phase={t * 6} />
+        <div style={{ position: "absolute", left: -600 + sweep * 2400, top: 250, width: 700, height: 560, clipPath: `path("${wavePath(700, 560, 26, 260, t * 6)}")` }}>
+          <Clip at={burn - 0.05} name="iceburst" start={0.1} dur={0.7} />
+          <div style={{ position: "absolute", inset: 0, background: ICE, opacity: 0.35, mixBlendMode: "screen" }} />
         </div>
       )}
       {gone > 0 && <Pop at={burn + 0.32} out={out} x={1330} y={480} rot={120}><Snowflake size={130} /></Pop>}
@@ -519,19 +530,13 @@ const SceneNorco: React.FC = () => {
       <Pop at={from + 0.35} out={to} x={x1 - 32} y={y - 84} origin="50% 100%"><div style={{ transform: `translateY(${-18 * Math.max(0, sp(t, norco, BOUNCE) - 1) * 4}px)` }}><Pin color={TEAL} /></div></Pop>
       <Kick at={from + 0.55} out={to} style={{ left: x1 - 160, top: y + 16, width: 320, textAlign: "center" }}>Norco, California</Kick>
       {fly > 0 && fly < 1 && <div style={{ position: "absolute", left: px - 27, top: py - 27, transform: `rotate(${ang}deg)` }}><Plane /></div>}
-      {/* the lab card */}
-      <Pop at={norco + 0.15} out={to} x={1060} y={720} rot={4} origin="80% 0%">
-        <div style={{ display: "flex", alignItems: "flex-end", gap: 26, background: "#fff", border: `3px solid ${INK}`, borderRadius: 22, padding: "26px 34px 18px", boxShadow: "0 14px 40px rgba(11,27,43,.14)" }}>
-          <Beaker color={GREEN} level={0.5} t={t} w={96} />
-          <div style={{ position: "relative" }}>
-            <Beaker color={ICE} level={0.35 + splash * 0.08} t={t + 2} w={110} />
-            {drop > 0 && drop < 1 && <div style={{ position: "absolute", left: 47, top: -180 + drop * 230, width: 16, height: 22, borderRadius: "50% 50% 50% 50% / 40% 40% 60% 60%", background: GOLD }} />}
-            {splash > 0 && <div style={{ position: "absolute", left: 55 - splash * 40, top: 70 - splash * 14, width: splash * 80, height: splash * 28, borderRadius: "50%", border: `3px solid ${GOLD}`, opacity: Math.max(0, 1.4 - splash) }} />}
-          </div>
-          <Beaker color={GOLD} level={0.62} t={t + 4} w={96} />
-        </div>
-      </Pop>
-      <Pop at={norco + 0.25} out={to} x={1118} y={470} rot={-10} origin="50% 100%">
+      {/* the lab: the real footage in a window, the pipette drawn above it */}
+      <Window at={norco + 0.15} out={to} x={1040} y={700} w={560} h={300} rot={4} origin="80% 0%">
+        <Clip at={norco + 0.15} name="lab" start={0.3} dur={2.6} />
+        {splash > 0 && <div style={{ position: "absolute", left: 280 - splash * 46, top: 96 - splash * 16, width: splash * 92, height: splash * 32, borderRadius: "50%", border: `3px solid ${GOLD}`, opacity: Math.max(0, 1.4 - splash) }} />}
+      </Window>
+      {drop > 0 && drop < 1 && <div style={{ position: "absolute", left: 1312, top: 700 + drop * 90, width: 16, height: 22, borderRadius: "50% 50% 50% 50% / 40% 40% 60% 60%", background: GOLD }} />}
+      <Pop at={norco + 0.25} out={to} x={1260} y={470} rot={-10} origin="50% 100%">
         <svg width={120} height={260} viewBox="0 0 60 130" style={{ transform: `translateY(${t > make - 0.4 && t < make ? Math.sin((t - make + 0.4) * 16) * 4 : 0}px)` }}>
           <rect x={22} y={2} width={16} height={24} rx={6} fill={CORAL} stroke={INK} strokeWidth={2.5} />
           <rect x={25} y={26} width={10} height={86} rx={4} fill="#fff" stroke={INK} strokeWidth={2.5} />
@@ -681,14 +686,24 @@ const SceneSchool: React.FC = () => {
       {[[220, 430, 60], [520, 520, 80], [240, 700, 50], [540, 760, 64], [430, 330, 44]].map(([x, y, s], i) => (
         <Pop key={i} at={cooling + 0.35 + i * 0.11} out={wipeAt + 0.5} x={x} y={y} rot={160}><div style={{ transform: `rotate(${(t - cooling) * 40 * (i % 2 ? 1 : -1)}deg)` }}><Snowflake size={s} color={i % 2 ? TEAL : ICE} /></div></Pop>
       ))}
-      <Kick at={cooling} out={wipeAt + 0.5} size={20} color={INK} style={{ left: 250, top: 930 }}>How cooling works</Kick>
+      <Window at={cooling + 0.25} out={wipeAt + 0.5} x={500} y={410} w={300} h={300} r="50%" rot={-20} tint="rgba(191,233,242,.22)"><Clip at={cooling + 0.25} name="frost" start={1.0} dur={4.0} /></Window>
+      <Kick at={cooling} out={wipeAt + 0.5} size={20} color={INK} style={{ left: 330, top: 930 }}>How cooling works</Kick>
       {/* bottle */}
       <Pop at={from + 0.45} out={wipeAt + 0.5} x={1240} y={370} origin="50% 100%">
         <div style={{ position: "relative", width: 300, height: 560 }}>
-          <svg width={300} height={560} viewBox="0 0 150 280">
-            <rect x={56} y={4} width={38} height={30} rx={6} fill={TEAL} stroke={INK} strokeWidth={3} />
-            <path d="M58 34 V60 C30 70 22 90 22 120 V254 a14 14 0 0 0 14 14 H114 a14 14 0 0 0 14 -14 V120 C128 90 120 70 92 60 V34 Z" fill="#fff" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+          <svg width={300} height={560} viewBox="0 0 150 280" style={{ position: "absolute", left: 0, top: 0 }}>
+            <path d="M58 34 V60 C30 70 22 90 22 120 V254 a14 14 0 0 0 14 14 H114 a14 14 0 0 0 14 -14 V120 C128 90 120 70 92 60 V34 Z" fill="#fff" />
             <path d="M28 150 V254 a8 8 0 0 0 8 8 H114 a8 8 0 0 0 8 -8 V150 Z" fill={ICE} />
+          </svg>
+          {t >= survives - 0.4 && (
+            <div style={{ position: "absolute", left: 0, top: 0, width: 300, height: 560, clipPath: 'path("M56 300 V508 a16 16 0 0 0 16 16 H228 a16 16 0 0 0 16 -16 V300 Z")', opacity: ez(t, survives - 0.4, survives + 0.2) }}>
+              <Clip at={survives - 0.4} name="bubbles" start={0.3} dur={4.4} />
+              <div style={{ position: "absolute", inset: 0, background: ICE, opacity: 0.3, mixBlendMode: "screen" }} />
+            </div>
+          )}
+          <svg width={300} height={560} viewBox="0 0 150 280" style={{ position: "absolute", left: 0, top: 0 }}>
+            <rect x={56} y={4} width={38} height={30} rx={6} fill={TEAL} stroke={INK} strokeWidth={3} />
+            <path d="M58 34 V60 C30 70 22 90 22 120 V254 a14 14 0 0 0 14 14 H114 a14 14 0 0 0 14 -14 V120 C128 90 120 70 92 60 V34 Z" fill="none" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
             {ring > 0 && <circle cx={75} cy={205} r={10 + Math.min(1.6, ring) * 34} fill="none" stroke={GOLD} strokeWidth={3} opacity={Math.max(0, 1.3 - ring * 0.8)} />}
             {ring > 0 && <circle cx={75} cy={205} r={12} fill={GOLD} />}
             {drop > 0 && drop < 1 && <ellipse cx={75} cy={-30 + drop * 232} rx={9} ry={12} fill={GOLD} />}
@@ -704,6 +719,8 @@ const SceneSchool: React.FC = () => {
 
 /* 8. Territories: four platform blooms, no names. */
 const BLOOMS: string[][] = [[GREEN, "#8FC9A6", "#C9E6D3"], [GOLD, "#F7CF8E", "#FBE6BF"], [ICE, "#DCF3F8", "#FFFFFF"], [CORAL, PINK, "#F4A6B5"]];
+/* The four worlds from V3, one drop each: green herbs, golden light, frost, color. Nothing from the blind flight. */
+const WORLDS: [string, number][] = [["drop_green", 0], ["drop_gold", 0.9], ["drop_white", 1.0], ["drop_play", 0]];
 const SceneTerritories: React.FC = () => {
   const t = useT();
   const from = 50.5, to = 55.3;
@@ -717,10 +734,13 @@ const SceneTerritories: React.FC = () => {
         return (
           <Pop key={i} at={four + i * 0.1} out={to - 0.05} x={cx - 130} y={cy - 130} rot={30}>
             <div style={{ position: "relative", width: 260, height: 260 }}>
-              {cs.map((c, k) => {
-                const a = t * 0.7 + i + (k * Math.PI * 2) / 3;
-                return <div key={k} style={{ position: "absolute", left: 130 + Math.cos(a) * 44 - 82, top: 130 + Math.sin(a) * 44 - 82, width: 164, height: 164, borderRadius: "50%", background: c, border: `3px solid ${INK}`, mixBlendMode: "normal" }} />;
+              {cs.slice(1).map((c, k) => {
+                const a = t * 0.7 + i + k * Math.PI;
+                return <div key={k} style={{ position: "absolute", left: 130 + Math.cos(a) * 118 - 34, top: 130 + Math.sin(a) * 118 - 34, width: 68, height: 68, borderRadius: "50%", background: c, border: `3px solid ${INK}` }} />;
               })}
+              <div style={{ position: "absolute", left: 10, top: 10, width: 240, height: 240, borderRadius: "50%", overflow: "hidden", border: `3px solid ${INK}`, background: INK }}>
+                <Clip at={four + i * 0.1} dir="fof3" name={WORLDS[i][0]} start={WORLDS[i][1]} dur={2.8} />
+              </div>
               {q > 0 && <div style={{ position: "absolute", left: 96, top: 96, width: 68, height: 68, borderRadius: "50%", background: INK, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", ...sans(40, 800), transform: `scale(${q})` }}><span style={{ color: "#fff" }}>?</span></div>}
             </div>
             <div style={{ ...mono(18), textAlign: "center", marginTop: 26 }}>Platform {i + 1}</div>
@@ -746,11 +766,11 @@ const SceneCups: React.FC = () => {
         const wob = t > tasted && t < tasted + 0.8 ? Math.sin((t - tasted - i * 0.08) * 22) * 6 * Math.max(0, 1 - (t - tasted) / 0.8) : 0;
         return (
           <React.Fragment key={ch}>
-            <Slide at={cups - 0.2 + i * 0.08} out={wipeAt + 0.6} x={cx - 125} y={420} dy={420} cfg={POP}>
+            <Slide at={cups - 0.2 + i * 0.08} out={tasted - 0.2} x={cx - 125} y={420} dy={420} cfg={POP}>
               <div style={{ transform: `rotate(${wob}deg)`, transformOrigin: "50% 100%" }}><Cup t={t} size={250} letter={ch} letterAt={letters - 0.05 + i * 0.1} /></div>
             </Slide>
             {tag > 0 && (
-              <div style={{ position: "absolute", left: cx - 120, top: 322, width: 240, transform: `scale(${tag}) rotate(${(1 - Math.min(1, tag)) * 10}deg)`, transformOrigin: "50% 100%", opacity: 1 - exitP(t, wipeAt + 0.6, 0.3) }}>
+              <div style={{ position: "absolute", left: cx - 120, top: 322, width: 240, transform: `scale(${tag}) rotate(${(1 - Math.min(1, tag)) * 10}deg)`, transformOrigin: "50% 100%", opacity: 1 - exitP(t, tasted - 0.2, 0.3) }}>
                 <div style={{ background: "#fff", border: `3px solid ${INK}`, borderRadius: 14, padding: "10px 16px", display: "flex", alignItems: "center", gap: 12 }}>
                   <svg width={22} height={26} viewBox="0 0 22 26"><rect x={2} y={11} width={18} height={13} rx={3} fill={INK} /><path d="M6 11 V8 a5 5 0 0 1 10 0 V11" fill="none" stroke={INK} strokeWidth={3} /></svg>
                   <div style={{ flex: 1, height: 14, borderRadius: 7, background: `repeating-linear-gradient(90deg, ${LINE} 0 10px, transparent 10px 16px)` }} />
@@ -762,6 +782,7 @@ const SceneCups: React.FC = () => {
       })}
       <Say text="Four cups, four letters, *no names* until you’ve tasted." after={lineAt("cups")} out={wipeAt + 0.6} size={56} style={{ left: L, top: 880, width: 1500 }} />
       <Kick at={from + 0.2} out={wipeAt + 0.6} style={{ left: L, top: 120 }}>The blind tasting</Kick>
+      <Window at={tasted - 0.25} out={wipeAt + 0.6} x={180} y={290} w={1560} h={540} r={28}><Clip at={tasted - 0.25} name="cups" start={0.4} dur={2.4} /></Window>
       <WipeOut at={wipeAt} x={960} y={560} color={GOLD} />
     </Scene>
   );
@@ -899,38 +920,43 @@ const SceneNoon: React.FC = () => {
   );
 };
 
-/* 13. The title, a confetti of flavor, and the end card. */
+/* 13. The title: the light film opens into the crown splash from V3, the title in cream over it, then the rings under the end card. */
 const SceneTitle: React.FC = () => {
   const t = useT();
   const from = 75.6, to = 87;
-  const title = tw("future");
   const end = 79.6;
+  const fresh = tw("freshness");
+  const inA = ez(t, from, from + 0.45);
+  const rings = ez(t, 80.0, 80.7);
   const outA = ez(t, 85.6, 87, Easing.in(Easing.quad));
+  const up = -ez(t, end, end + 0.8) * 70;
+  const sweep = interpolate(t, [fresh + 0.9, fresh + 2.3], [-30, 130], clamp);
   return (
     <Scene from={from} to={to}>
-      {Array.from({ length: 70 }, (_, i) => {
-        const a0 = title - 0.3 + rnd(i, 3) * 1.6;
-        if (t < a0) return null;
-        const dt = t - a0;
-        const x = 60 + rnd(i) * 1800 + Math.sin(dt * 3 + i) * 40, y = -40 + dt * (220 + rnd(i, 1) * 260);
-        if (y > 1140) return null;
-        const sz = 12 + rnd(i, 2) * 18;
-        const o = Math.max(0, 1 - ez(t, end + 0.2, end + 1.2));
-        return <div key={i} style={{ position: "absolute", left: x, top: y, width: sz, height: rnd(i, 4) > 0.5 ? sz : sz * 0.5, borderRadius: rnd(i, 4) > 0.5 ? "50%" : 3, background: PALETTE[i % 6], transform: `rotate(${dt * 300 * (rnd(i, 5) - 0.5)}deg)`, opacity: o }} />;
-      })}
-      <Say text="The Future of *Freshness.*" after={lineAt("title")} size={150} align="center" style={{ left: 0, right: 0, top: 350, transform: `translateY(${-ez(t, end, end + 0.8) * 70}px)` }} />
-      <Say text="*Let’s build it together.*" after={lineAt("together")} size={58} align="center" style={{ left: 0, right: 0, top: 560, transform: `translateY(${-ez(t, end, end + 0.8) * 70}px)` }} />
+      <AbsoluteFill style={{ background: "#04070B", opacity: inA }}>
+        <Clip at={from} dir="fof3" name="crown_slow" start={0.9} dur={5.2} />
+        {rings > 0 && <AbsoluteFill style={{ opacity: rings }}><Clip at={80.0} dir="fof3" name="ripples_slow" start={0.6} dur={7.2} /></AbsoluteFill>}
+        <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 52%, rgba(0,0,0,.5) 100%)" }} />
+        <AbsoluteFill style={{ background: "linear-gradient(0deg, rgba(4,7,11,.9), rgba(4,7,11,.5) 22%, rgba(4,7,11,0) 44%)", opacity: ez(t, end, end + 0.6) }} />
+      </AbsoluteFill>
+      <Say text="The Future of *Freshness.*" after={lineAt("title")} size={150} align="center" color={CREAM} accent={ICE} style={{ left: 0, right: 0, top: 350, transform: `translateY(${up}px)`, textShadow: "0 6px 40px rgba(0,0,0,.5)" }} />
+      {sweep > -30 && sweep < 130 && (
+        <div style={{ position: "absolute", left: 0, right: 0, top: 350, transform: `translateY(${up}px)`, textAlign: "center" }}>
+          <div style={{ ...serif(150), color: "transparent", display: "inline-block", backgroundImage: `linear-gradient(100deg, rgba(255,255,255,0) ${sweep - 12}%, rgba(255,255,255,.95) ${sweep}%, rgba(191,233,242,.9) ${sweep + 4}%, rgba(255,255,255,0) ${sweep + 14}%)`, WebkitBackgroundClip: "text", backgroundClip: "text", whiteSpace: "nowrap" }}>The Future of <i>Freshness.</i></div>
+        </div>
+      )}
+      <Say text="*Let’s build it together.*" after={lineAt("together")} size={58} align="center" color={CREAM} accent={ICE} style={{ left: 0, right: 0, top: 560, transform: `translateY(${up}px)`, textShadow: "0 4px 24px rgba(0,0,0,.5)" }} />
       <Slide at={end} x={0} y={740} dy={40} style={{ right: 0, textAlign: "center" }}>
-        <div style={{ ...mono(19), color: DIM, letterSpacing: "0.16em" }}>Monday, November 9, 2026 | 10:00 AM to 12:00 PM ET · Princeton, New Jersey</div>
+        <div style={{ ...mono(19), color: "rgba(244,241,234,.72)", letterSpacing: "0.16em" }}>Monday, November 9, 2026 | 10:00 AM to 12:00 PM ET · Princeton, New Jersey</div>
       </Slide>
       <Slide at={end + 0.15} x={0} y={806} dy={60} style={{ right: 0, display: "flex", justifyContent: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 34, background: "#fff", padding: "16px 36px", borderRadius: 16, border: `3px solid ${INK}`, boxShadow: "0 16px 40px rgba(11,27,43,.12)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 34, background: "#fff", padding: "16px 36px", borderRadius: 16, boxShadow: "0 16px 50px rgba(0,0,0,.45)" }}>
           <Img src={staticFile("img/therabreath-logo.png")} style={{ height: 52 }} />
           <span style={{ font: `300 30px ${SANS}`, color: "rgba(11,27,43,.45)" }}>×</span>
           <Img src={staticFile("img/tff-logo.png")} style={{ height: 50 }} />
         </div>
       </Slide>
-      <AbsoluteFill style={{ background: BG, opacity: outA }} />
+      <AbsoluteFill style={{ background: "#04070B", opacity: outA }} />
     </Scene>
   );
 };

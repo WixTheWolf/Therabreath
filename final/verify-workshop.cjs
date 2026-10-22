@@ -4,7 +4,7 @@ const cache={};function load(name){if(cache[name])return cache[name];const modul
 
 const {SCENES}=load('scenes'),{SAMPLES,PRIMARY_TERRITORIES,SEEDS,MISSIONS,EVENT,ROSS_GOAL,SOURCES}=load('content'),{fold}=load('state');
 // FINAL run of show: Ross's four objectives as four chapters, the tasting at the center, the growth matrix right after it.
-const ids=SCENES.map(s=>s.id);assert.equal(SCENES.length,29);assert.equal(ids[0],'arrival');assert.equal(ids[1],'film');assert.equal(ids[ids.length-1],'lunch');
+const ids=SCENES.map(s=>s.id);assert.equal(SCENES.length,29);assert.equal(ids[0],'arrival');assert.equal(ids[1],'title');assert.equal(ids[ids.length-1],'lunch');assert.equal(ids[ids.length-2],'film');assert.equal(ids[ids.length-3],'next');
 for(const id of ['brief','gap','market','signals','signalvote','whitespace','school','oxyd','map','tasting','matrix','chips','canvas','bench','dots','pipeline','assemble','next'])assert(ids.includes(id),'missing scene '+id);
 for(const id of ['climb','portfolio','code','signal1','territory1'])assert(!ids.includes(id),'cut scene still live: '+id);assert.equal(SCENES.find(s=>s.id==='signals').builds,7);assert.equal(SCENES.find(s=>s.id==='map').builds,3);assert.equal(ids.indexOf('whitespace'),ids.indexOf('signalvote')+1);
 assert.equal(ids.indexOf('matrix'),ids.indexOf('tasting')+1);assert(ids.indexOf('tasting')<ids.indexOf('chips'));assert.equal(SCENES.find(s=>s.id==='bench').builds,MISSIONS.length-1);

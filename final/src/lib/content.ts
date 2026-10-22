@@ -288,7 +288,7 @@ export const THINK = [
 
 // The morning, one line per act (pre-brief and site).
 export const AGENDA: [string, string][] = [
-  ['10:00', 'A short film, then your brief, your homework and one thesis'],
+  ['10:00', 'Your brief, your homework and one thesis'],
   ['10:10', 'Chapter 1 · The Signals: the growth math, the shelf, seven sourced signals, and you pick three'],
   ['10:23', 'The white space: moments of the day by the consumers you named, from your own pre-work'],
   ['10:26', 'Flavor School: how cooling works and how flavor survives OXYD-8'],
@@ -297,5 +297,6 @@ export const AGENDA: [string, string][] = [
   ['11:00', 'Chapter 3 · The Concepts: two teams build, tune on The Bench, pitch and vote'],
   ['11:30', 'Chapter 4 · The Pipeline: Now, Next, Later, with owners and dates'],
   ['11:40', 'The Flavor Playbook assembles, with your names on the cover'],
+  ['11:48', 'A short film to send you to lunch'],
   ['12:00', 'Lunch'],
 ];
