@@ -1,4 +1,4 @@
-# THE FLAVOR RACE V16: the full-length film, re-cut from V15.1
+# THE FLAVOR RACE V16 (V16.1: lettering fix): the full-length film, re-cut from V15.1
 
 V15.1 (the director's final cut with the 21 October polish) had the story and the shots. The notes on it were: the
 sound effects did not line up with the picture (the drop of flavor in the montage), the audio and the music could
@@ -27,7 +27,7 @@ director's structure and every beat that worked, and rebuilds the rest.
 | 0:00 | I The surprise | black; condensation on white; droplets on the orange stripe; the cap in steam with EVERY CATEGORY HAS A RACE set over it in the film's own type, holding on black; the dark pad, the lamps; both rockets against the full Moon (new: the finish line); COMPETITOR; TheraBreath; Mission Control at The Flavor Factory ("TheraBreath One, you are go for flavor."); the cap in the cold; three, two, one; the burner, WHUMP |
 | 0:30 | II Launch | both pads erupt; the fans; both clear the pad; the long lens ("Look at her go!"); the look back; the hull; the pitch-over into silence |
 | 0:45 | III The race | side by side; the rival slides in ("Nice bottle. See you at the moon."); neck and neck; both from below; the rival commits and pulls away; from TheraBreath's shoulder the rival is a dot by the Moon ("Norco, I'm running out of road here. The same fuel won't get me there first."); the warning light; the engines go quiet |
-| 1:04 | IV Discovery | SEARCHING at The Flavor Factory ("TB-1, hang on. We're bringing it to you."); the montage on the score's beats: tea, cucumber, the coconut pops and splashes, the melon bursts, one drop lands on the orange, mint, the yuzu is the one; the lab: the pipette drop lands, light through the vial (new), the vial locks, FLAVOR TRANSFER READY, the signal crosses the night side; the transfer ("Oh, that's new."); TheraBreath comes alive; the relight on the score's return; FOLLOW? OR LEAD? set over both at full thrust; TheraBreath passes the rival (new); Mission Control erupts (new; "That's the future, TB-1. Go get it!"); it streaks for the Moon |
+| 1:04 | IV Discovery | SEARCHING at The Flavor Factory ("TB-1, hang on. We're bringing it to you."); the montage on the score's beats: tea, cucumber, the coconut pops and splashes, the melon bursts, one drop lands on the orange, mint, the yuzu is the one; the lab: the pipette drop lands, light through the vial (new), the vial locks, FLAVOR TRANSFER READY, the signal crosses the night side; the transfer ("Oh, that's new."); TheraBreath comes alive; the relight on the score's return; both at full thrust over Earth; TheraBreath passes the rival (new); Mission Control erupts (new; "That's the future, TB-1. Go get it!"); it streaks for the Moon |
 | 1:38 | V The Moon | the descent in silence; the dust; the footpad ("Norco, the flavor has landed."); standing on the Moon; the pole; and only then the flag; the Earthrise |
 | 1:57 | VI Home | THERABREATH ONE on the monitors; lift-off for home ("TheraBreath One. Bring it home."); homeward; re-entry; the clouds; New Jersey from the air; the Church & Dwight sign with the real seal; the contrail over headquarters; the landing on the lawn; the robot and the six samples; the tasting in silence; black; THE FUTURE OF FRESHNESS; LET'S TASTE WHAT'S NEXT. |
 | 2:34 | VII The stinger | back on the Moon, the rival finally lands beside the flag ("Well, that's not ideal.") |
@@ -45,10 +45,11 @@ director's structure and every beat that worked, and rebuilds the rest.
   the Earthrise, the plasma, the clouds, the lawn landing. V15.1 ran 3:03; V16 runs 2:40 with more story in it.
 
 ### The lettering
-EVERY CATEGORY HAS A RACE and FOLLOW? OR LEAD? are set in the end card's condensed metal (Archivo 800, 66% width)
-over the same shots before their baked-in letters appear (b92b53de 0.0 to 1.75 s, 5d17c937 2.0 to 5.3 s), so the
-film has one type system from the first card to the last. SEARCHING, FLAVOR TRANSFER READY and THERABREATH ONE stay:
-they are objects in the scene, at scene scale.
+EVERY CATEGORY HAS A RACE is set in the end card's condensed metal (Archivo 800, 66% width) over the same shot before
+its baked-in letters appear (b92b53de 0.0 to 1.75 s), so the film has one type system from the first card to the last.
+FOLLOW? OR LEAD? is out altogether (V16.1): the clean two-rocket shot (5d17c937 2.0 to 5.3 s) carries the beat on its
+own, with the thrust bed and the pass. SEARCHING, FLAVOR TRANSFER READY and THERABREATH ONE stay: they are objects in
+the scene. GINGER on the background monitors in Mission Control stays as shot.
 
 ## Voice: eleven radio lines from the V4 sessions (same four voices: FLIGHT, NORCO, TB-ONE, COMPETITOR)
 NORCO and FLIGHT are heard in the room; TB-ONE and the COMPETITOR are heard over the air (band-limited, a Quindar tone

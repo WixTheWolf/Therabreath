@@ -192,5 +192,20 @@ No em or en dashes (`node playbook/design/scripts/check-dashes.mjs .` from the r
   at +0.27). Voice: `sound/vo16.py` (eleven radio lines from the V4 sessions). Baton: `sound/events16.py`; `mix2.py`
   with `CUT=16` dips the score and the effects deeper under speech.
 - New clips committed: `public/race/clips/m/n01_padmoon.mp4` and the three grey-Moon grades from the V15 polish.
+- V16.1 (22 October, on the client's note): FOLLOW? OR LEAD? is out altogether; the clean two-rocket shot carries the beat
+  with the thrust bed and the pass, and its five word cues are gone from `cues16.py`. GINGER on the Mission Control
+  monitors stays as shot. Same length, same cut points, same music and voice stems.
 - Commands are at the end of `docs/session/RACE16.md`. The app copy (`final/public/media/flavor-race.mp4`) is the
+  1080p picture with the mix, two-pass x264 at 3.5 Mbps, faststart; the poster is the flag wide.
+
+## V17, the cut you do not see (22 October 2026)
+- `src/FlavorRaceV17.tsx` (registered as FlavorRaceV17, 24 fps, 3,913 frames, 2:43). The research, the rules, the cut
+  table, what changed cut by cut and the sound are in `docs/session/RACE17.md`.
+- No text but the end card (the title, the supers and the three lettering shots are gone), no Moon-behind-the-pad
+  shot, nothing under a second unless the picture hides the cut, every cut on movement or inside an occlusion or a
+  dissolve (`xf` frames, centred on the cut), the four same-clip jumps replaced by continuous takes.
+- Sound: `sound/cues17.py` (233 cues, one bed per place with J and L bridges across every scene change), `sound/vo17.py`
+  (the radio perspective follows the picture), `sound/music17.py` (the V16 score on the V17 bars; the finale's bar 29 on
+  the lift-off so its last chord lands on the lawn), `sound/events17.py`; `mix2.py` with `CUT=17`.
+- Commands are at the end of `docs/session/RACE17.md`. The app copy (`final/public/media/flavor-race.mp4`) is the
   1080p picture with the mix, two-pass x264 at 3.5 Mbps, faststart; the poster is the flag wide.

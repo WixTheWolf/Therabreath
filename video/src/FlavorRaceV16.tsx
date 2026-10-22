@@ -13,9 +13,10 @@ import CD_SEAL from "../public/race/v15/cd_seal_track.json";
      gone: the two 1960s control rooms (the film has one Mission Control, The Flavor Factory), the soft review proxy of
      TheraBreath passing, nine seconds of ferns, sage and a flagpole on the way to Church & Dwight, the fruit-in-orbit
      shots that showed the blind flight's own ingredients, the lime beside a ginger root, the chamomile.
-   - The giant generated lettering is out. EVERY CATEGORY HAS A RACE and FOLLOW? OR LEAD? are set in the film's own
-     type (the end card's condensed metal) over the same shots before their baked-in text appears, and over a clean
-     two-rocket shot. SEARCHING, FLAVOR TRANSFER READY and THERABREATH ONE stay: they are things in the scene.
+   - The giant generated lettering is out. EVERY CATEGORY HAS A RACE is set in the film's own type (the end card's
+     condensed metal) over the same shot before its baked-in text appears. FOLLOW? OR LEAD? is gone altogether: the
+     two rockets at full thrust carry that beat on their own. SEARCHING, FLAVOR TRANSFER READY and THERABREATH ONE
+     stay: they are things in the scene.
    - New beats: both rockets silhouetted against the full Moon (the finish line, seen before the race), the real
      overtake (TheraBreath passes the rival), Mission Control erupting as it takes the lead, light through the vial in
      the lab, the orange drop with its splash (the plink lands on the splash, not on a cucumber).
@@ -99,7 +100,7 @@ const SEGS: Seg[] = [
   { id: "transfer", dur: 3.0, kind: "clip", clip: "v12/g12_transfer", from: 0.675 },
   { id: "life", dur: 1.9167, kind: "clip", clip: "v15/g5_life_fix", from: 0.0 },                                // TheraBreath comes alive
   { id: "relight", dur: 1.0, kind: "clip", clip: "v15/7e9b6135", from: 15.9, zoom: [1.3, 1.31] },               // dark bells; the relight at +0.27: the score's return
-  { id: "follow", dur: 3.2917, kind: "clip", clip: "v15/5d17c937", from: 2.0, zoom: [1.3, 1.34] },              // FOLLOW? OR LEAD? set over both at full thrust
+  { id: "follow", dur: 3.2917, kind: "clip", clip: "v15/5d17c937", from: 2.0, zoom: [1.3, 1.34] },              // both at full thrust over Earth, clean, no lettering
   { id: "pass", dur: 2.4167, kind: "clip", clip: "v12/g6_pass", from: 0.4 },                                    // TheraBreath passes the rival
   { id: "mcerupts", dur: 1.5, kind: "clip", clip: "v122/v122_mc_erupts", from: 0.9, zoom: [1.0, 1.03] },        // Mission Control erupts
   { id: "overtake", dur: 1.4167, kind: "clip", clip: "v15/7e9b6135", from: 20.2, zoom: [1.3, 1.32] },           // and streaks for the Moon
@@ -209,19 +210,6 @@ const TitleEvery: React.FC<{ dur: number }> = ({ dur }) => {
   );
 };
 
-// FOLLOW? OR LEAD? Two words, two beats, over both rockets at full thrust; out on the cut to the pass.
-const TitleFollow: React.FC<{ dur: number }> = ({ dur }) => {
-  const fr = useCurrentFrame();
-  const shade = interpolate(fr, [0, 10], [0, 1], clamp);
-  return (
-    <AbsoluteFill style={{ opacity: fr < dur ? 1 : 0 }}>
-      <AbsoluteFill style={{ opacity: shade, background: "linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.35) 42%, rgba(0,0,0,0) 62%)" }} />
-      <Word text="FOLLOW?" at={4} size={176} x={150} y={118} align="left" />
-      <Word text="OR LEAD?" at={26} size={176} x={1770} y={118} align="right" />
-    </AbsoluteFill>
-  );
-};
-
 // Film grain and a soft vignette; full 16:9, no letterbox
 const Grain: React.FC = () => {
   const fr = useCurrentFrame();
@@ -241,8 +229,6 @@ export const LIGHTS16 = t("lights", 0.71);     // the pad floods with light
 export const RELIGHT16 = t("relight", 0.27);   // the engines relight: the score's return
 const TITLE_AT = t("every", 0.6);
 const TITLE_END = t("lights");
-const FOLLOW_AT = t("follow");
-const FOLLOW_END = t("pass");
 
 export const FlavorRaceV16: React.FC = () => {
   loadFonts();
@@ -259,7 +245,6 @@ export const FlavorRaceV16: React.FC = () => {
       <Sequence from={f(RELIGHT16)} durationInFrames={8} layout="none"><Flash warm /></Sequence>
 
       <Sequence from={f(TITLE_AT)} durationInFrames={f(TITLE_END) - f(TITLE_AT)} layout="none"><TitleEvery dur={f(TITLE_END) - f(TITLE_AT)} /></Sequence>
-      <Sequence from={f(FOLLOW_AT)} durationInFrames={f(FOLLOW_END) - f(FOLLOW_AT)} layout="none"><TitleFollow dur={f(FOLLOW_END) - f(FOLLOW_AT)} /></Sequence>
 
       <Sequence from={f(t("mc1", 0.1))} durationInFrames={f(2.45)} layout="none"><Super15 dur={f(2.45)} a="MISSION CONTROL" b="THE FLAVOR FACTORY · NORCO, CALIFORNIA" /></Sequence>
       <Sequence from={f(t("pipette", 0.1))} durationInFrames={f(3.0)} layout="none"><Super15 dur={f(3.0)} a="THE FLAVOR FACTORY" b="NORCO, CALIFORNIA · FLAVOR LAB" /></Sequence>

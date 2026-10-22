@@ -48,7 +48,6 @@ BEAM = T('prism', 0.25)                                  # the beam finds the vi
 LOCK = T('glove', 0.95)                                  # the vial locks into the cell (c09_lab_cell src 1.35)
 PRESS = T('transferbtn', 0.60)                           # FLAVOR TRANSFER READY (7e9b6135 src 12.89)
 RL = T('relight', 0.27)                                  # the engines relight: the score's return (src 16.17)
-WORD1, WORD2 = T('follow', 0.17), T('follow', 1.08)      # FOLLOW? then OR LEAD?
 PASSED = T('pass', 1.0)                                  # TheraBreath's nose draws level and past (g6_pass src 1.4)
 CHEER = T('mcerupts', 0.3)                               # the arms go up (v122_mc_erupts src 1.2)
 TOUCH = T('foot', 0.55)                                  # Moon touchdown: the footpad meets the regolith (n14_dust src 2.55)
@@ -364,16 +363,11 @@ P('08_SPACE_RELIGHT_V1', RL - 0.3, -21, trim=(0.08, 0.45), align='onset', fo=0.1
 P(sub_boom(2.4, 62, 30, 0.3, 0.8), RL + 0.05, -9, tag='relight sub')
 P('x4_refuel', RL + 0.03, -17, align='onset', space=True)
 P('08_SPACE_RELIGHT_V2', RL + 0.05, -16, trim=(1.0, 3.0), fi=0.2, fo=0.6, lpf=2600, width=1.3)
-# FOLLOW? OR LEAD?: both at full thrust over Earth; a low push under each word; then TheraBreath passes the rival
+# both at full thrust over Earth (no lettering); then TheraBreath passes the rival
 P('09_RACE_THERA_THRUST_V1', T('follow', -0.05), -17, norm='rms', fi=0.1, loop=True, hpf=120, until=T('descent', 1.4), fo=0.6, width=1.4,
   auto=[(T('follow'), 0), (T('pass'), 1), (T('mcerupts'), -6), (T('overtake'), 1), (T('descent'), -10)], rateauto=[(T('follow'), 1.0), (T('overtake'), 1.15)])
 P('05_PRE_TURBINE_RIVAL_V1', T('follow', 0.1), -25, lpf=2000, fi=0.3, until=T('pass', 2.2), fo=0.5, pan=0.4)
 P(whoosh(1.8, 300, 2600, q=0.9, seed=128), T('follow', 0.1), -18, panauto=[(T('follow'), -0.5), (T('follow', 1.8), 0.5)], tag='both, flat out')
-P(whoosh(0.7, 90, 400, q=0.8, seed=132), WORD1 - 0.45, -24, width=1.4, tag='FOLLOW? push')
-P(sub_boom(1.4, 50, 28, 0.3, 0.6), WORD1 + 0.02, -20, tag='FOLLOW? sub')
-P(whoosh(0.7, 90, 400, q=0.8, seed=133), WORD2 - 0.45, -23, width=1.4, tag='OR LEAD? push')
-P(sub_boom(1.4, 54, 28, 0.3, 0.6), WORD2 + 0.02, -18, tag='OR LEAD? sub')
-P('02_REVEAL_SHIMMER_BLOOM_V2', WORD2 + 0.05, -28, hpf=2500, fo=0.8, width=1.5, tag='OR LEAD? shimmer')
 # the pass: one clean sweep left to right as TheraBreath draws level and past; the rival's grind falls behind
 P(whoosh(2.2, 250, 2400, q=0.8, seed=129, shape='rise'), PASSED - 1.0, -18, width=1.5, panauto=[(PASSED - 1.0, 0.3), (PASSED + 1.0, -0.5)], tag='TheraBreath passes')
 P(sub_boom(2.0, 60, 28, 0.3, 0.8), PASSED, -12, tag='the lead')
