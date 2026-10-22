@@ -23,10 +23,13 @@ import { FlavorTrailerV9, TRAILER9_FRAMES } from "./FlavorTrailerV9";
 import { FlavorTrailerBlueSky, TRAILER_BLUESKY_FRAMES } from "./FlavorTrailerBlueSky";
 import { FlavorTrailer, TRAILER_FRAMES } from "./FlavorTrailer";
 import { MissionNext, MISSION_FRAMES } from "./MissionNext";
+import { FutureOfFreshness, FOF_FRAMES, FutureOfFreshnessLoop, FOF_LOOP_FRAMES } from "./FutureOfFreshness";
 import "./index.css";
 
 export const RemotionRoot: React.FC = () => (
   <>
+    <Composition id="FutureOfFreshness" component={FutureOfFreshness} durationInFrames={FOF_FRAMES} fps={30} width={1920} height={1080} />
+    <Composition id="FutureOfFreshnessLoop" component={FutureOfFreshnessLoop} durationInFrames={FOF_LOOP_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="Opening" component={Opening} durationInFrames={OPENING_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="OpeningLoop" component={Opening} defaultProps={{ clean: true }} durationInFrames={LOOP_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="FlavorRace" component={FlavorRace} durationInFrames={RACE_FRAMES} fps={30} width={1920} height={1080} />

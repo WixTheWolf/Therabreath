@@ -22,7 +22,7 @@ const W = (line?: string): RoomMode => ({ kind: 'watch', line });
 
 const SCENE_CATALOG: Scene[] = [
   { id: 'arrival', n: 0, act: 'Pre-show', chapter: -1, theme: 'b', builds: 0, title: 'Arrival', notes: 'Loop from 9:15. Names rise into the drop as people join. Invite everyone to scan the QR.', room: W('Welcome. We start at 10:00.') },
-  { id: 'film', n: 0, act: 'Opening', chapter: -1, theme: 'b', builds: 0, title: 'The film', notes: 'Lights down, sound up. 30 seconds. Let it land before anyone speaks.', room: W('Eyes up. The film is starting.') },
+  { id: 'film', n: 0, act: 'Opening', chapter: -1, theme: 'b', builds: 0, title: 'The film', notes: 'Lights down, sound up. THE FLAVOR RACE, about three minutes. Let it land before anyone speaks.', room: W('Eyes up. The film is starting.') },
   { id: 'title', n: 1, act: 'Opening', chapter: -1, theme: 'b', builds: 0, title: 'The Flavor Playbook', notes: 'Dan welcomes the room. Thank Ross for the invitation. Two hours, one document by noon.', room: W() },
   { id: 'july', n: 2, act: 'Opening', chapter: -1, theme: 'a', builds: 1, title: 'From July to today', notes: 'In July you came to Norco: resiliency, innovation, operations, partnership. Today is about the fifth word: growth.', room: W() },
   { id: 'brief', n: 3, act: 'Opening', chapter: -1, theme: 'a', builds: 4, title: 'Your brief, our agenda', notes: 'These are Ross\'s four objectives, word for word. Each act answers one and writes one chapter of the Playbook. Watch the line at the bottom fill.', room: W() },

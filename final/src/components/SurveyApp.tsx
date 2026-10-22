@@ -67,7 +67,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
           <p className="bw-hi">{first ? `${first}, you’re invited.` : 'You’re invited.'}</p>
           <h1>The Future<br /><em>of Freshness</em></h1>
           <p>{EVENT.dateLine} · {EVENT.room} room</p>
-          <button className="bw-play" onClick={() => setFilm(true)}><span />Watch the 30-second film</button>
+          <button className="bw-play" onClick={() => setFilm(true)}><span />Watch the film · 1:18</button>
         </div>
       </header>
 
@@ -177,7 +177,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
         <button className="bw-link bw-pdf" onClick={() => print()}>Save this pre-brief as a PDF</button>
         <div className="k">Confidential</div>
       </footer>
-      {film && <FilmModal onClose={() => setFilm(false)} />}
+      {film && <FilmModal q={`?c=${encodeURIComponent(code)}&k=${encodeURIComponent(k)}`} onClose={() => setFilm(false)} />}
     </main>
   );
 }
