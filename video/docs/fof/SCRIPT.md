@@ -1,5 +1,7 @@
 # The Future of Freshness: opening film
 
+V1, superseded on October 22, 2026 by V2 (`V2.md`, `src/FutureOfFreshnessV2.tsx`). Kept for reference.
+
 The film on the pre-brief and the site (`final/public/media/opening.mp4`). 1:18, 1920 x 1080, 30 fps, -16 LUFS.
 Composition: `src/FutureOfFreshness.tsx` (`FutureOfFreshness`, and `FutureOfFreshnessLoop` for the hero background).
 Mix: `scripts/fof_mix.py`. The room premiere on November 9 is still THE FLAVOR RACE (`flavor-race.mp4`); this film is the pre-read.

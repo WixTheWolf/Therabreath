@@ -20,3 +20,7 @@ public/race/audio/rawmn/
 public/race/audio/rawmn2/
 public/race/audio/licensed/
 __pycache__/
+# Generated film sources (regenerate from docs/fof/jobs*.md) and the hardlinked render folder
+public/fof/
+public/fof2/
+public_v2/

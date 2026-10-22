@@ -1,5 +1,5 @@
 'use client';
-// The opening film (1:18), full screen with sound. Escape or a click outside closes it.
+// The opening film (1:17), full screen with sound. Escape or a click outside closes it.
 // `q` carries the pre-brief's signed link (c and k) so the film plays there without the password.
 import { useEffect } from 'react';
 

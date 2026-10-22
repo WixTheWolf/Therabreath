@@ -67,7 +67,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
           <p className="bw-hi">{first ? `${first}, you’re invited.` : 'You’re invited.'}</p>
           <h1>The Future<br /><em>of Freshness</em></h1>
           <p>{EVENT.dateLine} · {EVENT.room} room</p>
-          <button className="bw-play" onClick={() => setFilm(true)}><span />Watch the film · 1:18</button>
+          <button className="bw-play" onClick={() => setFilm(true)}><span />Watch the film · 1:17</button>
         </div>
       </header>
 
