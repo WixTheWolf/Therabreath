@@ -160,7 +160,7 @@ function BenchPanel({ s, send, team }: { s: any; send: any; team: number }) {
   const c = s.concepts[`t${team}-1`]; const b = s.bench[team];
   const t = baseTerritory(s, team, c); const { avg, n } = teamDials(b);
   const { list } = readouts(t, avg, b, c);
-  const OPTS: Record<string, string[]> = { stability: ['Low', 'Medium', 'High'], readiness: ['Proven today', 'Needs engineering', 'Screen first'], horizon: ['Now · 2027', 'Next · 2028', 'Future · 2029 to 2030'], format: ['Rinse · Toothpaste', 'Strip · Gum · Sachet', 'Rinse · Spray', 'Kids rinse · Toothpaste'] };
+  const OPTS: Record<string, string[]> = { stability: ['Low', 'Medium', 'High'], readiness: ['Proven today', 'Needs engineering', 'Screen first'], format: ['Rinse · Toothpaste', 'Strip · Gum · Sachet', 'Rinse · Spray', 'Kids rinse · Toothpaste'] };
   return (
     <section className="cx-box">
       <div className="k">The Bench · Team {team} · {n} phones · built on {t.hero}</div>

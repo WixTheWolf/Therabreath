@@ -4,8 +4,9 @@ const cache={};function load(name){if(cache[name])return cache[name];const modul
 
 const {SCENES}=load('scenes'),{SAMPLES,PRIMARY_TERRITORIES,SEEDS,MISSIONS,EVENT,ROSS_GOAL,SOURCES}=load('content'),{fold}=load('state');
 // FINAL run of show: Ross's four objectives as four chapters, the tasting at the center, the growth matrix right after it.
-const ids=SCENES.map(s=>s.id);assert.equal(SCENES.length,41);assert.equal(ids[0],'arrival');assert.equal(ids[1],'film');assert.equal(ids[ids.length-1],'lunch');
-for(const id of ['brief','gap','signalvote','school','oxyd','tasting','matrix','chips','canvas','bench','dots','pipeline','code','assemble','next'])assert(ids.includes(id),'missing scene '+id);
+const ids=SCENES.map(s=>s.id);assert.equal(SCENES.length,28);assert.equal(ids[0],'arrival');assert.equal(ids[1],'film');assert.equal(ids[ids.length-1],'lunch');
+for(const id of ['brief','gap','market','signals','signalvote','school','oxyd','map','tasting','matrix','chips','canvas','bench','dots','pipeline','assemble','next'])assert(ids.includes(id),'missing scene '+id);
+for(const id of ['climb','portfolio','code','signal1','territory1'])assert(!ids.includes(id),'cut scene still live: '+id);assert.equal(SCENES.find(s=>s.id==='signals').builds,7);assert.equal(SCENES.find(s=>s.id==='map').builds,3);
 assert.equal(ids.indexOf('matrix'),ids.indexOf('tasting')+1);assert(ids.indexOf('tasting')<ids.indexOf('chips'));assert.equal(SCENES.find(s=>s.id==='bench').builds,MISSIONS.length-1);
 assert.equal(EVENT.code,'FOF1109');assert(EVENT.lockup.includes('Princeton, New Jersey'));assert(SOURCES[ROSS_GOAL.src]);assert(SAMPLES.every(s=>s.base));
 assert.equal(PRIMARY_TERRITORIES.length,4);assert.equal(MISSIONS.length,2);assert.equal(SAMPLES.length,4);assert.equal(SAMPLES.map(s=>s.code).join(''),'ABCD');assert.equal(SAMPLES.find(s=>s.code==='C').name,'Mystery Flavor');assert.equal(new Set(SCENES.map(s=>s.id)).size,SCENES.length);assert(SCENES.every(s=>s.title&&s.room));assert(SAMPLES.every(s=>PRIMARY_TERRITORIES.some(t=>t.id===s.territory)));assert(SEEDS.every(s=>PRIMARY_TERRITORIES.some(t=>t.id===s.territory)));

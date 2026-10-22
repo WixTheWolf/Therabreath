@@ -12,7 +12,7 @@ export function Climb({ step }: SceneProps) {
   return (
     <div className="pad">
       <Enter i={0}><div className="k">The climb · US mouthwash share</div></Enter>
-      <Enter i={1}><h2 className="h1">Number 2 in US mouthwash.<br /><span className="it">Next stop: number 1.</span></h2></Enter>
+      <Enter i={1}><h2 className="h1">Number 2 in US mouthwash.<br /><span className="it">Earned one flavor at a time.</span></h2></Enter>
       <svg className="climb" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
         <defs><linearGradient id="cl" x1="0" x2="1"><stop offset="0" stopColor="var(--fg3)" /><stop offset="1" stopColor="var(--accent)" /></linearGradient></defs>
         {[0, 10, 20, 30].map((v) => <g key={v}><line x1={40} x2={W - 40} y1={Y(v)} y2={Y(v)} stroke="var(--rule2)" /><text x={0} y={Y(v) + 6} className="axis">{v}%</text></g>)}
@@ -25,7 +25,7 @@ export function Climb({ step }: SceneProps) {
           </g>
         ))}
       </svg>
-      <R b={1} step={step} className="climb-note lede">25.3% in Q2 2026, up 4.5 points. Consumption growth above 20%.</R>
+      <R b={1} step={step} className="climb-note lede">25.3% in Q2 2026, up 4.5 points.</R>
       <Src k={['warc', 'q4call', 'q2call']} />
     </div>
   );
@@ -50,6 +50,7 @@ export function Gap({ step }: SceneProps) {
         <R b={1} step={step}><h1 className="h1"><span className="it">86</span> of every 100 US households have not met TheraBreath yet.</h1></R>
         <R b={2} step={step}><div className="gap-second it">Flavor is how we introduce ourselves.</div></R>
         <Src k="q2call" extra="TheraBreath 14%, mouthwash category 65%" style={{ position: 'absolute', top: 700, left: 0, width: 760 }} />
+        <Enter i={1} className="gap-share"><b className="num">25.3%</b> share of US mouthwash in Q2 2026, up 4.5 points. Number 2. Share is the climb; households are the room still to meet.</Enter>
       </div>
       <div className="glabel" style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}<sup>%</sup></div><div className="who">Mouthwash category</div></div>
       <div className="glabel" style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}<sup>%</sup></div><div className="who">TheraBreath</div></div>
@@ -99,8 +100,8 @@ export function Portfolio({ step }: SceneProps) {
 export function Market({ step }: SceneProps) {
   return (
     <div className="pad">
-      <Enter i={0}><div className="k">The market is moving · public launches</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1400 }}>The flavor race has started. <span className="it">It is being run at the shelf, one limited edition at a time.</span></h2></Enter>
+      <Enter i={0}><div className="k">The shelf is moving · public launches</div></Enter>
+      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1400 }}>The shelf is now a flavor shelf. <span className="it">One limited edition at a time.</span></h2></Enter>
       <div className="market">
         <div className="mk-line" />
         {MARKET.map((m, i) => (
@@ -111,6 +112,34 @@ export function Market({ step }: SceneProps) {
             <div className="src">{clean(SOURCES[m.src])}</div>
           </R>
         ))}
+      </div>
+      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">The turn</span><p>TheraBreath did not join this race. It started ahead of it: alcohol-free and dye-free from the first bottle, OXYD-8 at the center, and a kids line already on shelf. <span className="it">The question for today is what keeps it ahead.</span></p></R>
+    </div>
+  );
+}
+
+// The seven signals in one scene: a list on the left, and each build lights one signal with its proofs and its so what.
+export function Signals({ step }: SceneProps) {
+  const k = Math.min(SIGNALS.length, Math.max(0, step));
+  const sig = k > 0 ? SIGNALS[k - 1] : null;
+  return (
+    <div className="signal sigs" style={{ ['--h' as any]: sig ? sig.hue : 190 }}>
+      <div className="sig-light" style={{ opacity: sig ? 1 : 0.35 }} />
+      <div className="pad" style={{ position: 'relative' }}>
+        <Enter i={0}><div className="k">Chapter 1 · Seven signals shaping oral care</div></Enter>
+        <Enter i={1}><h2 className="h2">Seven signals. <span className="it">You will pick three.</span></h2></Enter>
+        <div className="sigs-list">
+          {SIGNALS.map((x, i) => <div key={x.id} className={'sl' + (i === k - 1 ? ' on' : i < k - 1 ? ' past' : '')} style={{ ['--h' as any]: x.hue, ['--i' as any]: i }}><span className="num">0{x.n}</span><b>{x.title}</b></div>)}
+        </div>
+        {sig && (
+          <div className="sigs-focus" key={sig.id}>
+            <div className="k">Signal {sig.n} of 7</div>
+            <h3 className="sf-title">{sig.title}</h3>
+            <div className="sf-proofs">{sig.proofs.map((p, i) => <div key={i} className="proof" style={{ ['--d' as any]: `${i * 180}ms` }}><p>{p.t}</p><div className="src">{clean(SOURCES[p.src])}</div></div>)}</div>
+            <div className="sig-so"><span className="k">So what for TheraBreath</span><div className="h3 it">{sig.so}</div></div>
+          </div>
+        )}
+        {!sig && <div className="sigs-hint">Each signal comes with two public proofs and one implication. The vote follows.</div>}
       </div>
     </div>
   );

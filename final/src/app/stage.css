@@ -659,3 +659,42 @@
 .matrix .mx-row span { font: 500 14px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg3); }
 .matrix .mx-row.lead { border-color: var(--c); box-shadow: 0 0 40px -10px var(--c); }
 .matrix .mx-take { margin: 8px 0 0; font: 300 22px/1.4 var(--serif); color: var(--fg2); } .matrix .mx-take b { color: var(--fg); font-weight: 400; }
+
+/* Cut-list additions: the share line on the gap, the turn on the market scene, the seven-signals scene, the platform cards on the map, the title note. */
+.gap-share { position: absolute; left: 0; top: 470px; width: 760px; font: 400 26px/1.4 var(--sans); color: var(--fg2); z-index: 3; }
+.gap-share .num { font-size: 34px; color: var(--fg); margin-right: 6px; }
+.mk-turn { position: absolute; left: 120px; right: 120px; bottom: 104px; padding: 24px 32px; border-radius: 22px; background: var(--panel); border: 1px solid var(--rule); box-shadow: 0 20px 60px rgba(0,0,0,.08); display: grid; grid-template-columns: 140px 1fr; gap: 26px; align-items: start; }
+.mk-turn p { font: 300 32px/1.25 var(--serif); max-width: 1420px; }
+.mk-turn .it { color: var(--accent); }
+.sigs .sig-light { transition: opacity 1s var(--ease); }
+.sigs-list { position: absolute; left: 120px; top: 400px; width: 700px; display: flex; flex-direction: column; gap: 10px; }
+.sl { display: grid; grid-template-columns: 56px 1fr; align-items: baseline; gap: 14px; padding: 14px 18px; border-radius: 16px; border: 1px solid transparent; opacity: .42; transition: opacity .7s var(--ease), background .7s var(--ease), border-color .7s var(--ease), transform .7s var(--ease); animation: enterUp .8s var(--ease) both; animation-delay: calc(var(--i) * 80ms + 300ms); }
+.sl .num { font-size: 22px; color: var(--fg3); }
+.sl b { font: 300 36px/1.1 var(--serif); }
+.sl.past { opacity: .62; }
+.sl.on { opacity: 1; background: var(--panel2); border-color: hsla(var(--h), 60%, 50%, .6); transform: translateX(12px); box-shadow: 0 0 40px hsla(var(--h), 90%, 60%, .22); }
+.sl.on b { color: hsl(var(--h), 55%, 34%); }
+.sigs-focus { position: absolute; left: 900px; right: 120px; top: 380px; bottom: 120px; animation: enterUp .8s var(--ease) both; }
+.sf-title { font: 300 60px/1.05 var(--serif); letter-spacing: -.02em; margin-top: 18px; color: hsl(var(--h), 55%, 34%); }
+.sf-proofs { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 22px; }
+.sf-proofs .proof { padding: 20px 26px; }
+.sf-proofs .proof { animation: enterUp .8s var(--ease) both; animation-delay: var(--d); }
+.sf-proofs .proof p { font-size: 23px; margin-bottom: 10px; }
+.sigs-focus .sig-so { margin-top: 20px; gap: 8px; }
+.sigs-focus .sig-so .h3 { color: hsl(var(--h), 55%, 38%); font-size: 34px; }
+.sigs-hint { position: absolute; left: 900px; right: 120px; top: 430px; font: 300 40px/1.25 var(--serif); color: var(--fg2); max-width: 820px; animation: enterUp .8s var(--ease) both; animation-delay: .5s; }
+.map-plot { transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.map-plot.away { opacity: 0; transform: translateY(30px); pointer-events: none; }
+.map-cards { position: absolute; right: 120px; top: 190px; width: 1160px; height: 700px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 22px; opacity: 0; pointer-events: none; transition: opacity .9s var(--ease) .3s; }
+.map-cards.on { opacity: 1; }
+.mc { position: relative; padding: 30px 34px; border-radius: 24px; background: var(--panel2); border: 1px solid var(--rule); backdrop-filter: blur(16px); display: flex; flex-direction: column; gap: 12px; overflow: hidden; transform: translateY(24px); transition: transform .9s var(--ease); transition-delay: calc(var(--i) * 120ms + .3s); }
+.map-cards.on .mc { transform: none; }
+.mc::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: linear-gradient(90deg, var(--c1), var(--c2)); }
+.mc-top { display: flex; justify-content: space-between; align-items: baseline; }
+.mc-top .num { font-size: 24px; color: var(--fg3); }
+.mc b { font: 300 44px/1.05 var(--serif); }
+.mc p { font: 400 22px/1.4 var(--sans); color: var(--fg2); }
+.mc-q { margin-top: auto; font: 300 26px/1.25 var(--serif); }
+.mc-q .k { display: block; margin-bottom: 6px; }
+.title-note { margin-top: 34px; font: 400 24px/1.4 var(--sans); color: var(--fg2); }
+.cloud sup { font-size: .5em; margin-left: 6px; color: var(--accent); font-style: normal; }

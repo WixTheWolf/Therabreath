@@ -169,7 +169,7 @@ export function BenchScene({ s, step }: SceneProps) {
       <div className="bench-head">
         <div className="k">The Bench · Team {team} of {MISSIONS.length} · {n} {n === 1 ? 'phone' : 'phones'} tuning{b?.locked ? ' · locked' : ''}</div>
         <h2 className="h2">{c?.name || mission?.title || `Team ${team}`}</h2>
-        <div className="bench-base"><span className="k">Built on</span> {t.name} · <span className="it">{t.hero}</span></div>
+        <div className="bench-base"><span className="k">Platform</span> {t.name} · <span className="it">starting from {t.hero}</span></div>
       </div>
       <div className="bench-dials">
         {DIALS.map((d) => (
@@ -193,17 +193,17 @@ export function BenchScene({ s, step }: SceneProps) {
         </svg>
       </div>
       <div className="bench-read">
-        <div className="k">Engineering readout</div>
+        <div className="k">Questions for the bench · our starting read</div>
         {list.map((r) => (
           <div key={r.key} className={'br ' + (r.override ? 'ov' : r.tone)}>
             <span>{r.label}</span><b>{r.override ? r.override.value : r.value}</b>
-            <small>{r.override ? `Ryan: ${r.override.note || 'confirmed on the bench'}` : r.basis}</small>
+            <small>{r.override ? `The room’s read: ${r.override.note || 'confirmed on the bench'}` : r.basis}</small>
           </div>
         ))}
         <div className="k" style={{ marginTop: 18 }}>Flavor Code check</div>
         <div className="bcode">{code.map((x) => <div key={x.n} className={x.ok ? 'ok' : 'warn'} title={x.why}><i />{x.t}{!x.ok && <small>{x.why}</small>}</div>)}</div>
         {claims && <div className="bclaims">Benefit language set by C&amp;D clinical and regulatory.</div>}
-        <div className="src" style={{ marginTop: 12 }}>Rules of thumb from public literature. The TFF lab confirms on the bench.</div>
+        <div className="src" style={{ marginTop: 12 }}>Our starting read, from public literature. The room’s read goes on top; the lab confirms on the bench.</div>
       </div>
     </div>
   );
