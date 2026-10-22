@@ -35,8 +35,7 @@ Ross Conroy's invitation (September 18, 2026) set the brief for the Oral Care R&
 | Time | Scenes | Who |
 | --- | --- | --- |
 | 9:30 | Arrival loop: names rise into the drop as phones join | Matt |
-| 10:00 | THE FLAVOR RACE premieres (V15, 3:04) | |
-| 10:03 | Welcome, July to today, Ross's brief and goal, the pre-work reveal, the thesis | Dan |
+| 10:00 | Welcome, July to today, Ross's brief and goal, the pre-work reveal, the thesis | Dan |
 | 10:10 | Chapter 1, The Signals: the climb, the gap, the portfolio, the market, seven signals, vote three | Alex |
 | 10:27 | Flavor School: what flavor is, how cool works, flavor in an oxidizing world, anatomy | Ryan |
 | 10:35 | Chapter 2, The Territories: the map, four opportunity platforms | Matt |

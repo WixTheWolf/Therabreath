@@ -1,5 +1,20 @@
 # THE FLAVOR RACE: session handoff (after V15)
 
+## V15 polish and the 2K master (21 October 2026)
+- The film the presentation plays is now the polished V15 at 2560 x 1440: `final/public/media/flavor-race.mp4` (H.264 High, 24 fps, two-pass 3.9 Mbps, AAC 192k, BT.709 TV range, faststart, about 94 MB so it stays under GitHub's 100 MB file limit), with a 2560 x 1440 poster (`flavor-race-poster.jpg`, the onboard look back at 0:45). `docs/session/flavor-race-v15-review.mp4` is the earlier 720p review copy, before the polish.
+- Polish, with every cut point where the director put it:
+  - No faces: the warning beat (`px31`) opened on 1.7 s of a 1960s control room with two men's faces. Those 1.7 s (`warn`) now push in on the room's red alarm beacon (zoom 1.8 from 72% 42%, softened 1 px over the proxy's blocks), then the proxy's own cut (frame 41) to TheraBreath's warning light (`warnlight`).
+  - One grey Moon: TheraBreath standing, the flag wide and the stinger's late rival were generated on a brown regolith (CIELAB chroma 9 to 22 against 1 to 4 on the descent, the footpad and the Earthrise). `scripts/grade_moon.py` pulls only warm, weakly coloured pixels toward grey (the cap, the flag's stripe, the engine glow, Earth and the wordmark are left alone): `v15/moon_stand_grey` (k 0.65), `v15/c7_flag_grey` (w/c7_flag from 9 s, k 0.85, gate 26 to 40), `v15/g9_late_grey` (k 0.7). Ground chroma after: 3.2, 8.5, 4.2 to 5.3.
+  - The real Church & Dwight seal on the headquarters monument (`cdsign`): the generated monument carried a drawn copy (the arm redrawn). `scripts/make_cd_seal.py` fits the real seal (`public/img/cd-seal.png`, Church & Dwight's logo from Brandfetch) to the generated ring's ellipse, lights it through an affine colour map on four anchors (white, red, navy, skin) and the sign's own fall-off, softens and grains it, and covers the generated TM with the stone beside it; the real seal's own TM lands there. The camera is locked off (under 0.2 px over the 47 frames used); `public/race/v15/cd_seal_track.json` is track_sign.py's track anyway. `LogoPatch` takes the source width per patch (`sw`, this clip is 1912 wide). The small seal on the building behind is still the generated one.
+  - Sound: the 1960s room tone comes back under the beacon; the alarm leads there (+14 dB, settling to +2 on the hull light) with the score 5 dB down (`events15.py`), so in its band it sits 4 dB under the score instead of 12; the hull creak moves onto the hull shot.
+- Commands:
+  - Grades: `python3 scripts/grade_moon.py public/race/clips/w/c7_flag.mp4 9 15 public/race/clips/v15/c7_flag_grey.mp4 0.85 26 40`, `... v122/moon_stand.mp4 0 4.05 .../v15/moon_stand_grey.mp4 0.65`, `... v12/g9_late.mp4 0 5.05 .../v15/g9_late_grey.mp4 0.7`.
+  - Seal: `ffmpeg -ss 0 -i public/race/clips/v15/5b518a71.mp4 -frames:v 1 -vf "scale=in_color_matrix=bt601:in_range=tv,format=rgb24" ref0.png`, `python3 scripts/make_cd_seal.py ref0.png public/race/v15/cd_seal_patch.png`, `python3 scripts/track_sign.py public/race/clips/v15/5b518a71.mp4 0 2.958 40,600,780,940 public/race/v15/cd_seal_track.json`.
+  - Picture at 2K: `npx remotion render src/index.ts FlavorRaceV15 out/race15p_pic.mp4 --muted --concurrency=3 --crf=12 --scale=1.3333333333333333 --jpeg-quality=95` (2560 x 1440, about 29 minutes; the graphics and the end card render natively at 2K, the clips are scaled by the browser). The render is full-range BT.601.
+  - Stems and mix as below (V15 commands), with `TARGET=-15.2`: -16.0 LUFS integrated, 8.9 LU range, -1.5 dBTP.
+  - Delivery: two-pass x264 `-preset slower -tune film -profile:v high -x264-params aq-mode=3:aq-strength=0.85:rc-lookahead=60 -b:v 3900k -maxrate 9000k -bufsize 14000k`, `-vf scale=in_color_matrix=bt601:out_color_matrix=bt709:in_range=pc:out_range=tv,format=yuv420p`, tagged BT.709 TV range, audio from `out/race15p_final_mix.wav` as AAC 192k, `-movflags +faststart`. A test of the launch at this rate held SSIM 0.989 against the master with no visible blocking in the fire, the smoke or dark space; light grain reduction before the encode gained nothing.
+- Not redone for the polish: the V15 Premiere package (`premiere/V15/`) still has the earlier `warn`, `stand`, `flagwide`, `cdsign` and stinger shots.
+
 ## State
 - V15, the final cut: the director's own edit of 12 October 2026 (a 3:04 review proxy of 77 shots, with the flavor montage and the sound unfinished), conformed shot for shot to the full-resolution sources and finished: `src/FlavorRaceV15.tsx` (registered in `src/Root.tsx` as FlavorRaceV15). 3:03.6, 4,406 frames at 24 fps, 75 shots.
 - V15 review copy: `docs/session/flavor-race-v15-review.mp4` (720p, two-pass 1.1 Mbps so it stays under 30 MB, AAC 160k).
@@ -167,3 +182,15 @@
 
 ## Standing rules
 No em or en dashes (`node playbook/design/scripts/check-dashes.mjs .` from the repo root, as CI runs it). No faces. Locked hero bottle (white, short ribbed orange cap). Rival labelled only COMPETITOR. Real logos unaltered. On-screen text as overlay only. No product claims. The Mr. Blue Sky file stays private and uncommitted. Ask before spending credits.
+
+## V16, the full-length film re-cut from V15.1 (22 October 2026)
+- `src/FlavorRaceV16.tsx` (registered as FlavorRaceV16, 24 fps, 3,871 frames, 2:41). The treatment, the shot list, what
+  came out and why, the voice lines, the score and the sound are in `docs/session/RACE16.md`.
+- Score: five new ElevenLabs Music v2.5 cues in `public/race/audio/v16_*.mp3` (D, 152.02 BPM, bar 1.5787 s), placed on
+  their bar lines by `sound/music16.py`. Effects: `sound/cues16.py` (every cue on its picture frame; the pipette drop at
+  +1.20, the melon at +0.15, the coconut at +0.03 and +0.40, the orange drop at +0.38, the press at +0.60, the relight
+  at +0.27). Voice: `sound/vo16.py` (eleven radio lines from the V4 sessions). Baton: `sound/events16.py`; `mix2.py`
+  with `CUT=16` dips the score and the effects deeper under speech.
+- New clips committed: `public/race/clips/m/n01_padmoon.mp4` and the three grey-Moon grades from the V15 polish.
+- Commands are at the end of `docs/session/RACE16.md`. The app copy (`final/public/media/flavor-race.mp4`) is the
+  1080p picture with the mix, two-pass x264 at 3.5 Mbps, faststart; the poster is the flag wide.
