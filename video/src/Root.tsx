@@ -26,10 +26,12 @@ import { MissionNext, MISSION_FRAMES } from "./MissionNext";
 import { FutureOfFreshness, FOF_FRAMES, FutureOfFreshnessLoop, FOF_LOOP_FRAMES } from "./FutureOfFreshness";
 import { FutureOfFreshnessV2, FOF2_FRAMES, FutureOfFreshnessV2Loop, FOF2_LOOP_FRAMES } from "./FutureOfFreshnessV2";
 import { FutureOfFreshnessV3, FOF3_FRAMES } from "./FutureOfFreshnessV3";
+import { FutureOfFreshnessV4, FOF4_FRAMES } from "./FutureOfFreshnessV4";
 import "./index.css";
 
 export const RemotionRoot: React.FC = () => (
   <>
+    <Composition id="FutureOfFreshnessV4" component={FutureOfFreshnessV4} durationInFrames={FOF4_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="FutureOfFreshnessV3" component={FutureOfFreshnessV3} durationInFrames={FOF3_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="FutureOfFreshnessV2" component={FutureOfFreshnessV2} durationInFrames={FOF2_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="FutureOfFreshnessV2Loop" component={FutureOfFreshnessV2Loop} durationInFrames={FOF2_LOOP_FRAMES} fps={30} width={1920} height={1080} />

@@ -88,7 +88,7 @@ function Hero({ onFilm, live }: { onFilm: () => void; live: boolean }) {
         <h1>The Future<br /><em>of Freshness</em></h1>
         <p>TheraBreath took away the burn. Now let&rsquo;s give more people a reason to want it. Two hours with Church &amp; Dwight Oral Care R&amp;D: four of your objectives, four samples made in your bases, and a Flavor Playbook with your names on it.{live ? ' The session is live.' : ''}</p>
         <div className="st-cta">
-          <button className="st-play" onClick={onFilm}><span className="st-tri" />Play the film <small>1:21 · sound on</small></button>
+          <button className="st-play" onClick={onFilm}><span className="st-tri" />Play the film <small>1:27 · sound on</small></button>
           <a className="st-ghost" href="#platforms">Explore the workshop</a>
         </div>
       </div>
