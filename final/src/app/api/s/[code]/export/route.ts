@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { list } from '@/lib/server/store';
-import { isAuthed, COOKIE } from '@/lib/auth';
+import { isHost, HOST_COOKIE } from '@/lib/auth';
 export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest, { params }: { params: Promise<{ code: string }> }) {
-  if (!(await isAuthed(req.cookies.get(COOKIE)?.value))) return NextResponse.json({ error: 'forbidden' }, { status: 403 });
+  if (!(await isHost(req.cookies.get(HOST_COOKIE)?.value))) return NextResponse.json({ error: 'forbidden' }, { status: 403 });
   const code = (await params).code.toUpperCase();
   const rows = await list(code, 0);
   if (req.nextUrl.searchParams.get('format') === 'csv') {

@@ -231,6 +231,7 @@
 .bw-logi small { display: block; font: 500 10px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--fg3); margin-bottom: 6px; }
 .bw-pdf { display: inline-block; margin-bottom: 22px; }
 .bw-foot .k { font-size: 11px; }
+.bw-conf { max-width: 720px; margin: 26px auto 0; font: 400 15px/1.55 var(--sans); color: var(--fg3); }
 @media (max-width: 600px) { .bw-qcards, .bw-think, .bw-logi { grid-template-columns: 1fr; } .bw-env-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .bw-env { height: 210px; } .bw-wiz { padding: 16px; } }
 
 /* the PDF: no video, no buttons, no links, every envelope open */

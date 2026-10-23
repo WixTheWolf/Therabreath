@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { list, append, storeKind } from '@/lib/server/store';
 import { nudge } from '@/lib/server/broadcast';
 import { SUPABASE_URL } from '@/lib/supabase';
-import { isAuthed, joinToken, COOKIE } from '@/lib/auth';
+import { isAuthed, isHost, joinToken, COOKIE, HOST_COOKIE } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
+// Phones (signed link) may send these. Everything else (scene changes, votes, timers, overrides, wipe) needs the host cookie.
 const PUBLIC_KINDS = new Set(['join', 'team', 'pick', 'rate', 'guess', 'concept', 'suggest', 'react', 'survey', 'dial', 'benchbase']);
 const clean = (c: string) => c.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
 
@@ -22,8 +23,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ cod
   const code = clean((await params).code);
   const body = await req.json().catch(() => ({}));
   const evs = Array.isArray(body.events) ? body.events.slice(0, 500) : [];
-  const authed = await isAuthed(req.cookies.get(COOKIE)?.value);
-  const tokenOk = body.k === (await joinToken(code));
+  const authed = await isHost(req.cookies.get(HOST_COOKIE)?.value);
+  const tokenOk = body.k === (await joinToken(code)) || (await isAuthed(req.cookies.get(COOKIE)?.value));
   for (const e of evs) {
     if (!e || typeof e.id !== 'string' || typeof e.kind !== 'string') return NextResponse.json({ error: 'bad event' }, { status: 400 });
     if (!authed && !(tokenOk && PUBLIC_KINDS.has(e.kind))) return NextResponse.json({ error: 'forbidden' }, { status: 403 });

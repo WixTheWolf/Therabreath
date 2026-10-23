@@ -45,7 +45,7 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
           <div className="k">Contents</div>
           <h2>Four objectives. <em>Five chapters.</em></h2>
           <ol className="pb-toc">{OBJECTIVES.map((o, i) => <li key={o.n}><span className="n">0{i + 1}</span><b>{['Signals', 'Territories', 'Concepts', 'Pipeline'][i]}</b><p>{o.ask}</p></li>)}<li><span className="n">05</span><b>The Flavor Code</b><p>Seven guardrails every TheraBreath flavor keeps.</p></li></ol>
-          <div className="pb-thesis">TheraBreath took away the burn. <em>Now let&rsquo;s add the want.</em></div>
+          <div className="pb-thesis">TheraBreath took away the burn. <em>Now let&rsquo;s give more people a reason to want it.</em></div>
         </section>
 
         <section className="pb-page">
@@ -74,7 +74,7 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
             <div key={c.id} className="pb-concept">
               <div className="pb-c-head"><b>{c.name || 'Untitled concept'}</b><span>Team {c.team}{c.horizon ? ` · ${c.horizon}` : ''}{tallyPick(s, 'concepts')[c.id] ? ` · ${tallyPick(s, 'concepts')[c.id]} dots` : ''}</span></div>
               {s.bench[c.team] && (() => { const b = s.bench[c.team]; const t = baseTerritory(s, c.team, c); const { avg } = teamDials(b); const { list } = readouts(t, avg, b, c); return (
-                <div className="pb-sig-row"><Compass prof={compass(t, avg)[1]} color={t.palette[1]} size={170} labels={false} /><div><div className="k">Sensory signature · built on {t.hero}</div><p>{DIALS.map((d) => `${d.l} ${avg[d.id].toFixed(1)}`).join(' · ')}</p><p>{list.map((r) => `${r.label}: ${r.override ? r.override.value + ' (Ryan)' : r.value}`).join(' · ')}</p></div></div>
+                <div className="pb-sig-row"><Compass prof={compass(t, avg)[1]} color={t.palette[1]} size={170} labels={false} /><div><div className="k">Sensory signature · built on {t.hero}</div><p>{DIALS.map((d) => `${d.l} ${avg[d.id].toFixed(1)}`).join(' · ')}</p><p>{list.map((r) => `${r.label}: ${r.override ? r.override.value + ' (the room’s read)' : r.value}`).join(' · ')}</p></div></div>
               ); })()}
               <dl>{([['For', c.segment], ['When', c.occasion], ['First', c.first], ['Heart', c.heart], ['Finish', c.finish], ['Sensation', (c.sensation || []).join(', ')], ['Format', c.format], ['Why incremental', c.incremental], ['Why TheraBreath', c.why]] as [string, string][]).filter(([, v]) => v).map(([l, v]) => <div key={l}><dt>{l}</dt><dd>{v}</dd></div>)}</dl>
             </div>

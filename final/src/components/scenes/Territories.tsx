@@ -20,7 +20,20 @@ export function MapScene({ step }: SceneProps) {
         <R b={2} step={step}><p className="lede" style={{ maxWidth: 440, marginTop: 36 }}>Four questions to explore. Today’s samples help us decide where to develop next.</p></R>
         <div className="src" style={{ marginTop: 40 }}>Our perspective, illustrative.</div>
       </div>
-      <div className="map-plot" style={{ width: W, height: H }}>
+      <div className={'map-cards' + (step >= 3 ? ' on' : '')}>
+        {TERRITORIES.map((t, i) => {
+          const tasted = SAMPLES.some((x) => x.territory === t.id);
+          return (
+            <div key={t.id} className="mc" style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1], ['--i' as any]: i }}>
+              <div className="mc-top"><span className="num">0{t.n}</span><em className="k">{tasted ? 'In today’s tasting' : 'On screen today'}</em></div>
+              <b>{t.name}</b>
+              <p>{t.promise}</p>
+              <div className="mc-q"><span className="k">Question for the room</span>{t.q}</div>
+            </div>
+          );
+        })}
+      </div>
+      <div className={'map-plot' + (step >= 3 ? ' away' : '')} style={{ width: W, height: H }}>
         <div className={'map-glow' + (step >= 2 ? ' on' : '')} />
         <div className="ax ax-x"><span>Familiar</span><span>Character</span><span>Adventurous</span></div>
         <div className="ax ax-y"><span>Bold</span><span>Intensity</span><span>Gentle</span></div>
@@ -81,7 +94,7 @@ export function Territory({ s, step, idx }: SceneProps) {
       <World t={t} />
       <div className="terr-veil" />
       <div className="pad terr-in">
-        <Enter i={0}><div className="k">Platform {t.n} of 4 · <span className="fit">{t.fit}</span> · {t.moment}</div></Enter>
+        <Enter i={0}><div className="k">Platform {t.n} of 4 · {t.moment}</div></Enter>
         <Enter i={1}><h2 className="terr-name">{t.name}</h2></Enter>
         <Enter i={2}><div className="terr-hero it">A direction to explore together</div></Enter>
         <Enter i={3}><p className="terr-promise">{t.promise}</p></Enter>

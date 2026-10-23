@@ -47,3 +47,21 @@ test('PLAYBOOK_SECRET rotates cookies and join links', async () => {
     assert.notEqual(await auth.joinToken('TB1109'), before[1]);
   } finally { delete process.env.PLAYBOOK_SECRET; }
 });
+
+test('the host password is separate from the room password', async () => {
+  process.env.PLAYBOOK_PASSWORD = 'room-only'; process.env.PLAYBOOK_HOST_PASSWORD = 'host-only';
+  try {
+    assert.equal(await auth.checkPassword('room-only'), true);
+    assert.equal(await auth.checkHostPassword('room-only'), false);
+    assert.equal(await auth.checkHostPassword('host-only'), true);
+    assert.equal(await auth.checkPassword('host-only'), false);
+  } finally { delete process.env.PLAYBOOK_PASSWORD; delete process.env.PLAYBOOK_HOST_PASSWORD; }
+});
+
+test('the room cookie never passes as the host cookie', async () => {
+  const room = await auth.authToken(), host = await auth.hostToken();
+  assert.notEqual(room, host);
+  assert.equal(await auth.isHost(room), false);
+  assert.equal(await auth.isHost(host), true);
+  assert.equal(await auth.isAuthed(host), false);
+});

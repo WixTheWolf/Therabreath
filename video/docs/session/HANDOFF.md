@@ -182,3 +182,30 @@
 
 ## Standing rules
 No em or en dashes (`node playbook/design/scripts/check-dashes.mjs .` from the repo root, as CI runs it). No faces. Locked hero bottle (white, short ribbed orange cap). Rival labelled only COMPETITOR. Real logos unaltered. On-screen text as overlay only. No product claims. The Mr. Blue Sky file stays private and uncommitted. Ask before spending credits.
+
+## V16, the full-length film re-cut from V15.1 (22 October 2026)
+- `src/FlavorRaceV16.tsx` (registered as FlavorRaceV16, 24 fps, 3,871 frames, 2:41). The treatment, the shot list, what
+  came out and why, the voice lines, the score and the sound are in `docs/session/RACE16.md`.
+- Score: five new ElevenLabs Music v2.5 cues in `public/race/audio/v16_*.mp3` (D, 152.02 BPM, bar 1.5787 s), placed on
+  their bar lines by `sound/music16.py`. Effects: `sound/cues16.py` (every cue on its picture frame; the pipette drop at
+  +1.20, the melon at +0.15, the coconut at +0.03 and +0.40, the orange drop at +0.38, the press at +0.60, the relight
+  at +0.27). Voice: `sound/vo16.py` (eleven radio lines from the V4 sessions). Baton: `sound/events16.py`; `mix2.py`
+  with `CUT=16` dips the score and the effects deeper under speech.
+- New clips committed: `public/race/clips/m/n01_padmoon.mp4` and the three grey-Moon grades from the V15 polish.
+- V16.1 (22 October, on the client's note): FOLLOW? OR LEAD? is out altogether; the clean two-rocket shot carries the beat
+  with the thrust bed and the pass, and its five word cues are gone from `cues16.py`. GINGER on the Mission Control
+  monitors stays as shot. Same length, same cut points, same music and voice stems.
+- Commands are at the end of `docs/session/RACE16.md`. The app copy (`final/public/media/flavor-race.mp4`) is the
+  1080p picture with the mix, two-pass x264 at 3.5 Mbps, faststart; the poster is the flag wide.
+
+## V17, the cut you do not see (22 October 2026)
+- `src/FlavorRaceV17.tsx` (registered as FlavorRaceV17, 24 fps, 3,913 frames, 2:43). The research, the rules, the cut
+  table, what changed cut by cut and the sound are in `docs/session/RACE17.md`.
+- No text but the end card (the title, the supers and the three lettering shots are gone), no Moon-behind-the-pad
+  shot, nothing under a second unless the picture hides the cut, every cut on movement or inside an occlusion or a
+  dissolve (`xf` frames, centred on the cut), the four same-clip jumps replaced by continuous takes.
+- Sound: `sound/cues17.py` (233 cues, one bed per place with J and L bridges across every scene change), `sound/vo17.py`
+  (the radio perspective follows the picture), `sound/music17.py` (the V16 score on the V17 bars; the finale's bar 29 on
+  the lift-off so its last chord lands on the lawn), `sound/events17.py`; `mix2.py` with `CUT=17`.
+- Commands are at the end of `docs/session/RACE17.md`. The app copy (`final/public/media/flavor-race.mp4`) is the
+  1080p picture with the mix, two-pass x264 at 3.5 Mbps, faststart; the poster is the flag wide.

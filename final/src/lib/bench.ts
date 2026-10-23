@@ -1,7 +1,7 @@
 // The Bench: turns six sensory dials into an engineering brief.
 // Every readout is a rule of thumb from public literature. The TFF lab confirms on the bench.
 // No formulas, no usage levels.
-import { TERRITORIES, DIALS, CODE, type Territory } from './content';
+import { TERRITORIES, PRIMARY_TERRITORIES, DIALS, CODE, type Territory } from './content';
 import type { Bench, Dials, SessionState, Concept } from './state';
 
 export const DEFAULT_DIALS: Dials = { onset: 3, linger: 3, sweet: 2, warm: 1, lift: 3, tingle: 2 };
@@ -20,11 +20,15 @@ export function teamDials(b?: Bench): { avg: Dials; min: Dials; max: Dials; n: n
   return { avg: b?.locked || avg, min, max, n: all.length };
 }
 
+// The platform a team builds on: the one chosen on Console, else the one its concept names, else the one its mission implies
+// (team 1 adults: Plant-Powered Freshness; team 2 kids and families: Next-Generation Kids). Platforms first, legacy worlds after.
 export const baseTerritory = (s: SessionState, team: number, c?: Concept): Territory => {
   const id = s.bench[team]?.base;
-  return TERRITORIES.find((t) => t.id === id)
-    || TERRITORIES.find((t) => (c?.why || '').toLowerCase().includes(t.name.toLowerCase().split(',')[0]) || (c?.why || '').toLowerCase().includes(t.hero.toLowerCase()))
-    || TERRITORIES[0];
+  const pool = [...PRIMARY_TERRITORIES, ...TERRITORIES];
+  const text = `${c?.name || ''} ${c?.why || ''}`.toLowerCase();
+  return pool.find((t) => t.id === id)
+    || pool.find((t) => text.includes(t.name.toLowerCase().split(',')[0]) || text.includes(t.hero.toLowerCase()))
+    || PRIMARY_TERRITORIES[team === 2 ? PRIMARY_TERRITORIES.length - 1 : 0];
 };
 
 // Compass (9 dims) at first impression, heart and finish, shaped by the dials on top of the territory.
@@ -65,7 +69,6 @@ export function readouts(t: Territory, d: Dials, b?: Bench, c?: Concept): { list
   risk = Math.max(1, Math.min(3, risk));
   const stabilityWhy = t.riskWhy + (d.sweet >= 4 ? ' Higher sweetness adds reactive notes.' : '') + (d.lift >= 5 ? ' A bold top note means more volatile aromatics to protect.' : '');
   const ready = risk === 3 ? 'Screen first' : risk === 2 ? (t.fit === 'Proven today' ? 'Needs engineering' : t.fit) : t.fit === 'Screen first' ? 'Needs engineering' : t.fit;
-  const horizon = risk === 1 && ready === 'Proven today' ? 'Now · 2027' : risk === 3 ? 'Future · 2029 to 2030' : 'Next · 2028';
   const formats: string[] = [];
   if (d.tingle >= 4 || d.onset >= 4) formats.push('Strip', 'Gum', 'Sachet');
   if (d.onset <= 2) formats.push('Rinse', 'Spray');
@@ -76,9 +79,8 @@ export function readouts(t: Territory, d: Dials, b?: Bench, c?: Concept): { list
   const fmt = [...new Set(formats)].slice(0, 4).join(' · ');
   const list: Readout[] = [
     { key: 'stability', label: 'Stability risk', value: LEVEL[risk], tone: risk === 1 ? 'ok' : risk === 2 ? 'warn' : 'risk', basis: stabilityWhy },
-    { key: 'readiness', label: 'Readiness', value: ready, tone: ready === 'Proven today' ? 'ok' : ready === 'Screen first' ? 'risk' : 'warn', basis: 'Territory evidence, adjusted for the stability risk above.' },
+    { key: 'readiness', label: 'Readiness', value: ready, tone: ready === 'Proven today' ? 'ok' : ready === 'Screen first' ? 'risk' : 'warn', basis: 'What is already proven in the platform, adjusted for the stability risk above. The room decides the horizon on the pipeline board.' },
     { key: 'format', label: 'Format fit', value: fmt, tone: 'ok', basis: 'Fast onset and tingle suit strips and gum; soft profiles suit rinse and spray.' },
-    { key: 'horizon', label: 'Horizon', value: horizon, tone: horizon.startsWith('Now') ? 'ok' : horizon.startsWith('Next') ? 'warn' : 'risk', basis: 'Proven and low risk ships first; anything to screen goes later.' },
   ];
   for (const r of list) { const o = b?.overrides[r.key]; if (o) r.override = o; }
   const code = [

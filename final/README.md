@@ -35,8 +35,7 @@ Ross Conroy's invitation (September 18, 2026) set the brief for the Oral Care R&
 | Time | Scenes | Who |
 | --- | --- | --- |
 | 9:30 | Arrival loop: names rise into the drop as phones join | Matt |
-| 10:00 | THE FLAVOR RACE premieres (V15, 3:04, 2560 x 1440) | |
-| 10:03 | Welcome, July to today, Ross's brief and goal, the pre-work reveal, the thesis | Dan |
+| 10:00 | Welcome, July to today, Ross's brief and goal, the pre-work reveal, the thesis | Dan |
 | 10:10 | Chapter 1, The Signals: the climb, the gap, the portfolio, the market, seven signals, vote three | Alex |
 | 10:27 | Flavor School: what flavor is, how cool works, flavor in an oxidizing world, anatomy | Ryan |
 | 10:35 | Chapter 2, The Territories: the map, four opportunity platforms | Matt |
@@ -57,7 +56,7 @@ Every interaction is an event in one log, folded into session state (`src/lib/st
 - **Store:** the `flavor-playbook` Supabase project (`fof_events`), reached through the key-checked database functions `fof_list` and `fof_append`. The table has RLS on with no policies, so the public key alone cannot read or write it. A wipe is a `wipe` event, not a deletion. A `POSTGRES_URL` takes precedence if one is set; `STORE=memory` forces the in-memory store for local tests.
 - **Realtime:** polling always runs; Supabase Realtime (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`) makes cross-screen updates faster when it is configured.
 - **Offline:** phone taps queue locally and send when the connection returns.
-- **Password:** the built-in password hash is the same as the Playbook's; `PLAYBOOK_PASSWORD` overrides it. THE FLAVOR RACE film and its poster sit behind the password, since the film premieres in the room. The film (`public/media/flavor-race.mp4`) is the polished V15 at 2560 x 1440 (H.264, AAC), sized under GitHub's 100 MB file limit; how it is made is in `video/docs/session/HANDOFF.md`.
+- **Password:** the built-in password hash is the same as the Playbook's; `PLAYBOOK_PASSWORD` overrides it. THE FLAVOR RACE film and its poster sit behind the password, since the film premieres in the room. The film (`public/media/flavor-race.mp4`) is V17 at 2560 x 1440 (H.264, AAC), sized under GitHub's 100 MB file limit; how it is made is in `video/docs/session/HANDOFF.md`.
 
 ## Run it
 

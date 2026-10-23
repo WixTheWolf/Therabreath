@@ -67,7 +67,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
           <p className="bw-hi">{first ? `${first}, you’re invited.` : 'You’re invited.'}</p>
           <h1>The Future<br /><em>of Freshness</em></h1>
           <p>{EVENT.dateLine} · {EVENT.room} room</p>
-          <button className="bw-play" onClick={() => setFilm(true)}><span />Watch the 30-second film</button>
+          <button className="bw-play" onClick={() => setFilm(true)}><span />Watch the film · 1:27</button>
         </div>
       </header>
 
@@ -76,13 +76,15 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
         <p className="bw-letter">{first ? `Dear ${first},` : 'Hello,'}</p>
         <p className="bw-letter">In July you came to Norco and saw how we make flavor. On November 9 we come to Princeton with something different: our flavor expertise, consumer and market observations, trend insights and innovation work, aimed at the goal in {first.toLowerCase() === 'ross' ? 'your' : 'Ross\u2019s'} invitation: <em>new flavor experiences that strengthen TheraBreath&rsquo;s appeal with loyal users and attract new consumers.</em></p>
         <p className="bw-letter">So the morning is built around your four objectives, and around real work: four samples from our development bench, made in the TheraBreath bases you sent us. You will taste, score, argue, invent and engineer. By noon the room will have written a Flavor Playbook: three directions, with owners and dates, and your name on the cover.</p>
+        <p className="bw-letter">Two names for one morning: <em>The Future of Freshness</em> is the session. <em>The Flavor Playbook</em> is the document the session writes.</p>
+        <p className="bw-letter">Who you will meet from The Flavor Factory: Dan Wixted, President, opens and closes the morning. Alex takes the market and the signals. Ryan Wixted teaches Flavor School and runs the tasting and The Bench. Matt Wixted, Director of Operations, keeps us to noon.</p>
         <p className="bw-letter">This page is here so you arrive ready to discuss, not just listen. It takes five minutes.</p>
         <p className="bw-sign"><img src="/img/tff-logo.webp" alt="The Flavor Factory" />The Flavor Factory team</p>
       </section>
 
       <section className="bw-sec bw-rise">
         <div className="k">The thesis and the growth math</div>
-        <h2 className="bw-thesis">TheraBreath took away the burn.<br /><em>Now let&rsquo;s add the want.</em></h2>
+        <h2 className="bw-thesis">TheraBreath took away the burn.<br /><em>Now let&rsquo;s give more people a reason to want it.</em></h2>
         <div className="bw-math">
           <div><b>25.3%</b><span>Share of US mouthwash in Q2 2026, up 4.5 points. Number 2.</span></div>
           <div><b>{GAP.tb}%</b><span>of US households buy TheraBreath, against {GAP.category}% for the category. 86 of every 100 have not met it yet.</span></div>
@@ -175,9 +177,9 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
         <p className="bw-promise">You will leave with a Playbook that has <em>your name</em> on it.</p>
         <div className="bw-logi"><div><small>When</small>{EVENT.date}<br />{EVENT.time} ET</div><div><small>Where</small>{EVENT.room} room, Church &amp; Dwight<br />469 N Harrison St, Princeton, NJ 08540</div><div><small>Bring</small>Curiosity, and an appetite for something other than mint</div></div>
         <button className="bw-link bw-pdf" onClick={() => print()}>Save this pre-brief as a PDF</button>
-        <div className="k">Confidential</div>
+        <p className="bw-conf">Confidential. The samples you will taste are development concepts made for this conversation: not products, claims or commercial formulations. This page, the room and the Playbook stay between the people in them.</p>
       </footer>
-      {film && <FilmModal onClose={() => setFilm(false)} />}
+      {film && <FilmModal q={`?c=${encodeURIComponent(code)}&k=${encodeURIComponent(k)}`} onClose={() => setFilm(false)} />}
     </main>
   );
 }

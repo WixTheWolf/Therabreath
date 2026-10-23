@@ -77,6 +77,7 @@ export function Title({ s }: SceneProps) {
         <Enter i={0}><div className="k">TheraBreath × The Flavor Factory</div></Enter>
         <Enter i={1}><h1 className="hero center">The Flavor Playbook</h1></Enter>
         <Enter i={2}><div className="sub it center">{EVENT.sub}</div></Enter>
+        <Enter i={3}><div className="title-note">The Future of Freshness is the morning. The Flavor Playbook is what the morning writes.</div></Enter>
       </div>
       <div className="logos"><img src="/img/tff-logo-white.webp" alt="The Flavor Factory" /></div>
     </>
@@ -122,7 +123,10 @@ export function Prework({ s, step }: SceneProps) {
   const answers = Object.values(s.survey);
   const count = (key: 'consumer' | 'moment') => { const t: Record<string, number> = {}; answers.forEach((a) => a[key] && (t[a[key]!] = (t[a[key]!] || 0) + 1)); return ranked(t); };
   const cons = count('consumer'), mom = count('moment');
-  const vetoes = answers.map((a) => a.veto).filter(Boolean) as string[];
+  // The same veto from several people shows once, with a count.
+  const vetoCount: Record<string, [string, number]> = {};
+  for (const v of answers.map((a) => a.veto).filter(Boolean) as string[]) { const key = v.trim().toLowerCase().replace(/[.!]+$/, ''); if (!key) continue; vetoCount[key] = [vetoCount[key]?.[0] || v.trim().replace(/[.!]+$/, ''), (vetoCount[key]?.[1] || 0) + 1]; }
+  const vetoes = Object.values(vetoCount).sort((a, b) => b[1] - a[1]);
   const max = (l: [string, number][]) => Math.max(1, ...l.map((x) => x[1]));
   const Bars = ({ list }: { list: [string, number][] }) => (
     <div className="pw-bars">{list.slice(0, 5).map(([k, v], i) => <div key={k} className={i === 0 ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">Answers arrive from the pre-work survey.</div>}</div>
@@ -137,7 +141,7 @@ export function Prework({ s, step }: SceneProps) {
       {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">The room&rsquo;s freshness</span><p className="h3 it">{describe(roomProfile(answers), 'The room wants freshness that is')}</p></div></R>}
       <R b={2} step={step} className="vetoes">
         <div className="k">Flavors you would never approve</div>
-        <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map((v, i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 30 + ((i * 17) % 5) * 6 }}>{v}</span>) : <span className="empty">Vetoes arrive from the pre-work survey.</span>}</div>
+        <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map(([v, n], i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 30 + ((i * 17) % 5) * 6 + Math.min(18, (n - 1) * 6) }}>{v}{n > 1 && <sup className="num">{n}</sup>}</span>) : <span className="empty">Vetoes arrive from the pre-work survey.</span>}</div>
       </R>
     </div>
   );
@@ -153,7 +157,7 @@ export function Thesis({ step }: SceneProps) {
   return (
     <div className="thesis">
       <div className={'tl1' + (step >= 0 ? ' on' : '')}>TheraBreath took away the burn.</div>
-      <div className={'tl2 it' + (step >= 1 ? ' on' : '')}>Now let&rsquo;s add the want.</div>
+      <div className={'tl2 it' + (step >= 1 ? ' on' : '')}>Now let&rsquo;s give more people a reason to want it.</div>
     </div>
   );
 }

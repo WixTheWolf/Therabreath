@@ -18,15 +18,28 @@ import { FlavorRaceV12_1, RACE12_1_FRAMES } from "./FlavorRaceV12_1";
 import { FlavorRaceV12_2, RACE12_2_FRAMES } from "./FlavorRaceV12_2";
 import { FlavorRaceV14, RACE14_FRAMES } from "./FlavorRaceV14";
 import { FlavorRaceV15, RACE15_FRAMES } from "./FlavorRaceV15";
+import { FlavorRace90, RACE90_FRAMES } from "./FlavorRace90";
+import { FlavorRaceV16, RACE16_FRAMES } from "./FlavorRaceV16";
+import { FlavorRaceV17, RACE17_FRAMES } from "./FlavorRaceV17";
 import { FlavorRaceFrame, FlavorRaceFrame15, FlavorRaceGraphics, FlavorRaceGraphicsV14, FlavorRaceGraphicsV15, GRAPHICS14_FRAMES, GRAPHICS15_FRAMES, GRAPHICS_FRAMES } from "./FlavorRaceGraphics";
 import { FlavorTrailerV9, TRAILER9_FRAMES } from "./FlavorTrailerV9";
 import { FlavorTrailerBlueSky, TRAILER_BLUESKY_FRAMES } from "./FlavorTrailerBlueSky";
 import { FlavorTrailer, TRAILER_FRAMES } from "./FlavorTrailer";
 import { MissionNext, MISSION_FRAMES } from "./MissionNext";
+import { FutureOfFreshness, FOF_FRAMES, FutureOfFreshnessLoop, FOF_LOOP_FRAMES } from "./FutureOfFreshness";
+import { FutureOfFreshnessV2, FOF2_FRAMES, FutureOfFreshnessV2Loop, FOF2_LOOP_FRAMES } from "./FutureOfFreshnessV2";
+import { FutureOfFreshnessV3, FOF3_FRAMES } from "./FutureOfFreshnessV3";
+import { FutureOfFreshnessV4, FOF4_FRAMES } from "./FutureOfFreshnessV4";
 import "./index.css";
 
 export const RemotionRoot: React.FC = () => (
   <>
+    <Composition id="FutureOfFreshnessV4" component={FutureOfFreshnessV4} durationInFrames={FOF4_FRAMES} fps={30} width={1920} height={1080} />
+    <Composition id="FutureOfFreshnessV3" component={FutureOfFreshnessV3} durationInFrames={FOF3_FRAMES} fps={30} width={1920} height={1080} />
+    <Composition id="FutureOfFreshnessV2" component={FutureOfFreshnessV2} durationInFrames={FOF2_FRAMES} fps={30} width={1920} height={1080} />
+    <Composition id="FutureOfFreshnessV2Loop" component={FutureOfFreshnessV2Loop} durationInFrames={FOF2_LOOP_FRAMES} fps={30} width={1920} height={1080} />
+    <Composition id="FutureOfFreshness" component={FutureOfFreshness} durationInFrames={FOF_FRAMES} fps={30} width={1920} height={1080} />
+    <Composition id="FutureOfFreshnessLoop" component={FutureOfFreshnessLoop} durationInFrames={FOF_LOOP_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="Opening" component={Opening} durationInFrames={OPENING_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="OpeningLoop" component={Opening} defaultProps={{ clean: true }} durationInFrames={LOOP_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="FlavorRace" component={FlavorRace} durationInFrames={RACE_FRAMES} fps={30} width={1920} height={1080} />
@@ -44,6 +57,9 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="FlavorRaceV12-1" component={FlavorRaceV12_1} durationInFrames={RACE12_1_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
     <Composition id="FlavorRaceV12-2" component={FlavorRaceV12_2} durationInFrames={RACE12_2_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
     <Composition id="FlavorRaceV14" component={FlavorRaceV14} durationInFrames={RACE14_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ stem: "all" }} />
+    <Composition id="FlavorRaceV17" component={FlavorRaceV17} durationInFrames={RACE17_FRAMES} fps={24} width={1920} height={1080} />
+    <Composition id="FlavorRaceV16" component={FlavorRaceV16} durationInFrames={RACE16_FRAMES} fps={24} width={1920} height={1080} />
+    <Composition id="FlavorRace90" component={FlavorRace90} durationInFrames={RACE90_FRAMES} fps={24} width={1920} height={1080} />
     <Composition id="FlavorRaceV15" component={FlavorRaceV15} durationInFrames={RACE15_FRAMES} fps={24} width={1920} height={1080} />
     <Composition id="FlavorRaceGraphics" component={FlavorRaceGraphics} durationInFrames={GRAPHICS_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="FlavorRaceGraphicsV14" component={FlavorRaceGraphicsV14} durationInFrames={GRAPHICS14_FRAMES} fps={30} width={1920} height={1080} />
