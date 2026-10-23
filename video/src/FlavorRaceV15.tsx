@@ -4,6 +4,7 @@ import { Flash, loadFonts } from "./FlavorRaceV12_2";
 import SIGN_MC1 from "../public/race/v15/sign_track_mc1.json";
 import JACKET_MC1 from "../public/race/v15/jacket_track_mc1.json";
 import LABEL_HULL from "../public/race/v15/label_track_hull.json";
+import CD_SEAL from "../public/race/v15/cd_seal_track.json";
 
 /* THE FLAVOR RACE · Version 15, the final cut: the director's own edit of 12 October 2026 (Version 4's personality and
    spectacle, its title beats and Mission Control at The Flavor Factory), conformed shot for shot to the full-resolution
@@ -21,14 +22,16 @@ import LABEL_HULL from "../public/race/v15/label_track_hull.json";
    VI home: The Flavor Factory sees it, the lift-off for home, re-entry, down through the clouds to New Jersey, the
    campus, Church & Dwight headquarters, the landing, six samples, the tasting, silence, black, the line
    VII the stinger: back on the Moon, the competitor finally arrives.
-   No faces, with one exception the director has to rule on: the warning beat (v15/px31, from the director's proxy)
-   opens on a vintage control room where two men are seen in profile for about 1.6 s before the warning light. Every
+   No faces: the warning beat (v15/px31, from the director's proxy) opens on a vintage control room where two men are
+   seen in profile, so its first 1.7 s push in on the room's red alarm beacon instead (the same cut points). Every
    hero shot is the locked bottle: white, short ribbed orange cap. The rival is only ever COMPETITOR:
    the shot that spells it wrong is gone (the pull-away runs on instead). The Mission Control wall sign wore a
    generated copy of The Flavor Factory wordmark with a mangled R: it carries the real logo, tracked to the camera.
    Generated text the model misspelt is repaired: the small print in the hull shot stays soft (a tracked blur), the
    close-up as TheraBreath comes alive loses its small print, The Flavor Factory's monitors read THERABREATH ONE, and
-   the launch button's garbled label is lifted off. Where the director's in-points caught a frame of the neighbouring
+   the launch button's garbled label is lifted off. The headquarters monument's drawn copy of the Church & Dwight seal
+   carries the real seal (public/img/cd-seal.png), lit like the sign. The Moon stands on one grey regolith: the shots
+   generated on a brown one (TheraBreath standing, the flag wide, the late rival) are graded to match. Where the director's in-points caught a frame of the neighbouring
    source shot (the transfer button, the flagpole) or replayed frames across a cut (the eruption into the lift-off,
    the rival's engines into its pull-away), they are moved by a few frames; every cut point stays where the director
    put it.
@@ -47,7 +50,7 @@ const MONO = '"JetBrains Mono", ui-monospace, monospace';
 const IVORY = "#F4EDE0";
 
 type Track = { fps: number; from: number; frames: number[][] };
-type Patch = { img: string; track: Track };
+type Patch = { img: string; track: Track; sw?: number };   // sw: the source's width when it is not 1916
 // a softened region that follows a surface (track_sign.py): the layer's own pixels, blurred, seen through feathered
 // ellipses (full strength inside 60% of their radii) placed in source pixels (sw x sh) and moved by the track
 type Soften = { track: Track; sw: number; sh: number; px: number; rx: number; ry: number; spots: [number, number][] };
@@ -90,7 +93,8 @@ const SEGS: Seg[] = [
   { id: "px27", dur: 3.5, kind: "clip", clip: "v15/px27", from: 0.0, zoom: [1.0, 1.0] },                    // stand-in from the review proxy
   { id: "rivaleng", dur: 1.25, kind: "clip", clip: "v15/5d17c937", from: 11.86, zoom: [1.3, 1.31] },       // the competitor commits
   { id: "rivalaway", dur: 3.125, kind: "clip", clip: "v15/5d17c937", from: 13.11, zoom: [1.3, 1.33] },      // and pulls away
-  { id: "warn", dur: 3.875, kind: "clip", clip: "v15/px31", from: 0.0, zoom: [1.0, 1.0] },                  // stand-in: a vintage control room (faces, 1.6 s), then TheraBreath's warning light
+  { id: "warn", dur: 1.708, kind: "clip", clip: "v15/px31", from: 0.0, zoom: [1.8, 1.86], origin: "72% 42%", grade: "blur(1px)" },  // stand-in: the vintage control room's red alarm beacon, pushed in past the two men at its consoles (softened: the proxy's blocks show at this size)
+  { id: "warnlight", dur: 2.167, kind: "clip", clip: "v15/px31", from: 1.708, zoom: [1.0, 1.0] },          // then TheraBreath's warning light (the proxy's own cut, frame 41)
   // IV. DISCOVERY
   { id: "search", dur: 1.875, kind: "clip", clip: "v15/5f1977e8", from: 0.0 },                             // The Flavor Factory: SEARCHING
   { id: "cutoff", dur: 2.334, kind: "clip", clip: "h/c04_burner_cut", from: 1.683 },                        // the engines go quiet
@@ -118,9 +122,9 @@ const SEGS: Seg[] = [
   { id: "descent", dur: 4.625, kind: "clip", clip: "v11/617c18bf", from: 0.3 },
   { id: "dust", dur: 1.375, kind: "clip", clip: "k/n14_dust", from: 0.25 },
   { id: "foot", dur: 1.916, kind: "clip", clip: "k/n14_dust", from: 1.995 },                               // the Flavor has landed
-  { id: "stand", dur: 2.667, kind: "clip", clip: "v122/moon_stand", from: 0.0 },
+  { id: "stand", dur: 2.667, kind: "clip", clip: "v15/moon_stand_grey", from: 0.0 },                       // v122/moon_stand on the grey regolith (scripts/grade_moon.py)
   { id: "pole", dur: 1.167, kind: "clip", clip: "k/n28_flag", from: 8.837 },                               // the pole enters the regolith
-  { id: "flagwide", dur: 3.5, kind: "clip", clip: "w/c7_flag", from: 10.5, zoom: [1.0, 1.03] },            // and only then the flag
+  { id: "flagwide", dur: 3.5, kind: "clip", clip: "v15/c7_flag_grey", from: 1.5, zoom: [1.0, 1.03] },      // and only then the flag (w/c7_flag from 9 s, on the grey regolith)
   { id: "earthrise", dur: 5.5, kind: "clip", clip: "v15/fbfbe7c8", from: 2.6, zoom: [1.15, 1.18] },
   // VI. HOME
   { id: "orbit2", dur: 2.042, kind: "clip", clip: "v15/f84aafa8", from: 0.8, zoom: [1.35, 1.4] },
@@ -135,7 +139,7 @@ const SEGS: Seg[] = [
   { id: "sage", dur: 1.667, kind: "clip", clip: "v15/d061bbeb", from: 0.0 },
   { id: "campus", dur: 2.0, kind: "clip", clip: "v15/5b518a71", from: 2.82, zoom: [1.5, 1.53] },
   { id: "flagpole", dur: 2.0, kind: "clip", clip: "v15/67b0baa3", from: 1.938, zoom: [1.5, 1.52] },
-  { id: "cdsign", dur: 1.958, kind: "clip", clip: "v15/5b518a71", from: 0.0 },                             // Church & Dwight, Ewing, New Jersey
+  { id: "cdsign", dur: 1.958, kind: "clip", clip: "v15/5b518a71", from: 0.0, patches: [{ img: "cd_seal_patch", track: CD_SEAL, sw: 1912 }] },   // Church & Dwight, Ewing, New Jersey: the real seal on the monument
   { id: "cdsky", dur: 2.334, kind: "clip", clip: "v15/5b518a71", from: 4.953 },
   { id: "hqland", dur: 6.333, kind: "clip", clip: "s11_hq", from: 3.383 },
   { id: "robot", dur: 5.0, kind: "clip", clip: "v12/g7_robot", from: 0.0 },                                // six samples
@@ -144,8 +148,8 @@ const SEGS: Seg[] = [
   { id: "end", dur: 5.0, kind: "end" },
   { id: "black1", dur: 0.75, kind: "black" },
   // VII. THE STINGER
-  { id: "stgflag", dur: 1.875, kind: "clip", clip: "v12/g9_late", from: 0.0, zoom: [1.5, 1.52], origin: "75% 75%" },
-  { id: "stglate", dur: 3.125, kind: "clip", clip: "v12/g9_late", from: 2.6, zoom: [1.45, 1.47], origin: "68% 70%" },
+  { id: "stgflag", dur: 1.875, kind: "clip", clip: "v15/g9_late_grey", from: 0.0, zoom: [1.5, 1.52], origin: "75% 75%" },   // v12/g9_late on the grey regolith
+  { id: "stglate", dur: 3.125, kind: "clip", clip: "v15/g9_late_grey", from: 2.6, zoom: [1.45, 1.47], origin: "68% 70%" },
   { id: "black2", dur: 1.0, kind: "black" },
 ];
 
@@ -163,10 +167,11 @@ const SRC_W = 1916;
 const LogoPatch: React.FC<{ p: Patch }> = ({ p }) => {
   const fr = useCurrentFrame();
   const m = p.track.frames[Math.min(fr, p.track.frames.length - 1)];
-  const s = 1920 / SRC_W;
+  const sw = p.sw || SRC_W;
+  const s = 1920 / sw;
   return (
-    <div style={{ position: "absolute", left: 0, top: -(1080 * s - 1080) / 2, width: SRC_W, height: 1080, transform: `scale(${s})`, transformOrigin: "0 0" }}>
-      <Img src={staticFile(`race/v15/${p.img}.png`)} style={{ position: "absolute", left: 0, top: 0, width: SRC_W, height: 1080, transform: `matrix(${m.join(",")})`, transformOrigin: "0 0" }} />
+    <div style={{ position: "absolute", left: 0, top: -(1080 * s - 1080) / 2, width: sw, height: 1080, transform: `scale(${s})`, transformOrigin: "0 0" }}>
+      <Img src={staticFile(`race/v15/${p.img}.png`)} style={{ position: "absolute", left: 0, top: 0, width: sw, height: 1080, transform: `matrix(${m.join(",")})`, transformOrigin: "0 0" }} />
     </div>
   );
 };

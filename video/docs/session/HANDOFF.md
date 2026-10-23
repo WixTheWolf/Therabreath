@@ -1,7 +1,7 @@
 # THE FLAVOR RACE: session handoff (after V15)
 
 ## V15 polish and the 2K master (21 October 2026)
-- The film the presentation plays is now the polished V15 at 2560 x 1440: `final/public/media/flavor-race.mp4` (H.264 High, 24 fps, two-pass 3.9 Mbps, AAC 192k, BT.709 TV range, faststart, about 94 MB so it stays under GitHub's 100 MB file limit), with a 2560 x 1440 poster (`flavor-race-poster.jpg`, the onboard look back at 0:45). `docs/session/flavor-race-v15-review.mp4` is the earlier 720p review copy, before the polish.
+- This 2K master of the polished V15 (H.264 High, 24 fps, two-pass 3.9 Mbps, AAC 192k, BT.709 TV range, faststart, about 94 MB, with a 2560 x 1440 poster of the onboard look back at 0:45) was the presentation's film until V16 replaced it; the presentation now plays V17 at 2K (see the V17 section). `docs/session/flavor-race-v15-review.mp4` is the earlier 720p review copy, before the polish.
 - Polish, with every cut point where the director put it:
   - No faces: the warning beat (`px31`) opened on 1.7 s of a 1960s control room with two men's faces. Those 1.7 s (`warn`) now push in on the room's red alarm beacon (zoom 1.8 from 72% 42%, softened 1 px over the proxy's blocks), then the proxy's own cut (frame 41) to TheraBreath's warning light (`warnlight`).
   - One grey Moon: TheraBreath standing, the flag wide and the stinger's late rival were generated on a brown regolith (CIELAB chroma 9 to 22 against 1 to 4 on the descent, the footpad and the Earthrise). `scripts/grade_moon.py` pulls only warm, weakly coloured pixels toward grey (the cap, the flag's stripe, the engine glow, Earth and the wordmark are left alone): `v15/moon_stand_grey` (k 0.65), `v15/c7_flag_grey` (w/c7_flag from 9 s, k 0.85, gate 26 to 40), `v15/g9_late_grey` (k 0.7). Ground chroma after: 3.2, 8.5, 4.2 to 5.3.
@@ -207,5 +207,16 @@ No em or en dashes (`node playbook/design/scripts/check-dashes.mjs .` from the r
 - Sound: `sound/cues17.py` (233 cues, one bed per place with J and L bridges across every scene change), `sound/vo17.py`
   (the radio perspective follows the picture), `sound/music17.py` (the V16 score on the V17 bars; the finale's bar 29 on
   the lift-off so its last chord lands on the lawn), `sound/events17.py`; `mix2.py` with `CUT=17`.
-- Commands are at the end of `docs/session/RACE17.md`. The app copy (`final/public/media/flavor-race.mp4`) is the
-  1080p picture with the mix, two-pass x264 at 3.5 Mbps, faststart; the poster is the flag wide.
+- Commands are at the end of `docs/session/RACE17.md`.
+- The app copy (`final/public/media/flavor-race.mp4`) is V17 at 2560 x 1440 for the large monitor (23 October): H.264
+  High, 24 fps, two-pass 4.3 Mbps, BT.709 TV range, faststart, 91.5 MB (87.2 MiB, under GitHub's 100 MB file limit).
+  The sound is the 1080p app copy's own AAC track, copied across bit for bit (-16.4 LUFS, 7.6 LU). The poster
+  (`flavor-race-poster.jpg`) is the same frame as before, the flag wide (frame 2650, 1:50.4), at 2560 x 1440.
+  - Picture: `npx remotion render src/index.ts FlavorRaceV17 out/race17/pic2k.mp4 --muted --concurrency=3 --crf=12
+    --scale=1.3333333333333333 --jpeg-quality=95` (about 27 minutes; the end card and the logo patches are drawn at
+    2K, the clips are scaled by the browser; the render is full-range BT.601).
+  - Delivery: the V15 2K encode (above) at `-b:v 4300k -maxrate 9000k -bufsize 14000k`, with
+    `-map 0:v:0 -map 1:a:0 -c:a copy` taking the sound from the 1080p V17 app copy.
+  - Checks: every one of the 3,913 frames, scaled to 1080p, matches the 1080p V17 (SSIM 0.972 at worst, mean 0.986), so
+    the cut is the same frame for frame; the encode holds SSIM 0.989 against the 2K master (0.977 at worst);
+    `blackdetect` and `freezedetect` give the same blacks and the same held card as the 1080p copy.

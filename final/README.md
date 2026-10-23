@@ -56,7 +56,7 @@ Every interaction is an event in one log, folded into session state (`src/lib/st
 - **Store:** the `flavor-playbook` Supabase project (`fof_events`), reached through the key-checked database functions `fof_list` and `fof_append`. The table has RLS on with no policies, so the public key alone cannot read or write it. A wipe is a `wipe` event, not a deletion. A `POSTGRES_URL` takes precedence if one is set; `STORE=memory` forces the in-memory store for local tests.
 - **Realtime:** polling always runs; Supabase Realtime (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`) makes cross-screen updates faster when it is configured.
 - **Offline:** phone taps queue locally and send when the connection returns.
-- **Password:** the built-in password hash is the same as the Playbook's; `PLAYBOOK_PASSWORD` overrides it. THE FLAVOR RACE film and its poster sit behind the password, since the film premieres in the room.
+- **Password:** the built-in password hash is the same as the Playbook's; `PLAYBOOK_PASSWORD` overrides it. THE FLAVOR RACE film and its poster sit behind the password, since the film premieres in the room. The film (`public/media/flavor-race.mp4`) is V17 at 2560 x 1440 (H.264, AAC), sized under GitHub's 100 MB file limit; how it is made is in `video/docs/session/HANDOFF.md`.
 
 ## Run it
 
@@ -90,7 +90,7 @@ node scripts/export-deck.mjs https://<production-host> FOF1109 <password> delive
 3. Attendee names and roles for the personal pre-brief links.
 4. The Q3 earnings call on October 30: refresh the share and penetration scenes once the numbers are approved.
 5. Next-step commitments and dates (Playbook v1.0 in 8 business days, new samples, a January 2027 review).
-6. The official TheraBreath orange and logo, and a brand check of the generated Church & Dwight sign in THE FLAVOR RACE.
+6. The official TheraBreath orange and logo. In THE FLAVOR RACE the Church & Dwight monument now carries the real seal; the small seal on the building behind it is still the generated one.
 7. Darwin room: TV inputs, our laptop or theirs in Edge, guest Wi-Fi, and whether anyone joins remotely.
 
 The dash check rejects em dashes and en dashes anywhere in the repo.
