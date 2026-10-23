@@ -209,3 +209,21 @@ No em or en dashes (`node playbook/design/scripts/check-dashes.mjs .` from the r
   the lift-off so its last chord lands on the lawn), `sound/events17.py`; `mix2.py` with `CUT=17`.
 - Commands are at the end of `docs/session/RACE17.md`. The app copy (`final/public/media/flavor-race.mp4`) is the
   1080p picture with the mix, two-pass x264 at 3.5 Mbps, faststart; the poster is the flag wide.
+
+## V18, the notes pass on V17 (23 October 2026)
+- `src/FlavorRaceV18.tsx` (registered as FlavorRaceV18, 24 fps, 3,983 frames, 2:46). The notes and what was done for
+  each are in `docs/session/RACE18.md`.
+- The flash at 0:44 was the pitch shot's sun flare flickering in the generated footage: the shot now plays its
+  flare-free tail, motion-interpolated to two thirds speed (`public/race/clips/v18/g10_pitch_slow.mp4`, made with
+  ffmpeg minterpolate from v12/g10_pitch src 2.96). The bottle reveal is hard cuts. The plasma shot is gone (the
+  re-entry punches into the cloud behind a flash; its time went to the homeward shot and the approach to the lawn so
+  the finale's last chord still lands on it). Three hard cuts hidden inside source clips (the head of the two-rocket
+  shot, the regolith, the cloud over New Jersey) that V17 played through are now cuts on the clip's own frame. The FLAVOR TRANSFER READY press is back (one bar, given back by the prism, the
+  glove and the transfer). The montage is eight shots on the beats (3, 4, 2, 2, 2, 2, 2, 7). The last lap is rebuilt
+  with the rival first, the hero alone, the charge at the lens, one pass on the cue's bar 23, the room, the streak.
+- Sound: `sound/cues18.py` (253 cues), `sound/vo18.py` (five lines: the count, "Nice bottle", "running out of road",
+  "Oh, that's new", "not ideal"), `sound/music18.py` (same anchors as V17; bar 23 on the pass), `sound/events18.py`;
+  `mix2.py` with `CUT=18`.
+- The flight's flavors stay out of the montage (the tasting is blind); the note asking for the workshop's flavors is
+  answered in RACE18.md with the swap that is possible if the blind is lifted.
+- Commands are at the end of `docs/session/RACE18.md`. The app copy and the Stage notes say two minutes forty-six.
