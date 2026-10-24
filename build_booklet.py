@@ -26,8 +26,8 @@ FOOTER = "Confidential - Prepared exclusively for Church & Dwight / TheraBreath 
 
 
 def clean_text(s: str) -> str:
-    return (s.replace("–", "-")
-             .replace("—", "-")
+    return (s.replace("\u2013", "-")
+             .replace("\u2014", "-")
              .replace("×", "x")
              .replace("•", "•")
              .replace("“", '"').replace("”", '"')
