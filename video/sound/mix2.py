@@ -11,7 +11,9 @@ from numpy.lib.stride_tricks import sliding_window_view
 from scipy.signal import butter, sosfilt, lfilter, fftconvolve, resample_poly
 if os.environ.get("CUT") == "17":
     from events17 import MUSIC_AUTO, MUSIC_CUTS
-if os.environ.get("CUT") == "18":
+if os.environ.get("CUT") == "19":
+    from events19 import MUSIC_AUTO, MUSIC_CUTS
+elif os.environ.get("CUT") == "18":
     from events18 import MUSIC_AUTO, MUSIC_CUTS
 elif os.environ.get("CUT") == "16":
     from events16 import MUSIC_AUTO, MUSIC_CUTS
@@ -185,7 +187,7 @@ def main(pic, mus, sfx, vo, dst):
     key = env_db(V)
     on = np.clip((key + 50) / 14, 0, 1)
     # V16 carries eleven radio lines over a loud score, so its dips are deeper (DEEP): the speech band steps well out of the way
-    DEEP = os.environ.get('CUT') in ('16', '17', '18')
+    DEEP = os.environ.get('CUT') in ('16', '17', '18', '19')
     g_wide = smooth(-(6.0 if DEEP else 4.0) * on, 40, 550 if DEEP else 450); g_mid = smooth(-(9.0 if DEEP else 7.0) * on, 40, 550 if DEEP else 450)
     bm, am = peaking(300, -1.5, 0.8); M = lfilter(bm, am, M, axis=0)
     lowM = sosfilt(butter(2, 250, 'lp', fs=SR, output='sos'), M, axis=0)

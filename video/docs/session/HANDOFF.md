@@ -227,3 +227,28 @@ No em or en dashes (`node playbook/design/scripts/check-dashes.mjs .` from the r
 - The flight's flavors stay out of the montage (the tasting is blind); the note asking for the workshop's flavors is
   answered in RACE18.md with the swap that is possible if the blind is lifted.
 - Commands are at the end of `docs/session/RACE18.md`. The app copy and the Stage notes say two minutes forty-six.
+
+## V19, the continuity pass on V18 (24 October 2026)
+- `src/FlavorRaceV19.tsx` (registered as FlavorRaceV19, 24 fps, 3,983 frames, 2:46: the same length to the frame, so
+  every anchor of the score is where V18 had it). What the rewatch found, the research behind each fix and what was
+  done are in `docs/session/RACE19.md`.
+- The stray Moon beside the Earth on the way home is gone (`public/race/clips/v19/homeward_nomoon.mp4`: the body
+  tracked per frame and the sky filled under a feathered disc by `scratch/v19/depatch.py`; the shot starts after the
+  landing leg has cleared it). The crescent in the corner of the Moon descent is gone the same way
+  (`v19/descent_nocrescent.mp4`). The Earthrise is replaced by the look home: the same clip's tail with the Earth
+  already up and the camera booming off the regolith, slowed with minterpolate (`v19/earth_up_slow.mp4`); the flag
+  wide is longer so flag wide to lift-off keeps its 7.3 s for the score's rise. The re-entry gets a fall: the plasma
+  (engines first), then the entry burn over the cloud deck (`v19/fall.mp4`, trimmed from `w/x_reentrypov` src 12.0), then the punch into the
+  cloud; the New Jersey aerial is warmed toward the golden hour. The arm and the tray of four come out on the lawn
+  (`v19/robot_lawn.mp4`, generated from the landing's last frame) and the bench shot is reframed on four glasses and
+  reversed so the hand lifts one (`v19/tasting4.mp4`). The montage is the flight's own flavors where the library has
+  them (ginger and lime, the orange drop, the lemon into the beaker, strawberries and cherries into water (`v19/berries.mp4`,
+  generated), the frozen watermelon, the frosted mint, chamomile in lavender haze, the yuzu), same eight beats.
+- Sound: `sound/cues19.py` (257 cues: the new montage sounds on their frames, one glass note on the look home, the
+  plasma dying into the entry burn and thin air over the fall, the hatch, arm and tray on the lawn's frames, the
+  hand on the glass), `sound/vo19.py` (the same five lines), `sound/music19.py` (same anchors; printed alignment
+  identical to V18), `sound/events19.py`; `mix2.py` with `CUT=19` (its deeper dialogue dips now include cut 19; add each new cut
+  there or the beds sit 2 dB higher under the lines).
+- Generation budget: two Seedance clips (77 Higgsfield credits); the account is below the price of one more clip and
+  the ElevenLabs workspace is over its quota, so anything else new is a library build (see RACE19.md).
+- Commands are at the end of `docs/session/RACE19.md`. The app copy and the Stage notes still say two minutes forty-six.
