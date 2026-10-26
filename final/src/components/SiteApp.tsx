@@ -64,7 +64,8 @@ export default function SiteApp({ host = false }: { host?: boolean }) {
       <header className="st-bar">
         <div className="st-lock"><img src="/img/tff-logo-white.webp" alt="The Flavor Factory" /><span>×</span><b>TheraBreath</b></div>
         {live && <a className="st-live" href={`/playbook/${LIVE_CODE}`}><i />Live now · open the room&rsquo;s Playbook</a>}
-        {host && <nav className="st-hostbar" aria-label="Host"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host">Open the presentation</a></nav>}
+        {host ? <nav className="st-hostbar" aria-label="Host"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host">Open the presentation</a></nav>
+          : <a className="st-host" href="/login?host=1">Host sign-in</a>}
       </header>
       <nav className="st-rail" aria-label="Chapters">
         {NAV.map(([id, l]) => <a key={id} href={`#${id}`} className={active === id ? 'on' : ''}><span>{l}</span><i /></a>)}

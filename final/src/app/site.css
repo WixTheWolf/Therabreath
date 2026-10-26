@@ -259,7 +259,7 @@
   .st-clock { grid-template-columns: 1fr; }
   .st-dial { max-width: 360px; justify-self: center; }
   .st-qs { grid-template-columns: 1fr 1fr; }
-  .st-host { display: none; }
+  .st-host { font-size: 11px; }
 }
 @media (max-width: 520px) {
   .st-lock b { display: none; }
