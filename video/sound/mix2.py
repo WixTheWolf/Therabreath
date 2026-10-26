@@ -11,7 +11,9 @@ from numpy.lib.stride_tricks import sliding_window_view
 from scipy.signal import butter, sosfilt, lfilter, fftconvolve, resample_poly
 if os.environ.get("CUT") == "17":
     from events17 import MUSIC_AUTO, MUSIC_CUTS
-if os.environ.get("CUT") == "21":
+if os.environ.get("CUT") == "22":
+    from events22 import MUSIC_AUTO, MUSIC_CUTS
+elif os.environ.get("CUT") == "21":
     from events21 import MUSIC_AUTO, MUSIC_CUTS
 elif os.environ.get("CUT") == "20":
     from events20 import MUSIC_AUTO, MUSIC_CUTS
@@ -191,10 +193,10 @@ def main(pic, mus, sfx, vo, dst):
     key = env_db(V)
     on = np.clip((key + 50) / 14, 0, 1)
     # V16 carries eleven radio lines over a loud score, so its dips are deeper (DEEP): the speech band steps well out of the way
-    DEEP = os.environ.get('CUT') in ('16', '17', '18', '19', '20', '21')
+    DEEP = os.environ.get('CUT') in ('16', '17', '18', '19', '20', '21', '22')
     # V20 (the scored review): the lines the plot hangs on were at or under the score in the speech band, so the score's
     # speech band steps a further 3 dB aside and the effects' a further 2
-    CLEAR = os.environ.get('CUT') in ('20', '21')
+    CLEAR = os.environ.get('CUT') in ('20', '21', '22')
     g_wide = smooth(-(6.0 if DEEP else 4.0) * on, 40, 550 if DEEP else 450); g_mid = smooth(-(12.0 if CLEAR else 9.0 if DEEP else 7.0) * on, 40, 550 if DEEP else 450)
     bm, am = peaking(300, -1.5, 0.8); M = lfilter(bm, am, M, axis=0)
     lowM = sosfilt(butter(2, 250, 'lp', fs=SR, output='sos'), M, axis=0)

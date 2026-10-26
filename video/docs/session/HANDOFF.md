@@ -281,3 +281,19 @@ No em or en dashes (`node playbook/design/scripts/check-dashes.mjs .` from the r
   and rider as V20). The app copy and the Stage notes say two minutes twenty-six.
 - The site's front door now shows hosts (the host cookie) two links in its bar: THE FLAVOR RACE in the film modal and
   the presentation (`/host`). The room password alone does not show them.
+
+## V22, the last lap rebuilt and the fall replaced (26 October 2026)
+- `src/FlavorRaceV22.tsx` (registered as FlavorRaceV22, 24 fps, 3,516 frames, 2:26). On the note about 1:58 to 1:59
+  and the race from 1:30 to 1:39. The last lap is now one race on one story: the competitor far ahead (left to
+  right), she draws alongside it (`v15/px27` from its head), dead level from behind (`v12/g3_neck`, never used
+  before), her engines kick on the score's bar 23 and a wider angle from the same side sees her pull away
+  (`v12/g6_pass`), Mission Control erupts, and back on the race the competitor coughs smoke as she closes on the Moon
+  (the tail of `g6_pass`). Out: the climb with the toy rival on legs and the golden rocket that read as the
+  competitor streaking for the Moon. The fall is now the view down past her engines as the cloud deck rushes up and
+  swallows the lens (`w/x_reentrypov` src 5.75 to 7.13). Both keep their V21 lengths, so every anchor of the score
+  holds. Notes and the score in `docs/session/RACE22.md`.
+- No new footage: the ElevenLabs workspace has 261 credits (a new side-on pass shot from the race's own frame was set
+  up on flow kV2Cgf1jrrEIfQfZmfi7, node XakTcYBkfmGwO4R8y3XX, Gemini Omni, 8 s, 7,339 credits, refused for quota)
+  and Higgsfield has 10.91.
+- Sound: `sound/cues22.py` (the last lap and the fall re-placed), `vo22.py`, `music22.py`, `events22.py`; `mix2.py`
+  with `CUT=22` (the same dialogue carve and rider as V20).
