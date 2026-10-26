@@ -252,3 +252,23 @@ No em or en dashes (`node playbook/design/scripts/check-dashes.mjs .` from the r
 - Generation budget: two Seedance clips (77 Higgsfield credits); the account is below the price of one more clip and
   the ElevenLabs workspace is over its quota, so anything else new is a library build (see RACE19.md).
 - Commands are at the end of `docs/session/RACE19.md`. The app copy and the Stage notes still say two minutes forty-six.
+
+## V20, every deduction in the scored review (26 October 2026)
+- `src/FlavorRaceV20.tsx` (registered as FlavorRaceV20, 24 fps, 3,627 frames, 2:31: fifteen seconds shorter than V19,
+  all of it from the trip home). The review's rubric, every deduction with what was done, the spend, the
+  measurements and the honest re-score are in `docs/session/RACE20.md`.
+- New footage (ElevenLabs flow kV2Cgf1jrrEIfQfZmfi7, 12,384 credits; the workspace is now about 260 credits from its
+  quota): the race left to right from the side-by-side frame (`public/race/clips/v20/race_lr.mp4`, Gemini Omni; the
+  rival's surge, its pull-away and, later in the same take, the rival far ahead after the relight); a true-scale Moon
+  landing (`v20/descent_true.mp4`, Veo 3.1 Lite from an empty-Moon still to the landed frame; also the landed wide);
+  the toast (`v20/toast.mp4`, Gemini Omni from the tray's last frame: four gloved hands lift the four glasses and
+  touch them together). The glow after the transfer is regraded to TheraBreath mint (`v20/life_mint.mp4`, scratch
+  v20/tools/mint.py). Mission Control's cheer is pushed in under its garbled lettering. The look home and the bench
+  tasting are gone.
+- Sound: `sound/cues20.py` (269 cues: the rival's engine to the right, a drop and a harder landing on the pass, a
+  harder punch into the cloud, the landing thrust from the plume's first light, the toast on the lawn),
+  `sound/vo20.py` (the same five lines), `sound/music20.py` (the finale cue loses four bars on a bar line, file 59.21
+  into 65.53, so its last chord still lands 0.84 s after the lawn touchdown), `sound/events20.py` (9 to 10 dB under
+  "Nice bottle" and "running out of road", the drop before the pass); `mix2.py` with `CUT=20` (a 3 dB deeper speech
+  carve, and the room rider eased: RIDE 1.0, RIDE_DOWN 0.3).
+- Commands are at the end of `docs/session/RACE20.md`. The app copy and the Stage notes say two minutes thirty-one.

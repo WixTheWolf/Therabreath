@@ -11,7 +11,9 @@ from numpy.lib.stride_tricks import sliding_window_view
 from scipy.signal import butter, sosfilt, lfilter, fftconvolve, resample_poly
 if os.environ.get("CUT") == "17":
     from events17 import MUSIC_AUTO, MUSIC_CUTS
-if os.environ.get("CUT") == "19":
+if os.environ.get("CUT") == "20":
+    from events20 import MUSIC_AUTO, MUSIC_CUTS
+elif os.environ.get("CUT") == "19":
     from events19 import MUSIC_AUTO, MUSIC_CUTS
 elif os.environ.get("CUT") == "18":
     from events18 import MUSIC_AUTO, MUSIC_CUTS
@@ -187,8 +189,11 @@ def main(pic, mus, sfx, vo, dst):
     key = env_db(V)
     on = np.clip((key + 50) / 14, 0, 1)
     # V16 carries eleven radio lines over a loud score, so its dips are deeper (DEEP): the speech band steps well out of the way
-    DEEP = os.environ.get('CUT') in ('16', '17', '18', '19')
-    g_wide = smooth(-(6.0 if DEEP else 4.0) * on, 40, 550 if DEEP else 450); g_mid = smooth(-(9.0 if DEEP else 7.0) * on, 40, 550 if DEEP else 450)
+    DEEP = os.environ.get('CUT') in ('16', '17', '18', '19', '20')
+    # V20 (the scored review): the lines the plot hangs on were at or under the score in the speech band, so the score's
+    # speech band steps a further 3 dB aside and the effects' a further 2
+    CLEAR = os.environ.get('CUT') == '20'
+    g_wide = smooth(-(6.0 if DEEP else 4.0) * on, 40, 550 if DEEP else 450); g_mid = smooth(-(12.0 if CLEAR else 9.0 if DEEP else 7.0) * on, 40, 550 if DEEP else 450)
     bm, am = peaking(300, -1.5, 0.8); M = lfilter(bm, am, M, axis=0)
     lowM = sosfilt(butter(2, 250, 'lp', fs=SR, output='sos'), M, axis=0)
     highM = sosfilt(butter(2, 4000, 'hp', fs=SR, output='sos'), M, axis=0)
@@ -197,7 +202,7 @@ def main(pic, mus, sfx, vo, dst):
     # ---- effects: step out of the voice's way while a line is spoken (mostly in the speech band), then
     # light peak control on the very top only (fast, gentle)
     X = sosfilt(butter(2, 25, 'hp', fs=SR, output='sos'), X, axis=0)
-    x_wide = smooth(-(4.0 if DEEP else 2.0) * on, 30, 450 if DEEP else 350); x_mid = smooth(-(8.0 if DEEP else 6.0) * on, 30, 450 if DEEP else 350)
+    x_wide = smooth(-(4.0 if DEEP else 2.0) * on, 30, 450 if DEEP else 350); x_mid = smooth(-(10.0 if CLEAR else 8.0 if DEEP else 6.0) * on, 30, 450 if DEEP else 350)
     lowX = sosfilt(butter(2, 300, 'lp', fs=SR, output='sos'), X, axis=0)
     highX = sosfilt(butter(2, 4000, 'hp', fs=SR, output='sos'), X, axis=0)
     X = (lowX + highX) * to_audio_rate(x_wide, n)[:, None] + (X - lowX - highX) * to_audio_rate(x_wide + x_mid, n)[:, None]

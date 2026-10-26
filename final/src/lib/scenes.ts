@@ -22,7 +22,7 @@ const W = (line?: string): RoomMode => ({ kind: 'watch', line });
 
 const SCENE_CATALOG: Scene[] = [
   { id: 'arrival', n: 0, act: 'Pre-show', chapter: -1, theme: 'b', builds: 0, title: 'Arrival', notes: 'Loop from 9:15. Names rise into the drop as people join. Invite everyone to scan the QR.', room: W('Welcome. We start at 10:00.') },
-  { id: 'film', n: 0, act: 'Close', chapter: -1, theme: 'b', builds: 0, title: 'The film', notes: 'The send-off. Lights down, sound up. THE FLAVOR RACE, two minutes forty-six. Let the card land before anyone speaks, and wait for the stinger.', room: W('Eyes up. The film is starting.') },
+  { id: 'film', n: 0, act: 'Close', chapter: -1, theme: 'b', builds: 0, title: 'The film', notes: 'The send-off. Lights down, sound up. THE FLAVOR RACE, two minutes thirty-one. Let the card land before anyone speaks, and wait for the stinger.', room: W('Eyes up. The film is starting.') },
   { id: 'title', n: 1, act: 'Opening', chapter: -1, theme: 'b', builds: 0, title: 'The Flavor Playbook', notes: 'Dan welcomes the room. Thank Ross for the invitation. Two hours, one document by noon.', room: W() },
   { id: 'july', n: 2, act: 'Opening', chapter: -1, theme: 'a', builds: 1, title: 'From July to today', notes: 'In July you came to Norco: resiliency, innovation, operations, partnership. Today is about the fifth word: growth.', room: W() },
   { id: 'brief', n: 3, act: 'Opening', chapter: -1, theme: 'a', builds: 4, title: 'Your brief, our agenda', notes: 'These are Ross\'s four objectives, word for word. Each act answers one and writes one chapter of the Playbook. Watch the line at the bottom fill.', room: W() },
@@ -77,7 +77,7 @@ const LIVE_ORDER = [
 ];
 const LIVE_NOTES: Record<string, Partial<Scene>> = {
   arrival: { notes: '9:30 to 10:00. Ross meets us at 9:30 for Wi-Fi and the room. Plug in, Stage full screen, test the film sound. Names rise into the drop as people scan the QR.' },
-  film: { notes: '11:48. The send-off. Lights down, sound up. THE FLAVOR RACE, two minutes forty-six, with the competitor and the stinger. Nobody speaks until the rival has landed; then Dan: see you at lunch.', room: W('Eyes up. The film is starting.') },
+  film: { notes: '11:48. The send-off. Lights down, sound up. THE FLAVOR RACE, two minutes thirty-one, with the competitor and the stinger. Nobody speaks until the rival has landed; then Dan: see you at lunch.', room: W('Eyes up. The film is starting.') },
   title: { notes: '10:00 sharp. Dan welcomes the room and thanks Ross for the invitation. Two hours, one Playbook by noon, with their names on the cover.' },
   july: { notes: '10:02. In July you came to Norco: resiliency, innovation, operations, partnership. Today is the fifth word: growth.' },
   brief: { builds: 5, notes: '10:04. Ross\'s four objectives, word for word, and his goal: new flavor experiences that strengthen appeal with loyal users and attract new consumers. Each objective writes one chapter. Watch the line at the bottom fill.' },
