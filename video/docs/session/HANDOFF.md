@@ -272,3 +272,12 @@ No em or en dashes (`node playbook/design/scripts/check-dashes.mjs .` from the r
   "Nice bottle" and "running out of road", the drop before the pass); `mix2.py` with `CUT=20` (a 3 dB deeper speech
   carve, and the room rider eased: RIDE 1.0, RIDE_DOWN 0.3).
 - Commands are at the end of `docs/session/RACE20.md`. The app copy and the Stage notes say two minutes thirty-one.
+
+## V21, V20 without the toast (26 October 2026)
+- `src/FlavorRaceV21.tsx` (registered as FlavorRaceV21, 24 fps, 3,516 frames, 2:26). The toast shot is out; the film
+  ends on the tray of four arriving at the lens, the robot shot's last frame held under the fade. Everything before
+  the robot shot is V20 to the frame. Notes in `docs/session/RACE21.md`.
+- Sound: `sound/cues21.py`, `vo21.py`, `music21.py`, `events21.py`; `mix2.py` with `CUT=21` (the same dialogue carve
+  and rider as V20). The app copy and the Stage notes say two minutes twenty-six.
+- The site's front door now shows hosts (the host cookie) two links in its bar: THE FLAVOR RACE in the film modal and
+  the presentation (`/host`). The room password alone does not show them.

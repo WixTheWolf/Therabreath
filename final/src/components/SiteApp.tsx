@@ -41,12 +41,15 @@ function useReveal() {
 
 const NAV = [['hero', 'Film'], ['brief', 'Your brief'], ['why', 'Why flavor'], ['platforms', 'Platforms'], ['flight', 'Tasting'], ['close', 'The morning'], ['explore', 'Explore']];
 
-export default function SiteApp() {
+// `host` (the host cookie, read on the server) adds THE FLAVOR RACE and the presentation to the bar; the room never
+// sees either before 11:48.
+export default function SiteApp({ host = false }: { host?: boolean }) {
   const { state: s } = useSession(LIVE_CODE, { interval: 8000 });
   const live = s.scene > 0 || Object.keys(s.participants).length > 0;
   const t = sceneIndex('tasting');
   const revealed = t >= 0 && (s.scene > t || (s.scene === t && s.step >= 2));
   const [film, setFilm] = useState(false);
+  const [race, setRace] = useState(false);
   const [active, setActive] = useState('hero');
   useReveal();
   useEffect(() => { document.documentElement.dataset.theme = 'b'; }, []);
@@ -61,6 +64,7 @@ export default function SiteApp() {
       <header className="st-bar">
         <div className="st-lock"><img src="/img/tff-logo-white.webp" alt="The Flavor Factory" /><span>×</span><b>TheraBreath</b></div>
         {live && <a className="st-live" href={`/playbook/${LIVE_CODE}`}><i />Live now · open the room&rsquo;s Playbook</a>}
+        {host && <nav className="st-hostbar" aria-label="Host"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host">Open the presentation</a></nav>}
       </header>
       <nav className="st-rail" aria-label="Chapters">
         {NAV.map(([id, l]) => <a key={id} href={`#${id}`} className={active === id ? 'on' : ''}><span>{l}</span><i /></a>)}
@@ -74,6 +78,7 @@ export default function SiteApp() {
       <details id="explore" className="st-explore"><summary>Explore further: the vocabulary of freshness, two worlds, three shifts</summary><p>Optional reading before or after the workshop. These pages illustrate ideas; they do not validate formulas or consumer demand.</p><Vocab /><Worlds /><ShiftTrack /></details>
 
       {film && <FilmModal onClose={() => setFilm(false)} />}
+      {race && <FilmModal race onClose={() => setRace(false)} />}
     </main>
   );
 }

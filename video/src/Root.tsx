@@ -24,6 +24,7 @@ import { FlavorRaceV17, RACE17_FRAMES } from "./FlavorRaceV17";
 import { FlavorRaceV18, RACE18_FRAMES } from "./FlavorRaceV18";
 import { FlavorRaceV19, RACE19_FRAMES } from "./FlavorRaceV19";
 import { FlavorRaceV20, RACE20_FRAMES } from "./FlavorRaceV20";
+import { FlavorRaceV21, RACE21_FRAMES } from "./FlavorRaceV21";
 import { FlavorRaceFrame, FlavorRaceFrame15, FlavorRaceGraphics, FlavorRaceGraphicsV14, FlavorRaceGraphicsV15, GRAPHICS14_FRAMES, GRAPHICS15_FRAMES, GRAPHICS_FRAMES } from "./FlavorRaceGraphics";
 import { FlavorTrailerV9, TRAILER9_FRAMES } from "./FlavorTrailerV9";
 import { FlavorTrailerBlueSky, TRAILER_BLUESKY_FRAMES } from "./FlavorTrailerBlueSky";
@@ -63,6 +64,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="FlavorRaceV18" component={FlavorRaceV18} durationInFrames={RACE18_FRAMES} fps={24} width={1920} height={1080} />
     <Composition id="FlavorRaceV19" component={FlavorRaceV19} durationInFrames={RACE19_FRAMES} fps={24} width={1920} height={1080} />
     <Composition id="FlavorRaceV20" component={FlavorRaceV20} durationInFrames={RACE20_FRAMES} fps={24} width={1920} height={1080} />
+    <Composition id="FlavorRaceV21" component={FlavorRaceV21} durationInFrames={RACE21_FRAMES} fps={24} width={1920} height={1080} />
     <Composition id="FlavorRaceV17" component={FlavorRaceV17} durationInFrames={RACE17_FRAMES} fps={24} width={1920} height={1080} />
     <Composition id="FlavorRaceV16" component={FlavorRaceV16} durationInFrames={RACE16_FRAMES} fps={24} width={1920} height={1080} />
     <Composition id="FlavorRace90" component={FlavorRace90} durationInFrames={RACE90_FRAMES} fps={24} width={1920} height={1080} />

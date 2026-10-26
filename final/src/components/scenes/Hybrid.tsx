@@ -43,7 +43,7 @@ export function Compass({ prof, ghost = CORE_MINT, color = 'var(--accent)', size
   );
 }
 
-// 1. The film: THE FLAVOR RACE (V20, 2:31), the send-off at the end of the morning. Lights down, sound up.
+// 1. The film: THE FLAVOR RACE (V21, 2:26), the send-off at the end of the morning. Lights down, sound up.
 export function Film({ ctx }: SceneProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(false); const [done, setDone] = useState(false);
