@@ -18,9 +18,21 @@ and a half seconds shorter than V20.
 
 ## The score
 
-On the V20 rubric the change costs a point under Idea and story: the ending no longer shows the four glasses being
-lifted as the room's samples; the tray of four arriving at the lens carries that by count alone (which is the V19
-review's own free fix 6). 89 out of 100; everything else in RACE20.md's re-score stands.
+Scored after a full viewing (the whole film at one frame a second, the climb and the trip home frame by frame) and
+the measurements, on the V20 rubric:
+
+| Area | Out of | V20 | V21 | what still costs |
+|---|---|---|---|---|
+| Idea and story | 20 | 19 | 18 | The ending carries the room's four samples by count alone: no A to D on the glasses, and without the toast no beat that says this is the room's tasting (2) |
+| Picture | 25 | 21 | 21 | The bottle's fins, legs and label layout still change between generated shots (3); the landing's dust billows and hangs, which it cannot do in vacuum (1) |
+| Editing and pacing | 20 | 18 | 18 | The Earth is larger in the flag wide than in the landing wide before it (1); the landing is told twice, the wide a frame from the ground and then the footpad close-up (1) |
+| Sound and mix | 20 | 18 | 19 | Unheard in the room: the Moon sits 5 dB lower than V19 and needs a check over the room's air handling (1). The end card now resolves 1.9 dB under the pass (V20: 0.5), so the order is the story's: the launch, the pass, the cloud, the relight, the card |
+| Fit for the room | 15 | 14 | 14 | 2:26 is still long for a send-off before lunch (1) |
+| **Total** | **100** | **90** | **90** | |
+
+Loudness at the key moments (momentary, LUFS): launch -9.3, the pass -10.3, the cloud punch -11.3, the relight -11.6,
+the end card -12.2, the montage -13.7, the Moon descent -23.0. The plot lines on their words: "Nice bottle" 25.3 dB
+over everything else at the tenth percentile, "running out of road" 25.7, "Oh, that's new" 17.8 (the same as V20).
 
 ## Commands
 ```
