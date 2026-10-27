@@ -350,8 +350,8 @@ export const TOPICS = [
 export const TEAM = [
   { name: 'Dan Wixted', title: 'President' },
   { name: 'Alex Wixted', title: 'Business Operations' },
-  { name: 'Ryan Wixted', title: 'Quality Control' },
-  { name: 'Matt Wixted', title: 'Director of Operations' },
+  { name: 'Ryan Wixted', title: 'QC/QA Manager' },
+  { name: 'Matt Wixted', title: 'Production Manager' },
 ];
 
 // Ross, in his own words (invitation, September 18, 2026).
