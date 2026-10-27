@@ -4,7 +4,8 @@
 // white-space marks and Now, Next and Later are typed in live on the deck and saved on this laptop. Each block of the
 // run of show (RUN) tags its slides with the objective it answers and who leads it.
 // Keys: right, space or click to go on; left to go back; F full screen; N speaker notes.
-// ?all=1 lays every slide out in order, for printing the deck to PDF. ?reset=1 clears what was typed in rehearsal.
+// ?all=1 lays every slide out in order, for printing the deck to PDF; ?all=1&notes=1 is the presenter edition (each
+// slide with its lead, time and speaker notes, after a cover with the run of show). ?reset=1 clears rehearsal input.
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { useScale } from './StageApp';
@@ -135,7 +136,7 @@ export default function DeckApp() {
         notes: '11:40 to 11:44. Dan. Read the roadmap back, column by column, with each owner. This is what Ross asked for at the end of his invitation.',
         body: <><p className="dk-k">Our innovation roadmap</p><h2 className="dk-h">The roadmap <em>we built together.</em></h2><div className="dk-road">{HORIZONS.map((h) => { const items = (nnl[h.id] || '').split('\n').map((x) => x.trim()).filter(Boolean); return <div key={h.id}><b>{h.label}</b><small>{h.when}</small>{items.length ? <ul>{items.map((x, j) => <li key={j}>{x}</li>)}</ul> : <p>Read back from the board</p>}</div>; })}</div><p className="dk-goal">&ldquo;&hellip;{ROSS_WORDS.roadmap}.&rdquo;</p><p className="dk-src">{SOURCES.ross}</p></> },
       { id: 'next', block: 'close', title: 'What happens next',
-        notes: '11:44 to 11:48. Dan. The three next steps, with dates. Then: thank you for building this with us. [CONFIRM dates]',
+        notes: '11:44 to 11:48. Dan. The three next steps, with dates. Then: thank you for building this with us. The dates are still to be confirmed before November 9.',
         body: <><p className="dk-k">What happens next</p><h2 className="dk-h">Three directions. <em>Clear owners. Agreed next steps.</em></h2><ol className="dk-steps">{NEXT_STEPS.map((n, i) => <li key={n.t}><span>{i + 1}</span><div><b>{n.t}</b><p>{n.d}</p></div></li>)}</ol></> },
       { id: 'film', block: 'close', title: 'THE FLAVOR RACE', dark: true,
         notes: '11:48. The send-off. Lights down, sound up. Two minutes twenty-six. Nobody speaks until the rival has landed; then Dan: see you at lunch.',
@@ -148,6 +149,7 @@ export default function DeckApp() {
   const [notes, setNotes] = useState(false);
   const [hint, setHint] = useState(true);
   const [all, setAll] = useState(false);
+  const [pres, setPres] = useState(false);
   const scale = useScale(1920, 1080);
   const n = slides.length;
   const go = useCallback((d: number) => setI((x) => Math.max(0, Math.min(n - 1, x + d))), [n]);
@@ -155,7 +157,7 @@ export default function DeckApp() {
   useEffect(() => {
     const q = new URLSearchParams(location.search);
     if (q.has('reset')) { SAVED.forEach((k) => { try { localStorage.removeItem(key(k)); } catch {} }); location.replace(location.pathname); return; }
-    setAll(q.has('all'));
+    setAll(q.has('all')); setPres(q.has('notes'));
     const h = Number(location.hash.slice(1)); if (h > 0) setI(h - 1);
     const t = setTimeout(() => setHint(false), 5000); return () => clearTimeout(t);
   }, []);
@@ -175,6 +177,7 @@ export default function DeckApp() {
     addEventListener('keydown', k); return () => removeEventListener('keydown', k);
   }, [go, n]);
 
+  if (all && pres) return <Presenter slides={slides} told={answers.length > 0} />;
   if (all) return (
     <main className="dk-print">
       {slides.map((sl, j) => <div key={sl.id} className="dk-page"><SlideView sl={sl} active={false} /><span className="dk-count">{j + 1} / {n}</span></div>)}
@@ -201,6 +204,43 @@ export default function DeckApp() {
   );
 }
 
+// The presenter edition: what to send the team. A cover with the run of show, then every slide exactly as the room
+// sees it, with its number, who leads it, the objective and the speaker notes. Without pre-brief answers yet, a page
+// marks where "You told us" will appear.
+function Presenter({ slides, told }: { slides: Slide[]; told: boolean }) {
+  const n = slides.length;
+  const range = (id: string) => { const ix = slides.map((s, j) => (s.block === id ? j + 1 : 0)).filter(Boolean); return ix.length > 1 ? `${ix[0]} to ${ix[ix.length - 1]}` : `${ix[0]}`; };
+  const head = (sl: Slide) => { const b = RUN.find((x) => x.id === sl.block); return <><span>{b?.lead}</span>{b?.obj && <span>Objective {b.obj}</span>}</>; };
+  return (
+    <main className="dk-print dk-pres-doc">
+      <section className="dk-pres dk-pres-cover">
+        <p className="dk-pres-k">Presenter edition · final · {EVENT.date} · {EVENT.room} room, Princeton</p>
+        <h1>The Future <em>of Freshness</em></h1>
+        <p className="dk-pres-sub">Every slide exactly as the room will see it on the TV, with who presents it, the time and the speaker notes. {n} slides{told ? '' : `, plus "You told us" once the pre-brief answers are in`}. The live deck is at /host (right arrow or click to go on, F for full screen, N for notes).</p>
+        <table className="dk-pres-run"><thead><tr><th>Time</th><th>Part</th><th>Objective</th><th>Lead</th><th>Slides</th></tr></thead>
+          <tbody>{RUN.map((b) => <tr key={b.id}><td>{b.t} to {b.end}</td><td>{b.title}</td><td>{b.obj || ''}</td><td>{b.lead}</td><td>{range(b.id)}</td></tr>)}</tbody></table>
+        <p className="dk-pres-foot">Confidential. For The Flavor Factory team; not for distribution.</p>
+      </section>
+      {slides.map((sl, j) => (
+        <Fragment key={sl.id}>
+          <section className="dk-pres">
+            <header><b>{j + 1} / {n} · {sl.title}</b>{head(sl)}</header>
+            <div className="dk-pres-slide"><div className="dk-pres-scale"><SlideView sl={sl} active={false} /></div></div>
+            <p className="dk-pres-notes">{sl.notes}</p>
+          </section>
+          {!told && sl.id === 'agenda' && (
+            <section className="dk-pres">
+              <header><b>After {j + 1} · You told us</b><span>Dan</span></header>
+              <div className="dk-pres-slide dk-pres-wait"><p>Appears here once the pre-brief answers are in (Ross sends the pre-brief on November 3): the consumer the room most wants to win, the moment TheraBreath is missing, and the flavors they would never approve, without names. The slides after it move up one.</p></div>
+              <p className="dk-pres-notes">10:08. Dan. Read the top consumer and the missing moment, then have some fun with the vetoes. No names on screen.</p>
+            </section>
+          )}
+        </Fragment>
+      ))}
+    </main>
+  );
+}
+
 function SlideView({ sl, active }: { sl: Slide; active: boolean }) {
   const blk = RUN.find((b) => b.id === sl.block);
   return (
@@ -215,11 +255,14 @@ function SlideView({ sl, active }: { sl: Slide; active: boolean }) {
 // THE FLAVOR RACE fills the slide. It starts on the keypress that lands on it (a user gesture, so sound is allowed).
 function FilmSlide() {
   const v = useRef<HTMLVideoElement>(null);
+  // On paper the film is its poster, without the player's controls.
+  const [still] = useState(() => new URLSearchParams(location.search).has('all'));
   useEffect(() => {
     const el = v.current; if (!el) return;
     const live = !!el.closest('[data-active]');
     if (live) el.play().catch(() => {});
     return () => { el.pause(); };
   }, []);
+  if (still) return <img className="dk-film" src="/media/flavor-race-poster.jpg" alt="THE FLAVOR RACE" />;
   return <video ref={v} className="dk-film" controls playsInline preload="auto" poster="/media/flavor-race-poster.jpg"><source src="/media/flavor-race.mp4" type="video/mp4" /></video>;
 }
