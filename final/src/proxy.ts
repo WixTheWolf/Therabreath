@@ -25,4 +25,4 @@ export async function proxy(req: NextRequest) {
 }
 // THE FLAVOR RACE premieres in the room, so it sits behind the password. The opening film quotes Ross's invitation,
 // so it does too, and the pre-brief reaches it with its signed link.
-export const config = { matcher: ['/', '/host', '/stage/:path*', '/console/:path*', '/playbook/:path*', '/sessions/:path*', '/media/flavor-race.mp4', '/media/flavor-race-poster.jpg', '/media/opening.mp4', '/media/opening.webm', '/media/film-poster.jpg'] };
+export const config = { matcher: ['/', '/host', '/scorecard', '/stage/:path*', '/console/:path*', '/playbook/:path*', '/sessions/:path*', '/media/flavor-race.mp4', '/media/flavor-race-poster.jpg', '/media/opening.mp4', '/media/opening.webm', '/media/film-poster.jpg'] };

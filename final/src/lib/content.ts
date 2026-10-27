@@ -259,7 +259,7 @@ export const OCCASIONS = [
 
 export const NEXT_STEPS = [
   { t: 'Three directions, three owners', d: 'Each with a TFF owner, a C&D reviewer, an intended base and a next sample action, agreed before we leave Princeton.' },
-  { t: 'Playbook v1.0 in 8 business days', d: 'Polished from today\'s session data, with every vote, score and edit in it.' },
+  { t: 'The Flavor Playbook in 8 business days', d: 'Today\'s scores, choices, owners and dates, written up and sent to everyone in the room.' },
   { t: 'New samples in your bases', d: 'The next round built in the TheraBreath bases you sent, reviewed together in January 2027.' },
 ];
 
@@ -286,17 +286,13 @@ export const THINK = [
   'The moment in the day when TheraBreath is not there yet, and what it would have to taste like to earn it.',
 ];
 
-// The morning, one line per act (pre-brief and site).
+// The morning, one line per part (site, pre-brief and the deck's timings). A simple morning: one deck, one paper
+// scorecard for the tasting, and a conversation. No phones.
 export const AGENDA: [string, string][] = [
-  ['10:00', 'Your brief, your homework and one thesis'],
-  ['10:10', 'Chapter 1 · The Signals: the growth math, the shelf, seven sourced signals, and you pick three'],
-  ['10:23', 'The white space: moments of the day by the consumers you named, from your own pre-work'],
-  ['10:26', 'Flavor School: how cooling works and how flavor survives OXYD-8'],
-  ['10:34', 'Chapter 2 · The Territories: four platforms, then a blind tasting made in your bases'],
-  ['10:54', 'Loyal users and new consumers: where each sample lands'],
-  ['11:00', 'Chapter 3 · The Concepts: two teams build, tune on The Bench, pitch and vote'],
-  ['11:30', 'Chapter 4 · The Pipeline: Now, Next, Later, with owners and dates'],
-  ['11:40', 'The Flavor Playbook assembles, with your names on the cover'],
-  ['11:48', 'A short film to send you to lunch'],
-  ['12:00', 'Lunch'],
+  ['10:00', 'Welcome, and your four objectives'],
+  ['10:10', 'Why flavor, and what is changing'],
+  ['10:25', 'Flavor School'],
+  ['10:35', 'Four platforms, then a blind tasting made in your bases'],
+  ['11:00', 'What goes first: Now, Next, Later'],
+  ['11:40', 'Owners, next steps, and a short film to send you to lunch'],
 ];

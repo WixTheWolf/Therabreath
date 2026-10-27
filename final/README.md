@@ -16,12 +16,23 @@ Ross Conroy's invitation (September 18, 2026) set the brief for the Oral Care R&
 - A pre-read so the team comes "prepared to discuss, not just listen."
 - Unflavored Fresh Breath and Kids bases sent to The Flavor Factory. The blind tasting is built in them.
 
+## The simple format (October 27)
+
+The morning now runs on one clean deck and a paper scorecard, with no phones. The front door is one short page.
+
+- `/`: when and where, why we are meeting, Ross's four objectives, the morning in six lines, and the pre-brief.
+- `/host` (host password): the deck. Fourteen slides, one idea each: the title, July to today, the four objectives, "You told us" (only once pre-brief answers exist), the gap, the flavor shelf, seven signals (the room picks three by hand), Flavor School, four platforms, the blind tasting, the reveal, which directions go first, Now, Next and Later (typed in live and saved in the browser), what happens next, and THE FLAVOR RACE. Right arrow, space or a click goes on; left goes back; F is full screen; N shows the speaker notes with times and presenters. `/host?all=1` lays every slide out for a PDF.
+- `/scorecard` (password): the tasting scorecard, one Letter page per person, with the same questions the phones asked (appeal, feels like TheraBreath, newness, who it is for, advance or not, one word, and the fruits for Sample C).
+- The pre-brief is unchanged except for its promises: no phone votes, no orbs on the screen, no Bench; the Playbook is the write-up sent after the morning.
+
+The live-workshop surfaces below (Stage, Console, phones, the assembled Playbook) are still in the code and still work at their addresses, but nothing links to them any more.
+
 ## Surfaces
 
 | Route | Who | What |
 | --- | --- | --- |
 | `/` | Attendees and facilitators (password) | The site: the film, Ross's brief and goal, the growth math, four platforms, the sealed tasting flight (cards flip once the room reveals them), the morning, and optional exploration tools. |
-| `/survey/FOF1109?k=KEY&n=Name` | Each attendee (signed link) | The pre-brief: a personal letter, the thesis and growth math, seven signals, four questions, four sealed platforms, the agenda and two minutes of homework that opens the session. Prints to a 3-page Letter PDF without links. |
+| `/survey/FOF1109?k=KEY&n=Name` | Each attendee (signed link) | The pre-brief: a personal letter, the thesis and growth math, seven signals, four questions, four sealed platforms, the agenda and two minutes of homework that opens the session. Prints to a 4-page Letter PDF without links. |
 | `/stage/FOF1109` | The room TV (password) | The deck: 41 scenes on a fixed 1920 x 1080 canvas, driven by the Console or the arrow keys. |
 | `/console/FOF1109` | Matt, with Alex as backup (password) | Scenes, timed notes, votes, timers, teams, Bench overrides, pipeline and commitments, personal pre-brief links, export and wipe. |
 | `/j/FOF1109?k=KEY` | Phones (signed link from the QR) | Voting, the tasting scorecard, the Concept Canvas, the Bench dials, dots and reactions. |
@@ -74,8 +85,9 @@ Rehearse: open `/console/ANYCODE`, press **Simulate 12** on each scene, and step
 
 ## PDFs (`deliverables/`, not deployed)
 
-- `The-Future-of-Freshness-Pre-brief.pdf`: the 3-page pre-read for Ross to send on November 3.
-- `The-Future-of-Freshness-Stage-Deck.pdf`: all 41 scenes at their final build step, the offline fallback.
+- `The-Future-of-Freshness-Pre-brief.pdf`: the 4-page pre-read for Ross to send on November 3 (regenerated October 27 with the simple-format copy).
+- `The-Future-of-Freshness-Deck.pdf`: the fourteen slides of the simple deck (from `/host?all=1`), the offline fallback.
+- `The-Future-of-Freshness-Tasting-Scorecard.pdf`: the paper scorecard, one Letter page; print one per person.
 
 After the session, export the leave-behind with the room's results (never during a session, because it moves the Stage):
 
