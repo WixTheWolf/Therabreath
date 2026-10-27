@@ -25,3 +25,10 @@ export const HOST_COOKIE = 'pb_host';
 export const joinToken = async (code: string) => (await hmac('join:' + code.toUpperCase())).slice(0, 16);
 export async function isAuthed(cookieValue?: string | null) { return !!cookieValue && cookieValue === (await authToken()); }
 export const COOKIE = 'pb_auth';
+export const cookieOpts = () => ({ httpOnly: true, sameSite: 'lax' as const, secure: process.env.NODE_ENV === 'production', path: '/', maxAge: 60 * 60 * 24 * 30 });
+
+// The team link (/t/KEY) signs a teammate in with host access in one click, for previews before the day. Only the
+// key's hash is stored here; setting PLAYBOOK_TEAM_KEY replaces the key and turns the old link off.
+const DEFAULT_TEAM_HASH = '6365923b5ee706dfbbbca21ea0e48c6046d86e23342c44cfc6391f5fe9e07d95';
+export async function teamHash() { return process.env.PLAYBOOK_TEAM_KEY ? sha256(norm(process.env.PLAYBOOK_TEAM_KEY)) : DEFAULT_TEAM_HASH; }
+export async function checkTeamKey(k: string) { return !!norm(k) && (await sha256(norm(k))) === (await teamHash()); }

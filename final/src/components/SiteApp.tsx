@@ -15,7 +15,7 @@ export default function SiteApp({ host = false, prebrief }: { host?: boolean; pr
     <main className="sp" data-theme="a">
       <header className="sp-bar">
         <div className="sp-lock"><img src="/img/tff-logo.webp" alt="The Flavor Factory" /><span>×</span><b>TheraBreath</b></div>
-        {host ? <nav className="sp-host" aria-label="Host"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host">Open the presentation</a><a href="/host/run">Run sheet</a></nav>
+        {host ? <nav className="sp-host" aria-label="Host"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host">Open the presentation</a><a href="/host/run">Run sheet</a><a href="/team">Team page</a></nav>
           : <a className="sp-signin" href="/login?host=1">Host sign-in</a>}
       </header>
 

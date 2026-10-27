@@ -24,7 +24,6 @@ const CONFIRM = [
   'The bases: Blossom Mint and Grove Mint in the Fresh Breath base, Berry Blast and the Mystery Flavor in the Kids base.',
   'The dates on What happens next, including the January 2027 review.',
   'A video call with Ross before the day. He asked to connect once or twice beforehand.',
-  'Alex’s title for the Who we are slide, if we want one shown.',
   'The pre-brief goes out November 3.',
 ];
 

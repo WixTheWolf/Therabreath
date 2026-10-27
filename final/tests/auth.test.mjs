@@ -65,3 +65,13 @@ test('the room cookie never passes as the host cookie', async () => {
   assert.equal(await auth.isHost(host), true);
   assert.equal(await auth.isAuthed(host), false);
 });
+
+test('the team link only opens with its key', async () => {
+  delete process.env.PLAYBOOK_TEAM_KEY;
+  for (const k of ['', ' ', 'team', 'norco-console-1109', 'a'.repeat(20)]) assert.equal(await auth.checkTeamKey(k), false);
+  process.env.PLAYBOOK_TEAM_KEY = 'Rehearsal-Team-Key';
+  try {
+    assert.equal(await auth.checkTeamKey('rehearsal-team-key'), true);
+    assert.equal(await auth.checkTeamKey('rehearsal-team-keyx'), false);
+  } finally { delete process.env.PLAYBOOK_TEAM_KEY; }
+});

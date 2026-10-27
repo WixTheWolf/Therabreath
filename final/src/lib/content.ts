@@ -309,13 +309,14 @@ export const RUN: Block[] = [
   { id: 'tasting', t: '10:40', end: '11:00', title: 'A blind tasting made in your bases', obj: '02', lead: 'Ryan',
     slides: 'Blind tasting, The reveal',
     does: 'Scorecards out. A and B in the Fresh Breath base, C and D in the Kids base. D is the Mystery Flavor: fruit guesses before the reveal. Then the names, and one word for each.',
-    handoff: 'Matt, concepts.' },
-  { id: 'concepts', t: '11:00', end: '11:20', title: 'From samples to concepts: who, when and what role', obj: '03', lead: 'Matt',
+    handoff: 'Ryan stays on for the concepts.' },
+  { id: 'concepts', t: '11:00', end: '11:20', title: 'From samples to concepts: who, when and what role', obj: '03', lead: 'Ryan',
     slides: 'Five questions, Three concepts',
-    does: 'From the scorecards, pick two or three directions. For each: who it is for, the moment, its role in the range, the format, and whether it grows loyal users, new consumers or both. Type each one into a concept card.' },
-  { id: 'pipeline', t: '11:20', end: '11:40', title: 'White space and the pipeline: Now, Next, Later', obj: '04', lead: 'Matt with Alex',
+    does: 'From the scorecards, pick two or three directions. For each: who it is for, the moment, its role in the range, the format, and whether it grows loyal users, new consumers or both. Type each one into a concept card.',
+    handoff: 'Alex, the white space.' },
+  { id: 'pipeline', t: '11:20', end: '11:40', title: 'White space and the pipeline: Now, Next, Later', obj: '04', lead: 'Alex',
     slides: 'White space, Now Next Later',
-    does: 'Alex walks the grid: where TheraBreath is today, and where each concept lands (click a cell to mark it). Matt places each concept and platform in Now, Next or Later with a TFF owner, a C&D reviewer, the base and the next sample action.',
+    does: 'Alex walks the grid: where TheraBreath is today, and where each concept lands (click a cell to mark it). Then each concept and platform goes into Now, Next or Later with a TFF owner, a C&D reviewer, the base and the next sample action.',
     handoff: 'Dan, the roadmap.' },
   { id: 'close', t: '11:40', end: '12:00', title: 'Our roadmap, owners and next steps, and a short film to send you to lunch', lead: 'Dan',
     slides: 'Our innovation roadmap, What happens next, THE FLAVOR RACE',
@@ -323,13 +324,13 @@ export const RUN: Block[] = [
 ];
 export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title, b.obj]);
 
-// The four of us, as the pre-brief letter introduces us. Titles only where we have them (Matt confirmed Alex's surname
-// and Ryan's title on October 27).
+// The four of us, as the pre-brief letter introduces us (names and titles confirmed by Matt on October 27). Matt is in
+// the room but does not present, so his card has no part of the morning.
 export const TEAM = [
   { name: 'Dan Wixted', title: 'President', today: 'Opens and closes the morning' },
-  { name: 'Alex Wixted', title: '', today: 'The market, the signals and the white space' },
-  { name: 'Ryan Wixted', title: 'Quality Control', today: 'Flavor School and the tasting' },
-  { name: 'Matt Wixted', title: 'Director of Operations', today: 'The concepts and the pipeline' },
+  { name: 'Alex Wixted', title: 'Business Operations', today: 'The market, the signals, the white space and the pipeline' },
+  { name: 'Ryan Wixted', title: 'Quality Control', today: 'Flavor School, the tasting and the concepts' },
+  { name: 'Matt Wixted', title: 'Director of Operations', today: '' },
 ];
 
 // Ross, in his own words (invitation, September 18, 2026).
