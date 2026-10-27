@@ -144,10 +144,10 @@ export const TERRITORIES: Territory[] = [
 // Four primary platforms for the November 9 live workshop. Legacy worlds remain available in the exploration tools.
 const platform = (id: string, changes: Partial<Territory>): Territory => ({ ...TERRITORIES.find(t => t.id === id)!, ...changes });
 export const PRIMARY_TERRITORIES: Territory[] = [
-  platform('warmcool', { n: 1, name: 'Plant-Powered Freshness', hero: 'Ginger Lemon Mint + Blossom Mint', promise: 'Explore botanical freshness through citrus, herbs and the contrast of warmth and cool.', why: 'Two complementary botanical directions, built for this workshop in the Fresh Breath base and tasted blind today.', flavors: ['Ginger, Lemon, Peppermint', 'Grapefruit, Lavender, Spearmint, Wintergreen'], signature: 'Bright citrus, aromatic herbs, a fresh mint finish. Sensory targets to evaluate.', who: 'Adults looking for a new botanical freshness experience.', fit: 'Screen first', fitNote: 'Development concepts: base compatibility and sample readiness are part of what we evaluate together.', image: '/img/gingerlime.webp', arc: ['Bright citrus', 'Botanical character', 'Mint finish'], moment: 'Everyday discovery', q: 'Which botanical direction feels right for TheraBreath?', opts: ['Ginger citrus', 'Floral citrus', 'Both'] }),
+  platform('warmcool', { n: 1, name: 'Plant-Powered Freshness', hero: 'Blossom Mint + Grove Mint', promise: 'Explore botanical freshness through citrus, herbs and florals, with a mint finish.', why: 'Two complementary botanical directions, built for this workshop in the Fresh Breath base and tasted blind today.', flavors: ['Grapefruit, Lavender, Rose, Spearmint, Wintergreen', 'Spearmint, Peppermint, Wintergreen, Rosemary, Ylang Ylang, Eucalyptus'], signature: 'Bright citrus, aromatic herbs, a fresh mint finish. Sensory targets to evaluate.', who: 'Adults looking for a new botanical freshness experience.', fit: 'Screen first', fitNote: 'Development concepts: base compatibility and sample readiness are part of what we evaluate together.', image: '/img/gingerlime.webp', arc: ['Bright citrus', 'Botanical character', 'Mint finish'], moment: 'Everyday discovery', q: 'Which botanical direction feels right for TheraBreath?', opts: ['Blossom Mint', 'Grove Mint', 'Both'] }),
   platform('bright', { n: 2, name: 'Global Brightness', promise: 'Familiar citrus opens a door to new flavor experiences.', why: 'A proposed direction to discuss alongside the current lab work.', fit: 'Screen first', fitNote: 'A direction to discuss on screen; not in today’s tasting flight.', q: 'Where can citrus take freshness beyond another mint?' }),
   platform('botanical', { n: 3, name: 'Modern Clean', promise: 'Explore green, gentle freshness for people who find mouthwash too intense.', why: 'A proposed sensory direction, to be tested with consumers and in the intended base.', fit: 'Screen first', fitNote: 'A direction to discuss on screen; not in today’s tasting flight.', q: 'Can gentle feel unmistakably fresh?' }),
-  platform('ladder', { n: 4, name: 'Next-Generation Kids', hero: 'Mystery Flavor', promise: 'Flavor makes the routine: playful discovery that invites curiosity.', why: 'Two new kids rinse directions, built for this workshop in the Kids base and tasted blind today.', flavors: ['A mystery fruit blend', 'A frozen-pop profile'], signature: 'A playful fruit blend; evaluate sweetness, finish and age-appropriate appeal.', who: 'Kids and families; consumer appeal remains a hypothesis.', fit: 'Screen first', fitNote: 'Development concepts: both kids samples are starting points, not selections.', arc: ['Guess', 'Discover', 'Discuss'], moment: 'The daily routine', q: 'Could a recurring mystery flavor make the routine more engaging?', opts: ['Advance', 'Explore further', 'Not yet'] }),
+  platform('ladder', { n: 4, name: 'Next-Generation Kids', hero: 'Berry Blast + Mystery Flavor', promise: 'Flavor makes the routine: playful discovery that invites curiosity.', why: 'Two new kids rinse directions, built for this workshop in the Kids base and tasted blind today.', flavors: ['Blueberry, Blackberry, Raspberry', 'A mystery fruit blend'], signature: 'A playful fruit blend; evaluate sweetness, finish and age-appropriate appeal.', who: 'Kids and families; consumer appeal remains a hypothesis.', fit: 'Screen first', fitNote: 'Development concepts: both kids samples are starting points, not selections.', arc: ['Guess', 'Discover', 'Discuss'], moment: 'The daily routine', q: 'Could a recurring mystery flavor make the routine more engaging?', opts: ['Advance', 'Explore further', 'Not yet'] }),
 ];
 
 // The freshness vocabulary: "Mint" is where it starts, not where it ends.
@@ -189,11 +189,14 @@ export const DIALS = [
 
 export const SAMPLES = [
   // status is client language: every sample is a development concept, nothing is a selection yet.
-  { code: 'A', name: 'Ginger Lemon Mint', territory: 'warmcool', note: 'Ginger, Lemon, Peppermint', base: 'Fresh Breath base', status: 'Botanical direction one' },
-  { code: 'B', name: 'Blossom Mint', territory: 'warmcool', note: 'Grapefruit, Lavender, Spearmint, Wintergreen', base: 'Fresh Breath base', status: 'Botanical direction two' },
-  { code: 'C', name: 'Mystery Flavor', territory: 'ladder', note: 'Apple, Grape, Cherry, Strawberry, Lemon', base: 'Kids base', status: 'Kids direction one: guess the fruits' },
-  { code: 'D', name: 'Frozen-Pop Exploration', territory: 'ladder', note: 'A frozen-pop fruit profile', base: 'Kids base', status: 'Kids direction two' },
+  // The lineup as Matt confirmed it on October 27, in tasting order. The Mystery Flavor is tasted last and the room
+  // guesses its fruits before the reveal; `mystery` marks it everywhere (scorecard, deck, run sheet), not its letter.
+  { code: 'A', name: 'Blossom Mint', territory: 'warmcool', note: 'Grapefruit, Lavender, Rose, Spearmint, Wintergreen', base: 'Fresh Breath base', status: 'Botanical direction one' },
+  { code: 'B', name: 'Grove Mint', territory: 'warmcool', note: 'Spearmint, Peppermint, Wintergreen, Rosemary, Ylang Ylang, Eucalyptus', base: 'Fresh Breath base', status: 'Botanical direction two' },
+  { code: 'C', name: 'Berry Blast', territory: 'ladder', note: 'Blueberry, Blackberry, Raspberry', base: 'Kids base', status: 'Kids direction one' },
+  { code: 'D', name: 'Mystery Flavor', territory: 'ladder', note: 'Apple, Grape, Cherry, Strawberry, Lemon', base: 'Kids base', status: 'Kids direction two: guess the fruits', mystery: true },
 ];
+export const MYSTERY = SAMPLES.find((x) => x.mystery)!.code;
 export const WHO_CHIPS = ['Gen Z', 'Mild-seekers', 'Families', '55+', 'Dry mouth', 'International', 'Me'];
 
 export const MOLECULES = [
@@ -305,7 +308,7 @@ export const RUN: Block[] = [
     does: 'Taste, aroma and feel, and why OXYD-8 is a demanding home for flavor. Then the four platforms: two carry today\'s samples, two are for discussion.' },
   { id: 'tasting', t: '10:40', end: '11:00', title: 'A blind tasting made in your bases', obj: '02', lead: 'Ryan',
     slides: 'Blind tasting, The reveal',
-    does: 'Scorecards out. A and B in the Fresh Breath base, C and D in the Kids base. Fruit guesses for C before the reveal. Then the names, and one word for each.',
+    does: 'Scorecards out. A and B in the Fresh Breath base, C and D in the Kids base. D is the Mystery Flavor: fruit guesses before the reveal. Then the names, and one word for each.',
     handoff: 'Matt, concepts.' },
   { id: 'concepts', t: '11:00', end: '11:20', title: 'From samples to concepts: who, when and what role', obj: '03', lead: 'Matt',
     slides: 'Five questions, Three concepts',
@@ -320,12 +323,12 @@ export const RUN: Block[] = [
 ];
 export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title, b.obj]);
 
-// The four of us, as the pre-brief letter introduces us. Titles only where we have them. [CONFIRM Alex's surname and
-// title, and Ryan's title]
+// The four of us, as the pre-brief letter introduces us. Titles only where we have them (Matt confirmed Alex's surname
+// and Ryan's title on October 27).
 export const TEAM = [
   { name: 'Dan Wixted', title: 'President', today: 'Opens and closes the morning' },
-  { name: 'Alex', title: '', today: 'The market, the signals and the white space' },
-  { name: 'Ryan Wixted', title: '', today: 'Flavor School and the tasting' },
+  { name: 'Alex Wixted', title: '', today: 'The market, the signals and the white space' },
+  { name: 'Ryan Wixted', title: 'Quality Control', today: 'Flavor School and the tasting' },
   { name: 'Matt Wixted', title: 'Director of Operations', today: 'The concepts and the pipeline' },
 ];
 

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Light from '../Light';
 import { Compass } from './Hybrid';
 import { R, Enter, Src, SceneProps, spectrumAt } from './ui';
-import { PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, ROSS_GOAL } from '@/lib/content';
+import { PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, ROSS_GOAL, MYSTERY } from '@/lib/content';
 import { tallyPick, ranked, tasteSummary } from '@/lib/state';
 
 // Map positions: x = character (familiar to adventurous), y = intensity (gentle to bold). Our perspective, illustrative.
@@ -122,7 +122,7 @@ export function Tasting({ s, step }: SceneProps) {
   const rows = SAMPLES.map((x) => { const g = Object.values(s.ratings[x.code] || {}).map((r) => r.guess).filter(Boolean); return { ...x, sum: tasteSummary(s, x.code), guessN: g.length, right: g.filter((v) => v === x.territory).length }; });
   const metrics: ['appeal' | 'feels' | 'newness', string][] = [['appeal', 'Appeal'], ['feels', 'Feels like TheraBreath'], ['newness', 'Newness']];
   const cell = (v: number) => { const a = Math.max(0, Math.min(1, (v - 1) / 4)); return { background: `color-mix(in oklab, var(--accent) ${Math.round(a * 85)}%, transparent)`, opacity: v ? 1 : 0.35 }; };
-  const mysteryGuesses = Object.values(s.ratings.C || {}).map(r => r.fruitGuess).filter(Boolean);
+  const mysteryGuesses = Object.values(s.ratings[MYSTERY] || {}).map(r => r.fruitGuess).filter(Boolean);
   const words = rows.flatMap((r) => r.sum.words.map((w) => ({ w, code: r.code })));
   return (
     <div className="pad tasting">

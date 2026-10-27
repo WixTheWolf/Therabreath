@@ -21,7 +21,7 @@ export default function Scorecard() {
             <div className="sc-row"><span>Who is it for</span><div className="sc-boxes">{WHO_CHIPS.map((w) => <i key={w}>{w}</i>)}</div></div>
             <div className="sc-row"><span>Advance this direction?</span><div className="sc-boxes">{['Yes', 'Maybe', 'No'].map((w) => <i key={w}>{w}</i>)}</div></div>
             <div className="sc-row"><span>One word for it</span><u /></div>
-            {x.code === 'C' && <div className="sc-row"><span>The fruits you taste</span><u /></div>}
+            {x.mystery && <div className="sc-row"><span>The fruits you taste</span><u /></div>}
           </div>
         </section>
       ))}
