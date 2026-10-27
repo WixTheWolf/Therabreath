@@ -1,7 +1,7 @@
 import { EVENT, RUN, SAMPLES, NEXT_STEPS } from '@/lib/content';
 import PrintButton from '@/app/scorecard/PrintButton';
 
-// The hosts' run sheet: one printout for Dan, Alex, Ryan and Matt, behind the host password. Not for the room.
+// The hosts' run sheet: one printout for The Flavor Factory team, behind the password. Not for the room.
 // The run of show comes from RUN, the same source as the agenda and the deck's presenter tags.
 const fresh = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.code).join(' and ');
 const kids = SAMPLES.filter((x) => x.base.startsWith('Kids')).map((x) => x.code).join(' and ');
@@ -31,7 +31,7 @@ export default function RunSheet() {
   return (
     <main className="sc rs" data-theme="a">
       <header className="sc-head">
-        <div><b>Run sheet</b><span>The Future of Freshness · {EVENT.date} · {EVENT.room} room · for Dan, Alex, Ryan and Matt · not for the room</span></div>
+        <div><b>Run sheet</b><span>The Future of Freshness · {EVENT.date} · {EVENT.room} room · for The Flavor Factory team · not for the room</span></div>
         <PrintButton label="Print the run sheet" />
       </header>
 
@@ -43,13 +43,12 @@ export default function RunSheet() {
       <section className="rs-sec">
         <h2>The run of show</h2>
         <table className="rs-run">
-          <thead><tr><th>Time</th><th>Lead</th><th>Block and slides</th><th>What happens</th></tr></thead>
+          <thead><tr><th>Time</th><th>Block and slides</th><th>What happens</th></tr></thead>
           <tbody>{RUN.map((b) => (
             <tr key={b.id}>
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
-              <td className="rs-lead">{b.lead}</td>
               <td><b>{b.title}</b>{b.obj && <em>Objective {b.obj}</em>}<small>{b.slides}</small></td>
-              <td>{b.does}{b.handoff && <i>Hand off: {b.handoff}</i>}</td>
+              <td>{b.does}</td>
             </tr>
           ))}</tbody>
         </table>

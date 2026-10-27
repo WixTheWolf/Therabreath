@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react';
 import FilmModal from './FilmModal';
 import { EVENT, OBJECTIVES, AGENDA, SOURCES, ROSS_GOAL } from '@/lib/content';
 
-// `host` (the host cookie, read on the server) adds THE FLAVOR RACE, the presentation and the run sheet to the bar; the room never
-// sees either before 11:48. `prebrief` is the signed pre-brief link for the live session.
-export default function SiteApp({ host = false, prebrief }: { host?: boolean; prebrief: string }) {
+// The bar opens THE FLAVOR RACE, the presentation, the run sheet and the team page for everyone past the password.
+// `prebrief` is the signed pre-brief link for the live session.
+export default function SiteApp({ prebrief }: { prebrief: string }) {
   const [race, setRace] = useState(false);
   useEffect(() => { document.documentElement.dataset.theme = 'a'; }, []);
 
@@ -15,8 +15,7 @@ export default function SiteApp({ host = false, prebrief }: { host?: boolean; pr
     <main className="sp" data-theme="a">
       <header className="sp-bar">
         <div className="sp-lock"><img src="/img/tff-logo.webp" alt="The Flavor Factory" /><span>×</span><b>TheraBreath</b></div>
-        {host ? <nav className="sp-host" aria-label="Host"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host">Open the presentation</a><a href="/host/run">Run sheet</a><a href="/team">Team page</a></nav>
-          : <a className="sp-signin" href="/login?host=1">Host sign-in</a>}
+        <nav className="sp-host" aria-label="More"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host">Open the presentation</a><a href="/host/run">Run sheet</a><a href="/team">Team page</a></nav>
       </header>
 
       <section className="sp-top">

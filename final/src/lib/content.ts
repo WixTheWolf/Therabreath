@@ -48,11 +48,12 @@ export const SOURCES: Record<string, string> = {
 
 export const JULY = ['Resiliency', 'Innovation', 'Operations', 'Partnership', 'Growth'];
 
+// Ross's four key areas of focus, word for word from his invitation (September 18, 2026).
 export const OBJECTIVES = [
-  { n: '01', ask: 'Identify emerging flavor, sensory and consumer trends shaping the future of oral care.', act: 'Act I', chapter: 'What is changing', short: 'Signals' },
-  { n: '02', ask: 'Explore new flavor territories and differentiated sensory experiences.', act: 'Acts II and III', chapter: 'Where flavor can go', short: 'Territories' },
-  { n: '03', ask: 'Generate concepts that create new occasions, engage new consumers and expand the portfolio.', act: 'Act IV', chapter: 'What we could make', short: 'Concepts' },
-  { n: '04', ask: 'Develop a pipeline of platforms, flavor directions and white space for incremental growth.', act: 'Act V', chapter: 'What we do first, next and later', short: 'Pipeline' },
+  { n: '01', ask: 'Identifying emerging flavor, sensory, and consumer trends that could influence the future of oral care.', act: 'Act I', chapter: 'What is changing', short: 'Signals' },
+  { n: '02', ask: 'Exploring new flavor territories and sensory experiences that can differentiate TheraBreath from competitors and create memorable consumer experiences.', act: 'Acts II and III', chapter: 'Where flavor can go', short: 'Territories' },
+  { n: '03', ask: 'Developing innovative flavor concepts that unlock new usage occasions, address new consumer segments, and create opportunities for portfolio expansion.', act: 'Act IV', chapter: 'What we could make', short: 'Concepts' },
+  { n: '04', ask: 'Generating a pipeline of innovation platforms, flavor directions, and white-space opportunities that have the potential to drive incremental growth across the portfolio.', act: 'Act V', chapter: 'What we do first, next and later', short: 'Pipeline' },
 ];
 
 export const CHAPTERS = ['Signals', 'Territories', 'Concepts', 'Pipeline', 'Flavor Code'];
@@ -290,47 +291,60 @@ export const THINK = [
 ];
 
 // The run of show: one source for the agenda (site and pre-brief), the deck's agenda slide and presenter tags, and the
-// hosts' run sheet. `obj` is the objective from Ross's invitation the block answers. `lead` and the notes stay off the
+// hosts' run sheet. `obj` is the objective from Ross's invitation the block answers. The notes stay off the
 // site and the pre-brief: they are for the deck and the run sheet. A simple morning: one deck, one paper scorecard for
 // the tasting, and a conversation. No phones.
-export type Block = { id: string; t: string; end: string; title: string; obj?: string; lead: string; slides: string; does: string; handoff?: string };
+export type Block = { id: string; t: string; end: string; title: string; obj?: string; slides: string; does: string };
 export const RUN: Block[] = [
-  { id: 'welcome', t: '10:00', end: '10:10', title: 'Welcome: who we are, and your four objectives', lead: 'Dan',
+  { id: 'welcome', t: '10:00', end: '10:10', title: 'Welcome: who we are, and your four objectives',
     slides: 'Title, Who we are, From July to today, Your four objectives, The morning, You told us (only if pre-brief answers came in)',
-    does: 'Thank Ross for the invitation. Who we are and how we work. July to today. Ross\'s four objectives and his goal. The morning on one slide. The homework answers, if any.',
-    handoff: 'Over to Alex for the market.' },
-  { id: 'market', t: '10:10', end: '10:25', title: 'Your portfolio, the market, and what is changing', obj: '01', lead: 'Alex',
-    slides: 'The portfolio today, 86 of every 100 households, The shelf is a flavor shelf, Seven signals',
-    does: 'Mint is mastered; the next chapter is everything mint makes possible. The household gap. The shelf turns to flavor. Seven signals: the room picks the three that matter most, by show of hands.',
-    handoff: 'Ryan, Flavor School.' },
-  { id: 'school', t: '10:25', end: '10:40', title: 'Flavor School and four opportunity platforms', obj: '02', lead: 'Ryan',
-    slides: 'Flavor School, Four opportunity platforms',
+    does: 'Thank Ross for the invitation. Who we are and how we work. July to today. Ross\'s four objectives and his goal. The morning on one slide. The homework answers, if any.' },
+  { id: 'market', t: '10:10', end: '10:25', title: 'Your portfolio, the market, and what is changing', obj: '01',
+    slides: 'Opener for objective 01, The portfolio today, 86 of every 100 households, The shelf is a flavor shelf, Seven signals',
+    does: 'Mint is mastered; the next chapter is everything mint makes possible. The household gap. The shelf turns to flavor. Seven signals: the room picks the three that matter most, by show of hands.' },
+  { id: 'school', t: '10:25', end: '10:40', title: 'Flavor School and four opportunity platforms', obj: '02',
+    slides: 'Opener for objective 02, Flavor School, Four opportunity platforms',
     does: 'Taste, aroma and feel, and why OXYD-8 is a demanding home for flavor. Then the four platforms: two carry today\'s samples, two are for discussion.' },
-  { id: 'tasting', t: '10:40', end: '11:00', title: 'A blind tasting made in your bases', obj: '02', lead: 'Ryan',
+  { id: 'tasting', t: '10:40', end: '11:00', title: 'A blind tasting made in your bases', obj: '02',
     slides: 'Blind tasting, The reveal',
-    does: 'Scorecards out. A and B in the Fresh Breath base, C and D in the Kids base. D is the Mystery Flavor: fruit guesses before the reveal. Then the names, and one word for each.',
-    handoff: 'Ryan stays on for the concepts.' },
-  { id: 'concepts', t: '11:00', end: '11:20', title: 'From samples to concepts: who, when and what role', obj: '03', lead: 'Ryan',
-    slides: 'Five questions, Three concepts',
-    does: 'From the scorecards, pick two or three directions. For each: who it is for, the moment, its role in the range, the format, and whether it grows loyal users, new consumers or both. Type each one into a concept card.',
-    handoff: 'Alex, the white space.' },
-  { id: 'pipeline', t: '11:20', end: '11:40', title: 'White space and the pipeline: Now, Next, Later', obj: '04', lead: 'Alex',
-    slides: 'White space, Now Next Later',
-    does: 'Alex walks the grid: where TheraBreath is today, and where each concept lands (click a cell to mark it). Then each concept and platform goes into Now, Next or Later with a TFF owner, a C&D reviewer, the base and the next sample action.',
-    handoff: 'Dan, the roadmap.' },
-  { id: 'close', t: '11:40', end: '12:00', title: 'Our roadmap, owners and next steps, and a short film to send you to lunch', lead: 'Dan',
+    does: 'Scorecards out. A and B in the Fresh Breath base, C and D in the Kids base. D is the Mystery Flavor: fruit guesses before the reveal. Then the names, and one word for each.' },
+  { id: 'concepts', t: '11:00', end: '11:20', title: 'From samples to concepts: who, when and what role', obj: '03',
+    slides: 'Opener for objective 03, Five questions, Three concepts',
+    does: 'From the scorecards, pick two or three directions. For each: who it is for, the moment, its role in the range, the format, and whether it grows loyal users, new consumers or both. Type each one into a concept card.' },
+  { id: 'pipeline', t: '11:20', end: '11:40', title: 'White space and the pipeline: Now, Next, Later', obj: '04',
+    slides: 'Opener for objective 04, White space, Now Next Later',
+    does: 'Walk the grid: where TheraBreath is today, and where each concept lands (click a cell to mark it). Then each concept and platform goes into Now, Next or Later with a TFF owner, a C&D reviewer, the base and the next sample action.' },
+  { id: 'close', t: '11:40', end: '12:00', title: 'Our roadmap, owners and next steps, and a short film to send you to lunch',
     slides: 'Our innovation roadmap, What happens next, THE FLAVOR RACE',
     does: 'Read the roadmap back, Now, Next and Later, with owners. The three next steps. Thank the room. At 11:48, THE FLAVOR RACE (2:26), lights down, sound up. Then lunch, hosted by Church & Dwight.' },
 ];
 export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title, b.obj]);
 
-// The four of us, as the pre-brief letter introduces us (names and titles confirmed by Matt on October 27). Matt is in
-// the room but does not present, so his card has no part of the morning.
+// The deck opens each of Ross's four objectives with his words, then these talking points and the questions for the
+// room. It is a discussion, so nothing here is a script. Facts only from elsewhere in this file.
+const MINT = PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length;
+export const TOPICS = [
+  { title: 'What is changing.',
+    points: [`Mint is mastered: ${MINT} of TheraBreath\u2019s ${PORTFOLIO.length} flavors today are mint.`, '86 of every 100 US households have not met TheraBreath yet.', 'The shelf is turning into a flavor shelf, one limited edition at a time.', 'Seven signals shaping flavor in oral care.'],
+    questions: ['Which three signals matter most for TheraBreath?', 'What are you seeing that we have missed?'] },
+  { title: 'Where flavor can go.',
+    points: ['Most of what we call flavor is smell; the rest is feeling.', 'OXYD-8 makes TheraBreath a demanding home for flavor.', 'Four opportunity platforms, two of them in the blind tasting.', 'Four samples, made in your Fresh Breath and Kids bases.'],
+    questions: ['Which territory feels most like TheraBreath, and which stretches it furthest?', 'What would set TheraBreath apart from the flavors competitors are adding?'] },
+  { title: 'What we could make.',
+    points: ['Start from a sample or a platform that earned a next round.', 'Five questions: who it is for, when, its role in the range, its format and what it grows.', 'Up to three concepts, built in the room.'],
+    questions: ['Which moment of the day is TheraBreath missing?', 'Which consumers could a new flavor bring in?'] },
+  { title: 'What goes first, next and later.',
+    points: ['White space: where TheraBreath is today, and where each concept could land.', 'Now, Next, Later: the next sample round, after the first results, platforms to keep exploring.', 'Each direction leaves with a TFF owner, a C&D reviewer, a base and a next sample action.'],
+    questions: ['What goes first, and what has to be true for it to work?', 'What would you need to see from the next sample round?'] },
+];
+
+// The four of us, as the pre-brief letter introduces us (names and titles confirmed by Matt on October 27). Who presents
+// which part is not shown anywhere.
 export const TEAM = [
-  { name: 'Dan Wixted', title: 'President', today: 'Opens and closes the morning' },
-  { name: 'Alex Wixted', title: 'Business Operations', today: 'The market, the signals, the white space and the pipeline' },
-  { name: 'Ryan Wixted', title: 'Quality Control', today: 'Flavor School, the tasting and the concepts' },
-  { name: 'Matt Wixted', title: 'Director of Operations', today: '' },
+  { name: 'Dan Wixted', title: 'President' },
+  { name: 'Alex Wixted', title: 'Business Operations' },
+  { name: 'Ryan Wixted', title: 'Quality Control' },
+  { name: 'Matt Wixted', title: 'Director of Operations' },
 ];
 
 // Ross, in his own words (invitation, September 18, 2026).

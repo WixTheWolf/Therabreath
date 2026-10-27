@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAuthed, isHost, joinToken, COOKIE, HOST_COOKIE } from '@/lib/auth';
 
-// Host tools (the deck and the run sheet), Console and the session list need the host password on top of the room password.
-const HOST_ONLY = (p: string) => p === '/host' || p.startsWith('/host/') || p === '/team' || p.startsWith('/console/') || p.startsWith('/sessions');
+// One password opens the site, the presentation, the run sheet, the team page and the film. Only the old live-workshop
+// Console and session list (unlinked; they can wipe a session) still need the host password.
+const HOST_ONLY = (p: string) => p.startsWith('/console/') || p.startsWith('/sessions');
 
 // Stage, Console and the Playbook need the password. Phones join through signed links instead.
 export async function proxy(req: NextRequest) {

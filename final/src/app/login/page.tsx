@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-// One gate for both passwords. The host password works here too and opens everything; ?host=1 marks a page that
-// needs it (the presentation, the run sheet, the team page).
+// One gate. The password opens everything a team member needs; ?host=1 marks the old Console, which still needs the
+// host password.
 export default function Login() {
   const [pw, setPw] = useState(''); const [err, setErr] = useState(false); const [busy, setBusy] = useState(false); const [host, setHost] = useState(false);
   useEffect(() => { setHost(new URLSearchParams(location.search).get('host') === '1'); }, []);
@@ -19,7 +19,7 @@ export default function Login() {
       <form onSubmit={go} className="gate-card">
         <div className="k">TheraBreath × The Flavor Factory</div>
         <h1 className="h2">The Future<br /><span className="it">of Freshness</span></h1>
-        <p>{host ? 'This page is for The Flavor Factory team. Enter the host password.' : 'Confidential. Enter your password.'}</p>
+        <p>{host ? 'The old workshop Console. Enter the host password.' : 'Confidential. Enter your password.'}</p>
         <input type="password" autoFocus autoComplete="current-password" autoCapitalize="none" autoCorrect="off" spellCheck={false} value={pw} onChange={(e) => setPw(e.target.value)} placeholder={host ? 'Host password' : 'Password'} aria-label="Password" />
         {err && <div className="gate-err">That is not it. Try again.</div>}
         <button disabled={busy || !pw}>{busy ? 'Checking' : 'Enter'}</button>

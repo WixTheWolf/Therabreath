@@ -2,16 +2,16 @@
 // The presentation: one clean deck for the morning. One idea per slide, big type, Ross's four objectives as the spine.
 // No phones: the tasting is scored on the paper card (/scorecard) and the room decides out loud; the concept cards, the
 // white-space marks and Now, Next and Later are typed in live on the deck and saved on this laptop. Each block of the
-// run of show (RUN) tags its slides with the objective it answers and who leads it.
+// run of show (RUN) tags its slides with the objective it answers.
 // Keys: right, space or click to go on; left to go back; F full screen; N speaker notes.
 // ?all=1 lays every slide out in order, for printing the deck to PDF; ?all=1&notes=1 is the presenter edition (each
 // slide with its lead, time and speaker notes, after a cover with the run of show). ?reset=1 clears rehearsal input.
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { useScale } from './StageApp';
-import { EVENT, JULY, OBJECTIVES, ROSS_GOAL, ROSS_WORDS, SOURCES, GAP, MARKET, SIGNALS, PRIMARY_TERRITORIES as PLATFORMS, SAMPLES, HORIZONS, NEXT_STEPS, RUN, TEAM, SCIENCE, IMAGINATION, PORTFOLIO, SURVEY, ROLES, FORMATS, WHITESPACE } from '@/lib/content';
+import { EVENT, JULY, OBJECTIVES, TOPICS, ROSS_GOAL, ROSS_WORDS, SOURCES, GAP, MARKET, SIGNALS, PRIMARY_TERRITORIES as PLATFORMS, SAMPLES, HORIZONS, NEXT_STEPS, RUN, TEAM, SCIENCE, IMAGINATION, PORTFOLIO, SURVEY, ROLES, FORMATS, WHITESPACE } from '@/lib/content';
 
-type Slide = { id: string; title: string; notes: string; block: string; dark?: boolean; body: React.ReactNode };
+type Slide = { id: string; title: string; notes: string[]; block: string; dark?: boolean; body: React.ReactNode };
 
 const SENSES = [
   { t: 'Taste', w: 'The tongue', d: 'Sweet, sour, salty, bitter, umami.' },
@@ -66,52 +66,55 @@ export default function DeckApp() {
     const count = (k: 'consumer' | 'moment', v: string) => answers.filter((a) => a[k] === v).length;
     const list: (Slide | null)[] = [
       { id: 'title', block: 'welcome', title: 'The Future of Freshness', dark: true,
-        notes: '10:00. Dan welcomes the room and thanks Ross for the invitation. Two hours, and by noon a roadmap with owners and dates.',
+        notes: ['Welcome, and thank you to Ross for the invitation.', 'Two hours, built around your four objectives.', 'By noon: concepts, a roadmap, and owners and dates.'],
         body: <div className="dk-center"><p className="dk-k">TheraBreath × The Flavor Factory</p><h1 className="dk-hero">The Future<br /><em>of Freshness</em></h1><p className="dk-sub">{EVENT.date} · {EVENT.room} room, Princeton</p></div> },
       { id: 'team', block: 'welcome', title: 'Who we are and how we work',
-        notes: '10:01. Dan. Ross wrote that in July there was no chance to explore our innovation capabilities in depth. This is the short version; the morning is the long one. Flavor is science (how a flavor survives the bottle) and imagination (why someone wants it). Then the four of us, and what each one leads today.',
-        body: <><p className="dk-k">Who we are · how we work</p><h2 className="dk-h">Flavor is science <em>and imagination.</em></h2><div className="dk-sci"><div><small>Science</small><p>{SCIENCE.map((x) => <span key={x}>{x}</span>)}</p></div><div><small>Imagination</small><p>{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</p></div></div><div className="dk-team">{TEAM.map((t) => <div key={t.name}><b>{t.name}</b>{t.title && <small>{t.title}</small>}{t.today && <p>{t.today}</p>}</div>)}</div><p className="dk-line">You asked to see our &ldquo;{ROSS_WORDS.capabilities}.&rdquo; <em>By noon you will have seen each one at work.</em></p></> },
+        notes: ['Ross asked to see our innovation capabilities in depth; this morning is that, in practice.', 'Flavor is science (how a flavor survives the bottle) and imagination (why someone wants it).', 'Introduce the four of us.'],
+        body: <><p className="dk-k">Who we are · how we work</p><h2 className="dk-h">Flavor is science <em>and imagination.</em></h2><div className="dk-sci"><div><small>Science</small><p>{SCIENCE.map((x) => <span key={x}>{x}</span>)}</p></div><div><small>Imagination</small><p>{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</p></div></div><div className="dk-team">{TEAM.map((t) => <div key={t.name}><b>{t.name}</b>{t.title && <small>{t.title}</small>}</div>)}</div><p className="dk-line">You asked to see our &ldquo;{ROSS_WORDS.capabilities}.&rdquo; <em>By noon you will have seen each one at work.</em></p></> },
       { id: 'july', block: 'welcome', title: 'From July to today',
-        notes: '10:04. Thirty seconds. In July you came to Norco: resiliency, innovation, operations, partnership. Today is the fifth word: growth.',
+        notes: ['In July you came to Norco: resiliency, innovation, operations, partnership.', 'Today is the fifth word: growth.'],
         body: <><p className="dk-k">From July to today</p><h2 className="dk-h">In July, you came to Norco.<br /><em>Today is about growth.</em></h2><div className="dk-words">{JULY.map((w) => <span key={w} className={w === 'Growth' ? 'on' : ''}>{w}</span>)}</div></> },
       { id: 'brief', block: 'welcome', title: 'Your four objectives',
-        notes: '10:05. Ross\'s four objectives, word for word, and his goal. The morning answers each one in turn.',
+        notes: ['Ross\'s four objectives, in his words.', 'His goal: strengthen appeal with loyal users and attract new consumers.', 'Each part of the morning answers one objective.'],
         body: <><p className="dk-k">Your brief</p><h2 className="dk-h">You asked for four things.</h2><ol className="dk-obj">{OBJECTIVES.map((o) => <li key={o.n}><span>{o.n}</span><p><b>{o.short}.</b> {o.ask}</p></li>)}</ol><p className="dk-goal">&ldquo;New flavor experiences that both <mark>{ROSS_GOAL.loyal}</mark> and <mark>{ROSS_GOAL.fresh.replace(/\.$/, '')}</mark>.&rdquo;</p><p className="dk-src">{SOURCES[ROSS_GOAL.src]}</p></> },
       { id: 'agenda', block: 'welcome', title: 'The morning',
-        notes: '10:07. The morning on one slide. Point to the objective numbers: each block answers one of Ross\'s four, in order. Name who leads each part.',
-        body: <><p className="dk-k">The morning</p><h2 className="dk-h">Two hours. <em>Your four objectives, in order.</em></h2><ol className="dk-run">{RUN.map((b) => <li key={b.id}><span>{b.t}</span><p>{b.title}</p><i>{b.obj ? `Objective ${b.obj}` : ''}</i><b>{b.lead}</b></li>)}</ol></> },
+        notes: ['Two hours, four objectives, in order.', 'A conversation, not a presentation: questions are welcome throughout.'],
+        body: <><p className="dk-k">The morning</p><h2 className="dk-h">Two hours. <em>Your four objectives, in order.</em></h2><ol className="dk-run">{RUN.map((b) => <li key={b.id}><span>{b.t}</span><p>{b.title}</p><i>{b.obj ? `Objective ${b.obj}` : ''}</i></li>)}</ol></> },
       answers.length ? { id: 'told', block: 'welcome', title: 'You told us',
-        notes: '10:08. The pre-brief homework. Read the top consumer and the missing moment, then have some fun with the vetoes. No names on screen.',
+        notes: ['The consumer the room most wants to win, and the moment TheraBreath is missing.', 'Have some fun with the vetoes. No names on screen.'],
         body: <><p className="dk-k">Your homework · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</p><h2 className="dk-h">You told us.</h2><div className="dk-told">
           {consumer && <div><small>The consumer you most want to win next</small><b>{consumer.v}</b></div>}
           {moment && <div><small>The moment TheraBreath is missing</small><b>{moment.v}</b></div>}
         </div>{vetoes.length > 0 && <div className="dk-vetoes"><small>Flavors you would never approve</small>{vetoes.map((v, i) => <q key={i}>{v}</q>)}</div>}</> } : null,
+      { id: 'open-01', block: 'market', title: 'Objective 01: ' + TOPICS[0].title.replace(/\.$/, ''), notes: ['Ross\'s words first, then the talking points.', 'Open the questions to the room; the next slides are the evidence.'], body: <Opener i={0} /> },
       { id: 'portfolio', block: 'market', title: 'The portfolio today',
-        notes: `10:10. Alex. The starting line. ${PORTFOLIO.length} flavors across six formats, and ${mint} of them are mint. TheraBreath has mastered mint. Ross asked for opportunities beyond the current portfolio: the next chapter is everything mint makes possible.`,
+        notes: [`${PORTFOLIO.length} flavors across six formats; ${mint} of them are mint.`, 'TheraBreath has mastered mint.', 'Ross asked for opportunities beyond the current portfolio: the next chapter is everything mint makes possible.'],
         body: <><p className="dk-k">The portfolio today · {PORTFOLIO.length} flavors across {FORMAT_ORDER.length} formats</p><h2 className="dk-h">{mint} of {PORTFOLIO.length} are mint. <em>The next chapter is everything mint makes possible.</em></h2><div className="dk-pf">{FORMAT_ORDER.map((f) => <div key={f} className={f === 'Rinse' ? 'wide' : ''}><small>{f}</small><ul>{PORTFOLIO.filter((v) => v.format === f).map((v, j) => <li key={j} className={isMint(v.flavor) ? '' : 'other'}>{v.flavor}<span>{v.line}</span></li>)}</ul></div>)}</div><p className="dk-src">{clean(SOURCES.listings)}</p></> },
       { id: 'gap', block: 'market', title: '86 of every 100 households',
-        notes: '10:13. Alex. One line of context: 25.3% share of US mouthwash in Q2 2026, up 4.5 points, number 2. Then the gap: 86 of every 100 US households have not met TheraBreath yet. Pause. Flavor is how we introduce ourselves.',
+        notes: ['25.3% share of US mouthwash in Q2 2026, up 4.5 points: number 2.', '86 of every 100 US households have not met TheraBreath yet.', 'Flavor is how TheraBreath introduces itself.'],
         body: <><p className="dk-k">Why flavor, why now</p><h2 className="dk-big">86 of every 100 US households <em>have not met TheraBreath yet.</em></h2><div className="dk-facts"><div><b>{GAP.category}%</b><span>buy mouthwash</span></div><div><b>{GAP.tb}%</b><span>buy TheraBreath</span></div><div><b>25.3%</b><span>share of US mouthwash, Q2 2026, up 4.5 points. Number 2.</span></div></div><p className="dk-src">{SOURCES.q2call}</p></> },
       { id: 'shelf', block: 'market', title: 'The shelf is a flavor shelf',
-        notes: '10:15. Alex. Factual and neutral: the shelf is now a flavor shelf, one limited edition at a time. Then the turn: TheraBreath started ahead of this race (alcohol-free, dye-free, OXYD-8, a kids line on shelf). The question is what keeps it ahead.',
+        notes: ['Factual and neutral: the shelf is now a flavor shelf, one limited edition at a time.', 'TheraBreath started ahead of this race: alcohol-free, dye-free, OXYD-8, a kids line on shelf.', 'For the room: what keeps it ahead?'],
         body: <><p className="dk-k">The market</p><h2 className="dk-h">The shelf is now <em>a flavor shelf.</em></h2><ul className="dk-list">{MARKET.map((m) => <li key={m.what}><span>{m.when}</span><p><b>{m.who}.</b> {m.what}</p></li>)}</ul><p className="dk-src">{[...new Set(MARKET.map((m) => clean(SOURCES[m.src])))].join('; ')}</p></> },
       { id: 'signals', block: 'market', title: 'Seven signals',
-        notes: '10:18 to 10:25. Alex. One line each; the proofs are in the pre-brief. Then ask the room: which three matter most for TheraBreath? Count hands and write the three down. Hand to Ryan.',
+        notes: ['One line each; the proofs are in the pre-brief.', 'For the room: which three matter most for TheraBreath? Write them down.'],
         body: <><p className="dk-k">What is changing</p><h2 className="dk-h">Seven signals. <em>Which three matter most?</em></h2><ol className="dk-signals">{SIGNALS.map((x) => <li key={x.id}><span>{String(x.n).padStart(2, '0')}</span><b>{x.title}</b><p>{x.so}</p></li>)}</ol></> },
+      { id: 'open-02', block: 'school', title: 'Objective 02: ' + TOPICS[1].title.replace(/\.$/, ''), notes: ['Ross\'s words first, then the talking points.', 'Open the questions to the room; the next slides are the evidence.'], body: <Opener i={1} /> },
       { id: 'school', block: 'school', title: 'Flavor School',
-        notes: '10:25 to 10:33. Ryan. Most of what we call flavor is smell; the rest is feeling. Cooling has two jobs: the first impression and the last. OXYD-8 is tough on odor-causing bacteria, which makes it a demanding home for flavor. Public chemistry only, no formula details.',
+        notes: ['Most of what we call flavor is smell; the rest is feeling.', 'Cooling has two jobs: the first impression and the last.', 'OXYD-8 is tough on odor-causing bacteria, which makes it a demanding home for flavor.', 'Public chemistry only, no formula details.'],
         body: <><p className="dk-k">Flavor School</p><h2 className="dk-h">Most of what we call flavor is smell. <em>The rest is feeling.</em></h2><div className="dk-three">{SENSES.map((x) => <div key={x.t}><b>{x.t}</b><small>{x.w}</small><p>{x.d}</p></div>)}</div><p className="dk-line">OXYD-8 is designed to be tough on odor-causing bacteria. That also makes it a demanding home for flavor. <em>We don&rsquo;t just make it taste good. We make it survive.</em></p></> },
       { id: 'platforms', block: 'school', title: 'Four opportunity platforms',
-        notes: '10:33 to 10:40. Ryan. Four platforms. Two carry today\'s samples; two we discuss on screen. Keep sample names for the reveal. Close on the difference: competitors add flavor one limited edition at a time; these start where TheraBreath is already ahead.',
+        notes: ['Two platforms carry today\'s samples; two are for discussion.', 'Keep the sample names for the reveal.', 'The difference: competitors add flavor one limited edition at a time; these start where TheraBreath is already ahead.'],
         body: <><p className="dk-k">Where flavor can go</p><h2 className="dk-h">Four opportunity platforms.</h2><div className="dk-four">{PLATFORMS.map((t) => <div key={t.id} style={{ borderTopColor: t.palette[1] }}><span>0{t.n}</span><b>{t.name}</b><p>{t.promise}</p><small>{SAMPLES.some((x) => x.territory === t.id) ? 'In today’s tasting' : 'For discussion'}</small></div>)}</div><p className="dk-line">The shelf adds flavor one limited edition at a time. These start where TheraBreath is already ahead: <em>alcohol-free, dye-free, built around OXYD-8.</em></p></> },
       { id: 'tasting', block: 'tasting', title: 'Blind tasting',
-        notes: '10:40 to 10:55. Ryan. Hand out the scorecards (print from /scorecard, one per person). A and B are in the Fresh Breath base, C and D in the Kids base. D is the Mystery Flavor, tasted last: write the fruit guesses before the reveal. Rinse and pause between samples. These are workshop reactions, not consumer validation.',
+        notes: ['Scorecards out, one per person (print from /scorecard).', 'A and B in the Fresh Breath base, C and D in the Kids base.', 'D is the Mystery Flavor, tasted last: fruit guesses before the reveal.', 'Rinse and pause between samples. Workshop reactions, not consumer validation.'],
         body: <><p className="dk-k">The tasting</p><h2 className="dk-h">Taste first. <em>Names later.</em></h2><div className="dk-four dk-samples">{SAMPLES.map((x) => <div key={x.code}><span className="dk-code">{x.code}</span><p>{x.base}</p>{x.mystery && <small>Write down the fruits you taste</small>}</div>)}</div><p className="dk-line">Score each sample on your card: <b>appeal</b>, <b>feels like TheraBreath</b>, <b>newness</b>.</p></> },
       { id: 'reveal', block: 'tasting', title: 'The reveal',
-        notes: '10:55 to 11:00. Ryan. For D, the Mystery Flavor, read the fruit guesses first, then the answer. Ask for one word for each sample. Then straight on to the concepts.',
+        notes: ['For D, read the fruit guesses first, then the answer.', 'One word for each sample from the room.'],
         body: <><p className="dk-k">The reveal</p><h2 className="dk-h">What you just tasted.</h2><div className="dk-four dk-samples">{SAMPLES.map((x) => <div key={x.code}><span className="dk-code">{x.code}</span><b>{x.name}</b><p>{x.note}</p><small>{x.base}</small></div>)}</div><p className="dk-src">Development concepts made for this conversation: not products, claims or commercial formulations.</p></> },
+      { id: 'open-03', block: 'concepts', title: 'Objective 03: ' + TOPICS[2].title.replace(/\.$/, ''), notes: ['Ross\'s words first, then the talking points.', 'Open the questions to the room; the next slides are the evidence.'], body: <Opener i={2} /> },
       { id: 'recipe', block: 'concepts', title: 'Five questions',
-        notes: '11:00 to 11:05. Ryan. Start from the scorecards: which two or three samples or platforms earned a next round? Each one becomes a concept by answering five questions. The last one is Ross\'s goal: does it strengthen appeal with loyal users, attract new consumers, or both?',
+        notes: ['From the scorecards: which samples or platforms earned a next round?', 'Each becomes a concept by answering five questions.', 'The last is Ross\'s goal: loyal users, new consumers, or both?'],
         body: <><p className="dk-k">From samples to concepts</p><h2 className="dk-h">Five questions <em>turn a direction into a concept.</em></h2><ol className="dk-recipe">
           <li><b>Start from</b><p>{SAMPLES.map((x) => <span key={x.code}>{x.code}. {x.name}</span>)}{PLATFORMS.map((t) => <span key={t.id} className="alt">{t.name}</span>)}</p></li>
           <li><b><i>1</i>Who is it for?</b><p>{SURVEY.consumer.options.map((x) => <span key={x}>{x}</span>)}</p></li>
@@ -121,25 +124,26 @@ export default function DeckApp() {
           <li><b><i>5</i>What does it grow?</b><p><span><strong>Loyal users</strong> {ROSS_GOAL.loyal}</span><span><strong>New consumers</strong> {ROSS_GOAL.fresh.replace(/\.$/, '')}</span><span><strong>Both</strong></span></p></li>
         </ol></> },
       { id: 'concepts', block: 'concepts', title: 'Three concepts',
-        notes: '11:05 to 11:20. Ryan. Type each concept into a card as the room decides: a name, the direction, then the five answers (each box suggests the morning\'s own options). Three is the ceiling, not the target. The deck saves as you type.',
+        notes: ['Type each concept into a card as the room decides: a name, the direction, then the five answers.', 'Each box suggests the morning\'s own options; the deck saves as you type.', 'Three is the ceiling, not the target.'],
         body: <><p className="dk-k">Concepts</p><h2 className="dk-h">Three concepts. <em>Built by this room.</em></h2><div className="dk-cards">{[1, 2, 3].map((c) => <div key={c}><span>Concept {c}</span><input className="dk-name" value={concepts[`${c}-name`] || ''} onChange={(e) => type(`${c}-name`, e.target.value)} placeholder="Name it" aria-label={`Concept ${c} name`} />{FIELDS.map((x) => <label key={x.f}><small>{x.l}</small><input list={`dk-${x.f}`} value={concepts[`${c}-${x.f}`] || ''} onChange={(e) => type(`${c}-${x.f}`, e.target.value)} /></label>)}</div>)}</div>{FIELDS.map((x) => <datalist key={x.f} id={`dk-${x.f}`}>{x.opts.map((o) => <option key={o} value={o} />)}</datalist>)}</> },
+      { id: 'open-04', block: 'pipeline', title: 'Objective 04: ' + TOPICS[3].title.replace(/\.$/, ''), notes: ['Ross\'s words first, then the talking points.', 'Open the questions to the room; the next slides are the evidence.'], body: <Opener i={3} /> },
       { id: 'whitespace', block: 'pipeline', title: 'White space',
-        notes: '11:20 to 11:28. Alex. The grid: eight moments of the day across, the consumers from the pre-brief down. Shaded is our read of where TheraBreath is today, there to be challenged: the sink, morning and night, and the dry mouth lozenge on the go. Everything else is open. Click a cell to mark where each concept lands. Then on to the board.',
+        notes: ['Eight moments of the day across, the consumers from the pre-brief down.', 'Shaded is our read of where TheraBreath is today, there to be challenged: the sink, morning and night, and the dry mouth lozenge on the go.', 'Click a cell to mark where each concept lands.'],
         body: <><p className="dk-k">White space · our read, to challenge</p><h2 className="dk-h">The day happens <em>between the sinks.</em></h2><div className="dk-ws" style={{ ['--cols' as any]: WHITESPACE.moments.length }}>
           <div />{WHITESPACE.moments.map((m) => <div key={m} className={'dk-ws-m' + (moment?.v === m ? ' top' : '')}>{m}{count('moment', m) > 0 && <b>{count('moment', m)}</b>}</div>)}
           {WHITESPACE.segments.map((sg) => <Fragment key={sg}><div className={'dk-ws-s' + (consumer?.v === sg ? ' top' : '')}>{sg}{count('consumer', sg) > 0 && <b>{count('consumer', sg)}</b>}</div>{WHITESPACE.moments.map((m) => { const cell = `${sg}|${m}`; return <button key={m} className={'dk-ws-c' + (WHITESPACE.today(sg, m) ? ' today' : '') + (ws.includes(cell) ? ' on' : '')} onClick={() => mark(cell)} aria-label={`${sg}, ${m}`} />; })}</Fragment>)}
         </div><div className="dk-ws-key"><span><i className="today" />{WHITESPACE.read}</span><span><i className="on" />Where today&rsquo;s concepts land</span>{answers.length > 0 && <span><b>n</b>Pre-brief answers from this room</span>}</div></> },
       { id: 'nnl', block: 'pipeline', title: 'Now, Next, Later',
-        notes: '11:28 to 11:40. Alex. Place each concept and platform in Now, Next or Later, typing as the room decides (click a column to type; one line per direction). For each, record the TFF owner, the C&D reviewer, the base and the next sample action. Hand to Dan.',
+        notes: ['Place each concept and platform in Now, Next or Later as the room decides (click a column; one line per direction).', 'For each: a TFF owner, a C&D reviewer, the base and the next sample action.'],
         body: <><p className="dk-k">The pipeline</p><h2 className="dk-h">Now. Next. Later.</h2>{names.length > 0 && <p className="dk-names">Your concepts: {names.map((x) => <b key={x}>{x}</b>)}</p>}<div className="dk-nnl">{HORIZONS.map((h) => <label key={h.id}><b>{h.label}</b><small>{h.when}</small><textarea value={nnl[h.id] || ''} onChange={(e) => write(h.id, e.target.value)} placeholder="Type as the room decides" /></label>)}</div></> },
       { id: 'roadmap', block: 'close', title: 'Our innovation roadmap',
-        notes: '11:40 to 11:44. Dan. Read the roadmap back, column by column, with each owner. This is what Ross asked for at the end of his invitation.',
+        notes: ['Read the roadmap back, column by column, with each owner.', 'This is what Ross asked for at the end of his invitation.'],
         body: <><p className="dk-k">Our innovation roadmap</p><h2 className="dk-h">The roadmap <em>we built together.</em></h2><div className="dk-road">{HORIZONS.map((h) => { const items = (nnl[h.id] || '').split('\n').map((x) => x.trim()).filter(Boolean); return <div key={h.id}><b>{h.label}</b><small>{h.when}</small>{items.length ? <ul>{items.map((x, j) => <li key={j}>{x}</li>)}</ul> : <p>Read back from the board</p>}</div>; })}</div><p className="dk-goal">&ldquo;&hellip;{ROSS_WORDS.roadmap}.&rdquo;</p><p className="dk-src">{SOURCES.ross}</p></> },
       { id: 'next', block: 'close', title: 'What happens next',
-        notes: '11:44 to 11:48. Dan. The three next steps, with dates. Then: thank you for building this with us. The dates are still to be confirmed before November 9.',
+        notes: ['The three next steps, with dates (still to be confirmed before November 9).', 'Thank you for building this with us.'],
         body: <><p className="dk-k">What happens next</p><h2 className="dk-h">Three directions. <em>Clear owners. Agreed next steps.</em></h2><ol className="dk-steps">{NEXT_STEPS.map((n, i) => <li key={n.t}><span>{i + 1}</span><div><b>{n.t}</b><p>{n.d}</p></div></li>)}</ol></> },
       { id: 'film', block: 'close', title: 'THE FLAVOR RACE', dark: true,
-        notes: '11:48. The send-off. Lights down, sound up. Two minutes twenty-six. Nobody speaks until the rival has landed; then Dan: see you at lunch.',
+        notes: ['The send-off: lights down, sound up. Two minutes twenty-six.', 'Nobody speaks until the rival has landed; then: see you at lunch.'],
         body: <FilmSlide /> },
     ];
     return list.filter(Boolean) as Slide[];
@@ -198,27 +202,33 @@ export default function DeckApp() {
           <span className="dk-count">{i + 1} / {n}</span>
         </div>
       </div>
-      {notes && <aside className="dk-notes" onClick={(e) => e.stopPropagation()}><b>{i + 1}. {sl.title}</b><p>{sl.notes}</p>{i + 1 < n && <small>Next: {slides[i + 1].title}</small>}</aside>}
+      {notes && <aside className="dk-notes" onClick={(e) => e.stopPropagation()}><b>{i + 1}. {sl.title}</b><ul>{sl.notes.map((x, k) => <li key={k}>{x}</li>)}</ul>{i + 1 < n && <small>Next: {slides[i + 1].title}</small>}</aside>}
       {hint && <div className="dk-hint">Right arrow or click to go on · Left arrow back · F full screen · N notes</div>}
     </main>
   );
 }
 
+// Each of Ross's four objectives opens with his words, our talking points and the questions for the room.
+function Opener({ i }: { i: number }) {
+  const o = OBJECTIVES[i], t = TOPICS[i];
+  return <><p className="dk-k">In Ross&rsquo;s words</p><h2 className="dk-h">{t.title}</h2><p className="dk-ross">&ldquo;{o.ask}&rdquo;</p><div className="dk-tp"><div><small>Talking points</small><ul>{t.points.map((x) => <li key={x}>{x}</li>)}</ul></div><div><small>For discussion</small><ul>{t.questions.map((x) => <li key={x}>{x}</li>)}</ul></div></div></>;
+}
+
 // The presenter edition: what to send the team. A cover with the run of show, then every slide exactly as the room
-// sees it, with its number, who leads it, the objective and the speaker notes. Without pre-brief answers yet, a page
+// sees it, with its number, the time, the objective and the talking points. Without pre-brief answers yet, a page
 // marks where "You told us" will appear.
 function Presenter({ slides, told }: { slides: Slide[]; told: boolean }) {
   const n = slides.length;
   const range = (id: string) => { const ix = slides.map((s, j) => (s.block === id ? j + 1 : 0)).filter(Boolean); return ix.length > 1 ? `${ix[0]} to ${ix[ix.length - 1]}` : `${ix[0]}`; };
-  const head = (sl: Slide) => { const b = RUN.find((x) => x.id === sl.block); return <><span>{b?.lead}</span>{b?.obj && <span>Objective {b.obj}</span>}</>; };
+  const head = (sl: Slide) => { const b = RUN.find((x) => x.id === sl.block); return <>{b && <span>{b.t} to {b.end}</span>}{b?.obj && <span>Objective {b.obj}</span>}</>; };
   return (
     <main className="dk-print dk-pres-doc">
       <section className="dk-pres dk-pres-cover">
         <p className="dk-pres-k">Presenter edition · final · {EVENT.date} · {EVENT.room} room, Princeton</p>
         <h1>The Future <em>of Freshness</em></h1>
-        <p className="dk-pres-sub">Every slide exactly as the room will see it on the TV, with who presents it, the time and the speaker notes. {n} slides{told ? '' : `, plus "You told us" once the pre-brief answers are in`}. The live deck is at /host (right arrow or click to go on, F for full screen, N for notes).</p>
-        <table className="dk-pres-run"><thead><tr><th>Time</th><th>Part</th><th>Objective</th><th>Lead</th><th>Slides</th></tr></thead>
-          <tbody>{RUN.map((b) => <tr key={b.id}><td>{b.t} to {b.end}</td><td>{b.title}</td><td>{b.obj || ''}</td><td>{b.lead}</td><td>{range(b.id)}</td></tr>)}</tbody></table>
+        <p className="dk-pres-sub">Every slide exactly as the room will see it on the TV, with the time and the talking points. It is a discussion: each objective opens with Ross’s words, our talking points and questions for the room. {n} slides{told ? '' : `, plus "You told us" once the pre-brief answers are in`}. The live deck is at /host (right arrow or click to go on, F for full screen, N for notes).</p>
+        <table className="dk-pres-run"><thead><tr><th>Time</th><th>Part</th><th>Objective</th><th>Slides</th></tr></thead>
+          <tbody>{RUN.map((b) => <tr key={b.id}><td>{b.t} to {b.end}</td><td>{b.title}</td><td>{b.obj || ''}</td><td>{range(b.id)}</td></tr>)}</tbody></table>
         <p className="dk-pres-foot">Confidential. For The Flavor Factory team; not for distribution.</p>
       </section>
       {slides.map((sl, j) => (
@@ -226,13 +236,13 @@ function Presenter({ slides, told }: { slides: Slide[]; told: boolean }) {
           <section className="dk-pres">
             <header><b>{j + 1} / {n} · {sl.title}</b>{head(sl)}</header>
             <div className="dk-pres-slide"><div className="dk-pres-scale"><SlideView sl={sl} active={false} /></div></div>
-            <p className="dk-pres-notes">{sl.notes}</p>
+            <ul className="dk-pres-notes">{sl.notes.map((x, k) => <li key={k}>{x}</li>)}</ul>
           </section>
           {!told && sl.id === 'agenda' && (
             <section className="dk-pres">
-              <header><b>After {j + 1} · You told us</b><span>Dan</span></header>
+              <header><b>After {j + 1} · You told us</b></header>
               <div className="dk-pres-slide dk-pres-wait"><p>Appears here once the pre-brief answers are in (Ross sends the pre-brief on November 3): the consumer the room most wants to win, the moment TheraBreath is missing, and the flavors they would never approve, without names. The slides after it move up one.</p></div>
-              <p className="dk-pres-notes">10:08. Dan. Read the top consumer and the missing moment, then have some fun with the vetoes. No names on screen.</p>
+              <ul className="dk-pres-notes"><li>The consumer the room most wants to win, and the moment TheraBreath is missing.</li><li>Have some fun with the vetoes. No names on screen.</li></ul>
             </section>
           )}
         </Fragment>
@@ -246,7 +256,7 @@ function SlideView({ sl, active }: { sl: Slide; active: boolean }) {
   return (
     <section className={'dk-slide' + (sl.dark ? ' dark' : '')} data-active={active ? '1' : undefined}>
       {sl.body}
-      {!sl.dark && blk && <div className="dk-tag">{blk.obj && <span>Objective {blk.obj}</span>}<b>{blk.lead}</b></div>}
+      {!sl.dark && blk?.obj && <div className="dk-tag"><span>Objective {blk.obj}</span></div>}
       {!sl.dark && <footer className="dk-foot"><img src="/img/tff-logo.webp" alt="The Flavor Factory" /><span>× TheraBreath · Confidential</span></footer>}
     </section>
   );
