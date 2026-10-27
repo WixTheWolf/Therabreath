@@ -78,7 +78,7 @@ export function Portfolio({ step }: SceneProps) {
       <div className="pad" style={{ position: 'absolute', zIndex: 2 }}>
         <Enter i={0}><div className="k">The portfolio today · {PORTFOLIO.length} flavors across six formats</div></Enter>
         <div className="pf-title">
-          <div className={'pft' + (zoom ? ' out' : '')}><h2 className="h1">We have mastered mint.</h2></div>
+          <div className={'pft' + (zoom ? ' out' : '')}><h2 className="h1">{PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length} of {PORTFOLIO.length} are mint.<br /><span className="it">Mint is mastered.</span></h2></div>
           <div className={'pft' + (zoom ? '' : ' out')}><h2 className="h1 it" style={{ maxWidth: 900 }}>The next chapter is everything mint makes possible.</h2></div>
         </div>
       </div>
@@ -126,8 +126,8 @@ export function Signals({ step }: SceneProps) {
     <div className="signal sigs" style={{ ['--h' as any]: sig ? sig.hue : 190 }}>
       <div className="sig-light" style={{ opacity: sig ? 1 : 0.35 }} />
       <div className="pad" style={{ position: 'relative' }}>
-        <Enter i={0}><div className="k">Chapter 1 · Seven signals shaping oral care</div></Enter>
-        <Enter i={1}><h2 className="h2">Seven signals. <span className="it">You will pick three.</span></h2></Enter>
+        <Enter i={0}><div className="k">Seven signals shaping oral care</div></Enter>
+        <Enter i={1}><h2 className="h2">Seven signals. <span className="it">Which three matter most?</span></h2></Enter>
         <div className="sigs-list">
           {SIGNALS.map((x, i) => <div key={x.id} className={'sl' + (i === k - 1 ? ' on' : i < k - 1 ? ' past' : '')} style={{ ['--h' as any]: x.hue, ['--i' as any]: i }}><span className="num">0{x.n}</span><b>{x.title}</b></div>)}
         </div>
@@ -139,7 +139,7 @@ export function Signals({ step }: SceneProps) {
             <div className="sig-so"><span className="k">So what for TheraBreath</span><div className="h3 it">{sig.so}</div></div>
           </div>
         )}
-        {!sig && <div className="sigs-hint">Each signal comes with two public proofs and one implication. The vote follows.</div>}
+        {!sig && <div className="sigs-hint">Each signal comes with two public proofs and one implication for TheraBreath.</div>}
       </div>
     </div>
   );

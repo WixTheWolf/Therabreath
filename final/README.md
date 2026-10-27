@@ -16,32 +16,31 @@ Ross Conroy's invitation (September 18, 2026) set the brief for the Oral Care R&
 - A pre-read so the team comes "prepared to discuss, not just listen."
 - Unflavored Fresh Breath and Kids bases sent to The Flavor Factory. The blind tasting is built in them.
 
-## The simple format (October 27)
+## The presentation and the front door (October 27)
 
-The morning now runs on one clean deck and a paper scorecard, with no phones. The front door is one short page.
+Back to the Stage's look (the glass drop, the light, the signal colors, the platform worlds), with the morning as a discussion around Ross's four objectives: no phones, no votes, nobody named as presenting any part.
 
-- `/`: when and where, why we are meeting, Ross's four objectives, the morning (each part tagged with the objective it answers), and the pre-brief. Hosts also get THE FLAVOR RACE, the presentation and the run sheet in the bar.
-- `/host` (password): the deck, built as talking points for a discussion. 24 slides (25 once pre-brief answers exist), one idea each. Ross's four objectives, quoted word for word, are the spine: each opens with his words, our talking points and questions for the room, then the slides that carry it, and each of those slides is tagged with its objective. Nobody is named as presenting any part. Welcome: title, who we are and how we work (names and titles, the science and imagination lists, Ross's "creativity, technical expertise, and innovation capabilities"), July to today, the four objectives, the morning, "You told us". Objective 01: the portfolio today, the gap, the flavor shelf, seven signals. Objective 02: Flavor School, four platforms, the blind tasting, the reveal. Objective 03: five questions that turn a direction into a concept, three concept cards typed in live. Objective 04: the white-space grid (click a cell to mark where a concept lands) and Now, Next, Later. Close: the roadmap read back from the board, what happens next, THE FLAVOR RACE. Right arrow, space or a click goes on; left goes back; F is full screen; N shows the talking points. What the room types is saved in the browser on the presenting laptop; `/host?all=1` lays every slide out for a PDF, filled in; `/host?all=1&notes=1` is the presenter edition with the talking points; `/host?reset=1` clears it after rehearsal.
-- `/host/run` (password): the run sheet for The Flavor Factory team, two Letter pages: 9:30 setup, the run of show with slides and what happens, what to do after the film, and what is still to confirm.
-- `/team` (password, or the team link): everything built so far for The Flavor Factory team, with a practice copy of the pre-brief (session `PREVIEW`, so answers never reach the live session) and the morning.
-- Signing in: one password opens everything (the front door, the presentation, the run sheet, the team page, the scorecard and the film); there is no separate host step. The host password still works in the same box, and still guards the old live-workshop Console and session list (unlinked; they can wipe a session). The team link, `/t/KEY`, signs a teammate in with one click; only the key's hash is in `src/lib/auth.ts`, and setting `PLAYBOOK_TEAM_KEY` on Vercel replaces the key and turns the old link off.
-- `/scorecard` (password): the tasting scorecard, one Letter page per person, with the same questions the phones asked (appeal, feels like TheraBreath, newness, who it is for, advance or not, one word, and the fruits for the Mystery Flavor, Sample D).
-- The pre-brief: its promises match the simple morning (no phone votes, no orbs on the screen, no Bench; the Playbook is the write-up sent after the morning), the letter introduces the four of us by name and title, and its agenda carries the objective tags.
-- One source for the morning: `RUN` in `src/lib/content.ts` holds the blocks, times, objectives and slides; `TOPICS` holds the talking points and questions for each objective's opener; `OBJECTIVES` holds Ross's four key areas of focus word for word. The site and pre-brief agenda, the deck and the run sheet all read them. `TEAM` holds the names and titles on the who-we-are slide.
+- `/host` (password): the presentation, 32 scenes on a fixed 1920 x 1080 canvas (33 once pre-brief answers exist), run from the presenting laptop with no live session (`src/components/ShowApp.tsx`, scenes in `src/components/show/ShowScenes.tsx` and `src/components/scenes/`). Welcome: the title, who we are (names and titles, the science and imagination lists, Ross's "creativity, technical expertise, and innovation capabilities"), July to today, the four objectives word for word with their times, "You told us" (only with pre-brief answers), the thesis. Then one chapter per objective, each opening on one screen in Ross's words and closing on a discussion. Objective 01: the gap, the portfolio, the flavor shelf, seven signals, then the room picks three. Objective 02: Flavor School (taste, aroma and feel; cooling; OXYD-8; anatomy), the four platforms on the map and one at a time, the blind tasting and the reveal, then the directions for a next round. Objective 03: up to three concept cards typed in live. Objective 04: the white space (click a cell to mark where a concept lands) and Now, Next, Later typed in live. Close: the Playbook assembled from what the room marked and typed, what happens next, THE FLAVOR RACE, lunch. Right arrow, space or a click goes on; left goes back; F is full screen; N shows the talking points; B blanks the screen. What the room marks and types is saved in the browser on the presenting laptop; `/host?results=1` is a printable page of it; `/host?reset=1` clears it after rehearsal.
+- `/`: the front door, back in its cinematic form: the film, Ross's brief word for word with the time that answers each objective, the growth math, the four platforms, the sealed tasting flight, who you will meet, the morning with objective tags, the pre-brief link, and the optional exploration drawer. The bar opens THE FLAVOR RACE, the presentation, the run sheet and the team page.
+- `/team` (password, or the team link): everything built for The Flavor Factory team in the front door's look, with a practice copy of the pre-brief (session `PREVIEW`, so answers never reach the live session) and the morning.
+- `/host/run` (password): the run sheet for The Flavor Factory team, two Letter pages: 9:30 setup, the run of show with its scenes and what happens, what to do after the film, and what is still to confirm.
+- `/scorecard` (password): the tasting scorecard, one Letter page per person (appeal, feels like TheraBreath, newness, who it is for, advance or not, one word, and the fruits for the Mystery Flavor, Sample D).
+- Signing in: one password opens everything; there is no separate host step. The host password still works in the same box, and still guards the old live-workshop Console.
+- One source for the morning: `RUN` in `src/lib/content.ts` holds the blocks, times, objectives and scenes; `TOPICS` holds the talking points and the discussion questions for each objective; `OBJECTIVES` holds Ross's four key areas of focus word for word.
 
-The live-workshop surfaces below (Stage, Console, phones, the assembled Playbook) are still in the code and still work at their addresses, but nothing links to them any more.
+The live-workshop surfaces below (the session-driven Stage, Console, phones, the session Playbook) are still in the code and still work at their addresses, but nothing links to them any more.
 
 ## Surfaces
 
 | Route | Who | What |
 | --- | --- | --- |
-| `/` | Attendees and facilitators (password) | The site: the film, Ross's brief and goal, the growth math, four platforms, the sealed tasting flight (cards flip once the room reveals them), the morning, and optional exploration tools. |
+| `/` | Attendees and facilitators (password) | The site: the film, Ross's brief and goal, the growth math, four platforms, the sealed tasting flight, who you will meet, the morning and the pre-brief, and optional exploration tools. |
 | `/survey/FOF1109?k=KEY&n=Name` | Each attendee (signed link) | The pre-brief: a personal letter, the thesis and growth math, seven signals, four questions, four sealed platforms, the agenda and two minutes of homework that opens the session. Prints to a 4-page Letter PDF without links. |
-| `/stage/FOF1109` | The room TV (password) | The deck: 41 scenes on a fixed 1920 x 1080 canvas, driven by the Console or the arrow keys. |
+| `/stage/FOF1109` | Not linked (password) | The old session-driven Stage, driven by the Console or the arrow keys. |
 | `/console/FOF1109` | Matt, with Alex as backup (password) | Scenes, timed notes, votes, timers, teams, Bench overrides, pipeline and commitments, personal pre-brief links, export and wipe. |
 | `/j/FOF1109?k=KEY` | Phones (signed link from the QR) | Voting, the tasting scorecard, the Concept Canvas, the Bench dials, dots and reactions. |
 | `/playbook/FOF1109` | Everyone after the session | The Playbook, assembled from the room's decisions, with a print PDF. |
-| `/host` | Facilitators | Open any surface for any code. |
+| `/host` | The room TV (password) | The presentation: 32 scenes run from the presenting laptop, no phones. |
 
 `FOF1109` is the live session and is set once, in `src/lib/content.ts` (`EVENT.code`). Any other code is a clean rehearsal session.
 
@@ -90,16 +89,18 @@ Rehearse: open `/console/ANYCODE`, press **Simulate 12** on each scene, and step
 ## PDFs (`deliverables/`, not deployed)
 
 - `The-Future-of-Freshness-Pre-brief.pdf`: the 4-page pre-read for Ross to send on November 3 (regenerated October 27: names and titles in the letter, Ross's objectives word for word, objective tags on the agenda).
-- `The-Future-of-Freshness-Presenter-Deck.pdf`: the final to send the team, landscape Letter (from `/host?all=1&notes=1`): a cover with the run of show, then every slide as the room sees it with its number, time, objective and talking points, and a page marking where "You told us" appears once the pre-brief answers are in.
-- `The-Future-of-Freshness-Deck.pdf`: the 24 slides of the deck, blank (from `/host?all=1`), the offline fallback. Save a copy to the presenting laptop with the film file.
+- `The-Future-of-Freshness-Presenter-Deck.pdf`: the final to send the team, landscape Letter: a cover with the run of show, then every scene as the room sees it at its last build, with its number, time, objective and talking points, and a page marking where "You told us" appears once the pre-brief answers are in.
+- `The-Future-of-Freshness-Deck.pdf`: the 32 scenes, blank, one 16:9 page each: the offline fallback. Save a copy to the presenting laptop with the film file.
 - `The-Future-of-Freshness-Run-Sheet.pdf`: the hosts' run sheet, two Letter pages; one each for Dan, Alex, Ryan and Matt.
 - `The-Future-of-Freshness-Tasting-Scorecard.pdf`: the paper scorecard, one Letter page; print one per person.
 
-After the session, export the leave-behind with the room's results (never during a session, because it moves the Stage):
+Both are exported from the running site with a fresh browser, so the room's inputs are blank and nothing touches the live session:
 
 ```bash
-node scripts/export-deck.mjs https://<production-host> FOF1109 <password> deliverables/Playbook-Session-Deck.pdf
+node scripts/export-show.mjs https://<production-host> <password> deliverables/The-Future-of-Freshness
 ```
+
+After the session, open `/host?results=1` on the presenting laptop and print it to PDF: the signals, directions, concepts, white-space marks and Now, Next, Later as the room left them.
 
 ## Before November 9 [CONFIRM]
 

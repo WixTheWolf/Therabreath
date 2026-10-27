@@ -304,3 +304,29 @@
 @media (max-width: 700px) { .ws-four { grid-template-columns: 1fr; } .ws-glass { height: 260px; } .ws-facts div { grid-template-columns: 1fr; gap: 4px; } }
 @media (prefers-reduced-motion: reduce) { .ws-glass i, .ws-seal.open { transition: none; animation: none; } }
 .ws-seal small { margin-top: 14px; }
+
+/* The restored front door: objective tags on the agenda, who you will meet, the pre-brief at the close. */
+.st-agenda .st-obj { margin-left: 10px; padding: 3px 8px; border-radius: 99px; border: 1px solid rgba(46,143,168,.4); font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--teal); font-style: normal; white-space: nowrap; }
+.ws-team { border-top: 1px solid #ffffff25; }
+.ws-team .ws-card { border-top-color: var(--glacier-d); }
+.ws-team .ws-card h3 { margin: 0 0 10px; font-family: var(--serif); font-weight: 300; font-size: 34px; }
+.ws-team .ws-card small { font: 500 12px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+.st-before { position: relative; max-width: 760px; margin: 0 auto 36px; padding: 28px 32px; border-radius: 20px; background: rgba(255,255,255,.6); border: 1px solid rgba(11,27,43,.1); display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.st-before p { font-size: 18px; line-height: 1.5; }
+/* On phones the bar holds four links and wraps, so it scrolls away with the hero instead of covering the sections. */
+@media (max-width: 700px) { .st-bar { position: absolute; } }
+
+/* The team page, in the front door's look. */
+html:has(.tm) { background: #0B1B2B; }
+.tm { min-height: 100vh; background: var(--bg); color: var(--fg); }
+.tm-top { position: relative; padding-top: 150px; }
+.tm-top > *:not(.tm-orb) { position: relative; }
+.tm-orb { position: absolute; right: -10vw; top: -20vh; width: 70vh; height: 70vh; border-radius: 50%; background: radial-gradient(circle, rgba(143,224,240,.28), rgba(244,184,96,.08) 55%, transparent 70%); filter: blur(30px); pointer-events: none; }
+.tm-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.tm-card { display: flex; flex-direction: column; gap: 4px; color: var(--fg); text-decoration: none; transition: background .3s, transform .3s; }
+.tm-card:hover { background: rgba(255,255,255,.06); transform: translateY(-3px); }
+.tm-card h3 { font-family: var(--serif); font-weight: 300; margin: 12px 0 8px; }
+.tm-card p { opacity: .78; }
+.tm-morning h2 { font-family: var(--serif); font-weight: 300; }
+@media (max-width: 1100px) { .tm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .tm-grid { grid-template-columns: 1fr; } .tm-top { padding-top: 110px; } }

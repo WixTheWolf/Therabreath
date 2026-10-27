@@ -2,20 +2,20 @@ import { EVENT, RUN, SAMPLES, NEXT_STEPS } from '@/lib/content';
 import PrintButton from '@/app/scorecard/PrintButton';
 
 // The hosts' run sheet: one printout for The Flavor Factory team, behind the password. Not for the room.
-// The run of show comes from RUN, the same source as the agenda and the deck's presenter tags.
+// The run of show comes from RUN, the same source as the agenda and the presentation's chapter times.
 const fresh = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.code).join(' and ');
 const kids = SAMPLES.filter((x) => x.base.startsWith('Kids')).map((x) => x.code).join(' and ');
 
 const SETUP = [
   'Laptop to the TV. Open /host and press F for full screen. The speaker notes (N) show on the same screen, so keep them off while the laptop is mirrored to the TV and use this sheet instead.',
-  'Sound: play ten seconds of THE FLAVOR RACE (the last slide) through the room speakers and set the volume. Then press Home to go back to the title.',
-  'Wifi: Ross offered to help us get on the network. If it fails, present from the backup on the laptop: the deck PDF and the film file.',
-  'Rehearsed on this laptop? Open /host?reset=1 once to clear the concept cards, the white-space marks and the board.',
+  'Sound: press End, then the left arrow once, to reach THE FLAVOR RACE. Play ten seconds through the room speakers and set the volume. Then press Home to go back to the title.',
+  'Wifi: Ross offered to help us get on the network. If it fails, present from the backup on the laptop: the presentation PDF and the film file.',
+  'Rehearsed on this laptop? Open /host?reset=1 once to clear the marked signals and directions, the concept cards, the white-space marks and the board.',
   `Samples: ${fresh} in the Fresh Breath base, ${kids} in the Kids base, poured blind into coded cups. Water to rinse, cups to spit, napkins.`,
   'Scorecards: one per person plus spares, and pens. Print from /scorecard.',
 ];
 const AFTER = [
-  'Before you close the laptop: open /host?all=1 and print to PDF. It keeps the concept cards, the white-space marks and Now, Next, Later exactly as the room left them.',
+  'Before you close the laptop: open /host?results=1 and print it to PDF. It keeps the marked signals and directions, the concept cards, the white-space marks and Now, Next, Later exactly as the room left them.',
   'Collect the scorecards.',
   ...NEXT_STEPS.map((n) => `${n.t}: ${n.d}`),
 ];
@@ -43,7 +43,7 @@ export default function RunSheet() {
       <section className="rs-sec">
         <h2>The run of show</h2>
         <table className="rs-run">
-          <thead><tr><th>Time</th><th>Block and slides</th><th>What happens</th></tr></thead>
+          <thead><tr><th>Time</th><th>Block and scenes</th><th>What happens</th></tr></thead>
           <tbody>{RUN.map((b) => (
             <tr key={b.id}>
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
@@ -64,7 +64,7 @@ export default function RunSheet() {
           <ol className="rs-check">{CONFIRM.map((x) => <li key={x}>{x}</li>)}</ol>
         </section>
       </div>
-      <p className="sc-foot">Confidential. Keys on the deck: right arrow, space or click to go on; left arrow back; Home to the start; F full screen; N notes.</p>
+      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on; left arrow back; Home to the start; F full screen; N talking points; B blank screen.</p>
     </main>
   );
 }

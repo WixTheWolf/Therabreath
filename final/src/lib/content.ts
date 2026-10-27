@@ -290,38 +290,39 @@ export const THINK = [
   'The moment in the day when TheraBreath is not there yet, and what it would have to taste like to earn it.',
 ];
 
-// The run of show: one source for the agenda (site and pre-brief), the deck's agenda slide and presenter tags, and the
-// hosts' run sheet. `obj` is the objective from Ross's invitation the block answers. The notes stay off the
-// site and the pre-brief: they are for the deck and the run sheet. A simple morning: one deck, one paper scorecard for
-// the tasting, and a conversation. No phones.
+// The run of show: one source for the agenda (site and pre-brief), the presentation's chapter times, and the hosts'
+// run sheet. `obj` is the objective from Ross's invitation the block answers. The notes stay off the
+// site and the pre-brief: they are for the presentation and the run sheet. One presentation, one paper scorecard for the
+// tasting, and a conversation. No phones.
 export type Block = { id: string; t: string; end: string; title: string; obj?: string; slides: string; does: string };
 export const RUN: Block[] = [
   { id: 'welcome', t: '10:00', end: '10:10', title: 'Welcome: who we are, and your four objectives',
-    slides: 'Title, Who we are, From July to today, Your four objectives, The morning, You told us (only if pre-brief answers came in)',
-    does: 'Thank Ross for the invitation. Who we are and how we work. July to today. Ross\'s four objectives and his goal. The morning on one slide. The homework answers, if any.' },
+    slides: 'Title, Who we are, From July to today, Your four objectives, You told us (only if pre-brief answers came in), The thesis',
+    does: 'Thank Ross for the invitation. Who we are and how we work. July to today. Ross\'s four objectives, word for word, and his goal. The homework answers, if any. TheraBreath took away the burn; now let\'s give more people a reason to want it.' },
   { id: 'market', t: '10:10', end: '10:25', title: 'Your portfolio, the market, and what is changing', obj: '01',
-    slides: 'Opener for objective 01, The portfolio today, 86 of every 100 households, The shelf is a flavor shelf, Seven signals',
-    does: 'Mint is mastered; the next chapter is everything mint makes possible. The household gap. The shelf turns to flavor. Seven signals: the room picks the three that matter most, by show of hands.' },
+    slides: 'Objective 01, 86 of every 100 households, The portfolio today, The shelf is a flavor shelf, Seven signals, For discussion',
+    does: 'The household gap. Mint is mastered; the next chapter is everything mint makes possible. The shelf turns to flavor. Seven signals, one build each. Then the room picks the three that matter most (click to mark them) and says what we have missed.' },
   { id: 'school', t: '10:25', end: '10:40', title: 'Flavor School and four opportunity platforms', obj: '02',
-    slides: 'Opener for objective 02, Flavor School, Four opportunity platforms',
-    does: 'Taste, aroma and feel, and why OXYD-8 is a demanding home for flavor. Then the four platforms: two carry today\'s samples, two are for discussion.' },
+    slides: 'Objective 02, What flavor really is, How cool works, Flavor in an oxidizing world, Anatomy of a TheraBreath flavor, Four opportunity platforms, then one scene per platform',
+    does: 'Taste, aroma and feel; the two jobs of cooling; why OXYD-8 is a demanding home for flavor; how a TheraBreath flavor must finish. Then the four platforms on one map and one at a time: two carry today\'s samples, two are for discussion.' },
   { id: 'tasting', t: '10:40', end: '11:00', title: 'A blind tasting made in your bases', obj: '02',
-    slides: 'Blind tasting, The reveal',
-    does: 'Scorecards out. A and B in the Fresh Breath base, C and D in the Kids base. D is the Mystery Flavor: fruit guesses before the reveal. Then the names, and one word for each.' },
+    slides: 'Blind tasting and the reveal, For discussion',
+    does: 'Scorecards out. A and B in the Fresh Breath base, C and D in the Kids base. D is the Mystery Flavor: fruit guesses before the reveal. Then the names, one word for each, and the directions that earned a next round (click to mark them).' },
   { id: 'concepts', t: '11:00', end: '11:20', title: 'From samples to concepts: who, when and what role', obj: '03',
-    slides: 'Opener for objective 03, Five questions, Three concepts',
-    does: 'From the scorecards, pick two or three directions. For each: who it is for, the moment, its role in the range, the format, and whether it grows loyal users, new consumers or both. Type each one into a concept card.' },
+    slides: 'Objective 03, Concepts built in the room',
+    does: 'From the scorecards and the marked directions, up to three concepts. For each: where it starts, who it is for, the moment, its role in the range, the format, and whether it grows loyal users, new consumers or both. Type each one into a concept card.' },
   { id: 'pipeline', t: '11:20', end: '11:40', title: 'White space and the pipeline: Now, Next, Later', obj: '04',
-    slides: 'Opener for objective 04, White space, Now Next Later',
-    does: 'Walk the grid: where TheraBreath is today, and where each concept lands (click a cell to mark it). Then each concept and platform goes into Now, Next or Later with a TFF owner, a C&D reviewer, the base and the next sample action.' },
+    slides: 'Objective 04, White space, Now Next Later',
+    does: 'Walk the grid: where TheraBreath is today, and where each concept lands (click a cell to mark it). Then each concept and direction goes into Now, Next or Later with a TFF owner, a C&D reviewer, the base and the next sample action.' },
   { id: 'close', t: '11:40', end: '12:00', title: 'Our roadmap, owners and next steps, and a short film to send you to lunch',
-    slides: 'Our innovation roadmap, What happens next, THE FLAVOR RACE',
-    does: 'Read the roadmap back, Now, Next and Later, with owners. The three next steps. Thank the room. At 11:48, THE FLAVOR RACE (2:26), lights down, sound up. Then lunch, hosted by Church & Dwight.' },
+    slides: 'The Playbook you just built, What happens next, THE FLAVOR RACE, Lunch',
+    does: 'The Playbook assembles from what the room marked and typed: read the roadmap back with owners. The three next steps. Thank the room. At 11:48, THE FLAVOR RACE (2:26), lights down, sound up. Then lunch, hosted by Church & Dwight.' },
 ];
 export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title, b.obj]);
 
-// The deck opens each of Ross's four objectives with his words, then these talking points and the questions for the
-// room. It is a discussion, so nothing here is a script. Facts only from elsewhere in this file.
+// The presentation opens each of Ross's four objectives in his words; these are the talking points in its notes and the
+// questions its discussion scenes ask the room. It is a discussion, so nothing here is a script. Facts only from
+// elsewhere in this file.
 const MINT = PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length;
 export const TOPICS = [
   { title: 'What is changing.',

@@ -12,7 +12,7 @@ export function School({ step }: SceneProps) {
   ];
   return (
     <div className="pad school">
-      <Enter i={0}><div className="k">Flavor School · with Ryan Wixted</div></Enter>
+      <Enter i={0}><div className="k">Flavor School · What flavor really is</div></Enter>
       <Enter i={1}><h2 className="h1" style={{ maxWidth: 1300 }}>Most of what we call flavor is actually smell. <span className="it">The rest is feeling.</span></h2></Enter>
       <div className="venn">
         {parts.map((p, i) => (

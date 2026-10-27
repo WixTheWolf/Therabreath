@@ -5,6 +5,7 @@ import './site.css';
 import './console.css';
 import './playbook.css';
 import './simple.css';
+import './show.css';
 import type { Metadata, Viewport } from 'next';
 
 export const metadata: Metadata = {
