@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
-import { SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT, DIALS, MYSTERY } from '@/lib/content';
+import { SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT, DIALS, MYSTERY, DIRECTIONS } from '@/lib/content';
 import { DEFAULT_DIALS, readouts } from '@/lib/bench';
 import { uid } from '@/lib/state';
 import { candidates } from './scenes/Build';
@@ -41,12 +41,12 @@ export default function RoomApp({ code, k }: { code: string; k: string }) {
     case 'placements': body = <Placements {...props} />; break;
     case 'bench': body = <BenchPhone {...props} />; break;
     case 'code': body = <CodeReact {...props} />; break;
-    case 'thanks': body = <div className="rm-center"><div className="rm-drop" /><h1 className="h2">Thank you, {me.name}.</h1><p className="rm-p">The Playbook v1.0 arrives within 8 business days.</p></div>; break;
-    default: body = <div className="rm-center"><div className="rm-drop" /><div className="k">{scene.act}</div><h1 className="h3">{room.line || scene.title}</h1><p className="rm-p">Eyes up. Your phone lights up when the room needs you.</p></div>;
+    case 'thanks': body = <div className="rm-center"><div className="rm-drop" /><h1 className="h2">Thank you, {me.name}.</h1><p className="rm-p">We will send everyone the write-up within 8 business days.</p></div>; break;
+    default: body = <div className="rm-center"><div className="rm-drop" /><div className="k">{scene.act}</div><h1 className="h3">{room.line || scene.title}</h1><p className="rm-p">Nothing to do on your phone right now. It will change when there is something to vote on.</p></div>;
   }
   return (
     <main className="room" data-theme={theme}>
-      <header className="rm-head"><span className="rm-brand"><i />The Flavor Playbook</span><span className={'rm-dot' + (status.online ? '' : ' off')} />{me.name}</header>
+      <header className="rm-head"><span className="rm-brand"><i />The Future of Freshness</span><span className={'rm-dot' + (status.online ? '' : ' off')} />{me.name}</header>
       <div className="rm-body" key={scene.id + (room.kind === 'guess' ? Math.floor(s.step / 2) : '')}>{body}</div>
     </main>
   );
@@ -59,17 +59,17 @@ function JoinForm({ onJoin }: { onJoin: (n: string) => void }) {
       <form className="rm-center rm-join" onSubmit={(e) => { e.preventDefault(); if (n.trim()) onJoin(n.trim().split(/\s+/)[0].slice(0, 20)); }}>
         <div className="rm-drop" />
         <div className="k">{EVENT.lockup}</div>
-        <h1 className="h2">The Flavor<br /><span className="it">Playbook</span></h1>
+        <h1 className="h2">The Future<br /><span className="it">of Freshness</span></h1>
         <input autoFocus value={n} onChange={(e) => setN(e.target.value)} placeholder="Your first name" aria-label="Your first name" maxLength={20} />
-        <button className="rm-btn" disabled={!n.trim()}>Join the room</button>
-        <p className="rm-fine">First name only. Nothing is shared outside this session.</p>
+        <button className="rm-btn" disabled={!n.trim()}>Join</button>
+        <p className="rm-fine">Just your first name. It shows on the screen when you join, and votes are only used for today.</p>
       </form>
     </main>
   );
 }
 
 type P = { s: any; me: Me; p: (k: string, d: any) => void; step: number; room?: any };
-const Lock = ({ v }: { v: any }) => (v?.locked ? <div className="rm-lock">Voting is closed. Look up.</div> : !v?.open ? <div className="rm-lock soft">The vote opens in a moment. You can choose now.</div> : null);
+const Lock = ({ v }: { v: any }) => (v?.locked ? <div className="rm-lock">This vote is closed.</div> : null);
 
 function Pick({ s, me, p, room }: P) {
   const v = s.votes[room.key]; const mine: string[] = v?.picks?.[me.pid] || [];
@@ -80,7 +80,7 @@ function Pick({ s, me, p, room }: P) {
     <div className="rm-pad">
       <h2 className="h3">{room.prompt}</h2><Lock v={v} />
       <div className="rm-list">{SIGNALS.map((x) => <button key={x.id} className={'rm-opt' + (sel.includes(x.id) ? ' on' : '')} style={{ ['--h' as any]: x.hue }} onClick={() => toggle(x.id)} disabled={v?.locked}><span className="num">0{x.n}</span>{x.title}</button>)}</div>
-      <button className="rm-btn sticky" disabled={sel.length !== room.max || v?.locked || sent} onClick={() => p('pick', { key: room.key, value: sel })}>{sent ? 'Sent. Change any time before the lock.' : `Send ${sel.length} of ${room.max}`}</button>
+      <button className="rm-btn sticky" disabled={sel.length !== room.max || v?.locked || sent} onClick={() => p('pick', { key: room.key, value: sel })}>{sent ? 'Sent. You can change it until we move on.' : `Send ${sel.length} of ${room.max}`}</button>
     </div>
   );
 }
@@ -94,13 +94,13 @@ function Chips({ s, me, p, room }: P) {
     <div className="rm-pad">
       <h2 className="h3">{room.prompt}</h2><Lock v={v} />
       <div className="rm-chipsleft">{Array.from({ length: room.total }, (_, i) => <i key={i} className={i < used ? 'used' : ''} />)}</div>
-      <div className="rm-list">{TERRITORIES.map((t) => (
-        <div key={t.id} className="rm-chip" style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1] }}>
-          <span className="sw" /><b>{t.name}</b>
-          <button onClick={() => add(t.id, -1)} disabled={!o[t.id] || v?.locked}>-</button><em className="num">{o[t.id] || 0}</em><button onClick={() => add(t.id, 1)} disabled={used >= room.total || v?.locked}>+</button>
+      <div className="rm-list">{DIRECTIONS.map((d) => { const t = TERRITORIES.find((x) => x.id === d.territory)!; return (
+        <div key={d.id} className="rm-chip" style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1] }}>
+          <span className="sw" /><b>{d.label}<small>{d.sub}</small></b>
+          <button onClick={() => add(d.id, -1)} disabled={!o[d.id] || v?.locked}>-</button><em className="num">{o[d.id] || 0}</em><button onClick={() => add(d.id, 1)} disabled={used >= room.total || v?.locked}>+</button>
         </div>
-      ))}</div>
-      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{JSON.stringify(o) === JSON.stringify(mine) && used === room.total ? 'Sent' : `Place ${used} of ${room.total} chips`}</button>
+      ); })}</div>
+      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{JSON.stringify(o) === JSON.stringify(mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} chips`}</button>
     </div>
   );
 }
@@ -120,16 +120,16 @@ function Taste({ s, me, p, step }: P) {
       <div className="rm-tabs">{SAMPLES.map((x) => <button key={x.code} className={(cur === x.code ? 'on' : '') + (done(x.code) ? ' done' : '')} onClick={() => setCur(x.code)}>{x.code}</button>)}</div>
       <h2 className="h3">Sample {cur}{step >= 2 ? <span className="it"> · {SAMPLES.find((x) => x.code === cur)!.name}</span> : null}</h2>
       {step >= 2 && <p>{SAMPLES.find(x => x.code === cur)?.note}</p>}
-      {cur === MYSTERY && step < 2 && <label>What fruit notes do you recognize?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Write your guesses before the reveal" /></label>}
+      {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your guesses, before we tell you" /></label>}
       <Scale label="Appeal" v={r.appeal} set={(n) => setR({ ...r, appeal: n })} />
       <Scale label="Feels like TheraBreath" v={r.feels} set={(n) => setR({ ...r, feels: n })} />
       <Scale label="Newness" v={r.newness} set={(n) => setR({ ...r, newness: n })} />
-      <div className="k" style={{ margin: '18px 0 10px' }}>Who is it for</div>
+      <div className="k" style={{ margin: '18px 0 10px' }}>Who would buy it</div>
       <div className="rm-tags">{WHO_CHIPS.map((w) => <button key={w} className={r.who.includes(w) ? 'on' : ''} onClick={() => setR({ ...r, who: r.who.includes(w) ? r.who.filter((x: string) => x !== w) : [...r.who, w] })}>{w}</button>)}</div>
-      <div className="k" style={{ margin: '4px 0 10px' }}>Which territory do you think it is?</div>
+      <div className="k" style={{ margin: '4px 0 10px' }}>Which direction do you think it comes from?</div>
       <div className="rm-tags">{TERRITORIES.map((t) => <button key={t.id} className={r.guess === t.id ? 'on' : ''} onClick={() => setR({ ...r, guess: t.id })}>{t.name}</button>)}</div>
-      <div className="k">Would you advance this direction?</div><div className="rm-tags">{['Yes', 'Maybe', 'No'].map(v => <button key={v} className={r.advance === v ? 'on' : ''} onClick={() => setR({ ...r, advance: v })}>{v}</button>)}</div>
-      <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="One word for it" />
+      <div className="k">Should it get a next round?</div><div className="rm-tags">{['Yes', 'Maybe', 'No'].map(v => <button key={v} className={r.advance === v ? 'on' : ''} onClick={() => setR({ ...r, advance: v })}>{v}</button>)}</div>
+      <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="One word to describe it" />
       <button className="rm-btn sticky" disabled={!ok} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
     </div>
   );
@@ -204,7 +204,7 @@ function DotsVote({ s, me, p, room }: P) {
   const items = candidates(s).filter((x) => x.kind === 'concept').concat(candidates(s).filter((x) => x.kind === 'seed'));
   return (
     <div className="rm-pad">
-      <h2 className="h3">Three dots. <span className="it">Stack them if you love one.</span></h2><Lock v={v} />
+      <h2 className="h3">You have three dots. <span className="it">Put them on the ideas you would develop. Stacking is fine.</span></h2><Lock v={v} />
       <div className="rm-chipsleft">{Array.from({ length: room.total }, (_, i) => <i key={i} className={i < used ? 'used' : ''} />)}</div>
       <div className="rm-list">{items.map((x) => (
         <div key={x.id} className="rm-chip" style={{ ['--c1' as any]: x.color, ['--c2' as any]: x.color }}>
@@ -212,7 +212,7 @@ function DotsVote({ s, me, p, room }: P) {
           <button onClick={() => setO({ ...o, [x.id]: Math.max(0, (o[x.id] || 0) - 1) })} disabled={!o[x.id] || v?.locked}>-</button><em className="num">{o[x.id] || 0}</em><button onClick={() => used < room.total && setO({ ...o, [x.id]: (o[x.id] || 0) + 1 })} disabled={used >= room.total || v?.locked}>+</button>
         </div>
       ))}</div>
-      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{JSON.stringify(o) === JSON.stringify(mine) && used === room.total ? 'Sent' : `Place ${used} of ${room.total} dots`}</button>
+      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{JSON.stringify(o) === JSON.stringify(mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} dots`}</button>
     </div>
   );
 }

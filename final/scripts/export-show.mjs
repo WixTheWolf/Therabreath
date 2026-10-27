@@ -1,9 +1,9 @@
-// Exports the presentation (/host) to two PDFs, from the running site, exactly as the room will see it:
+// Exports the presentation (/host) to two PDFs, from the running site, exactly as it will look on the TV:
 //   <out>-Deck.pdf            every scene at its last build, one 16:9 page each (the offline fallback)
 //   <out>-Presenter-Deck.pdf  landscape Letter for the team: a cover with the run of show, then every scene with its
 //                             number, time, objective and talking points
-// It uses a fresh browser profile, so the concept cards, marks and Now, Next, Later are blank. Nothing is written to the
-// live session.
+// ?still=1 never writes to the session, so this is safe against the live site; the votes, concept cards and the plan
+// show whatever the session holds (blank before November 9).
 // Usage: node scripts/export-show.mjs <baseUrl> <password> <outPrefix>
 // Needs Playwright (npm i -g playwright, or set NODE_PATH to a folder that has it).
 import { writeFileSync } from 'node:fs';
@@ -27,7 +27,7 @@ const scenes = await page.evaluate(() => window.__show);
 const run = await page.evaluate(() => window.__run);
 const shots = [];
 for (let i = 0; i < scenes.length; i++) {
-  await page.evaluate((h) => { location.hash = h; }, `#${i + 1}.99`);
+  await page.evaluate((h) => { location.hash = h; }, `#${scenes[i].at}.99`);
   // Let the scene fade in and its builds land; the gap's glasses take longest to fill.
   await page.waitForTimeout(scenes[i].id === 'gap' ? 6500 : 3200);
   shots.push(await page.screenshot({ type: 'jpeg', quality: 90 }));
@@ -61,14 +61,14 @@ ul{margin:0;padding-left:16px;columns:2;column-gap:.4in}li{margin:0 0 4px;break-
 .wait{flex:1;display:grid;place-items:center;border:1px dashed rgba(11,27,43,.3);border-radius:6px;padding:.5in;font:300 15pt/1.4 Newsreader,Georgia,serif;color:rgba(11,27,43,.7)}`;
 const cover = `<section><p class="k">Presenter edition · ${esc(run[0].t)} to ${esc(run[run.length - 1].end)} · Monday, November 9, 2026 · Darwin room, Princeton</p>
 <h1>The Future <em>of Freshness</em></h1>
-<p class="sub">Every scene exactly as the room will see it on the TV, at its last build, with the time and the talking points. It is a discussion: each of Ross’s four objectives opens in his words and closes on questions for the room; what the room decides is marked or typed in live and becomes the Playbook at the end. ${scenes.length} scenes${told ? '' : ', plus “You told us” once the pre-brief answers are in'}. The live presentation is at /host: right arrow or click to go on, F for full screen, N for the talking points.</p>
+<p class="sub">Every scene as it will look on the TV, at its last build, with the time and the talking points. It is a discussion. Each of Ross’s four objectives opens in his words and ends with questions for everyone. People vote from their phones four times, and what we decide together is typed in live and becomes the Playbook at the end. ${scenes.length} scenes${told ? '' : ', plus “Your pre-brief answers” once the answers are in'}. The live presentation is at /host: right arrow or click to go on, F for full screen, N for the talking points.</p>
 <table><thead><tr><th>Time</th><th>Part</th><th>Objective</th><th>Scenes</th></tr></thead><tbody>${run.map((b) => `<tr><td class="t">${esc(b.t)} to ${esc(b.end)}</td><td>${esc(b.title)}</td><td>${esc(b.obj || '')}</td><td>${range(b.id)}</td></tr>`).join('')}</tbody></table>
 <p class="foot">Confidential. For The Flavor Factory team; not for distribution.</p></section>`;
 const pages = scenes.map((s, j) => {
   const b = blockOf(s.block);
   const pg = `<section><header><b>${j + 1} / ${scenes.length} · ${esc(s.title)}</b>${b ? `<span>${esc(b.t)} to ${esc(b.end)}</span>` : ''}${b?.obj ? `<span>Objective ${esc(b.obj)}</span>` : ''}${s.builds ? `<span>${s.builds} build${s.builds > 1 ? 's' : ''}</span>` : ''}</header>
 <img class="slide" src="${img(shots[j])}"><ul>${s.notes.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></section>`;
-  const wait = !told && s.id === 'brief' ? `<section><header><b>After ${j + 1} · You told us</b></header><div class="wait">Appears here once the pre-brief answers are in (Ross sends the pre-brief on November 3): the consumer the room most wants to win, the moment TheraBreath is missing, and the flavors they would never approve, without names. Every scene after it is numbered one higher.</div><ul><li>The pre-brief homework: the consumer the room most wants to win, and the moment TheraBreath is missing.</li><li>Have some fun with the vetoes. No names on screen.</li></ul></section>` : '';
+  const wait = !told && s.id === 'brief' ? `<section><header><b>After ${j + 1} · Your pre-brief answers</b></header><div class="wait">Appears here once the pre-brief answers are in (Ross sends the pre-brief on November 3): the consumer they most want TheraBreath to win, the moment TheraBreath is missing, and the flavors they would never approve, without names. Every scene after it is numbered one higher.</div><ul><li>The pre-brief answers: the consumer they most want to win, and the moment TheraBreath is missing.</li><li>Have some fun with the vetoes. No names on screen.</li></ul></section>` : '';
   return pg + wait;
 }).join('');
 const p = await ctx.newPage();

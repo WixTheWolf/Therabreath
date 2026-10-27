@@ -1,6 +1,9 @@
-// The run of show. One entry per Stage scene, in order.
-// theme: 'a' Laboratory Light, 'b' After Hours. chapter: index into CHAPTERS (-1 for none).
+// The run of show: one entry per scene, in order. The presentation (/host), the phones (/j) and the Console all read this,
+// and the session's `scene` index points into it, so the order is shared by every screen.
+// theme: 'a' light, 'b' dark. chapter: which of Ross's four objectives the scene belongs to (-1 for none).
 // builds: how many extra steps the scene reveals before moving on. room: what every phone shows.
+// points: the talking points in the presenter's notes (N). Nobody is named as presenting any part.
+import { TOPICS, PORTFOLIO, SAMPLES, MYSTERY, PRIMARY_TERRITORIES } from './content';
 
 export type RoomMode =
   | { kind: 'watch'; line?: string }
@@ -16,102 +19,97 @@ export type RoomMode =
   | { kind: 'bench' }
   | { kind: 'thanks' };
 
-export type Scene = { id: string; n: number; act: string; chapter: number; theme: 'a' | 'b'; builds: number; title: string; minutes?: number; notes: string; room: RoomMode };
+export type Scene = { id: string; n: number; act: string; chapter: number; theme: 'a' | 'b'; builds: number; title: string; minutes?: number; notes: string; room: RoomMode; block: string; points: string[] };
 
 const W = (line?: string): RoomMode => ({ kind: 'watch', line });
+const MINT = PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length;
+const FRESH = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.code).join(' and ');
+const KIDS = SAMPLES.filter((x) => x.base.startsWith('Kids')).map((x) => x.code).join(' and ');
+const PART = (n: number) => `Part ${n} · ${TOPICS[n - 1].title}`;
 
-const SCENE_CATALOG: Scene[] = [
-  { id: 'arrival', n: 0, act: 'Pre-show', chapter: -1, theme: 'b', builds: 0, title: 'Arrival', notes: 'Loop from 9:15. Names rise into the drop as people join. Invite everyone to scan the QR.', room: W('Welcome. We start at 10:00.') },
-  { id: 'film', n: 0, act: 'Close', chapter: -1, theme: 'b', builds: 0, title: 'The film', notes: 'The send-off. Lights down, sound up. THE FLAVOR RACE, two minutes twenty-six. Let the card land before anyone speaks, and wait for the stinger.', room: W('Eyes up. The film is starting.') },
-  { id: 'title', n: 1, act: 'Opening', chapter: -1, theme: 'b', builds: 0, title: 'The Flavor Playbook', notes: 'Dan welcomes the room. Thank Ross for the invitation. Two hours, one document by noon.', room: W() },
-  { id: 'july', n: 2, act: 'Opening', chapter: -1, theme: 'a', builds: 1, title: 'From July to today', notes: 'In July you came to Norco: resiliency, innovation, operations, partnership. Today is about the fifth word: growth.', room: W() },
-  { id: 'brief', n: 3, act: 'Opening', chapter: -1, theme: 'a', builds: 4, title: 'Your brief, our agenda', notes: 'These are Ross\'s four objectives, word for word. Each act answers one and writes one chapter of the Playbook. Watch the line at the bottom fill.', room: W() },
-  { id: 'prework', n: 4, act: 'Opening', chapter: -1, theme: 'a', builds: 2, title: 'The room already spoke', notes: 'Pre-work reveal. Read the top consumer and the missing moment. Have fun with the vetoes.', room: W() },
-  { id: 'vocab', n: 4, act: 'Opening', chapter: -1, theme: 'b', builds: 2, title: 'Freshness is evolving', notes: 'For decades freshness meant one thing: mint. Step 1 explodes the vocabulary. Step 2: freshness is bigger than mint. Pick two words and define them out loud.', room: W('Freshness is evolving') },
-  { id: 'thesis', n: 5, act: 'Opening', chapter: -1, theme: 'b', builds: 1, title: 'The thesis', notes: 'Pause between the lines. TheraBreath took away the burn. Now let\'s give more people a reason to want it.', room: W() },
-  { id: 'climb', n: 6, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 1, title: 'The climb', minutes: 2, notes: '5.6 to 15.6 with Swishy Time, just under 22 at the end of 2025, 25.3 in Q2 2026. Number 2, with number 1 in sight.', room: W() },
-  { id: 'gap', n: 7, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 2, title: 'The gap', minutes: 3, notes: 'One line of context: 25.3% share in Q2 2026, number 2. Then the emotional center. Let the glasses fill in silence. 86 of every 100 US households have not met TheraBreath yet. Pause. Flavor is how we introduce ourselves.', room: W() },
-  { id: 'portfolio', n: 8, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 1, title: 'The portfolio today', minutes: 2, notes: 'We have mastered mint. Nearly every adult variant is a mint named for a benefit. Then zoom out: everything mint makes possible.', room: W() },
-  { id: 'market', n: 9, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 6, title: 'The shelf is a flavor shelf', minutes: 2, notes: 'Factual and neutral. The shelf is now a flavor shelf, one limited edition at a time. Last build: TheraBreath started ahead of this race. The question is what keeps it ahead.', room: W() },
-  { id: 'signals', n: 9, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 7, title: 'Seven signals', minutes: 5, notes: 'One scene, seven builds. Each build lights one signal: the headline, two proofs, the so what. About forty seconds each. Ask which one surprises the R&D team.', room: W('Seven signals') },
-  { id: 'shifts', n: 9, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 6, title: 'Six shifts', minutes: 2, notes: 'Each step flips one shift. Ask the room which one TheraBreath is already leading.', room: W('Six shifts') },
-  ...[1, 2, 3, 4, 5, 6, 7].map((k): Scene => ({ id: `signal${k}`, n: 9 + k, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 2, title: `Signal ${k}`, minutes: 1.5, notes: 'Motion first, then the still for discussion. Read the headline, then the two proofs, then "so what".', room: W('Signal ' + k + ' of 7') })),
-  { id: 'signalvote', n: 17, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 1, title: 'Live vote: three signals', minutes: 3, notes: 'Open the vote on Console. Pick the three signals that matter most. Lock, then reveal: the top three pulse and lock into Chapter 1.', room: { kind: 'pick', key: 'signals', max: 3, prompt: 'Pick the 3 signals that matter most for TheraBreath.' } },
-  { id: 'whitespace', n: 17, act: 'Act I · The Signals', chapter: 0, theme: 'a', builds: 3, title: 'The white space', minutes: 3, notes: 'Moments across, consumers down. Build 1: where TheraBreath lives today (the sink, morning and night). Build 2: the room\'s pre-work answers. Build 3: the white space where their top moment and top consumer meet. Our read, to challenge.', room: W('White space') },
-  { id: 'school', n: 18, act: 'Act II · Flavor School', chapter: 1, theme: 'b', builds: 3, title: 'What flavor really is', minutes: 2, notes: 'Alex leads. Taste on the tongue, aroma through the nose (including from the back of the mouth), feel through the trigeminal nerve. [CONFIRM wording with Alex]', room: W('Flavor School') },
-  { id: 'cooling', n: 19, act: 'Act II · Flavor School', chapter: 1, theme: 'b', builds: 3, title: 'How cool works', minutes: 2, notes: 'Cooling has two jobs: the first impression and the last. Curves are illustrative. [CONFIRM with Alex]', room: W('Flavor School') },
-  { id: 'oxyd', n: 20, act: 'Act II · Flavor School', chapter: 1, theme: 'b', builds: 3, title: 'Flavor in an oxidizing world', minutes: 2, notes: 'OXYD-8 is tough on odor-causing bacteria, which makes it a demanding home for flavor. Three levers. We don\'t just make it taste good. We make it survive. No formula details. [CONFIRM all copy with Alex]', room: W('Flavor School') },
-  { id: 'anatomy', n: 21, act: 'Act II · Flavor School', chapter: 1, theme: 'b', builds: 4, title: 'Anatomy of a TheraBreath flavor', minutes: 2, notes: 'First impression, heart, finish, linger. However adventurous it starts, it must finish fresh.', room: W('Flavor School') },
-  { id: 'molecules', n: 22, act: 'Act II · Flavor School', chapter: 1, theme: 'b', builds: 13, title: 'Molecule flight', minutes: 2, notes: 'Hand out the vials. Phones guess the source before each reveal. Step through the seven molecules. [CONFIRM set with Alex]', room: { kind: 'guess' } },
-  { id: 'map', n: 23, act: 'Act III · The Territory Flight', chapter: 1, theme: 'a', builds: 3, title: 'The map', minutes: 4, notes: 'Intensity by character. Our perspective, illustrative. The gentle, adventurous quadrant glows: our hypothesis for where new consumers come in. Build 3: the four platform cards.', room: W() },
-  ...[1, 2, 3, 4, 5, 6, 7].map((k): Scene => ({ id: `territory${k}`, n: 23 + k, act: 'Act III · The Territory Flight', chapter: 1, theme: k === 4 ? 'b' : 'a', builds: 1, title: `Territory ${k}`, minutes: 1.5, notes: 'Twenty seconds of world, then the card. Pass the aroma jar for this territory.', room: W('Territory ' + k + ' of 7') })),
-  { id: 'tasting', n: 31, act: 'Act III · The Territory Flight', chapter: 1, theme: 'b', builds: 2, title: 'Blind tasting', minutes: 8, notes: 'Samples A to D. Phones score each. Watch the heat map fill. Step 2 reveals the names with the liquid flip.', room: { kind: 'taste' } },
-  { id: 'matrix', n: 31, act: 'Act III · The Territory Flight', chapter: 1, theme: 'b', builds: 1, title: 'Loyal users and new consumers', minutes: 3, notes: 'Each sample plotted on the two goals in Ross\'s brief.', room: W('Loyal users and new consumers') },
-  { id: 'chips', n: 32, act: 'Act III · The Territory Flight', chapter: 1, theme: 'a', builds: 1, title: 'Territory vote', minutes: 3, notes: 'Five chips each. Territories grow as chips land. Lock, then the ranking goes into Chapter 2.', room: { kind: 'chips', key: 'territories', total: 5, prompt: 'Place 5 chips on the territories you want in the Playbook.' } },
-  { id: 'clock', n: 32, act: 'Act IV · Co-create', chapter: 2, theme: 'b', builds: 5, title: 'The flavor clock', minutes: 2, notes: 'The same person wants a different freshness at 7 AM and at 10 PM. Step through the five moments. Which moment is TheraBreath missing? The pre-work already told us.', room: W('The flavor clock') },
-  { id: 'missions', n: 33, act: 'Act IV · Co-create', chapter: 2, theme: 'a', builds: 1, title: 'Mission briefing', minutes: 2, notes: 'Three mixed teams, C&D and TFF together. Phones pick a team. Missions can be changed on Console.', room: { kind: 'team' } },
-  { id: 'seeds', n: 34, act: 'Act IV · Co-create', chapter: 2, theme: 'a', builds: 0, title: 'Seed cards', minutes: 3, notes: 'Fourteen provocations, not answers. Teams can use, remix or ignore them.', room: { kind: 'team' } },
-  { id: 'canvas', n: 35, act: 'Act IV · Co-create', chapter: 2, theme: 'a', builds: 0, title: 'The Concept Canvas', minutes: 15, notes: 'Start the 15 minute timer. One captain per team types; others suggest. The glass drains; in the last minute it speeds up.', room: { kind: 'canvas' } },
-  { id: 'bench', n: 35, act: 'Act IV · Co-create', chapter: 2, theme: 'a', builds: 2, title: 'The Bench', minutes: 8, notes: 'Each team tunes its concept on six dials. Steps show team 1, 2, 3. Readouts are rules of thumb; Alex can override any of them from Console. Lock the signature before pitches.', room: { kind: 'bench' } },
-  { id: 'pitches', n: 36, act: 'Act IV · Co-create', chapter: 2, theme: 'a', builds: 2, title: 'Pitches', minutes: 7, notes: 'Two to three minutes each. Step to the next poster. Timer per pitch.', room: W('Pitches') },
-  { id: 'dots', n: 37, act: 'Act IV · Co-create', chapter: 2, theme: 'a', builds: 1, title: 'Dot vote', minutes: 2, notes: 'Three dots each across all concepts and seeds. Dots rain onto the posters. Top concepts lock into Chapter 3.', room: { kind: 'dots', key: 'concepts', total: 3 } },
-  { id: 'pipeline', n: 38, act: 'Act V · Build the Playbook', chapter: 3, theme: 'a', builds: 0, title: 'The pipeline board', minutes: 7, notes: 'Place the voted concepts on Now, Next, Future and a portfolio role, from Console. Phones can agree or challenge.', room: { kind: 'placements' } },
-  { id: 'calendar', n: 39, act: 'Act V · Build the Playbook', chapter: 3, theme: 'a', builds: 1, title: 'The 2027 flavor calendar', minutes: 4, notes: 'Four seasonal drop windows. A flavor calendar turns innovation into a rhythm the shelf can count on.', room: W() },
-  { id: 'code', n: 40, act: 'Act V · Build the Playbook', chapter: 4, theme: 'a', builds: 7, title: 'The Flavor Code', minutes: 4, notes: 'Seven guardrails. Phones react keep, edit or add for each.', room: { kind: 'code' } },
-  { id: 'assemble', n: 41, act: 'Close', chapter: 4, theme: 'b', builds: 1, title: 'The Playbook you just built', minutes: 3, notes: 'The signature moment. Let it assemble. End on the cover with their names.', room: W('The Playbook is assembling') },
-  { id: 'next', n: 42, act: 'Close', chapter: 4, theme: 'b', builds: 3, title: 'What happens next', minutes: 2, notes: 'Three commitments [CONFIRM dates]. Dan closes: thank you for building this with us.', room: { kind: 'thanks' } },
-  { id: 'lunch', n: 43, act: 'Close', chapter: -1, theme: 'b', builds: 0, title: 'Lunch', notes: 'Ambient loop in the colors of the chosen territories.', room: { kind: 'thanks' } },
-];
-
-// FINAL run of show: Ross's four objectives as four chapters, the real samples at the center, a hard stop at noon.
-// Presenters: Dan opens and closes, Alex the market and share, Ryan Flavor School, the tasting and the Bench, Matt facilitates.
-// 29 scenes, about 98 minutes of content and 12 minutes of slack before the hard stop at noon.
-// Cut from the first draft: the share line (folded into the gap), the portfolio constellation, seven separate signal scenes
-// (now one scene with seven builds), four platform scenes (now a build on the map), and the Flavor Code (it stays in the Playbook).
-const LIVE_ORDER = [
-  'arrival', 'title', 'july', 'brief', 'prework', 'thesis',
-  'gap', 'market', 'signals', 'signalvote', 'whitespace',
-  'school', 'cooling', 'oxyd', 'anatomy', 'map', 'tasting', 'matrix', 'chips',
-  'missions', 'canvas', 'bench', 'pitches', 'dots',
-  'pipeline', 'assemble', 'next', 'film', 'lunch',
-];
-const LIVE_NOTES: Record<string, Partial<Scene>> = {
-  arrival: { notes: '9:30 to 10:00. Ross meets us at 9:30 for Wi-Fi and the room. Plug in, Stage full screen, test the film sound. Names rise into the drop as people scan the QR.' },
-  film: { notes: '11:48. The send-off. Lights down, sound up. THE FLAVOR RACE, two minutes twenty-six, with the competitor and the stinger. Nobody speaks until the rival has landed; then Dan: see you at lunch.', room: W('Eyes up. The film is starting.') },
-  title: { notes: '10:00 sharp. Dan welcomes the room and thanks Ross for the invitation. Two hours, one Playbook by noon, with their names on the cover.' },
-  july: { notes: '10:02. In July you came to Norco: resiliency, innovation, operations, partnership. Today is the fifth word: growth.' },
-  brief: { builds: 5, notes: '10:04. Ross\'s four objectives, word for word, and his goal: new flavor experiences that strengthen appeal with loyal users and attract new consumers. Each objective writes one chapter. Watch the line at the bottom fill.' },
-  prework: { notes: '10:06. The pre-brief homework, live. Read the top consumer and the missing moment. Have fun with the vetoes.' },
-  thesis: { notes: '10:09. Pause between the lines. TheraBreath took away the burn. Now let\'s give more people a reason to want it.' },
-  gap: { minutes: 3, notes: '10:10. Alex. One line of context first: 25.3% share of US mouthwash in Q2 2026, up 4.5 points, number 2. Refresh after the Q3 call on October 30. Then the emotional center: let the glasses fill in silence. 86 of every 100 US households have not met TheraBreath yet. Pause. Flavor is how we introduce ourselves.' },
-  market: { notes: '10:13. Alex. Factual and neutral: the shelf is now a flavor shelf, one limited edition at a time. The last build is the turn: TheraBreath started ahead of this race (alcohol-free, dye-free, OXYD-8, a kids line on shelf). The question is what keeps it ahead.' },
-  signals: { minutes: 5, notes: '10:15 to 10:20. Alex. One scene, seven builds, about forty seconds each: the headline, two proofs, the so what. Ask which one surprises the R&D team. Do not read every proof aloud.' },
-  signalvote: { notes: '10:20 to 10:23. Open the vote on Console. Three signals each. Lock, reveal, and the top three go into Chapter 1.' },
-  whitespace: { notes: '10:23 to 10:26. Alex, then the room. Eight moments across, eight consumers down. TheraBreath lives at the sink: morning and night, plus the dry mouth lozenge on the go. Build 2 shows their own pre-work answers; build 3 lights the white space where the top moment meets the top consumer. Ask: is that the first direction, or a trap? This is objective 04\'s "white space", on one screen.' },
-  school: { notes: '10:26. Ryan. Taste on the tongue, aroma through the nose (including from the back of the mouth), feel through the trigeminal nerve. [CONFIRM wording with Ryan]' },
-  cooling: { notes: '10:28. Ryan. Cooling has two jobs: the first impression and the last. The curves are illustrative, for teaching.' },
-  oxyd: { minutes: 3, notes: '10:30. Ryan. The R&D moment. OXYD-8 is tough on odor-causing bacteria, which makes it a demanding home for flavor. Three levers. Public chemistry only, no formula details. [CONFIRM copy with Ryan]' },
-  anatomy: { minutes: 1, notes: '10:33. First impression, heart, finish, linger. However adventurous it starts, it must finish fresh.' },
-  map: { title: 'Four opportunity platforms', minutes: 4, notes: '10:34 to 10:38. Four platforms on the intensity by character map. Our perspective, illustrative. The gentle, adventurous corner is our hypothesis for where new consumers come in. Build 3 brings up the four platform cards: two carry today\'s samples, two are discussed on screen. One question per platform. Keep sample names for the reveal.' },
-  tasting: { minutes: 16, notes: '10:38 to 10:54. Ryan. A and B in the Fresh Breath base, C and D in the Kids base [CONFIRM with Ryan]. Phones score each sample. D is the Mystery Flavor: collect fruit guesses before step 2 reveals the names. Rinse and pause between samples. Workshop reactions, not consumer validation.' },
-  matrix: { notes: '10:54. Ross asked for both: strengthen appeal with loyal users, and attract new consumers. Feels like TheraBreath runs across, newness runs up, appeal is size. Top right is where to develop first.' },
-  chips: { title: 'Platform vote', notes: '10:57. Five chips across the four platforms. Lock, then the ranking goes into Chapter 2.' },
-  missions: { notes: '11:00. Two mixed teams, C&D and TFF together: one adult mission, one kids and family mission. Start from the tasting results.' },
-  canvas: { minutes: 12, notes: '11:02 to 11:14. Start the 12-minute glass. One captain per team types; the others suggest. One concept per team: consumer, occasion, sensory target, why it is incremental.' },
-  bench: { builds: 1, minutes: 7, notes: '11:14 to 11:21. Ryan. Each team tunes its concept on six dials. The readouts are our starting read, from public literature; the room\'s read goes on top, and Ryan can override any line from Console. Lock the signature before pitches.' },
-  pitches: { builds: 1, minutes: 6, notes: '11:21 to 11:27. Two to three minutes per team. Who it is for, why only TheraBreath, what changes in the next sample.' },
-  dots: { minutes: 3, notes: '11:27. Three dots each. Dots rain onto the posters; the top concepts lock into Chapter 3.' },
-  pipeline: { minutes: 10, notes: '11:30 to 11:40. Place the directions on Now, Next, Later and a portfolio role. For each priority record the TFF owner, C&D reviewer, base, next sample action and evaluation date.' },
-  assemble: { notes: '11:40. The signature moment. Let the Playbook assemble and close on the cover with their names. The Flavor Code is in the document; it is not presented.' },
-  next: { minutes: 5, notes: '11:43 to 11:48. Read back owners, sample actions and dates. Playbook v1.0 within 8 business days. Dan closes: thank you for building this with us. Then the film, done by 11:51. Nine minutes of slack before noon. [CONFIRM dates]' },
-  lunch: { notes: '12:00. Hard stop. The room is ours through lunch; the loop runs in the colors they chose.' },
-};
-const PLATFORM_NAMES = ['Plant-Powered Freshness', 'Global Brightness', 'Modern Clean', 'Next-Generation Kids'];
-export const SCENES: Scene[] = LIVE_ORDER.map((id, n) => {
-  const base = SCENE_CATALOG.find(s => s.id === id)!;
-  const notes = LIVE_NOTES[id] || LIVE_NOTES[id.replace(/\d+$/, '')];
-  const platform = id.startsWith('territory') ? { title: PLATFORM_NAMES[Number(id.slice(-1)) - 1], room: W('Opportunity platform ' + id.slice(-1) + ' of 4') } : {};
-  return { ...base, ...notes, ...platform, n };
+type Row = Omit<Scene, 'n' | 'notes'>;
+const opener = (n: number, block: string): Row => ({
+  id: `open${n}`, act: PART(n), chapter: n - 1, theme: 'b', builds: 0, title: TOPICS[n - 1].title, block, room: W(TOPICS[n - 1].title),
+  points: ['Read Ross’s words on screen, then talk it through:', ...TOPICS[n - 1].points],
 });
+const platform = (k: number): Row => {
+  const t = PRIMARY_TERRITORIES[k - 1]; const tasted = SAMPLES.some((x) => x.territory === t.id);
+  return { id: `platform${k}`, act: PART(2), chapter: 1, theme: k === 4 ? 'b' : 'a', builds: 1, title: t.name, block: 'school', room: W(t.name),
+    points: [`${t.name}: ${t.promise}`, tasted ? 'Two of today’s samples come from here. Don’t name them yet.' : 'Not in the tasting. We just want their opinion.', `Ask: ${t.q}`] };
+};
+
+const SHOW: Row[] = [
+  { id: 'arrival', act: 'Before we start', chapter: -1, theme: 'b', builds: 0, title: 'Arrival', block: 'welcome', room: W('Welcome. We start at 10:00.'),
+    points: ['9:30. Ross is meeting us at 9:30 to help with the Wi-Fi and the room.', 'Laptop on the TV, press F for full screen, and test the film sound.', 'As people sit down, ask them to scan the code. Their names show up on screen as they join.'] },
+  { id: 'title', act: 'Welcome', chapter: -1, theme: 'b', builds: 0, title: 'The Future of Freshness', block: 'welcome', room: W(),
+    points: ['10:00. Welcome everyone and thank Ross for inviting us.', 'Two hours: the four things Ross asked for, four samples to taste, and a plan to leave with.', 'Phones come out a few times today, for votes and for the tasting.'] },
+  { id: 'team', act: 'Welcome', chapter: -1, theme: 'a', builds: 0, title: 'Who we are', block: 'welcome', room: W(),
+    points: ['Introduce the four of us and what each of us does day to day.', 'Ross asked to see our creativity, technical expertise and innovation capabilities. Today is our chance to show them.'] },
+  { id: 'july', act: 'Welcome', chapter: -1, theme: 'a', builds: 1, title: 'From July to today', block: 'welcome', room: W(),
+    points: ['When they visited Norco in July we talked about resiliency, innovation, operations and partnership.', 'Today is about the fifth one: growth.'] },
+  { id: 'brief', act: 'Welcome', chapter: -1, theme: 'a', builds: 5, title: 'Your four objectives', block: 'welcome', room: W(),
+    points: ['Read the four objectives the way Ross wrote them. They are the agenda for the morning.', 'Last build is his goal: flavors that keep loyal users and bring in new ones.'] },
+  { id: 'prework', act: 'Welcome', chapter: -1, theme: 'a', builds: 2, title: 'Your pre-brief answers', block: 'welcome', room: W(),
+    points: ['Their pre-brief answers: the consumer they most want to win, and the moment TheraBreath is missing.', 'Have some fun with the vetoes. No names on screen.', 'This scene is skipped automatically if nobody has answered yet.'] },
+  { id: 'thesis', act: 'Welcome', chapter: -1, theme: 'b', builds: 1, title: 'Why we are here', block: 'welcome', room: W(),
+    points: ['Let this one sit for a second.', 'TheraBreath took the burn out of mouthwash. The next job is giving more people a reason to want it.'] },
+
+  opener(1, 'market'),
+  { id: 'gap', act: PART(1), chapter: 0, theme: 'a', builds: 2, title: '86 out of 100 households', block: 'market', room: W(),
+    points: ['Quick context first: 25.3% of US mouthwash in Q2 2026, up 4.5 points, number 2.', 'Then let the glasses fill. 86 out of 100 US households still don’t buy TheraBreath.', 'Flavor is one of the best ways to reach them.'] },
+  { id: 'portfolio', act: PART(1), chapter: 0, theme: 'a', builds: 1, title: 'The portfolio today', block: 'market', room: W(),
+    points: [`${MINT} of the ${PORTFOLIO.length} flavors are mint. That is a strength.`, 'Next build zooms out: there is a lot of room around mint.'] },
+  { id: 'market', act: PART(1), chapter: 0, theme: 'a', builds: 6, title: 'What competitors are launching', block: 'market', room: W(),
+    points: ['Keep this factual. Competitors are adding flavors, mostly as limited editions.', 'Last build: TheraBreath already has what they are chasing (alcohol-free, dye-free, OXYD-8, a kids line). Ask what keeps it ahead.'] },
+  { id: 'signals', act: PART(1), chapter: 0, theme: 'a', builds: 7, title: 'Seven trends', block: 'market', room: W('Seven trends'),
+    points: ['One trend per click: the headline, two sources, and what we think it means for TheraBreath.', 'Don’t read every source out loud. About forty seconds each.', 'Ask which one surprises them.'] },
+  { id: 'signalvote', act: PART(1), chapter: 0, theme: 'a', builds: 2, title: 'Vote: the three that matter most', block: 'market',
+    room: { kind: 'pick', key: 'signals', max: 3, prompt: 'Pick the three trends that matter most for TheraBreath.' },
+    points: ['Phones out. Everyone picks three.', 'Watch the bars fill. No phone? Click a bar to add a hand vote.', 'Build 1 shows the top three. They go into the Playbook.', `Build 2: ${TOPICS[0].questions[1]}`] },
+
+  opener(2, 'school'),
+  { id: 'school', act: PART(2), chapter: 1, theme: 'b', builds: 3, title: 'What flavor is', block: 'school', room: W('Flavor School'),
+    points: ['Taste is the tongue: sweet, sour, salty, bitter, umami.', 'Aroma is the nose, including from the back of the mouth when you swallow.', 'Feel is the trigeminal nerve. That is where cooling, tingle and warmth come from.'] },
+  { id: 'cooling', act: PART(2), chapter: 1, theme: 'b', builds: 3, title: 'How cooling works', block: 'school', room: W('Flavor School'),
+    points: ['Cooling does two jobs: the hit when you first rinse, and how long it lasts.', 'These curves are for explaining, not measured data.'] },
+  { id: 'oxyd', act: PART(2), chapter: 1, theme: 'b', builds: 3, title: 'Flavor and OXYD-8', block: 'school', room: W('Flavor School'),
+    points: ['OXYD-8 is tough on the bacteria behind bad breath, and that makes it hard on flavor.', 'Three things we work with: pH, how we dissolve and protect the flavor, and picking materials that hold up.', 'Public chemistry only. No formula details.'] },
+  { id: 'anatomy', act: PART(2), chapter: 1, theme: 'b', builds: 4, title: 'How a TheraBreath flavor is built', block: 'school', room: W('Flavor School'),
+    points: ['First impression, main flavor, finish, and how long it lasts.', 'Whatever it starts with, a TheraBreath flavor has to finish clean.'] },
+  { id: 'map', act: PART(2), chapter: 1, theme: 'a', builds: 2, title: 'Four directions', block: 'school', room: W('Four directions'),
+    points: ['Four directions on one map: familiar to adventurous, gentle to bold. This is our view, not data.', 'The gentle and adventurous corner is where we think new users could come from.', 'Two of these are in today’s tasting.'] },
+  platform(1), platform(2), platform(3), platform(4),
+  { id: 'tasting', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'The blind tasting', block: 'tasting', room: { kind: 'taste' },
+    points: ['Phones out, or the paper card. Score each sample as you go.', `${FRESH} are in the Fresh Breath base, ${KIDS} in the Kids base.`, `${MYSTERY} is the Mystery Flavor. Taste it last and write down the fruits.`, 'Water and a pause between samples. These are first reactions, not consumer research.', 'Build 1 shows their words and fruit guesses. Build 2 reveals the names.'] },
+  { id: 'matrix', act: PART(2), chapter: 1, theme: 'b', builds: 1, title: 'Where each sample landed', block: 'tasting', room: W('Where each sample landed'),
+    points: ['This comes straight from their scores. Across: feels like TheraBreath (loyal users). Up: newness (new consumers). Size is appeal.', 'Top right is what Ross asked for: both at once.'] },
+  { id: 'nextround', act: PART(2), chapter: 1, theme: 'a', builds: 1, title: 'Vote: what gets a next round', block: 'tasting',
+    room: { kind: 'chips', key: 'directions', total: 5, prompt: 'Place five chips on the directions you would develop next. You can stack them.' },
+    points: ['Five chips each, on the samples and directions they would develop next. Stacking is fine.', 'Click a direction to add a hand vote for anyone without a phone.', 'Build 1 shows the top three.', `Then ask: ${TOPICS[1].questions[1]}`] },
+
+  opener(3, 'concepts'),
+  { id: 'concepts', act: PART(3), chapter: 2, theme: 'a', builds: 0, title: 'Concepts', block: 'concepts', room: W('We are writing up concepts together. Shout out ideas.'),
+    points: ['Start from what scored well and what got chips.', 'Up to three concepts. For each: where it starts, who it is for, when, its role in the range, the format, and what it grows.', 'Type as they talk. The boxes suggest options from this morning, and everything saves to the session.'] },
+  { id: 'dots', act: PART(3), chapter: 2, theme: 'a', builds: 1, title: 'Vote: which ideas to develop', block: 'concepts', room: { kind: 'dots', key: 'concepts', total: 3 },
+    points: ['Three dots each, on the concepts or samples they would develop. Stacking is fine.', 'Build 1 shows the top three.'] },
+
+  opener(4, 'pipeline'),
+  { id: 'whitespace', act: PART(4), chapter: 3, theme: 'a', builds: 3, title: 'Where TheraBreath fits in a day', block: 'pipeline', room: W('Where TheraBreath fits in a day'),
+    points: ['Moments of the day across, the consumers from the pre-brief down.', 'Build 1: where we think TheraBreath is today (morning and night at the sink, and the dry mouth lozenge). Ask them to correct us.', 'Build 2: their pre-brief answers. Build 3: everything still open.', 'Click a cell to mark where a concept fits.'] },
+  { id: 'board', act: PART(4), chapter: 3, theme: 'a', builds: 0, title: 'Now, Next, Later', block: 'pipeline', room: W('Now, Next, Later'),
+    points: ['Now, Next or Later for each concept and direction. One line each.', 'For each one: a TFF owner, a C&D reviewer, the base, and the next sample step.', TOPICS[3].questions[1]] },
+
+  { id: 'playbook', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 1, title: 'What we decided', block: 'close', room: W('Here is what we decided'),
+    points: ['Everything we decided this morning: the trends, the directions, the concepts and the plan.', 'Read the plan back with the owners.', 'Next build: the cover. We will send the write-up within 8 business days.'] },
+  { id: 'next', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 3, title: 'What happens next', block: 'close', room: { kind: 'thanks' },
+    points: ['The three next steps. The dates still need confirming before November 9.', 'Then thank everyone.'] },
+  { id: 'film', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 0, title: 'THE FLAVOR RACE', block: 'close', room: W('Phones down. The film is starting.'),
+    points: ['11:48. Lights down, sound up. THE FLAVOR RACE runs 2:26.', 'Don’t talk over it. When it ends, send everyone to lunch.'] },
+  { id: 'lunch', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 0, title: 'Lunch', block: 'close', room: { kind: 'thanks' },
+    points: ['12:00. Lunch, hosted by Church & Dwight.'] },
+];
+
+export const SCENES: Scene[] = SHOW.map((s, n) => ({ ...s, n, notes: s.points.join(' ') }));
 export const sceneIndex = (id: string) => SCENES.findIndex((s) => s.id === id);
-export const EXECUTIVE = ['title', 'gap', 'signalvote', 'tasting', 'matrix', 'chips', 'dots', 'pipeline', 'next'];
+// The Console's short version of the morning.
+export const EXECUTIVE = ['title', 'brief', 'gap', 'signalvote', 'tasting', 'matrix', 'nextround', 'concepts', 'dots', 'board', 'playbook', 'next'];

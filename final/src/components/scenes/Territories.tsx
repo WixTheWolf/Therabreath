@@ -15,20 +15,20 @@ export function MapScene({ step }: SceneProps) {
   return (
     <div className="pad map">
       <div className="map-copy">
-        <Enter i={0}><div className="k">Four opportunity platforms</div></Enter>
-        <Enter i={1}><h2 className="h1">Where flavor<br /><span className="it">can go next.</span></h2></Enter>
-        <R b={2} step={step}><p className="lede" style={{ maxWidth: 440, marginTop: 36 }}>Four questions to explore. Today’s samples help us decide where to develop next.</p></R>
-        <div className="src" style={{ marginTop: 40 }}>Our perspective, illustrative.</div>
+        <Enter i={0}><div className="k">Four directions</div></Enter>
+        <Enter i={1}><h2 className="h1">Where we think <span className="it">flavor could go.</span></h2></Enter>
+        <R b={2} step={step}><p className="lede" style={{ maxWidth: 460, marginTop: 36 }}>Two of these are in today&rsquo;s tasting. We want your opinion on the other two.</p></R>
+        <div className="src" style={{ marginTop: 40 }}>Our view, not data.</div>
       </div>
       <div className={'map-cards' + (step >= 3 ? ' on' : '')}>
         {TERRITORIES.map((t, i) => {
           const tasted = SAMPLES.some((x) => x.territory === t.id);
           return (
             <div key={t.id} className="mc" style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1], ['--i' as any]: i }}>
-              <div className="mc-top"><span className="num">0{t.n}</span><em className="k">{tasted ? 'In today’s tasting' : 'On screen today'}</em></div>
+              <div className="mc-top"><span className="num">0{t.n}</span><em className="k">{tasted ? 'In today’s tasting' : 'For discussion'}</em></div>
               <b>{t.name}</b>
               <p>{t.promise}</p>
-              <div className="mc-q"><span className="k">Question for the room</span>{t.q}</div>
+              <div className="mc-q"><span className="k">Our question</span>{t.q}</div>
             </div>
           );
         })}
@@ -91,27 +91,27 @@ export function Territory({ s, step, idx }: SceneProps) {
   return (
     <div className={'territory' + (t.dark ? ' dark' : '')} style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1], ['--c3' as any]: t.palette[2] }}>
       {t.image ? <img className="terr-img" src={t.image} alt="" /> : <div className="terr-img terr-noimg" />}
-      <World t={t} />
+      {!t.image && <World t={t} />}
       <div className="terr-veil" />
       <div className="pad terr-in">
-        <Enter i={0}><div className="k">Platform {t.n} of 4 · {t.moment}</div></Enter>
+        <Enter i={0}><div className="k">Direction {t.n} of 4 · {t.moment}</div></Enter>
         <Enter i={1}><h2 className="terr-name">{t.name}</h2></Enter>
-        <Enter i={2}><div className="terr-hero it">A direction to explore together</div></Enter>
+        <Enter i={2}><div className="terr-hero it">{SAMPLES.some((x) => x.territory === t.id) ? 'In today’s tasting' : 'For discussion'}</div></Enter>
         <Enter i={3}><p className="terr-promise">{t.promise}</p></Enter>
         <Enter i={4}>
           <div className="terr-arc">
-            {t.arc.map((a, i) => <div key={a} className={i === stage ? 'on' : ''}><span className="k">{['First', 'Heart', 'Finish'][i]}</span><b>{a}</b><i style={{ height: `${20 + t.curve[i] * 70}px` }} /></div>)}
+            {t.arc.map((a, i) => <div key={a} className={i === stage ? 'on' : ''}><span className="k">{['First', 'Then', 'Finish'][i]}</span><b>{a}</b><i style={{ height: `${20 + t.curve[i] * 70}px` }} /></div>)}
           </div>
         </Enter>
-        <R b={0} d={1400} step={step} className="terr-q"><span className="k">Question for the room</span><b>{t.q}</b></R>
+        <R b={0} d={1400} step={step} className="terr-q"><span className="k">Our question</span><b>{t.q}</b></R>
       </div>
       <div className={'terr-compass' + (step >= 1 ? ' up' : '')}>
-        <Compass prof={t.prof[stage]} color={t.palette[1]} size={440} stage={['First impression', 'Heart', 'Finish'][stage] + ' · grey: today\u2019s core mint'} />
+        <Compass prof={t.prof[stage]} color={t.palette[1]} size={440} stage={['First impression', 'Main flavor', 'Finish'][stage] + ' · grey: your core mint'} />
       </div>
       <R b={1} step={step} className="terr-card">
-        <div><span className="k">Why now</span><p>{t.why}</p></div>
-        <div><span className="k">The opportunity</span><p>{t.q}</p><p>Sample details revealed after tasting.</p></div>
-        <div><span className="k">Sensory signature</span><p>{t.signature}</p><span className="k" style={{ marginTop: 18, display: 'block' }}>Who</span><p>{t.who}</p>{t.fitNote && <p className="src" style={{ marginTop: 12 }}>{t.fitNote}</p>}</div>
+        <div><span className="k">Where it stands</span><p>{t.why}</p>{t.fitNote && <p className="src" style={{ marginTop: 12 }}>{t.fitNote}</p>}</div>
+        <div><span className="k">What it tastes like</span><p>{t.signature}</p>{SAMPLES.some((x) => x.territory === t.id) && <p>We will tell you which samples these are after the tasting.</p>}</div>
+        <div><span className="k">Who it is for</span><p>{t.who}</p></div>
       </R>
     </div>
   );
@@ -153,18 +153,18 @@ export function Matrix({ s, step }: SceneProps) {
   const out = step >= 1 && scored.length > 0;
   return (
     <div className="pad matrix">
-      <Enter i={0}><div className="k">Loyal users and new consumers · from your tasting scores · {Math.max(0, ...pts.map((p) => p.sum.n))} tasters</div></Enter>
-      <Enter i={1}><h2 className="h2">Where each sample <span className="it">lands.</span></h2></Enter>
+      <Enter i={0}><div className="k">From your scores · {Math.max(0, ...pts.map((p) => p.sum.n))} {Math.max(0, ...pts.map((p) => p.sum.n)) === 1 ? 'person' : 'people'}</div></Enter>
+      <Enter i={1}><h2 className="h2">Where each sample <span className="it">landed.</span></h2></Enter>
       <Enter i={2} className="mx-goal">
         <p>{ROSS_GOAL.lead} <mark className="mx-x">{ROSS_GOAL.loyal}</mark> {ROSS_GOAL.joiner} <mark className="mx-y">{ROSS_GOAL.fresh}</mark></p>
         <Src k={ROSS_GOAL.src} style={{ position: 'static' }} />
       </Enter>
       <div className="mx-plot">
         <i className="mx-mid v" /><i className="mx-mid h" />
-        <span className="mx-q tr">Both goals<b>Develop first</b></span>
-        <span className="mx-q tl">New, but not yet TheraBreath<b>Tune the finish</b></span>
-        <span className="mx-q br">Loved by loyal users<b>A line extension</b></span>
-        <span className="mx-q bl">Neither yet<b>Rethink</b></span>
+        <span className="mx-q tr">Does both<b>Develop first</b></span>
+        <span className="mx-q tl">New, but doesn&rsquo;t feel like TheraBreath yet<b>Work on the finish</b></span>
+        <span className="mx-q br">Feels like TheraBreath<b>Could extend a line</b></span>
+        <span className="mx-q bl">Neither yet<b>Rethink it</b></span>
         <span className="mx-ax x">Feels like TheraBreath <em>strengthens loyal users</em> →</span>
         <span className="mx-ax y">Newness <em>attracts new consumers</em> →</span>
         {pts.map((p, i) => {
@@ -176,7 +176,7 @@ export function Matrix({ s, step }: SceneProps) {
             </div>
           );
         })}
-        {!scored.length && <span className="mx-empty">Scores arrive from the tasting.</span>}
+        {!scored.length && <span className="mx-empty">Your tasting scores show up here.</span>}
       </div>
       <R b={1} step={step} className="mx-legend">
         {[...pts].sort((x, y) => (y.sum.feels + y.sum.newness) - (x.sum.feels + x.sum.newness)).map((p) => (
@@ -185,7 +185,7 @@ export function Matrix({ s, step }: SceneProps) {
             <span>{p.sum.n ? <>Loyal {p.sum.feels.toFixed(1)} · New {p.sum.newness.toFixed(1)} · Appeal {p.sum.appeal.toFixed(1)}</> : 'Not scored'}</span>
           </div>
         ))}
-        <p className="mx-take">{lead ? <><b>{lead.name}</b> sits closest to both goals in this room.</> : null} Workshop reactions, not consumer validation.</p>
+        <p className="mx-take">{lead ? <><b>{lead.name}</b> came closest to doing both. </> : null}These are first reactions from this group, not consumer research.</p>
       </R>
     </div>
   );

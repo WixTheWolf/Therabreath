@@ -8,12 +8,12 @@ export function School({ step }: SceneProps) {
   const parts = [
     { t: 'Taste', w: 'The tongue', d: 'Sweet, sour, salty, bitter, umami.' },
     { t: 'Aroma', w: 'The nose, both ways', d: 'Sniffed in, and rising from the back of the mouth as you swallow.' },
-    { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling, warming. What mint really is.' },
+    { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming. Most of what mint does happens here.' },
   ];
   return (
     <div className="pad school">
-      <Enter i={0}><div className="k">Flavor School · What flavor really is</div></Enter>
-      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1300 }}>Most of what we call flavor is actually smell. <span className="it">The rest is feeling.</span></h2></Enter>
+      <Enter i={0}><div className="k">Flavor School · What flavor is</div></Enter>
+      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1400 }}>Most of what we call flavor is really smell. <span className="it">The rest is how it feels.</span></h2></Enter>
       <div className="venn">
         {parts.map((p, i) => (
           <R key={p.t} b={i + 1} step={step} className={'vc vc' + i}><div className="vc-in"><b className="h3">{p.t}</b><span className="k">{p.w}</span><p>{p.d}</p></div></R>
@@ -41,10 +41,10 @@ export function Cooling({ step }: SceneProps) {
   return (
     <div className="pad cooling">
       <div className="cool-copy">
-        <Enter i={0}><div className="k">Flavor School · How cool works</div></Enter>
-        <Enter i={1}><h2 className="h1">Cooling has<br />two jobs.</h2></Enter>
-        <R b={3} step={step}><p className="h3 it accent">The first impression and the last impression. We design both.</p></R>
-        <div className="src" style={{ marginTop: 40 }}>Illustrative curves for teaching, not measured data.</div>
+        <Enter i={0}><div className="k">Flavor School · How cooling works</div></Enter>
+        <Enter i={1}><h2 className="h1">Cooling does<br />two jobs.</h2></Enter>
+        <R b={3} step={step}><p className="h3 it accent">The hit when you first rinse, and how long it lasts after. We tune both.</p></R>
+        <div className="src" style={{ marginTop: 40 }}>Drawn to explain the idea. These are not measured curves.</div>
       </div>
       <svg className="cool-plot" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
         <defs><filter id="cglow"><feGaussianBlur stdDeviation="7" /></filter></defs>
@@ -88,15 +88,15 @@ export function Oxyd({ step }: SceneProps) {
     };
     raf = requestAnimationFrame(f); return () => cancelAnimationFrame(raf);
   }, []);
-  const levers = ['pH control', 'Protective solubilization', 'Choosing materials that hold up'];
+  const levers = ['Controlling pH', 'Dissolving and protecting the flavor', 'Choosing materials that hold up'];
   return (
     <div className="oxyd">
       <canvas ref={ref} width={1920} height={1080} className="oxyd-cv" />
       <div className="pad" style={{ position: 'relative' }}>
-        <Enter i={0}><div className="k">Flavor School · Flavor in an oxidizing world</div></Enter>
-        <Enter i={1}><h2 className="h2" style={{ maxWidth: 1000 }}>OXYD-8 is designed to be tough on odor-causing bacteria. That also makes it a demanding home for flavor.</h2></Enter>
+        <Enter i={0}><div className="k">Flavor School · Flavor and OXYD-8</div></Enter>
+        <Enter i={1}><h2 className="h2" style={{ maxWidth: 1050 }}>OXYD-8 is built to be tough on the bacteria behind bad breath. That makes it hard on flavor too.</h2></Enter>
         <div className="levers">{levers.map((l, i) => <R key={l} b={i + 1} step={step} className="lever"><span className="num">0{i + 1}</span>{l}</R>)}</div>
-        <R b={3} step={step} className="oxyd-pay h1 it">We don&rsquo;t just make it taste good. We make it survive.</R>
+        <R b={3} step={step} className="oxyd-pay h2 it">A flavor only counts if it still tastes right after months on the shelf.</R>
       </div>
       <Src k="patent" extra="Public chemistry only. No TheraBreath or TFF formula details" style={{ position: 'absolute', left: 120, bottom: 118 }} />
     </div>
@@ -106,16 +106,16 @@ export function Oxyd({ step }: SceneProps) {
 // 21. Anatomy of a TheraBreath flavor
 export function Anatomy({ step }: SceneProps) {
   const layers = [
-    { t: 'First impression', d: 'Aroma as the cap opens.' },
-    { t: 'Heart', d: 'The character.' },
-    { t: 'Finish', d: 'Clean cooling.' },
-    { t: 'Linger', d: 'The long confidence.' },
+    { t: 'First impression', d: 'What you smell when you open the cap.' },
+    { t: 'Main flavor', d: 'What you taste while you rinse.' },
+    { t: 'Finish', d: 'Clean and cool.' },
+    { t: 'How long it lasts', d: 'Fresh breath afterwards.' },
   ];
   return (
     <div className="pad anatomy">
       <div className="an-copy">
-        <Enter i={0}><div className="k">Flavor School · Anatomy of a TheraBreath flavor</div></Enter>
-        <Enter i={1}><h2 className="h1">However adventurous it starts, <span className="it">it must finish fresh.</span></h2></Enter>
+        <Enter i={0}><div className="k">Flavor School · How it is built</div></Enter>
+        <Enter i={1}><h2 className="h1">It can start anywhere. <span className="it">It has to finish clean.</span></h2></Enter>
       </div>
       <div className="pyramid">
         {layers.map((l, i) => <R key={l.t} b={i + 1} step={step} className={'py py' + i} style={{ ['--w' as any]: `${40 + i * 20}%` }}><b>{l.t}</b><span>{l.d}</span></R>)}

@@ -7,16 +7,16 @@ const fresh = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.cod
 const kids = SAMPLES.filter((x) => x.base.startsWith('Kids')).map((x) => x.code).join(' and ');
 
 const SETUP = [
-  'Laptop to the TV. Open /host and press F for full screen. The speaker notes (N) show on the same screen, so keep them off while the laptop is mirrored to the TV and use this sheet instead.',
-  'Sound: press End, then the left arrow once, to reach THE FLAVOR RACE. Play ten seconds through the room speakers and set the volume. Then press Home to go back to the title.',
-  'Wifi: Ross offered to help us get on the network. If it fails, present from the backup on the laptop: the presentation PDF and the film file.',
-  'Rehearsed on this laptop? Open /host?reset=1 once to clear the marked signals and directions, the concept cards, the white-space marks and the board.',
+  'Laptop to the TV. Open /host and press F for full screen. Only this laptop opens /host on the day: it moves everyone\'s phones. Keep the talking points (N) off while the laptop is mirrored to the TV, and use this sheet instead.',
+  'Phones: people join by scanning the code on the first screen. Phones use their own data, so the room Wi-Fi only matters for the laptop. Ross offered to help us get on the network; if it fails, present from the backup PDF and the film file on the laptop (no voting).',
+  'Sound: press End, then the left arrow once, to reach THE FLAVOR RACE. Play ten seconds through the room speakers and set the volume. Then press Home to go back to the start.',
+  'Rehearse on /host?code=REHEARSE (the team page links to it), never on /host itself, so rehearsal votes stay out of the live session.',
   `Samples: ${fresh} in the Fresh Breath base, ${kids} in the Kids base, poured blind into coded cups. Water to rinse, cups to spit, napkins.`,
-  'Scorecards: one per person plus spares, and pens. Print from /scorecard.',
+  'Paper scorecards as a backup for anyone who would rather not use a phone: a few copies and pens. Print from /scorecard. Hand votes can be added on screen by clicking a bar, an orb or a row.',
 ];
 const AFTER = [
-  'Before you close the laptop: open /host?results=1 and print it to PDF. It keeps the marked signals and directions, the concept cards, the white-space marks and Now, Next, Later exactly as the room left them.',
-  'Collect the scorecards.',
+  'Before you close the laptop: open /host?results=1 and print it to PDF. It has the votes, the tasting scores, the concepts, the white-space marks and Now, Next, Later.',
+  'Collect any paper scorecards.',
   ...NEXT_STEPS.map((n) => `${n.t}: ${n.d}`),
 ];
 const CONFIRM = [
@@ -64,7 +64,7 @@ export default function RunSheet() {
           <ol className="rs-check">{CONFIRM.map((x) => <li key={x}>{x}</li>)}</ol>
         </section>
       </div>
-      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on; left arrow back; Home to the start; F full screen; N talking points; B blank screen.</p>
+      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on; left arrow back; Home to the start; F full screen; N talking points; B blank screen. A reload picks up where the session was.</p>
     </main>
   );
 }

@@ -6,11 +6,11 @@ import { teamConcepts } from './CoCreate';
 
 export type Item = { id: string; name: string; sub: string; dots: number; kind: 'concept' | 'seed'; color: string };
 
-// Everything that can be placed on the pipeline: team concepts and seed cards, most dots first.
+// Everything the dot vote covers: the concepts typed today, then the four samples, most dots first.
 export function candidates(s: SessionState): Item[] {
   const t = tallyPick(s, 'concepts');
-  const cs: Item[] = teamConcepts(s).map((c) => ({ id: c.id, name: c.name || `Team ${c.team} concept`, sub: `Team ${c.team}`, dots: t[c.id] || 0, kind: 'concept', color: TERRITORIES[(c.team + 1) % 7].palette[1] }));
-  const sd: Item[] = SEEDS.map((x) => ({ id: x.id, name: x.name, sub: `Seed ${x.n}`, dots: t[x.id] || 0, kind: 'seed', color: TERRITORIES.find((tr) => tr.id === x.territory)!.palette[1] }));
+  const cs: Item[] = teamConcepts(s).map((c) => ({ id: c.id, name: c.name, sub: `Concept ${c.team}`, dots: t[c.id] || 0, kind: 'concept', color: ['#8FE0F0', '#F4B860', '#F7B6D2'][(c.team - 1) % 3] }));
+  const sd: Item[] = SEEDS.map((x) => ({ id: x.id, name: x.name, sub: `Sample ${x.id.slice(-1)}`, dots: t[x.id] || 0, kind: 'seed', color: TERRITORIES.find((tr) => tr.id === x.territory)!.palette[1] }));
   return [...cs, ...sd].sort((a, b) => b.dots - a.dots || (a.kind === 'concept' ? -1 : 1));
 }
 
@@ -68,7 +68,7 @@ export function Calendar({ s, step }: SceneProps) {
           );
         })}
       </div>
-      <R b={1} step={step} className="cal-note lede">Drops are placed from Console as the room agrees them.</R>
+      <R b={1} step={step} className="cal-note lede">Drops are placed from Console as the group agrees them.</R>
     </div>
   );
 }

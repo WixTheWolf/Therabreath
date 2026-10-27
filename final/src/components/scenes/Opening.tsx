@@ -15,7 +15,7 @@ export function useQR(text: string) {
 
 const DROP_CAM = { pos: [0, 0.55, 8.6], target: [0, -0.45, 0], fov: 26, shift: [0.30, 0.02] };
 
-// Names rise through the drop as people join, then burst into light at the tip.
+// Names rise through the drop as people join and burst into light at the tip; once settled they are listed under the count.
 function Bubbles({ s, cam }: { s: any; cam: any }) {
   const list = people(s).filter((p) => !p.paper).slice(-9);
   const [now, setNow] = useState(Date.now());
@@ -39,7 +39,7 @@ function Bubbles({ s, cam }: { s: any; cam: any }) {
           <div key={p.pid}>
             <i className="bubble" style={{ left: sx, top: sy, width: r * 2, height: r * 2, opacity: settled ? 0.55 : 1 }} />
             {burst > 0 && <i className="spark" style={{ left: sx, top: sy, opacity: burst }} />}
-            <span className="bname" style={{ left: sx + r + 12, top: sy, opacity: settled ? 0.55 : Math.min(1, age * 2) }}>{p.name}</span>
+            <span className="bname" style={{ left: sx + r + 12, top: sy, opacity: settled ? 0 : Math.min(1, age * 2) }}>{p.name}</span>
           </div>
         );
       })}
@@ -56,15 +56,15 @@ export function Arrival({ s, ctx }: SceneProps) {
       <Bubbles s={s} cam={DROP_CAM} />
       <div className="arrival-copy">
         <Enter i={0}><div className="k">Welcome. We start at 10:00.</div></Enter>
-        <Enter i={1}><h1 className="hero">The Flavor<br />Playbook</h1></Enter>
-        <Enter i={2}><div className="sub it">{EVENT.sub}</div></Enter>
+        <Enter i={1}><h1 className="hero">The Future<br /><span className="it">of Freshness</span></h1></Enter>
+        <Enter i={2}><div className="sub">Grab a seat and scan the code. We will use phones a few times this morning.</div></Enter>
         <Enter i={3}><div className="meta">{EVENT.lockup}</div></Enter>
       </div>
       <Enter i={4} className="join">
         <div className="qr" dangerouslySetInnerHTML={{ __html: qr }} />
-        <div><h3>Join the session</h3><p>Point your camera here. First name only.</p><code>{ctx.code}</code></div>
+        <div><h3>Scan to join</h3><p>Point your phone camera here. First name is all we need.</p><code>{ctx.code}</code></div>
       </Enter>
-      <div className="presence"><div className="count num">{n}</div><div className="lbl">In the room</div></div>
+      <div className="presence"><div className="count num">{n}</div><div className="lbl">Joined</div>{n > 0 && <div className="presence-names">{people(s).filter((p) => !p.paper).slice(-16).map((p) => p.name).join(' · ')}</div>}</div>
     </>
   );
 }
@@ -88,7 +88,7 @@ export function July({ step }: SceneProps) {
   return (
     <div className="pad">
       <Enter i={0}><div className="k">From July to today</div></Enter>
-      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1400 }}>In July, you came to Norco.<br /><span className="it">Today, we build together.</span></h2></Enter>
+      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1500 }}>When you visited Norco in July, we talked about four things.<br /><span className="it">Today is about the fifth.</span></h2></Enter>
       <div className="july">
         {JULY.map((w, i) => (
           <div key={w} className={'jf' + (i === 4 ? ' grow' : '') + (i === 4 && step >= 1 ? ' lit' : '')} style={{ ['--i' as any]: i }}>
@@ -104,13 +104,13 @@ export function Brief({ step }: SceneProps) {
   return (
     <div className="pad">
       <Enter i={0}><div className="k">Your brief, our agenda</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>You asked for four things. <span className="it">Here is how we will deliver them by noon.</span></h2></Enter>
+      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>You asked for four things. <span className="it">Here is when we get to each one.</span></h2></Enter>
       <div className="brief-tiles">
         {OBJECTIVES.map((o, i) => (
           <R key={o.n} b={i + 1} step={step} className="bt">
             <div className="bt-n num">{o.n}</div>
             <p className="bt-ask">{o.ask}</p>
-            <div className="bt-to"><span>{o.act}</span><b>Chapter: {o.chapter}</b></div>
+            <div className="bt-to"><span>{o.act}</span><b>{o.chapter}</b></div>
           </R>
         ))}
       </div>
@@ -129,19 +129,19 @@ export function Prework({ s, step }: SceneProps) {
   const vetoes = Object.values(vetoCount).sort((a, b) => b[1] - a[1]);
   const max = (l: [string, number][]) => Math.max(1, ...l.map((x) => x[1]));
   const Bars = ({ list }: { list: [string, number][] }) => (
-    <div className="pw-bars">{list.slice(0, 5).map(([k, v], i) => <div key={k} className={i === 0 ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">Answers arrive from the pre-work survey.</div>}</div>
+    <div className="pw-bars">{list.slice(0, 5).map(([k, v], i) => <div key={k} className={i === 0 ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">No answers yet.</div>}</div>
   );
   return (
     <div className="pad">
-      <Enter i={0}><div className="k">The room already spoke · {answers.length} pre-work answers</div></Enter>
+      <Enter i={0}><div className="k">From your pre-brief · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div></Enter>
       <div className="pw-grid">
         <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} /></R>
         <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} /></R>
       </div>
       {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">The room&rsquo;s freshness</span><p className="h3 it">{describe(roomProfile(answers), 'The room wants freshness that is')}</p></div></R>}
       <R b={2} step={step} className="vetoes">
-        <div className="k">Flavors you would never approve</div>
-        <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map(([v, n], i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 30 + ((i * 17) % 5) * 6 + Math.min(18, (n - 1) * 6) }}>{v}{n > 1 && <sup className="num">{n}</sup>}</span>) : <span className="empty">Vetoes arrive from the pre-work survey.</span>}</div>
+        <div className="k">Flavors you would never sign off on</div>
+        <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map(([v, n], i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 30 + ((i * 17) % 5) * 6 + Math.min(18, (n - 1) * 6) }}>{v}{n > 1 && <sup className="num">{n}</sup>}</span>) : <span className="empty">No answers yet.</span>}</div>
       </R>
     </div>
   );
@@ -156,8 +156,8 @@ function roomProfile(answers: any[]) {
 export function Thesis({ step }: SceneProps) {
   return (
     <div className="thesis">
-      <div className={'tl1' + (step >= 0 ? ' on' : '')}>TheraBreath took away the burn.</div>
-      <div className={'tl2 it' + (step >= 1 ? ' on' : '')}>Now let&rsquo;s give more people a reason to want it.</div>
+      <div className={'tl1' + (step >= 0 ? ' on' : '')}>TheraBreath took the burn out of mouthwash.</div>
+      <div className={'tl2 it' + (step >= 1 ? ' on' : '')}>The next job is giving more people a reason to want it.</div>
     </div>
   );
 }

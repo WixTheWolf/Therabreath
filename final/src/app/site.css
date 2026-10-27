@@ -24,7 +24,7 @@
 .st-live + .st-hostbar { margin-left: 0; }
 .st-hostbar > * { padding: 8px 14px; border-radius: 99px; border: 1px solid rgba(255,255,255,.3); background: rgba(11,27,43,.6); color: var(--fg); font: 500 12px var(--mono); letter-spacing: .08em; text-decoration: none; cursor: pointer; }
 .st-hostbar > *:hover { border-color: var(--glacier); }
-@media (max-width: 700px) { .st-bar { flex-wrap: wrap; } .st-hostbar { order: 3; flex-basis: 100%; justify-content: flex-start; margin-left: 0; } .st-hostbar > * { padding: 6px 11px; font-size: 11px; } }
+@media (max-width: 700px) { .st-bar { flex-wrap: wrap; } .st-hostbar { order: 3; flex-basis: 100%; max-width: 100%; justify-content: flex-start; margin-left: 0; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; } .st-hostbar::-webkit-scrollbar { display: none; } .st-hostbar > * { flex: none; white-space: nowrap; padding: 6px 11px; font-size: 11px; } }
 .st-rail { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 40; display: flex; flex-direction: column; gap: 14px; }
 .st-rail a { display: flex; align-items: center; justify-content: flex-end; gap: 10px; text-decoration: none; }
 .st-rail i { width: 8px; height: 8px; border-radius: 50%; background: var(--fg3); transition: all .4s var(--ease); }
@@ -330,3 +330,17 @@ html:has(.tm) { background: #0B1B2B; }
 .tm-morning h2 { font-family: var(--serif); font-weight: 300; }
 @media (max-width: 1100px) { .tm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 700px) { .tm-grid { grid-template-columns: 1fr; } .tm-top { padding-top: 110px; } }
+
+/* Photographs on the front door: the four directions, the tasting cups and the lab bench. */
+.ws-photo { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.ws-photo img { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; object-position: 70% 50%; display: block; transition: transform 1.2s cubic-bezier(.2, .7, .1, 1); }
+.ws-photo:hover img { transform: scale(1.04); }
+.ws-photo-in { padding: 26px 30px 30px; }
+.ws-photo-in h3 { font-family: var(--serif); font-weight: 300; font-size: 36px; margin: 12px 0; }
+.ws-photo-in strong { margin: 18px 0 0; font-weight: 500; }
+.ws-cups, .ws-lab { margin: 36px 0 0; border-radius: 22px; overflow: hidden; border: 1px solid #ffffff1a; }
+.ws-cups img, .ws-lab img { width: 100%; aspect-ratio: 21 / 8; object-fit: cover; display: block; }
+.ws-cups img { object-position: 50% 75%; }
+.ws-lab img { object-position: 70% 55%; }
+.ws-seal h3 { font-family: var(--serif); font-weight: 300; }
+.st-rise.ws-photo { transition-delay: calc(var(--i, 0) * 80ms); }

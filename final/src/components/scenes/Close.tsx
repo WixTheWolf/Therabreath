@@ -32,14 +32,14 @@ export function Assemble({ s, step }: SceneProps) {
         {pages.map((p, i) => (
           <div key={p.t} className="page" style={{ ['--i' as any]: i }}>
             <div className="k">{p.k}</div><b>{p.t}</b>
-            <ul>{p.l.length ? p.l.map((x, j) => <li key={j}>{x}</li>) : <li className="ghost">Decided in the room</li>}</ul>
+            <ul>{p.l.length ? p.l.map((x, j) => <li key={j}>{x}</li>) : <li className="ghost">To be decided</li>}</ul>
           </div>
         ))}
         <div className="page cover">
           <div className="k">TheraBreath × The Flavor Factory</div>
           <b className="cover-t">The Flavor Playbook</b>
           <span className="it">{EVENT.sub}</span>
-          <div className="cover-names">Built by {d.names.length ? d.names.join(', ') : 'the room'}</div>
+          <div className="cover-names">Built by {d.names.length ? d.names.join(', ') : 'everyone who was there'}</div>
           <div className="k" style={{ marginTop: 'auto' }}>v0.1 · co-authored {EVENT.date.replace('Monday, ', '')} · {EVENT.city}</div>
         </div>
       </div>
@@ -58,7 +58,7 @@ export function Next({ s, step }: SceneProps) {
   return (
     <div className="pad next">
       <Enter i={0}><div className="k">What happens next</div></Enter>
-      <Enter i={1}><h2 className="h1">Thank you for building this <span className="it">with us.</span></h2></Enter>
+      <Enter i={1}><h2 className="h1">Thank you. <span className="it">Here is what happens next.</span></h2></Enter>
       <div className="steps">
         {NEXT_STEPS.map((n, i) => (
           <R key={n.t} b={i + 1} step={step} className="nstep"><span className="num">0{i + 1}</span><b className="h3">{n.t}</b>
@@ -80,7 +80,7 @@ export function Lunch({ s }: SceneProps) {
       <div className="lunch-in">
         <div className="k">TheraBreath × The Flavor Factory</div>
         <h1 className="hero center">Lunch.</h1>
-        <p className="sub it center">Three directions. Clear owners. Agreed next steps.</p>
+        <p className="sub it center">Thank you for the morning.</p>
       </div>
     </div>
   );

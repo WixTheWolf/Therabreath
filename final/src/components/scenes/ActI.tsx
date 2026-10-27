@@ -46,15 +46,15 @@ export function Gap({ step }: SceneProps) {
     <>
       <Light scene="glasses" theme="a" camera={GLASS_CAM} frame={(t) => ({ fill: [Math.max(0.001, 0.65 * ease((t - 0.4) / 2.6)), Math.max(0.001, 0.14 * ease((t - 0.4) / 2.6))], glow: stepRef >= 1 ? 1 : 0 })} onStart={() => setT0(performance.now())} />
       <div className="gap-copy">
-        <div className="k">The gap · household penetration</div>
-        <R b={1} step={step}><h1 className="h1"><span className="it">86</span> of every 100 US households have not met TheraBreath yet.</h1></R>
-        <R b={2} step={step}><div className="gap-second it">Flavor is how we introduce ourselves.</div></R>
+        <div className="k">Household penetration · US</div>
+        <R b={1} step={step}><h1 className="h1"><span className="it">86</span> out of 100 US households don&rsquo;t buy TheraBreath yet.</h1></R>
+        <R b={2} step={step}><div className="gap-second it">Flavor is one of the best ways to reach them.</div></R>
         <Src k="q2call" extra="TheraBreath 14%, mouthwash category 65%" style={{ position: 'absolute', top: 700, left: 0, width: 760 }} />
-        <Enter i={1} className="gap-share"><b className="num">25.3%</b> share of US mouthwash in Q2 2026, up 4.5 points. Number 2. Share is the climb; households are the room still to meet.</Enter>
+        <Enter i={1} className="gap-share"><b className="num">25.3%</b> of US mouthwash in Q2 2026, up 4.5 points, and number 2 in the category. Share is climbing fast. Most households still haven&rsquo;t tried it.</Enter>
       </div>
       <div className="glabel" style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}<sup>%</sup></div><div className="who">Mouthwash category</div></div>
       <div className="glabel" style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}<sup>%</sup></div><div className="who">TheraBreath</div></div>
-      <R b={1} step={step} className="tag86" style={{ left: Math.min(tx + 10, 1600), top: ty }}>The 86%</R>
+      <R b={1} step={step} className="tag86" style={{ left: Math.min(tx + 10, 1600), top: ty }}>The other 86</R>
     </>
   );
 }
@@ -76,10 +76,10 @@ export function Portfolio({ step }: SceneProps) {
   return (
     <div className="portfolio">
       <div className="pad" style={{ position: 'absolute', zIndex: 2 }}>
-        <Enter i={0}><div className="k">The portfolio today · {PORTFOLIO.length} flavors across six formats</div></Enter>
+        <Enter i={0}><div className="k">Your portfolio today · {PORTFOLIO.length} flavors across six formats</div></Enter>
         <div className="pf-title">
-          <div className={'pft' + (zoom ? ' out' : '')}><h2 className="h1">{PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length} of {PORTFOLIO.length} are mint.<br /><span className="it">Mint is mastered.</span></h2></div>
-          <div className={'pft' + (zoom ? '' : ' out')}><h2 className="h1 it" style={{ maxWidth: 900 }}>The next chapter is everything mint makes possible.</h2></div>
+          <div className={'pft' + (zoom ? ' out' : '')}><h2 className="h1">{PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length} of your {PORTFOLIO.length} flavors are mint.<br /><span className="it">You have mint covered.</span></h2></div>
+          <div className={'pft' + (zoom ? '' : ' out')}><h2 className="h1 it" style={{ maxWidth: 900 }}>So where else could flavor take you?</h2></div>
         </div>
       </div>
       <div className={'constellation' + (zoom ? ' zoom' : '')}>
@@ -100,8 +100,8 @@ export function Portfolio({ step }: SceneProps) {
 export function Market({ step }: SceneProps) {
   return (
     <div className="pad">
-      <Enter i={0}><div className="k">The shelf is moving · public launches</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1400 }}>The shelf is now a flavor shelf. <span className="it">One limited edition at a time.</span></h2></Enter>
+      <Enter i={0}><div className="k">Recent launches · all public</div></Enter>
+      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>Your competitors are launching flavors, <span className="it">mostly as limited editions.</span></h2></Enter>
       <div className="market">
         <div className="mk-line" />
         {MARKET.map((m, i) => (
@@ -113,7 +113,7 @@ export function Market({ step }: SceneProps) {
           </R>
         ))}
       </div>
-      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">The turn</span><p>TheraBreath did not join this race. It started ahead of it: alcohol-free and dye-free from the first bottle, OXYD-8 at the center, and a kids line already on shelf. <span className="it">The question for today is what keeps it ahead.</span></p></R>
+      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">Where you stand</span><p>TheraBreath has been alcohol-free and dye-free from the start, it has OXYD-8, and it already has a kids line. <span className="it">So the question is how flavor keeps you ahead.</span></p></R>
     </div>
   );
 }
@@ -126,20 +126,20 @@ export function Signals({ step }: SceneProps) {
     <div className="signal sigs" style={{ ['--h' as any]: sig ? sig.hue : 190 }}>
       <div className="sig-light" style={{ opacity: sig ? 1 : 0.35 }} />
       <div className="pad" style={{ position: 'relative' }}>
-        <Enter i={0}><div className="k">Seven signals shaping oral care</div></Enter>
-        <Enter i={1}><h2 className="h2">Seven signals. <span className="it">Which three matter most?</span></h2></Enter>
+        <Enter i={0}><div className="k">What we are seeing</div></Enter>
+        <Enter i={1}><h2 className="h2">Seven trends we think matter <span className="it">for oral care.</span></h2></Enter>
         <div className="sigs-list">
           {SIGNALS.map((x, i) => <div key={x.id} className={'sl' + (i === k - 1 ? ' on' : i < k - 1 ? ' past' : '')} style={{ ['--h' as any]: x.hue, ['--i' as any]: i }}><span className="num">0{x.n}</span><b>{x.title}</b></div>)}
         </div>
         {sig && (
           <div className="sigs-focus" key={sig.id}>
-            <div className="k">Signal {sig.n} of 7</div>
+            <div className="k">Trend {sig.n} of 7</div>
             <h3 className="sf-title">{sig.title}</h3>
             <div className="sf-proofs">{sig.proofs.map((p, i) => <div key={i} className="proof" style={{ ['--d' as any]: `${i * 180}ms` }}><p>{p.t}</p><div className="src">{clean(SOURCES[p.src])}</div></div>)}</div>
-            <div className="sig-so"><span className="k">So what for TheraBreath</span><div className="h3 it">{sig.so}</div></div>
+            <div className="sig-so"><span className="k">What it could mean for TheraBreath</span><div className="h3 it">{sig.so}</div></div>
           </div>
         )}
-        {!sig && <div className="sigs-hint">Each signal comes with two public proofs and one implication for TheraBreath.</div>}
+        {!sig && <div className="sigs-hint">Each one comes with two public sources and what we think it means for TheraBreath. You will vote on them next.</div>}
       </div>
     </div>
   );

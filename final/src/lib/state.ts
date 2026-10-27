@@ -7,7 +7,7 @@ export type Participant = { pid: string; name: string; role?: string; team?: num
 export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string; guess?: string; fruitGuess?: string; advance?: string };
 export type Dials = Record<string, number>;
 export type Bench = { dials: Record<string, Dials>; base?: string; overrides: Record<string, { value: string; note?: string }>; locked?: Dials };
-export type Concept = { id: string; team: number; slot: number; name: string; segment: string; occasion: string; first: string; heart: string; finish: string; sensation: string[]; format: string; incremental: string; why: string; horizon: string; suggestions: { pid: string; text: string }[] };
+export type Concept = { id: string; team: number; slot: number; name: string; segment: string; occasion: string; first: string; heart: string; finish: string; sensation: string[]; format: string; incremental: string; why: string; horizon: string; role?: string; suggestions: { pid: string; text: string }[] };
 export type Placement = { horizon: string; role: string; t: number };
 
 export type SessionState = {
@@ -24,6 +24,8 @@ export type SessionState = {
   calendar: Record<string, string>; // concept id -> season
   bench: Record<string, Bench>; // team -> bench
   survey: Record<string, { name: string; consumer?: string; moment?: string; veto?: string; profile?: Record<string, number> }>;
+  board: Record<string, string>; // horizon (Now, Next, Future) -> one line per direction, typed in the presentation
+  marks: string[]; // white-space cells marked in the presentation, as 'segment|moment'
   timer: { running: boolean; endsAt: number; remaining: number; total: number };
   spotlight: { kind: string; ref: string } | null;
   paper: boolean; blank: boolean; sound: boolean;
@@ -32,7 +34,7 @@ export type SessionState = {
 
 export const initialState = (): SessionState => ({
   scene: 0, step: 0, participants: {}, votes: {}, ratings: {}, guesses: {}, concepts: {},
-  missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {},
+  missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {}, board: {}, marks: [],
   timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, paper: false, blank: false, sound: false, lastEvent: 0,
 });
 
@@ -70,6 +72,8 @@ export function reduce(s: SessionState, e: Ev): SessionState {
       if (d.action === 'stop') s.timer = { running: false, endsAt: 0, remaining: 0, total: 0 };
       break;
     }
+    case 'board': s.board[d.horizon] = String(d.text || '').slice(0, 2000); break;
+    case 'mark': s.marks = s.marks.includes(d.cell) ? s.marks.filter((x) => x !== d.cell) : [...s.marks, String(d.cell).slice(0, 120)]; break;
     case 'spotlight': s.spotlight = d.ref ? { kind: d.kind, ref: d.ref } : null; break;
     case 'flag': (s as any)[d.name] = !!d.value; break;
     case 'wipe': return initialState();

@@ -5,7 +5,8 @@ import { MISSIONS, SEEDS, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/conte
 import { people, tallyPick, ranked, SessionState, Concept } from '@/lib/state';
 
 const terr = (id: string) => TERRITORIES.find((t) => t.id === id)!;
-export const teamConcepts = (s: SessionState) => [1, 2].map((team) => s.concepts[`t${team}-1`]).filter(Boolean) as Concept[];
+// Up to three concepts, typed in the presentation (or by team captains on phones in the old Stage flow). Unnamed cards are skipped.
+export const teamConcepts = (s: SessionState) => [1, 2, 3].map((team) => s.concepts[`t${team}-1`]).filter((c) => c && c.name) as Concept[];
 
 // 33. Mission briefing: three mixed teams.
 export function Missions({ s }: SceneProps) {

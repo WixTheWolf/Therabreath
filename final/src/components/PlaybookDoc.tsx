@@ -64,7 +64,7 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
           <h3>Blind tasting</h3>
           <table className="pb-table"><thead><tr><th>Sample</th><th>Appeal</th><th>Feels like TheraBreath</th><th>Newness</th><th>Tasters</th><th>Words / advance</th></tr></thead>
             <tbody>{SAMPLES.map((x) => { const r = tasteSummary(s, x.code); return <tr key={x.code}><td><b>{x.code}</b> {x.name}</td><td>{r.n ? r.appeal.toFixed(1) : ''}</td><td>{r.n ? r.feels.toFixed(1) : ''}</td><td>{r.n ? r.newness.toFixed(1) : ''}</td><td>{r.n || ''}</td><td>{r.words.slice(0, 5).join(', ')}{Object.values(s.ratings[x.code] || {}).filter(v => v.advance === 'Yes').length > 0 && <small> · {Object.values(s.ratings[x.code] || {}).filter(v => v.advance === 'Yes').length} advance</small>}</td></tr>; })}</tbody></table>
-          <p className="pb-note">Scores are 1 to 5, averaged across tasters in the room.</p>
+          <p className="pb-note">Scores are 1 to 5, averaged across everyone who tasted.</p>
         </section>
 
         <section className="pb-page">
@@ -74,12 +74,12 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
             <div key={c.id} className="pb-concept">
               <div className="pb-c-head"><b>{c.name || 'Untitled concept'}</b><span>Team {c.team}{c.horizon ? ` · ${c.horizon}` : ''}{tallyPick(s, 'concepts')[c.id] ? ` · ${tallyPick(s, 'concepts')[c.id]} dots` : ''}</span></div>
               {s.bench[c.team] && (() => { const b = s.bench[c.team]; const t = baseTerritory(s, c.team, c); const { avg } = teamDials(b); const { list } = readouts(t, avg, b, c); return (
-                <div className="pb-sig-row"><Compass prof={compass(t, avg)[1]} color={t.palette[1]} size={170} labels={false} /><div><div className="k">Sensory signature · built on {t.hero}</div><p>{DIALS.map((d) => `${d.l} ${avg[d.id].toFixed(1)}`).join(' · ')}</p><p>{list.map((r) => `${r.label}: ${r.override ? r.override.value + ' (the room’s read)' : r.value}`).join(' · ')}</p></div></div>
+                <div className="pb-sig-row"><Compass prof={compass(t, avg)[1]} color={t.palette[1]} size={170} labels={false} /><div><div className="k">Sensory signature · built on {t.hero}</div><p>{DIALS.map((d) => `${d.l} ${avg[d.id].toFixed(1)}`).join(' · ')}</p><p>{list.map((r) => `${r.label}: ${r.override ? r.override.value + ' (our read on the day)' : r.value}`).join(' · ')}</p></div></div>
               ); })()}
               <dl>{([['For', c.segment], ['When', c.occasion], ['First', c.first], ['Heart', c.heart], ['Finish', c.finish], ['Sensation', (c.sensation || []).join(', ')], ['Format', c.format], ['Why incremental', c.incremental], ['Why TheraBreath', c.why]] as [string, string][]).filter(([, v]) => v).map(([l, v]) => <div key={l}><dt>{l}</dt><dd>{v}</dd></div>)}</dl>
             </div>
           )) : <p className="pb-lede">Team concepts appear here as the canvases fill.</p>}
-          <h3>Seed cards the room backed</h3>
+          <h3>Seed cards the group backed</h3>
           <ul className="pb-seeds">{items.filter((x) => x.kind === 'seed' && x.dots > 0).map((x) => { const sd = SEEDS.find((y) => y.id === x.id)!; return <li key={x.id}><b>{sd.name}</b> {sd.idea} <em>{x.dots} dots</em></li>; })}{!items.some((x) => x.kind === 'seed' && x.dots > 0) && <li className="ghost">None yet.</li>}</ul>
         </section>
 
@@ -97,7 +97,7 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
           <div className="k">Chapter 5 · The Flavor Code</div>
           <h2>Seven rules every flavor keeps</h2>
           <ol className="pb-code">{CODE.map((c) => { const r = codeRx(c.n); const edits = r.filter((x) => x.v === 'edit'); return <li key={c.n}><span className="n">{c.n}</span><div><b>{c.t}</b><p>{c.d}</p>{r.length > 0 && <small>{r.filter((x) => x.v === 'keep').length} keep · {edits.length} edit{edits.filter((x) => x.text).map((x, i) => <span key={i}> · &ldquo;{x.text}&rdquo;</span>)}</small>}</div></li>; })}</ol>
-          {!!additions.length && <><h3>Rules the room added</h3><ul className="pb-seeds">{additions.map((a, i) => <li key={i}>{a}</li>)}</ul></>}
+          {!!additions.length && <><h3>Rules the group added</h3><ul className="pb-seeds">{additions.map((a, i) => <li key={i}>{a}</li>)}</ul></>}
           <h3>What happens next</h3>
           <ol className="pb-next">{NEXT_STEPS.map((n) => <li key={n.t}><b>{n.t}</b> {n.d}</li>)}</ol>
         </section>
