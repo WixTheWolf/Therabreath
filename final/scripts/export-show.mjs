@@ -4,19 +4,20 @@
 //                             number, time, objective and talking points
 // ?still=1 never writes to the session, so this is safe against the live site; the votes, concept cards and the plan
 // show whatever the session holds (blank before November 9).
-// Usage: node scripts/export-show.mjs <baseUrl> <password> <outPrefix>
+// Usage: node scripts/export-show.mjs <baseUrl> <signIn> <outPrefix>, where <signIn> is the team link's path (/t/KEY)
+// or the host password: the presentation only opens for the team.
 // Needs Playwright (npm i -g playwright, or set NODE_PATH to a folder that has it).
 import { writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 const { chromium } = await import('playwright').catch(() => createRequire(import.meta.url)('playwright'));
 
 const [base, password, out] = process.argv.slice(2);
-if (!base || !password || !out) { console.error('Usage: node scripts/export-show.mjs <baseUrl> <password> <outPrefix>'); process.exit(1); }
+if (!base || !password || !out) { console.error('Usage: node scripts/export-show.mjs <baseUrl> </t/KEY or host password> <outPrefix>'); process.exit(1); }
 
 const browser = await chromium.launch({ proxy: process.env.HTTPS_PROXY && !/localhost|127\.0\.0\.1/.test(base) ? { server: process.env.HTTPS_PROXY } : undefined });
 const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 }, ignoreHTTPSErrors: true });
-const login = await ctx.request.post(`${base}/api/login`, { data: { password } });
-if (!login.ok()) throw new Error('login failed: ' + login.status());
+const login = password.startsWith('/t/') ? await ctx.request.get(base + password, { maxRedirects: 0 }) : await ctx.request.post(`${base}/api/login`, { data: { password } });
+if (!(await ctx.cookies()).some((c) => c.name === 'pb_host')) throw new Error('sign-in did not open the presentation: ' + login.status());
 
 const page = await ctx.newPage();
 // ?still=1 shows THE FLAVOR RACE as its poster instead of playing it.
@@ -61,12 +62,12 @@ ul{margin:0;padding-left:16px;columns:2;column-gap:.4in}li{margin:0 0 4px;break-
 .wait{flex:1;display:grid;place-items:center;border:1px dashed rgba(11,27,43,.3);border-radius:6px;padding:.5in;font:300 15pt/1.4 Newsreader,Georgia,serif;color:rgba(11,27,43,.7)}`;
 const cover = `<section><p class="k">Presenter edition · ${esc(run[0].t)} to ${esc(run[run.length - 1].end)} · Monday, November 9, 2026 · Darwin room, Princeton</p>
 <h1>The Future <em>of Freshness</em></h1>
-<p class="sub">Every scene as it will look on the TV, at its last build, with the time and the talking points. It is a discussion. Each of Ross’s four objectives opens in his words and ends with questions for everyone. People vote from their phones four times, and what we decide together is typed in live and becomes the Playbook at the end. ${scenes.length} scenes${told ? '' : ', plus “Your pre-brief answers” once the answers are in'}. The live presentation is at /host: right arrow or click to go on, F for full screen, N for the talking points.</p>
+<p class="sub">Every scene as it will look on the TV, at its last build, with the time and the talking points. It is a discussion. Each of Ross’s four objectives opens in his words and ends with questions for everyone. People vote from their phones four times, and what we decide together is typed in live and becomes the Playbook at the end. ${scenes.length} scenes${told ? '' : ', plus “Your pre-brief answers” once the answers are in'}. The live presentation is at /host, opened from the team link: right arrow or click to go on, ] to jump to the next part, S to skip the slides marked optional, F for full screen, N for the talking points.</p>
 <table><thead><tr><th>Time</th><th>Part</th><th>Objective</th><th>Scenes</th></tr></thead><tbody>${run.map((b) => `<tr><td class="t">${esc(b.t)} to ${esc(b.end)}</td><td>${esc(b.title)}</td><td>${esc(b.obj || '')}</td><td>${range(b.id)}</td></tr>`).join('')}</tbody></table>
 <p class="foot">Confidential. For The Flavor Factory team; not for distribution.</p></section>`;
 const pages = scenes.map((s, j) => {
   const b = blockOf(s.block);
-  const pg = `<section><header><b>${j + 1} / ${scenes.length} · ${esc(s.title)}</b>${b ? `<span>${esc(b.t)} to ${esc(b.end)}</span>` : ''}${b?.obj ? `<span>Objective ${esc(b.obj)}</span>` : ''}${s.builds ? `<span>${s.builds} build${s.builds > 1 ? 's' : ''}</span>` : ''}</header>
+  const pg = `<section><header><b>${j + 1} / ${scenes.length} · ${esc(s.title)}</b>${b ? `<span>${esc(b.t)} to ${esc(b.end)}</span>` : ''}${b?.obj ? `<span>Objective ${esc(b.obj)}</span>` : ''}${s.builds ? `<span>${s.builds} build${s.builds > 1 ? 's' : ''}</span>` : ''}${s.optional ? '<span>Optional if late</span>' : ''}</header>
 <img class="slide" src="${img(shots[j])}"><ul>${s.notes.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></section>`;
   const wait = !told && s.id === 'brief' ? `<section><header><b>After ${j + 1} · Your pre-brief answers</b></header><div class="wait">Appears here once the pre-brief answers are in (Ross sends the pre-brief on November 3): the consumer they most want TheraBreath to win, the moment TheraBreath is missing, and the flavors they would never approve, without names. Every scene after it is numbered one higher.</div><ul><li>The pre-brief answers: the consumer they most want to win, and the moment TheraBreath is missing.</li><li>Have some fun with the vetoes. No names on screen.</li></ul></section>` : '';
   return pg + wait;

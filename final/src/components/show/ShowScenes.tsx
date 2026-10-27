@@ -291,52 +291,68 @@ export function DotsShow({ s, step }: SceneProps) {
   );
 }
 
-// Where TheraBreath fits in a day: the moments by the consumers from the pre-brief. Build 1 fills where TheraBreath is
-// today (our read, to challenge), build 2 brings in the pre-brief answers, build 3 lights everything still open. Click a
-// cell to mark where a concept fits.
+// Where TheraBreath fits in a day: the moments from morning to night on one line, with "On the go" set apart. Build 1
+// shows where we think TheraBreath already is (our read of the public listings, to challenge), build 2 the moment the
+// pre-brief answers say is missing, build 3 everything still open. Below, one row per concept written this morning (or
+// the samples and directions before any are written): click a cell to mark where that idea could fit.
+const CONCEPT_COLORS = ['#3FB6D3', '#E39A35', '#D96C9C'];
+export function dayRows(s: SessionState) {
+  const cs = teamConcepts(s);
+  return cs.length
+    ? cs.map((c) => ({ id: c.id, name: c.name, sub: c.segment ? `For ${c.segment}` : `Concept ${c.team}`, color: CONCEPT_COLORS[(c.team - 1) % 3] }))
+    : DIRECTIONS.map((d) => ({ id: d.id, name: d.label, sub: d.sub, color: d.colors[1] }));
+}
+export const markLabel = (s: SessionState, cell: string) => {
+  const [id, m] = cell.split('|');
+  const name = teamConcepts(s).find((c) => c.id === id)?.name || DIRECTIONS.find((d) => d.id === id)?.label || id;
+  return `${name} · ${m}`;
+};
 export function WhiteSpaceShow({ s, step }: SceneProps) {
   const live = useLive();
   const marks = s.marks || [];
   const answers = Object.values(s.survey || {});
-  const count = (key: 'consumer' | 'moment') => { const t: Record<string, number> = {}; answers.forEach((a) => a[key] && (t[a[key]!] = (t[a[key]!] || 0) + 1)); return t; };
-  const mom = count('moment'), seg = count('consumer');
-  const topMom = ranked(mom).slice(0, 2).map((x) => x[0]), topSeg = ranked(seg).slice(0, 2).map((x) => x[0]);
-  const maxM = Math.max(1, ...Object.values(mom)), maxS = Math.max(1, ...Object.values(seg));
-  const voted = answers.length > 0;
-  const hot = (sg: string, m: string) => step >= 3 && !WHITESPACE.today(sg, m) && voted && topMom.includes(m) && topSeg.includes(sg);
-  const open = (sg: string, m: string) => step >= 3 && !WHITESPACE.today(sg, m);
+  const tally = (key: 'consumer' | 'moment') => { const t: Record<string, number> = {}; answers.forEach((a) => a[key] && (t[a[key]!] = (t[a[key]!] || 0) + 1)); return t; };
+  const mom = tally('moment'), seg = tally('consumer');
+  const maxM = Math.max(1, ...Object.values(mom));
+  const topMom = ranked(mom)[0]?.[0], topSeg = ranked(seg)[0];
+  const cols = [...WHITESPACE.moments.filter((m) => m !== 'On the go'), 'On the go'];
+  const rows = dayRows(s);
+  const now = (m: string) => step >= 1 && !!WHITESPACE.present[m];
+  const open = (m: string) => step >= 3 && !WHITESPACE.present[m];
   return (
-    <div className="pad wsp">
-      <Enter i={0}><div className="k">Part 4 · Moments of the day, by consumer · our read, so please correct it</div></Enter>
+    <div className="pad dy">
+      <Enter i={0}><div className="k">Part 4 · White-space opportunities · our read, so please correct it</div></Enter>
       <div className="wsp-head">
         <div className={'wsp-h' + (step < 3 ? ' on' : '')}><h2 className="h2">Where TheraBreath shows up <span className="it">in a day.</span></h2></div>
         <div className={'wsp-h' + (step >= 3 ? ' on' : '')}><h2 className="h2">Most of the day <span className="it">is still open.</span></h2></div>
       </div>
-      <div className="wsp-grid" style={{ ['--cols' as any]: WHITESPACE.moments.length }}>
-        <div className="wsp-corner" />
-        {WHITESPACE.moments.map((m) => (
-          <div key={m} className={'wsp-col' + (step >= 2 && topMom.includes(m) ? ' top' : '')}>
-            <i style={{ height: step >= 2 ? `${((mom[m] || 0) / maxM) * 44}px` : 0 }} />
-            <span>{m}</span>{step >= 2 && mom[m] ? <b className="num">{mom[m]}</b> : null}
+      <div className="dy-grid" style={{ ['--cols' as any]: cols.length, ['--rows' as any]: rows.length }}>
+        <div className="dy-key">
+          <R b={1} step={step} className="dy-k"><i className="now" />TheraBreath today</R>
+          <R b={2} step={step} className="dy-k"><i className="vote" />{answers.length ? `Missing, say ${answers.length} pre-briefs` : 'Missing, from your pre-briefs'}</R>
+          <R b={3} step={step} className="dy-k"><i className="open" />Still open</R>
+        </div>
+        {cols.map((m, c) => (
+          <div key={m} className={'dy-col' + (m === 'On the go' ? ' any' : '') + (step >= 2 && m === topMom ? ' top' : '')} style={{ ['--c' as any]: c }}>
+            <div className="dy-bar"><i style={{ height: step >= 2 ? `${((mom[m] || 0) / maxM) * 64}px` : 0 }} />{step >= 2 && mom[m] ? <b className="num">{mom[m]}</b> : null}</div>
+            <span className="dy-dot" />
+            <span className="dy-name">{m}</span>
+            <em className={'dy-now' + (now(m) ? ' on' : '') + (open(m) ? ' open' : '')}>{now(m) ? WHITESPACE.present[m] : open(m) ? 'Open' : ''}</em>
           </div>
         ))}
-        {WHITESPACE.segments.map((sg, r) => (
-          <React.Fragment key={sg}>
-            <div className={'wsp-row' + (step >= 2 && topSeg.includes(sg) ? ' top' : '')}><span>{sg}</span>{step >= 2 && seg[sg] ? <b className="num">{seg[sg]}</b> : null}<i style={{ width: step >= 2 ? `${((seg[sg] || 0) / maxS) * 100}%` : 0 }} /></div>
-            {WHITESPACE.moments.map((m, c) => {
-              const cell = `${sg}|${m}`, today = WHITESPACE.today(sg, m);
-              return <button key={m} data-nonav onClick={() => !live.still && live.send('mark', { cell })} aria-label={`${sg}, ${m}`} className={'wsp-cell' + (step >= 1 && today ? ' today' : '') + (hot(sg, m) ? ' hot' : open(sg, m) ? ' open' : '') + (marks.includes(cell) ? ' mark' : '')} style={{ ['--i' as any]: r * WHITESPACE.moments.length + c }} />;
+        {rows.map((r) => (
+          <React.Fragment key={r.id}>
+            <div className="dy-row" style={{ ['--rc' as any]: r.color }}><i /><b>{r.name}</b><small>{r.sub}</small></div>
+            {cols.map((m) => {
+              const cell = `${r.id}|${m}`;
+              return <button key={m} data-nonav onClick={() => !live.still && live.send('mark', { cell })} aria-label={`${r.name}, ${m}`} style={{ ['--rc' as any]: r.color }}
+                className={'dy-cell' + (now(m) ? ' now' : '') + (open(m) ? ' open' : '') + (marks.includes(cell) ? ' mark' : '') + (m === 'On the go' ? ' any' : '')} />;
             })}
           </React.Fragment>
         ))}
       </div>
-      <div className="wsp-side">
-        <R b={1} step={step} className="wsp-note"><i className="today" /><span>Where we think TheraBreath is today: at the sink in the morning and at night, and the dry mouth lozenge on the go.</span></R>
-        <R b={2} step={step} className="wsp-note"><i className="vote" /><span>{voted ? `Your ${answers.length} pre-brief answers: the consumer you most want to win, and the moment you said is missing.` : 'Your pre-brief answers show up here: the consumer you most want to win, and the moment you said is missing.'}</span></R>
-        <R b={3} step={step} className="wsp-note hot"><i className="hot" /><span>The open cells: no TheraBreath flavor is made for these moments yet.</span></R>
-        <R b={3} step={step} className="wsp-note"><i className="mark" /><span>Where today&rsquo;s concepts could fit.</span></R>
-      </div>
-      <div className="src stage-src">{WHITESPACE.read}{voted ? ' Pre-brief answers from this group.' : ''}</div>
+      <R b={3} step={step} className="dy-lede">Ross asked for flavors that <span className="it">unlock new usage occasions.</span> Each open moment is one. Click a cell to mark where an idea could fit.</R>
+      <div className="src stage-src">{WHITESPACE.read}{step >= 2 && topSeg ? ` In the pre-brief, most of you want to win ${topSeg[0].charAt(0).toLowerCase() + topSeg[0].slice(1)}.` : ''}</div>
     </div>
   );
 }

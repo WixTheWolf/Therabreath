@@ -32,3 +32,8 @@ export const cookieOpts = () => ({ httpOnly: true, sameSite: 'lax' as const, sec
 const DEFAULT_TEAM_HASH = '6365923b5ee706dfbbbca21ea0e48c6046d86e23342c44cfc6391f5fe9e07d95';
 export async function teamHash() { return process.env.PLAYBOOK_TEAM_KEY ? sha256(norm(process.env.PLAYBOOK_TEAM_KEY)) : DEFAULT_TEAM_HASH; }
 export async function checkTeamKey(k: string) { return !!norm(k) && (await sha256(norm(k))) === (await teamHash()); }
+
+// The team's own pages need the team link (or the host password): the presentation, which moves everyone's phones, the
+// run sheet, the team page, the paper scorecard, the old Stage and THE FLAVOR RACE, which premieres in the room.
+// Church & Dwight's password opens the front door and the Playbook only.
+export const teamOnly = (p: string) => p === '/host' || p.startsWith('/host/') || p === '/team' || p === '/scorecard' || p.startsWith('/stage/') || p.startsWith('/media/flavor-race');

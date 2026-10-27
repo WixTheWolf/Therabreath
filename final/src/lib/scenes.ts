@@ -19,7 +19,7 @@ export type RoomMode =
   | { kind: 'bench' }
   | { kind: 'thanks' };
 
-export type Scene = { id: string; n: number; act: string; chapter: number; theme: 'a' | 'b'; builds: number; title: string; minutes?: number; notes: string; room: RoomMode; block: string; points: string[] };
+export type Scene = { id: string; n: number; act: string; chapter: number; theme: 'a' | 'b'; builds: number; title: string; minutes?: number; optional?: boolean; notes: string; room: RoomMode; block: string; points: string[] };
 
 const W = (line?: string): RoomMode => ({ kind: 'watch', line });
 const MINT = PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length;
@@ -34,7 +34,7 @@ const opener = (n: number, block: string): Row => ({
 });
 const platform = (k: number): Row => {
   const t = PRIMARY_TERRITORIES[k - 1]; const tasted = SAMPLES.some((x) => x.territory === t.id);
-  return { id: `platform${k}`, act: PART(2), chapter: 1, theme: k === 4 ? 'b' : 'a', builds: 1, title: t.name, block: 'school', room: W(t.name),
+  return { id: `platform${k}`, optional: !tasted, act: PART(2), chapter: 1, theme: k === 4 ? 'b' : 'a', builds: 1, title: t.name, block: 'school', room: W(t.name),
     points: [`${t.name}: ${t.promise}`, tasted ? 'Two of today’s samples come from here. Don’t name them yet.' : 'Not in the tasting. We just want their opinion.', `Ask: ${t.q}`] };
 };
 
@@ -70,11 +70,11 @@ const SHOW: Row[] = [
   opener(2, 'school'),
   { id: 'school', act: PART(2), chapter: 1, theme: 'b', builds: 3, title: 'What flavor is', block: 'school', room: W('Flavor School'),
     points: ['Taste is the tongue: sweet, sour, salty, bitter, umami.', 'Aroma is the nose, including from the back of the mouth when you swallow.', 'Feel is the trigeminal nerve. That is where cooling, tingle and warmth come from.'] },
-  { id: 'cooling', act: PART(2), chapter: 1, theme: 'b', builds: 3, title: 'How cooling works', block: 'school', room: W('Flavor School'),
+  { id: 'cooling', optional: true, act: PART(2), chapter: 1, theme: 'b', builds: 3, title: 'How cooling works', block: 'school', room: W('Flavor School'),
     points: ['Cooling does two jobs: the hit when you first rinse, and how long it lasts.', 'These curves are for explaining, not measured data.'] },
-  { id: 'oxyd', act: PART(2), chapter: 1, theme: 'b', builds: 3, title: 'Flavor and OXYD-8', block: 'school', room: W('Flavor School'),
+  { id: 'oxyd', optional: true, act: PART(2), chapter: 1, theme: 'b', builds: 3, title: 'Flavor and OXYD-8', block: 'school', room: W('Flavor School'),
     points: ['OXYD-8 is tough on the bacteria behind bad breath, and that makes it hard on flavor.', 'Three things we work with: pH, how we dissolve and protect the flavor, and picking materials that hold up.', 'Public chemistry only. No formula details.'] },
-  { id: 'anatomy', act: PART(2), chapter: 1, theme: 'b', builds: 4, title: 'How a TheraBreath flavor is built', block: 'school', room: W('Flavor School'),
+  { id: 'anatomy', optional: true, act: PART(2), chapter: 1, theme: 'b', builds: 4, title: 'How a TheraBreath flavor is built', block: 'school', room: W('Flavor School'),
     points: ['First impression, main flavor, finish, and how long it lasts.', 'Whatever it starts with, a TheraBreath flavor has to finish clean.'] },
   { id: 'map', act: PART(2), chapter: 1, theme: 'a', builds: 2, title: 'Four directions', block: 'school', room: W('Four directions'),
     points: ['Four directions on one map: familiar to adventurous, gentle to bold. This is our view, not data.', 'The gentle and adventurous corner is where we think new users could come from.', 'Two of these are in today’s tasting.'] },
@@ -95,7 +95,7 @@ const SHOW: Row[] = [
 
   opener(4, 'pipeline'),
   { id: 'whitespace', act: PART(4), chapter: 3, theme: 'a', builds: 3, title: 'Where TheraBreath fits in a day', block: 'pipeline', room: W('Where TheraBreath fits in a day'),
-    points: ['Moments of the day across, the consumers from the pre-brief down.', 'Build 1: where we think TheraBreath is today (morning and night at the sink, and the dry mouth lozenge). Ask them to correct us.', 'Build 2: their pre-brief answers. Build 3: everything still open.', 'Click a cell to mark where a concept fits.'] },
+    points: ['A day from morning to night, with on the go set apart.', 'Build 1: where we think TheraBreath is today: rinse in the morning and at night; lozenges, gum and sachets on the go. Ask them to correct us.', 'Build 2: the moment their pre-brief answers say is missing. Build 3: everything still open.', 'The rows are this morning’s concepts (before any are written, the samples and directions). Click a cell to mark where each one could fit.'] },
   { id: 'board', act: PART(4), chapter: 3, theme: 'a', builds: 0, title: 'Now, Next, Later', block: 'pipeline', room: W('Now, Next, Later'),
     points: ['Now, Next or Later for each concept and direction. One line each.', 'For each one: a TFF owner, a C&D reviewer, the base, and the next sample step.', TOPICS[3].questions[1]] },
 
@@ -109,7 +109,10 @@ const SHOW: Row[] = [
     points: ['12:00. Lunch, hosted by Church & Dwight.'] },
 ];
 
-export const SCENES: Scene[] = SHOW.map((s, n) => ({ ...s, n, notes: s.points.join(' ') }));
+const LATE = 'Optional. If we are running late, skip it: S skips every optional slide, ] jumps to the next part.';
+export const SCENES: Scene[] = SHOW.map((s, n) => { const points = s.optional ? [...s.points, LATE] : s.points; return { ...s, points, n, notes: points.join(' ') }; });
+// Where ] and [ jump in the presentation: the start of each part, plus the map and the tasting inside part 2.
+export const SECTIONS = ['arrival', 'open1', 'open2', 'map', 'tasting', 'open3', 'open4', 'playbook'];
 export const sceneIndex = (id: string) => SCENES.findIndex((s) => s.id === id);
 // The Console's short version of the morning.
 export const EXECUTIVE = ['title', 'brief', 'gap', 'signalvote', 'tasting', 'matrix', 'nextround', 'concepts', 'dots', 'board', 'playbook', 'next'];

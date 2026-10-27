@@ -197,3 +197,66 @@
 /* What we decided: the fanned pages sit right of the title so they never cover it. */
 .show .stack { right: 120px; }
 .show .as-copy { max-width: 470px; }
+
+/* Readable from the back of the room: on the 1920 canvas nothing on the TV that carries information is smaller than
+   about 18px, and the faintest labels move up one step in contrast. */
+.show .chrome-top { font-size: 19px; }
+.show .progress > div { font-size: 17px; }
+.show .src { font-size: 19px; color: var(--fg2); }
+.show .bt-to { font-size: 18px; }
+.show .axis, .show .ax, .show .mk-when, .show .hrow.head span, .show .matrix .mx-ax { font-size: 18px; color: var(--fg2); }
+.show .cmp-lab { font-size: 18px; } .show .cmp-stage { font-size: 16px; }
+.show .matrix .mx-q { font-size: 16px; } .show .matrix .mx-q b { font-size: 26px; }
+.show .matrix .mx-row span { font-size: 17px; }
+.show .tchip { font-size: 19px; }
+.show .st-panel .k { font-size: 17px; } .show .st-person .k { font-size: 18px; }
+.show .gb-lab { font-size: 20px; height: 96px; color: var(--fg2); }
+.show .orb small { font-size: 16px; } .show .orb em { font-size: 19px; }
+.show .dl-name small { font-size: 15px; }
+.show .join-corner .k { font-size: 14px; }
+.show .tl .hname small { font-size: 17px; }
+.show .ccv-card label span { font-size: 16px; }
+.show .sb-tray .k, .show .sb-col .k { font-size: 18px; }
+
+/* White space as a day: the moments on one line from morning to night, on the go set apart, and a row per idea. */
+.dy .wsp-head { height: 110px; }
+.dy-grid { position: absolute; left: 120px; right: 120px; top: 330px; display: grid; grid-template-columns: 330px repeat(var(--cols), 1fr); grid-auto-rows: 58px; row-gap: 10px; column-gap: 10px; }
+.dy-grid > .dy-key, .dy-grid > .dy-col { height: 176px; margin-bottom: 6px; }
+.dy-grid { grid-template-rows: 182px; }
+.dy-key { display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding-bottom: 6px; }
+.dy-k { display: flex; align-items: center; gap: 12px; font: 400 19px/1.2 var(--sans); color: var(--fg2); }
+.dy-k i { width: 22px; height: 22px; border-radius: 7px; flex: none; }
+.dy-k i.now, .dy-cell.now { background: linear-gradient(135deg, var(--glacier), var(--accent)); }
+.dy-k i.vote { background: linear-gradient(0deg, #F4B860, #F7D9A2); }
+.dy-k i.open { border: 2px solid rgba(227, 154, 53, .7); background: rgba(244, 184, 96, .12); }
+.dy-col { position: relative; display: grid; grid-template-rows: 70px 16px auto auto; justify-items: center; text-align: center; }
+.dy-col::before { content: ''; position: absolute; top: 76px; left: -5px; right: -5px; height: 4px; border-radius: 4px; background: linear-gradient(90deg, hsl(calc(38 + var(--c) * 34) 80% 66%), hsl(calc(72 + var(--c) * 34) 70% 62%)); opacity: .75; }
+.dy-col.any::before { background: repeating-linear-gradient(90deg, var(--fg3) 0 8px, transparent 8px 16px); opacity: .5; left: 6px; }
+.dy-col.any { border-left: 1px dashed var(--rule); }
+.dy-bar { position: relative; align-self: end; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 70px; }
+.dy-bar i { display: block; width: 38px; border-radius: 8px 8px 2px 2px; background: linear-gradient(0deg, #F4B860, #F7D9A2); transition: height .9s var(--ease); }
+.dy-bar b { position: absolute; bottom: calc(100% - 6px); font-size: 22px; color: #B86E12; }
+.dy-dot { position: relative; z-index: 1; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--fg3); }
+.dy-col.top .dy-dot { border-color: #E39A35; box-shadow: 0 0 18px rgba(244, 184, 96, .9); }
+.dy-name { margin-top: 12px; font: 500 19px/1.15 var(--sans); color: var(--fg2); }
+.dy-col.top .dy-name { color: var(--fg); }
+.dy-now { margin-top: 10px; min-height: 30px; padding: 4px 12px; border-radius: 99px; font: 500 16px/1.4 var(--sans); font-style: normal; color: transparent; transition: color .6s, background .6s; }
+.dy-now.on { color: #0B1B2B; background: linear-gradient(135deg, var(--glacier), var(--accent)); }
+.dy-now.open { color: #B86E12; background: rgba(244, 184, 96, .16); }
+.dy-row { display: grid; grid-template-columns: 16px 1fr; column-gap: 14px; align-content: center; }
+.dy-row i { grid-row: span 2; align-self: center; width: 16px; height: 16px; border-radius: 50%; background: var(--rc); box-shadow: 0 0 14px var(--rc); }
+.dy-row b { font: 300 27px/1.1 var(--serif); color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dy-row small { font: 400 16px/1.3 var(--sans); color: var(--fg2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dy-cell { position: relative; border-radius: 12px; border: 1px solid var(--rule); background: var(--panel2); cursor: pointer; padding: 0; transition: background .6s var(--ease), border-color .6s, box-shadow .6s, transform .5s var(--ease); }
+.dy-cell.now { opacity: .55; border-color: transparent; }
+.dy-cell.open { border-color: rgba(227, 154, 53, .45); background: rgba(244, 184, 96, .07); }
+.dy-cell.any { border-style: dashed; }
+.dy-cell.mark { opacity: 1; border-color: var(--rc); background: radial-gradient(circle at 50% 50%, var(--rc) 0 13px, color-mix(in oklab, var(--rc) 22%, transparent) 14px); box-shadow: 0 0 26px color-mix(in oklab, var(--rc) 45%, transparent); transform: scale(1.04); }
+.dy-cell:hover { border-color: var(--rc); }
+.dy-grid { grid-auto-rows: min(92px, calc(420px / var(--rows))); }
+.dy-lede { position: absolute; left: 120px; right: 120px; bottom: 170px; font: 300 32px/1.3 var(--serif); color: var(--fg2); }
+.dy-lede .it { color: var(--fg); }
+.dy-grid { top: 300px; grid-auto-rows: min(92px, calc((360px - (var(--rows) - 1) * 10px) / var(--rows))); }
+.dy-lede { bottom: 160px; }
+/* Direction names keep their natural break (no "Next-" left alone on a line). */
+.show .terr-name { text-wrap: wrap; }

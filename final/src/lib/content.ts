@@ -59,7 +59,7 @@ export const OBJECTIVES = [
 export const CHAPTERS = ['Signals', 'Territories', 'Concepts', 'Pipeline', 'Flavor Code'];
 
 export const SURVEY = {
-  consumer: { q: 'Which consumer do you most want TheraBreath to win next?', options: ['The 86% who don\u2019t buy it yet', 'People who want it milder', 'Gen Z', 'Families with kids and tweens', 'People 55 and over', 'People on GLP-1s or with dry mouth', 'Hispanic households', 'Shoppers outside the US'] },
+  consumer: { q: 'Which consumer do you most want TheraBreath to win next?', options: ['The 86% who don\u2019t buy it yet', 'People who want it milder', 'Gen Z', 'Families with kids and tweens', 'People 55 and over', 'People on GLP-1s or with dry mouth', 'Shoppers outside the US'] },
   moment: { q: 'Which moment of the day is TheraBreath missing?', options: ['Wake-up', 'After coffee', 'After lunch', 'Afternoon meeting', 'After the gym', 'Before going out', 'Wind-down', 'On the go'] },
   veto: { q: 'Name one flavor you would never approve for TheraBreath, and why.' },
 };
@@ -241,7 +241,10 @@ export const WHITESPACE = {
   sink: ['Wake-up', 'Wind-down'],
   extra: [[DRY_MOUTH, 'On the go']] as [string, string][],
   today: (segment: string, moment: string) => ['Wake-up', 'Wind-down'].includes(moment) || (segment === DRY_MOUTH && moment === 'On the go'),
-  read: 'Our read, not measured data. Tell us where we have it wrong.',
+  // Where we think TheraBreath already is in a day, from the public product listings (rinse; dry mouth lozenges, gum and
+  // rinse sachets). Our read, to challenge on the day.
+  present: { 'Wake-up': 'Rinse', 'Wind-down': 'Rinse', 'On the go': 'Lozenges, gum, sachets' } as Record<string, string>,
+  read: 'Our read of the public product listings, not measured data. Tell us where we have it wrong.',
 };
 
 export const HORIZONS = [{ id: 'Now', label: 'Now', when: 'The next sample round' }, { id: 'Next', label: 'Next', when: 'After the first results' }, { id: 'Future', label: 'Later', when: 'Directions to keep exploring' }];

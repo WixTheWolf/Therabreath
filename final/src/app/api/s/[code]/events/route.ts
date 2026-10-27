@@ -5,12 +5,9 @@ import { SUPABASE_URL } from '@/lib/supabase';
 import { isAuthed, isHost, joinToken, COOKIE, HOST_COOKIE } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
-// Phones (signed link) may send these.
+// Phones (signed link) may send these. Everything else, from moving the slides to the votes, the board and the marks,
+// needs the team cookie that the team link sets, so a guest who only has the password cannot move anyone's phone.
 const PUBLIC_KINDS = new Set(['join', 'team', 'pick', 'rate', 'guess', 'concept', 'suggest', 'react', 'survey', 'dial', 'benchbase']);
-// The presentation, opened with the one password, also drives the scene and writes down what the group decides. A phone
-// that only opened its join link has no password cookie, so it cannot send these. Timers, overrides, commitments and wipe
-// still need the host cookie.
-const ROOM_KINDS = new Set(['goto', 'vote', 'board', 'mark', 'flag']);
 const clean = (c: string) => c.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ code: string }> }) {
@@ -32,7 +29,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ cod
   const tokenOk = body.k === (await joinToken(code)) || roomOk;
   for (const e of evs) {
     if (!e || typeof e.id !== 'string' || typeof e.kind !== 'string') return NextResponse.json({ error: 'bad event' }, { status: 400 });
-    if (!authed && !(tokenOk && PUBLIC_KINDS.has(e.kind)) && !(roomOk && ROOM_KINDS.has(e.kind))) return NextResponse.json({ error: 'forbidden' }, { status: 403 });
+    if (!authed && !(tokenOk && PUBLIC_KINDS.has(e.kind))) return NextResponse.json({ error: 'forbidden' }, { status: 403 });
     e.t = authed && e.t ? e.t : Date.now();
     if (JSON.stringify(e.data || {}).length > 8000) return NextResponse.json({ error: 'too large' }, { status: 413 });
   }

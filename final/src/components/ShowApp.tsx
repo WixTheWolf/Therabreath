@@ -11,7 +11,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { useScale, Clock } from './StageApp';
-import { SCENES, Scene } from '@/lib/scenes';
+import { SCENES, SECTIONS, Scene } from '@/lib/scenes';
 import type { SceneProps } from './scenes/ui';
 import { Arrival, July, Prework, Thesis } from './scenes/Opening';
 import { Gap, Portfolio, Market, Signals } from './scenes/ActI';
@@ -20,7 +20,7 @@ import { MapScene, Territory, Matrix } from './scenes/Territories';
 import { Next, Lunch } from './scenes/Close';
 import {
   LiveCtx, Live, ShowTitle, Team, ShowBrief, Opener, SignalVoteShow, TastingLive, NextRound, ConceptCanvas, DotsShow, WhiteSpaceShow, Board,
-  Playbook, ShowFilm, JoinCorner, FIELDS, decided,
+  Playbook, ShowFilm, JoinCorner, FIELDS, decided, markLabel,
 } from './show/ShowScenes';
 import { EVENT, TOPICS, HORIZONS, RUN } from '@/lib/content';
 
@@ -41,8 +41,9 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const { state: s, send, status } = useSession(code, { admin: true, interval: 500 });
   const told = Object.keys(s.survey || {}).length > 0;
   const n = SCENES.length;
-  // "You told us" only appears once someone has answered the pre-brief.
-  const skip = useCallback((i: number) => SCENES[i].id === 'prework' && !told, [told]);
+  // "You told us" only appears once someone has answered the pre-brief. S (short) also skips the optional slides.
+  const [short, setShort] = useState(false);
+  const skip = useCallback((i: number) => (SCENES[i].id === 'prework' && !told) || (short && !!SCENES[i].optional), [told, short]);
 
   const [pos, setPos] = useState({ i: 0, step: 0 });
   const [notes, setNotes] = useState(false);
@@ -94,6 +95,13 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       if (j >= 0) setPos({ i: j, step: SCENES[j].builds });
     }
   }, [n, skip]);
+  // ] and [ jump to the next or previous part (the map and the tasting count as their own stops).
+  const jump = useCallback((d: number) => {
+    const stops = SECTIONS.map((id) => SCENES.findIndex((x) => x.id === id)).filter((x) => x >= 0);
+    const { i } = posRef.current;
+    const j = d > 0 ? stops.find((x) => x > i) : [...stops].reverse().find((x) => x < i);
+    if (j !== undefined) setPos({ i: j, step: 0 });
+  }, []);
   useEffect(() => {
     const kd = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement;
@@ -102,12 +110,15 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); go(-1); }
       else if (e.key === 'Home') setPos({ i: 0, step: 0 });
       else if (e.key === 'End') setPos({ i: n - 1, step: 0 });
+      else if (e.key === ']') jump(1);
+      else if (e.key === '[') jump(-1);
+      else if (e.key === 's' || e.key === 'S') setShort((x) => !x);
       else if (e.key === 'n' || e.key === 'N') setNotes((x) => !x);
       else if (e.key === 'b' || e.key === 'B') setBlank((x) => !x);
       else if (e.key === 'f' || e.key === 'F') { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen?.(); }
     };
     addEventListener('keydown', kd); return () => removeEventListener('keydown', kd);
-  }, [go, n]);
+  }, [go, jump, n]);
 
   const sc = SCENES[Math.min(pos.i, n - 1)];
   useEffect(() => { document.documentElement.dataset.theme = mode === 'results' ? 'a' : sc.theme; }, [sc.theme, mode]);
@@ -115,7 +126,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const ctxLive: Live = useMemo(() => ({ send, still, joinUrl }), [send, still, joinUrl]);
   const ctx = useMemo(() => ({ code, k, origin, joinUrl }), [code, k, origin, joinUrl]);
   // The export script (scripts/export-show.mjs) reads the run of show from here, and rehearsal scripts read the join link.
-  useEffect(() => { Object.assign(window, { __join: joinUrl, __run: RUN, __show: SCENES.filter((_, i) => !skip(i)).map(({ id, title, builds, block, points, chapter }) => ({ id, title, builds, block, notes: points, ch: chapter, at: SCENES.findIndex((x) => x.id === id) + 1 })) }); }, [skip, joinUrl]);
+  useEffect(() => { Object.assign(window, { __join: joinUrl, __run: RUN, __show: SCENES.filter((_, i) => !skip(i)).map(({ id, title, builds, block, points, chapter, optional }) => ({ id, title, builds, block, optional: !!optional, notes: points, ch: chapter, at: SCENES.findIndex((x) => x.id === id) + 1 })) }); }, [skip, joinUrl]);
 
   if (mode === 'results') return <Results s={s} code={code} />;
 
@@ -127,6 +138,8 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const View = VIEWS[key];
   const idx = Number(sc.id.match(/\d+$/)?.[0] || 0);
   const shown = SCENES.filter((_, i) => !skip(i));
+  const nextStop = SECTIONS.map((id) => SCENES.find((x) => x.id === id)!).find((x) => x.n > pos.i);
+  const timing = runTiming(sc.block);
   const at = shown.indexOf(sc) + 1;
   return (
     <LiveCtx.Provider value={ctxLive}>
@@ -148,10 +161,11 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
             <span className="k">{at} of {shown.length}{sc.builds ? ` · build ${pos.step} of ${sc.builds}` : ''}{code !== EVENT.code ? ` · rehearsal ${code}` : ''} · {Object.keys(s.participants).length} joined</span>
             <b>{sc.title}</b>
             <ul>{sc.points.map((x, j) => <li key={j}>{x}</li>)}</ul>
-            {pos.i + 1 < n && <small>Next: {SCENES.slice(pos.i + 1).find((_, j) => !skip(pos.i + 1 + j))?.title}</small>}
+            {pos.i + 1 < n && <small>Next: {SCENES.slice(pos.i + 1).find((_, j) => !skip(pos.i + 1 + j))?.title}{nextStop ? ` · ] jumps to ${nextStop.title}` : ''}</small>}
+            <small>{timing}{short ? ' · Short version: optional slides skipped (S to undo)' : ''}</small>
           </aside>
         )}
-        {hint && <div className="show-hint">Right arrow or click to go on · Left arrow back · F full screen · N talking points</div>}
+        {hint && <div className="show-hint">Right arrow or click to go on · Left arrow back · ] next part · S short version · F full screen · N talking points</div>}
         {code !== EVENT.code && !still && <div className="show-rehearse">Rehearsal session {code}. Votes here never reach the live session.</div>}
       </div>
     </LiveCtx.Provider>
@@ -189,9 +203,18 @@ function Results({ s, code }: { s: any; code: string }) {
       <section><h2 className="h3">Concepts</h2>{cs.length ? cs.map((c: any) => <div key={c.id} className="sr-concept"><b>{c.name}</b><dl>{FIELDS.map((f) => c[f.key] ? <div key={f.f}><dt>{f.l}</dt><dd>{c[f.key]}</dd></div> : null)}</dl></div>) : <p className="ghost">None written</p>}
         {d.ideas.length > 0 && <p className="sr-dots">Dot vote: {d.ideas.map((x) => `${x.t} (${x.n})`).join(', ')}</p>}</section>
       <section><h2 className="h3">Now, Next, Later</h2><div className="sr-nnl">{HORIZONS.map((h) => { const l = d.plan.filter((x) => x.h === h.label); return <div key={h.id}><b>{h.label}</b><small>{h.when}</small><ul>{l.map((x, j) => <li key={j}>{x.t}</li>)}{!l.length && <li className="ghost">Nothing yet</li>}</ul></div>; })}</div></section>
-      <section><h2 className="h3">Where the concepts could fit</h2><ul>{marks.map((c) => <li key={c}>{c.replace('|', ' · ')}</li>)}{!marks.length && <li className="ghost">No cells marked</li>}</ul></section>
+      <section><h2 className="h3">Where the ideas could fit in a day</h2><ul>{marks.map((c) => <li key={c}>{markLabel(s, c)}</li>)}{!marks.length && <li className="ghost">No cells marked</li>}</ul></section>
       <p className="src">Confidential. These are development samples and concepts made for this session, not finished products or claims.</p>
       <button className="sr-print" onClick={() => print()}>Print or save as PDF</button>
     </main>
   );
+}
+
+// For the talking points: the planned window for this part of the morning, and how far over it the clock is.
+function runTiming(block: string) {
+  const b = RUN.find((x) => x.id === block); if (!b) return '';
+  const now = new Date(); const mins = (t: string) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const cur = now.getHours() * 60 + now.getMinutes(); const over = cur - mins(b.end);
+  const hhmm = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+  return `This part: ${b.t} to ${b.end} · now ${hhmm}${over > 0 && over < 180 ? ` · ${over} min over` : ''}`;
 }

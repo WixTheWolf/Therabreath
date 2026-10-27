@@ -41,7 +41,7 @@ const NAV = [['hero', 'Film'], ['brief', 'Your brief'], ['why', 'Why flavor'], [
 
 // The bar opens THE FLAVOR RACE, the presentation, the run sheet and the team page for everyone past the password.
 // `prebrief` is the signed pre-brief link for the live session.
-export default function SiteApp({ prebrief }: { prebrief: string }) {
+export default function SiteApp({ prebrief, team = false }: { prebrief: string; team?: boolean }) {
   const [film, setFilm] = useState(false);
   const [race, setRace] = useState(false);
   const [active, setActive] = useState('hero');
@@ -57,7 +57,7 @@ export default function SiteApp({ prebrief }: { prebrief: string }) {
     <main className="site" data-theme="b">
       <header className="st-bar">
         <div className="st-lock"><img src="/img/tff-logo-white.webp" alt="The Flavor Factory" /><span>×</span><b>TheraBreath</b></div>
-        <nav className="st-hostbar" aria-label="More"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host">Open the presentation</a><a href="/host/run">Run sheet</a><a href="/team">Team page</a></nav>
+        {team && <nav className="st-hostbar" aria-label="For the team"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host?code=REHEARSE">Rehearse</a><a href="/host/run">Run sheet</a><a href="/team">Team page</a></nav>}
       </header>
       <nav className="st-rail" aria-label="Chapters">
         {NAV.map(([id, l]) => <a key={id} href={`#${id}`} className={active === id ? 'on' : ''}><span>{l}</span><i /></a>)}

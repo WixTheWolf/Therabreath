@@ -75,3 +75,8 @@ test('the team link only opens with its key', async () => {
     assert.equal(await auth.checkTeamKey('rehearsal-team-keyx'), false);
   } finally { delete process.env.PLAYBOOK_TEAM_KEY; }
 });
+
+test('the team pages and the closing film need the team link, the front door does not', async () => {
+  for (const p of ['/host', '/host/run', '/team', '/scorecard', '/stage/FOF1109', '/media/flavor-race.mp4', '/media/flavor-race-poster.jpg']) assert.equal(auth.teamOnly(p), true, p);
+  for (const p of ['/', '/login', '/survey/FOF1109', '/j/FOF1109', '/playbook/FOF1109', '/media/opening.mp4', '/hostess']) assert.equal(auth.teamOnly(p), false, p);
+});

@@ -1,17 +1,18 @@
 import { EVENT, RUN, SAMPLES, NEXT_STEPS } from '@/lib/content';
 import PrintButton from '@/app/scorecard/PrintButton';
 
-// The hosts' run sheet: one printout for The Flavor Factory team, behind the password. Not for the room.
+// The hosts’ run sheet: one printout for The Flavor Factory team, behind the team link. Not for handing out.
 // The run of show comes from RUN, the same source as the agenda and the presentation's chapter times.
 const fresh = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.code).join(' and ');
 const kids = SAMPLES.filter((x) => x.base.startsWith('Kids')).map((x) => x.code).join(' and ');
 
 const SETUP = [
-  'Laptop to the TV. Open /host and press F for full screen. Only this laptop opens /host on the day: it moves everyone’s phones. Keep the talking points (N) off while the laptop is mirrored to the TV, and use this sheet instead.',
+  'Laptop to the TV. Open the team link, then Present on the day (/host), and press F for full screen. Only this laptop opens it on the day: it moves everyone’s phones. Church & Dwight’s password cannot open it. Keep the talking points (N) off while the laptop is mirrored to the TV, and use this sheet instead.',
   'Phones: people join by scanning the code on the first screen. Phones use their own data, so the room Wi-Fi only matters for the laptop. Ross offered to help us get on the network; if it fails, present from the backup PDF and the film file on the laptop (no voting).',
   'Sound: press End, then the left arrow once, to reach THE FLAVOR RACE. Play ten seconds through the room speakers and set the volume. Then press Home to go back to the start.',
-  'Rehearse on /host?code=REHEARSE (the team page links to it), never on /host itself, so rehearsal votes stay out of the live session.',
+  'Rehearse on /host?code=REHEARSE (the team page links to it), never on /host itself, so rehearsal votes stay out of the live session. The night before, wipe the live session FOF1109 from the Console so nothing clicked during previews is left.',
   `Samples: ${fresh} in the Fresh Breath base, ${kids} in the Kids base, poured blind into coded cups. Water to rinse, cups to spit, napkins.`,
+  'Running late: press S to skip the optional slides (How cooling works, Flavor and OXYD-8, how a flavor is built, and the two directions that are not in the tasting), or ] to jump to the next part. The talking points (N) show how far over the current part is.',
   'Paper scorecards as a backup for anyone who would rather not use a phone: a few copies and pens. Print from /scorecard. Hand votes can be added on screen by clicking a bar, an orb or a row.',
 ];
 const AFTER = [
@@ -64,7 +65,7 @@ export default function RunSheet() {
           <ol className="rs-check">{CONFIRM.map((x) => <li key={x}>{x}</li>)}</ol>
         </section>
       </div>
-      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on; left arrow back; Home to the start; F full screen; N talking points; B blank screen. A reload picks up where the session was.</p>
+      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on; left arrow back; ] next part and [ previous part; S skips the optional slides; Home to the start; F full screen; N talking points; B blank screen. A reload picks up where the session was.</p>
     </main>
   );
 }
