@@ -7,7 +7,7 @@ const fresh = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.cod
 const kids = SAMPLES.filter((x) => x.base.startsWith('Kids')).map((x) => x.code).join(' and ');
 
 const SETUP = [
-  'Laptop to the TV. Open /host and press F for full screen. Only this laptop opens /host on the day: it moves everyone\'s phones. Keep the talking points (N) off while the laptop is mirrored to the TV, and use this sheet instead.',
+  'Laptop to the TV. Open /host and press F for full screen. Only this laptop opens /host on the day: it moves everyone’s phones. Keep the talking points (N) off while the laptop is mirrored to the TV, and use this sheet instead.',
   'Phones: people join by scanning the code on the first screen. Phones use their own data, so the room Wi-Fi only matters for the laptop. Ross offered to help us get on the network; if it fails, present from the backup PDF and the film file on the laptop (no voting).',
   'Sound: press End, then the left arrow once, to reach THE FLAVOR RACE. Play ten seconds through the room speakers and set the volume. Then press Home to go back to the start.',
   'Rehearse on /host?code=REHEARSE (the team page links to it), never on /host itself, so rehearsal votes stay out of the live session.',
@@ -31,7 +31,7 @@ export default function RunSheet() {
   return (
     <main className="sc rs" data-theme="a">
       <header className="sc-head">
-        <div><b>Run sheet</b><span>The Future of Freshness · {EVENT.date} · {EVENT.room} room · for The Flavor Factory team · not for the room</span></div>
+        <div><b>Run sheet</b><span>The Future of Freshness · {EVENT.date} · {EVENT.room} room · for The Flavor Factory team · not for handing out</span></div>
         <PrintButton label="Print the run sheet" />
       </header>
 

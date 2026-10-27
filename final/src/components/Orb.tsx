@@ -7,16 +7,16 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 export const PROFILE = [
   { id: 'adv', l: 'More familiar', r: 'More adventurous' },
   { id: 'cool', l: 'Cooling', r: 'Soft' },
-  { id: 'bot', l: 'Classic freshness', r: 'Botanical freshness' },
-  { id: 'exp', l: 'Functional', r: 'Experiential' },
-  { id: 'occ', l: 'Everyday', r: 'Occasion-based' },
+  { id: 'bot', l: 'Classic mint', r: 'Botanical' },
+  { id: 'exp', l: 'Just does the job', r: 'Something to enjoy' },
+  { id: 'occ', l: 'Every day', r: 'For a moment' },
 ];
 export const DEFAULT_PROFILE: Record<string, number> = { adv: 3, cool: 3, bot: 3, exp: 3, occ: 3 };
 
 export function describe(p: Record<string, number>, who = 'Your freshness is') {
   const w = (id: string, lo: string, hi: string) => (p[id] <= 2 ? lo : p[id] >= 4 ? hi : '');
-  const words = [w('adv', 'familiar', 'adventurous'), w('cool', 'cold', 'soft'), w('bot', 'classic', 'botanical'), w('exp', 'functional', 'experiential'), w('occ', 'everyday', 'made for moments')].filter(Boolean);
-  return words.length ? `${who} ${words.join(', ')}.` : `${who} beautifully balanced.`;
+  const words = [w('adv', 'familiar', 'adventurous'), w('cool', 'cold', 'soft'), w('bot', 'classic', 'botanical'), w('exp', 'practical', 'something to enjoy'), w('occ', 'for every day', 'for a moment')].filter(Boolean);
+  return words.length ? `${who} ${words.join(', ')}.` : `${who} right in the middle.`;
 }
 
 const Orb = forwardRef<HTMLCanvasElement, { profile: Record<string, number>; size?: number; className?: string }>(function Orb({ profile, size = 320, className }, fref) {

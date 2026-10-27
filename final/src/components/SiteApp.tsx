@@ -202,7 +202,7 @@ function WhyFlavor() {
   return (
     <section id="why" ref={r} className="ws-section ws-why">
       <div className="st-k">Why flavor, why now</div>
-      <h2>86 of every 100 US households<br /><em>have not met TheraBreath yet.</em></h2>
+      <h2>86 out of 100 US households<br /><em>don’t buy TheraBreath yet.</em></h2>
       <div className="ws-gap">
         <div className="ws-glass" style={{ ['--f' as any]: GAP.category / 100 }}><i /><b>{GAP.category}%</b><span>Mouthwash category household penetration</span></div>
         <div className="ws-glass tb" style={{ ['--f' as any]: GAP.tb / 100 }}><i /><b>{GAP.tb}%</b><span>TheraBreath household penetration</span></div>

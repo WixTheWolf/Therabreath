@@ -94,8 +94,8 @@ function Chips({ s, me, p, room }: P) {
     <div className="rm-pad">
       <h2 className="h3">{room.prompt}</h2><Lock v={v} />
       <div className="rm-chipsleft">{Array.from({ length: room.total }, (_, i) => <i key={i} className={i < used ? 'used' : ''} />)}</div>
-      <div className="rm-list">{DIRECTIONS.map((d) => { const t = TERRITORIES.find((x) => x.id === d.territory)!; return (
-        <div key={d.id} className="rm-chip" style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1] }}>
+      <div className="rm-list">{DIRECTIONS.map((d) => { return (
+        <div key={d.id} className="rm-chip" style={{ ['--c1' as any]: d.colors[0], ['--c2' as any]: d.colors[1] }}>
           <span className="sw" /><b>{d.label}<small>{d.sub}</small></b>
           <button onClick={() => add(d.id, -1)} disabled={!o[d.id] || v?.locked}>-</button><em className="num">{o[d.id] || 0}</em><button onClick={() => add(d.id, 1)} disabled={used >= room.total || v?.locked}>+</button>
         </div>

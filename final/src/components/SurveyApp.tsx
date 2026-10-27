@@ -86,7 +86,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
         <h2 className="bw-thesis">TheraBreath took the burn out of mouthwash.<br /><em>The next job is giving more people a reason to want it.</em></h2>
         <div className="bw-math">
           <div><b>25.3%</b><span>TheraBreath’s share of US mouthwash in Q2 2026, up 4.5 points. It is now number 2.</span></div>
-          <div><b>{GAP.tb}%</b><span>of US households buy TheraBreath, against {GAP.category}% for the category. 86 of every 100 have not met it yet.</span></div>
+          <div><b>{GAP.tb}%</b><span>of US households buy TheraBreath, against {GAP.category}% for the category. 86 of every 100 don’t buy it yet.</span></div>
           <div><b>54%</b><span>of Americans want a milder-tasting mouthwash.</span></div>
         </div>
         <p className="bw-src">Sources: {SOURCES.q2call}; {SOURCES.kenvue}.</p>

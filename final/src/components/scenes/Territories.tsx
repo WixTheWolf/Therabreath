@@ -145,7 +145,7 @@ export function Tasting({ s, step }: SceneProps) {
 
 // The growth matrix: Ross's two goals as two axes. Feels like TheraBreath (loyal users) across, newness (new consumers) up, appeal as size.
 export function Matrix({ s, step }: SceneProps) {
-  const pts = SAMPLES.map((x, i) => ({ ...x, sum: tasteSummary(s, x.code), c: spectrumAt(0.08 + i * 0.27) }));
+  const pts = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code), c: x.color[1] }));
   const scored = pts.filter((p) => p.sum.n > 0);
   const lead = scored.length ? scored.reduce((a, b) => (b.sum.feels + b.sum.newness > a.sum.feels + a.sum.newness ? b : a)) : null;
   // Axes run 1.5 to 4.5 so the midline sits at 3, the middle of the 1 to 5 scale; scores outside clamp to the edge.

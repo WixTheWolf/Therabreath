@@ -12,7 +12,7 @@ export default async function Team() {
   const items = [
     { href: '/host?code=REHEARSE', t: 'Rehearse the presentation', d: 'The full presentation on a rehearsal session. Scan the code with your own phone to try the votes and the tasting. Nothing here reaches the live session.', c: '#8FE0F0' },
     { href: '/', t: 'The front door', d: 'What Church & Dwight sees after the password: the film, Ross’s brief, the four directions, the blind tasting, who they will meet and the morning.', c: '#F4B860' },
-    { href: prebrief, t: 'The pre-brief', d: 'The pre-read Ross sends on November 3. This is a practice copy, so try the homework: answers here never reach the live session.', c: '#CFE8C6' },
+    { href: prebrief, t: 'The pre-brief', d: 'The pre-read Ross sends on November 3. This is a practice copy, so try the questions: answers here never reach the live session.', c: '#CFE8C6' },
     { href: '/host/run', t: 'The run sheet', d: 'The morning minute by minute, the 9:30 setup and what is still to confirm. Prints to two pages.', c: '#C9B8FF' },
     { href: '/scorecard', t: 'The paper scorecard', d: 'A backup for anyone who would rather not score on a phone: one page per person for samples A to D.', c: '#F7B6D2' },
     { href: '/media/flavor-race.mp4', t: 'THE FLAVOR RACE', d: 'The 2:26 film that sends everyone to lunch at 11:48. Sound on.', c: '#F2677B' },

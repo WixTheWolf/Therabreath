@@ -138,7 +138,7 @@ export function Prework({ s, step }: SceneProps) {
         <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} /></R>
         <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} /></R>
       </div>
-      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">The room&rsquo;s freshness</span><p className="h3 it">{describe(roomProfile(answers), 'The room wants freshness that is')}</p></div></R>}
+      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">The room&rsquo;s freshness</span><p className="h3 it">{describe(roomProfile(answers), 'As a group, you want freshness that is')}</p></div></R>}
       <R b={2} step={step} className="vetoes">
         <div className="k">Flavors you would never sign off on</div>
         <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map(([v, n], i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 30 + ((i * 17) % 5) * 6 + Math.min(18, (n - 1) * 6) }}>{v}{n > 1 && <sup className="num">{n}</sup>}</span>) : <span className="empty">No answers yet.</span>}</div>

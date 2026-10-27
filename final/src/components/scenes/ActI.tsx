@@ -50,7 +50,7 @@ export function Gap({ step }: SceneProps) {
         <R b={1} step={step}><h1 className="h1"><span className="it">86</span> out of 100 US households don&rsquo;t buy TheraBreath yet.</h1></R>
         <R b={2} step={step}><div className="gap-second it">Flavor is one of the best ways to reach them.</div></R>
         <Src k="q2call" extra="TheraBreath 14%, mouthwash category 65%" style={{ position: 'absolute', top: 700, left: 0, width: 760 }} />
-        <Enter i={1} className="gap-share"><b className="num">25.3%</b> of US mouthwash in Q2 2026, up 4.5 points, and number 2 in the category. Share is climbing fast. Most households still haven&rsquo;t tried it.</Enter>
+        <Enter i={1} className="gap-share">TheraBreath had <b className="num">25.3%</b> of US mouthwash in Q2 2026, up 4.5 points, and is number 2 in the category. Most households still haven&rsquo;t tried it.</Enter>
       </div>
       <div className="glabel" style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}<sup>%</sup></div><div className="who">Mouthwash category</div></div>
       <div className="glabel" style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}<sup>%</sup></div><div className="who">TheraBreath</div></div>
@@ -113,7 +113,7 @@ export function Market({ step }: SceneProps) {
           </R>
         ))}
       </div>
-      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">Where you stand</span><p>TheraBreath has been alcohol-free and dye-free from the start, it has OXYD-8, and it already has a kids line. <span className="it">So the question is how flavor keeps you ahead.</span></p></R>
+      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">Where you stand</span><p>TheraBreath has been alcohol-free and dye-free from the start, it has OXYD-8, and it already has a kids line. <span className="it">So the question is how flavor keeps TheraBreath ahead.</span></p></R>
     </div>
   );
 }

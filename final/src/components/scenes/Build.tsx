@@ -1,6 +1,6 @@
 'use client';
 import { R, Enter, SceneProps } from './ui';
-import { SEEDS, HORIZONS, ROLES, CODE, TERRITORIES } from '@/lib/content';
+import { SEEDS, HORIZONS, ROLES, CODE, SAMPLES } from '@/lib/content';
 import { SessionState, tallyPick, ranked } from '@/lib/state';
 import { teamConcepts } from './CoCreate';
 
@@ -10,7 +10,7 @@ export type Item = { id: string; name: string; sub: string; dots: number; kind: 
 export function candidates(s: SessionState): Item[] {
   const t = tallyPick(s, 'concepts');
   const cs: Item[] = teamConcepts(s).map((c) => ({ id: c.id, name: c.name, sub: `Concept ${c.team}`, dots: t[c.id] || 0, kind: 'concept', color: ['#8FE0F0', '#F4B860', '#F7B6D2'][(c.team - 1) % 3] }));
-  const sd: Item[] = SEEDS.map((x) => ({ id: x.id, name: x.name, sub: `Sample ${x.id.slice(-1)}`, dots: t[x.id] || 0, kind: 'seed', color: TERRITORIES.find((tr) => tr.id === x.territory)!.palette[1] }));
+  const sd: Item[] = SEEDS.map((x) => ({ id: x.id, name: x.name, sub: `Sample ${x.id.slice(-1)}`, dots: t[x.id] || 0, kind: 'seed', color: SAMPLES.find((sm) => 'workshop-' + sm.code === x.id)!.color[1] }));
   return [...cs, ...sd].sort((a, b) => b.dots - a.dots || (a.kind === 'concept' ? -1 : 1));
 }
 

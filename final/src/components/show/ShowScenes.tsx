@@ -26,7 +26,7 @@ export const OBJ_HUE = [200, 32, 335, 262];
 const OBJ_IMG = ['/img/open-1-ice.webp', '/img/open-2-citrus.webp', '/img/open-3-bloom.webp', '/img/open-4-violet.webp'];
 export const when = (n: string) => { const bs = RUN.filter((b) => b.obj === n); return bs.length ? `${bs[0].t} to ${bs[bs.length - 1].end}` : ''; };
 export const directionName = (id: string) => DIRECTIONS.find((d) => d.id === id)?.label || id;
-const dirColors = (id: string) => { const d = DIRECTIONS.find((x) => x.id === id); const t = PLATFORMS.find((p) => p.id === d?.territory); return t ? t.palette : ['#BFE9F2', '#6CC7DD']; };
+const dirColors = (id: string) => DIRECTIONS.find((x) => x.id === id)?.colors || ['#BFE9F2', '#6CC7DD'];
 
 export function ShowTitle() {
   return (
@@ -333,7 +333,7 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
       <div className="wsp-side">
         <R b={1} step={step} className="wsp-note"><i className="today" /><span>Where we think TheraBreath is today: at the sink in the morning and at night, and the dry mouth lozenge on the go.</span></R>
         <R b={2} step={step} className="wsp-note"><i className="vote" /><span>{voted ? `Your ${answers.length} pre-brief answers: the consumer you most want to win, and the moment you said is missing.` : 'Your pre-brief answers show up here: the consumer you most want to win, and the moment you said is missing.'}</span></R>
-        <R b={3} step={step} className="wsp-note hot"><i className="hot" /><span>Everything in between. No TheraBreath flavor is made for these moments yet.</span></R>
+        <R b={3} step={step} className="wsp-note hot"><i className="hot" /><span>The open cells: no TheraBreath flavor is made for these moments yet.</span></R>
         <R b={3} step={step} className="wsp-note"><i className="mark" /><span>Where today&rsquo;s concepts could fit.</span></R>
       </div>
       <div className="src stage-src">{WHITESPACE.read}{voted ? ' Pre-brief answers from this group.' : ''}</div>

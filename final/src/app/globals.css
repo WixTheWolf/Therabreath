@@ -36,3 +36,7 @@ a { color: inherit; }
 .accent { color: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .2s !important; } }
+
+/* No lone words on the last line of a headline, and fewer ragged paragraphs. */
+h1, h2, h3, .h1, .h2, .h3 { text-wrap: balance; }
+p, li { text-wrap: pretty; }
