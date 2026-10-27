@@ -1,4 +1,4 @@
 'use client';
-export default function PrintButton() {
-  return <button className="sc-print" onClick={() => print()}>Print the scorecard</button>;
+export default function PrintButton({ label = 'Print the scorecard' }: { label?: string }) {
+  return <button className="sc-print" onClick={() => print()}>{label}</button>;
 }

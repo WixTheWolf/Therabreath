@@ -77,7 +77,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
         <p className="bw-letter">In July you came to Norco and saw how we make flavor. On November 9 we come to Princeton with something different: our flavor expertise, consumer and market observations, trend insights and innovation work, aimed at the goal in {first.toLowerCase() === 'ross' ? 'your' : 'Ross\u2019s'} invitation: <em>new flavor experiences that strengthen TheraBreath&rsquo;s appeal with loyal users and attract new consumers.</em></p>
         <p className="bw-letter">So the morning is built around your four objectives, and around real work: four samples from our development bench, made in the TheraBreath bases you sent us. You will taste, score and discuss. By noon we will agree three directions to develop, with owners and dates, and we will write them up as a Flavor Playbook for everyone in the room.</p>
         <p className="bw-letter">Two names for one morning: <em>The Future of Freshness</em> is the session. <em>The Flavor Playbook</em> is the write-up that follows it.</p>
-        <p className="bw-letter">Who you will meet from The Flavor Factory: Dan Wixted, President, opens and closes the morning. Alex takes the market and the signals. Ryan Wixted teaches Flavor School and runs the tasting. Matt Wixted, Director of Operations, keeps us to noon.</p>
+        <p className="bw-letter">Who you will meet from The Flavor Factory: Dan Wixted, President, opens and closes the morning. Alex takes the market, the signals and the white space. Ryan Wixted teaches Flavor School and runs the tasting. Matt Wixted, Director of Operations, leads the concepts and the pipeline.</p>
         <p className="bw-letter">This page is here so you arrive ready to discuss, not just listen. It takes five minutes.</p>
         <p className="bw-sign"><img src="/img/tff-logo.webp" alt="The Flavor Factory" />The Flavor Factory team</p>
       </section>
@@ -128,7 +128,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
 
       <section className="bw-sec bw-rise">
         <div className="k">The morning</div>
-        <ol className="bw-timeline" ref={agenda} style={{ ['--f' as any]: fill }}>{AGENDA.map(([t, l], i) => <li key={t} className={fill * AGENDA.length > i ? 'on' : ''}><span className="num">{t}</span>{l}</li>)}</ol>
+        <ol className="bw-timeline" ref={agenda} style={{ ['--f' as any]: fill }}>{AGENDA.map(([t, l, o], i) => <li key={t} className={fill * AGENDA.length > i ? 'on' : ''}><span className="num">{t}</span><span>{l}{o && <em className="bw-o">Objective {o}</em>}</span></li>)}</ol>
       </section>
 
       <section className="bw-sec bw-home bw-rise" id="homework">

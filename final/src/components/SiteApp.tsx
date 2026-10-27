@@ -1,11 +1,11 @@
 'use client';
 // The site: the front door, behind the password. One short page: when and where, why we are meeting, Ross's four
-// objectives, the morning, and the pre-brief. Nothing scrolls on its own and nothing animates.
+// objectives, the morning (each part tagged with the objective it answers), and the pre-brief. Nothing scrolls on its own and nothing animates.
 import { useEffect, useState } from 'react';
 import FilmModal from './FilmModal';
 import { EVENT, OBJECTIVES, AGENDA, SOURCES, ROSS_GOAL } from '@/lib/content';
 
-// `host` (the host cookie, read on the server) adds THE FLAVOR RACE and the presentation to the bar; the room never
+// `host` (the host cookie, read on the server) adds THE FLAVOR RACE, the presentation and the run sheet to the bar; the room never
 // sees either before 11:48. `prebrief` is the signed pre-brief link for the live session.
 export default function SiteApp({ host = false, prebrief }: { host?: boolean; prebrief: string }) {
   const [race, setRace] = useState(false);
@@ -15,7 +15,7 @@ export default function SiteApp({ host = false, prebrief }: { host?: boolean; pr
     <main className="sp" data-theme="a">
       <header className="sp-bar">
         <div className="sp-lock"><img src="/img/tff-logo.webp" alt="The Flavor Factory" /><span>×</span><b>TheraBreath</b></div>
-        {host ? <nav className="sp-host" aria-label="Host"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host">Open the presentation</a></nav>
+        {host ? <nav className="sp-host" aria-label="Host"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host">Open the presentation</a><a href="/host/run">Run sheet</a></nav>
           : <a className="sp-signin" href="/login?host=1">Host sign-in</a>}
       </header>
 
@@ -28,7 +28,7 @@ export default function SiteApp({ host = false, prebrief }: { host?: boolean; pr
       <section className="sp-sec">
         <h2>Why we&rsquo;re meeting</h2>
         <p className="sp-line">TheraBreath took away the burn. Now let&rsquo;s give more people a reason to want it.</p>
-        <p>In two hours we will look at what is changing in flavor, taste four samples made in your bases, and agree what to develop first, with owners and dates.</p>
+        <p>In two hours we will look at what is changing in flavor, taste four samples made in your bases, turn the best into concepts, and agree a roadmap with owners and dates.</p>
       </section>
 
       <section className="sp-sec">
@@ -39,7 +39,7 @@ export default function SiteApp({ host = false, prebrief }: { host?: boolean; pr
 
       <section className="sp-sec">
         <h2>The morning</h2>
-        <ol className="sp-agenda">{AGENDA.map(([t, l]) => <li key={t}><b>{t}</b><span>{l}</span></li>)}</ol>
+        <ol className="sp-agenda">{AGENDA.map(([t, l, o]) => <li key={t}><b>{t}</b><span>{l}{o && <em className="sp-o">Objective {o}</em>}</span></li>)}</ol>
       </section>
 
       <section className="sp-sec sp-cta">

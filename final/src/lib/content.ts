@@ -236,10 +236,10 @@ export const WHITESPACE = {
 
 export const HORIZONS = [{ id: 'Now', label: 'Now', when: 'The next sample round' }, { id: 'Next', label: 'Next', when: 'After the first results' }, { id: 'Future', label: 'Later', when: 'Platforms to keep exploring' }];
 export const ROLES = [
-  { id: 'Core', job: 'The always-on mints. Retain and carry the clinical claims.' },
-  { id: 'Expanders', job: 'Permanent flavors beyond pure mint. Recruit mild-seekers and adventurous adults.' },
-  { id: 'Explorers', job: 'Limited editions, seasonal drops, exclusives, collaborations. News, shelf space, trial.' },
-  { id: 'Specialists', job: 'Need-states where flavor is part of the benefit: dry mouth, night, kids, sensitive.' },
+  { id: 'Core', job: 'The always-on mints. Retain and carry the clinical claims.', short: 'Always-on mints' },
+  { id: 'Expanders', job: 'Permanent flavors beyond pure mint. Recruit mild-seekers and adventurous adults.', short: 'Permanent, beyond mint' },
+  { id: 'Explorers', job: 'Limited editions, seasonal drops, exclusives, collaborations. News, shelf space, trial.', short: 'Limited editions and drops' },
+  { id: 'Specialists', job: 'Need-states where flavor is part of the benefit: dry mouth, night, kids, sensitive.', short: 'Need-states: dry mouth, night, kids' },
 ];
 
 export const CODE = [
@@ -286,13 +286,51 @@ export const THINK = [
   'The moment in the day when TheraBreath is not there yet, and what it would have to taste like to earn it.',
 ];
 
-// The morning, one line per part (site, pre-brief and the deck's timings). A simple morning: one deck, one paper
-// scorecard for the tasting, and a conversation. No phones.
-export const AGENDA: [string, string][] = [
-  ['10:00', 'Welcome, and your four objectives'],
-  ['10:10', 'Why flavor, and what is changing'],
-  ['10:25', 'Flavor School'],
-  ['10:35', 'Four platforms, then a blind tasting made in your bases'],
-  ['11:00', 'What goes first: Now, Next, Later'],
-  ['11:40', 'Owners, next steps, and a short film to send you to lunch'],
+// The run of show: one source for the agenda (site and pre-brief), the deck's agenda slide and presenter tags, and the
+// hosts' run sheet. `obj` is the objective from Ross's invitation the block answers. `lead` and the notes stay off the
+// site and the pre-brief: they are for the deck and the run sheet. A simple morning: one deck, one paper scorecard for
+// the tasting, and a conversation. No phones.
+export type Block = { id: string; t: string; end: string; title: string; obj?: string; lead: string; slides: string; does: string; handoff?: string };
+export const RUN: Block[] = [
+  { id: 'welcome', t: '10:00', end: '10:10', title: 'Welcome: who we are, and your four objectives', lead: 'Dan',
+    slides: 'Title, Who we are, From July to today, Your four objectives, The morning, You told us (only if pre-brief answers came in)',
+    does: 'Thank Ross for the invitation. Who we are and how we work. July to today. Ross\'s four objectives and his goal. The morning on one slide. The homework answers, if any.',
+    handoff: 'Over to Alex for the market.' },
+  { id: 'market', t: '10:10', end: '10:25', title: 'Your portfolio, the market, and what is changing', obj: '01', lead: 'Alex',
+    slides: 'The portfolio today, 86 of every 100 households, The shelf is a flavor shelf, Seven signals',
+    does: 'Mint is mastered; the next chapter is everything mint makes possible. The household gap. The shelf turns to flavor. Seven signals: the room picks the three that matter most, by show of hands.',
+    handoff: 'Ryan, Flavor School.' },
+  { id: 'school', t: '10:25', end: '10:40', title: 'Flavor School and four opportunity platforms', obj: '02', lead: 'Ryan',
+    slides: 'Flavor School, Four opportunity platforms',
+    does: 'Taste, aroma and feel, and why OXYD-8 is a demanding home for flavor. Then the four platforms: two carry today\'s samples, two are for discussion.' },
+  { id: 'tasting', t: '10:40', end: '11:00', title: 'A blind tasting made in your bases', obj: '02', lead: 'Ryan',
+    slides: 'Blind tasting, The reveal',
+    does: 'Scorecards out. A and B in the Fresh Breath base, C and D in the Kids base. Fruit guesses for C before the reveal. Then the names, and one word for each.',
+    handoff: 'Matt, concepts.' },
+  { id: 'concepts', t: '11:00', end: '11:20', title: 'From samples to concepts: who, when and what role', obj: '03', lead: 'Matt',
+    slides: 'Five questions, Three concepts',
+    does: 'From the scorecards, pick two or three directions. For each: who it is for, the moment, its role in the range, the format, and whether it grows loyal users, new consumers or both. Type each one into a concept card.' },
+  { id: 'pipeline', t: '11:20', end: '11:40', title: 'White space and the pipeline: Now, Next, Later', obj: '04', lead: 'Matt with Alex',
+    slides: 'White space, Now Next Later',
+    does: 'Alex walks the grid: where TheraBreath is today, and where each concept lands (click a cell to mark it). Matt places each concept and platform in Now, Next or Later with a TFF owner, a C&D reviewer, the base and the next sample action.',
+    handoff: 'Dan, the roadmap.' },
+  { id: 'close', t: '11:40', end: '12:00', title: 'Our roadmap, owners and next steps, and a short film to send you to lunch', lead: 'Dan',
+    slides: 'Our innovation roadmap, What happens next, THE FLAVOR RACE',
+    does: 'Read the roadmap back, Now, Next and Later, with owners. The three next steps. Thank the room. At 11:48, THE FLAVOR RACE (2:26), lights down, sound up. Then lunch, hosted by Church & Dwight.' },
 ];
+export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title, b.obj]);
+
+// The four of us, as the pre-brief letter introduces us. Titles only where we have them. [CONFIRM Alex's surname and
+// title, and Ryan's title]
+export const TEAM = [
+  { name: 'Dan Wixted', title: 'President', today: 'Opens and closes the morning' },
+  { name: 'Alex', title: '', today: 'The market, the signals and the white space' },
+  { name: 'Ryan Wixted', title: '', today: 'Flavor School and the tasting' },
+  { name: 'Matt Wixted', title: 'Director of Operations', today: 'The concepts and the pipeline' },
+];
+
+// Ross, in his own words (invitation, September 18, 2026).
+export const ROSS_WORDS = {
+  capabilities: 'creativity, technical expertise, and innovation capabilities',
+  roadmap: 'explore new possibilities and define a compelling innovation roadmap together',
+};

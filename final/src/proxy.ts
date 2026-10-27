@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAuthed, isHost, joinToken, COOKIE, HOST_COOKIE } from '@/lib/auth';
 
-// Host tools, Console and the session list need the host password on top of the room password.
-const HOST_ONLY = (p: string) => p === '/host' || p.startsWith('/console/') || p.startsWith('/sessions');
+// Host tools (the deck and the run sheet), Console and the session list need the host password on top of the room password.
+const HOST_ONLY = (p: string) => p === '/host' || p.startsWith('/host/') || p.startsWith('/console/') || p.startsWith('/sessions');
 
 // Stage, Console and the Playbook need the password. Phones join through signed links instead.
 export async function proxy(req: NextRequest) {
@@ -25,4 +25,4 @@ export async function proxy(req: NextRequest) {
 }
 // THE FLAVOR RACE premieres in the room, so it sits behind the password. The opening film quotes Ross's invitation,
 // so it does too, and the pre-brief reaches it with its signed link.
-export const config = { matcher: ['/', '/host', '/scorecard', '/stage/:path*', '/console/:path*', '/playbook/:path*', '/sessions/:path*', '/media/flavor-race.mp4', '/media/flavor-race-poster.jpg', '/media/opening.mp4', '/media/opening.webm', '/media/film-poster.jpg'] };
+export const config = { matcher: ['/', '/host', '/host/:path*', '/scorecard', '/stage/:path*', '/console/:path*', '/playbook/:path*', '/sessions/:path*', '/media/flavor-race.mp4', '/media/flavor-race-poster.jpg', '/media/opening.mp4', '/media/opening.webm', '/media/film-poster.jpg'] };

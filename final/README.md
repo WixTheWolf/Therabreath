@@ -20,10 +20,12 @@ Ross Conroy's invitation (September 18, 2026) set the brief for the Oral Care R&
 
 The morning now runs on one clean deck and a paper scorecard, with no phones. The front door is one short page.
 
-- `/`: when and where, why we are meeting, Ross's four objectives, the morning in six lines, and the pre-brief.
-- `/host` (host password): the deck. Fourteen slides, one idea each: the title, July to today, the four objectives, "You told us" (only once pre-brief answers exist), the gap, the flavor shelf, seven signals (the room picks three by hand), Flavor School, four platforms, the blind tasting, the reveal, which directions go first, Now, Next and Later (typed in live and saved in the browser), what happens next, and THE FLAVOR RACE. Right arrow, space or a click goes on; left goes back; F is full screen; N shows the speaker notes with times and presenters. `/host?all=1` lays every slide out for a PDF.
+- `/`: when and where, why we are meeting, Ross's four objectives, the morning (each part tagged with the objective it answers), and the pre-brief. Hosts also get THE FLAVOR RACE, the presentation and the run sheet in the bar.
+- `/host` (host password): the deck. Twenty slides (21 once pre-brief answers exist), one idea each, in seven blocks; every slide carries a tag naming the objective it answers and who leads it. Welcome (Dan): title, who we are and how we work (the team and the science and imagination lists, with Ross's "creativity, technical expertise, and innovation capabilities"), July to today, the four objectives, the morning, "You told us". Objective 01 (Alex): the portfolio today, the gap, the flavor shelf, seven signals. Objective 02 (Ryan): Flavor School, four platforms (with the line on what sets them apart), the blind tasting, the reveal. Objective 03 (Matt): five questions that turn a direction into a concept, and three concept cards typed in live. Objective 04 (Matt with Alex): the white-space grid (click a cell to mark where a concept lands) and Now, Next, Later. Close (Dan): the roadmap read back from the board, what happens next, THE FLAVOR RACE. Right arrow, space or a click goes on; left goes back; F is full screen; N shows the speaker notes with times. What the room types (concept cards, white-space marks, the board) is saved in the browser on the presenting laptop; `/host?all=1` lays every slide out for a PDF, filled in; `/host?reset=1` clears it after rehearsal.
+- `/host/run` (host password): the run sheet for Dan, Alex, Ryan and Matt, two Letter pages: 9:30 setup, the run of show with leads, slides, what happens and hand-offs, what to do after the film, and what is still to confirm.
 - `/scorecard` (password): the tasting scorecard, one Letter page per person, with the same questions the phones asked (appeal, feels like TheraBreath, newness, who it is for, advance or not, one word, and the fruits for Sample C).
-- The pre-brief is unchanged except for its promises: no phone votes, no orbs on the screen, no Bench; the Playbook is the write-up sent after the morning.
+- The pre-brief: its promises match the simple morning (no phone votes, no orbs on the screen, no Bench; the Playbook is the write-up sent after the morning), the letter says who leads what, and its agenda carries the objective tags.
+- One source for the morning: `RUN` in `src/lib/content.ts` holds the blocks, times, leads, objectives, slides and hand-offs. The site and pre-brief agenda, the deck's agenda slide and tags, and the run sheet all read it. `TEAM` holds the names and titles on the who-we-are slide (titles only where confirmed).
 
 The live-workshop surfaces below (Stage, Console, phones, the assembled Playbook) are still in the code and still work at their addresses, but nothing links to them any more.
 
@@ -85,8 +87,9 @@ Rehearse: open `/console/ANYCODE`, press **Simulate 12** on each scene, and step
 
 ## PDFs (`deliverables/`, not deployed)
 
-- `The-Future-of-Freshness-Pre-brief.pdf`: the 4-page pre-read for Ross to send on November 3 (regenerated October 27 with the simple-format copy).
-- `The-Future-of-Freshness-Deck.pdf`: the fourteen slides of the simple deck (from `/host?all=1`), the offline fallback.
+- `The-Future-of-Freshness-Pre-brief.pdf`: the 4-page pre-read for Ross to send on November 3 (regenerated October 27 with the who-leads-what letter and the objective tags on the agenda).
+- `The-Future-of-Freshness-Deck.pdf`: the twenty slides of the deck, blank (from `/host?all=1`), the offline fallback. Save a copy to the presenting laptop with the film file.
+- `The-Future-of-Freshness-Run-Sheet.pdf`: the hosts' run sheet, two Letter pages; one each for Dan, Alex, Ryan and Matt.
 - `The-Future-of-Freshness-Tasting-Scorecard.pdf`: the paper scorecard, one Letter page; print one per person.
 
 After the session, export the leave-behind with the room's results (never during a session, because it moves the Stage):
