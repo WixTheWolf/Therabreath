@@ -47,6 +47,7 @@ export default function RoomApp({ code, k }: { code: string; k: string }) {
   return (
     <main className="room" data-theme={theme}>
       <header className="rm-head"><span className="rm-brand"><i />The Future of Freshness</span><span className={'rm-dot' + (status.online ? '' : ' off')} />{me.name}</header>
+      {!status.online && Date.now() - status.lastOk > 4000 && <p className="rm-offline" role="status">Reconnecting. Anything you’ve sent is saved on this phone and goes through as soon as you’re back online.</p>}
       <div className="rm-body" key={scene.id + (room.kind === 'guess' ? Math.floor(s.step / 2) : '')}>{body}</div>
     </main>
   );

@@ -10,8 +10,8 @@
   --serif: 'Newsreader', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --mono: 'Geist Mono', ui-monospace, monospace;
   --ease: cubic-bezier(.22, .8, .2, 1); --ease-in: cubic-bezier(.6, 0, .8, .2);
 }
-[data-theme="a"] { --bg: #F0EEE9; --fg: #0B1B2B; --fg2: rgba(11,27,43,.74); --fg3: rgba(11,27,43,.62); --rule: rgba(11,27,43,.14); --rule2: rgba(11,27,43,.07); --panel: rgba(255,255,255,.6); --panel2: rgba(255,255,255,.85); --accent: #2E8FA8; --accent-ink: #1F6C82; --accent-soft: rgba(108,199,221,.28); --glow: rgba(255,255,255,.9); color-scheme: light; }
-[data-theme="b"] { --bg: #0B1B2B; --fg: #F0EEE9; --fg2: rgba(240,238,233,.76); --fg3: rgba(240,238,233,.58); --rule: rgba(240,238,233,.16); --rule2: rgba(240,238,233,.07); --panel: rgba(255,255,255,.05); --panel2: rgba(255,255,255,.09); --accent: #8FE0F0; --accent-ink: #8FE0F0; --accent-soft: rgba(143,224,240,.2); --glow: rgba(191,239,250,.9); color-scheme: dark; }
+[data-theme="a"] { --bg: #F0EEE9; --fg: #0B1B2B; --fg2: rgba(11,27,43,.74); --fg3: rgba(11,27,43,.66); --rule: rgba(11,27,43,.14); --rule2: rgba(11,27,43,.07); --panel: rgba(255,255,255,.6); --panel2: rgba(255,255,255,.85); --accent: #2E8FA8; --accent-ink: #1F6C82; --accent-soft: rgba(108,199,221,.28); --glow: rgba(255,255,255,.9); color-scheme: light; }
+[data-theme="b"] { --bg: #0B1B2B; --fg: #F0EEE9; --fg2: rgba(240,238,233,.76); --fg3: rgba(240,238,233,.62); --rule: rgba(240,238,233,.16); --rule2: rgba(240,238,233,.07); --panel: rgba(255,255,255,.05); --panel2: rgba(255,255,255,.09); --accent: #8FE0F0; --accent-ink: #8FE0F0; --accent-soft: rgba(143,224,240,.2); --glow: rgba(191,239,250,.9); color-scheme: dark; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: var(--bg, #0B1B2B); color: var(--fg, #F0EEE9); }
@@ -34,6 +34,14 @@ a { color: inherit; }
 .src { font: 400 18px/1.45 var(--mono); color: var(--fg3); letter-spacing: .01em; }
 .num { font-family: var(--serif); font-weight: 300; letter-spacing: -.04em; font-feature-settings: "lnum", "tnum"; }
 .accent { color: var(--accent); }
+
+/* The browser's own surfaces in the house colors: the caret, link underlines, and a page scrollbar that matches the
+   page (the pre-brief and the light phone screens sit inside the dark root, so they switch the scheme back). */
+input, textarea { caret-color: var(--accent); }
+::placeholder { color: var(--fg3); opacity: 1; }
+a { text-underline-offset: .18em; text-decoration-thickness: 1px; }
+html { scrollbar-color: rgba(143,224,240,.35) #0B1B2B; }
+html:has(.brief-web), html:has(.room[data-theme="a"]) { color-scheme: light; scrollbar-color: rgba(11,27,43,.3) #F0EEE9; }
 
 /* A visible focus ring for keyboard users, everywhere. */
 :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible { outline: 2px solid var(--accent, #6CC7DD); outline-offset: 3px; }

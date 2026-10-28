@@ -35,6 +35,7 @@
 .progress > div span { margin-right: 10px; color: var(--fg3); }
 .progress > div.on { color: var(--fg); }
 .progress > div.done { color: var(--fg2); }
+[data-theme="b"] .progress > div, [data-theme="b"] .chrome-top { text-shadow: 0 1px 10px rgba(0,0,0,.55); }
 .stage-src { position: absolute; left: 120px; bottom: 118px; max-width: 1500px; z-index: 5; }
 .timer-badge { position: absolute; right: 120px; top: 92px; z-index: 30; display: flex; align-items: center; gap: 14px; padding: 12px 22px; border-radius: 40px; background: var(--panel2); backdrop-filter: blur(14px); border: 1px solid var(--rule); font: 400 34px/1 var(--serif); font-feature-settings: "tnum"; }
 .timer-badge i { width: 26px; height: 26px; border-radius: 50%; background: conic-gradient(var(--accent) var(--p), var(--rule) 0); }
@@ -193,12 +194,12 @@
 /* flavor school */
 .venn { position: absolute; left: 50%; top: 440px; width: 1100px; height: 520px; transform: translateX(-50%); }
 .vc { position: absolute; width: 480px; height: 480px; border-radius: 50%; display: grid; place-items: center; mix-blend-mode: screen; }
-.vc0 { left: 60px; top: 40px; background: radial-gradient(circle, rgba(247,182,210,.5), rgba(247,182,210,.1) 70%); border: 1px solid rgba(247,182,210,.5); }
-.vc1 { left: 310px; top: 0; background: radial-gradient(circle, rgba(191,233,242,.5), rgba(191,233,242,.1) 70%); border: 1px solid rgba(191,233,242,.5); }
-.vc2 { left: 560px; top: 40px; background: radial-gradient(circle, rgba(200,184,255,.5), rgba(200,184,255,.1) 70%); border: 1px solid rgba(200,184,255,.5); }
+.vc0 { left: 60px; top: 40px; background: radial-gradient(circle, rgba(247,182,210,.34), rgba(247,182,210,.1) 70%); border: 1px solid rgba(247,182,210,.5); }
+.vc1 { left: 310px; top: 0; background: radial-gradient(circle, rgba(191,233,242,.3), rgba(191,233,242,.1) 70%); border: 1px solid rgba(191,233,242,.5); }
+.vc2 { left: 560px; top: 40px; background: radial-gradient(circle, rgba(200,184,255,.34), rgba(200,184,255,.1) 70%); border: 1px solid rgba(200,184,255,.5); }
 .vc-in { text-align: center; max-width: 280px; display: flex; flex-direction: column; gap: 12px; }
-.vc-in .k { font-size: 15px; }
-.vc-in p { font: 400 21px/1.35 var(--sans); color: var(--fg2); }
+.vc-in .k { font-size: 15px; color: var(--fg); }
+.vc-in p { font: 400 21px/1.35 var(--sans); color: var(--fg); }
 .cool-copy { position: absolute; left: 120px; top: 190px; width: 560px; }
 .cool-copy .h1 { margin: 30px 0 40px; }
 .cool-plot { position: absolute; right: 100px; top: 250px; overflow: visible; }

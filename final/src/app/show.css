@@ -235,14 +235,14 @@
 .dy-col.any { border-left: 1px dashed var(--rule); }
 .dy-bar { position: relative; align-self: end; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 70px; }
 .dy-bar i { display: block; width: 38px; border-radius: 8px 8px 2px 2px; background: linear-gradient(0deg, #F4B860, #F7D9A2); transition: height .9s var(--ease); }
-.dy-bar b { position: absolute; bottom: calc(100% - 6px); font-size: 22px; color: #B86E12; }
+.dy-bar b { position: absolute; bottom: calc(100% - 6px); font-size: 22px; color: #8A4E08; }
 .dy-dot { position: relative; z-index: 1; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--fg3); }
 .dy-col.top .dy-dot { border-color: #E39A35; box-shadow: 0 0 18px rgba(244, 184, 96, .9); }
 .dy-name { margin-top: 12px; font: 500 19px/1.15 var(--sans); color: var(--fg2); }
 .dy-col.top .dy-name { color: var(--fg); }
 .dy-now { margin-top: 10px; min-height: 30px; padding: 4px 12px; border-radius: 99px; font: 500 16px/1.4 var(--sans); font-style: normal; color: transparent; transition: color .6s, background .6s; }
 .dy-now.on { color: #0B1B2B; background: linear-gradient(135deg, var(--glacier), var(--accent)); }
-.dy-now.open { color: #B86E12; background: rgba(244, 184, 96, .16); }
+.dy-now.open { color: #8A4E08; background: rgba(244, 184, 96, .16); }
 .dy-row { display: grid; grid-template-columns: 16px 1fr; column-gap: 14px; align-content: center; }
 .dy-row i { grid-row: span 2; align-self: center; width: 16px; height: 16px; border-radius: 50%; background: var(--rc); box-shadow: 0 0 14px var(--rc); }
 .dy-row b { font: 300 27px/1.1 var(--serif); color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
