@@ -4,7 +4,7 @@
 // the end. An optional drawer holds the vocabulary of freshness, science and imagination, and the three shifts.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import FilmModal from './FilmModal';
-import { EVENT, PRIMARY_TERRITORIES, SAMPLES, VOCAB, SHIFTS, SCIENCE, IMAGINATION, AGENDA, OBJECTIVES, TOPICS, RUN, ROSS_GOAL, GAP, SOURCES, TEAM } from '@/lib/content';
+import { EVENT, PRIMARY_TERRITORIES, SAMPLES, VOCAB, SHIFTS, SCIENCE, IMAGINATION, AGENDA, OBJECTIVES, TOPICS, RUN, ROSS_GOAL, GAP, SOURCES, TEAM, ABOUT } from '@/lib/content';
 
 const clamp = (x: number, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const ease = (x: number) => 1 - Math.pow(1 - clamp(x), 3);
@@ -245,6 +245,7 @@ function Team() {
   return (
     <section id="team" className="ws-section ws-team">
       <div className="st-k">The Flavor Factory · Norco, California</div><h2>Who you’ll<br /><em>be meeting.</em></h2>
+      <p className="ws-lead st-rise">{ABOUT}</p>
       <div className="ws-lab st-rise"><img src="/img/lab-bench.webp" alt="" loading="lazy" /></div>
       <div className="ws-grid ws-four">{TEAM.map((t) => <article className="ws-card st-rise" key={t.name}><h3>{t.name}</h3><small>{t.title}</small></article>)}</div>
     </section>

@@ -44,7 +44,7 @@ const SHOW: Row[] = [
   { id: 'title', act: 'Welcome', chapter: -1, theme: 'b', builds: 0, title: 'The Future of Freshness', block: 'welcome', room: W(),
     points: ['At 10:00, welcome everyone and thank Ross for inviting us.', 'Set up the two hours: the four things Ross asked for, four samples to taste and a plan to leave with.', 'Let them know phones will come out a few times, for the votes and the tasting.'] },
   { id: 'team', act: 'Welcome', chapter: -1, theme: 'a', builds: 0, title: 'Who we are', block: 'welcome', room: W(),
-    points: ['Introduce the four of us and what each of us does day to day.', 'Ross asked to see our creativity, technical expertise and innovation capabilities. This morning is our chance to show all three.'] },
+    points: ['Introduce the four of us and what each of us does day to day.', 'Say a word about the range of our work: food and beverage, confectionery, pharmaceutical, nutraceutical and oral care, and how working across all of it feeds what we bring to TheraBreath.', 'Ross asked to see our creativity, technical expertise and innovation capabilities. This morning is our chance to show all three.'] },
   { id: 'july', act: 'Welcome', chapter: -1, theme: 'a', builds: 1, title: 'From July to today', block: 'welcome', room: W(),
     points: ['When they came to Norco in July, we talked about resiliency, innovation, operations and partnership.', 'Today is about the fifth: growth.'] },
   { id: 'brief', act: 'Welcome', chapter: -1, theme: 'a', builds: 5, title: 'Your four objectives', block: 'welcome', room: W(),

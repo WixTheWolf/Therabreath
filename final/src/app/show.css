@@ -27,7 +27,7 @@
 .st::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 88%, transparent) 42%, color-mix(in oklab, var(--bg) 20%, transparent) 70%, transparent), linear-gradient(0deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 80%, transparent) 26%, transparent 46%); }
 .st .pad { z-index: 2; }
 .st .h1 { margin-top: 4px; font-size: 120px; }
-.st-lede { max-width: 980px; margin-top: 26px; font-size: 32px; }
+.st-lede { max-width: 1080px; margin-top: 26px; font-size: 32px; }
 .st-two { position: absolute; left: 120px; width: 1060px; top: 520px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .st-panel { padding: 26px 28px 28px; border-radius: 24px; background: color-mix(in oklab, var(--panel2) 92%, transparent); border: 1px solid var(--rule); backdrop-filter: blur(16px); position: relative; overflow: hidden; }
 .st-panel::before { content: ''; position: absolute; inset: -40% -10% auto auto; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, var(--tint), transparent 65%); opacity: .55; pointer-events: none; }

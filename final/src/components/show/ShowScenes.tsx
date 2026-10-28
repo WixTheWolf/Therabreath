@@ -10,7 +10,7 @@ import { teamConcepts } from '../scenes/CoCreate';
 import { candidates } from '../scenes/Build';
 import { useQR } from '../scenes/Opening';
 import {
-  EVENT, OBJECTIVES, TOPICS, RUN, TEAM, SCIENCE, IMAGINATION, ROSS_WORDS, SIGNALS, SAMPLES, PRIMARY_TERRITORIES as PLATFORMS,
+  EVENT, OBJECTIVES, TOPICS, RUN, TEAM, ABOUT, SCIENCE, IMAGINATION, ROSS_WORDS, SIGNALS, SAMPLES, PRIMARY_TERRITORIES as PLATFORMS,
   SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY,
 } from '@/lib/content';
 import { tallyPick, ranked, tasteSummary, uid, SessionState } from '@/lib/state';
@@ -50,7 +50,7 @@ export function Team() {
       <div className="pad">
         <Enter i={0}><div className="k">The Flavor Factory · Norco, California</div></Enter>
         <Enter i={1}><h2 className="h1">Who we are</h2></Enter>
-        <Enter i={2}><p className="lede st-lede">We make flavors for oral care. Half the job is science, making sure a flavor survives the bottle. The other half is knowing what people actually want to taste.</p></Enter>
+        <Enter i={2}><p className="lede st-lede">{ABOUT}</p></Enter>
         <div className="st-two">
           <Enter i={3} className="st-panel sci"><span className="k">What we test in the lab</span><div className="st-chips">{SCIENCE.map((x) => <span key={x}>{x}</span>)}</div></Enter>
           <Enter i={4} className="st-panel ima"><span className="k">What we bring in from outside oral care</span><div className="st-chips">{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</div></Enter>
