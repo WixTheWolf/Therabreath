@@ -26,21 +26,21 @@
 .st-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: slowPush 30s ease-out both; }
 .st::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 88%, transparent) 42%, color-mix(in oklab, var(--bg) 20%, transparent) 70%, transparent), linear-gradient(0deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 80%, transparent) 26%, transparent 46%); }
 .st .pad { z-index: 2; }
-.st .h1 { margin-top: 4px; font-size: 120px; }
-.st-lede { max-width: 1080px; margin-top: 26px; font-size: 32px; }
-.st-two { position: absolute; left: 120px; width: 1060px; top: 520px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-.st-panel { padding: 26px 28px 28px; border-radius: 24px; background: color-mix(in oklab, var(--panel2) 92%, transparent); border: 1px solid var(--rule); backdrop-filter: blur(16px); position: relative; overflow: hidden; }
+.st .h1 { margin-top: 4px; font-size: 108px; }
+.st-lede { max-width: 1080px; margin-top: 16px; font-size: 32px; }
+.st-two { position: absolute; left: 120px; width: 1060px; top: 526px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.st-panel { padding: 22px 26px 22px; border-radius: 24px; background: color-mix(in oklab, var(--panel2) 92%, transparent); border: 1px solid var(--rule); backdrop-filter: blur(16px); position: relative; overflow: hidden; }
 .st-panel::before { content: ''; position: absolute; inset: -40% -10% auto auto; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, var(--tint), transparent 65%); opacity: .55; pointer-events: none; }
 .st-panel.sci { --tint: rgba(108,199,221,.45); }
 .st-panel.ima { --tint: rgba(244,184,96,.45); }
 .st-panel .k { position: relative; font-size: 15px; }
-.st-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; position: relative; }
+.st-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; position: relative; }
 .st-chips span { padding: 8px 15px; border-radius: 30px; border: 1px solid var(--rule); background: rgba(255,255,255,.6); font: 400 18px/1 var(--sans); color: var(--fg2); }
-.st-people { position: absolute; left: 120px; right: 120px; top: 812px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; }
+.st-people { position: absolute; left: 120px; right: 120px; top: 836px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; }
 .st-person { padding-top: 20px; border-top: 1px solid var(--fg3); display: flex; flex-direction: column; gap: 12px; }
 .st-person b { font: 300 46px/1 var(--serif); letter-spacing: -.015em; }
 .st-person .k { font-size: 16px; color: var(--fg3); }
-.st-ask { position: absolute; left: 120px; right: 120px; top: 965px; }
+.st-ask { position: absolute; left: 120px; right: 120px; top: 982px; }
 .st-ask p { font: 300 28px/1.35 var(--serif); color: var(--fg2); }
 .st-ask .it { color: var(--accent); }
 
