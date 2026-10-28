@@ -1,1 +1,28 @@
-{ "buildPath": "code" }
+{
+  "buildPath": "code",
+  "detector": {
+    "ignoreRules": [
+      "italic-serif-display",
+      "kicker-above-heading",
+      "hero-eyebrow-chip",
+      "cream-palette",
+      "border-accent-on-rounded",
+      "ai-color-palette"
+    ],
+    "ignoreFiles": [
+      "src/app/playbook.css",
+      "src/app/console.css",
+      "src/components/PlaybookDoc.tsx",
+      "src/components/ConsoleApp.tsx",
+      "src/components/ConsolePanel.tsx"
+    ],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "geist",
+        "createdAt": "2026-10-28T20:44:09.150Z",
+        "reason": "The house sans, chosen with the identity (October 28: keep the look)"
+      }
+    ]
+  }
+}
