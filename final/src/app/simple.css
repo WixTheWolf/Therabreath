@@ -43,5 +43,5 @@ html:has(.rs), html:has(.rs) body { background: #fff; }
 .rs-run td i { display: block; font-style: italic; color: #2E8FA8; margin-top: 3px; }
 .rs-t { white-space: nowrap; font: 500 9pt/1.3 var(--mono); width: .7in; }
 .rs-t small { font-size: 7pt; }
-.rs-run td:nth-child(3) { width: 2.1in; }
+.rs-run td:nth-child(3) { width: 3.3in; }
 .rs-two { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }

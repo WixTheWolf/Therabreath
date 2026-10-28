@@ -46,11 +46,11 @@ export function Gap({ step }: SceneProps) {
     <>
       <Light scene="glasses" theme="a" camera={GLASS_CAM} frame={(t) => ({ fill: [Math.max(0.001, 0.65 * ease((t - 0.4) / 2.6)), Math.max(0.001, 0.14 * ease((t - 0.4) / 2.6))], glow: stepRef >= 1 ? 1 : 0 })} onStart={() => setT0(performance.now())} />
       <div className="gap-copy">
-        <div className="k">Household penetration · US</div>
+        <div className="k">US households that buy mouthwash</div>
         <R b={1} step={step}><h1 className="h1"><span className="it">86</span> out of 100 US households don&rsquo;t buy TheraBreath yet.</h1></R>
         <R b={2} step={step}><div className="gap-second it">Flavor is one of the best ways to reach them.</div></R>
         <Src k="q2call" extra="TheraBreath 14%, mouthwash category 65%" style={{ position: 'absolute', top: 700, left: 0, width: 760 }} />
-        <Enter i={1} className="gap-share">TheraBreath had <b className="num">25.3%</b> of US mouthwash in Q2 2026, up 4.5 points, and is number 2 in the category. Most households still haven&rsquo;t tried it.</Enter>
+        <Enter i={1} className="gap-share">TheraBreath had <b className="num">25.3%</b> of US mouthwash in Q2 2026, up 4.5 points, which makes it number 2 in the category. Even so, most households still don’t buy it.</Enter>
       </div>
       <div className="glabel" style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}<sup>%</sup></div><div className="who">Mouthwash category</div></div>
       <div className="glabel" style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}<sup>%</sup></div><div className="who">TheraBreath</div></div>
@@ -113,7 +113,7 @@ export function Market({ step }: SceneProps) {
           </R>
         ))}
       </div>
-      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">Where you stand</span><p>TheraBreath has been alcohol-free and dye-free from the start, it has OXYD-8, and it already has a kids line. <span className="it">So the question is how flavor keeps TheraBreath ahead.</span></p></R>
+      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">Where you stand</span><p>TheraBreath has been alcohol-free and dye-free from the start. It has OXYD-8, and it already has a kids line. <span className="it">So the real question is how flavor keeps it ahead.</span></p></R>
     </div>
   );
 }
@@ -126,7 +126,7 @@ export function Signals({ step }: SceneProps) {
     <div className="signal sigs" style={{ ['--h' as any]: sig ? sig.hue : 190 }}>
       <div className="sig-light" style={{ opacity: sig ? 1 : 0.35 }} />
       <div className="pad" style={{ position: 'relative' }}>
-        <Enter i={0}><div className="k">What we are seeing</div></Enter>
+        <Enter i={0}><div className="k">What we’re seeing</div></Enter>
         <Enter i={1}><h2 className="h2">Seven trends we think matter <span className="it">for oral care.</span></h2></Enter>
         <div className="sigs-list">
           {SIGNALS.map((x, i) => <div key={x.id} className={'sl' + (i === k - 1 ? ' on' : i < k - 1 ? ' past' : '')} style={{ ['--h' as any]: x.hue, ['--i' as any]: i }}><span className="num">0{x.n}</span><b>{x.title}</b></div>)}
@@ -139,7 +139,7 @@ export function Signals({ step }: SceneProps) {
             <div className="sig-so"><span className="k">What it could mean for TheraBreath</span><div className="h3 it">{sig.so}</div></div>
           </div>
         )}
-        {!sig && <div className="sigs-hint">Each one comes with two public sources and what we think it means for TheraBreath. You will vote on them next.</div>}
+        {!sig && <div className="sigs-hint">Each one comes with two public sources and our take on what it means for TheraBreath. You’ll vote on them right after.</div>}
       </div>
     </div>
   );

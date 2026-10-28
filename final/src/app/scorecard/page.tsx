@@ -12,20 +12,20 @@ export default function Scorecard() {
         <label>Name <i /></label>
         <PrintButton />
       </header>
-      <p className="sc-how">Taste each sample, rinse, then score it. 1 is low, 5 is high. Names are revealed after everyone has scored.</p>
+      <p className="sc-how">Taste each sample, rinse, then score it from 1 (low) to 5 (high). We’ll reveal the names once everyone has scored.</p>
       {SAMPLES.map((x) => (
         <section key={x.code} className="sc-card">
           <div className="sc-id"><b>{x.code}</b><small>{x.base}</small></div>
           <div className="sc-body">
             {SCALES.map((l) => <div key={l} className="sc-row"><span>{l}</span><div className="sc-dots">{[1, 2, 3, 4, 5].map((n) => <i key={n}>{n}</i>)}</div></div>)}
-            <div className="sc-row"><span>Who would buy it</span><div className="sc-boxes">{WHO_CHIPS.map((w) => <i key={w}>{w}</i>)}</div></div>
+            <div className="sc-row"><span>Who would buy it?</span><div className="sc-boxes">{WHO_CHIPS.map((w) => <i key={w}>{w}</i>)}</div></div>
             <div className="sc-row"><span>Should it get a next round?</span><div className="sc-boxes">{['Yes', 'Maybe', 'No'].map((w) => <i key={w}>{w}</i>)}</div></div>
-            <div className="sc-row"><span>One word for it</span><u /></div>
+            <div className="sc-row"><span>Sum it up in one word</span><u /></div>
             {x.mystery && <div className="sc-row"><span>Which fruits can you taste?</span><u /></div>}
           </div>
         </section>
       ))}
-      <p className="sc-foot">Confidential. These are development samples made for this session, not finished products.</p>
+      <p className="sc-foot">Confidential. These are development samples made for this session. They aren’t finished products.</p>
     </main>
   );
 }

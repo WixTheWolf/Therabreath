@@ -17,7 +17,7 @@ export function MapScene({ step }: SceneProps) {
       <div className="map-copy">
         <Enter i={0}><div className="k">Four directions</div></Enter>
         <Enter i={1}><h2 className="h1">Where we think <span className="it">flavor could go.</span></h2></Enter>
-        <R b={2} step={step}><p className="lede" style={{ maxWidth: 460, marginTop: 36 }}>Two of these are in today&rsquo;s tasting. We want your opinion on the other two.</p></R>
+        <R b={2} step={step}><p className="lede" style={{ maxWidth: 460, marginTop: 36 }}>Two of these are in today’s tasting. For the other two, we just want your opinion.</p></R>
         <div className="src" style={{ marginTop: 40 }}>Our view, not data.</div>
       </div>
       <div className={'map-cards' + (step >= 3 ? ' on' : '')}>
@@ -106,12 +106,12 @@ export function Territory({ s, step, idx }: SceneProps) {
         <R b={0} d={1400} step={step} className="terr-q"><span className="k">Our question</span><b>{t.q}</b></R>
       </div>
       <div className={'terr-compass' + (step >= 1 ? ' up' : '')}>
-        <Compass prof={t.prof[stage]} color={t.palette[1]} size={440} stage={['First impression', 'Main flavor', 'Finish'][stage] + ' · grey: your core mint'} />
+        <Compass prof={t.prof[stage]} color={t.palette[1]} size={440} stage={['First impression', 'Main flavor', 'Finish'][stage] + ' · gray: your core mint'} />
       </div>
       <R b={1} step={step} className="terr-card">
         <div><span className="k">Where it stands</span><p>{t.why}</p>{t.fitNote && <p className="src" style={{ marginTop: 12 }}>{t.fitNote}</p>}</div>
-        <div><span className="k">What it tastes like</span><p>{t.signature}</p>{SAMPLES.some((x) => x.territory === t.id) && <p>We will tell you which samples these are after the tasting.</p>}</div>
-        <div><span className="k">Who it is for</span><p>{t.who}</p></div>
+        <div><span className="k">What it tastes like</span><p>{t.signature}</p>{SAMPLES.some((x) => x.territory === t.id) && <p>We’ll tell you which samples these are after the tasting.</p>}</div>
+        <div><span className="k">Who it’s for</span><p>{t.who}</p></div>
       </R>
     </div>
   );
@@ -185,7 +185,7 @@ export function Matrix({ s, step }: SceneProps) {
             <span>{p.sum.n ? <>Loyal {p.sum.feels.toFixed(1)} · New {p.sum.newness.toFixed(1)} · Appeal {p.sum.appeal.toFixed(1)}</> : 'Not scored'}</span>
           </div>
         ))}
-        <p className="mx-take">{lead ? <><b>{lead.name}</b> came closest to doing both. </> : null}These are first reactions from this group, not consumer research.</p>
+        <p className="mx-take">{lead ? <><b>{lead.name}</b> came closest to doing both. </> : null}Remember, these are this group’s first reactions, not consumer research.</p>
       </R>
     </div>
   );

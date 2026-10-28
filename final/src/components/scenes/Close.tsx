@@ -58,7 +58,7 @@ export function Next({ s, step }: SceneProps) {
   return (
     <div className="pad next">
       <Enter i={0}><div className="k">What happens next</div></Enter>
-      <Enter i={1}><h2 className="h1">Thank you. <span className="it">Here is what happens next.</span></h2></Enter>
+      <Enter i={1}><h2 className="h1">Thank you. <span className="it">Here’s what happens next.</span></h2></Enter>
       <div className="steps">
         {NEXT_STEPS.map((n, i) => (
           <R key={n.t} b={i + 1} step={step} className="nstep"><span className="num">0{i + 1}</span><b className="h3">{n.t}</b>
@@ -80,7 +80,7 @@ export function Lunch({ s }: SceneProps) {
       <div className="lunch-in">
         <div className="k">TheraBreath × The Flavor Factory</div>
         <h1 className="hero center">Lunch.</h1>
-        <p className="sub it center">Thank you for the morning.</p>
+        <p className="sub it center">Thank you for spending the morning with us.</p>
       </div>
     </div>
   );

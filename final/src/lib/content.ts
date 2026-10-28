@@ -61,7 +61,7 @@ export const CHAPTERS = ['Signals', 'Territories', 'Concepts', 'Pipeline', 'Flav
 export const SURVEY = {
   consumer: { q: 'Which consumer do you most want TheraBreath to win next?', options: ['The 86% who don\u2019t buy it yet', 'People who want it milder', 'Gen Z', 'Families with kids and tweens', 'People 55 and over', 'People on GLP-1s or with dry mouth', 'Shoppers outside the US'] },
   moment: { q: 'Which moment of the day is TheraBreath missing?', options: ['Wake-up', 'After coffee', 'After lunch', 'Afternoon meeting', 'After the gym', 'Before going out', 'Wind-down', 'On the go'] },
-  veto: { q: 'Name one flavor you would never approve for TheraBreath, and why.' },
+  veto: { q: 'What’s one flavor you’d never sign off on for TheraBreath, and why?' },
 };
 
 export const CLIMB: { label: string; v: number; src: string; note?: string; approx?: boolean }[] = [
@@ -103,22 +103,22 @@ export const PORTFOLIO: Variant[] = [
 ];
 
 export const MARKET = [
-  { when: 'July 2025', who: 'Listerine', what: 'Watermelon Mint, alcohol-free, limited time, Target exclusive.', src: 'dtoday25' },
-  { when: 'March 2026', who: 'Listerine', what: 'Citrus Mint with grapefruit and yuzu, alcohol-free, Target.', src: 'dtoday26' },
-  { when: 'March 2026', who: 'TheraBreath', what: 'Eucalyptus Mint, Target exclusive.', src: 'drbicuspid' },
-  { when: 'June 2026', who: 'Listerine', what: 'An intensity range including Extra Mild, citing that 54% of Americans want a milder-tasting mouthwash.', src: 'kenvue' },
-  { when: '2025 to 2026', who: 'Hismile', what: 'Toothpaste as entertainment: collaborations with Lucky Charms, Reese’s, KFC and more.', src: 'hismile' },
+  { when: 'July 2025', who: 'Listerine', what: 'Watermelon Mint. Alcohol-free, for a limited time, and only at Target.', src: 'dtoday25' },
+  { when: 'March 2026', who: 'Listerine', what: 'Citrus Mint, with grapefruit and yuzu. Alcohol-free, at Target.', src: 'dtoday26' },
+  { when: 'March 2026', who: 'TheraBreath', what: 'Eucalyptus Mint, only at Target.', src: 'drbicuspid' },
+  { when: 'June 2026', who: 'Listerine', what: 'A range of intensities, down to Extra Mild, pointing to the 54% of Americans who want a milder-tasting mouthwash.', src: 'kenvue' },
+  { when: '2025 to 2026', who: 'Hismile', what: 'Toothpaste as entertainment, with tie-ins to Lucky Charms, Reese’s, KFC and more.', src: 'hismile' },
 ];
 
 export type Signal = { id: string; n: number; title: string; proofs: { t: string; src: string }[]; so: string; hue: number };
 export const SIGNALS: Signal[] = [
-  { id: 'mild', n: 1, hue: 190, title: 'People want milder mouthwash.', proofs: [{ t: '54% of Americans want a milder-tasting mouthwash.', src: 'kenvue' }, { t: 'Gentleness is now a category-wide claim, a space TheraBreath’s “no burn” promise opened.', src: 'kenvue' }], so: 'Offer intensity as a choice people make.' },
-  { id: 'warm', n: 2, hue: 28, title: 'Warm spices are showing up in fresh flavors.', proofs: [{ t: 'Frosted Star Anise is the 2026 Flavor of the Year. Two-thirds of consumers recognize star anise, only 34% have tasted it.', src: 'dsm' }, { t: 'Sweet heat (“swicy”) keeps growing.', src: 'kerry' }], so: 'Room for a warm, spiced flavor for adults that still finishes cool.' },
-  { id: 'fruit', n: 3, hue: 330, title: 'Fruit flavors are growing up.', proofs: [{ t: 'Black Currant is McCormick’s 2026 Flavor of the Year.', src: 'mccormick' }, { t: 'Dragon fruit is a breakout global flavor; hibiscus and orange blossom are future flavors.', src: 'kerry' }], so: 'Fruit-forward mints made for adults.' },
-  { id: 'botanical', n: 4, hue: 140, title: 'Botanicals are showing up in daily routines.', proofs: [{ t: 'TheraBreath Eucalyptus Mint and Overnight Chamomile Mint are already on shelf: botanical names, and one of them names a moment.', src: 'drbicuspid' }, { t: '“Swishy Time” reframed rinsing as a self-care ritual, and the share line followed.', src: 'warc' }], so: 'Flavors tied to a time of day, like morning or bedtime.' },
-  { id: 'allure', n: 5, hue: 36, title: 'Dessert flavors are moving into oral care.', proofs: [{ t: 'Dessert-inspired oral care flavors are a rising trend.', src: 'vml' }, { t: 'Gen Z treats flavor as identity.', src: 'vml' }], so: 'A sweeter start can work if the finish is clean.' },
-  { id: 'sensation', n: 6, hue: 210, title: 'People judge whether it works by how it feels.', proofs: [{ t: 'Tingling, warming, salivating and fizzing are used to signal that a product is working.', src: 'pf' }, { t: 'Next-generation coolers promise fast onset and long linger (for example Optacool Fuji).', src: 'symrise' }], so: 'Cooling, tingle and warmth are part of the product, so we design them on purpose.' },
-  { id: 'mouths', n: 7, hue: 260, title: 'More people live with dry mouth or changed taste.', proofs: [{ t: '1 in 8 US adults currently take a GLP-1; users commonly report dry mouth, bad breath and taste changes, though studies have not established that the drugs cause them.', src: 'carequest' }, { t: 'More than 25 million Americans live with dry mouth.', src: 'pf' }], so: 'Flavors made for dry mouth and changed taste could be a line of their own.' },
+  { id: 'mild', n: 1, hue: 190, title: 'People want milder mouthwash.', proofs: [{ t: '54% of Americans want a milder-tasting mouthwash.', src: 'kenvue' }, { t: 'Everyone in the category talks about gentleness now. TheraBreath’s “no burn” promise opened that door.', src: 'kenvue' }], so: 'Let people choose how strong they want it.' },
+  { id: 'warm', n: 2, hue: 28, title: 'Warm spices are showing up in fresh flavors.', proofs: [{ t: 'Frosted Star Anise is dsm-firmenich’s 2026 Flavor of the Year. Two in three consumers recognize star anise, but only 34% have actually tasted it.', src: 'dsm' }, { t: 'Sweet heat, or “swicy,” keeps on growing.', src: 'kerry' }], so: 'There’s room for a warm, spiced flavor for adults, as long as it still finishes cool.' },
+  { id: 'fruit', n: 3, hue: 330, title: 'Fruit flavors are growing up.', proofs: [{ t: 'Black Currant is McCormick’s 2026 Flavor of the Year.', src: 'mccormick' }, { t: 'Dragon fruit is breaking out around the world, and hibiscus and orange blossom are the ones to watch.', src: 'kerry' }], so: 'Fruit-forward mints, made with adults in mind.' },
+  { id: 'botanical', n: 4, hue: 140, title: 'Botanicals are showing up in daily routines.', proofs: [{ t: 'TheraBreath’s Eucalyptus Mint and Overnight Chamomile Mint are already on shelf. Both lead with a botanical, and one is named for a time of day.', src: 'drbicuspid' }, { t: '“Swishy Time” turned rinsing into a small self-care ritual, and share went up with it.', src: 'warc' }], so: 'Flavors made for a particular time of day, like first thing in the morning or right before bed.' },
+  { id: 'allure', n: 5, hue: 36, title: 'Dessert flavors are moving into oral care.', proofs: [{ t: 'Dessert-inspired flavors are on the rise in oral care.', src: 'vml' }, { t: 'Gen Z treats flavor as part of who they are.', src: 'vml' }], so: 'A sweeter start can work, as long as the finish is clean.' },
+  { id: 'sensation', n: 6, hue: 210, title: 'People judge whether it works by how it feels.', proofs: [{ t: 'Tingling, warming, salivating and fizzing all tell people a product is working.', src: 'pf' }, { t: 'New coolers, such as Symrise’s Optacool Fuji, promise a fast hit and a long linger.', src: 'symrise' }], so: 'Cooling, tingle and warmth are part of the product, so they deserve as much design as the taste.' },
+  { id: 'mouths', n: 7, hue: 260, title: 'More people live with dry mouth or changed taste.', proofs: [{ t: 'Right now, 1 in 8 US adults takes a GLP-1. Many report dry mouth, bad breath or changes in taste, though studies haven’t shown that the drugs cause them.', src: 'carequest' }, { t: 'More than 25 million Americans live with dry mouth.', src: 'pf' }], so: 'Flavors made for dry mouth and changed taste could become a line of their own.' },
 ];
 
 export type Territory = {
@@ -145,27 +145,27 @@ export const TERRITORIES: Territory[] = [
 // Four primary platforms for the November 9 live workshop. Legacy worlds remain available in the exploration tools.
 const platform = (id: string, changes: Partial<Territory>): Territory => ({ ...TERRITORIES.find(t => t.id === id)!, ...changes });
 export const PRIMARY_TERRITORIES: Territory[] = [
-  platform('warmcool', { n: 1, name: 'Plant-Powered Freshness', hero: 'Blossom Mint + Grove Mint', promise: 'Citrus, herbs and florals, finished with mint.', why: 'We made two botanical samples for today in your Fresh Breath base.', flavors: ['Grapefruit, Lavender, Rose, Spearmint, Wintergreen', 'Spearmint, Peppermint, Wintergreen, Rosemary, Ylang Ylang, Eucalyptus'], signature: 'Bright citrus and herbs, with a mint finish.', who: 'Adults who want something other than straight mint.', fit: 'Screen first', fitNote: 'These are development samples. We are still checking how they hold up in the base.', image: '/img/botanicals.webp', palette: ['#F4D5E0', '#A0679F', '#7DB58A'], dark: false, arc: ['Citrus', 'Herbs and florals', 'Mint'], moment: 'Every day', q: 'Which of the two samples feels more like TheraBreath?', opts: ['Blossom Mint', 'Grove Mint', 'Both'] }),
-  platform('bright', { n: 2, name: 'Global Brightness', promise: 'Citrus people already know, taken somewhere new.', why: 'Not in today’s tasting. We would like your read on it.', signature: 'A burst of citrus, then a cold, clean finish.', who: 'Morning rinsers, people heading out, and international markets.', fit: 'Screen first', fitNote: '', arc: ['Citrus', 'Yuzu', 'Cold and clean'], moment: 'Mornings and going out', q: 'Is there a citrus flavor that could sit next to your mints?' }),
-  platform('botanical', { n: 3, name: 'Modern Clean', promise: 'Green, gentle freshness for people who find mouthwash too strong.', why: 'Not in today’s tasting. It would need consumer testing in your base.', signature: 'Soft cooling, green notes and a calm finish.', who: 'People who skip mouthwash because it is too harsh.', fit: 'Screen first', fitNote: '', arc: ['Cucumber', 'Green tea', 'Soft cooling'], moment: 'Midday', q: 'Can a gentle flavor still feel fresh enough?' }),
-  platform('ladder', { n: 4, name: 'Next-Generation Kids', hero: 'Berry Blast + Mystery Flavor', promise: 'Flavors that make kids want to rinse.', why: 'We made two kids samples for today in your Kids base.', flavors: ['Blueberry, Blackberry, Raspberry', 'A mystery fruit blend'], signature: 'Fruity and fun. We want your read on the sweetness and the finish.', who: 'Kids and their parents. We have not tested this with consumers yet.', fit: 'Screen first', fitNote: 'Both are starting points, not final picks.', image: '/img/kids-splash.webp', arc: ['Fruit', 'Sweet', 'Clean'], moment: 'Brushing and rinsing time', q: 'Would a mystery flavor get kids more interested in rinsing?', opts: ['Advance', 'Explore further', 'Not yet'] }),
+  platform('warmcool', { n: 1, name: 'Plant-Powered Freshness', hero: 'Blossom Mint + Grove Mint', promise: 'Citrus, herbs and a touch of floral, always finished with mint.', why: 'We made two botanical samples for today, both in your Fresh Breath base.', flavors: ['Grapefruit, Lavender, Rose, Spearmint, Wintergreen', 'Spearmint, Peppermint, Wintergreen, Rosemary, Ylang Ylang, Eucalyptus'], signature: 'It opens bright with citrus and herbs and finishes on mint.', who: 'Adults who’d like something besides straight mint.', fit: 'Screen first', fitNote: 'These are still development samples, and we’re testing how well they hold up in the base.', image: '/img/botanicals.webp', palette: ['#F4D5E0', '#A0679F', '#7DB58A'], dark: false, arc: ['Citrus', 'Herbs and florals', 'Mint'], moment: 'Every day', q: 'Which of the two samples feels more like TheraBreath?', opts: ['Blossom Mint', 'Grove Mint', 'Both'] }),
+  platform('bright', { n: 2, name: 'Global Brightness', promise: 'Citrus people already know, taken somewhere new.', why: 'This one isn’t in today’s tasting, but we’d love your read on it.', signature: 'A burst of citrus, then a cold, clean finish.', who: 'Morning rinsers, people heading out the door, and markets outside the US.', fit: 'Screen first', fitNote: '', arc: ['Citrus', 'Yuzu', 'Cold and clean'], moment: 'Mornings and going out', q: 'Is there a citrus that could sit comfortably next to your mints?' }),
+  platform('botanical', { n: 3, name: 'Modern Clean', promise: 'Green, gentle freshness for people who find mouthwash too strong.', why: 'It isn’t in today’s tasting, and it would need consumer testing in your base first.', signature: 'Soft cooling, a few green notes and a calm finish.', who: 'People who skip mouthwash because they find it too harsh.', fit: 'Screen first', fitNote: '', arc: ['Cucumber', 'Green tea', 'Soft cooling'], moment: 'Midday', q: 'Can a gentle flavor still feel fresh enough?' }),
+  platform('ladder', { n: 4, name: 'Next-Generation Kids', hero: 'Berry Blast + Mystery Flavor', promise: 'Flavors that make kids actually want to rinse.', why: 'We made two samples for kids today, both in your Kids base.', flavors: ['Blueberry, Blackberry, Raspberry', 'A mystery fruit blend'], signature: 'Fruity and fun. We especially want your read on the sweetness and the finish.', who: 'Kids and their parents. We haven’t tested it with consumers yet.', fit: 'Screen first', fitNote: 'Both are starting points rather than final picks.', image: '/img/kids-splash.webp', arc: ['Fruit', 'Sweet', 'Clean'], moment: 'Brushing and rinsing time', q: 'Would a mystery flavor get kids more interested in rinsing?', opts: ['Advance', 'Explore further', 'Not yet'] }),
 ];
 
 // The freshness vocabulary: "Mint" is where it starts, not where it ends.
 export const VOCAB = [
-  { w: 'Brightness', d: 'The lift of citrus and aromatic top notes.' }, { w: 'Cooling', d: 'Not a taste: a sensation on the mouth’s cold receptors.' },
-  { w: 'Green', d: 'Leafy, watery notes that read as natural clean.' }, { w: 'Citrus lift', d: 'The sparkle of peel oils.' },
-  { w: 'Botanical', d: 'Herbs and teas that signal care, not medicine.' }, { w: 'Soft', d: 'Freshness without the burn.' },
-  { w: 'Warmth', d: 'A touch of spice makes the cool that follows feel colder.' }, { w: 'Floral', d: 'Restrained florals that still read as clean.' },
-  { w: 'Juicy', d: 'Fruit notes that make the mouth water.' }, { w: 'Clean bitter', d: 'The dry, tonic edge of grapefruit peel or tea.' },
-  { w: 'Tingle', d: 'A buzz people read as “it’s working”.' }, { w: 'Duration', d: 'How long the fresh feeling lasts.' },
-  { w: 'Mouthfeel', d: 'Body, smoothness, dryness: how clean feels.' }, { w: 'Ritual', d: 'A moment people repeat and look forward to.' },
-  { w: 'Mood', d: 'Flavor sets a state: awake, calm, confident.' }, { w: 'Occasion', d: 'A different freshness at 7 AM and at 10 PM.' },
+  { w: 'Brightness', d: 'The lift you get from citrus and bright top notes.' }, { w: 'Cooling', d: 'It isn’t a taste at all. It’s your mouth’s cold receptors switching on.' },
+  { w: 'Green', d: 'Leafy, watery notes that come across as naturally clean.' }, { w: 'Citrus lift', d: 'The sparkle that comes from peel oils.' },
+  { w: 'Botanical', d: 'Herbs and teas that feel like care rather than medicine.' }, { w: 'Soft', d: 'Freshness without the burn.' },
+  { w: 'Warmth', d: 'A touch of spice makes the cool that follows feel colder.' }, { w: 'Floral', d: 'Light florals that still come across as clean.' },
+  { w: 'Juicy', d: 'Fruit notes that make your mouth water.' }, { w: 'Clean bitter', d: 'The dry, tonic edge of grapefruit peel or tea.' },
+  { w: 'Tingle', d: 'A little buzz that tells people “it’s working.”' }, { w: 'Duration', d: 'How long the fresh feeling lasts.' },
+  { w: 'Mouthfeel', d: 'Body, smoothness and dryness. It’s what clean feels like.' }, { w: 'Ritual', d: 'A moment people repeat and look forward to.' },
+  { w: 'Mood', d: 'Flavor can wake you up, calm you down or make you feel confident.' }, { w: 'Occasion', d: 'What you want at 7 AM isn’t what you want at 10 PM.' },
 ];
 
 export const SHIFTS = [
-  { a: 'Generic mint', b: 'Composed flavor', d: 'Mint can carry citrus, herbs and botanicals. We think that is worth testing.' },
-  { a: 'Maximum intensity', b: 'Chosen intensity', d: 'Gentler, greener profiles might bring in people who avoid mouthwash today.' },
+  { a: 'Generic mint', b: 'Layered flavor', d: 'Mint can carry citrus, herbs and botanicals, and we think that’s worth testing.' },
+  { a: 'Maximum intensity', b: 'Chosen intensity', d: 'Gentler, greener profiles could bring in the people who avoid mouthwash today.' },
   { a: 'Daily chore', b: 'Enjoyable routine', d: 'A bit of fun in the flavor might get kids to rinse without being asked.' },
 ];
 
@@ -244,10 +244,10 @@ export const WHITESPACE = {
   // Where we think TheraBreath already is in a day, from the public product listings (rinse; dry mouth lozenges, gum and
   // rinse sachets). Our read, to challenge on the day.
   present: { 'Wake-up': 'Rinse', 'Wind-down': 'Rinse', 'On the go': 'Lozenges, gum, sachets' } as Record<string, string>,
-  read: 'Our read of the public product listings, not measured data. Tell us where we have it wrong.',
+  read: 'This is our read of the public product listings, not measured data, so tell us where we’ve got it wrong.',
 };
 
-export const HORIZONS = [{ id: 'Now', label: 'Now', when: 'The next sample round' }, { id: 'Next', label: 'Next', when: 'After the first results' }, { id: 'Future', label: 'Later', when: 'Directions to keep exploring' }];
+export const HORIZONS = [{ id: 'Now', label: 'Now', when: 'In the next sample round' }, { id: 'Next', label: 'Next', when: 'Once the first results are in' }, { id: 'Future', label: 'Later', when: 'Worth exploring further' }];
 export const ROLES = [
   { id: 'Core', job: 'The always-on mints. Retain and carry the clinical claims.', short: 'Always-on mints' },
   { id: 'Expanders', job: 'Permanent flavors beyond pure mint. Recruit mild-seekers and adventurous adults.', short: 'Permanent, beyond mint' },
@@ -271,9 +271,9 @@ export const OCCASIONS = [
 ];
 
 export const NEXT_STEPS = [
-  { t: 'An owner for each direction', d: 'Before we leave today, each direction gets a TFF owner, a C&D reviewer, a base and a next sample step.' },
-  { t: 'The write-up within 8 business days', d: 'Today’s scores, choices, owners and dates in one document, sent to everyone here.' },
-  { t: 'The next round of samples', d: 'We make the next round in your bases and review it with you in January 2027.' },
+  { t: 'An owner for each direction', d: 'Before we leave today, every direction gets a TFF owner, a C&D reviewer, a base and a clear next sample step.' },
+  { t: 'The write-up within 8 business days', d: 'We’ll pull today’s scores, choices, owners and dates into one document and send it to everyone here.' },
+  { t: 'The next round of samples', d: 'We’ll make the next round in your bases and go through it with you in January 2027.' },
 ];
 
 // Freshness, designed: where the two worlds meet (site).
@@ -294,9 +294,9 @@ export const REGIONS: Region[] = [
 
 // Pre-brief: three things to think about before November 9. [CONFIRM copy with Matt]
 export const THINK = [
-  'One flavor experience a loyal TheraBreath user would welcome, and one that would bring in someone who has never bought it.',
-  'The flavor note you expect to be hardest to hold in an oxidizing base, and why.',
-  'The moment in the day when TheraBreath is not there yet, and what it would have to taste like to earn it.',
+  'One flavor a loyal TheraBreath user would love, and one that might win over someone who has never bought it.',
+  'The flavor note you think would struggle most in an oxidizing base, and why.',
+  'A moment in the day where TheraBreath isn’t showing up yet, and what it would need to taste like to earn a place there.',
 ];
 
 // The run of show: one source for the agenda (site and pre-brief), the presentation's chapter times, and the hosts'
@@ -305,27 +305,27 @@ export const THINK = [
 // next round, ideas); the paper scorecard and hand votes on the laptop cover anyone without a phone.
 export type Block = { id: string; t: string; end: string; title: string; obj?: string; slides: string; does: string };
 export const RUN: Block[] = [
-  { id: 'welcome', t: '10:00', end: '10:10', title: 'Welcome, who we are, and your four objectives',
-    slides: 'Arrival, Title, Who we are, From July to today, Your four objectives, Your pre-brief answers (only if answers came in), Why we are here',
-    does: 'While people sit down, the arrival screen shows the QR code and how many phones have joined. Thank Ross for the invitation. Introduce the four of us and recap July. Read Ross’s four objectives and his goal. Show the pre-brief answers if any came in. Then why we are here: TheraBreath took the burn out of mouthwash, and the next job is giving more people a reason to want it.' },
+  { id: 'welcome', t: '10:00', end: '10:10', title: 'Welcome, who we are and your four objectives',
+    slides: 'Arrival, Title, Who we are, From July to today, Your four objectives, Your pre-brief answers (only if answers came in), Why we’re here',
+    does: 'As people sit down, the arrival screen shows the QR code and counts the phones as they join. Thank Ross for having us, introduce the four of us and recap July. Read Ross’s four objectives and his goal, and show the pre-brief answers if any came in. Then explain why we’re here: TheraBreath took the burn out of mouthwash, and the next job is giving more people a reason to want it.' },
   { id: 'market', t: '10:10', end: '10:25', title: 'What’s changing: your portfolio, the market and seven trends', obj: '01',
     slides: 'Part 1, 86 out of 100 households, The portfolio today, What competitors are launching, Seven trends, Vote: the three that matter most',
-    does: 'Start with the household gap. Walk the portfolio and what competitors are launching. Seven trends, one per click. Then everyone votes for three on their phone; click a bar to add a hand vote for anyone without one. The top three go into the Playbook. Ask what we missed.' },
-  { id: 'school', t: '10:25', end: '10:40', title: 'Flavor School and four directions', obj: '02',
+    does: 'Open with the household gap, then walk through the portfolio and what competitors are launching. The seven trends come up one click at a time. After that, everyone votes for three on their phone, and you can click a bar to add a vote by hand for anyone without one. The top three go into the Playbook. Finish by asking what we missed.' },
+  { id: 'school', t: '10:25', end: '10:40', title: 'Flavor School, then four directions', obj: '02',
     slides: 'Part 2, What flavor is, How cooling works, Flavor and OXYD-8, How a TheraBreath flavor is built, Four directions, then one scene per direction',
-    does: 'Taste, smell and feel. How cooling works. Why OXYD-8 is a hard place for flavor to live, and how a TheraBreath flavor has to finish. Then the four directions on one map, and one at a time. Two of them have samples in the tasting. The other two are for discussion.' },
+    does: 'Cover taste, smell and feel, and how cooling works. Explain why OXYD-8 is a hard place for flavor to live and how a TheraBreath flavor has to finish. Then show the four directions on one map and go through them one at a time. Two of them have samples in the tasting, and the other two are there for discussion.' },
   { id: 'tasting', t: '10:40', end: '11:00', title: 'A blind tasting in your bases', obj: '02',
     slides: 'The blind tasting, Where each sample landed, Vote: what gets a next round',
-    does: 'Pour A and B in the Fresh Breath base, C and D in the Kids base. Everyone scores each sample on their phone or the paper scorecard, and the scores fill the screen as they come in. D is the Mystery Flavor, so ask for fruit guesses before the names go up. Then the chart of where each sample landed, and everyone places five chips on what should get a next round.' },
+    does: 'Pour A and B in the Fresh Breath base and C and D in the Kids base. Everyone scores each sample on their phone or the paper scorecard, and the scores fill the screen as they come in. D is the Mystery Flavor, so get everyone’s fruit guesses before the names go up. Then show where each sample landed, and have everyone place five chips on what should get a next round.' },
   { id: 'concepts', t: '11:00', end: '11:20', title: 'From samples to concepts', obj: '03',
     slides: 'Part 3, Concepts, Vote: which ideas to develop',
-    does: 'Take the directions with the most chips and write up to three concepts together. For each one: where it starts, who it is for, the moment, its role in the range, the format, and whether it grows loyal users, new users or both. Type them straight into the cards on screen. Then everyone gets three dots on their phone to vote for the ones to develop.' },
+    does: 'Take the directions with the most chips and write up to three concepts together. For each one, cover where it starts, who it’s for, the moment, its role in the range, the format, and whether it grows loyal users, new users or both. Type them straight into the cards on screen. Then everyone gets three dots on their phone to vote for the ones worth developing.' },
   { id: 'pipeline', t: '11:20', end: '11:40', title: 'White space, then Now, Next, Later', obj: '04',
     slides: 'Part 4, Where TheraBreath fits in a day, Now, Next, Later',
-    does: 'Walk the grid of moments in a day. Click a cell to mark where TheraBreath is today and where each concept would go. Then put each concept and direction under Now, Next or Later, with a TFF owner, a C&D reviewer, the base and the next sample. The top votes sit in a tray beside the board.' },
-  { id: 'close', t: '11:40', end: '12:00', title: 'What we decided, next steps, and a short film before lunch',
+    does: 'Walk through the day, moment by moment: where TheraBreath is today, the moment the pre-brief says is missing, and everything that’s still open. Click a cell to mark where each concept could fit. Then put each concept and direction under Now, Next or Later, with a TFF owner, a C&D reviewer, the base and the next sample. The top votes sit in a tray beside the board.' },
+  { id: 'close', t: '11:40', end: '12:00', title: 'What we decided, what happens next, and a short film before lunch',
     slides: 'What we decided, What happens next, THE FLAVOR RACE, Lunch',
-    does: 'The Playbook pages fill in from the votes and the board. Read the plan back with owners. Go through the three next steps and say thank you. At 11:48, THE FLAVOR RACE (2:26), lights down and sound up. Then lunch, hosted by Church & Dwight.' },
+    does: 'The Playbook pages fill in from the votes and the board. Read the plan back with the owners, go through the three next steps and say thank you. At 11:48 it’s THE FLAVOR RACE (2:26), with the lights down and the sound up. Then lunch, hosted by Church & Dwight.' },
 ];
 export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title, b.obj]);
 
@@ -335,16 +335,16 @@ export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title,
 const MINT = PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length;
 export const TOPICS = [
   { title: 'What\u2019s changing',
-    points: [`${MINT} of TheraBreath\u2019s ${PORTFOLIO.length} flavors are mint.`, '86 out of 100 US households don\u2019t buy TheraBreath yet.', 'Competitors are adding flavors, mostly as limited editions.', 'Seven trends we think matter for oral care.'],
+    points: [`${MINT} of TheraBreath\u2019s ${PORTFOLIO.length} flavors are mint.`, '86 out of 100 US households don\u2019t buy TheraBreath yet.', 'Competitors are adding flavors, mostly as limited editions.', 'Then seven trends we think matter for oral care.'],
     questions: ['Which three trends matter most for TheraBreath?', 'What are you seeing that we missed?'] },
   { title: 'Where flavor could go',
-    points: ['Most of what people call flavor is smell. The rest is how it feels.', 'OXYD-8 is hard on flavor, so everything we make has to hold up in it.', 'Four directions. Two of them are in the tasting.', 'Four samples, made in your Fresh Breath and Kids bases.'],
-    questions: ['Which direction feels most like TheraBreath, and which one stretches it the most?', 'What would make TheraBreath\u2019s flavors different from what competitors are launching?'] },
+    points: ['Most of what people call flavor is smell. The rest is how it feels.', 'OXYD-8 is hard on flavor, so everything we make has to hold up in it.', 'We’ll show four directions, and two of them are in the tasting.', 'Four samples, all made in your Fresh Breath and Kids bases.'],
+    questions: ['Which direction feels most like TheraBreath, and which one stretches it the most?', 'What would set TheraBreath\u2019s flavors apart from what competitors are launching?'] },
   { title: 'What we could make',
-    points: ['Start from the samples and directions that did well.', 'For each concept: who it is for, when they would use it, its role in the range, the format, and what it grows.', 'Up to three concepts.'],
+    points: ['Start from the samples and directions that did well.', 'For each concept, agree who it’s for, when they’d use it, its role in the range, the format and what it grows.', 'Aim for up to three.'],
     questions: ['Which moment of the day is TheraBreath missing?', 'Who could a new flavor bring in?'] },
   { title: 'What to do first',
-    points: ['Where TheraBreath shows up in a day now, and where the concepts could fit.', 'Now, Next and Later: the next sample round, after the first results, and ideas to keep exploring.', 'Every direction leaves with a TFF owner, a C&D reviewer, a base and a next step.'],
+    points: ['Where TheraBreath shows up in a day now, and where the concepts could fit.', 'Then Now, Next and Later: the next sample round, what follows the first results, and what’s worth exploring further.', 'Every direction leaves with a TFF owner, a C&D reviewer, a base and a next step.'],
     questions: ['What should go first, and what has to be true for it to work?', 'What would you need to see in the next round of samples?'] },
 ];
 

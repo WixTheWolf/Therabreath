@@ -87,7 +87,7 @@ Rehearse: open `/host?code=REHEARSE` and join a phone or two from the QR code. V
 
 ## PDFs (`deliverables/`, not deployed)
 
-- `The-Future-of-Freshness-Pre-brief.pdf`: the 4-page pre-read for Ross to send on November 3 (regenerated October 27: rewritten in plain language, with the phone votes and the new run of show).
+- `The-Future-of-Freshness-Pre-brief.pdf`: the 4-page pre-read for Ross to send on November 3 (regenerated October 28: every line of copy on the site, the presentation, the phones and the pre-brief rewritten to sound warmer and more conversational, with the meaning, numbers and sources unchanged).
 - `The-Future-of-Freshness-Presenter-Deck.pdf`: the final to send the team, landscape Letter: a cover with the run of show, then every scene as it looks on the TV at its last build, with its number, time, objective and talking points, and a page marking where the pre-brief answers appear once they are in.
 - `The-Future-of-Freshness-Deck.pdf`: the 35 scenes, blank, one 16:9 page each: the offline fallback. Save a copy to the presenting laptop with the film file.
 - `The-Future-of-Freshness-Run-Sheet.pdf`: the hosts' run sheet, two Letter pages; one each for Dan, Alex, Ryan and Matt.

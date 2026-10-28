@@ -7,7 +7,7 @@ import { MOLECULES } from '@/lib/content';
 export function School({ step }: SceneProps) {
   const parts = [
     { t: 'Taste', w: 'The tongue', d: 'Sweet, sour, salty, bitter, umami.' },
-    { t: 'Aroma', w: 'The nose, both ways', d: 'Sniffed in, and rising from the back of the mouth as you swallow.' },
+    { t: 'Aroma', w: 'The nose, both ways', d: 'What you sniff in, plus what rises from the back of your mouth as you swallow.' },
     { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming. Most of what mint does happens here.' },
   ];
   return (
@@ -43,8 +43,8 @@ export function Cooling({ step }: SceneProps) {
       <div className="cool-copy">
         <Enter i={0}><div className="k">Flavor School · How cooling works</div></Enter>
         <Enter i={1}><h2 className="h1">Cooling does<br />two jobs.</h2></Enter>
-        <R b={3} step={step}><p className="h3 it accent">The hit when you first rinse, and how long it lasts after. We tune both.</p></R>
-        <div className="src" style={{ marginTop: 40 }}>Drawn to explain the idea. These are not measured curves.</div>
+        <R b={3} step={step}><p className="h3 it accent">There’s the hit when you first rinse, and there’s how long it lasts. We tune both.</p></R>
+        <div className="src" style={{ marginTop: 40 }}>Drawn to explain the idea. These aren’t measured curves.</div>
       </div>
       <svg className="cool-plot" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
         <defs><filter id="cglow"><feGaussianBlur stdDeviation="7" /></filter></defs>
@@ -94,7 +94,7 @@ export function Oxyd({ step }: SceneProps) {
       <canvas ref={ref} width={1920} height={1080} className="oxyd-cv" />
       <div className="pad" style={{ position: 'relative' }}>
         <Enter i={0}><div className="k">Flavor School · Flavor and OXYD-8</div></Enter>
-        <Enter i={1}><h2 className="h2" style={{ maxWidth: 1050 }}>OXYD-8 is built to be tough on the bacteria behind bad breath. That makes it hard on flavor too.</h2></Enter>
+        <Enter i={1}><h2 className="h2" style={{ maxWidth: 1050 }}>OXYD-8 is built to be tough on the bacteria behind bad breath, and that makes it tough on flavor too.</h2></Enter>
         <div className="levers">{levers.map((l, i) => <R key={l} b={i + 1} step={step} className="lever"><span className="num">0{i + 1}</span>{l}</R>)}</div>
         <R b={3} step={step} className="oxyd-pay h2 it">A flavor only counts if it still tastes right after months on the shelf.</R>
       </div>
@@ -108,13 +108,13 @@ export function Anatomy({ step }: SceneProps) {
   const layers = [
     { t: 'First impression', d: 'What you smell when you open the cap.' },
     { t: 'Main flavor', d: 'What you taste while you rinse.' },
-    { t: 'Finish', d: 'Clean and cool.' },
-    { t: 'How long it lasts', d: 'Fresh breath afterwards.' },
+    { t: 'Finish', d: 'Clean and cool, every time.' },
+    { t: 'How long it lasts', d: 'Fresh breath that stays with you.' },
   ];
   return (
     <div className="pad anatomy">
       <div className="an-copy">
-        <Enter i={0}><div className="k">Flavor School · How it is built</div></Enter>
+        <Enter i={0}><div className="k">Flavor School · How it’s built</div></Enter>
         <Enter i={1}><h2 className="h1">It can start anywhere. <span className="it">It has to finish clean.</span></h2></Enter>
       </div>
       <div className="pyramid">

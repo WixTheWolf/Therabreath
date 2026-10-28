@@ -50,7 +50,7 @@ export function Team() {
       <div className="pad">
         <Enter i={0}><div className="k">The Flavor Factory · Norco, California</div></Enter>
         <Enter i={1}><h2 className="h1">Who we are</h2></Enter>
-        <Enter i={2}><p className="lede st-lede">We make flavors for oral care. Half of the job is science: will it survive the bottle? The other half is knowing what people actually want to taste.</p></Enter>
+        <Enter i={2}><p className="lede st-lede">We make flavors for oral care. Half the job is science, making sure a flavor survives the bottle. The other half is knowing what people actually want to taste.</p></Enter>
         <div className="st-two">
           <Enter i={3} className="st-panel sci"><span className="k">What we test in the lab</span><div className="st-chips">{SCIENCE.map((x) => <span key={x}>{x}</span>)}</div></Enter>
           <Enter i={4} className="st-panel ima"><span className="k">What we bring in from outside oral care</span><div className="st-chips">{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</div></Enter>
@@ -58,7 +58,7 @@ export function Team() {
         <div className="st-people">
           {TEAM.map((t, i) => <Enter key={t.name} i={5 + i} className="st-person"><b>{t.name}</b><span className="k">{t.title}</span></Enter>)}
         </div>
-        <Enter i={9} className="st-ask"><p>You asked to see our {ROSS_WORDS.capabilities}. <span className="it">That is what this morning is for.</span></p></Enter>
+        <Enter i={9} className="st-ask"><p>You asked to see our {ROSS_WORDS.capabilities}. <span className="it">That’s what we’re here to show you.</span></p></Enter>
       </div>
     </div>
   );
@@ -69,7 +69,7 @@ export function ShowBrief({ step }: SceneProps) {
   return (
     <div className="pad">
       <Enter i={0}><div className="k">From Ross&rsquo;s invitation</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>You asked for four things. <span className="it">Here is when we get to each one.</span></h2></Enter>
+      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>You asked for four things. <span className="it">Here’s when we’ll get to each one.</span></h2></Enter>
       <div className="brief-tiles">
         {OBJECTIVES.map((o, i) => (
           <R key={o.n} b={i + 1} step={step} className="bt" style={{ ['--h' as any]: OBJ_HUE[i] }}>
@@ -149,9 +149,9 @@ export function TastingLive({ s, step }: SceneProps) {
       <div className="pad">
         <Enter i={0}><div className="k">The blind tasting · made in the bases you sent · {tasters} {tasters === 1 ? 'person has' : 'people have'} scored</div></Enter>
         <Enter i={1}><h2 className="h1">Four samples, <span className="it">tasted blind.</span></h2></Enter>
-        <Enter i={2}><p className="lede tl-lede">Score each one on your phone, or on the paper card. We will tell you what they are once everyone is done.</p></Enter>
+        <Enter i={2}><p className="lede tl-lede">Score each one on your phone or on the paper card. Once everyone’s done, we’ll tell you what they are.</p></Enter>
         <div className="heat">
-          <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}<span>Who it is for</span></div>
+          <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}<span>Who it’s for</span></div>
           {rows.map((r) => (
             <div key={r.code} className="hrow">
               <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? r.name : r.base}{step >= 2 && <small>{r.note}</small>}</span></div>
@@ -220,7 +220,7 @@ function Synced({ value, commit, area, ...rest }: { value: string; commit: (v: s
 const GROWS = ['Loyal users', 'New consumers', 'Both'];
 export const FIELDS: { f: string; key: string; l: string; opts: string[] }[] = [
   { f: 'dir', key: 'why', l: 'Starts from', opts: [...SAMPLES.map((x) => `${x.code}. ${x.name}`), ...PLATFORMS.map((t) => t.name)] },
-  { f: 'who', key: 'segment', l: 'Who it is for', opts: SURVEY.consumer.options },
+  { f: 'who', key: 'segment', l: 'Who it’s for', opts: SURVEY.consumer.options },
   { f: 'when', key: 'occasion', l: 'When', opts: SURVEY.moment.options },
   { f: 'role', key: 'role', l: 'Role in the range', opts: ROLES.map((r) => r.id) },
   { f: 'format', key: 'format', l: 'Format', opts: FORMATS },
@@ -284,7 +284,7 @@ export function DotsShow({ s, step }: SceneProps) {
               </button>
             );
           })}
-          {!teamConcepts(s).length && <p className="empty">The concepts we write together show up here next to the four samples.</p>}
+          {!teamConcepts(s).length && <p className="empty">The concepts we write together will show up here, next to the four samples.</p>}
         </div>
       </div>
     </div>
@@ -321,7 +321,7 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
   const open = (m: string) => step >= 3 && !WHITESPACE.present[m];
   return (
     <div className="pad dy">
-      <Enter i={0}><div className="k">Part 4 · White-space opportunities · our read, so please correct it</div></Enter>
+      <Enter i={0}><div className="k">Part 4 · White-space opportunities · our read, so correct us where we’re wrong</div></Enter>
       <div className="wsp-head">
         <div className={'wsp-h' + (step < 3 ? ' on' : '')}><h2 className="h2">Where TheraBreath shows up <span className="it">in a day.</span></h2></div>
         <div className={'wsp-h' + (step >= 3 ? ' on' : '')}><h2 className="h2">Most of the day <span className="it">is still open.</span></h2></div>
@@ -329,7 +329,7 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
       <div className="dy-grid" style={{ ['--cols' as any]: cols.length, ['--rows' as any]: rows.length }}>
         <div className="dy-key">
           <R b={1} step={step} className="dy-k"><i className="now" />TheraBreath today</R>
-          <R b={2} step={step} className="dy-k"><i className="vote" />{answers.length ? `Missing, say ${answers.length} pre-briefs` : 'Missing, from your pre-briefs'}</R>
+          <R b={2} step={step} className="dy-k"><i className="vote" />{answers.length ? `Missing, from ${answers.length} pre-briefs` : 'Missing, from your pre-briefs'}</R>
           <R b={3} step={step} className="dy-k"><i className="open" />Still open</R>
         </div>
         {cols.map((m, c) => (
@@ -351,8 +351,8 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
           </React.Fragment>
         ))}
       </div>
-      <R b={3} step={step} className="dy-lede">Ross asked for flavors that <span className="it">unlock new usage occasions.</span> Each open moment is one. Click a cell to mark where an idea could fit.</R>
-      <div className="src stage-src">{WHITESPACE.read}{step >= 2 && topSeg ? ` In the pre-brief, most of you want to win ${topSeg[0].charAt(0).toLowerCase() + topSeg[0].slice(1)}.` : ''}</div>
+      <R b={3} step={step} className="dy-lede">Ross asked for flavors that <span className="it">unlock new usage occasions.</span> Every open moment is one. Click a cell to mark where an idea fits.</R>
+      <div className="src stage-src">{WHITESPACE.read}{step >= 2 && topSeg ? ` In the pre-brief, most of you said you want to win ${topSeg[0].charAt(0).toLowerCase() + topSeg[0].slice(1)}.` : ''}</div>
     </div>
   );
 }
@@ -365,7 +365,7 @@ export function Board({ s }: SceneProps) {
     <div className="pad sb">
       <Enter i={0}><div className="k">Part 4 · Now, Next, Later</div></Enter>
       <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>What should go first? <span className="it">And what has to be true for it to work?</span></h2></Enter>
-      <Enter i={2} className="sb-tray"><span className="k">Top votes this morning</span>{tray.length ? [...new Set(tray)].map((x) => <span key={x} className="tchip">{x}</span>) : <em>The top concepts and directions from the votes show up here.</em>}</Enter>
+      <Enter i={2} className="sb-tray"><span className="k">Top votes this morning</span>{tray.length ? [...new Set(tray)].map((x) => <span key={x} className="tchip">{x}</span>) : <em>The top concepts and directions from the votes will show up here.</em>}</Enter>
       <div className="sb-cols">
         {HORIZONS.map((h, i) => (
           <Enter key={h.id} i={3 + i} className={'sb-col ' + h.id.toLowerCase()}>
@@ -376,7 +376,7 @@ export function Board({ s }: SceneProps) {
           </Enter>
         ))}
       </div>
-      <Enter i={6} className="src stage-src">For each one: a TFF owner, a C&amp;D reviewer, the base and the next sample step.</Enter>
+      <Enter i={6} className="src stage-src">For each one, name a TFF owner, a C&amp;D reviewer, the base and the next sample step.</Enter>
     </div>
   );
 }
@@ -423,8 +423,8 @@ export function Playbook({ s, step }: SceneProps) {
       </div>
       <div className="as-copy">
         <Enter i={0}><div className="k">Wrapping up</div></Enter>
-        <Enter i={1}><h2 className="h1">Here is what<br /><span className="it">we decided.</span></h2></Enter>
-        <Enter i={2}><p className="lede as-lede">We will write it up and send it to everyone here within 8 business days.</p></Enter>
+        <Enter i={1}><h2 className="h1">Here’s what<br /><span className="it">we decided.</span></h2></Enter>
+        <Enter i={2}><p className="lede as-lede">We’ll write it all up and send it to everyone here within 8 business days.</p></Enter>
       </div>
     </div>
   );

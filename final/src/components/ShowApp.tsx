@@ -204,7 +204,7 @@ function Results({ s, code }: { s: any; code: string }) {
         {d.ideas.length > 0 && <p className="sr-dots">Dot vote: {d.ideas.map((x) => `${x.t} (${x.n})`).join(', ')}</p>}</section>
       <section><h2 className="h3">Now, Next, Later</h2><div className="sr-nnl">{HORIZONS.map((h) => { const l = d.plan.filter((x) => x.h === h.label); return <div key={h.id}><b>{h.label}</b><small>{h.when}</small><ul>{l.map((x, j) => <li key={j}>{x.t}</li>)}{!l.length && <li className="ghost">Nothing yet</li>}</ul></div>; })}</div></section>
       <section><h2 className="h3">Where the ideas could fit in a day</h2><ul>{marks.map((c) => <li key={c}>{markLabel(s, c)}</li>)}{!marks.length && <li className="ghost">No cells marked</li>}</ul></section>
-      <p className="src">Confidential. These are development samples and concepts made for this session, not finished products or claims.</p>
+      <p className="src">Confidential. These are development samples and concepts made for this session. They aren’t finished products or claims.</p>
       <button className="sr-print" onClick={() => print()}>Print or save as PDF</button>
     </main>
   );

@@ -4,7 +4,7 @@
 // Answers land in the live session and open the morning on the "Your pre-brief answers" scene. Prints to a link-free PDF.
 import { useEffect, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
-import { SURVEY, EVENT, OBJECTIVES, PRIMARY_TERRITORIES as PLATFORMS, AGENDA, THINK, SIGNALS, GAP, ROSS_GOAL, SOURCES } from '@/lib/content';
+import { SURVEY, EVENT, OBJECTIVES, PRIMARY_TERRITORIES as PLATFORMS, AGENDA, THINK, SIGNALS, GAP, ROSS_GOAL, SOURCES, TEAM } from '@/lib/content';
 import { uid } from '@/lib/state';
 import Orb, { PROFILE, DEFAULT_PROFILE, describe } from './Orb';
 import FilmModal from './FilmModal';
@@ -74,26 +74,26 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
       <section className="bw-sec bw-rise">
         <div className="k">A letter from The Flavor Factory</div>
         <p className="bw-letter">{first ? `Dear ${first},` : 'Hello,'}</p>
-        <p className="bw-letter">In July you came to Norco and saw how we make flavor. On November 9 we come to Princeton to share what we know about flavor, what we see in the market, the trends we are watching and our innovation work. All of it is aimed at the goal in {first.toLowerCase() === 'ross' ? 'your' : 'Ross\u2019s'} invitation: <em>new flavor experiences that strengthen TheraBreath&rsquo;s appeal with loyal users and attract new consumers.</em></p>
-        <p className="bw-letter">We built the morning around your four objectives. We are bringing four samples from our development bench, made in the TheraBreath bases you sent us. You will taste them blind and score them on your phone, and we will all vote from our phones a few times along the way. By noon we want to agree what to develop first, who owns it and when the next samples are due. Afterwards we will write it up as <em>The Flavor Playbook</em> and send it to everyone who was there.</p>
-        <p className="bw-letter">From The Flavor Factory you will meet Dan Wixted, President; Alex Wixted, Business Operations; Ryan Wixted, QC/QA Manager; and Matt Wixted, Production Manager.</p>
-        <p className="bw-letter">This page takes about five minutes to read. There are four quick questions near the bottom, and we will share everyone’s answers at the start of the morning.</p>
+        <p className="bw-letter">In July you came out to Norco and saw how we make flavor. On November 9 it’s our turn to come to Princeton. We’ll bring what we know about flavor, what we’re seeing in the market, the trends we’re watching and the innovation work we’ve been doing, all of it aimed at the goal in {first.toLowerCase() === 'ross' ? 'your' : 'Ross’s'} invitation: <em>new flavor experiences that strengthen TheraBreath’s appeal with loyal users and attract new consumers.</em></p>
+        <p className="bw-letter">We’ve built the morning around your four objectives. We’re also bringing four samples from our development bench, made in the TheraBreath bases you sent us. You’ll taste them blind and score them on your phone, and we’ll all vote from our phones a few more times along the way. By noon, we’d like to agree on what to develop first, who owns it and when the next samples are due. Afterwards we’ll write it all up as <em>The Flavor Playbook</em> and send it to everyone who was there.</p>
+        <p className="bw-letter">You’ll meet four of us from The Flavor Factory: {TEAM.map((t, i) => `${i === TEAM.length - 1 ? 'and ' : ''}${t.name}, ${t.title}`).join('; ')}.</p>
+        <p className="bw-letter">This page takes about five minutes to read. Near the bottom there are four quick questions, and we’ll open the morning with everyone’s answers.</p>
         <p className="bw-sign"><img src="/img/tff-logo.webp" alt="The Flavor Factory" />The Flavor Factory team</p>
       </section>
 
       <section className="bw-sec bw-rise">
-        <div className="k">Why we are here</div>
+        <div className="k">Why we’re here</div>
         <h2 className="bw-thesis">TheraBreath took the burn out of mouthwash.<br /><em>The next job is giving more people a reason to want it.</em></h2>
         <div className="bw-math">
-          <div><b>25.3%</b><span>TheraBreath’s share of US mouthwash in Q2 2026, up 4.5 points. It is now number 2.</span></div>
-          <div><b>{GAP.tb}%</b><span>of US households buy TheraBreath, against {GAP.category}% for the category. 86 of every 100 don’t buy it yet.</span></div>
+          <div><b>25.3%</b><span>TheraBreath’s share of US mouthwash in Q2 2026, up 4.5 points. That makes it number 2.</span></div>
+          <div><b>{GAP.tb}%</b><span>of US households buy TheraBreath, compared with {GAP.category}% for the category. That leaves 86 of every 100 who don’t buy it yet.</span></div>
           <div><b>54%</b><span>of Americans want a milder-tasting mouthwash.</span></div>
         </div>
         <p className="bw-src">Sources: {SOURCES.q2call}; {SOURCES.kenvue}.</p>
       </section>
 
       <section className="bw-sec bw-rise">
-        <div className="k">Seven trends · on the day, everyone votes for three</div>
+        <div className="k">Seven trends · on the day, everyone picks the three that matter most</div>
         <ol className="bw-signals">{SIGNALS.map((x) => <li key={x.id}><span className="num">{String(x.n).padStart(2, '0')}</span><b>{x.title}</b><p>{x.so}</p></li>)}</ol>
       </section>
 
@@ -109,7 +109,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
 
       <section className="bw-sec bw-rise">
         <div className="k">Four directions for flavor<span className="bw-tap"> · tap a card to open it</span></div>
-        <p className="bw-count">{nOpen === PLATFORMS.length ? 'You have opened all four. The samples themselves stay blind until the tasting.' : `${nOpen} of ${PLATFORMS.length} opened`}</p>
+        <p className="bw-count">{nOpen === PLATFORMS.length ? 'You’ve opened all four. The samples themselves stay under wraps until the tasting.' : `${nOpen} of ${PLATFORMS.length} opened`}</p>
         <div className="bw-env-grid bw-four">{PLATFORMS.map((t, i) => {
           const o = !!opened[t.id]; const light = t.dark || t.id === 'fruit';
           return (
@@ -136,7 +136,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
           <div className="bw-done">
             <Orb ref={orb} profile={profile} size={280} />
             <h2>Thank you, {first}.</h2>
-            <p>{describe(profile)} We will share everyone’s answers at the start of the morning.</p>
+            <p>{describe(profile)} We’ll share everyone’s answers when the morning starts.</p>
             <div className="bw-done-row">
               <button className="rm-btn" onClick={saveOrb}>Save my freshness orb</button>
               <button className="bw-link" onClick={() => { setDone(false); setStep(0); }}>Change my answers</button>
@@ -152,8 +152,8 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
               {step === 0 && <label className="rm-field"><span>First, what should we call you?</span><input value={a.name} placeholder="Your first name" onChange={(e) => setA({ ...a, name: e.target.value.slice(0, 20) })} /></label>}
               {step === 1 && <div className="rm-field"><span>{SURVEY.consumer.q}</span><div className="bw-tiles">{SURVEY.consumer.options.map((o) => <button key={o} className={a.consumer === o ? 'on' : ''} onClick={() => { setA({ ...a, consumer: o }); setTimeout(() => setStep(2), 280); }}>{o}</button>)}</div></div>}
               {step === 2 && <div className="rm-field"><span>{SURVEY.moment.q}</span><div className="bw-tiles">{SURVEY.moment.options.map((o) => <button key={o} className={a.moment === o ? 'on' : ''} onClick={() => { setA({ ...a, moment: o }); setTimeout(() => setStep(3), 280); }}>{o}</button>)}</div></div>}
-              {step === 3 && <label className="rm-field"><span>{SURVEY.veto.q}</span><textarea rows={3} value={a.veto} placeholder="Optional. Shown on the screen without your name." onChange={(e) => setA({ ...a, veto: e.target.value.slice(0, 140) })} /></label>}
-              {step === 4 && <div className="bw-sliders"><span className="bw-field-l">Move the sliders to show how you like your freshness.</span>{PROFILE.map((x) => (
+              {step === 3 && <label className="rm-field"><span>{SURVEY.veto.q}</span><textarea rows={3} value={a.veto} placeholder="Optional. If you answer, it goes on screen without your name." onChange={(e) => setA({ ...a, veto: e.target.value.slice(0, 140) })} /></label>}
+              {step === 4 && <div className="bw-sliders"><span className="bw-field-l">Slide each one toward how you like your freshness.</span>{PROFILE.map((x) => (
                 <label key={x.id} className="rm-dial"><small><i>{x.l}</i><i>{x.r}</i></small><input type="range" min={1} max={5} step={1} value={profile[x.id]} onChange={(e) => setProfile({ ...profile, [x.id]: Number(e.target.value) })} /></label>
               ))}<p className="bw-desc">{describe(profile)}</p></div>}
             </div>
@@ -164,7 +164,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
             </div>
           </div>
         )}
-        <p className="bw-print-only">The questions are on the web version of this page, from your personal invitation link. We will share the answers at the start of the morning.</p>
+        <p className="bw-print-only">You’ll find the questions on the web version of this page, through your personal invitation link. We’ll share the answers at the start of the morning.</p>
       </section>
 
       <section className="bw-sec bw-rise">
@@ -173,10 +173,10 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
       </section>
 
       <footer className="bw-foot">
-        <p className="bw-promise">By noon we want a short list of what to develop, <em>with owners and dates.</em></p>
-        <div className="bw-logi"><div><small>When</small>{EVENT.date}<br />{EVENT.time} ET</div><div><small>Where</small>{EVENT.room} room, Church &amp; Dwight<br />469 N Harrison St, Princeton, NJ 08540</div><div><small>Bring</small>Your phone. You will use it to score the samples and vote.</div></div>
+        <p className="bw-promise">By noon, we’d like a short list of what to develop, <em>with owners and dates.</em></p>
+        <div className="bw-logi"><div><small>When</small>{EVENT.date}<br />{EVENT.time} ET</div><div><small>Where</small>{EVENT.room} room, Church &amp; Dwight<br />469 N Harrison St, Princeton, NJ 08540</div><div><small>Bring</small>Your phone. You’ll use it to score the samples and vote.</div></div>
         <button className="bw-link bw-pdf" onClick={() => print()}>Save this pre-brief as a PDF</button>
-        <p className="bw-conf">Confidential. The samples are development work made for this session. They are not finished products, and nothing on this page is a claim or a commercial formula. Please keep this page and the write-up within the group.</p>
+        <p className="bw-conf">Confidential. The samples are development work made just for this session. They aren’t finished products, and nothing on this page is a claim or a commercial formula. Please keep this page and the write-up within the group.</p>
       </footer>
       {film && <FilmModal q={`?c=${encodeURIComponent(code)}&k=${encodeURIComponent(k)}`} onClose={() => setFilm(false)} />}
     </main>

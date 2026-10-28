@@ -57,12 +57,12 @@ export function Arrival({ s, ctx }: SceneProps) {
       <div className="arrival-copy">
         <Enter i={0}><div className="k">Welcome. We start at 10:00.</div></Enter>
         <Enter i={1}><h1 className="hero">The Future<br /><span className="it">of Freshness</span></h1></Enter>
-        <Enter i={2}><div className="sub">Grab a seat and scan the code. We will use phones a few times this morning.</div></Enter>
+        <Enter i={2}><div className="sub">Grab a seat and scan the code. We’ll be using phones a few times this morning.</div></Enter>
         <Enter i={3}><div className="meta">{EVENT.lockup}</div></Enter>
       </div>
       <Enter i={4} className="join">
         <div className="qr" dangerouslySetInnerHTML={{ __html: qr }} />
-        <div><h3>Scan to join</h3><p>Point your phone camera here. First name is all we need.</p><code>{ctx.code}</code></div>
+        <div><h3>Scan to join</h3><p>Point your phone’s camera at the code. All we need is your first name.</p><code>{ctx.code}</code></div>
       </Enter>
       <div className="presence"><div className="count num">{n}</div><div className="lbl">Joined</div>{n > 0 && <div className="presence-names">{people(s).filter((p) => !p.paper).slice(-16).map((p) => p.name).join(' · ')}</div>}</div>
     </>
@@ -88,7 +88,7 @@ export function July({ step }: SceneProps) {
   return (
     <div className="pad">
       <Enter i={0}><div className="k">From July to today</div></Enter>
-      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1500 }}>When you visited Norco in July, we talked about four things.<br /><span className="it">Today is about the fifth.</span></h2></Enter>
+      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1500 }}>When you came to Norco in July, we talked about four things.<br /><span className="it">Today is about the fifth.</span></h2></Enter>
       <div className="july">
         {JULY.map((w, i) => (
           <div key={w} className={'jf' + (i === 4 ? ' grow' : '') + (i === 4 && step >= 1 ? ' lit' : '')} style={{ ['--i' as any]: i }}>
@@ -138,9 +138,9 @@ export function Prework({ s, step }: SceneProps) {
         <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} /></R>
         <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} /></R>
       </div>
-      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">The room&rsquo;s freshness</span><p className="h3 it">{describe(roomProfile(answers), 'As a group, you want freshness that is')}</p></div></R>}
+      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">Your freshness, as a group</span><p className="h3 it">{describe(roomProfile(answers), 'As a group, you want freshness that’s')}</p></div></R>}
       <R b={2} step={step} className="vetoes">
-        <div className="k">Flavors you would never sign off on</div>
+        <div className="k">The flavors you’d never sign off on</div>
         <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map(([v, n], i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 30 + ((i * 17) % 5) * 6 + Math.min(18, (n - 1) * 6) }}>{v}{n > 1 && <sup className="num">{n}</sup>}</span>) : <span className="empty">No answers yet.</span>}</div>
       </R>
     </div>

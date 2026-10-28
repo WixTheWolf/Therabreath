@@ -41,8 +41,8 @@ export default function RoomApp({ code, k }: { code: string; k: string }) {
     case 'placements': body = <Placements {...props} />; break;
     case 'bench': body = <BenchPhone {...props} />; break;
     case 'code': body = <CodeReact {...props} />; break;
-    case 'thanks': body = <div className="rm-center"><div className="rm-drop" /><h1 className="h2">Thank you, {me.name}.</h1><p className="rm-p">We will send everyone the write-up within 8 business days.</p></div>; break;
-    default: body = <div className="rm-center"><div className="rm-drop" /><div className="k">{scene.act}</div><h1 className="h3">{room.line || scene.title}</h1><p className="rm-p">Nothing to do on your phone right now. It will change when there is something to vote on.</p></div>;
+    case 'thanks': body = <div className="rm-center"><div className="rm-drop" /><h1 className="h2">Thank you, {me.name}.</h1><p className="rm-p">We’ll send everyone the write-up within 8 business days.</p></div>; break;
+    default: body = <div className="rm-center"><div className="rm-drop" /><div className="k">{scene.act}</div><h1 className="h3">{room.line || scene.title}</h1><p className="rm-p">Nothing to do on your phone right now. It’ll change as soon as there’s something to vote on.</p></div>;
   }
   return (
     <main className="room" data-theme={theme}>
@@ -62,7 +62,7 @@ function JoinForm({ onJoin }: { onJoin: (n: string) => void }) {
         <h1 className="h2">The Future<br /><span className="it">of Freshness</span></h1>
         <input autoFocus value={n} onChange={(e) => setN(e.target.value)} placeholder="Your first name" aria-label="Your first name" maxLength={20} />
         <button className="rm-btn" disabled={!n.trim()}>Join</button>
-        <p className="rm-fine">Just your first name. It shows on the screen when you join, and votes are only used for today.</p>
+        <p className="rm-fine">Just your first name is fine. It pops up on the screen when you join, and your votes are only used for this session.</p>
       </form>
     </main>
   );
@@ -80,7 +80,7 @@ function Pick({ s, me, p, room }: P) {
     <div className="rm-pad">
       <h2 className="h3">{room.prompt}</h2><Lock v={v} />
       <div className="rm-list">{SIGNALS.map((x) => <button key={x.id} className={'rm-opt' + (sel.includes(x.id) ? ' on' : '')} style={{ ['--h' as any]: x.hue }} onClick={() => toggle(x.id)} disabled={v?.locked}><span className="num">0{x.n}</span>{x.title}</button>)}</div>
-      <button className="rm-btn sticky" disabled={sel.length !== room.max || v?.locked || sent} onClick={() => p('pick', { key: room.key, value: sel })}>{sent ? 'Sent. You can change it until we move on.' : `Send ${sel.length} of ${room.max}`}</button>
+      <button className="rm-btn sticky" disabled={sel.length !== room.max || v?.locked || sent} onClick={() => p('pick', { key: room.key, value: sel })}>{sent ? 'Sent. You can still change it until we move on.' : `Send ${sel.length} of ${room.max}`}</button>
     </div>
   );
 }
@@ -120,16 +120,16 @@ function Taste({ s, me, p, step }: P) {
       <div className="rm-tabs">{SAMPLES.map((x) => <button key={x.code} className={(cur === x.code ? 'on' : '') + (done(x.code) ? ' done' : '')} onClick={() => setCur(x.code)}>{x.code}</button>)}</div>
       <h2 className="h3">Sample {cur}{step >= 2 ? <span className="it"> · {SAMPLES.find((x) => x.code === cur)!.name}</span> : null}</h2>
       {step >= 2 && <p>{SAMPLES.find(x => x.code === cur)?.note}</p>}
-      {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your guesses, before we tell you" /></label>}
+      {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess, before we tell you" /></label>}
       <Scale label="Appeal" v={r.appeal} set={(n) => setR({ ...r, appeal: n })} />
       <Scale label="Feels like TheraBreath" v={r.feels} set={(n) => setR({ ...r, feels: n })} />
       <Scale label="Newness" v={r.newness} set={(n) => setR({ ...r, newness: n })} />
-      <div className="k" style={{ margin: '18px 0 10px' }}>Who would buy it</div>
+      <div className="k" style={{ margin: '18px 0 10px' }}>Who would buy it?</div>
       <div className="rm-tags">{WHO_CHIPS.map((w) => <button key={w} className={r.who.includes(w) ? 'on' : ''} onClick={() => setR({ ...r, who: r.who.includes(w) ? r.who.filter((x: string) => x !== w) : [...r.who, w] })}>{w}</button>)}</div>
       <div className="k" style={{ margin: '4px 0 10px' }}>Which direction do you think it comes from?</div>
       <div className="rm-tags">{TERRITORIES.map((t) => <button key={t.id} className={r.guess === t.id ? 'on' : ''} onClick={() => setR({ ...r, guess: t.id })}>{t.name}</button>)}</div>
       <div className="k">Should it get a next round?</div><div className="rm-tags">{['Yes', 'Maybe', 'No'].map(v => <button key={v} className={r.advance === v ? 'on' : ''} onClick={() => setR({ ...r, advance: v })}>{v}</button>)}</div>
-      <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="One word to describe it" />
+      <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="Sum it up in one word" />
       <button className="rm-btn sticky" disabled={!ok} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
     </div>
   );
@@ -204,7 +204,7 @@ function DotsVote({ s, me, p, room }: P) {
   const items = candidates(s).filter((x) => x.kind === 'concept').concat(candidates(s).filter((x) => x.kind === 'seed'));
   return (
     <div className="rm-pad">
-      <h2 className="h3">You have three dots. <span className="it">Put them on the ideas you would develop. Stacking is fine.</span></h2><Lock v={v} />
+      <h2 className="h3">You have three dots. <span className="it">Put them on the ideas you’d develop, and stack them if you like.</span></h2><Lock v={v} />
       <div className="rm-chipsleft">{Array.from({ length: room.total }, (_, i) => <i key={i} className={i < used ? 'used' : ''} />)}</div>
       <div className="rm-list">{items.map((x) => (
         <div key={x.id} className="rm-chip" style={{ ['--c1' as any]: x.color, ['--c2' as any]: x.color }}>

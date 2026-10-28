@@ -10,13 +10,13 @@ const PRACTICE = 'PREVIEW';
 export default async function Team() {
   const prebrief = `/survey/${PRACTICE}?k=${await joinToken(PRACTICE)}`;
   const items = [
-    { href: '/host?code=REHEARSE', t: 'Rehearse the presentation', d: 'The full presentation on a rehearsal session. Scan the code with your own phone to try the votes and the tasting. Nothing here reaches the live session.', c: '#8FE0F0' },
-    { href: '/host', t: 'Present on the day', d: 'The live presentation. Only the presenting laptop opens it, on November 9. Anything clicked here reaches everyone’s phones, so use the rehearsal before then.', c: '#9EF0C8' },
-    { href: '/', t: 'The front door', d: 'What Church & Dwight sees after the password: the film, Ross’s brief, the four directions, the blind tasting, who they will meet and the morning.', c: '#F4B860' },
-    { href: prebrief, t: 'The pre-brief', d: 'The pre-read Ross sends on November 3. This is a practice copy, so try the questions: answers here never reach the live session.', c: '#CFE8C6' },
-    { href: '/host/run', t: 'The run sheet', d: 'The morning minute by minute, the 9:30 setup and what is still to confirm. Prints to two pages.', c: '#C9B8FF' },
-    { href: '/scorecard', t: 'The paper scorecard', d: 'A backup for anyone who would rather not score on a phone: one page per person for samples A to D.', c: '#F7B6D2' },
-    { href: '/media/flavor-race.mp4', t: 'THE FLAVOR RACE', d: 'The 2:26 film that sends everyone to lunch at 11:48. Sound on.', c: '#F2677B' },
+    { href: '/host?code=REHEARSE', t: 'Rehearse the presentation', d: 'The whole presentation, running on a rehearsal session. Scan the code with your own phone to try the votes and the tasting. Nothing you do here reaches the live session.', c: '#8FE0F0' },
+    { href: '/host', t: 'Present on the day', d: 'The live presentation. Only the presenting laptop should open it, and only on November 9. Anything you click here shows up on everyone’s phones, so stick to the rehearsal until then.', c: '#9EF0C8' },
+    { href: '/', t: 'The front door', d: 'What Church & Dwight sees after the password: the film, Ross’s brief, the four directions, the blind tasting, who they’ll meet and how the morning runs.', c: '#F4B860' },
+    { href: prebrief, t: 'The pre-brief', d: 'The pre-read Ross sends out on November 3. This is a practice copy, so go ahead and try the questions. Answers here never reach the live session.', c: '#CFE8C6' },
+    { href: '/host/run', t: 'The run sheet', d: 'The morning minute by minute, the 9:30 setup and what we still need to confirm. It prints on two pages.', c: '#C9B8FF' },
+    { href: '/scorecard', t: 'The paper scorecard', d: 'A backup for anyone who’d rather not score on a phone, with one page per person for samples A to D.', c: '#F7B6D2' },
+    { href: '/media/flavor-race.mp4', t: 'THE FLAVOR RACE', d: 'The 2:26 film that sends everyone off to lunch at 11:48. Turn the sound up.', c: '#F2677B' },
   ];
   return (
     <main className="site tm" data-theme="b">
@@ -28,7 +28,7 @@ export default async function Team() {
         <div className="tm-orb" />
         <div className="st-k">For The Flavor Factory team · {EVENT.date}</div>
         <h2>What we&rsquo;ve<br /><em>built.</em></h2>
-        <p className="ws-lead">Everything for The Future of Freshness, in one place. Please keep this page and its link inside the team: the link is what opens the presentation and these pages, and Church &amp; Dwight’s password does not. Before the day, use the rehearsal. On the day, only the presenting laptop opens the live presentation.</p>
+        <p className="ws-lead">Everything for The Future of Freshness, in one place. Please keep this page and its link inside the team. The link is what opens the presentation and these pages, and Church &amp; Dwight’s password won’t. Until the day, stick to the rehearsal. On the day, open the live presentation on the presenting laptop only.</p>
         <div className="ws-grid tm-grid">{items.map((x, i) => (
           <a key={x.t} href={x.href} className="ws-card tm-card" style={{ borderTopColor: x.c }}><span className="ws-code">{String(i + 1).padStart(2, '0')}</span><h3>{x.t}</h3><p>{x.d}</p></a>
         ))}</div>
