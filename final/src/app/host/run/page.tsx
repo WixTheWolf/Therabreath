@@ -1,6 +1,8 @@
 import { EVENT, RUN, SAMPLES, NEXT_STEPS } from '@/lib/content';
 import PrintButton from '@/app/scorecard/PrintButton';
 
+export const metadata = { title: 'Run sheet' };
+
 // The hosts’ run sheet: one printout for The Flavor Factory team, behind the team link. Not for handing out.
 // The run of show comes from RUN, the same source as the agenda and the presentation's chapter times.
 const fresh = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.code).join(' and ');
@@ -32,7 +34,7 @@ export default function RunSheet() {
   return (
     <main className="sc rs" data-theme="a">
       <header className="sc-head">
-        <div><b>Run sheet</b><span>The Future of Freshness · {EVENT.date} · {EVENT.room} room · for The Flavor Factory team · not for handing out</span></div>
+        <div><h1>Run sheet</h1><span>The Future of Freshness · {EVENT.date} · {EVENT.room} room · for The Flavor Factory team · not for handing out</span></div>
         <PrintButton label="Print the run sheet" />
       </header>
 

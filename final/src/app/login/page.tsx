@@ -21,7 +21,7 @@ export default function Login() {
         <h1 className="h2">The Future<br /><span className="it">of Freshness</span></h1>
         <p>{host ? 'The old workshop Console. Enter the host password.' : 'This is confidential. Please enter your password.'}</p>
         <input type="password" autoFocus autoComplete="current-password" autoCapitalize="none" autoCorrect="off" spellCheck={false} value={pw} onChange={(e) => setPw(e.target.value)} placeholder={host ? 'Host password' : 'Password'} aria-label="Password" />
-        {err && <div className="gate-err">That’s not it. Please try again.</div>}
+        {err && <div className="gate-err">That password didn’t work. Check it and try again.</div>}
         <button disabled={busy || !pw}>{busy ? 'Checking' : 'Enter'}</button>
       </form>
     </main>

@@ -56,7 +56,7 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
   return (
     <main className="site" data-theme="b">
       <header className="st-bar">
-        <div className="st-lock"><img src="/img/tff-logo-white.webp" alt="The Flavor Factory" /><span>×</span><b>TheraBreath</b></div>
+        <div className="st-lock"><img src="/img/tff-logo-white.webp" alt="The Flavor Factory" width={100} height={22} /><span>×</span><b>TheraBreath</b></div>
         {team && <nav className="st-hostbar" aria-label="For the team"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host?code=REHEARSE">Rehearse</a><a href="/host/run">Run sheet</a><a href="/team">Team page</a></nav>}
       </header>
       <nav className="st-rail" aria-label="Chapters">
@@ -80,14 +80,14 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
 function Hero({ onFilm }: { onFilm: () => void }) {
   return (
     <section id="hero" className="st-hero">
-      <video autoPlay muted loop playsInline poster="/media/opening-poster.jpg"><source src="/media/loop.mp4" type="video/mp4" /></video>
+      <video autoPlay muted loop playsInline poster="/media/opening-poster.jpg"><source media="(min-width: 701px), (orientation: landscape)" src="/media/loop.mp4" type="video/mp4" /><source src="/media/loop-portrait.mp4" type="video/mp4" /></video>
       <div className="st-shade" />
       <div className="st-hero-in">
         <div className="st-k">{EVENT.date} · {EVENT.time} ET · {EVENT.city}</div>
         <h1>The Future<br /><em>of Freshness</em></h1>
         <p>Two hours with Church &amp; Dwight Oral Care R&amp;D. We’ll work through the four things Ross asked for, taste four samples we made in your bases and vote on what to develop. By noon, every direction we pick will have a plan and an owner.</p>
         <div className="st-cta">
-          <button className="st-play" onClick={onFilm}><span className="st-tri" />Play the film <small>1:27 · sound on</small></button>
+          <button className="st-play" onClick={onFilm}><span className="st-tri" />Watch the film <small>1:27 · sound on</small></button>
           <a className="st-ghost" href="#brief">Explore the workshop</a>
         </div>
       </div>

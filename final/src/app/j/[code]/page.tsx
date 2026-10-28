@@ -1,6 +1,8 @@
 import RoomApp from '@/components/RoomApp';
 import { joinToken } from '@/lib/auth';
 
+export const metadata = { title: 'Join' };
+
 export const dynamic = 'force-dynamic';
 const clean = (c: string) => c.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
 

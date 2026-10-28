@@ -78,7 +78,7 @@ function Pick({ s, me, p, room }: P) {
   const sent = mine.length === room.max && sel.every((x) => mine.includes(x));
   return (
     <div className="rm-pad">
-      <h2 className="h3">{room.prompt}</h2><Lock v={v} />
+      <h1 className="h3">{room.prompt}</h1><Lock v={v} />
       <div className="rm-list">{SIGNALS.map((x) => <button key={x.id} className={'rm-opt' + (sel.includes(x.id) ? ' on' : '')} style={{ ['--h' as any]: x.hue }} onClick={() => toggle(x.id)} disabled={v?.locked}><span className="num">0{x.n}</span>{x.title}</button>)}</div>
       <button className="rm-btn sticky" disabled={sel.length !== room.max || v?.locked || sent} onClick={() => p('pick', { key: room.key, value: sel })}>{sent ? 'Sent. You can still change it until we move on.' : `Send ${sel.length} of ${room.max}`}</button>
     </div>
@@ -92,7 +92,7 @@ function Chips({ s, me, p, room }: P) {
   const add = (id: string, d: number) => setO((x) => { const n = Math.max(0, (x[id] || 0) + d); if (d > 0 && used >= room.total) return x; return { ...x, [id]: n }; });
   return (
     <div className="rm-pad">
-      <h2 className="h3">{room.prompt}</h2><Lock v={v} />
+      <h1 className="h3">{room.prompt}</h1><Lock v={v} />
       <div className="rm-chipsleft">{Array.from({ length: room.total }, (_, i) => <i key={i} className={i < used ? 'used' : ''} />)}</div>
       <div className="rm-list">{DIRECTIONS.map((d) => { return (
         <div key={d.id} className="rm-chip" style={{ ['--c1' as any]: d.colors[0], ['--c2' as any]: d.colors[1] }}>
@@ -118,7 +118,7 @@ function Taste({ s, me, p, step }: P) {
   return (
     <div className="rm-pad">
       <div className="rm-tabs">{SAMPLES.map((x) => <button key={x.code} className={(cur === x.code ? 'on' : '') + (done(x.code) ? ' done' : '')} onClick={() => setCur(x.code)}>{x.code}</button>)}</div>
-      <h2 className="h3">Sample {cur}{step >= 2 ? <span className="it"> · {SAMPLES.find((x) => x.code === cur)!.name}</span> : null}</h2>
+      <h1 className="h3">Sample {cur}{step >= 2 ? <span className="it"> · {SAMPLES.find((x) => x.code === cur)!.name}</span> : null}</h1>
       {step >= 2 && <p>{SAMPLES.find(x => x.code === cur)?.note}</p>}
       {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess, before we tell you" /></label>}
       <Scale label="Appeal" v={r.appeal} set={(n) => setR({ ...r, appeal: n })} />
@@ -143,7 +143,7 @@ function Guess({ s, me, p, step }: P) {
   return (
     <div className="rm-pad">
       <div className="k">Vial {MOLECULES.indexOf(m) + 1} of 7</div>
-      <h2 className="h3">Smell the strip. <span className="it">Where is it from?</span></h2>
+      <h1 className="h3">Smell the strip. <span className="it">Where is it from?</span></h1>
       <div className="rm-grid">{opts.map((o) => <button key={o} disabled={reveal} className={'rm-opt' + (mine === o ? ' on' : '') + (reveal && o === m.source ? ' right' : '')} onClick={() => p('guess', { molecule: m.id, answer: o })}>{o}</button>)}</div>
       {reveal && <div className="rm-reveal"><b>{m.name}</b> from {m.source.toLowerCase()}. {mine === m.source ? 'You got it.' : mine ? 'Not this time.' : ''}</div>}
     </div>
@@ -154,7 +154,7 @@ function Team({ s, me, p }: P) {
   const t = s.participants[me.pid]?.team;
   return (
     <div className="rm-pad">
-      <h2 className="h3">Pick your team.</h2>
+      <h1 className="h3">Pick your team.</h1>
       <div className="rm-list">{[1, 2].map((n) => { const m = MISSIONS.find((x) => x.id === s.missions[n - 1]); return <button key={n} className={'rm-opt tall' + (t === n ? ' on' : '')} onClick={() => p('team', { team: n })}><span className="num">{n}</span><div><b>Team {n}</b><small>{m?.title}</small></div></button>; })}</div>
     </div>
   );
@@ -171,7 +171,7 @@ function CanvasForm({ s, me, p }: P) {
   return (
     <div className="rm-pad">
       <div className="k">Team {team} · Concept Canvas</div>
-      <h2 className="h3">{MISSIONS.find((x) => x.id === s.missions[team - 1])?.title}</h2>
+      <h1 className="h3">{MISSIONS.find((x) => x.id === s.missions[team - 1])?.title}</h1>
       <p className="rm-fine">Everything saves as you move to the next field. One captain types; everyone can suggest below.</p>
       {F({ k: 'name', l: 'Concept name', ph: 'Give it a name you can taste', })}
       {Sel({ k: 'segment', l: 'For', opts: SEGMENTS })}
@@ -204,7 +204,7 @@ function DotsVote({ s, me, p, room }: P) {
   const items = candidates(s).filter((x) => x.kind === 'concept').concat(candidates(s).filter((x) => x.kind === 'seed'));
   return (
     <div className="rm-pad">
-      <h2 className="h3">You have three dots. <span className="it">Put them on the ideas you’d develop, and stack them if you like.</span></h2><Lock v={v} />
+      <h1 className="h3">You have three dots. <span className="it">Put them on the ideas you’d develop, and stack them if you like.</span></h1><Lock v={v} />
       <div className="rm-chipsleft">{Array.from({ length: room.total }, (_, i) => <i key={i} className={i < used ? 'used' : ''} />)}</div>
       <div className="rm-list">{items.map((x) => (
         <div key={x.id} className="rm-chip" style={{ ['--c1' as any]: x.color, ['--c2' as any]: x.color }}>
@@ -221,7 +221,7 @@ function Placements({ s, me, p }: P) {
   const placed = candidates(s).filter((x) => s.placements[x.id]);
   return (
     <div className="rm-pad">
-      <h2 className="h3">Agree or challenge <span className="it">each placement.</span></h2>
+      <h1 className="h3">Agree or challenge <span className="it">each placement.</span></h1>
       {!placed.length && <p className="rm-p">Placements appear here as Matt places them.</p>}
       <div className="rm-list">{placed.map((x) => { const r = s.reactions['place-' + x.id]?.[me.pid]?.v; return (
         <div key={x.id} className="rm-place"><div><b>{x.name}</b><small>{s.placements[x.id].horizon} · {s.placements[x.id].role}</small></div>
@@ -237,7 +237,7 @@ function CodeReact({ s, me, p }: P) {
   const [edit, setEdit] = useState<number | null>(null); const [txt, setTxt] = useState('');
   return (
     <div className="rm-pad">
-      <h2 className="h3">The Flavor Code. <span className="it">Keep or edit each rule.</span></h2>
+      <h1 className="h3">The Flavor Code. <span className="it">Keep or edit each rule.</span></h1>
       <div className="rm-list">{CODE.map((c) => { const r = s.reactions['code' + c.n]?.[me.pid]; return (
         <div key={c.n} className="rm-rule">
           <div><span className="num">{c.n}</span><b>{c.t}</b><small>{c.d}</small></div>
@@ -265,7 +265,7 @@ function BenchPhone({ s, me, p }: P) {
   return (
     <div className="rm-pad bench-phone" style={{ ['--c2' as any]: base.palette[1] }}>
       <div className="k">Team {team} · The Bench{b?.locked ? ' · locked' : ''}</div>
-      <h2 className="h3">{c?.name || 'Tune your concept'}</h2>
+      <h1 className="h3">{c?.name || 'Tune your concept'}</h1>
       <div className="rm-field"><span>Built on</span><div className="rm-tags">{TERRITORIES.map((t) => <button key={t.id} className={base.id === t.id ? 'on' : ''} onClick={() => p('benchbase', { team, base: t.id })}>{t.hero}</button>)}</div></div>
       {DIALS.map((x) => (
         <label key={x.id} className="rm-dial">

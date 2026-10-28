@@ -59,7 +59,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
       <div className="bw-prog"><i style={{ width: `${prog * 100}%` }} /></div>
 
       <header className="bw-hero">
-        <video autoPlay muted loop playsInline poster="/media/opening-poster.jpg"><source src="/media/loop.mp4" type="video/mp4" /></video>
+        <video autoPlay muted loop playsInline poster="/media/opening-poster.jpg"><source media="(min-width: 701px), (orientation: landscape)" src="/media/loop.mp4" type="video/mp4" /><source src="/media/loop-portrait.mp4" type="video/mp4" /></video>
         <img className="bw-poster" src="/media/opening-poster.jpg" alt="" />
         <div className="bw-shade" />
         <div className="bw-hero-in">
@@ -78,7 +78,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
         <p className="bw-letter">We’ve built the morning around your four objectives. We’re also bringing four samples from our development bench, made in the TheraBreath bases you sent us. You’ll taste them blind and score them on your phone, and we’ll all vote from our phones a few more times along the way. By noon, we’d like to agree on what to develop first, who owns it and when the next samples are due. Afterwards we’ll write it all up as <em>The Flavor Playbook</em> and send it to everyone who was there.</p>
         <p className="bw-letter">You’ll meet four of us from The Flavor Factory: {TEAM.map((t, i) => `${i === TEAM.length - 1 ? 'and ' : ''}${t.name}, ${t.title}`).join('; ')}.</p>
         <p className="bw-letter">This page takes about five minutes to read. Near the bottom there are four quick questions, and we’ll open the morning with everyone’s answers.</p>
-        <p className="bw-sign"><img src="/img/tff-logo.webp" alt="The Flavor Factory" />The Flavor Factory team</p>
+        <p className="bw-sign"><img src="/img/tff-logo.webp" alt="The Flavor Factory" width={1200} height={264} />The Flavor Factory team</p>
       </section>
 
       <section className="bw-sec bw-rise">

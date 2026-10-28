@@ -1,6 +1,8 @@
 import { EVENT, SAMPLES, WHO_CHIPS } from '@/lib/content';
 import PrintButton from './PrintButton';
 
+export const metadata = { title: 'Tasting scorecard' };
+
 // The tasting scorecard, on paper: the same questions the phones used to ask, one card per person. Prints to one page.
 const SCALES = ['Appeal', 'Feels like TheraBreath', 'Newness'];
 
@@ -8,7 +10,7 @@ export default function Scorecard() {
   return (
     <main className="sc" data-theme="a">
       <header className="sc-head">
-        <div><b>Blind tasting</b><span>The Future of Freshness · {EVENT.date}</span></div>
+        <div><h1>Blind tasting</h1><span>The Future of Freshness · {EVENT.date}</span></div>
         <label>Name <i /></label>
         <PrintButton />
       </header>

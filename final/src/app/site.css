@@ -26,7 +26,7 @@
 .st-hostbar > *:hover { border-color: var(--glacier); }
 @media (max-width: 700px) { .st-bar { flex-wrap: wrap; } .st-hostbar { order: 3; flex-basis: 100%; max-width: 100%; justify-content: flex-start; margin-left: 0; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; } .st-hostbar::-webkit-scrollbar { display: none; } .st-hostbar > * { flex: none; white-space: nowrap; padding: 6px 11px; font-size: 11px; } }
 .st-rail { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 40; display: flex; flex-direction: column; gap: 14px; }
-.st-rail a { display: flex; align-items: center; justify-content: flex-end; gap: 10px; text-decoration: none; }
+.st-rail a { display: flex; align-items: center; justify-content: flex-end; gap: 10px; min-height: 24px; text-decoration: none; }
 .st-rail i { width: 8px; height: 8px; border-radius: 50%; background: var(--fg3); transition: all .4s var(--ease); }
 .st-rail span { font: 500 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--fg); opacity: 0; transform: translateX(6px); transition: all .3s var(--ease); }
 .st-rail span { padding: 4px 8px; border-radius: 6px; background: rgba(11,27,43,.85); }
@@ -44,7 +44,7 @@
 .st-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; animation: st-up 1.4s var(--ease) both .7s; }
 .st-play { display: inline-flex; align-items: center; gap: 12px; padding: 16px 26px 16px 18px; border-radius: 99px; background: var(--cloud); color: var(--ink); font: 500 16px var(--sans); text-decoration: none; transition: transform .3s var(--ease), box-shadow .3s; box-shadow: 0 0 0 0 rgba(191,233,242,.6); }
 .st-play:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(191,233,242,.35); }
-.st-play small { font: 400 12px var(--mono); color: rgba(11,27,43,.55); }
+.st-play small { font: 400 12px var(--mono); color: rgba(11,27,43,.68); }
 .st-tri { width: 34px; height: 34px; border-radius: 50%; background: var(--ink); position: relative; }
 .st-tri::after { content: ''; position: absolute; left: 13px; top: 10px; border-left: 12px solid var(--cloud); border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
 .st-ghost { display: inline-flex; align-items: center; padding: 16px 22px; border-radius: 99px; border: 1px solid var(--rule); font: 500 15px var(--sans); text-decoration: none; color: var(--fg); }
@@ -240,10 +240,11 @@
 .st-agenda { position: relative; list-style: none; max-width: 760px; margin: 0 auto 44px; text-align: left; border-left: 2px solid rgba(11,27,43,.15); }
 .st-agenda li { position: relative; padding: 10px 0 10px 26px; font-size: 16px; }
 .st-agenda li::before { content: ''; position: absolute; left: -7px; top: 16px; width: 12px; height: 12px; border-radius: 50%; background: var(--cloud); border: 2px solid var(--teal); }
-.st-agenda b { display: inline-block; width: 64px; font: 500 13px var(--mono); color: var(--teal); }
+.st-agenda b { display: inline-block; width: 64px; font: 500 13px var(--mono); color: var(--teal-ink); }
 .st-close .st-play { background: var(--ink); color: var(--cloud); }
 .st-note { position: relative; font-size: 17px; }
-.st-foot { position: relative; margin-top: 60px; font: 400 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: rgba(11,27,43,.45); }
+.st-foot { position: relative; margin-top: 60px; font: 400 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: rgba(11,27,43,.62); text-wrap: balance; }
+.st-k { text-wrap: balance; }
 
 /* phones and tablets */
 @media (max-width: 900px) {
@@ -261,8 +262,13 @@
   .st-qs { grid-template-columns: 1fr 1fr; }
   .st-host { font-size: 11px; }
 }
+@media (max-width: 700px) {
+  .st-shade { background: linear-gradient(180deg, rgba(11,27,43,.15) 0%, rgba(11,27,43,.3) 25%, rgba(11,27,43,.8) 50%, rgba(11,27,43,.95) 100%); }
+  .st-hero p { text-shadow: 0 1px 14px rgba(11,27,43,.85); }
+}
 @media (max-width: 520px) {
-  .st-lock b { display: none; }
+  .st-lock { gap: 8px; font-size: 11px; }
+  .st-lock img { height: 20px; }
   .st-qs { grid-template-columns: 1fr; }
   .st-col span { font-size: 13px; padding: 6px 10px; }
   .st-shift { min-height: 380px; padding: 24px; }
@@ -270,7 +276,7 @@
 @media (prefers-reduced-motion: reduce) { .st-rise { opacity: 1; transform: none; } .st-hero video { display: none; } .st-hero { background: url(/media/opening-poster.jpg) center / cover; } }
 
 /* Focused November workshop overview */
-.ws-section{padding:110px max(7vw,24px);max-width:1600px;margin:auto;scroll-margin-top:70px}.ws-section h2{font-size:clamp(42px,6vw,86px);line-height:1.05;letter-spacing:-.04em;margin:24px 0}.ws-section h2 em{font-family:Newsreader,Georgia,serif;font-weight:400}.ws-lead{max-width:760px;font-size:21px;line-height:1.6;opacity:.8}.ws-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:42px}.ws-card{padding:32px;border:1px solid #ffffff25;border-top:3px solid #b9e6cd;border-radius:16px;background:#ffffff05}.ws-card h3{font-size:30px;letter-spacing:-.025em;margin:18px 0}.ws-card p,.ws-outcome p{font-size:18px;line-height:1.6}.ws-card strong{display:block;line-height:1.5;margin:24px 0}.ws-card small{display:block;line-height:1.5;opacity:.7}.ws-code{font-size:28px;color:#b9e6cd}.ws-flight{border-top:1px solid #ffffff25}.ws-outcome{padding:40px;margin-top:32px;border-radius:16px;background:#b9e6cd12}.ws-outcome h3{font-size:32px}.st-explore{border-top:1px solid #ffffff25;padding:32px 0}.st-explore>summary,.st-explore>p{margin:24px 7vw}.st-explore>summary{cursor:pointer;font-size:24px}.st-explore[open] .st-rise{opacity:1;transform:none}@media(max-width:700px){.ws-grid{grid-template-columns:1fr}.ws-section{padding:70px 24px}.ws-card{padding:24px}.ws-lead{font-size:18px}.ws-outcome{padding:24px}.st-rail{display:none}}
+.ws-section{padding:110px max(7vw,24px);max-width:1600px;margin:auto;scroll-margin-top:70px}.ws-section h1,.ws-section h2{font-size:clamp(42px,6vw,86px);line-height:1.05;letter-spacing:-.04em;margin:24px 0}.ws-section h1 em,.ws-section h2 em{font-family:Newsreader,Georgia,serif;font-weight:400}.ws-lead{max-width:760px;font-size:21px;line-height:1.6;opacity:.8}.ws-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:42px}.ws-card{padding:32px;border:1px solid #ffffff25;border-top:3px solid #b9e6cd;border-radius:16px;background:#ffffff05}.ws-card h3,.tm-card h2{font-size:30px;letter-spacing:-.025em;margin:18px 0}.ws-card p,.ws-outcome p{font-size:18px;line-height:1.6}.ws-card strong{display:block;line-height:1.5;margin:24px 0}.ws-card small{display:block;line-height:1.5;opacity:.7}.ws-code{font-size:28px;color:#b9e6cd}.ws-flight{border-top:1px solid #ffffff25}.ws-outcome{padding:40px;margin-top:32px;border-radius:16px;background:#b9e6cd12}.ws-outcome h3{font-size:32px}.st-explore{border-top:1px solid #ffffff25;padding:32px 0}.st-explore>summary,.st-explore>p{margin:24px 7vw}.st-explore>summary{cursor:pointer;font-size:24px}.st-explore[open] .st-rise{opacity:1;transform:none}@media(max-width:700px){.ws-grid{grid-template-columns:1fr}.ws-section{padding:70px 24px}.ws-card{padding:24px}.ws-lead{font-size:18px}.ws-outcome{padding:24px}.st-rail{display:none}}
 
 /* FINAL: Ross's brief, the growth math and the sealed tasting flight. */
 .ws-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -280,7 +286,7 @@
 .ws-goal p { font-family: Newsreader, Georgia, serif; font-weight: 300; font-size: clamp(22px, 2.3vw, 32px); line-height: 1.45; margin: 0 0 14px; opacity: .92; }
 .ws-goal mark { background: none; color: #fff; font-style: italic; box-shadow: inset 0 -.38em 0 var(--hl); }
 .ws-goal mark.x { --hl: rgba(255, 214, 140, .32); } .ws-goal mark.y { --hl: rgba(170, 228, 242, .32); }
-.ws-goal cite, .ws-src { display: block; font: 400 13px/1.5 "Geist Mono", ui-monospace, monospace; font-style: normal; opacity: .55; letter-spacing: .02em; }
+.ws-goal cite, .ws-src { display: block; font: 400 13px/1.5 "Geist Mono", ui-monospace, monospace; font-style: normal; opacity: .72; letter-spacing: .02em; }
 .ws-why { border-top: 1px solid #ffffff25; }
 .ws-gap { display: grid; grid-template-columns: 220px 220px 1fr; gap: 48px; align-items: end; margin-top: 52px; }
 .ws-glass { position: relative; height: 380px; border-radius: 26px 26px 34px 34px; border: 1px solid #ffffff40; background: linear-gradient(180deg, #ffffff08, #ffffff12); overflow: hidden; box-shadow: inset 0 0 40px #ffffff10; }
@@ -306,10 +312,11 @@
 .ws-seal small { margin-top: 14px; }
 
 /* The restored front door: objective tags on the agenda, who you will meet, the pre-brief at the close. */
-.st-agenda .st-obj { margin-left: 10px; padding: 3px 8px; border-radius: 99px; border: 1px solid rgba(46,143,168,.4); font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--teal); font-style: normal; white-space: nowrap; }
+.st-agenda .st-obj { margin-left: 10px; padding: 3px 8px; border-radius: 99px; border: 1px solid rgba(31,108,130,.35); font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--teal-ink); font-style: normal; white-space: nowrap; }
 .ws-team { border-top: 1px solid #ffffff25; }
 .ws-team .ws-card { border-top-color: var(--glacier-d); }
 .ws-team .ws-card h3 { margin: 0 0 10px; font-family: var(--serif); font-weight: 300; font-size: 34px; }
+.tm-card h2 { line-height: normal; letter-spacing: -.025em; }
 .ws-team .ws-card small { font: 500 12px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
 .st-before { position: relative; max-width: 760px; margin: 0 auto 36px; padding: 28px 32px; border-radius: 20px; background: rgba(255,255,255,.6); border: 1px solid rgba(11,27,43,.1); display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .st-before p { font-size: 18px; line-height: 1.5; }
@@ -325,7 +332,7 @@ html:has(.tm) { background: #0B1B2B; }
 .tm-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .tm-card { display: flex; flex-direction: column; gap: 4px; color: var(--fg); text-decoration: none; transition: background .3s, transform .3s; }
 .tm-card:hover { background: rgba(255,255,255,.06); transform: translateY(-3px); }
-.tm-card h3 { font-family: var(--serif); font-weight: 300; margin: 12px 0 8px; }
+.tm-card h3, .tm-card h2 { font-family: var(--serif); font-weight: 300; margin: 12px 0 8px; }
 .tm-card p { opacity: .78; }
 .tm-morning h2 { font-family: var(--serif); font-weight: 300; }
 @media (max-width: 1100px) { .tm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

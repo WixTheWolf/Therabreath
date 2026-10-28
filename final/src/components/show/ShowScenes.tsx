@@ -189,7 +189,7 @@ export function NextRound({ s, step }: SceneProps) {
           {DIRECTIONS.map((d, i) => {
             const n = t[d.id] || 0; const [c1, c2] = dirColors(d.id); const rank = order.indexOf(d.id); const top = revealed && rank > -1 && rank < 3;
             return (
-              <button key={d.id} className={'orb' + (top ? ' top' : '') + (revealed && !top ? ' dim' : '')} style={{ ['--c1' as any]: c1, ['--c2' as any]: c2, ['--s' as any]: `${130 + (n / max) * 110}px`, ['--i' as any]: i }} data-nonav onClick={() => !live.still && hand(live, 'directions', { [d.id]: 1 })}>
+              <button key={d.id} className={'orb' + (top ? ' top' : '') + (revealed && order.length && !top ? ' dim' : '')} style={{ ['--c1' as any]: c1, ['--c2' as any]: c2, ['--s' as any]: `${130 + (n / max) * 110}px`, ['--i' as any]: i }} data-nonav onClick={() => !live.still && hand(live, 'directions', { [d.id]: 1 })}>
                 <div className="orb-ball"><b className="num">{n}</b></div>
                 <span>{d.label}</span><small className="k">{d.sub}</small>
                 {top && <em className="k">Number {rank + 1}</em>}

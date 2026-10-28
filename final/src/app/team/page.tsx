@@ -1,6 +1,8 @@
 import { EVENT, RUN } from '@/lib/content';
 import { joinToken } from '@/lib/auth';
 
+export const metadata = { title: 'Team page' };
+
 // The team page: everything built for November 9 in one place, for The Flavor Factory team (the team link opens it;
 // the client password alone does not), in the front door's look. The pre-brief here is a practice copy: answers go to the PREVIEW session, never
 // the live one.
@@ -21,16 +23,16 @@ export default async function Team() {
   return (
     <main className="site tm" data-theme="b">
       <header className="st-bar">
-        <div className="st-lock"><img src="/img/tff-logo-white.webp" alt="The Flavor Factory" /><span>×</span><b>TheraBreath</b></div>
+        <div className="st-lock"><img src="/img/tff-logo-white.webp" alt="The Flavor Factory" width={100} height={22} /><span>×</span><b>TheraBreath</b></div>
         <nav className="st-hostbar" aria-label="More"><a href="/">Front door</a><a href="/host?code=REHEARSE">Rehearse</a></nav>
       </header>
       <section className="ws-section tm-top">
         <div className="tm-orb" />
         <div className="st-k">For The Flavor Factory team · {EVENT.date}</div>
-        <h2>What we&rsquo;ve<br /><em>built.</em></h2>
+        <h1>What we&rsquo;ve<br /><em>built.</em></h1>
         <p className="ws-lead">Everything for The Future of Freshness, in one place. Please keep this page and its link inside the team. The link is what opens the presentation and these pages, and Church &amp; Dwight’s password won’t. Until the day, stick to the rehearsal. On the day, open the live presentation on the presenting laptop only.</p>
         <div className="ws-grid tm-grid">{items.map((x, i) => (
-          <a key={x.t} href={x.href} className="ws-card tm-card" style={{ borderTopColor: x.c }}><span className="ws-code">{String(i + 1).padStart(2, '0')}</span><h3>{x.t}</h3><p>{x.d}</p></a>
+          <a key={x.t} href={x.href} className="ws-card tm-card" style={{ borderTopColor: x.c }}><span className="ws-code">{String(i + 1).padStart(2, '0')}</span><h2>{x.t}</h2><p>{x.d}</p></a>
         ))}</div>
       </section>
       <section className="st-close tm-morning">

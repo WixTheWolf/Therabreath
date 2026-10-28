@@ -1,6 +1,8 @@
 import SurveyApp from '@/components/SurveyApp';
 import { joinToken } from '@/lib/auth';
 
+export const metadata = { title: 'Pre-brief' };
+
 export const dynamic = 'force-dynamic';
 const clean = (c: string) => c.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
 

@@ -33,6 +33,17 @@ The Stage's look (the glass drop, the light, the signal colors, the photography)
 
 The older surfaces (the session-driven Stage and Console, the session Playbook) still work at their addresses, but nothing links to them.
 
+## Accessibility and polish (October 28)
+
+A pass over every page with automated checks (axe-core for WCAG 2.2 AA, Lighthouse, and a script for tap targets, focus rings, phone overflow and reduced motion), plus design and copy reviews of the screenshots.
+
+- Contrast: secondary and tertiary text in both themes, and every small teal label, now pass WCAG AA (4.5:1). The bright teal (`--teal`, `--accent`) stays for large type, rules and fills; small text uses `--teal-ink` / `--accent-ink` (`#1F6C82`), which the pre-brief and the run sheet also print in. The slides keep their look, with labels that read better on a TV in a bright room.
+- Keyboard and touch: a visible focus ring everywhere, rings on the password and name fields, chapter links of at least 24px, and 44px buttons on the phone voting screens.
+- Structure: one h1 on every page and phone screen, and tab titles that say which page is which (`Run sheet | The Future of Freshness`).
+- Phones: the front door keeps both names in the lockup and darkens the bottom of the hero so the copy reads over the splash. The hero loop has a portrait cut for phones (`public/media/loop-portrait.mp4`, 3 MB instead of 8.5 MB).
+- Small fixes: one name for the film button ("Watch the film"), a sign-in error that says what to do, a tab and home-screen icon (`src/app/icon.svg`, `apple-icon.png`, `favicon.ico`), fonts preloaded, logos sized, and the "next round" slide no longer greys out every option before anyone has voted.
+- Lighthouse on a phone, front door: performance 77 to 82, accessibility 96 to 100, best practices 96 to 100, first paint 3.5s to 2.4s, page weight 5.8 MB to 3.6 MB. (SEO stays low on purpose: every page is noindex.)
+
 ## Surfaces
 
 | Route | Who | What |
