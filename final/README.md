@@ -45,6 +45,12 @@ A pass over every page with automated checks (axe-core for WCAG 2.2 AA, Lighthou
 - A second pass with Impeccable (`PRODUCT.md` holds its product record): its anti-pattern detector run on the source and on every rendered surface (front door, pre-brief, team page, run sheet, scorecard, phone screens and the slides). Fixed: nothing readable below 12px on screen, the envelope questions as sentences that fit at 360px, dark lettering on the wax seals, Ross's goal and the pre-brief letter at a readable measure, input placeholders at AA, the Flavor School circles and the white-space "Open" tags at AA, label shadows over the opener photos, the caret, link underlines and a matching scrollbar on the light pages, a reconnecting notice on phones (votes already queue on the phone and resend), and the setup checklist in two columns. What the detector still lists is the chosen look (the italic title, the small labels above headings, Cloud Dancer, the colored top edges, Geist) and print sizes on paper.
 - Lighthouse on a phone, front door: performance 77 to 82, accessibility 96 to 100, best practices 96 to 100, first paint 3.5s to 2.4s, page weight 5.8 MB to 3.6 MB. (SEO stays low on purpose: every page is noindex.)
 
+## The opening film
+
+`FILM` in `src/lib/content.ts` names the file for each cut and how long it runs: the site's (`public/media/opening.*`) and the pre-brief's (`opening.brief.*` once V5 ships; until then both play `opening.*`). Each plays with English captions from the `.vtt` beside it (the player's CC button), and the pre-brief and its signed link reach the captions the same way they reach the film. When the film ends on the pre-brief, the page goes straight to the four questions, with the first one ready to answer. The pre-brief letter quotes Ross's goal from `ROSS_GOAL` instead of paraphrasing it.
+
+V5, the pre-brief intro, is built and waiting on its voice: `video/docs/fof/V5.md` has the script, the beats and the one command that turns a take into both cuts, their captions and the poster. Until it ships, the site plays V4 (1:27), with captions written from its own word times.
+
 ## Surfaces
 
 | Route | Who | What |

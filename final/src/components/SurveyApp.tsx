@@ -4,7 +4,7 @@
 // Answers land in the live session and open the morning on the "Your pre-brief answers" scene. Prints to a link-free PDF.
 import { useEffect, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
-import { SURVEY, EVENT, OBJECTIVES, PRIMARY_TERRITORIES as PLATFORMS, AGENDA, THINK, SIGNALS, GAP, ROSS_GOAL, SOURCES, TEAM } from '@/lib/content';
+import { SURVEY, EVENT, FILM, OBJECTIVES, PRIMARY_TERRITORIES as PLATFORMS, AGENDA, THINK, SIGNALS, GAP, ROSS_GOAL, SOURCES, TEAM } from '@/lib/content';
 import { uid } from '@/lib/state';
 import Orb, { PROFILE, DEFAULT_PROFILE, describe } from './Orb';
 import FilmModal from './FilmModal';
@@ -52,6 +52,12 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
     try { localStorage.setItem(`pb-brief-${code}`, JSON.stringify({ done: true, a, profile })); } catch {}
     setDone(true);
   };
+  // When the film ends, the page goes straight to the four questions it asks for, with the first one ready to answer.
+  const toQuestions = () => {
+    const el = document.getElementById('homework'); if (!el) return;
+    el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    setTimeout(() => (el.querySelector('.bw-wiz-body input, .bw-wiz-body textarea, .bw-wiz-body button, .bw-done button') as HTMLElement | null)?.focus({ preventScroll: true }), 700);
+  };
   const saveOrb = () => { const c = orb.current; if (!c) return; const l = document.createElement('a'); l.download = `freshness-${first || 'me'}.png`; l.href = c.toDataURL('image/png'); l.click(); };
 
   return (
@@ -67,14 +73,14 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
           <p className="bw-hi">{first ? `${first}, you’re invited.` : 'You’re invited.'}</p>
           <h1>The Future<br /><em>of Freshness</em></h1>
           <p>{EVENT.dateLine} · {EVENT.room} room</p>
-          <button className="bw-play" onClick={() => setFilm(true)}><span />Watch the film · 1:27</button>
+          <button className="bw-play" onClick={() => setFilm(true)}><span />Watch the film · {FILM.brief.length}</button>
         </div>
       </header>
 
       <section className="bw-sec bw-rise">
         <div className="k">A letter from The Flavor Factory</div>
         <p className="bw-letter">{first ? `Dear ${first},` : 'Hello,'}</p>
-        <p className="bw-letter">In July you came out to Norco and saw how we make flavor. On November 9 it’s our turn to come to Princeton. We’ll bring what we know about flavor, what we’re seeing in the market, the trends we’re watching and the innovation work we’ve been doing, all of it aimed at the goal in {first.toLowerCase() === 'ross' ? 'your' : 'Ross’s'} invitation: <em>new flavor experiences that strengthen TheraBreath’s appeal with loyal users and attract new consumers.</em></p>
+        <p className="bw-letter">In July you came out to Norco and saw how we make flavor. On November 9 it’s our turn to come to Princeton. We’ll bring what we know about flavor, what we’re seeing in the market, the trends we’re watching and the innovation work we’ve been doing, all of it aimed at the goal in {first.toLowerCase() === 'ross' ? 'your' : 'Ross’s'} invitation: <em>“{ROSS_GOAL.lead.slice(ROSS_GOAL.lead.indexOf('new flavor'))} {ROSS_GOAL.loyal} {ROSS_GOAL.joiner} {ROSS_GOAL.fresh}”</em></p>
         <p className="bw-letter">We’ve built the morning around your four objectives. We’re also bringing four samples from our development bench, made in the TheraBreath bases you sent us. You’ll taste them blind and score them on your phone, and we’ll all vote from our phones a few more times along the way. By noon, we’d like to agree on what to develop first, who owns it and when the next samples are due. Afterwards we’ll write it all up as <em>The Flavor Playbook</em> and send it to everyone who was there.</p>
         <p className="bw-letter">You’ll meet four of us from The Flavor Factory: {TEAM.map((t, i) => `${i === TEAM.length - 1 ? 'and ' : ''}${t.name}, ${t.title}`).join('; ')}.</p>
         <p className="bw-letter">This page takes about five minutes to read. Near the bottom there are four quick questions, and we’ll open the morning with everyone’s answers.</p>
@@ -178,7 +184,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
         <button className="bw-link bw-pdf" onClick={() => print()}>Save this pre-brief as a PDF</button>
         <p className="bw-conf">Confidential. The samples are development work made just for this session. They aren’t finished products, and nothing on this page is a claim or a commercial formula. Please keep this page and the write-up within the group.</p>
       </footer>
-      {film && <FilmModal q={`?c=${encodeURIComponent(code)}&k=${encodeURIComponent(k)}`} onClose={() => setFilm(false)} />}
+      {film && <FilmModal file={FILM.brief.file} q={`?c=${encodeURIComponent(code)}&k=${encodeURIComponent(k)}`} onClose={() => setFilm(false)} onEnd={() => { setFilm(false); toQuestions(); }} />}
     </main>
   );
 }

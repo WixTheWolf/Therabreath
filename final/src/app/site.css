@@ -55,6 +55,7 @@
 .st-modal { position: fixed; inset: 0; z-index: 80; background: rgba(0,0,0,.92); display: grid; place-items: center; animation: st-fade .4s; }
 @keyframes st-fade { from { opacity: 0; } }
 .st-modal video { width: min(94vw, 160vh); max-height: 88vh; border-radius: 10px; }
+.st-modal video::cue { font: 500 22px/1.35 var(--sans); color: #fff; background: rgba(4,7,11,.78); }
 .st-x { position: absolute; top: 18px; right: 22px; font: 500 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; padding: 10px 16px; border: 1px solid rgba(255,255,255,.3); border-radius: 99px; color: #fff; }
 
 /* sticky scenes */

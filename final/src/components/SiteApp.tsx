@@ -4,7 +4,7 @@
 // the end. An optional drawer holds the vocabulary of freshness, science and imagination, and the three shifts.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import FilmModal from './FilmModal';
-import { EVENT, PRIMARY_TERRITORIES, SAMPLES, VOCAB, SHIFTS, SCIENCE, IMAGINATION, AGENDA, OBJECTIVES, TOPICS, RUN, ROSS_GOAL, GAP, SOURCES, TEAM, ABOUT } from '@/lib/content';
+import { EVENT, FILM, PRIMARY_TERRITORIES, SAMPLES, VOCAB, SHIFTS, SCIENCE, IMAGINATION, AGENDA, OBJECTIVES, TOPICS, RUN, ROSS_GOAL, GAP, SOURCES, TEAM, ABOUT } from '@/lib/content';
 
 const clamp = (x: number, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const ease = (x: number) => 1 - Math.pow(1 - clamp(x), 3);
@@ -71,7 +71,7 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
       <Close prebrief={prebrief} />
       <details id="explore" className="st-explore"><summary>More reading: the words we use for freshness, and three shifts we’re seeing</summary><p>This part is optional. It’s here to explain ideas, and it isn’t formula work or consumer research.</p><Vocab /><Worlds /><ShiftTrack /></details>
 
-      {film && <FilmModal onClose={() => setFilm(false)} />}
+      {film && <FilmModal file={FILM.site.file} onClose={() => setFilm(false)} />}
       {race && <FilmModal race onClose={() => setRace(false)} />}
     </main>
   );
@@ -87,7 +87,7 @@ function Hero({ onFilm }: { onFilm: () => void }) {
         <h1>The Future<br /><em>of Freshness</em></h1>
         <p>Two hours with Church &amp; Dwight Oral Care R&amp;D. We’ll work through the four things Ross asked for, taste four samples we made in your bases and vote on what to develop. By noon, every direction we pick will have a plan and an owner.</p>
         <div className="st-cta">
-          <button className="st-play" onClick={onFilm}><span className="st-tri" />Watch the film <small>1:27 · sound on</small></button>
+          <button className="st-play" onClick={onFilm}><span className="st-tri" />Watch the film <small>{FILM.site.length} · sound on</small></button>
           <a className="st-ghost" href="#brief">Explore the workshop</a>
         </div>
       </div>

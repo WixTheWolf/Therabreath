@@ -15,6 +15,10 @@ export const EVENT = {
   code: 'FOF1109', // the live session on November 9; any other code is a clean rehearsal
 };
 
+// The opening film: the file for each cut (in public/media, with captions beside it as .vtt) and how long it runs. The
+// pre-brief's cut can end on its own four questions; the site's points at the pre-brief.
+export const FILM = { site: { file: 'opening', length: '1:27' }, brief: { file: 'opening', length: '1:27' } };
+
 // Ross's goal for the workshop, in his words (invitation, September 18, 2026). The two halves are the growth matrix.
 export const ROSS_GOAL = {
   lead: 'Our goal, as R&D, is to drive incremental growth through flavor innovation by identifying and developing new flavor experiences that both',
