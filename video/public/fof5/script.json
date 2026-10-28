@@ -1,0 +1,23 @@
+{
+  "note": "The Future of Freshness V5, the pre-brief intro. One take holds both endings (ask_b and phone_b for the pre-brief, ask_s and phone_s for the site). gap: seconds of air before the line in the film.",
+  "lines": [
+    { "id": "burn", "gap": 0.9, "text": "TheraBreath took the burn out of mouthwash." },
+    { "id": "want", "gap": 0.35, "text": "The next job is giving more people a reason to want it." },
+    { "id": "m65", "gap": 0.75, "text": "Sixty-five of every hundred American households buy mouthwash." },
+    { "id": "m14", "gap": 0.3, "text": "Fourteen buy TheraBreath, which leaves eighty-six who don't buy it yet." },
+    { "id": "norco", "gap": 1.0, "text": "In July, you came out to Norco and watched us make flavor." },
+    { "id": "ross", "gap": 0.3, "text": "Then Ross invited us to Princeton, with this goal." },
+    { "id": "goal", "gap": 0.45, "text": "Our goal, as R&D, is to drive incremental growth through flavor innovation by identifying and developing new flavor experiences that both strengthen our appeal with existing loyal users and create opportunities to attract new consumers to the franchise." },
+    { "id": "day", "gap": 0.9, "text": "So on Monday, November ninth, from ten to noon in the Darwin room, we'll work through his four objectives together." },
+    { "id": "pitch", "gap": 0.25, "text": "It's a working session, not a pitch." },
+    { "id": "trends", "gap": 0.85, "text": "You'll pick the three trends that matter most, then taste four samples we made in your Fresh Breath and Kids bases." },
+    { "id": "blind", "gap": 0.3, "text": "They're blind, and you'll score them on your phone." },
+    { "id": "noon", "gap": 0.85, "text": "By noon, we'd like to agree on up to three directions, each with an owner and a next sample, and we'll send everyone the write-up, The Flavor Playbook." },
+    { "id": "ask", "only": "brief", "gap": 0.85, "text": "Before you come, please answer the four quick questions on this page, because everyone's answers open the morning." },
+    { "id": "phone", "only": "brief", "gap": 0.25, "text": "And bring your phone." },
+    { "id": "ask", "only": "site", "gap": 0.85, "text": "Before you come, please answer the four quick questions in your pre-brief, because everyone's answers open the morning." },
+    { "id": "phone", "only": "site", "gap": 0.25, "text": "And bring your phone." },
+    { "id": "title", "gap": 1.0, "text": "The Future of Freshness." },
+    { "id": "see", "gap": 0.35, "text": "See you in Princeton." }
+  ]
+}

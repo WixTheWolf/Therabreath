@@ -1,0 +1,1604 @@
+{
+ "ending": "site",
+ "duration": 80.6,
+ "lines": [
+  {
+   "id": "burn",
+   "src0": 0.01,
+   "src1": 2.46,
+   "at": 0.9,
+   "end": 3.35
+  },
+  {
+   "id": "want",
+   "src0": 3.0,
+   "src1": 5.7,
+   "at": 3.7,
+   "end": 6.4
+  },
+  {
+   "id": "m65",
+   "src0": 6.06,
+   "src1": 9.12,
+   "at": 7.15,
+   "end": 10.21
+  },
+  {
+   "id": "m14",
+   "src0": 9.55,
+   "src1": 13.33,
+   "at": 10.51,
+   "end": 14.29
+  },
+  {
+   "id": "norco",
+   "src0": 13.75,
+   "src1": 17.07,
+   "at": 15.29,
+   "end": 18.61
+  },
+  {
+   "id": "ross",
+   "src0": 17.63,
+   "src1": 20.13,
+   "at": 18.91,
+   "end": 21.41
+  },
+  {
+   "id": "goal",
+   "src0": 20.63,
+   "src1": 34.41,
+   "at": 21.86,
+   "end": 35.64
+  },
+  {
+   "id": "day",
+   "src0": 34.94,
+   "src1": 40.56,
+   "at": 36.54,
+   "end": 42.16
+  },
+  {
+   "id": "pitch",
+   "src0": 41.03,
+   "src1": 43.0,
+   "at": 42.41,
+   "end": 44.38
+  },
+  {
+   "id": "trends",
+   "src0": 43.63,
+   "src1": 49.4,
+   "at": 45.23,
+   "end": 51.0
+  },
+  {
+   "id": "blind",
+   "src0": 49.95,
+   "src1": 52.12,
+   "at": 51.3,
+   "end": 53.47
+  },
+  {
+   "id": "noon",
+   "src0": 52.65,
+   "src1": 60.13,
+   "at": 54.32,
+   "end": 61.8
+  },
+  {
+   "id": "ask",
+   "src0": 68.27,
+   "src1": 74.2,
+   "at": 62.65,
+   "end": 68.58
+  },
+  {
+   "id": "phone",
+   "src0": 74.78,
+   "src1": 75.88,
+   "at": 68.83,
+   "end": 69.93
+  },
+  {
+   "id": "title",
+   "src0": 76.47,
+   "src1": 77.75,
+   "at": 70.93,
+   "end": 72.21
+  },
+  {
+   "id": "see",
+   "src0": 78.31,
+   "src1": 79.35,
+   "at": 72.56,
+   "end": 73.6
+  }
+ ],
+ "words": [
+  {
+   "k": "therabreath",
+   "text": "TheraBreath",
+   "t0": 0.89,
+   "t1": 1.73,
+   "line": "burn"
+  },
+  {
+   "k": "took",
+   "text": "took",
+   "t0": 1.73,
+   "t1": 1.91,
+   "line": "burn"
+  },
+  {
+   "k": "the",
+   "text": "the",
+   "t0": 1.91,
+   "t1": 2.09,
+   "line": "burn"
+  },
+  {
+   "k": "burn",
+   "text": "burn",
+   "t0": 2.09,
+   "t1": 2.296,
+   "line": "burn"
+  },
+  {
+   "k": "out",
+   "text": "out",
+   "t0": 2.296,
+   "t1": 2.45,
+   "line": "burn"
+  },
+  {
+   "k": "of",
+   "text": "of",
+   "t0": 2.45,
+   "t1": 2.59,
+   "line": "burn"
+  },
+  {
+   "k": "mouthwash",
+   "text": "mouthwash.",
+   "t0": 2.59,
+   "t1": 3.19,
+   "line": "burn"
+  },
+  {
+   "k": "the",
+   "text": "The",
+   "t0": 3.74,
+   "t1": 3.8,
+   "line": "want"
+  },
+  {
+   "k": "next",
+   "text": "next",
+   "t0": 3.8,
+   "t1": 4.0,
+   "line": "want"
+  },
+  {
+   "k": "job",
+   "text": "job",
+   "t0": 4.0,
+   "t1": 4.26,
+   "line": "want"
+  },
+  {
+   "k": "is",
+   "text": "is",
+   "t0": 4.26,
+   "t1": 4.48,
+   "line": "want"
+  },
+  {
+   "k": "giving",
+   "text": "giving",
+   "t0": 4.48,
+   "t1": 4.64,
+   "line": "want"
+  },
+  {
+   "k": "more",
+   "text": "more",
+   "t0": 4.64,
+   "t1": 4.94,
+   "line": "want"
+  },
+  {
+   "k": "people",
+   "text": "people",
+   "t0": 4.94,
+   "t1": 5.2,
+   "line": "want"
+  },
+  {
+   "k": "a",
+   "text": "a",
+   "t0": 5.2,
+   "t1": 5.36,
+   "line": "want"
+  },
+  {
+   "k": "reason",
+   "text": "reason",
+   "t0": 5.36,
+   "t1": 5.56,
+   "line": "want"
+  },
+  {
+   "k": "to",
+   "text": "to",
+   "t0": 5.56,
+   "t1": 5.8,
+   "line": "want"
+  },
+  {
+   "k": "want",
+   "text": "want",
+   "t0": 5.8,
+   "t1": 5.98,
+   "line": "want"
+  },
+  {
+   "k": "it",
+   "text": "it.",
+   "t0": 5.98,
+   "t1": 6.32,
+   "line": "want"
+  },
+  {
+   "k": "sixtyfive",
+   "text": "Sixty-five",
+   "t0": 7.21,
+   "t1": 7.53,
+   "line": "m65"
+  },
+  {
+   "k": "of",
+   "text": "of",
+   "t0": 7.53,
+   "t1": 7.85,
+   "line": "m65"
+  },
+  {
+   "k": "every",
+   "text": "every",
+   "t0": 7.85,
+   "t1": 8.09,
+   "line": "m65"
+  },
+  {
+   "k": "hundred",
+   "text": "hundred",
+   "t0": 8.09,
+   "t1": 8.39,
+   "line": "m65"
+  },
+  {
+   "k": "american",
+   "text": "American",
+   "t0": 8.39,
+   "t1": 8.81,
+   "line": "m65"
+  },
+  {
+   "k": "households",
+   "text": "households",
+   "t0": 8.81,
+   "t1": 9.25,
+   "line": "m65"
+  },
+  {
+   "k": "buy",
+   "text": "buy",
+   "t0": 9.25,
+   "t1": 9.57,
+   "line": "m65"
+  },
+  {
+   "k": "mouthwash",
+   "text": "mouthwash.",
+   "t0": 9.57,
+   "t1": 10.09,
+   "line": "m65"
+  },
+  {
+   "k": "fourteen",
+   "text": "Fourteen",
+   "t0": 10.54,
+   "t1": 10.98,
+   "line": "m14"
+  },
+  {
+   "k": "buy",
+   "text": "buy",
+   "t0": 10.98,
+   "t1": 11.24,
+   "line": "m14"
+  },
+  {
+   "k": "therabreath",
+   "text": "TheraBreath,",
+   "t0": 11.24,
+   "t1": 11.8,
+   "line": "m14"
+  },
+  {
+   "k": "which",
+   "text": "which",
+   "t0": 12.18,
+   "t1": 12.28,
+   "line": "m14"
+  },
+  {
+   "k": "leaves",
+   "text": "leaves",
+   "t0": 12.28,
+   "t1": 12.6,
+   "line": "m14"
+  },
+  {
+   "k": "eightysix",
+   "text": "eighty-six",
+   "t0": 12.6,
+   "t1": 13.12,
+   "line": "m14"
+  },
+  {
+   "k": "who",
+   "text": "who",
+   "t0": 13.12,
+   "t1": 13.42,
+   "line": "m14"
+  },
+  {
+   "k": "dont",
+   "text": "don\u2019t",
+   "t0": 13.42,
+   "t1": 13.68,
+   "line": "m14"
+  },
+  {
+   "k": "buy",
+   "text": "buy",
+   "t0": 13.68,
+   "t1": 13.82,
+   "line": "m14"
+  },
+  {
+   "k": "it",
+   "text": "it",
+   "t0": 13.82,
+   "t1": 13.96,
+   "line": "m14"
+  },
+  {
+   "k": "yet",
+   "text": "yet.",
+   "t0": 13.96,
+   "t1": 14.16,
+   "line": "m14"
+  },
+  {
+   "k": "in",
+   "text": "In",
+   "t0": 15.32,
+   "t1": 15.58,
+   "line": "norco"
+  },
+  {
+   "k": "july",
+   "text": "July,",
+   "t0": 15.58,
+   "t1": 15.82,
+   "line": "norco"
+  },
+  {
+   "k": "you",
+   "text": "you",
+   "t0": 16.22,
+   "t1": 16.34,
+   "line": "norco"
+  },
+  {
+   "k": "came",
+   "text": "came",
+   "t0": 16.34,
+   "t1": 16.5,
+   "line": "norco"
+  },
+  {
+   "k": "out",
+   "text": "out",
+   "t0": 16.5,
+   "t1": 16.7,
+   "line": "norco"
+  },
+  {
+   "k": "to",
+   "text": "to",
+   "t0": 16.7,
+   "t1": 16.84,
+   "line": "norco"
+  },
+  {
+   "k": "norco",
+   "text": "Norco",
+   "t0": 16.84,
+   "t1": 17.14,
+   "line": "norco"
+  },
+  {
+   "k": "and",
+   "text": "and",
+   "t0": 17.14,
+   "t1": 17.34,
+   "line": "norco"
+  },
+  {
+   "k": "watched",
+   "text": "watched",
+   "t0": 17.34,
+   "t1": 17.64,
+   "line": "norco"
+  },
+  {
+   "k": "us",
+   "text": "us",
+   "t0": 17.64,
+   "t1": 17.88,
+   "line": "norco"
+  },
+  {
+   "k": "make",
+   "text": "make",
+   "t0": 17.88,
+   "t1": 18.08,
+   "line": "norco"
+  },
+  {
+   "k": "flavor",
+   "text": "flavor.",
+   "t0": 18.08,
+   "t1": 18.44,
+   "line": "norco"
+  },
+  {
+   "k": "then",
+   "text": "Then",
+   "t0": 18.94,
+   "t1": 19.16,
+   "line": "ross"
+  },
+  {
+   "k": "ross",
+   "text": "Ross",
+   "t0": 19.16,
+   "t1": 19.36,
+   "line": "ross"
+  },
+  {
+   "k": "invited",
+   "text": "invited",
+   "t0": 19.36,
+   "t1": 19.7,
+   "line": "ross"
+  },
+  {
+   "k": "us",
+   "text": "us",
+   "t0": 19.7,
+   "t1": 19.96,
+   "line": "ross"
+  },
+  {
+   "k": "to",
+   "text": "to",
+   "t0": 19.96,
+   "t1": 20.1,
+   "line": "ross"
+  },
+  {
+   "k": "princeton",
+   "text": "Princeton,",
+   "t0": 20.1,
+   "t1": 20.36,
+   "line": "ross"
+  },
+  {
+   "k": "with",
+   "text": "with",
+   "t0": 20.68,
+   "t1": 20.78,
+   "line": "ross"
+  },
+  {
+   "k": "this",
+   "text": "this",
+   "t0": 20.78,
+   "t1": 20.96,
+   "line": "ross"
+  },
+  {
+   "k": "goal",
+   "text": "goal.",
+   "t0": 20.96,
+   "t1": 21.24,
+   "line": "ross"
+  },
+  {
+   "k": "our",
+   "text": "Our",
+   "t0": 21.89,
+   "t1": 22.07,
+   "line": "goal"
+  },
+  {
+   "k": "goal",
+   "text": "goal,",
+   "t0": 22.07,
+   "t1": 22.35,
+   "line": "goal"
+  },
+  {
+   "k": "as",
+   "text": "as",
+   "t0": 22.75,
+   "t1": 22.89,
+   "line": "goal"
+  },
+  {
+   "k": "rd",
+   "text": "R&D,",
+   "t0": 22.89,
+   "t1": 23.45,
+   "line": "goal"
+  },
+  {
+   "k": "is",
+   "text": "is",
+   "t0": 23.77,
+   "t1": 23.87,
+   "line": "goal"
+  },
+  {
+   "k": "to",
+   "text": "to",
+   "t0": 23.87,
+   "t1": 24.01,
+   "line": "goal"
+  },
+  {
+   "k": "drive",
+   "text": "drive",
+   "t0": 24.01,
+   "t1": 24.27,
+   "line": "goal"
+  },
+  {
+   "k": "incremental",
+   "text": "incremental",
+   "t0": 24.27,
+   "t1": 24.71,
+   "line": "goal"
+  },
+  {
+   "k": "growth",
+   "text": "growth",
+   "t0": 24.71,
+   "t1": 25.15,
+   "line": "goal"
+  },
+  {
+   "k": "through",
+   "text": "through",
+   "t0": 25.15,
+   "t1": 25.47,
+   "line": "goal"
+  },
+  {
+   "k": "flavor",
+   "text": "flavor",
+   "t0": 25.47,
+   "t1": 25.77,
+   "line": "goal"
+  },
+  {
+   "k": "innovation",
+   "text": "innovation",
+   "t0": 25.77,
+   "t1": 26.33,
+   "line": "goal"
+  },
+  {
+   "k": "by",
+   "text": "by",
+   "t0": 26.33,
+   "t1": 26.55,
+   "line": "goal"
+  },
+  {
+   "k": "identifying",
+   "text": "identifying",
+   "t0": 26.55,
+   "t1": 27.13,
+   "line": "goal"
+  },
+  {
+   "k": "and",
+   "text": "and",
+   "t0": 27.13,
+   "t1": 27.33,
+   "line": "goal"
+  },
+  {
+   "k": "developing",
+   "text": "developing",
+   "t0": 27.33,
+   "t1": 27.65,
+   "line": "goal"
+  },
+  {
+   "k": "new",
+   "text": "new",
+   "t0": 27.65,
+   "t1": 28.01,
+   "line": "goal"
+  },
+  {
+   "k": "flavor",
+   "text": "flavor",
+   "t0": 28.01,
+   "t1": 28.29,
+   "line": "goal"
+  },
+  {
+   "k": "experiences",
+   "text": "experiences",
+   "t0": 28.29,
+   "t1": 28.93,
+   "line": "goal"
+  },
+  {
+   "k": "that",
+   "text": "that",
+   "t0": 28.93,
+   "t1": 29.29,
+   "line": "goal"
+  },
+  {
+   "k": "both",
+   "text": "both",
+   "t0": 29.29,
+   "t1": 29.51,
+   "line": "goal"
+  },
+  {
+   "k": "strengthen",
+   "text": "strengthen",
+   "t0": 29.51,
+   "t1": 29.95,
+   "line": "goal"
+  },
+  {
+   "k": "our",
+   "text": "our",
+   "t0": 29.95,
+   "t1": 30.17,
+   "line": "goal"
+  },
+  {
+   "k": "appeal",
+   "text": "appeal",
+   "t0": 30.17,
+   "t1": 30.51,
+   "line": "goal"
+  },
+  {
+   "k": "with",
+   "text": "with",
+   "t0": 30.51,
+   "t1": 30.77,
+   "line": "goal"
+  },
+  {
+   "k": "existing",
+   "text": "existing",
+   "t0": 30.77,
+   "t1": 31.15,
+   "line": "goal"
+  },
+  {
+   "k": "loyal",
+   "text": "loyal",
+   "t0": 31.15,
+   "t1": 31.43,
+   "line": "goal"
+  },
+  {
+   "k": "users",
+   "text": "users",
+   "t0": 31.43,
+   "t1": 31.87,
+   "line": "goal"
+  },
+  {
+   "k": "and",
+   "text": "and",
+   "t0": 31.87,
+   "t1": 32.11,
+   "line": "goal"
+  },
+  {
+   "k": "create",
+   "text": "create",
+   "t0": 32.11,
+   "t1": 32.47,
+   "line": "goal"
+  },
+  {
+   "k": "opportunities",
+   "text": "opportunities",
+   "t0": 32.47,
+   "t1": 33.07,
+   "line": "goal"
+  },
+  {
+   "k": "to",
+   "text": "to",
+   "t0": 33.07,
+   "t1": 33.63,
+   "line": "goal"
+  },
+  {
+   "k": "attract",
+   "text": "attract",
+   "t0": 33.63,
+   "t1": 33.91,
+   "line": "goal"
+  },
+  {
+   "k": "new",
+   "text": "new",
+   "t0": 33.91,
+   "t1": 34.17,
+   "line": "goal"
+  },
+  {
+   "k": "consumers",
+   "text": "consumers",
+   "t0": 34.17,
+   "t1": 34.67,
+   "line": "goal"
+  },
+  {
+   "k": "to",
+   "text": "to",
+   "t0": 34.67,
+   "t1": 34.89,
+   "line": "goal"
+  },
+  {
+   "k": "the",
+   "text": "the",
+   "t0": 34.89,
+   "t1": 34.99,
+   "line": "goal"
+  },
+  {
+   "k": "franchise",
+   "text": "franchise.",
+   "t0": 34.99,
+   "t1": 35.37,
+   "line": "goal"
+  },
+  {
+   "k": "so",
+   "text": "So",
+   "t0": 36.58,
+   "t1": 36.7,
+   "line": "day"
+  },
+  {
+   "k": "on",
+   "text": "on",
+   "t0": 36.7,
+   "t1": 36.88,
+   "line": "day"
+  },
+  {
+   "k": "monday",
+   "text": "Monday,",
+   "t0": 36.88,
+   "t1": 37.22,
+   "line": "day"
+  },
+  {
+   "k": "november",
+   "text": "November",
+   "t0": 37.5,
+   "t1": 37.74,
+   "line": "day"
+  },
+  {
+   "k": "ninth",
+   "text": "ninth,",
+   "t0": 37.74,
+   "t1": 38.06,
+   "line": "day"
+  },
+  {
+   "k": "from",
+   "text": "from",
+   "t0": 38.4,
+   "t1": 38.62,
+   "line": "day"
+  },
+  {
+   "k": "ten",
+   "text": "ten",
+   "t0": 38.62,
+   "t1": 38.84,
+   "line": "day"
+  },
+  {
+   "k": "to",
+   "text": "to",
+   "t0": 38.84,
+   "t1": 39.02,
+   "line": "day"
+  },
+  {
+   "k": "noon",
+   "text": "noon",
+   "t0": 39.02,
+   "t1": 39.18,
+   "line": "day"
+  },
+  {
+   "k": "in",
+   "text": "in",
+   "t0": 39.18,
+   "t1": 39.32,
+   "line": "day"
+  },
+  {
+   "k": "the",
+   "text": "the",
+   "t0": 39.32,
+   "t1": 39.4,
+   "line": "day"
+  },
+  {
+   "k": "darwin",
+   "text": "Darwin",
+   "t0": 39.4,
+   "t1": 39.62,
+   "line": "day"
+  },
+  {
+   "k": "room",
+   "text": "room,",
+   "t0": 39.62,
+   "t1": 39.92,
+   "line": "day"
+  },
+  {
+   "k": "well",
+   "text": "we\u2019ll",
+   "t0": 40.22,
+   "t1": 40.34,
+   "line": "day"
+  },
+  {
+   "k": "work",
+   "text": "work",
+   "t0": 40.34,
+   "t1": 40.5,
+   "line": "day"
+  },
+  {
+   "k": "through",
+   "text": "through",
+   "t0": 40.5,
+   "t1": 40.7,
+   "line": "day"
+  },
+  {
+   "k": "his",
+   "text": "his",
+   "t0": 40.7,
+   "t1": 40.86,
+   "line": "day"
+  },
+  {
+   "k": "four",
+   "text": "four",
+   "t0": 40.86,
+   "t1": 41.06,
+   "line": "day"
+  },
+  {
+   "k": "objectives",
+   "text": "objectives",
+   "t0": 41.06,
+   "t1": 41.48,
+   "line": "day"
+  },
+  {
+   "k": "together",
+   "text": "together.",
+   "t0": 41.48,
+   "t1": 42.0,
+   "line": "day"
+  },
+  {
+   "k": "its",
+   "text": "It\u2019s",
+   "t0": 42.44,
+   "t1": 42.76,
+   "line": "pitch"
+  },
+  {
+   "k": "a",
+   "text": "a",
+   "t0": 42.76,
+   "t1": 42.84,
+   "line": "pitch"
+  },
+  {
+   "k": "working",
+   "text": "working",
+   "t0": 42.84,
+   "t1": 43.04,
+   "line": "pitch"
+  },
+  {
+   "k": "session",
+   "text": "session,",
+   "t0": 43.04,
+   "t1": 43.44,
+   "line": "pitch"
+  },
+  {
+   "k": "not",
+   "text": "not",
+   "t0": 43.7,
+   "t1": 43.82,
+   "line": "pitch"
+  },
+  {
+   "k": "a",
+   "text": "a",
+   "t0": 43.82,
+   "t1": 43.94,
+   "line": "pitch"
+  },
+  {
+   "k": "pitch",
+   "text": "pitch.",
+   "t0": 43.94,
+   "t1": 44.22,
+   "line": "pitch"
+  },
+  {
+   "k": "youll",
+   "text": "You\u2019ll",
+   "t0": 45.26,
+   "t1": 45.46,
+   "line": "trends"
+  },
+  {
+   "k": "pick",
+   "text": "pick",
+   "t0": 45.46,
+   "t1": 45.6,
+   "line": "trends"
+  },
+  {
+   "k": "the",
+   "text": "the",
+   "t0": 45.6,
+   "t1": 45.8,
+   "line": "trends"
+  },
+  {
+   "k": "three",
+   "text": "three",
+   "t0": 45.8,
+   "t1": 45.98,
+   "line": "trends"
+  },
+  {
+   "k": "trends",
+   "text": "trends",
+   "t0": 45.98,
+   "t1": 46.32,
+   "line": "trends"
+  },
+  {
+   "k": "that",
+   "text": "that",
+   "t0": 46.32,
+   "t1": 46.54,
+   "line": "trends"
+  },
+  {
+   "k": "matter",
+   "text": "matter",
+   "t0": 46.54,
+   "t1": 46.78,
+   "line": "trends"
+  },
+  {
+   "k": "most",
+   "text": "most,",
+   "t0": 46.78,
+   "t1": 47.08,
+   "line": "trends"
+  },
+  {
+   "k": "then",
+   "text": "then",
+   "t0": 47.48,
+   "t1": 47.64,
+   "line": "trends"
+  },
+  {
+   "k": "taste",
+   "text": "taste",
+   "t0": 47.64,
+   "t1": 47.9,
+   "line": "trends"
+  },
+  {
+   "k": "four",
+   "text": "four",
+   "t0": 47.9,
+   "t1": 48.18,
+   "line": "trends"
+  },
+  {
+   "k": "samples",
+   "text": "samples",
+   "t0": 48.18,
+   "t1": 48.62,
+   "line": "trends"
+  },
+  {
+   "k": "we",
+   "text": "we",
+   "t0": 48.62,
+   "t1": 48.86,
+   "line": "trends"
+  },
+  {
+   "k": "made",
+   "text": "made",
+   "t0": 48.86,
+   "t1": 49.02,
+   "line": "trends"
+  },
+  {
+   "k": "in",
+   "text": "in",
+   "t0": 49.02,
+   "t1": 49.18,
+   "line": "trends"
+  },
+  {
+   "k": "your",
+   "text": "your",
+   "t0": 49.18,
+   "t1": 49.34,
+   "line": "trends"
+  },
+  {
+   "k": "fresh",
+   "text": "Fresh",
+   "t0": 49.34,
+   "t1": 49.6,
+   "line": "trends"
+  },
+  {
+   "k": "breath",
+   "text": "Breath",
+   "t0": 49.6,
+   "t1": 49.86,
+   "line": "trends"
+  },
+  {
+   "k": "and",
+   "text": "and",
+   "t0": 49.86,
+   "t1": 50.12,
+   "line": "trends"
+  },
+  {
+   "k": "kids",
+   "text": "Kids",
+   "t0": 50.12,
+   "t1": 50.56,
+   "line": "trends"
+  },
+  {
+   "k": "bases",
+   "text": "bases.",
+   "t0": 50.56,
+   "t1": 50.72,
+   "line": "trends"
+  },
+  {
+   "k": "theyre",
+   "text": "They\u2019re",
+   "t0": 51.33,
+   "t1": 51.51,
+   "line": "blind"
+  },
+  {
+   "k": "blind",
+   "text": "blind,",
+   "t0": 51.51,
+   "t1": 51.81,
+   "line": "blind"
+  },
+  {
+   "k": "and",
+   "text": "and",
+   "t0": 52.07,
+   "t1": 52.17,
+   "line": "blind"
+  },
+  {
+   "k": "youll",
+   "text": "you\u2019ll",
+   "t0": 52.17,
+   "t1": 52.31,
+   "line": "blind"
+  },
+  {
+   "k": "score",
+   "text": "score",
+   "t0": 52.31,
+   "t1": 52.53,
+   "line": "blind"
+  },
+  {
+   "k": "them",
+   "text": "them",
+   "t0": 52.53,
+   "t1": 52.71,
+   "line": "blind"
+  },
+  {
+   "k": "on",
+   "text": "on",
+   "t0": 52.71,
+   "t1": 52.87,
+   "line": "blind"
+  },
+  {
+   "k": "your",
+   "text": "your",
+   "t0": 52.87,
+   "t1": 53.01,
+   "line": "blind"
+  },
+  {
+   "k": "phone",
+   "text": "phone.",
+   "t0": 53.01,
+   "t1": 53.25,
+   "line": "blind"
+  },
+  {
+   "k": "by",
+   "text": "By",
+   "t0": 54.35,
+   "t1": 54.51,
+   "line": "noon"
+  },
+  {
+   "k": "noon",
+   "text": "noon,",
+   "t0": 54.51,
+   "t1": 54.75,
+   "line": "noon"
+  },
+  {
+   "k": "wed",
+   "text": "we\u2019d",
+   "t0": 55.15,
+   "t1": 55.31,
+   "line": "noon"
+  },
+  {
+   "k": "like",
+   "text": "like",
+   "t0": 55.31,
+   "t1": 55.43,
+   "line": "noon"
+  },
+  {
+   "k": "to",
+   "text": "to",
+   "t0": 55.43,
+   "t1": 55.63,
+   "line": "noon"
+  },
+  {
+   "k": "agree",
+   "text": "agree",
+   "t0": 55.63,
+   "t1": 55.83,
+   "line": "noon"
+  },
+  {
+   "k": "on",
+   "text": "on",
+   "t0": 55.83,
+   "t1": 56.03,
+   "line": "noon"
+  },
+  {
+   "k": "up",
+   "text": "up",
+   "t0": 56.03,
+   "t1": 56.17,
+   "line": "noon"
+  },
+  {
+   "k": "to",
+   "text": "to",
+   "t0": 56.17,
+   "t1": 56.35,
+   "line": "noon"
+  },
+  {
+   "k": "three",
+   "text": "three",
+   "t0": 56.35,
+   "t1": 56.51,
+   "line": "noon"
+  },
+  {
+   "k": "directions",
+   "text": "directions,",
+   "t0": 56.51,
+   "t1": 56.93,
+   "line": "noon"
+  },
+  {
+   "k": "each",
+   "text": "each",
+   "t0": 57.31,
+   "t1": 57.45,
+   "line": "noon"
+  },
+  {
+   "k": "with",
+   "text": "with",
+   "t0": 57.45,
+   "t1": 57.65,
+   "line": "noon"
+  },
+  {
+   "k": "an",
+   "text": "an",
+   "t0": 57.65,
+   "t1": 57.77,
+   "line": "noon"
+  },
+  {
+   "k": "owner",
+   "text": "owner",
+   "t0": 57.77,
+   "t1": 57.97,
+   "line": "noon"
+  },
+  {
+   "k": "and",
+   "text": "and",
+   "t0": 57.97,
+   "t1": 58.11,
+   "line": "noon"
+  },
+  {
+   "k": "a",
+   "text": "a",
+   "t0": 58.11,
+   "t1": 58.21,
+   "line": "noon"
+  },
+  {
+   "k": "next",
+   "text": "next",
+   "t0": 58.21,
+   "t1": 58.41,
+   "line": "noon"
+  },
+  {
+   "k": "sample",
+   "text": "sample,",
+   "t0": 58.41,
+   "t1": 58.85,
+   "line": "noon"
+  },
+  {
+   "k": "and",
+   "text": "and",
+   "t0": 59.25,
+   "t1": 59.37,
+   "line": "noon"
+  },
+  {
+   "k": "well",
+   "text": "we\u2019ll",
+   "t0": 59.37,
+   "t1": 59.61,
+   "line": "noon"
+  },
+  {
+   "k": "send",
+   "text": "send",
+   "t0": 59.61,
+   "t1": 59.79,
+   "line": "noon"
+  },
+  {
+   "k": "everyone",
+   "text": "everyone",
+   "t0": 59.79,
+   "t1": 60.17,
+   "line": "noon"
+  },
+  {
+   "k": "the",
+   "text": "the",
+   "t0": 60.17,
+   "t1": 60.31,
+   "line": "noon"
+  },
+  {
+   "k": "writeup",
+   "text": "write-up,",
+   "t0": 60.31,
+   "t1": 60.69,
+   "line": "noon"
+  },
+  {
+   "k": "the",
+   "text": "The",
+   "t0": 61.05,
+   "t1": 61.15,
+   "line": "noon"
+  },
+  {
+   "k": "flavor",
+   "text": "Flavor",
+   "t0": 61.15,
+   "t1": 61.35,
+   "line": "noon"
+  },
+  {
+   "k": "playbook",
+   "text": "Playbook.",
+   "t0": 61.35,
+   "t1": 61.71,
+   "line": "noon"
+  },
+  {
+   "k": "before",
+   "text": "Before",
+   "t0": 62.68,
+   "t1": 62.92,
+   "line": "ask"
+  },
+  {
+   "k": "you",
+   "text": "you",
+   "t0": 62.92,
+   "t1": 63.1,
+   "line": "ask"
+  },
+  {
+   "k": "come",
+   "text": "come,",
+   "t0": 63.1,
+   "t1": 63.3,
+   "line": "ask"
+  },
+  {
+   "k": "please",
+   "text": "please",
+   "t0": 63.76,
+   "t1": 63.92,
+   "line": "ask"
+  },
+  {
+   "k": "answer",
+   "text": "answer",
+   "t0": 63.92,
+   "t1": 64.3,
+   "line": "ask"
+  },
+  {
+   "k": "the",
+   "text": "the",
+   "t0": 64.3,
+   "t1": 64.46,
+   "line": "ask"
+  },
+  {
+   "k": "four",
+   "text": "four",
+   "t0": 64.46,
+   "t1": 64.66,
+   "line": "ask"
+  },
+  {
+   "k": "quick",
+   "text": "quick",
+   "t0": 64.66,
+   "t1": 64.9,
+   "line": "ask"
+  },
+  {
+   "k": "questions",
+   "text": "questions",
+   "t0": 64.9,
+   "t1": 65.3,
+   "line": "ask"
+  },
+  {
+   "k": "in",
+   "text": "in",
+   "t0": 65.3,
+   "t1": 65.52,
+   "line": "ask"
+  },
+  {
+   "k": "your",
+   "text": "your",
+   "t0": 65.52,
+   "t1": 65.64,
+   "line": "ask"
+  },
+  {
+   "k": "prebrief",
+   "text": "pre-brief,",
+   "t0": 65.64,
+   "t1": 66.12,
+   "line": "ask"
+  },
+  {
+   "k": "because",
+   "text": "because",
+   "t0": 66.6,
+   "t1": 66.8,
+   "line": "ask"
+  },
+  {
+   "k": "everyones",
+   "text": "everyone\u2019s",
+   "t0": 66.8,
+   "t1": 67.38,
+   "line": "ask"
+  },
+  {
+   "k": "answers",
+   "text": "answers",
+   "t0": 67.38,
+   "t1": 67.62,
+   "line": "ask"
+  },
+  {
+   "k": "open",
+   "text": "open",
+   "t0": 67.62,
+   "t1": 67.92,
+   "line": "ask"
+  },
+  {
+   "k": "the",
+   "text": "the",
+   "t0": 67.92,
+   "t1": 68.12,
+   "line": "ask"
+  },
+  {
+   "k": "morning",
+   "text": "morning.",
+   "t0": 68.12,
+   "t1": 68.36,
+   "line": "ask"
+  },
+  {
+   "k": "and",
+   "text": "And",
+   "t0": 68.87,
+   "t1": 69.01,
+   "line": "phone"
+  },
+  {
+   "k": "bring",
+   "text": "bring",
+   "t0": 69.01,
+   "t1": 69.21,
+   "line": "phone"
+  },
+  {
+   "k": "your",
+   "text": "your",
+   "t0": 69.21,
+   "t1": 69.43,
+   "line": "phone"
+  },
+  {
+   "k": "phone",
+   "text": "phone.",
+   "t0": 69.43,
+   "t1": 69.71,
+   "line": "phone"
+  },
+  {
+   "k": "the",
+   "text": "The",
+   "t0": 70.96,
+   "t1": 71.06,
+   "line": "title"
+  },
+  {
+   "k": "future",
+   "text": "Future",
+   "t0": 71.06,
+   "t1": 71.28,
+   "line": "title"
+  },
+  {
+   "k": "of",
+   "text": "of",
+   "t0": 71.28,
+   "t1": 71.54,
+   "line": "title"
+  },
+  {
+   "k": "freshness",
+   "text": "Freshness.",
+   "t0": 71.54,
+   "t1": 72.06,
+   "line": "title"
+  },
+  {
+   "k": "see",
+   "text": "See",
+   "t0": 72.61,
+   "t1": 72.73,
+   "line": "see"
+  },
+  {
+   "k": "you",
+   "text": "you",
+   "t0": 72.73,
+   "t1": 72.87,
+   "line": "see"
+  },
+  {
+   "k": "in",
+   "text": "in",
+   "t0": 72.87,
+   "t1": 73.03,
+   "line": "see"
+  },
+  {
+   "k": "princeton",
+   "text": "Princeton.",
+   "t0": 73.03,
+   "t1": 73.27,
+   "line": "see"
+  }
+ ]
+}
