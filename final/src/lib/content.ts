@@ -358,8 +358,8 @@ export const TEAM = [
 ];
 
 // Who The Flavor Factory is, in one statement: the Who we are slide and the front door's Who you'll be meeting.
-// The categories are Matt's (October 28).
-export const ABOUT = 'We’re a custom flavor house. We develop and manufacture flavors for food and beverage, confectionery, pharmaceutical, nutraceutical and oral care, and that range is what we bring to TheraBreath.';
+// Matt's description and categories (October 28).
+export const ABOUT = 'We’re a wholesale flavor manufacturer, making flavors for just about anything: food and beverage, confectionery, pharmaceutical, nutraceutical and oral care. That range is what we bring to TheraBreath.';
 
 // Ross, in his own words (invitation, September 18, 2026).
 export const ROSS_WORDS = {
