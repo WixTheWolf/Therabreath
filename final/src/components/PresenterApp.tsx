@@ -288,7 +288,7 @@ function FilmPanel({ f, now, cmd, next, prev }: { f?: FilmState; now: number; cm
       <h2>THE FLAVOR RACE</h2>
       <p className="pv-sub" role="status">{state}</p>
       <div className="pv-film">
-        <b className="num">{mmss(t)}</b><span>of {f?.d ? mmss(f.d) : '2:26'}</span>
+        <b className="num">{mmss(t)}</b><span>of {f?.d ? mmss(f.d) : '2:23'}</span>
         <div className="pv-filmbar" aria-hidden="true"><i style={{ width: `${f?.d ? Math.min(100, (t / f.d) * 100) : 0}%` }} /></div>
       </div>
       <div className="pv-filmctl">

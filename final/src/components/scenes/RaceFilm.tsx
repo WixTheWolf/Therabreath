@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { SceneProps } from './ui';
 
-// THE FLAVOR RACE (V22, 2:26), the send-off at the end of the morning. Lights down, sound up.
+// THE FLAVOR RACE (V24, 2:24, 2560 x 1440), the send-off at the end of the morning. Lights down, sound up.
 export function Film({ ctx }: SceneProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(false); const [done, setDone] = useState(false);

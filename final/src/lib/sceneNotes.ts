@@ -36,7 +36,7 @@ const POINTS: Record<string, string[]> = {
   board: ['Put each concept and direction under Now, Next or Later, one line each.', 'Give each one its consumer or occasion, a flavor brief, a TFF owner, a C&D reviewer, the base and a date for the next sample.', TOPICS[3].questions[1]],
   playbook: ['This pulls together everything we decided this morning: the trends, the directions, the concepts and the plan.', 'Builds 1 to 4 open one chapter each at full size: the trends, the directions with the tasting, the concepts, and the plan. Read the plan back, owners and all.', 'The last build closes it into the cover. Let them know the write-up comes within 8 business days.'],
   next: ['Walk through the three next steps. The dates still need confirming before November 9.', 'Then thank everyone for their time.', 'Running late? Press End to skip the film and go straight to Lunch, or use Skip the film in the presenter view.'],
-  film: ['At about 11:48, lights down and sound up. THE FLAVOR RACE runs 2:26. Don’t announce it.', 'Space or K pauses and plays, and R starts it again. The presenter view has the same buttons and the film’s clock.', 'Don’t talk over it. When it ends, the closing card stays up: Next goes to Lunch, Back to What happens next.'],
+  film: ['At about 11:48, lights down and sound up. THE FLAVOR RACE runs 2:24. Don’t announce it.', 'Space or K pauses and plays, and R starts it again. The presenter view has the same buttons and the film’s clock.', 'Don’t talk over it. When it ends, the closing card stays up: Next goes to Lunch, Back to What happens next.'],
   lunch: ['Lunch at 12:00, hosted by Church & Dwight.'],
 };
 // The four part openers and the four directions follow one pattern each.

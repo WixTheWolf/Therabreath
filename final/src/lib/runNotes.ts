@@ -31,7 +31,7 @@ const TEXT: Record<string, Pick<BlockNotes, 'slides' | 'does'>> = {
   },
   close: {
     slides: 'What we decided, What happens next, THE FLAVOR RACE, Lunch',
-    does: 'The Playbook fills in from the votes and the board, and opens one chapter at a time so it can be read back, the plan with its owners last. Read it back, go through the three next steps and say thank you. Then, at about 11:48, THE FLAVOR RACE: a surprise for the room, so don’t announce it. Give it three minutes: lights down, sound up, 2:26 of film, and a moment after. It starts only when you move onto it, and you can pause, restart or skip it from the presenter view or the keys. If we’re running late, skip it: every decision and owner is already saved before it, and the Lunch slide keeps the Now rows on screen. Then lunch, hosted by Church & Dwight.',
+    does: 'The Playbook fills in from the votes and the board, and opens one chapter at a time so it can be read back, the plan with its owners last. Read it back, go through the three next steps and say thank you. Then, at about 11:48, THE FLAVOR RACE: a surprise for the room, so don’t announce it. Give it three minutes: lights down, sound up, 2:24 of film, and a moment after. It starts only when you move onto it, and you can pause, restart or skip it from the presenter view or the keys. If we’re running late, skip it: every decision and owner is already saved before it, and the Lunch slide keeps the Now rows on screen. Then lunch, hosted by Church & Dwight.',
   },
 };
 // The facilitator's view of each block: what it needs and what it should leave us with. Only what the run sheet and
