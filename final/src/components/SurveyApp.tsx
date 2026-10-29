@@ -17,7 +17,6 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
   const [a, setA] = useState({ name: '', consumer: '', moment: '', veto: '' });
   const [profile, setProfile] = useState<Record<string, number>>(DEFAULT_PROFILE);
   const [opened, setOpened] = useState<Record<string, boolean>>({});
-  const [flipped, setFlipped] = useState<Record<number, boolean>>({});
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
   const [film, setFilm] = useState(false);
@@ -104,12 +103,12 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
       </section>
 
       <section className="bw-sec bw-rise">
-        <div className="k">Ross’s four objectives<span className="bw-tap"> · tap a card to read it</span></div>
+        <div className="k">Ross’s four objectives, in his words</div>
         <div className="bw-qcards">{OBJECTIVES.map((o, i) => (
-          <button key={o.n} className={'bw-qcard' + (flipped[i] ? ' flip' : '')} onClick={() => setFlipped({ ...flipped, [i]: !flipped[i] })}>
-            <div className="bw-qf"><span className="num">{o.n}</span><b>{QUESTIONS[i]}</b><small>Tap to read</small></div>
-            <div className="bw-qb"><small>{o.act}</small><p>{o.ask}</p><b>{o.chapter}</b></div>
-          </button>
+          <article key={o.n} className="bw-qcard">
+            <div className="bw-qf"><span className="num">{o.n}</span><b>{QUESTIONS[i]}</b></div>
+            <div className="bw-qb"><p>“{o.ask}”</p><small>{o.act} · {o.chapter}</small></div>
+          </article>
         ))}</div>
       </section>
 

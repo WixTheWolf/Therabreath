@@ -147,18 +147,14 @@
 
 /* four questions, flip cards */
 .bw-qcards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.bw-qcard { position: relative; height: 200px; perspective: 1000px; text-align: left; }
-.bw-qf, .bw-qb { position: absolute; inset: 0; padding: 20px; border-radius: 18px; backface-visibility: hidden; transition: transform .8s var(--ease); display: flex; flex-direction: column; }
-.bw-qf { background: var(--panel2); border: 1px solid var(--rule); }
-.bw-qf .num { font-size: 40px; color: var(--accent); line-height: 1; }
-.bw-qf b { font: 400 25px/1.1 var(--serif); margin-top: auto; }
-.bw-qf small, .bw-qb small { font: 500 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--fg3); margin-top: 8px; }
-.bw-qb { background: #0B1B2B; color: #F0EEE9; transform: rotateY(180deg); }
-.bw-qb small { color: var(--glacier); margin: 0 0 8px; }
-.bw-qb p { font: 400 15px/1.45 var(--sans); color: rgba(240,238,233,.85); }
-.bw-qb b { margin-top: auto; font: 400 italic 19px var(--serif); color: var(--glacier); }
-.bw-qcard.flip .bw-qf { transform: rotateY(-180deg); }
-.bw-qcard.flip .bw-qb { transform: rotateY(0); }
+.bw-qcard { display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; border: 1px solid var(--rule); text-align: left; }
+.bw-qf, .bw-qb { padding: 18px 20px; display: flex; flex-direction: column; }
+.bw-qf { flex-direction: row; align-items: baseline; gap: 14px; background: var(--panel2); }
+.bw-qf .num { font-size: 34px; color: var(--accent); line-height: 1; }
+.bw-qf b { font: 400 25px/1.1 var(--serif); }
+.bw-qb { flex: 1; gap: 12px; background: #0B1B2B; color: #F0EEE9; }
+.bw-qb p { font: 400 17px/1.5 var(--sans); color: rgba(240,238,233,.9); }
+.bw-qb small { margin-top: auto; font: 500 12px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--glacier); }
 
 /* seven sealed envelopes */
 .bw-count { font: 400 italic 20px var(--serif); color: var(--accent); margin: -6px 0 18px; min-height: 1.4em; }
@@ -251,12 +247,10 @@
   .bw-env-card { opacity: 1; transform: none; position: relative; }
   .bw-env { height: auto; min-height: 1.9in; break-inside: avoid; }
   .bw-env-grid { grid-template-columns: repeat(4, 1fr); }
-  .bw-qcard { height: auto; }
-  .bw-qf, .bw-qb { position: relative; transform: none !important; backface-visibility: visible; }
-  .bw-qf { border-radius: 18px 18px 0 0; } .bw-qb { border-radius: 0 0 18px 18px; }
+  .bw-qcard { break-inside: avoid; }
   .bw-timeline::after { height: calc(100% - 16px); }
   .bw-timeline li { color: #0B1B2B; }
-  .bw-tap, .bw-qf small { display: none; }
+  .bw-tap { display: none; }
   .bw-print-only { display: block; font: 400 italic 20px var(--serif); }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }

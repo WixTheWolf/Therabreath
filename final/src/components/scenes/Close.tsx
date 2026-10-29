@@ -4,6 +4,7 @@ import { R, Enter, SceneProps } from './ui';
 import { EVENT, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, CODE, NEXT_STEPS } from '@/lib/content';
 import { SessionState, people, tallyPick, ranked } from '@/lib/state';
 import { candidates } from './Build';
+import { planRows } from '../show/Plan';
 
 // What the room decided, in one place. Shared by the Stage close and the Playbook document.
 export function decisions(s: SessionState) {
@@ -53,8 +54,8 @@ export function Assemble({ s, step }: SceneProps) {
 
 // 42. What happens next
 export function Next({ s, step }: SceneProps) {
-  const agreed = decisions(s).placed.map((x) => ({ x, c: s.commitments[x.id] || {} })).filter(({ c }) => c.owner || c.date || c.action).slice(0, 3);
-  const when = (d?: string) => (d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'date to agree');
+  // The first step names the directions from Now, Next, Later and who has them.
+  const agreed = planRows(s).filter((r) => r.what).slice(0, 3);
   return (
     <div className="pad next">
       <Enter i={0}><div className="k">What happens next</div></Enter>
@@ -62,7 +63,7 @@ export function Next({ s, step }: SceneProps) {
       <div className="steps">
         {NEXT_STEPS.map((n, i) => (
           <R key={n.t} b={i + 1} step={step} className="nstep"><span className="num">0{i + 1}</span><b className="h3">{n.t}</b>
-            {i === 0 && agreed.length ? <ul className="agreed">{agreed.map(({ x, c }) => <li key={x.id}><b>{x.name.replace(' (rehearsal)', '')}</b><span>{[c.owner, c.action].filter(Boolean).join(' · ')}</span><em>{c.base ? c.base + ' · ' : ''}{when(c.date)}</em></li>)}</ul> : <p>{n.d}</p>}
+            {i === 0 && agreed.length ? <ul className="agreed">{agreed.map((r) => <li key={r.id}><b>{r.what}</b><span>{[r.owner && `TFF: ${r.owner}`, r.reviewer && `C&D: ${r.reviewer}`].filter(Boolean).join(' · ') || 'Owners to agree'}</span><em>{[r.label, r.base, r.next].filter(Boolean).join(' · ')}</em></li>)}</ul> : <p>{n.d}</p>}
           </R>
         ))}
       </div>
@@ -73,6 +74,8 @@ export function Next({ s, step }: SceneProps) {
 // 43. Lunch: an ambient field in the colors of the territories the room chose.
 export function Lunch({ s }: SceneProps) {
   const d = decisions(s);
+  // What goes first stays on screen through lunch.
+  const now = planRows(s).filter((r) => r.h === 'Now' && r.what).slice(0, 3);
   const cols = (d.ter.length ? d.ter : TERRITORIES.slice(0, 3)).flatMap((t) => t.palette.slice(0, 2));
   return (
     <div className="lunch">
@@ -81,6 +84,12 @@ export function Lunch({ s }: SceneProps) {
         <div className="k">TheraBreath × The Flavor Factory</div>
         <h1 className="hero center">Lunch.</h1>
         <p className="sub it center">Thank you for spending the morning with us.</p>
+        {now.length > 0 && (
+          <div className="lunch-plan">
+            <span className="k">Now · In the next sample round</span>
+            <ul>{now.map((r) => <li key={r.id}><b>{r.what}</b><span>{[r.owner && `TFF: ${r.owner}`, r.reviewer && `C&D: ${r.reviewer}`, r.next].filter(Boolean).join(' · ')}</span></li>)}</ul>
+          </div>
+        )}
       </div>
     </div>
   );

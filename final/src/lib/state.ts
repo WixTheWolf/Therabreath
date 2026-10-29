@@ -5,11 +5,14 @@ import type { Sealed } from './content';
 export type Ev = { id: string; seq?: number; t: number; kind: string; pid?: string; data?: any };
 
 export type Participant = { pid: string; name: string; role?: string; team?: number; joined: number; sim?: boolean; paper?: boolean };
-export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string; guess?: string; fruitGuess?: string; advance?: string };
+export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string; guess?: string; fruitGuess?: string; advance?: string; card?: string };
 export type Dials = Record<string, number>;
 export type Bench = { dials: Record<string, Dials>; base?: string; overrides: Record<string, { value: string; note?: string }>; locked?: Dials };
 export type Concept = { id: string; team: number; slot: number; name: string; segment: string; occasion: string; first: string; heart: string; finish: string; sensation: string[]; format: string; incremental: string; why: string; horizon: string; role?: string; suggestions: { pid: string; text: string }[] };
 export type Placement = { horizon: string; role: string; t: number };
+// One line of Now, Next, Later: what goes forward, who owns it on each side, the base and the next sample step.
+export type PlanRow = { id: string; h: string; what: string; owner?: string; reviewer?: string; base?: string; next?: string; t: number };
+export const PLAN_FIELDS = ['what', 'owner', 'reviewer', 'base', 'next'] as const;
 
 export type SessionState = {
   scene: number; step: number;
@@ -25,7 +28,8 @@ export type SessionState = {
   calendar: Record<string, string>; // concept id -> season
   bench: Record<string, Bench>; // team -> bench
   survey: Record<string, { name: string; consumer?: string; moment?: string; veto?: string; profile?: Record<string, number> }>;
-  board: Record<string, string>; // horizon (Now, Next, Future) -> one line per direction, typed in the presentation
+  board: Record<string, string>; // horizon (Now, Next, Future) -> free text, from before the plan had rows
+  plan: Record<string, PlanRow>; // Now, Next, Later, one row per direction, typed in the presentation or the presenter view
   marks: string[]; // white-space cells marked in the presentation, as 'segment|moment'
   timer: { running: boolean; endsAt: number; remaining: number; total: number };
   spotlight: { kind: string; ref: string } | null;
@@ -36,7 +40,7 @@ export type SessionState = {
 
 export const initialState = (): SessionState => ({
   scene: 0, step: 0, participants: {}, votes: {}, ratings: {}, guesses: {}, concepts: {},
-  missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {}, board: {}, marks: [],
+  missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {}, board: {}, plan: {}, marks: [],
   timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, paper: false, blank: false, sound: false, revealed: null, lastEvent: 0,
 });
 
@@ -51,7 +55,9 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'goto': s.scene = Math.max(0, Math.min(SCENES.length - 1, d.scene)); s.step = Math.max(0, Math.min(SCENES[s.scene].builds, d.step || 0)); s.spotlight = null; break;
     case 'vote': { const v = vote(s, d.key); if (d.action === 'open') { v.open = true; v.locked = false; } if (d.action === 'lock') { v.open = false; v.locked = true; } if (d.action === 'reveal') { v.revealed = true; v.open = false; v.locked = true; } if (d.action === 'reset') s.votes[d.key] = { open: false, locked: false, revealed: false, picks: {} }; break; }
     case 'pick': { const v = vote(s, d.key); if (!v.locked || d.paper) v.picks[e.pid!] = d.value; break; }
-    case 'rate': (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess, fruitGuess: d.fruitGuess, advance: d.advance }; break;
+    case 'unpick': delete vote(s, d.key).picks[e.pid!]; break; // the presenter view taking back a hand vote
+    case 'rate': (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess, fruitGuess: d.fruitGuess, advance: d.advance, card: d.card }; break;
+    case 'unrate': if (s.ratings[d.sample]) delete s.ratings[d.sample][e.pid!]; break; // removing a paper card typed in by mistake
     case 'guess': (s.guesses[d.molecule] ||= {})[e.pid!] = d.answer; break;
     case 'concept': { const id = `t${d.team}-${d.slot || 1}`; s.concepts[id] = { ...(s.concepts[id] || { suggestions: [] }), ...d.fields, id, team: d.team, slot: d.slot || 1 }; break; }
     case 'suggest': { const id = `t${d.team}-${d.slot || 1}`; const c = s.concepts[id] || ({ id, team: d.team, slot: d.slot || 1, suggestions: [] } as any); c.suggestions = [...(c.suggestions || []), { pid: e.pid!, text: String(d.text).slice(0, 140) }]; s.concepts[id] = c; break; }
@@ -75,6 +81,13 @@ export function reduce(s: SessionState, e: Ev): SessionState {
       break;
     }
     case 'board': s.board[d.horizon] = String(d.text || '').slice(0, 2000); break;
+    case 'plan': {
+      const r = s.plan[d.id] || { id: String(d.id), h: 'Now', what: '', t: e.t };
+      if (d.h) r.h = String(d.h);
+      for (const f of PLAN_FIELDS) if (typeof d.fields?.[f] === 'string') (r as any)[f] = d.fields[f].slice(0, 160);
+      s.plan[r.id] = r; break;
+    }
+    case 'unplan': delete s.plan[d.id]; break;
     case 'mark': s.marks = s.marks.includes(d.cell) ? s.marks.filter((x) => x !== d.cell) : [...s.marks, String(d.cell).slice(0, 120)]; break;
     case 'spotlight': s.spotlight = d.ref ? { kind: d.kind, ref: d.ref } : null; break;
     case 'flag': (s as any)[d.name] = !!d.value; break;
@@ -101,6 +114,19 @@ export function tasteSummary(s: SessionState, sample: string) {
   const avg = (k: 'appeal' | 'feels' | 'newness') => (rs.length ? rs.reduce((a, r) => a + (r[k] || 0), 0) / rs.length : 0);
   const who: Record<string, number> = {}; rs.forEach((r) => r.who.forEach((w) => (who[w] = (who[w] || 0) + 1)));
   return { n: rs.length, appeal: avg('appeal'), feels: avg('feels'), newness: avg('newness'), who, words: rs.map((r) => r.word).filter(Boolean) as string[] };
+}
+// Votes and scores typed in from the room: hand votes (pid hand-...) and paper scorecards (pid paper-...).
+export const byHand = (pid: string) => pid.startsWith('hand-');
+export const onPaper = (pid: string) => pid.startsWith('paper-');
+export function voteCounts(s: SessionState, key: string) {
+  const pids = Object.keys(s.votes[key]?.picks || {});
+  const hand = pids.filter(byHand).length;
+  return { phones: pids.length - hand, hand };
+}
+export function tasters(s: SessionState) {
+  const pids = new Set(Object.values(s.ratings).flatMap((r) => Object.keys(r)));
+  const cards = [...pids].filter(onPaper).length;
+  return { phones: pids.size - cards, cards };
 }
 export const people = (s: SessionState) => Object.values(s.participants).sort((a, b) => a.joined - b.joined);
 export const uid = () => (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2) + Date.now().toString(36));

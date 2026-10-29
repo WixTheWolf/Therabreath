@@ -1,8 +1,8 @@
 'use client';
 // The scenes only the presentation has. Everything the room decides lives in the shared session: phones vote and score,
 // and the presentation types the concept cards, the white-space marks and Now, Next and Later into the same log, so the
-// Playbook at the end, the results page and every phone see the same thing. Votes take a hand count too: clicking a bar,
-// an orb or a row adds one vote for someone without a phone.
+// Playbook at the end, the results page and every phone see the same thing. Hand votes and paper scorecards for anyone
+// without a phone go in from the presenter view (/host/presenter), where each one can be taken back.
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import Light from '../Light';
 import { R, Enter, Src, SceneProps } from '../scenes/ui';
@@ -13,13 +13,15 @@ import {
   EVENT, OBJECTIVES, TOPICS, RUN, TEAM, ABOUT, SCIENCE, IMAGINATION, ROSS_WORDS, SIGNALS, SAMPLES, PRIMARY_TERRITORIES as PLATFORMS,
   SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY,
 } from '@/lib/content';
-import { tallyPick, ranked, tasteSummary, uid, SessionState } from '@/lib/state';
+import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, SessionState } from '@/lib/state';
+import { Synced, PLAN_COLS, PlanLists, RemoveRow, planRows, planActions } from './Plan';
 
 export type Live = { send: (kind: string, data?: any, pid?: string) => any; still: boolean; joinUrl: string };
 export const LiveCtx = createContext<Live | null>(null);
 const useLive = () => useContext(LiveCtx)!;
-// One vote for someone without a phone, counted like any other.
-const hand = (live: Live, key: string, value: any) => live.send('pick', { key, value, paper: true }, 'hand-' + uid());
+// "12 people have voted · 3 chips by hand": the phones, then what the presenter view added for people without one.
+const tally = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+const byHandNote = (n: number, one: string, many: string) => (n ? ` · ${n} ${n === 1 ? one : many} by hand` : '');
 
 // The four objectives: one hue and one photograph each.
 export const OBJ_HUE = [200, 32, 335, 262];
@@ -105,9 +107,8 @@ export function Opener({ idx }: SceneProps) {
 // The phone vote: pick three of the seven trends. Bars fill as votes land; build 1 lights the top three; build 2 asks
 // what we missed.
 export function SignalVoteShow({ s, step }: SceneProps) {
-  const live = useLive();
   const t = tallyPick(s, 'signals');
-  const voters = Object.keys(s.votes.signals?.picks || {}).length;
+  const c = voteCounts(s, 'signals');
   const max = Math.max(1, ...Object.values(t));
   const top3 = ranked(t).filter(([, n]) => n > 0).slice(0, 3).map((x) => x[0]);
   const revealed = step >= 1;
@@ -115,16 +116,16 @@ export function SignalVoteShow({ s, step }: SceneProps) {
     <div className="vt" style={{ ['--h' as any]: OBJ_HUE[0] }}>
       <div className="vt-glow" />
       <div className="pad">
-        <Enter i={0}><div className="k">Vote on your phone · {voters} {voters === 1 ? 'vote' : 'votes'} so far</div></Enter>
+        <Enter i={0}><div className="k">Vote on your phone · {tally(c.phones, 'vote', 'votes')} so far{byHandNote(c.hand, 'vote', 'votes')}</div></Enter>
         <Enter i={1}><h2 className="h1 vt-q">Which three matter most <span className="it">for TheraBreath?</span></h2></Enter>
         <div className="glassbars">
           {SIGNALS.map((sig) => {
             const n = t[sig.id] || 0; const top = revealed && top3.includes(sig.id);
             return (
-              <button key={sig.id} className={'gb' + (top ? ' top' : '') + (revealed && !top ? ' dim' : '')} style={{ ['--h' as any]: sig.hue }} data-nonav onClick={() => !live.still && hand(live, 'signals', [sig.id])}>
+              <div key={sig.id} className={'gb' + (top ? ' top' : '') + (revealed && !top ? ' dim' : '')} style={{ ['--h' as any]: sig.hue }} data-nonav>
                 <div className="gb-glass"><div className="gb-liquid" style={{ height: `${Math.max(3, (n / max) * 100)}%` }}><i /></div><b className="num">{n}</b></div>
                 <div className="gb-lab"><span className="num">0{sig.n}</span>{sig.title.replace(/\.$/, '')}</div>
-              </button>
+              </div>
             );
           })}
         </div>
@@ -138,7 +139,7 @@ export function SignalVoteShow({ s, step }: SceneProps) {
 // and the Mystery Flavor guesses; build 2 flips in the names.
 export function TastingLive({ s, step }: SceneProps) {
   const rows = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code) }));
-  const tasters = Math.max(0, ...rows.map((r) => r.sum.n));
+  const who = tasterCounts(s), n = who.phones + who.cards;
   const metrics: ['appeal' | 'feels' | 'newness', string][] = [['appeal', 'Appeal'], ['feels', 'Feels like TheraBreath'], ['newness', 'Newness']];
   const cell = (v: number) => { const a = Math.max(0, Math.min(1, (v - 1) / 4)); return { background: `color-mix(in oklab, var(--accent) ${Math.round(a * 85)}%, transparent)`, opacity: v ? 1 : 0.4 }; };
   const guesses = Object.values(s.ratings[MYSTERY] || {}).map((r) => r.fruitGuess).filter(Boolean) as string[];
@@ -148,7 +149,7 @@ export function TastingLive({ s, step }: SceneProps) {
       <img className="tl-img" src="/img/tasting-cups.webp" alt="" />
       <div className="tl-shade" />
       <div className="pad">
-        <Enter i={0}><div className="k">The blind tasting · made in the bases you sent · {tasters} {tasters === 1 ? 'person has' : 'people have'} scored</div></Enter>
+        <Enter i={0}><div className="k">The blind tasting · made in the bases you sent · {who.cards ? `${who.phones} scored on phones, ${who.cards} on paper` : `${n} ${n === 1 ? 'person has' : 'people have'} scored`}</div></Enter>
         <Enter i={1}><h2 className="h1">Four samples, <span className="it">tasted blind.</span></h2></Enter>
         <Enter i={2}><p className="lede tl-lede">Score each one on your phone or on the paper card. Once everyone’s done, we’ll tell you what they are.</p></Enter>
         <div className="heat">
@@ -174,9 +175,8 @@ export function TastingLive({ s, step }: SceneProps) {
 // The chip vote: five chips each across the four samples and the two directions not in the tasting. Orbs grow as chips
 // land; build 1 ranks the top three.
 export function NextRound({ s, step }: SceneProps) {
-  const live = useLive();
   const t = tallyPick(s, 'directions');
-  const voters = Object.keys(s.votes.directions?.picks || {}).length;
+  const c = voteCounts(s, 'directions');
   const max = Math.max(1, ...Object.values(t));
   const order = ranked(t).filter(([, n]) => n > 0).map((x) => x[0]);
   const revealed = step >= 1;
@@ -184,37 +184,23 @@ export function NextRound({ s, step }: SceneProps) {
     <div className="vt" style={{ ['--h' as any]: OBJ_HUE[1] }}>
       <div className="vt-glow" />
       <div className="pad">
-        <Enter i={0}><div className="k">Vote on your phone · five chips each · {voters} {voters === 1 ? 'person has' : 'people have'} voted</div></Enter>
+        <Enter i={0}><div className="k">Vote on your phone · five chips each · {tally(c.phones, 'person has', 'people have')} voted{byHandNote(c.hand, 'chip', 'chips')}</div></Enter>
         <Enter i={1}><h2 className="h1 vt-q">What should get <span className="it">a next round?</span></h2></Enter>
         <div className="orbs nr">
           {DIRECTIONS.map((d, i) => {
             const n = t[d.id] || 0; const [c1, c2] = dirColors(d.id); const rank = order.indexOf(d.id); const top = revealed && rank > -1 && rank < 3;
             return (
-              <button key={d.id} className={'orb' + (top ? ' top' : '') + (revealed && order.length && !top ? ' dim' : '')} style={{ ['--c1' as any]: c1, ['--c2' as any]: c2, ['--s' as any]: `${130 + (n / max) * 110}px`, ['--i' as any]: i }} data-nonav onClick={() => !live.still && hand(live, 'directions', { [d.id]: 1 })}>
+              <div key={d.id} className={'orb' + (top ? ' top' : '') + (revealed && order.length && !top ? ' dim' : '')} style={{ ['--c1' as any]: c1, ['--c2' as any]: c2, ['--s' as any]: `${130 + (n / max) * 110}px`, ['--i' as any]: i }} data-nonav>
                 <div className="orb-ball"><b className="num">{n}</b></div>
                 <span>{directionName(d.id, s)}</span><small className="k">{d.sub}</small>
                 {top && <em className="k">Number {rank + 1}</em>}
-              </button>
+              </div>
             );
           })}
         </div>
       </div>
     </div>
   );
-}
-
-// An input that writes to the session as you type (after a short pause) and picks up changes from elsewhere when idle.
-function Synced({ value, commit, area, ...rest }: { value: string; commit: (v: string) => void; area?: boolean } & Record<string, any>) {
-  const [v, setV] = useState(value);
-  const focused = useRef(false); const timer = useRef<any>(null);
-  useEffect(() => { if (!focused.current) setV(value); }, [value]);
-  const props = {
-    ...rest, value: v, 'data-nonav': true,
-    onFocus: () => { focused.current = true; },
-    onBlur: () => { focused.current = false; clearTimeout(timer.current); if (v !== value) commit(v); },
-    onChange: (e: any) => { const x = e.target.value; setV(x); clearTimeout(timer.current); timer.current = setTimeout(() => commit(x), 700); },
-  };
-  return area ? <textarea {...props} /> : <input {...props} />;
 }
 
 // The concept cards: up to three, typed in as the room talks. Each box suggests the morning's own options.
@@ -258,9 +244,8 @@ export function ConceptCanvas({ s }: SceneProps) {
 
 // The dot vote: three dots each across the concepts and the four samples. Build 1 ranks the top three.
 export function DotsShow({ s, step }: SceneProps) {
-  const live = useLive();
   const t = tallyPick(s, 'concepts');
-  const voters = Object.keys(s.votes.concepts?.picks || {}).length;
+  const c = voteCounts(s, 'concepts');
   // Concepts first, then the samples, in a fixed order so rows do not jump while votes land.
   const items = [...candidates(s)].sort((a, b) => (a.kind === b.kind ? a.id.localeCompare(b.id) : a.kind === 'concept' ? -1 : 1));
   const max = Math.max(1, ...items.map((x) => t[x.id] || 0));
@@ -270,19 +255,19 @@ export function DotsShow({ s, step }: SceneProps) {
     <div className="vt" style={{ ['--h' as any]: OBJ_HUE[2] }}>
       <div className="vt-glow" />
       <div className="pad">
-        <Enter i={0}><div className="k">Vote on your phone · three dots each · {voters} {voters === 1 ? 'person has' : 'people have'} voted</div></Enter>
+        <Enter i={0}><div className="k">Vote on your phone · three dots each · {tally(c.phones, 'person has', 'people have')} voted{byHandNote(c.hand, 'dot', 'dots')}</div></Enter>
         <Enter i={1}><h2 className="h1 vt-q">Which ideas <span className="it">should we develop?</span></h2></Enter>
         <div className="dotlist">
           {items.map((x, i) => {
             const n = t[x.id] || 0; const rank = top.indexOf(x.id);
             return (
-              <button key={x.id} className={'dl' + (revealed && rank > -1 ? ' top' : '') + (revealed && rank < 0 ? ' dim' : '')} style={{ ['--c' as any]: x.color, ['--i' as any]: i }} data-nonav onClick={() => !live.still && hand(live, 'concepts', { [x.id]: 1 })}>
+              <div key={x.id} className={'dl' + (revealed && rank > -1 ? ' top' : '') + (revealed && rank < 0 ? ' dim' : '')} style={{ ['--c' as any]: x.color, ['--i' as any]: i }} data-nonav>
                 <span className="dl-name"><b>{x.name}</b><small>{x.sub}</small></span>
                 <span className="dl-dots">{Array.from({ length: n }, (_, j) => <i key={j} style={{ ['--j' as any]: j }} />)}</span>
                 <span className="dl-bar"><i style={{ width: `${(n / max) * 100}%` }} /></span>
                 <b className="num dl-n">{n}</b>
                 {revealed && rank > -1 && <em className="k">Number {rank + 1}</em>}
-              </button>
+              </div>
             );
           })}
           {!teamConcepts(s).length && <p className="empty">The concepts we write together will show up here, next to the four samples.</p>}
@@ -358,56 +343,77 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
   );
 }
 
-// Now, Next, Later: typed in as the room decides, with the winners of the morning's votes in a tray above.
+// Now, Next, Later: one row per direction, typed in as the room decides (here or in the presenter view), each with its
+// TFF owner, C&D reviewer, base and next sample step. The winners of the morning's votes sit in a tray above; clicking
+// one starts a row under Now.
 export function Board({ s }: SceneProps) {
   const live = useLive();
-  const tray = [...ranked(tallyPick(s, 'concepts')).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => candidates(s).find((x) => x.id === id)?.name || id), ...ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => directionName(id, s))];
+  const act = planActions(live.send);
+  const tray = [...new Set([...ranked(tallyPick(s, 'concepts')).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => candidates(s).find((x) => x.id === id)?.name || id), ...ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => directionName(id, s))])];
+  const rows = Object.values(s.plan || {}).sort((a, b) => a.t - b.t);
+  const onBoard = new Set(rows.map((r) => r.what.trim().toLowerCase()));
+  const legacy = (h: string) => (s.board?.[h] || '').split('\n').map((x) => x.trim()).filter(Boolean);
   return (
     <div className="pad sb">
       <Enter i={0}><div className="k">Part 4 · Now, Next, Later</div></Enter>
       <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>What should go first? <span className="it">And what has to be true for it to work?</span></h2></Enter>
-      <Enter i={2} className="sb-tray"><span className="k">Top votes this morning</span>{tray.length ? [...new Set(tray)].map((x) => <span key={x} className="tchip">{x}</span>) : <em>The top concepts and directions from the votes will show up here.</em>}</Enter>
+      <Enter i={2} className="sb-tray"><span className="k">Top votes this morning</span>{tray.length ? tray.map((x) => <button key={x} type="button" className="tchip" data-nonav disabled={live.still || onBoard.has(x.toLowerCase())} onClick={() => act.add('Now', x)}>{x}</button>) : <em>The top concepts and directions from the votes will show up here.</em>}</Enter>
       <div className="sb-cols">
         {HORIZONS.map((h, i) => (
           <Enter key={h.id} i={3 + i} className={'sb-col ' + h.id.toLowerCase()}>
-            <label data-nonav>
-              <b>{h.label}</b><span className="k">{h.when}</span>
-              <Synced area value={s.board?.[h.id] || ''} commit={(v: string) => live.send('board', { horizon: h.id, text: v })} placeholder="One line per direction" />
-            </label>
+            <div className="sb-head"><b>{h.label}</b><span className="k">{h.when}</span></div>
+            <div className="sb-rows">
+              {legacy(h.id).map((x, j) => <div key={'l' + j} className="sb-row legacy"><span className="sb-what">{x}</span></div>)}
+              {rows.filter((r) => r.h === h.id).map((r) => (
+                <div key={r.id} className="sb-row">
+                  <Synced className="sb-what" value={r.what} commit={(v: string) => act.set(r.id, { what: v })} placeholder="Direction or concept" aria-label={`${h.label}: direction or concept`} />
+                  <div className="sb-meta">
+                    {PLAN_COLS.map((c) => (
+                      <label key={c.f} data-nonav className={'sb-' + c.f}><span>{c.l}</span><Synced {...(c.f === 'next' ? { area: true, rows: 1 } : {})} list={'list' in c ? c.list : undefined} value={(r as any)[c.f] || ''} commit={(v: string) => act.set(r.id, { [c.f]: v })} aria-label={`${r.what || h.label}: ${c.l}`} /></label>
+                    ))}
+                  </div>
+                  {!live.still && <RemoveRow label={r.what || 'this line'} onRemove={() => act.remove(r.id)} />}
+                </div>
+              ))}
+              {!live.still && <button type="button" className="sb-add" data-nonav onClick={() => act.add(h.id)}>Add a line</button>}
+            </div>
           </Enter>
         ))}
       </div>
-      <Enter i={6} className="src stage-src">For each one, name a TFF owner, a C&amp;D reviewer, the base and the next sample step.</Enter>
+      <PlanLists />
     </div>
   );
 }
 
 // What the morning decided, in one place: shared by the Playbook scene and the results page.
 export function decided(s: SessionState) {
-  const lines = (id: string) => (s.board?.[id] || '').split('\n').map((x) => x.trim()).filter(Boolean);
   const items = candidates(s);
   return {
-    signals: ranked(tallyPick(s, 'signals')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ t: SIGNALS.find((x) => x.id === id)?.title || id, n })),
+    signals: ranked(tallyPick(s, 'signals')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ t: SIGNALS.find((x) => x.id === id)?.title || id, so: SIGNALS.find((x) => x.id === id)?.so || '', n })),
     directions: ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ t: directionName(id, s), n })),
     ideas: ranked(tallyPick(s, 'concepts')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ t: items.find((x) => x.id === id)?.name || id, n })),
     concepts: teamConcepts(s),
-    plan: HORIZONS.flatMap((h) => lines(h.id).map((x) => ({ h: h.label, t: x }))),
+    plan: planRows(s),
     tasting: SAMPLES.map((x) => ({ ...x, name: directionName(x.code, s), sum: tasteSummary(s, x.code) })),
   };
 }
 
+// What the morning decided. Build 0 fans the four chapters out; builds 1 to 4 open each one at reading size (the trends,
+// the directions with the tasting, the concepts, and the plan with its owners), so it can be read back to the room;
+// build 5 closes them into the cover.
 export function Playbook({ s, step }: SceneProps) {
   const d = decided(s);
   const pages = [
     { k: 'Chapter 1', t: 'Trends', l: d.signals.map((x) => x.t) },
     { k: 'Chapter 2', t: 'Directions', l: d.directions.map((x) => x.t) },
     { k: 'Chapter 3', t: 'Concepts', l: (d.ideas.length ? d.ideas.map((x) => x.t) : d.concepts.map((c) => c.name).filter(Boolean)) },
-    { k: 'Chapter 4', t: 'The plan', l: d.plan.slice(0, 6).map((x) => `${x.h} · ${x.t}`) },
+    { k: 'Chapter 4', t: 'The plan', l: d.plan.slice(0, 6).map((x) => `${x.label} · ${x.what}`) },
   ];
+  const reading = step >= 1 && step <= 4;
   return (
-    <div className="assemble">
+    <div className={'assemble' + (reading ? ' reading' : '')}>
       <Light scene="drop" theme="b" camera={{ pos: [0, 0.4, 9.5], target: [0, -0.4, 0], fov: 26, shift: [0, 0.1] }} frame={(t) => ({ rot: t * 0.08 })} fallback="/img/cover-drop.jpg" style={{ position: 'absolute', inset: 0, opacity: 0.55 }} />
-      <div className={'stack' + (step >= 1 ? ' closed' : '')}>
+      <div className={'stack' + (step >= 5 ? ' closed' : '')}>
         {pages.map((p, i) => (
           <div key={p.t} className="page" style={{ ['--i' as any]: i }}>
             <div className="k">{p.k}</div><b>{p.t}</b>
@@ -427,7 +433,63 @@ export function Playbook({ s, step }: SceneProps) {
         <Enter i={1}><h2 className="h1">Here’s what<br /><span className="it">we decided.</span></h2></Enter>
         <Enter i={2}><p className="lede as-lede">We’ll write it all up and send it to everyone here within 8 business days.</p></Enter>
       </div>
+      {reading && <ReadPage key={step} n={step} d={d} />}
     </div>
+  );
+}
+
+// One chapter of the Playbook at a size the back of the room can read.
+const CH = ['Trends', 'Directions', 'Concepts', 'The plan'];
+function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
+  const none = (t: string) => <p className="rp-none">{t}</p>;
+  let body: React.ReactNode = null, title = '';
+  if (n === 1) {
+    title = 'The three trends that matter most';
+    body = d.signals.length ? <ol className="rp-rank">{d.signals.map((x, j) => <li key={x.t}><span className="num">{j + 1}</span><span><b>{x.t.replace(/\.$/, '')}</b>{x.so && <small>{x.so}</small>}</span><em>{x.n} {x.n === 1 ? 'vote' : 'votes'}</em></li>)}</ol> : none('No trend votes came in.');
+  } else if (n === 2) {
+    title = 'What gets a next round';
+    body = (
+      <>
+        {d.directions.length ? <ol className="rp-rank">{d.directions.map((x, j) => <li key={x.t}><span className="num">{j + 1}</span><b>{x.t}</b><em>{x.n} {x.n === 1 ? 'chip' : 'chips'}</em></li>)}</ol> : none('No chips were placed.')}
+        <div className="rp-taste">
+          <span className="rp-cap">The tasting, averaged from 1 to 5</span>
+          {d.tasting.map((x) => <div key={x.code}><b>{x.code}. {x.name}</b><span>{x.sum.n ? `Appeal ${x.sum.appeal.toFixed(1)} · Feels like TheraBreath ${x.sum.feels.toFixed(1)} · Newness ${x.sum.newness.toFixed(1)}` : 'No scores'}</span></div>)}
+        </div>
+      </>
+    );
+  } else if (n === 3) {
+    title = d.concepts.length ? 'The concepts we wrote' : 'The ideas worth developing';
+    const dots = Object.fromEntries(d.ideas.map((x) => [x.t, x.n]));
+    body = d.concepts.length ? (
+      <div className="rp-concepts" style={{ gridTemplateColumns: `repeat(${Math.min(3, d.concepts.length)}, 1fr)` }}>{d.concepts.slice(0, 3).map((c: any) => (
+        <div key={c.id} className="rp-concept">
+          <b>{c.name || 'Untitled concept'}</b>
+          {dots[c.name] ? <em>{dots[c.name]} {dots[c.name] === 1 ? 'dot' : 'dots'}</em> : null}
+          <dl>{FIELDS.map((f) => c[f.key] ? <div key={f.f}><dt>{f.l}</dt><dd>{c[f.key]}</dd></div> : null)}</dl>
+        </div>
+      ))}</div>
+    ) : d.ideas.length ? <ol className="rp-rank">{d.ideas.map((x, j) => <li key={x.t}><span className="num">{j + 1}</span><b>{x.t}</b><em>{x.n} {x.n === 1 ? 'dot' : 'dots'}</em></li>)}</ol> : none('No concepts were written.');
+  } else {
+    title = 'Now, Next, Later, with the owners';
+    body = d.plan.length ? (
+      <table className={'rp-plan' + (d.plan.length > 7 ? ' many' : d.plan.length <= 4 ? ' few' : '')}>
+        <thead><tr><th /><th>Direction</th>{PLAN_COLS.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead>
+        <tbody>{d.plan.slice(0, 10).map((r, j) => (
+          <tr key={r.id} className={r.h.toLowerCase()}>
+            <td>{j === 0 || d.plan[j - 1].h !== r.h ? <span className="rp-h">{r.label}</span> : null}</td>
+            <td><b>{r.what || 'Untitled'}</b></td>
+            {PLAN_COLS.map((c) => <td key={c.f}>{(r as any)[c.f] || <i>To agree</i>}</td>)}
+          </tr>
+        ))}</tbody>
+      </table>
+    ) : none('The plan fills in from Now, Next, Later.');
+  }
+  return (
+    <section className="rp" aria-label={`Chapter ${n}: ${CH[n - 1]}`}>
+      <header><span className="k">Chapter {n} of 4 · {CH[n - 1]}</span><span className="k">The Flavor Playbook · draft</span></header>
+      <h2 className="rp-t">{title}</h2>
+      {body}
+    </section>
   );
 }
 

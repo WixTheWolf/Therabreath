@@ -8,6 +8,7 @@ import { CHAPTERS } from '@/lib/content';
 import { SCENE_VIEWS } from './scenes';
 import ConsolePanel from './ConsolePanel';
 import { prewarmLight } from './Light';
+import { etClock } from '@/lib/time';
 
 export type Ctx = { code: string; k: string; joinUrl: string; origin: string };
 
@@ -17,9 +18,10 @@ export function useScale(w = 1920, h = 1080) {
   return s;
 }
 
+// Eastern time, where the room is.
 export function Clock() {
   const [t, setT] = useState('');
-  useEffect(() => { const f = () => setT(new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false })); f(); const i = setInterval(f, 10000); return () => clearInterval(i); }, []);
+  useEffect(() => { const f = () => setT(etClock()); f(); const i = setInterval(f, 10000); return () => clearInterval(i); }, []);
   return <>{t}</>;
 }
 

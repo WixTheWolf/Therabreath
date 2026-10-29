@@ -6,8 +6,10 @@
 // Later are typed here into the same session, and the Playbook scene near the end puts it all together. The talking
 // points (N) name nobody. ?code=REHEARSE runs a separate rehearsal session with its own code; ?results=1 is a printable
 // page of what was decided; ?still=1 is for the PDF export (it never writes to the session); #12 or #12.3 jumps to a
-// scene and build.
-// Keys: right, space or click to go on; left to go back; F full screen; N talking points; B blank screen.
+// scene and build. P opens the presenter view (/host/presenter) in its own window for the laptop's screen: the talking
+// points, the clock, the controls, and the hand votes and paper scorecards for anyone without a phone.
+// Keys: right, space or click to go on (not on the scenes with boxes to type in); left to go back; F full screen;
+// N talking points on this screen; P presenter view; B blank screen.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { useSealed } from '@/lib/sealedClient';
@@ -23,7 +25,10 @@ import {
   LiveCtx, Live, ShowTitle, Team, ShowBrief, Opener, SignalVoteShow, TastingLive, NextRound, ConceptCanvas, DotsShow, WhiteSpaceShow, Board,
   Playbook, ShowFilm, JoinCorner, FIELDS, decided, markLabel,
 } from './show/ShowScenes';
-import { EVENT, TOPICS, HORIZONS, RUN } from '@/lib/content';
+import { EVENT, TOPICS, RUN } from '@/lib/content';
+import { runTiming } from '@/lib/time';
+import { PLAN_COLS } from './show/Plan';
+import { showChannel, presenterUrl, ShowMsg } from '@/lib/showLink';
 
 type View = (p: SceneProps) => React.ReactNode;
 const VIEWS: Record<string, View> = {
@@ -35,6 +40,8 @@ const VIEWS: Record<string, View> = {
 };
 // The scenes where phones are in use: the code stays in the corner for anyone who has not joined.
 const VOTING = new Set(['signalvote', 'tasting', 'nextround', 'dots']);
+// The scenes with boxes to type in or cells to mark: a click there never moves the room on.
+const TYPING = new Set(['concepts', 'whitespace', 'board']);
 
 export default function ShowApp({ code, k }: { code: string; k: string }) {
   const [still, setStill] = useState(false);
@@ -117,6 +124,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
     const kd = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement;
       if (el.closest('input, textarea')) { if (e.key === 'Escape') el.blur(); return; }
+      if (e.key === ' ' && el.closest('button')) return; // a button reached with Tab: Space presses it, nothing else
       if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); go(1); }
       else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); go(-1); }
       else if (e.key === 'Home') setPos({ i: 0, step: 0 });
@@ -125,11 +133,42 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       else if (e.key === '[') jump(-1);
       else if (e.key === 's' || e.key === 'S') setShort((x) => !x);
       else if (e.key === 'n' || e.key === 'N') setNotes((x) => !x);
+      else if (e.key === 'p' || e.key === 'P') window.open(presenterUrl(code), 'pb-presenter-' + code, 'popup,width=1280,height=820');
       else if (e.key === 'b' || e.key === 'B') setBlank((x) => !x);
       else if (e.key === 'f' || e.key === 'F') { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen?.(); }
     };
     addEventListener('keydown', kd); return () => removeEventListener('keydown', kd);
-  }, [go, jump, n]);
+  }, [go, jump, n, code]);
+
+  // The presenter view: tell it where we are on every move, and do what it asks.
+  const shownList = useMemo(() => SCENES.filter((_, i) => !skip(i)), [skip]);
+  const link = useRef<BroadcastChannel | null>(null);
+  const posMsg = useCallback((): ShowMsg => {
+    const { i, step } = posRef.current;
+    const next = SCENES.slice(i + 1).find((_, j) => !skip(i + 1 + j))?.title || '';
+    return { t: 'pos', pos: { i, step, short, blank, at: shownList.indexOf(SCENES[i]) + 1, total: shownList.length, next } };
+  }, [skip, short, blank, shownList]);
+  useEffect(() => {
+    if (still || mode) return;
+    const ch = showChannel(code); link.current = ch; if (!ch) return;
+    ch.onmessage = (m) => {
+      const x = m.data as ShowMsg;
+      if (x.t === 'hello') ch.postMessage(posMsg());
+      if (x.t !== 'cmd') return;
+      const c = x.cmd;
+      if (c.c === 'go') go(c.d);
+      else if (c.c === 'jump') jump(c.d);
+      else if (c.c === 'goto') setPos({ i: Math.max(0, Math.min(n - 1, c.i)), step: Math.min(SCENES[Math.max(0, Math.min(n - 1, c.i))].builds, c.step || 0) });
+      else if (c.c === 'short') setShort((v) => !v);
+      else if (c.c === 'blank') setBlank((v) => !v);
+    };
+    return () => { ch.close(); link.current = null; };
+  }, [code, still, mode, go, jump, n, posMsg]);
+  useEffect(() => {
+    link.current?.postMessage(posMsg());
+    const iv = setInterval(() => link.current?.postMessage(posMsg()), 2000); // a heartbeat, so the presenter view knows we're here
+    return () => clearInterval(iv);
+  }, [pos, posMsg]);
 
   const sc = SCENES[Math.min(pos.i, n - 1)];
   useEffect(() => { document.documentElement.dataset.theme = mode === 'results' ? 'a' : sc.theme; }, [sc.theme, mode]);
@@ -142,19 +181,20 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   if (mode === 'results') return <Results s={sv} code={code} />;
 
   const click = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest('input, textarea, button, label, video, a, [data-nonav]')) return;
+    if (TYPING.has(sc.id) || (e.target as HTMLElement).closest('input, textarea, button, label, video, a, [data-nonav]')) return;
     go(e.clientX < innerWidth / 3 ? -1 : 1);
   };
   const key = sc.id.replace(/\d+$/, '');
   const View = VIEWS[key];
   const idx = Number(sc.id.match(/\d+$/)?.[0] || 0);
-  const shown = SCENES.filter((_, i) => !skip(i));
+  const shown = shownList;
   const nextStop = SECTIONS.map((id) => SCENES.find((x) => x.id === id)!).find((x) => x.n > pos.i);
-  const timing = runTiming(sc.block);
+  const tm = runTiming(sc.block);
+  const timing = tm ? `This part: ${tm.from} to ${tm.to} · now ${tm.now}${tm.over ? ` · ${tm.over} min over` : ''}` : '';
   const at = shown.indexOf(sc) + 1;
   return (
     <LiveCtx.Provider value={ctxLive}>
-      <div className={'stage-host show' + (still ? ' still' : '')} style={{ display: 'flex' }} onClick={click}>
+      <div className={'stage-host show' + (still ? ' still' : '')} style={{ display: 'flex' }} onClick={click} onMouseDown={(e) => { if ((e.target as HTMLElement).closest('button')) e.preventDefault(); }}>
         <div className="stage-wrap" style={{ width: 1920 * scale, height: 1080 * scale }}>
           <div className="stage" data-theme={sc.theme} style={{ transform: `scale(${scale})` }}>
             <div className="stage-scene" key={sc.id} data-step={pos.step} data-scene={sc.id}>
@@ -176,7 +216,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
             <small>{timing}{short ? ' · Short version: optional slides skipped (S to undo)' : ''}</small>
           </aside>
         )}
-        {hint && <div className="show-hint">Right arrow or click to go on · Left arrow back · ] next part · S short version · F full screen · N talking points</div>}
+        {hint && <div className="show-hint">Right arrow or click to go on · Left arrow back · ] next part · S short version · F full screen · P presenter view</div>}
         {code !== EVENT.code && !still && <div className="show-rehearse">Rehearsal session {code}. Votes here never reach the live session.</div>}
       </div>
     </LiveCtx.Provider>
@@ -213,7 +253,7 @@ function Results({ s, code }: { s: any; code: string }) {
       <section><h2 className="h3">What gets a next round</h2><ul>{d.directions.map((x) => <li key={x.t}>{x.t} <em>{x.n} chips</em></li>)}{!d.directions.length && <li className="ghost">No votes yet</li>}</ul></section>
       <section><h2 className="h3">Concepts</h2>{cs.length ? cs.map((c: any) => <div key={c.id} className="sr-concept"><b>{c.name}</b><dl>{FIELDS.map((f) => c[f.key] ? <div key={f.f}><dt>{f.l}</dt><dd>{c[f.key]}</dd></div> : null)}</dl></div>) : <p className="ghost">None written</p>}
         {d.ideas.length > 0 && <p className="sr-dots">Dot vote: {d.ideas.map((x) => `${x.t} (${x.n})`).join(', ')}</p>}</section>
-      <section><h2 className="h3">Now, Next, Later</h2><div className="sr-nnl">{HORIZONS.map((h) => { const l = d.plan.filter((x) => x.h === h.label); return <div key={h.id}><b>{h.label}</b><small>{h.when}</small><ul>{l.map((x, j) => <li key={j}>{x.t}</li>)}{!l.length && <li className="ghost">Nothing yet</li>}</ul></div>; })}</div></section>
+      <section><h2 className="h3">Now, Next, Later</h2>{d.plan.length ? <table className="sr-plan"><thead><tr><th /><th>Direction</th>{PLAN_COLS.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead><tbody>{d.plan.map((r) => <tr key={r.id}><td>{r.label}</td><td><b>{r.what || 'Untitled'}</b></td>{PLAN_COLS.map((c) => <td key={c.f}>{(r as any)[c.f] || <span className="ghost">To agree</span>}</td>)}</tr>)}</tbody></table> : <p className="ghost">Nothing yet</p>}</section>
       <section><h2 className="h3">Where the ideas could fit in a day</h2><ul>{marks.map((c) => <li key={c}>{markLabel(s, c)}</li>)}{!marks.length && <li className="ghost">No cells marked</li>}</ul></section>
       <p className="src">Confidential. These are development samples and concepts made for this session. They aren’t finished products or claims.</p>
       <button className="sr-print" onClick={() => print()}>Print or save as PDF</button>
@@ -221,11 +261,3 @@ function Results({ s, code }: { s: any; code: string }) {
   );
 }
 
-// For the talking points: the planned window for this part of the morning, and how far over it the clock is.
-function runTiming(block: string) {
-  const b = RUN.find((x) => x.id === block); if (!b) return '';
-  const now = new Date(); const mins = (t: string) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
-  const cur = now.getHours() * 60 + now.getMinutes(); const over = cur - mins(b.end);
-  const hhmm = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
-  return `This part: ${b.t} to ${b.end} · now ${hhmm}${over > 0 && over < 180 ? ` · ${over} min over` : ''}`;
-}
