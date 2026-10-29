@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # The Future of Freshness V5, both endings, from one voice take to the site's files.
 #   bash scripts/fof5_build.sh <take.wav|mp3> <words.json> [--ship]
+# REMIX=1 keeps the voice, the layout and the rendered picture, and redoes only the mix and the files (for a change to
+# scripts/fof5_mix.py alone).
 # words.json: the take's transcript with word times (ElevenLabs Scribe, or scripts/../words.py with faster-whisper).
 # Without --ship the films stay in out/fof5; with it they are copied into ../final/public/media, with captions and a
 # poster: opening.* is the site cut, opening.brief.* the pre-brief cut.
@@ -8,11 +10,13 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 TAKE="$1"; WORDS="$2"; SHIP="${3:-}"
 mkdir -p out/fof5 public/fof5/audio
-ffmpeg -loglevel error -y -i "$TAKE" -ar 48000 -ac 1 out/fof5/vo_in.wav && mv out/fof5/vo_in.wav public/fof5/audio/vo.wav
-python3 scripts/fof5_layout.py public/fof5/audio/vo.wav "$WORDS"
+if [ "${REMIX:-}" != 1 ]; then
+  ffmpeg -loglevel error -y -i "$TAKE" -ar 48000 -ac 1 out/fof5/vo_in.wav && mv out/fof5/vo_in.wav public/fof5/audio/vo.wav
+  python3 scripts/fof5_layout.py public/fof5/audio/vo.wav "$WORDS"
+fi
 for E in brief site; do
   ID=$([ "$E" = brief ] && echo FutureOfFreshnessV5Brief || echo FutureOfFreshnessV5Site)
-  npx remotion render src/index5.ts "$ID" "out/fof5/pic_$E.mp4" --muted --public-dir=public_v5 --concurrency=4 --crf=16 --log=error
+  [ "${REMIX:-}" = 1 ] || npx remotion render src/index5.ts "$ID" "out/fof5/pic_$E.mp4" --muted --public-dir=public_v5 --concurrency=4 --crf=16 --log=error
   python3 scripts/fof5_mix.py "$E" "out/fof5/mix_$E.wav"
   # loudness: two passes to -16.5 LUFS, true peak under -2 dBTP
   M=$(ffmpeg -hide_banner -i "out/fof5/mix_$E.wav" -af loudnorm=I=-16.5:TP=-2.0:LRA=11:print_format=json -f null - 2>&1 | sed -n '/^{/,/^}/p')

@@ -539,7 +539,7 @@ const SceneNorco: React.FC = () => {
   const e = exitP(t, to, 0.2);
   return (
     <Scene from={from} to={to} wipe={{ x: GX + (ORDER[3] % 10) * CELL + 25, y: GY + Math.floor(ORDER[3] / 10) * CELL + 25 }}>
-      <Say text="In July, you came out to Norco / and watched us make *flavor.*" after={lineAt("norco")} out={to} size={66} style={{ left: L, top: 130, width: 1200 }} />
+      <Say text="In July, your team came out to Norco / and watched us make *flavor.*" after={lineAt("norco")} out={to} size={66} style={{ left: L, top: 130, width: 1200 }} />
       <Kick at={from + 0.3} out={to} style={{ right: L, top: 140 }}>July 2026</Kick>
       {zoom < 1 && (
         <AbsoluteFill style={{ transform: `scale(${1 + 2.2 * zoom})`, transformOrigin: `${x1}px ${y}px`, opacity: Math.max(0, 1 - zoom * 1.7) }}>

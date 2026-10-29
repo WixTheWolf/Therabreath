@@ -208,7 +208,7 @@ cue(WHOOSHB, at("ask") - 0.65, 0.45)
 a0 = at("ask")
 answer, because = tw("answer", a0), tw("because", a0)
 answers, morning, phw = tw("answers", because), tw("morning", because), tw("phone", at("phone"))
-for kx in range(4): cue(POP, min(answer, a0 + 0.5) + kx * 0.12, 0.32, 0.9 + kx * 0.08)
+for kx in range(4): cue(POP, min(answer, a0 + 0.5) + kx * 0.12, 0.22, 0.9 + kx * 0.08)  # under "come, please", so kept low
 cue(DINGS, answers - 0.35, 0.9, 0.85); cue(WHOOSH, answers - 0.1, 0.3)
 for kx in range(4): cue(POP, morning + kx * 0.1, 0.2, 1.1 + kx * 0.1)
 cue(WHOOSH, phw - 0.2, 0.3); cue(POP, phw + 0.5, 0.3, 1.0); cue(DINGS, phw + 0.95, 1.1, 1.2)

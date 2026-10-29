@@ -88,7 +88,7 @@ export function July({ step }: SceneProps) {
   return (
     <div className="pad">
       <Enter i={0}><div className="k">From July to today</div></Enter>
-      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1500 }}>When you came to Norco in July, we talked about four things.<br /><span className="it">Today is about the fifth.</span></h2></Enter>
+      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1500 }}>When your team came to Norco in July, we talked about four things.<br /><span className="it">Today is about the fifth.</span></h2></Enter>
       <div className="july">
         {JULY.map((w, i) => (
           <div key={w} className={'jf' + (i === 4 ? ' grow' : '') + (i === 4 && step >= 1 ? ' lit' : '')} style={{ ['--i' as any]: i }}>
