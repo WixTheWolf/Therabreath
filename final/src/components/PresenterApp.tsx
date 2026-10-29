@@ -4,15 +4,16 @@
 // short-version state, and it moves the presentation (over showLink.ts, so both windows must be in the same browser).
 // It is also where hand votes and paper scorecards go in for anyone without a phone, and where a mistaken one comes
 // back out. Nothing here is on the TV.
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
+import { pointsOf, titleOf } from '@/lib/sceneNotes';
 import { EVENT, SIGNALS, DIRECTIONS, SAMPLES, WHO_CHIPS, MYSTERY, HORIZONS, CRITERIA, DEVELOP, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
 import { tallyPick, voteCounts, tasters, byHand, onPaper, people, uid, Ev, SessionState } from '@/lib/state';
 import { candidates } from './scenes/Build';
 import { Synced, PLAN_COLS, PlanLists, RemoveRow, planActions } from './show/Plan';
 import { runTiming, etClock } from '@/lib/time';
-import { showChannel, ShowPos, ShowCmd, ShowMsg } from '@/lib/showLink';
+import { showChannel, ShowPos, ShowCmd, ShowMsg, FilmState } from '@/lib/showLink';
 
 type Send = (kind: string, data?: any, pid?: string) => any;
 const dirName = (s: SessionState, id: string) => s.revealed?.samples[id]?.name || DIRECTIONS.find((d) => d.id === id)?.label || id;
@@ -37,18 +38,22 @@ export default function PresenterApp({ code }: { code: string }) {
   const linked = !!pos && now - seen < 7000;
   const off = !pos; // never heard from the presentation: nothing to move yet
   const cmd = useCallback((c: ShowCmd) => chan?.postMessage({ t: 'cmd', cmd: c } satisfies ShowMsg), [chan]);
+  const onFilm = useRef(false);
 
   useEffect(() => {
     const kd = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement;
       if (el.closest('input, textarea, select')) return;
       if (e.key === ' ' && el.closest('button')) return; // a button reached with Tab: Space presses it, nothing else
+      // On the film, as in the presentation: Space or K pauses and plays, R starts it again.
+      if (onFilm.current && [' ', 'k', 'K', 'r', 'R'].includes(e.key)) { e.preventDefault(); cmd({ c: 'film', a: /r/i.test(e.key) ? 'restart' : 'toggle' }); return; }
       if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); cmd({ c: 'go', d: 1 }); }
       else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); cmd({ c: 'go', d: -1 }); }
       else if (e.key === ']') cmd({ c: 'jump', d: 1 });
       else if (e.key === '[') cmd({ c: 'jump', d: -1 });
       else if (e.key === 's' || e.key === 'S') cmd({ c: 'short' });
       else if (e.key === 'b' || e.key === 'B') cmd({ c: 'blank' });
+      else if (e.key === 'End') cmd({ c: 'goto', i: SCENES.length - 1 });
     };
     addEventListener('keydown', kd); return () => removeEventListener('keydown', kd);
   }, [cmd]);
@@ -56,6 +61,7 @@ export default function PresenterApp({ code }: { code: string }) {
   // Without the presentation open, the session still says where the room is.
   const i = pos?.i ?? s.scene, step = pos?.step ?? s.step;
   const sc = SCENES[Math.min(i, SCENES.length - 1)];
+  onFilm.current = linked && sc.id === 'film';
   const tm = now ? runTiming(sc.block, new Date(now)) : null;
   const joined = people(s).filter((p) => !p.paper).length;
   const room = sc.id === 'signalvote' ? <HandVotes s={s} events={events} send={send} k="signals" title="Hand votes: the three trends" items={SIGNALS.map((x) => ({ id: x.id, label: x.title.replace(/\.$/, '') }))} value={(id) => [id]} />
@@ -63,6 +69,7 @@ export default function PresenterApp({ code }: { code: string }) {
     : sc.id === 'dots' ? <HandVotes s={s} events={events} send={send} k="concepts" title="Hand votes: dots for the ideas" items={candidates(s).map((x) => ({ id: x.id, label: x.name || 'Untitled concept', sub: x.sub }))} value={(id) => ({ [id]: 1 })} />
     : sc.id === 'tasting' || sc.id === 'matrix' ? <PaperCards s={s} events={events} sendMany={sendMany} />
     : sc.id === 'board' || sc.id === 'playbook' || sc.id === 'next' ? <PlanEditor s={s} send={send} />
+    : sc.id === 'film' ? <FilmPanel f={linked ? pos?.film : undefined} now={now} cmd={cmd} next={pos?.next || ''} prev={pos?.prev || ''} />
     : <Joined s={s} />;
 
   return (
@@ -87,10 +94,11 @@ export default function PresenterApp({ code }: { code: string }) {
 
       <div className={'pv-main' + (['tasting', 'matrix', 'board', 'playbook', 'next'].includes(sc.id) ? ' wide' : '')}>
         <section className="pv-now" aria-live="polite">
-          <h1>{sc.title}</h1>
+          <h1>{titleOf(sc)}</h1>
           {sc.builds > 0 && <p className="pv-build">Build {step} of {sc.builds}</p>}
-          <ul className="pv-points">{sc.points.map((x, j) => <li key={j}>{x}</li>)}</ul>
+          <ul className="pv-points">{pointsOf(sc).map((x, j) => <li key={j}>{x}</li>)}</ul>
           {pos?.next && <p className="pv-next">Next: <b>{pos.next}</b></p>}
+          {sc.id === 'next' && <button className="pv-skipfilm" disabled={off} onClick={() => cmd({ c: 'goto', i: SCENES.length - 1 })}>Running late: skip the film, go to Lunch</button>}
         </section>
         <aside className="pv-room">{room}</aside>
       </div>
@@ -102,7 +110,7 @@ export default function PresenterApp({ code }: { code: string }) {
         <button disabled={off} onClick={() => cmd({ c: 'jump', d: 1 })}>Next part</button>
         <label className="pv-goto"><span>Go to</span>
           <select disabled={off} value={i} onChange={(e) => cmd({ c: 'goto', i: Number(e.target.value) })}>
-            {SCENES.map((x, j) => <option key={x.id} value={j}>{j + 1}. {x.title}{x.optional ? ' (optional)' : ''}</option>)}
+            {SCENES.map((x, j) => <option key={x.id} value={j}>{j + 1}. {titleOf(x)}{x.optional ? ' (optional)' : ''}</option>)}
           </select>
         </label>
         <button disabled={off} aria-pressed={!!pos?.short} onClick={() => cmd({ c: 'short' })}>Short version</button>
@@ -265,6 +273,35 @@ function PlanEditor({ s, send }: { s: SessionState; send: Send }) {
         );
       })}
       <PlanLists />
+    </>
+  );
+}
+
+// THE FLAVOR RACE from the laptop: how far in it is, and play, pause, start again, skip on or go back. The clock runs
+// here between the presentation's heartbeats.
+const mmss = (x: number) => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, '0')}`;
+function FilmPanel({ f, now, cmd, next, prev }: { f?: FilmState; now: number; cmd: (c: ShowCmd) => void; next: string; prev: string }) {
+  const t = !f ? 0 : f.playing ? Math.min(f.d || Infinity, f.t + Math.max(0, now - f.ts) / 1000) : f.t;
+  const state = !f ? 'Waiting for the presentation' : f.ended ? 'Finished. The closing card is on the TV.' : f.muted && f.playing ? 'Playing without sound. Click the picture on the TV once, or press Sound on.' : f.playing ? 'Playing' : t > 0 ? 'Paused' : 'Ready';
+  return (
+    <>
+      <h2>THE FLAVOR RACE</h2>
+      <p className="pv-sub" role="status">{state}</p>
+      <div className="pv-film">
+        <b className="num">{mmss(t)}</b><span>of {f?.d ? mmss(f.d) : '2:26'}</span>
+        <div className="pv-filmbar" aria-hidden="true"><i style={{ width: `${f?.d ? Math.min(100, (t / f.d) * 100) : 0}%` }} /></div>
+      </div>
+      <div className="pv-filmctl">
+        <button className="primary" disabled={!f} onClick={() => cmd({ c: 'film', a: 'toggle' })}>{f?.ended ? 'Play again' : f?.playing ? 'Pause' : 'Play'}</button>
+        <button disabled={!f} onClick={() => cmd({ c: 'film', a: 'restart' })}>Start again</button>
+        {f?.muted && <button disabled={!f} onClick={() => cmd({ c: 'film', a: 'sound' })}>Sound on</button>}
+      </div>
+      <div className="pv-filmctl">
+        {next && <button disabled={!f} onClick={() => cmd({ c: 'go', d: 1 })}>Skip to {next}</button>}
+        {prev && <button disabled={!f} onClick={() => cmd({ c: 'go', d: -1 })}>Back to {prev}</button>}
+      </div>
+      <p className="pv-sub">Running late? Skip it. Every decision and owner is already saved, and the Lunch slide keeps the Now rows up.</p>
+      <p className="pv-sub">Keys here or on the presentation: Space or K to pause and play, R to start again, the arrows to move on or back.</p>
     </>
   );
 }

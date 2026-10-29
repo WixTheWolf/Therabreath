@@ -7,7 +7,8 @@ import { MapScene, Territory, Tasting, Matrix, Chips } from './Territories';
 import { Missions, Seeds, Canvas, Pitches, Dots } from './CoCreate';
 import { Pipeline, Calendar, Code } from './Build';
 import { Assemble, Next, Lunch } from './Close';
-import { Film, Vocab, Shifts, Clock, BenchScene } from './Hybrid';
+import { Vocab, Shifts, Clock, BenchScene } from './Hybrid';
+import { Film } from './RaceFilm';
 
 // Scene id (without trailing digits) to view.
 export const SCENE_VIEWS: Record<string, (p: SceneProps) => React.ReactNode> = {

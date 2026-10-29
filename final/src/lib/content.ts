@@ -324,47 +324,20 @@ export const THINK = [
 ];
 
 // The run of show: one source for the agenda (site and pre-brief), the presentation's chapter times, and the hosts'
-// run sheet. `obj` is the objective from Ross's invitation the block answers. The notes stay off the
-// site and the pre-brief: they are for the presentation and the run sheet. Phones vote four times (trends, tasting,
-// next round, ideas); the paper scorecard and hand votes on the laptop cover anyone without a phone.
-// kit: the technology and materials the block needs; output: what it should leave us with; after: a transition note.
-// Owners are still to assign (nobody is named as presenting any part), so the run sheet shows "To assign".
-export type Block = { id: string; t: string; end: string; title: string; obj?: string; slides: string; does: string; kit?: string; output?: string; after?: string };
+// run sheet. `obj` is the objective from Ross's invitation the block answers. Phones vote four times (trends, tasting,
+// next round, ideas); the paper scorecard and hand votes on the laptop cover anyone without a phone. This file ships to
+// attendee pages, so only the times, titles and objectives are here: what the team does in each block, and what it
+// needs, is in runNotes.ts (team only).
+export type Block = { id: string; t: string; end: string; title: string; obj?: string };
 export const RUN: Block[] = [
-  { id: 'welcome', t: '10:00', end: '10:10', title: 'Welcome, who we are and your four objectives',
-    slides: 'Arrival, Title, Who we are, From July to today, Your four objectives, Your pre-brief answers (only if answers came in), Why we’re here',
-    does: 'As people sit down, the arrival screen shows the QR code and counts the phones as they join. Thank Ross for having us, introduce the four of us and recap July. Read Ross’s four objectives and his goal, and show the pre-brief answers if any came in. Then explain why we’re here: TheraBreath took the burn out of mouthwash, and the next job is giving more people a reason to want it.' },
-  { id: 'market', t: '10:10', end: '10:25', title: 'What’s changing: your portfolio, the market and seven trends', obj: '01',
-    slides: 'Part 1, 86 out of 100 households, The portfolio today, What competitors are launching, Seven trends, Vote: the three that matter most',
-    does: 'Open with the household gap, then walk through the portfolio and what competitors are launching. The seven trends come up one click at a time. After that, everyone votes for three on their phone, and the presenter view adds a vote by hand for anyone without one. The top three go into the Playbook. Finish by asking what we missed.' },
-  { id: 'school', t: '10:25', end: '10:40', title: 'Flavor School, then four directions', obj: '02',
-    slides: 'Part 2, What flavor is, How cooling works, Flavor and OXYD-8, How a TheraBreath flavor is built, Four directions, then one scene per direction',
-    does: 'Cover taste, smell and feel, and how cooling works. Explain why OXYD-8 is a hard place for flavor to live and how a TheraBreath flavor has to finish. Then show the four directions on one map and go through them one at a time. Two of them have samples in the tasting, and the other two are there for discussion.' },
-  { id: 'tasting', t: '10:40', end: '11:00', title: 'A blind tasting in your bases', obj: '02',
-    slides: 'The blind tasting, Where each sample landed, Vote: what gets a next round',
-    does: 'Pour A and B in the Fresh Breath base and C and D in the Kids base. Everyone scores each sample on their phone or the paper scorecard, and the scores fill the screen as they come in. Type the paper cards into the presenter view as they’re handed in. D is the Mystery Flavor, so get everyone’s fruit guesses before the names go up. Then show where each sample landed, and have everyone place five chips on what should get a next round.' },
-  { id: 'concepts', t: '11:00', end: '11:20', title: 'From samples to concepts', obj: '03',
-    slides: 'Part 3, Concepts, Vote: which ideas to develop',
-    does: 'Take the directions with the most chips and write up to three concepts together. For each one, cover where it starts, who it’s for, the moment, its role in the range, the format, and whether it grows loyal users, new users or both. Type them straight into the cards on screen. Then everyone gets three dots on their phone to vote for the ones worth developing.' },
-  { id: 'pipeline', t: '11:20', end: '11:40', title: 'White space, then Now, Next, Later', obj: '04',
-    slides: 'Part 4, Where TheraBreath fits in a day, Now, Next, Later',
-    does: 'Walk through the day, moment by moment: where TheraBreath is today, the moment the pre-brief says is missing, and everything that’s still open. Click a cell to mark where each concept could fit. Then put each concept and direction under Now, Next or Later, one line each with its consumer or occasion, the flavor brief, a TFF owner, a C&D reviewer, the base and the date the next sample is due. Type them on the board or in the presenter view. The top votes sit in a tray above the board: click one to start its line under Now.' },
-  { id: 'close', t: '11:40', end: '12:00', title: 'What we decided, what happens next, and a short film before lunch',
-    slides: 'What we decided, What happens next, THE FLAVOR RACE, Lunch',
-    does: 'The Playbook fills in from the votes and the board, and opens one chapter at a time so it can be read back, the plan with its owners last. Read it back, go through the three next steps and say thank you. At 11:48 it’s THE FLAVOR RACE (2:26), with the lights down and the sound up. Then lunch, hosted by Church & Dwight.' },
+  { id: 'welcome', t: '10:00', end: '10:10', title: 'Welcome, who we are and your four objectives' },
+  { id: 'market', t: '10:10', end: '10:25', title: 'What’s changing: your portfolio, the market and seven trends', obj: '01' },
+  { id: 'school', t: '10:25', end: '10:40', title: 'Flavor School, then four directions', obj: '02' },
+  { id: 'tasting', t: '10:40', end: '11:00', title: 'A blind tasting in your bases', obj: '02' },
+  { id: 'concepts', t: '11:00', end: '11:20', title: 'From samples to concepts', obj: '03' },
+  { id: 'pipeline', t: '11:20', end: '11:40', title: 'White space, then Now, Next, Later', obj: '04' },
+  { id: 'close', t: '11:40', end: '12:00', title: 'What we decided and what happens next' },
 ];
-// The facilitator's view of each block (the run sheet's run of show): what it needs and what it should leave us with.
-// Only what the run sheet and the presentation already say; suggestions are marked as suggestions.
-const KIT: Record<string, Pick<Block, 'kit' | 'output' | 'after'>> = {
-  welcome: { kit: 'Laptop on the TV as an extended display, the presenter view (P), the QR code on the arrival screen, Wi-Fi for the laptop.', output: 'Phones joined, and the pre-brief answers on screen if any came in.' },
-  market: { kit: 'Phones for the trend vote; hand votes in the presenter view for anyone without one.', output: 'The three trends that matter most, and what we missed.' },
-  school: { kit: 'The presentation only.', output: 'The room’s first reactions to each of the four directions, before anything is tasted.' },
-  tasting: { kit: 'Four samples in coded cups (A and B in the Fresh Breath base, C and D in the Kids base), water, spit cups, napkins, paper scorecards and pens, phones.', output: 'Scores for all four samples, the fruit guesses, the names revealed, and five chips each on what gets a next round.', after: 'Suggested transition: while the chips go in, clear the cups and pens so the table is free for the concept cards at 11:00.' },
-  concepts: { kit: 'The concept cards on the TV, or typed in the presenter view; phones for the dot vote.', output: 'Up to three concepts, and the dot vote on which ones to develop.' },
-  pipeline: { kit: 'The presenter view for Now, Next, Later (or type on the board).', output: 'Each direction under Now, Next or Later with its consumer or occasion, flavor brief, TFF owner, C&D reviewer, base and next-sample date.' },
-  close: { kit: 'Speakers for THE FLAVOR RACE (2:26), with the film file saved on the laptop as a backup.', output: 'The plan read back with its owners, and the results page saved as a PDF.' },
-};
-RUN.forEach((b) => Object.assign(b, KIT[b.id]));
 export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title, b.obj]);
 
 // From sample to next step: how the morning turns four blind samples into up to three directions, each with owners and

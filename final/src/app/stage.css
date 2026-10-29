@@ -456,6 +456,7 @@
 .film { position: absolute; inset: 0; background: #000; cursor: pointer; }
 .film video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .film-sound { position: absolute; right: 60px; bottom: 60px; padding: 14px 22px; border-radius: 30px; background: rgba(255,255,255,.14); color: #fff; font: 500 18px var(--mono); letter-spacing: .1em; text-transform: uppercase; animation: pulse 1.6s infinite; }
+.film-paused { position: absolute; right: 60px; bottom: 60px; padding: 12px 20px; border-radius: 30px; background: rgba(0,0,0,.5); color: rgba(255,255,255,.8); font: 500 16px var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 .film-end { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; background: radial-gradient(circle, rgba(11,27,43,.3), rgba(11,27,43,.92)); opacity: 0; transition: opacity 2s var(--ease); color: #F0EEE9; }
 .film-end.on { opacity: 1; }
 

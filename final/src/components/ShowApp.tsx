@@ -15,6 +15,7 @@ import { useSession } from '@/lib/useSession';
 import { useSealed } from '@/lib/sealedClient';
 import { useScale, Clock } from './StageApp';
 import { SCENES, SECTIONS, Scene } from '@/lib/scenes';
+import { pointsOf, titleOf } from '@/lib/sceneNotes';
 import type { SceneProps } from './scenes/ui';
 import { Arrival, July, Prework, Thesis } from './scenes/Opening';
 import { Gap, Portfolio, Market, Signals } from './scenes/ActI';
@@ -23,7 +24,7 @@ import { MapScene, Territory, Matrix } from './scenes/Territories';
 import { Next, Lunch } from './scenes/Close';
 import {
   LiveCtx, Live, ShowTitle, Team, ShowBrief, Opener, SignalVoteShow, TastingLive, NextRound, ConceptCanvas, DotsShow, WhiteSpaceShow, Board,
-  Playbook, ShowFilm, JoinCorner, FIELDS, decided, markLabel,
+  Playbook, ShowFilm, FilmCtl, JoinCorner, FIELDS, decided, markLabel,
 } from './show/ShowScenes';
 import { EVENT, TOPICS, RUN, CRITERIA } from '@/lib/content';
 import { runTiming } from '@/lib/time';
@@ -101,6 +102,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   useEffect(() => { history.replaceState(null, '', `${location.search}#${pos.i + 1}${pos.step ? '.' + pos.step : ''}`); }, [pos]);
 
   const posRef = useRef(pos); posRef.current = pos;
+  const film = useRef<FilmCtl | null>(null); // set while THE FLAVOR RACE is on screen
   const go = useCallback((d: number) => {
     const { i, step } = posRef.current, sc = SCENES[i];
     if (d > 0) {
@@ -125,6 +127,8 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       const el = e.target as HTMLElement;
       if (el.closest('input, textarea')) { if (e.key === 'Escape') el.blur(); return; }
       if (e.key === ' ' && el.closest('button')) return; // a button reached with Tab: Space presses it, nothing else
+      // On the film: Space, Enter or K pauses and plays, R starts it again; the arrows still move on or back.
+      if (film.current && [' ', 'Enter', 'k', 'K', 'r', 'R'].includes(e.key)) { e.preventDefault(); film.current.act(/r/i.test(e.key) ? 'restart' : 'toggle'); return; }
       if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); go(1); }
       else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); go(-1); }
       else if (e.key === 'Home') setPos({ i: 0, step: 0 });
@@ -145,8 +149,9 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const link = useRef<BroadcastChannel | null>(null);
   const posMsg = useCallback((): ShowMsg => {
     const { i, step } = posRef.current;
-    const next = SCENES.slice(i + 1).find((_, j) => !skip(i + 1 + j))?.title || '';
-    return { t: 'pos', pos: { i, step, short, blank, at: shownList.indexOf(SCENES[i]) + 1, total: shownList.length, next } };
+    const nx = SCENES.slice(i + 1).find((_, j) => !skip(i + 1 + j)); const next = nx ? titleOf(nx) : '';
+    const pv = SCENES.slice(0, i).reverse().find((x) => !skip(x.n)); const prev = pv ? titleOf(pv) : '';
+    return { t: 'pos', pos: { i, step, short, blank, at: shownList.indexOf(SCENES[i]) + 1, total: shownList.length, next, prev, film: film.current?.state() } };
   }, [skip, short, blank, shownList]);
   useEffect(() => {
     if (still || mode) return;
@@ -161,6 +166,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       else if (c.c === 'goto') setPos({ i: Math.max(0, Math.min(n - 1, c.i)), step: Math.min(SCENES[Math.max(0, Math.min(n - 1, c.i))].builds, c.step || 0) });
       else if (c.c === 'short') setShort((v) => !v);
       else if (c.c === 'blank') setBlank((v) => !v);
+      else if (c.c === 'film') film.current?.act(c.a);
     };
     return () => { ch.close(); link.current = null; };
   }, [code, still, mode, go, jump, n, posMsg]);
@@ -169,6 +175,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
     const iv = setInterval(() => link.current?.postMessage(posMsg()), 2000); // a heartbeat, so the presenter view knows we're here
     return () => clearInterval(iv);
   }, [pos, posMsg]);
+  const filmChanged = useCallback(() => link.current?.postMessage(posMsg()), [posMsg]);
 
   const sc = SCENES[Math.min(pos.i, n - 1)];
   useEffect(() => { document.documentElement.dataset.theme = mode === 'results' ? 'a' : sc.theme; }, [sc.theme, mode]);
@@ -176,7 +183,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const ctxLive: Live = useMemo(() => ({ send, still, joinUrl }), [send, still, joinUrl]);
   const ctx = useMemo(() => ({ code, k, origin, joinUrl }), [code, k, origin, joinUrl]);
   // The export script (scripts/export-show.mjs) reads the run of show from here, and rehearsal scripts read the join link.
-  useEffect(() => { Object.assign(window, { __join: joinUrl, __run: RUN, __show: SCENES.filter((_, i) => !skip(i)).map(({ id, title, builds, block, points, chapter, optional }) => ({ id, title, builds, block, optional: !!optional, notes: points, ch: chapter, at: SCENES.findIndex((x) => x.id === id) + 1 })) }); }, [skip, joinUrl]);
+  useEffect(() => { Object.assign(window, { __join: joinUrl, __run: RUN, __show: SCENES.filter((_, i) => !skip(i)).map((x) => ({ id: x.id, title: titleOf(x), builds: x.builds, block: x.block, optional: !!x.optional, notes: pointsOf(x), ch: x.chapter, at: SCENES.findIndex((y) => y.id === x.id) + 1 })) }); }, [skip, joinUrl]);
 
   if (mode === 'results') return <Results s={sv} code={code} />;
 
@@ -198,7 +205,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
         <div className="stage-wrap" style={{ width: 1920 * scale, height: 1080 * scale }}>
           <div className="stage" data-theme={sc.theme} style={{ transform: `scale(${scale})` }}>
             <div className="stage-scene" key={sc.id} data-step={pos.step} data-scene={sc.id}>
-              {sc.id === 'film' ? <ShowFilm still={still} /> : View ? <View s={sv} step={pos.step} scene={sc} idx={idx} ctx={ctx} send={send} /> : null}
+              {sc.id === 'film' ? <ShowFilm still={still} ctl={film} onChange={filmChanged} /> : View ? <View s={sv} step={pos.step} scene={sc} idx={idx} ctx={ctx} send={send} /> : null}
             </div>
             {sc.chapter >= 0 && <Chrome i={pos.i} clock={!still} />}
             {VOTING.has(sc.id) && joinUrl && <JoinCorner url={joinUrl} />}
@@ -210,9 +217,9 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
         {notes && (
           <aside className="show-notes" data-nonav onClick={(e) => e.stopPropagation()}>
             <span className="k">{at} of {shown.length}{sc.builds ? ` · build ${pos.step} of ${sc.builds}` : ''}{code !== EVENT.code ? ` · rehearsal ${code}` : ''} · {Object.keys(s.participants).length} joined</span>
-            <b>{sc.title}</b>
-            <ul>{sc.points.map((x, j) => <li key={j}>{x}</li>)}</ul>
-            {pos.i + 1 < n && <small>Next: {SCENES.slice(pos.i + 1).find((_, j) => !skip(pos.i + 1 + j))?.title}{nextStop ? ` · ] jumps to ${nextStop.title}` : ''}</small>}
+            <b>{titleOf(sc)}</b>
+            <ul>{pointsOf(sc).map((x, j) => <li key={j}>{x}</li>)}</ul>
+            {pos.i + 1 < n && <small>Next: {(() => { const x = SCENES.slice(pos.i + 1).find((_, j) => !skip(pos.i + 1 + j)); return x ? titleOf(x) : ''; })()}{nextStop ? ` · ] jumps to ${nextStop.title}` : ''}</small>}
             <small>{timing}{short ? ' · Short version: optional slides skipped (S to undo)' : ''}</small>
           </aside>
         )}

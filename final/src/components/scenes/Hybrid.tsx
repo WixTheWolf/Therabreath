@@ -1,5 +1,6 @@
 'use client';
-// The hybrid scenes: the film, the freshness vocabulary, the six shifts, the flavor clock and The Bench.
+// The hybrid scenes: the freshness vocabulary, the six shifts, the flavor clock and The Bench. The film is in RaceFilm.tsx,
+// apart from this file, which the Playbook page (open to Church & Dwight's password) loads for its Compass.
 import { useEffect, useRef, useState } from 'react';
 import { R, Enter, SceneProps } from './ui';
 import { EVENT, VOCAB, SHIFTS, DAYPARTS, TERRITORIES, COMPASS, CORE_MINT, DIALS, MISSIONS } from '@/lib/content';
@@ -40,25 +41,6 @@ export function Compass({ prof, ghost = CORE_MINT, color = 'var(--accent)', size
       {labels && COMPASS.map((l, i) => { const [x, y] = pt(i, R0 + 38); return <text key={l} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="cmp-lab">{l}</text>; })}
       {stage && <text x={c} y={size - 8} textAnchor="middle" className="cmp-stage">{stage}</text>}
     </svg>
-  );
-}
-
-// 1. The film: THE FLAVOR RACE (V22, 2:26), the send-off at the end of the morning. Lights down, sound up.
-export function Film({ ctx }: SceneProps) {
-  const ref = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(false); const [done, setDone] = useState(false);
-  useEffect(() => {
-    const v = ref.current!; v.muted = false;
-    v.play().catch(() => { v.muted = true; setMuted(true); v.play().catch(() => {}); });
-  }, []);
-  return (
-    <div className="film" onClick={() => { const v = ref.current!; v.muted = false; setMuted(false); v.play(); }}>
-      <video ref={ref} playsInline preload="auto" poster="/media/flavor-race-poster.jpg" onEnded={() => setDone(true)}>
-        <source src="/media/flavor-race.mp4" type="video/mp4" />
-      </video>
-      {muted && !done && <div className="film-sound">Click for sound</div>}
-      <div className={'film-end' + (done ? ' on' : '')}><div className="k">TheraBreath × The Flavor Factory</div><h1 className="hero center">The Future<br /><span className="it">of Freshness</span></h1></div>
-    </div>
   );
 }
 

@@ -1,10 +1,10 @@
 'use client';
-// A film, full screen with sound: the opening film, or THE FLAVOR RACE for hosts on the front door. Escape, the Close
-// button or a click outside closes it, and focus goes back to whatever opened it; while it's open, Tab stays inside.
-// `q` carries the pre-brief's signed link (c and k) so the opening film plays there without the password; THE FLAVOR RACE
-// has no signed link (it premieres in the room). `file` picks the cut of the opening film (see FILM in content.ts),
-// which plays with its captions and offers its transcript, read from the same caption file so it's always the words she
-// says; `onEnd` runs when it finishes (the default closes it).
+// The opening film, full screen with sound, on the front door and the pre-brief. Escape, the Close button or a click
+// outside closes it, and focus goes back to whatever opened it; while it's open, Tab stays inside. `q` carries the
+// pre-brief's signed link (c and k) so the film plays there without the password. `file` picks the cut (see FILM in
+// content.ts), which plays with its captions and offers its transcript, read from the same caption file so it's always
+// the words she says. When it finishes, `onEnd` runs if given (the pre-brief goes straight to its questions); otherwise
+// `next` shows an end card with the next step, a replay and Close; with neither, it closes.
 import { useEffect, useRef, useState } from 'react';
 
 // The caption file as paragraphs: the cues joined into sentences, with the timings and cue numbers dropped.
@@ -16,15 +16,21 @@ function transcriptOf(vtt: string) {
   return out;
 }
 
-export default function FilmModal({ onClose, onEnd, q = '', race = false, file = 'opening' }: { onClose: () => void; onEnd?: () => void; q?: string; race?: boolean; file?: string }) {
+type Next = { label: string; href: string; line: string };
+export default function FilmModal({ onClose, onEnd, next, q = '', file = 'opening' }: { onClose: () => void; onEnd?: () => void; next?: Next; q?: string; file?: string }) {
   const box = useRef<HTMLDivElement>(null);
+  const vid = useRef<HTMLVideoElement>(null);
+  const [ended, setEnded] = useState(false);
+  useEffect(() => { if (ended) box.current?.querySelector<HTMLElement>('.st-end-go')?.focus(); }, [ended]);
+  const finished = () => { if (onEnd) onEnd(); else if (next) setEnded(true); else onClose(); };
+  const replay = () => { const v = vid.current; if (!v) return; setEnded(false); v.currentTime = 0; v.play().catch(() => {}); };
   const close = useRef(onClose); close.current = onClose;
   const [lines, setLines] = useState<string[] | null>(null);
   const [showText, setShowText] = useState(false);
   // Once, on open: focus the Close button, keep Tab inside, stop the page scrolling behind; undo it all on close.
   useEffect(() => {
     const back = document.activeElement as HTMLElement | null;
-    box.current?.querySelector<HTMLElement>('.st-close')?.focus();
+    box.current?.querySelector<HTMLElement>('.st-shut')?.focus();
     const k = (e: KeyboardEvent) => {
       if (e.key === 'Escape') { e.preventDefault(); close.current(); return; }
       if (e.key !== 'Tab' || !box.current) return;
@@ -43,14 +49,22 @@ export default function FilmModal({ onClose, onEnd, q = '', race = false, file =
     if (lines) return;
     try { const r = await fetch(`/media/${file}.vtt${q}`); setLines(r.ok ? transcriptOf(await r.text()) : []); } catch { setLines([]); }
   };
-  const title = race ? 'THE FLAVOR RACE' : 'The opening film';
+  const title = 'The opening film';
   return (
     <div className={'st-modal' + (showText ? ' with-text' : '')} ref={box} onClick={onClose} role="dialog" aria-modal="true" aria-label={title}>
       <div className="st-modal-in" onClick={(e) => e.stopPropagation()}>
-        <video autoPlay controls playsInline poster={race ? '/media/flavor-race-poster.jpg' : `/media/film-poster.jpg${q}`} onEnded={onEnd ?? onClose} aria-label={title}>
-          {race ? <source src="/media/flavor-race.mp4" type="video/mp4" />
-            : <><source src={`/media/${file}.mp4${q}`} type="video/mp4" /><source src={`/media/${file}.webm${q}`} type="video/webm" /><track kind="captions" srcLang="en" label="English" src={`/media/${file}.vtt${q}`} /></>}
-        </video>
+        <div className="st-film">
+          <video ref={vid} autoPlay controls playsInline poster={`/media/film-poster.jpg${q}`} onEnded={finished} onPlay={() => setEnded(false)} aria-label={title}>
+            <source src={`/media/${file}.mp4${q}`} type="video/mp4" /><source src={`/media/${file}.webm${q}`} type="video/webm" /><track kind="captions" srcLang="en" label="English" src={`/media/${file}.vtt${q}`} />
+          </video>
+          {ended && next && (
+            <div className="st-end" role="region" aria-label="What to do next">
+              <p>{next.line}</p>
+              <a className="st-play st-end-go" href={next.href}>{next.label}</a>
+              <div><button className="st-x" onClick={replay}>Watch again</button><button className="st-x" onClick={onClose}>Back to the page</button></div>
+            </div>
+          )}
+        </div>
         {showText && (
           <section className="st-transcript" id="film-transcript" aria-label="Transcript of the opening film" tabIndex={0}>
             <h2>Transcript</h2>
@@ -59,8 +73,8 @@ export default function FilmModal({ onClose, onEnd, q = '', race = false, file =
         )}
       </div>
       <div className="st-modal-bar" onClick={(e) => e.stopPropagation()}>
-        {!race && <button className="st-x" onClick={toggleText} aria-expanded={showText} aria-controls="film-transcript">{showText ? 'Hide transcript' : 'Transcript'}</button>}
-        <button className="st-x st-close" onClick={onClose}>Close<span aria-hidden="true"> · Esc</span></button>
+        <button className="st-x" onClick={toggleText} aria-expanded={showText} aria-controls="film-transcript">{showText ? 'Hide transcript' : 'Transcript'}</button>
+        <button className="st-x st-shut" onClick={onClose}>Close<span aria-hidden="true"> · Esc</span></button>
       </div>
     </div>
   );

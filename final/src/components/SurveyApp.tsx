@@ -90,7 +90,10 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
           <p className="bw-hi">{first ? `${first}, you’re invited.` : 'You’re invited.'}</p>
           <h1>The Future<br /><em>of Freshness</em></h1>
           <p>{EVENT.dateLine} · {EVENT.room} room</p>
-          <button className="bw-play" onClick={() => setFilm(true)}><span />Watch the film · {FILM.brief.length}</button>
+          <div className="bw-hero-go">
+            <button className="bw-play" onClick={() => setFilm(true)}><span />Watch the film · {FILM.brief.length}</button>
+            <a className="bw-skip" href="#homework" onClick={(e) => { e.preventDefault(); toQuestions(); }}>Skip to the four questions</a>
+          </div>
         </div>
       </header>
 

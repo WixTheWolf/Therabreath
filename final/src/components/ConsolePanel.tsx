@@ -2,6 +2,7 @@
 // CONSOLE: the facilitators' remote. Scenes, builds, notes, votes, timers, placements, simulator.
 import { useEffect, useState } from 'react';
 import { SCENES, EXECUTIVE } from '@/lib/scenes';
+import { notesOf, titleOf } from '@/lib/sceneNotes';
 import { MISSIONS, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, SEEDS, CODE, HORIZONS, ROLES, SEGMENTS, SURVEY, DIALS } from '@/lib/content';
 import { teamDials, baseTerritory, readouts } from '@/lib/bench';
 import { people, uid } from '@/lib/state';
@@ -60,9 +61,9 @@ export default function ConsolePanel({ sess, ctx, compact }: { sess: any; ctx: C
 
       <section className="cx-now">
         <div className="k">{scene.act} · {s.scene} of {SCENES.length - 1}{scene.minutes ? ` · ${scene.minutes} min` : ''}</div>
-        <h2>{scene.title}</h2>
+        <h2>{titleOf(scene)}</h2>
         <div className="cx-steps">{Array.from({ length: scene.builds + 1 }, (_, i) => <button key={i} className={i === s.step ? 'on' : i < s.step ? 'done' : ''} onClick={() => go(s.scene, i)}>{i}</button>)}</div>
-        <p className="cx-notes">{scene.notes}</p>
+        <p className="cx-notes">{notesOf(scene)}</p>
         <div className="cx-nav"><button onClick={prev}>Back</button><button className="primary" onClick={next}>Next</button></div>
       </section>
 
@@ -146,7 +147,7 @@ export default function ConsolePanel({ sess, ctx, compact }: { sess: any; ctx: C
       <section className="cx-list">
         {list.map((x) => { const i = SCENES.indexOf(x); return (
           <button key={x.id} className={i === s.scene ? 'on' : i < s.scene ? 'done' : ''} onClick={() => go(i)}>
-            <span className="num">{String(x.n).padStart(2, '0')}</span><b>{x.title}</b><em>{x.act.split(' · ')[0]}</em>
+            <span className="num">{String(x.n).padStart(2, '0')}</span><b>{titleOf(x)}</b><em>{x.act.split(' · ')[0]}</em>
           </button>
         ); })}
       </section>

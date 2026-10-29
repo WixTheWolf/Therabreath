@@ -3,8 +3,11 @@
 // math, the four directions in photographs, the blind tasting, who you will meet and the morning, with the pre-brief at
 // the end. An optional drawer holds the vocabulary of freshness, science and imagination, and the three shifts.
 import { useEffect, useMemo, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import FilmModal from './FilmModal';
 import Decisions from './Decisions';
+// The team's bar (and THE FLAVOR RACE behind it) loads only for the team, so nothing about the film ships to the room.
+const HostBar = dynamic(() => import('./HostBar'), { ssr: false });
 import { EVENT, FILM, PRIMARY_TERRITORIES, SAMPLES, VOCAB, SHIFTS, SCIENCE, IMAGINATION, AGENDA, OBJECTIVES, TOPICS, RUN, ROSS_GOAL, GAP, SOURCES, CITE, CRITERIA, DEVELOP, TEAM, ABOUT } from '@/lib/content';
 
 const clamp = (x: number, a = 0, b = 1) => Math.max(a, Math.min(b, x));
@@ -40,11 +43,10 @@ function useReveal() {
 
 const NAV = [['hero', 'Film'], ['brief', 'Your brief'], ['why', 'Why flavor'], ['platforms', 'Four directions'], ['flight', 'Tasting'], ['decide', 'How we decide'], ['team', 'Who you’ll meet'], ['close', 'The morning'], ['explore', 'More reading']];
 
-// The bar opens THE FLAVOR RACE, the presentation, the run sheet and the team page for everyone past the password.
+// For the team, the bar opens THE FLAVOR RACE, the rehearsal, the run sheet and the team page (HostBar).
 // `prebrief` is the signed pre-brief link for the live session.
 export default function SiteApp({ prebrief, team = false }: { prebrief: string; team?: boolean }) {
   const [film, setFilm] = useState(false);
-  const [race, setRace] = useState(false);
   const [active, setActive] = useState('hero');
   useReveal();
   useEffect(() => { document.documentElement.dataset.theme = 'b'; }, []);
@@ -58,13 +60,13 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
     <main className="site" data-theme="b">
       <header className="st-bar">
         <div className="st-lock"><img src="/img/tff-logo-white.webp" alt="The Flavor Factory" width={100} height={22} /><span>×</span><b>TheraBreath</b></div>
-        {team && <nav className="st-hostbar" aria-label="For the team"><button onClick={() => setRace(true)}>Watch THE FLAVOR RACE</button><a href="/host?code=REHEARSE">Rehearse</a><a href="/host/run">Run sheet</a><a href="/team">Team page</a></nav>}
+        {team && <HostBar />}
       </header>
       <nav className="st-rail" aria-label="Chapters">
         {NAV.map(([id, l]) => <a key={id} href={`#${id}`} className={active === id ? 'on' : ''}><span>{l}</span><i /></a>)}
       </nav>
 
-      <Hero onFilm={() => setFilm(true)} />
+      <Hero onFilm={() => setFilm(true)} prebrief={prebrief} />
       <YourBrief />
       <WhyFlavor />
       <WorkshopOverview />
@@ -73,13 +75,12 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
       <Close prebrief={prebrief} />
       <details id="explore" className="st-explore"><summary>More reading: the words we use for freshness, and three shifts we’re seeing</summary><p>This part is optional. It’s here to explain ideas, and it isn’t formula work or consumer research.</p><Vocab /><Worlds /><ShiftTrack /></details>
 
-      {film && <FilmModal file={FILM.site.file} onClose={() => setFilm(false)} />}
-      {race && <FilmModal race onClose={() => setRace(false)} />}
+      {film && <FilmModal file={FILM.site.file} onClose={() => setFilm(false)} next={{ label: 'Open the pre-brief', href: prebrief, line: 'Next: the pre-brief and its four quick questions. We’ll open the morning with everyone’s answers.' }} />}
     </main>
   );
 }
 
-function Hero({ onFilm }: { onFilm: () => void }) {
+function Hero({ onFilm, prebrief }: { onFilm: () => void; prebrief: string }) {
   return (
     <section id="hero" className="st-hero">
       <video autoPlay muted loop playsInline poster="/media/opening-poster.jpg"><source media="(min-width: 701px), (orientation: landscape)" src="/media/loop.mp4" type="video/mp4" /><source src="/media/loop-portrait.mp4" type="video/mp4" /></video>
@@ -90,6 +91,7 @@ function Hero({ onFilm }: { onFilm: () => void }) {
         <p>Two hours with Church &amp; Dwight Oral Care R&amp;D. We’ll work through the four things Ross asked for, taste four samples we made in your bases and vote on what to develop. By noon, every direction we pick will have a plan and an owner.</p>
         <div className="st-cta">
           <button className="st-play" onClick={onFilm}><span className="st-tri" />Watch the film <small>{FILM.site.length} · sound on</small></button>
+          <a className="st-ghost" href={prebrief}>Answer the pre-brief</a>
           <a className="st-ghost" href="#brief">Explore the workshop</a>
         </div>
       </div>

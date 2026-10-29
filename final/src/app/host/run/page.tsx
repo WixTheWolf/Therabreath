@@ -1,4 +1,5 @@
 import { EVENT, RUN, SAMPLES, NEXT_STEPS, TASTING_KIT } from '@/lib/content';
+import { RUN_NOTES } from '@/lib/runNotes';
 import { SEALED } from '@/lib/sealed';
 import PrintButton from '@/app/scorecard/PrintButton';
 
@@ -12,8 +13,8 @@ const kids = SAMPLES.filter((x) => x.base.startsWith('Kids')).map((x) => x.code)
 const SETUP = [
   'Connect the laptop to the TV as an extended display, not a mirror. Open the team link, then Present on the day (/host), drag that window to the TV and press F for full screen. Then press P: the presenter view opens in its own window. Keep it on the laptop’s screen. It has the talking points, the time in Princeton against this sheet, and buttons that move the presentation. Only this laptop should open the presentation on the day, because it moves everyone’s phones. (Church & Dwight’s password can’t open it.) If the TV will only mirror, skip the presenter view and use this sheet.',
   'Phones: people join by scanning the code on the first screen. Phones use their own data, so the room Wi-Fi only matters for the laptop. Ross offered to help us get on the network. If it fails, present from the backup PDF and the film file on the laptop, without the voting.',
-  'Film backup: the day before, download THE FLAVOR RACE and the opening film from the team page and keep both on the laptop’s desktop. If the site won’t play them on the day, play the files from there, full screen, with the sound up.',
-  'Sound check, on the rehearsal session so nobody’s phone moves: open /host?code=REHEARSE, press End, then the left arrow once, to get to THE FLAVOR RACE. Play ten seconds through the speakers and set the volume, then open Present on the day.',
+  'Film backup: the day before, download THE FLAVOR RACE from the team page (flavor-race.mp4: 2:26, 1920 × 1080, with sound) and keep it on the laptop’s desktop. Open it once to check it plays. If the site won’t play it on the day, play the file from there, full screen, with the sound up. The opening film isn’t shown in the room: we open with our own welcome.',
+  'Sound and picture check, before anyone arrives and on the rehearsal session so nobody’s phone moves: open /host?code=REHEARSE on the TV, press F for full screen, then End and the left arrow once to get to THE FLAVOR RACE. Check it fills the screen, play ten seconds through the speakers and set the volume, and press R to check it starts again. Then close that window and open Present on the day. Keep the film off the TV once people start arriving.',
   'Rehearse on /host?code=REHEARSE (the team page links to it), never on /host itself, so rehearsal votes stay out of the live session. Leave the live session FOF1109 alone the night before: it holds everyone’s pre-brief answers, and the team page shows how many are in.',
   `Samples: ${fresh} in the Fresh Breath base and ${kids} in the Kids base, poured blind into coded cups. Set out water to rinse, cups to spit into and napkins.`,
   'If we’re running late, press S to skip the optional slides (How cooling works, Flavor and OXYD-8, how a flavor is built, and the two directions that aren’t in the tasting), or ] to jump to the next part. The presenter view shows how far over the current part is and whether the short version is on.',
@@ -54,10 +55,10 @@ export default function RunSheet() {
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
               <td><b>{b.title}</b></td>
               <td className="rs-owner">To assign</td>
-              <td>{b.kit}</td>
-              <td>{b.output}</td>
+              <td>{RUN_NOTES[b.id].kit}</td>
+              <td>{RUN_NOTES[b.id].output}</td>
             </tr>,
-            b.after ? <tr key={b.id + '-after'} className="rs-after"><td className="rs-t">{b.end}</td><td colSpan={4}>{b.after}</td></tr> : null,
+            RUN_NOTES[b.id].after ? <tr key={b.id + '-after'} className="rs-after"><td className="rs-t">{b.end}</td><td colSpan={4}>{RUN_NOTES[b.id].after}</td></tr> : null,
           ])}</tbody>
         </table>
         <p className="rs-note">Owners are still to assign: nobody is named as presenting any part, so fill these in by hand once the team has agreed who runs what.</p>
@@ -75,8 +76,8 @@ export default function RunSheet() {
           <tbody>{RUN.map((b) => (
             <tr key={b.id}>
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
-              <td><b>{b.title}</b>{b.obj && <em>Objective {b.obj}</em>}<small>{b.slides}</small></td>
-              <td>{b.does}</td>
+              <td><b>{b.title}</b>{b.obj && <em>Objective {b.obj}</em>}<small>{RUN_NOTES[b.id].slides}</small></td>
+              <td>{RUN_NOTES[b.id].does}</td>
             </tr>
           ))}</tbody>
         </table>
@@ -84,7 +85,7 @@ export default function RunSheet() {
 
       <div className="rs-two">
         <section className="rs-sec">
-          <h2>After the film</h2>
+          <h2>After the morning</h2>
           <ol className="rs-check">{AFTER.map((x) => <li key={x}>{x}</li>)}</ol>
         </section>
         <section className="rs-sec">
@@ -92,7 +93,7 @@ export default function RunSheet() {
           <ol className="rs-check">{CONFIRM.map((x) => <li key={x}>{x}</li>)}</ol>
         </section>
       </div>
-      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on (clicks don’t move on while there are boxes to type in); left arrow to go back; ] for the next part and [ for the previous one; S to skip the optional slides; Home for the start; F for full screen; P for the presenter view; N for the talking points on the TV itself; B to blank the screen. The same keys work in the presenter view. If the page reloads, it picks up where the session left off.</p>
+      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on (clicks don’t move on while there are boxes to type in); left arrow to go back; ] for the next part and [ for the previous one; S to skip the optional slides; Home for the start; End for Lunch, which skips the film; F for full screen; P for the presenter view; N for the talking points on the TV itself; B to blank the screen. On THE FLAVOR RACE, space or K pauses and plays and R starts it again. The same keys work in the presenter view. If the page reloads, it picks up where the session left off.</p>
     </main>
   );
 }

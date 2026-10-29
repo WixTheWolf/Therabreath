@@ -57,13 +57,22 @@
 .st-modal video { width: min(94vw, 160vh); max-height: 88vh; border-radius: 10px; }
 .st-modal video::cue { font: 500 22px/1.35 var(--sans); color: #fff; background: rgba(4,7,11,.78); }
 .st-modal-in { display: grid; place-items: center; }
+/* the film, and the card that covers it when it ends: the next step first, then a replay and the way back */
+.st-film { position: relative; display: grid; }
+.st-film video { display: block; }
+.st-end { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 22px; padding: 24px; border-radius: 10px; background: rgba(4,7,11,.9); text-align: center; animation: st-fade .5s; }
+.st-end p { max-width: 30ch; font: 300 clamp(19px, 2.2vw, 30px)/1.3 var(--serif); color: #fff; }
+.st-end > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.st-end .st-play { padding: 16px 26px; }
+.st-end .st-play:focus-visible, .st-end .st-x:focus-visible { outline: 3px solid #8FE0F0; outline-offset: 3px; }
+@media (max-width: 600px) { .st-end { position: static; margin-top: 14px; background: #0B1B2B; } }
 .st-modal-bar { position: absolute; top: 18px; right: 22px; display: flex; gap: 10px; }
 .st-x { font: 500 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; padding: 12px 16px; min-height: 44px; border: 1px solid rgba(255,255,255,.4); border-radius: 99px; color: #fff; background: rgba(11,27,43,.6); }
 .st-x:hover { border-color: #fff; }
 .st-x[aria-expanded="true"] { background: #F0EEE9; color: #0B1B2B; border-color: #F0EEE9; }
 /* the transcript beside the film on a wide screen, under it on a narrow one */
 .st-modal.with-text .st-modal-in { grid-template-columns: minmax(0, 1fr) minmax(280px, 380px); gap: 24px; width: min(96vw, 1500px); align-items: center; }
-.st-modal.with-text video { width: 100%; }
+.st-modal.with-text video, .st-modal.with-text .st-film { width: 100%; }
 .st-transcript { max-height: 78vh; overflow-y: auto; padding: 24px 26px; border-radius: 12px; background: #F7F6F2; color: #0B1B2B; text-align: left; justify-self: stretch; }
 .st-transcript h2 { font: 500 12px/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #1F6C82; margin-bottom: 12px; }
 .st-transcript p { font: 400 16px/1.55 var(--sans); margin-bottom: 10px; }

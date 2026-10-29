@@ -13,6 +13,7 @@ import {
   EVENT, OBJECTIVES, TOPICS, RUN, TEAM, ABOUT, SCIENCE, IMAGINATION, ROSS_WORDS, SIGNALS, SAMPLES, PRIMARY_TERRITORIES as PLATFORMS,
   SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA,
 } from '@/lib/content';
+import type { FilmAct, FilmState } from '@/lib/showLink';
 import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, SessionState } from '@/lib/state';
 import { Synced, PLAN_COLS, PlanLists, RemoveRow, planRows, planActions, planCell } from './Plan';
 
@@ -499,24 +500,43 @@ export function JoinCorner({ url }: { url: string }) {
   return <div className="join-corner"><div className="qr" dangerouslySetInnerHTML={{ __html: qr }} /><span className="k">Scan to vote</span></div>;
 }
 
-// THE FLAVOR RACE fills the screen and starts with sound on the keypress that lands on it. On paper it is the poster.
-export function ShowFilm({ still }: { still: boolean }) {
+// THE FLAVOR RACE fills the screen and starts with sound on the move that lands on it, and stops when the slide is
+// left. `ctl` lets the presentation and the presenter view pause, play and restart it (Space or K, and R), and read how
+// it's doing; `onChange` says when that changes. A browser that won't play sound before anyone has pressed a key or
+// clicked in this window plays it muted with a note on the TV; a click on the picture brings the sound in. On paper
+// (the PDF decks) it is the closing card, so a shared deck never gives the film away.
+export type FilmCtl = { act: (a: FilmAct) => void; state: () => FilmState | undefined };
+export function ShowFilm({ still, ctl, onChange }: { still: boolean; ctl?: React.MutableRefObject<FilmCtl | null>; onChange?: () => void }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(false);
   const [done, setDone] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const change = useRef(onChange); change.current = onChange;
   useEffect(() => {
     const v = ref.current; if (!v) return;
-    v.muted = false;
-    v.play().catch(() => { v.muted = true; setMuted(true); v.play().catch(() => {}); });
-    return () => v.pause();
-  }, []);
-  if (still) return <div className="film"><img src="/media/flavor-race-poster.jpg" alt="THE FLAVOR RACE" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} /></div>;
+    const play = () => { v.muted = false; v.play().then(() => setMuted(false)).catch(() => { v.muted = true; setMuted(true); v.play().catch(() => {}); }); };
+    play();
+    if (ctl) ctl.current = {
+      act: (a) => {
+        if (a === 'restart' || (a === 'toggle' && v.ended)) { v.currentTime = 0; setDone(false); play(); }
+        else if (a === 'toggle') { if (v.paused) play(); else v.pause(); }
+        else if (a === 'sound') play();
+      },
+      state: () => ({ playing: !v.paused && !v.ended, ended: v.ended, muted: v.muted, t: v.currentTime, d: Number.isFinite(v.duration) ? v.duration : 0, ts: Date.now() }),
+    };
+    return () => { v.pause(); if (ctl) ctl.current = null; };
+  }, [ctl]);
+  const ev = (f?: () => void) => () => { f?.(); change.current?.(); };
+  if (still) return <div className="film"><div className="film-end on"><div className="k">TheraBreath × The Flavor Factory</div><h1 className="hero center">The Future<br /><span className="it">of Freshness</span></h1></div></div>;
   return (
-    <div className="film" data-nonav onClick={() => { const v = ref.current!; v.muted = false; setMuted(false); v.play(); }}>
-      <video ref={ref} playsInline preload="auto" poster="/media/flavor-race-poster.jpg" onEnded={() => setDone(true)}>
+    <div className="film" data-nonav onClick={() => ctl?.current?.act(muted ? 'sound' : 'toggle')}>
+      <video ref={ref} playsInline preload="auto" poster="/media/flavor-race-poster.jpg"
+        onPlay={ev(() => { setPaused(false); setDone(false); })} onPause={ev(() => setPaused(true))} onEnded={ev(() => setDone(true))}
+        onVolumeChange={ev(() => setMuted(!!ref.current?.muted))} onLoadedMetadata={ev()} onSeeked={ev()}>
         <source src="/media/flavor-race.mp4" type="video/mp4" />
       </video>
       {muted && !done && <div className="film-sound">Click for sound</div>}
+      {paused && !done && !muted && <div className="film-paused">Paused</div>}
       <div className={'film-end' + (done ? ' on' : '')}><div className="k">TheraBreath × The Flavor Factory</div><h1 className="hero center">The Future<br /><span className="it">of Freshness</span></h1></div>
     </div>
   );
