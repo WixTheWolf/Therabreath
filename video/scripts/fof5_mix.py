@@ -127,6 +127,7 @@ def cue(src, t, gain, p=1.0): CUES.append((src[0], t, gain, src[1], p))
 # 0. the burn
 burn = tw("burn")
 cue(POP, 0.3, 0.45, 0.8); cue(WHOOSH, burn - 0.1, 0.5); cue(ICE, burn + 0.2, 0.3); cue(POP, burn + 0.32, 0.4, 1.3)
+for k in range(5): cue(POP, burn + 0.45 + k * 0.09, 0.07, 1.7 + k * 0.08)  # the sparkles
 # 1. the want
 people, want = tw("people", at("want")), tw("want", at("want"))
 for i in range(18):
@@ -147,18 +148,26 @@ cue(POPB, wipe_math - 0.35, 0.4); cue(WHOOSHB, wipe_math, 0.45)
 # 3. Norco
 n0 = at("norco") - 0.5
 july, norco, make = tw("july", n0), tw("norco", n0), tw("make", n0)
+flavor = tw("flavor", make)
+zoom = min(norco + 0.3, make - 0.9)  # as in the composition: the map zooms into Norco and the lab opens
+burst = max(flavor - 0.05, make + 0.28)
 cue(POP, n0 + 0.2, 0.3, 0.9); cue(POP, n0 + 0.35, 0.3, 1.0)
-cue(WHOOSH, july + 0.1, 0.22); cue(POP, norco + 0.02, 0.4, 0.8); cue(POP, norco + 0.15, 0.3, 1.0)
+cue(WHOOSH, july + 0.1, 0.22); cue(POP, norco + 0.02, 0.4, 0.8); cue(WHOOSHB, zoom, 0.3, 0.9); cue(POP, zoom + 0.5, 0.22, 1.1)
 cue(DINGS, make + 0.3, 0.9, 0.8)
+for k in range(6): cue(POP, burst + k * 0.04, 0.12, 1.2 + k * 0.12)  # the flavor confetti
 # 4. Ross's goal
 r0 = at("ross") - 0.05; g0 = at("goal")
-cue(WHOOSH, r0 + 0.05, 0.28); cue(FLIP, tw("goal", r0) + 0.05, 0.32); cue(FLIP, g0 - 0.3, 0.25, 0.9); cue(WHOOSHB, g0 + 0.2, 0.14)
+cue(WHOOSH, r0 + 0.05, 0.28); cue(STAMPB, tw("princeton", r0), 0.45, 0.95); cue(FLIP, tw("goal", r0) + 0.05, 0.32); cue(FLIP, g0 - 0.3, 0.25, 0.9); cue(WHOOSHB, g0 + 0.2, 0.14)
 cue(SWIPE, tw("strengthen", g0) + 0.1, 0.45); cue(POP, tw("loyal", g0) + 0.4, 0.28, 1.1)
 cue(SWIPEB, tw("create", g0) + 0.1, 0.45, 1.05); cue(POP, tw("franchise", g0) + 0.2, 0.28, 0.95)
 cue(WHOOSHB, at("day") - 0.7, 0.3)
 # 5. the day
 d0 = at("day") - 0.6
-cue(POP, d0 + 0.25, 0.25, 0.85); cue(STAMP, tw("november", d0) + 0.15, 0.55)
+ninth = tw("ninth", tw("november", d0))
+cue(POP, d0 + 0.2, 0.25, 0.85)
+c0, span = d0 + 0.45, ninth - (d0 + 0.45)  # as in the composition: page k lifts off by c0 + span * sqrt((k + 1) / 8)
+for k in range(8): cue(FLIP, c0 + span * ((k + 1) / 8) ** 0.5 - 0.12, 0.1 + 0.02 * k, 1.0 + 0.05 * k)
+cue(STAMP, ninth, 0.55)
 cue(SWIPE, tw("ten", d0), 0.3, 0.8)
 four = tw("four", d0)
 for i in range(4): cue(POP, four + i * 0.16, 0.3, 1.0 + i * 0.12)
@@ -200,7 +209,7 @@ a0 = at("ask")
 answer, because = tw("answer", a0), tw("because", a0)
 answers, morning, phw = tw("answers", because), tw("morning", because), tw("phone", at("phone"))
 for kx in range(4): cue(POP, min(answer, a0 + 0.5) + kx * 0.12, 0.32, 0.9 + kx * 0.08)
-cue(DINGS, because + 0.1, 0.9, 0.85); cue(WHOOSH, answers - 0.1, 0.3)
+cue(DINGS, answers - 0.35, 0.9, 0.85); cue(WHOOSH, answers - 0.1, 0.3)
 for kx in range(4): cue(POP, morning + kx * 0.1, 0.2, 1.1 + kx * 0.1)
 cue(WHOOSH, phw - 0.2, 0.3); cue(POP, phw + 0.5, 0.3, 1.0); cue(DINGS, phw + 0.95, 1.1, 1.2)
 cue(RISER, at("title") - 0.5 - 2.9, 0.18)
