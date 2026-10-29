@@ -23,8 +23,10 @@ export default function Scorecard() {
             {SCALES.map((l) => <div key={l} className="sc-row"><span>{l}</span><div className="sc-dots">{[1, 2, 3, 4, 5].map((n) => <i key={n}>{n}</i>)}</div></div>)}
             <div className="sc-row"><span>Who would buy it?</span><div className="sc-boxes">{WHO_CHIPS.map((w) => <i key={w}>{w}</i>)}</div></div>
             <div className="sc-row"><span>Which direction do you think it comes from?</span><div className="sc-boxes">{TERRITORIES.map((t) => <i key={t.id}>{t.name}</i>)}</div></div>
-            <div className="sc-row"><span>Should it get a next round?</span><div className="sc-boxes">{['Yes', 'Maybe', 'No'].map((w) => <i key={w}>{w}</i>)}</div></div>
-            <div className="sc-row"><span>Sum it up in one word</span><u /></div>
+            <div className="sc-row sc-pair">
+              <span>Should it get a next round?</span><div className="sc-boxes">{['Yes', 'Maybe', 'No'].map((w) => <i key={w}>{w}</i>)}</div>
+              <span>One word for it</span><u />
+            </div>
             {x.mystery && <div className="sc-row"><span>Which fruits can you taste?</span><u /></div>}
           </div>
         </section>
