@@ -783,7 +783,7 @@ const QIcon: React.FC<{ i: number }> = ({ i }) => {
 const SceneAsk: React.FC<{ ending: Ending }> = ({ ending }) => {
   const t = useT();
   const from = lineAt("ask") - 0.6;
-  const ask = lineAt("ask"), quick = tw("answer", ask), because = tw("because", ask), answers = tw("answers", because), morning = tw("morning", because);
+  const ask = lineAt("ask"), quick = Math.min(tw("answer", ask), ask + 0.5), because = tw("because", ask), answers = tw("answers", because), morning = tw("morning", because);
   const phoneL = lineAt("phone"), phoneW = tw("phone", phoneL);
   const wipeAt = lineAt("title") - 0.55;
   const to = wipeAt + 0.5;
