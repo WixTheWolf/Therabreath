@@ -36,7 +36,7 @@ export const SOURCES: Record<string, string> = {
   dtoday25: 'Dentistry Today, July 18, 2025',
   dtoday26: 'Dentistry Today, March 12, 2026',
   drbicuspid: 'DrBicuspid, March 3, 2026',
-  kenvue: 'Kenvue press release, June 2, 2026',
+  kenvue: 'Kenvue press release, June 2, 2026 (the 54% figure: Kenvue / Suzy survey, 2024, n = 1,019)',
   hismile: 'Public press coverage, 2024 to 2026 [CONFIRM per item]',
   dsm: 'dsm-firmenich press release, December 2025',
   mccormick: 'McCormick, December 2025',
@@ -49,6 +49,13 @@ export const SOURCES: Record<string, string> = {
   listings: 'TheraBreath public product listings [CONFIRM access date]',
   ross: 'Ross Conroy, Church & Dwight Oral Care R&D, workshop invitation, September 18, 2026',
 };
+
+// The full notes behind the four numbers attendees see (the front door and the pre-brief), written out under each one.
+// Checked October 29 against the published release and public summaries of the call. Nothing here is a claim of ours.
+export const CITE = {
+  q2call: { src: 'Church & Dwight Q2 2026 earnings call, July 31, 2026', basis: 'Management’s remarks on the call: TheraBreath at 25.3% of US mouthwash, up 4.5 points and number 2 in the category; 14% of US households buy TheraBreath, against 65% for mouthwash.' },
+  kenvue: { src: 'Kenvue, “LISTERINE® introduces range of mouthwash intensities, including new Extra Mild,” press release, June 2, 2026', basis: 'The release says 54% of American consumers are looking for a milder-tasting option. Its footnote gives the survey: Kenvue / Suzy UA Refresh, 2024, US general population aged 15 and over, n = 1,019.', url: 'https://www.kenvue.com/media/listerine-introduces-range-of-mouthwash-intensities' },
+} as const;
 
 export const JULY = ['Resiliency', 'Innovation', 'Operations', 'Partnership', 'Growth'];
 
@@ -213,6 +220,14 @@ export const DIRECTIONS = [
   ...PRIMARY_TERRITORIES.filter((t) => !SAMPLES.some((x) => x.territory === t.id)).map((t) => ({ id: t.id, label: t.name, sub: 'Not in the tasting', territory: t.id, colors: [t.palette[0], t.palette[1]] })),
 ];
 export const WHO_CHIPS = ['Gen Z', 'Want it milder', 'Families', '55+', 'Dry mouth', 'International', 'Me'];
+// How each sample is scored, the same on the phones, the paper card, the presenter view and the TV: three scales from 1
+// (low) to 5 (high), then whether you'd develop it further. The keys stay as the session stores them.
+export const CRITERIA = [
+  { key: 'appeal', l: 'Flavor appeal', d: 'How much you like it' },
+  { key: 'feels', l: 'Fit with TheraBreath', d: 'Whether it feels like it belongs in the range' },
+  { key: 'newness', l: 'Newness', d: 'How new it feels next to what’s on the shelf' },
+] as const;
+export const DEVELOP = { q: 'Would you develop it further?', opts: ['Yes', 'Maybe', 'No'] };
 
 export const MOLECULES = [
   { id: 'menthol', sym: '◇', name: 'Menthol', source: 'Peppermint', note: 'The cool itself. It triggers the cold receptor, TRPM8.' },
@@ -280,7 +295,7 @@ export const OCCASIONS = [
 ];
 
 export const NEXT_STEPS = [
-  { t: 'An owner for each direction', d: 'Before we leave today, every direction gets a TFF owner, a C&D reviewer, a base and a clear next sample step.' },
+  { t: 'An owner for each direction', d: 'Before we leave today, every direction gets its consumer or occasion, a flavor brief, a TFF owner, a C&D reviewer, a base and a date for the next sample.' },
   { t: 'The write-up within 8 business days', d: 'We’ll pull today’s scores, choices, owners and dates into one document and send it to everyone here.' },
   { t: 'The next round of samples', d: 'We’ll make the next round in your bases and go through it with you in January 2027.' },
 ];
@@ -312,7 +327,9 @@ export const THINK = [
 // run sheet. `obj` is the objective from Ross's invitation the block answers. The notes stay off the
 // site and the pre-brief: they are for the presentation and the run sheet. Phones vote four times (trends, tasting,
 // next round, ideas); the paper scorecard and hand votes on the laptop cover anyone without a phone.
-export type Block = { id: string; t: string; end: string; title: string; obj?: string; slides: string; does: string };
+// kit: the technology and materials the block needs; output: what it should leave us with; after: a transition note.
+// Owners are still to assign (nobody is named as presenting any part), so the run sheet shows "To assign".
+export type Block = { id: string; t: string; end: string; title: string; obj?: string; slides: string; does: string; kit?: string; output?: string; after?: string };
 export const RUN: Block[] = [
   { id: 'welcome', t: '10:00', end: '10:10', title: 'Welcome, who we are and your four objectives',
     slides: 'Arrival, Title, Who we are, From July to today, Your four objectives, Your pre-brief answers (only if answers came in), Why we’re here',
@@ -331,12 +348,53 @@ export const RUN: Block[] = [
     does: 'Take the directions with the most chips and write up to three concepts together. For each one, cover where it starts, who it’s for, the moment, its role in the range, the format, and whether it grows loyal users, new users or both. Type them straight into the cards on screen. Then everyone gets three dots on their phone to vote for the ones worth developing.' },
   { id: 'pipeline', t: '11:20', end: '11:40', title: 'White space, then Now, Next, Later', obj: '04',
     slides: 'Part 4, Where TheraBreath fits in a day, Now, Next, Later',
-    does: 'Walk through the day, moment by moment: where TheraBreath is today, the moment the pre-brief says is missing, and everything that’s still open. Click a cell to mark where each concept could fit. Then put each concept and direction under Now, Next or Later, one line each with a TFF owner, a C&D reviewer, the base and the next sample. Type them on the board or in the presenter view. The top votes sit in a tray above the board: click one to start its line under Now.' },
+    does: 'Walk through the day, moment by moment: where TheraBreath is today, the moment the pre-brief says is missing, and everything that’s still open. Click a cell to mark where each concept could fit. Then put each concept and direction under Now, Next or Later, one line each with its consumer or occasion, the flavor brief, a TFF owner, a C&D reviewer, the base and the date the next sample is due. Type them on the board or in the presenter view. The top votes sit in a tray above the board: click one to start its line under Now.' },
   { id: 'close', t: '11:40', end: '12:00', title: 'What we decided, what happens next, and a short film before lunch',
     slides: 'What we decided, What happens next, THE FLAVOR RACE, Lunch',
     does: 'The Playbook fills in from the votes and the board, and opens one chapter at a time so it can be read back, the plan with its owners last. Read it back, go through the three next steps and say thank you. At 11:48 it’s THE FLAVOR RACE (2:26), with the lights down and the sound up. Then lunch, hosted by Church & Dwight.' },
 ];
+// The facilitator's view of each block (the run sheet's run of show): what it needs and what it should leave us with.
+// Only what the run sheet and the presentation already say; suggestions are marked as suggestions.
+const KIT: Record<string, Pick<Block, 'kit' | 'output' | 'after'>> = {
+  welcome: { kit: 'Laptop on the TV as an extended display, the presenter view (P), the QR code on the arrival screen, Wi-Fi for the laptop.', output: 'Phones joined, and the pre-brief answers on screen if any came in.' },
+  market: { kit: 'Phones for the trend vote; hand votes in the presenter view for anyone without one.', output: 'The three trends that matter most, and what we missed.' },
+  school: { kit: 'The presentation only.', output: 'The room’s first reactions to each of the four directions, before anything is tasted.' },
+  tasting: { kit: 'Four samples in coded cups (A and B in the Fresh Breath base, C and D in the Kids base), water, spit cups, napkins, paper scorecards and pens, phones.', output: 'Scores for all four samples, the fruit guesses, the names revealed, and five chips each on what gets a next round.', after: 'Suggested transition: while the chips go in, clear the cups and pens so the table is free for the concept cards at 11:00.' },
+  concepts: { kit: 'The concept cards on the TV, or typed in the presenter view; phones for the dot vote.', output: 'Up to three concepts, and the dot vote on which ones to develop.' },
+  pipeline: { kit: 'The presenter view for Now, Next, Later (or type on the board).', output: 'Each direction under Now, Next or Later with its consumer or occasion, flavor brief, TFF owner, C&D reviewer, base and next-sample date.' },
+  close: { kit: 'Speakers for THE FLAVOR RACE (2:26), with the film file saved on the laptop as a backup.', output: 'The plan read back with its owners, and the results page saved as a PDF.' },
+};
+RUN.forEach((b) => Object.assign(b, KIT[b.id]));
 export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title, b.obj]);
+
+// From sample to next step: how the morning turns four blind samples into up to three directions, each with owners and
+// a date. The times come from RUN.
+export const DECIDE = [
+  { v: 'Taste', when: '10:40', d: 'Four samples, blind, made in the bases you sent. Water between each one.' },
+  { v: 'Score', when: 'As you taste', d: 'Flavor appeal, fit with TheraBreath and newness from 1 to 5, and whether you’d develop it further. On your phone or a paper card.' },
+  { v: 'Reveal', when: 'Once everyone’s scored', d: 'The names go up on screen, next to everyone’s scores.' },
+  { v: 'Discuss', when: 'Before the vote', d: 'Where each sample landed, and what it would take to make it work.' },
+  { v: 'Vote', when: 'Chips by 11:00', d: 'Five chips each on what gets a next round. After the concepts, three dots each on which to develop.' },
+  { v: 'Assign', when: '11:20', d: 'Each direction goes under Now, Next or Later with everything below, and we read it back before noon.' },
+];
+// What every direction leaves with: the same six the presentation's Now, Next, Later rows ask for.
+export const RECORD = [
+  { l: 'Consumer or occasion', d: 'Who it’s for, or when they’d reach for it' },
+  { l: 'Flavor brief', d: 'What it should taste like, and how it should finish' },
+  { l: 'TFF owner', d: 'Who at The Flavor Factory makes the next sample' },
+  { l: 'C&D reviewer', d: 'Who at Church & Dwight reviews it' },
+  { l: 'Product base', d: 'Fresh Breath, Kids or another base' },
+  { l: 'Next sample due', d: 'The date the next round lands' },
+];
+// The tasting table, for the team: a checklist on the run sheet. Items are to-dos to confirm, not things already done.
+export const TASTING_KIT = [
+  'Cups labeled A to D, nothing else on the label: no names, no fruits.',
+  'Backup samples of each, in case of a spill or a second pour.',
+  'Tasting cups, spit cups and napkins at every seat.',
+  'Water to rinse between samples.',
+  'Paper scorecards and pens, and the QR code on screen for phones.',
+  'Reveal: the names flip on screen at the second build of the tasting. Reveal cards only if you’re bringing printed ones.',
+];
 
 // The presentation opens each of Ross's four objectives in his words; these are the talking points in its notes and the
 // questions its discussion scenes ask the room. It is a discussion, so nothing here is a script. Facts only from
@@ -353,7 +411,7 @@ export const TOPICS = [
     points: ['Start from the samples and directions that did well.', 'For each concept, agree who it’s for, when they’d use it, its role in the range, the format and what it grows.', 'Aim for up to three.'],
     questions: ['Which moment of the day is TheraBreath missing?', 'Who could a new flavor bring in?'] },
   { title: 'What to do first',
-    points: ['Where TheraBreath shows up in a day now, and where the concepts could fit.', 'Then Now, Next and Later: the next sample round, what follows the first results, and what’s worth exploring further.', 'Every direction leaves with a TFF owner, a C&D reviewer, a base and a next step.'],
+    points: ['Where TheraBreath shows up in a day now, and where the concepts could fit.', 'Then Now, Next and Later: the next sample round, what follows the first results, and what’s worth exploring further.', 'Every direction leaves with its consumer or occasion, a flavor brief, a TFF owner, a C&D reviewer, a base and a next-sample date.'],
     questions: ['What should go first, and what has to be true for it to work?', 'What would you need to see in the next round of samples?'] },
 ];
 

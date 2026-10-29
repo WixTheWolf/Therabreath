@@ -49,3 +49,13 @@ html:has(.rs), html:has(.rs) body { background: #fff; }
 .rs-t small { font-size: 7.5pt; }
 .rs-run td:nth-child(3) { width: 3.3in; }
 .rs-two { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+/* the facilitator's view: owners, kit and output per block, quieter than the run of show below it */
+.rs-glance { font-size: 8pt; }
+.rs-glance td:nth-child(2) { width: 1.7in; }
+.rs-glance td:nth-child(2) b { font-size: 9.5pt; }
+.rs-glance td:nth-child(3) { width: .7in; }
+.rs-glance td:nth-child(4), .rs-glance td:nth-child(5) { width: 2.2in; }
+.rs-owner { font-style: italic; color: #555; }
+.rs-after td { padding-top: 4px; padding-bottom: 4px; background: #F2F6F7; font-style: italic; color: #1F6C82; }
+.rs-after .rs-t { font-style: normal; color: #1F6C82; }
+.rs-note { margin-top: 4px; font: 400 7.5pt/1.4 var(--mono); color: #555; }

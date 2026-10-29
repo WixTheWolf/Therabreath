@@ -1,4 +1,4 @@
-import { EVENT, RUN, SAMPLES, NEXT_STEPS } from '@/lib/content';
+import { EVENT, RUN, SAMPLES, NEXT_STEPS, TASTING_KIT } from '@/lib/content';
 import { SEALED } from '@/lib/sealed';
 import PrintButton from '@/app/scorecard/PrintButton';
 
@@ -12,6 +12,7 @@ const kids = SAMPLES.filter((x) => x.base.startsWith('Kids')).map((x) => x.code)
 const SETUP = [
   'Connect the laptop to the TV as an extended display, not a mirror. Open the team link, then Present on the day (/host), drag that window to the TV and press F for full screen. Then press P: the presenter view opens in its own window. Keep it on the laptop’s screen. It has the talking points, the time in Princeton against this sheet, and buttons that move the presentation. Only this laptop should open the presentation on the day, because it moves everyone’s phones. (Church & Dwight’s password can’t open it.) If the TV will only mirror, skip the presenter view and use this sheet.',
   'Phones: people join by scanning the code on the first screen. Phones use their own data, so the room Wi-Fi only matters for the laptop. Ross offered to help us get on the network. If it fails, present from the backup PDF and the film file on the laptop, without the voting.',
+  'Film backup: the day before, download THE FLAVOR RACE and the opening film from the team page and keep both on the laptop’s desktop. If the site won’t play them on the day, play the files from there, full screen, with the sound up.',
   'Sound check, on the rehearsal session so nobody’s phone moves: open /host?code=REHEARSE, press End, then the left arrow once, to get to THE FLAVOR RACE. Play ten seconds through the speakers and set the volume, then open Present on the day.',
   'Rehearse on /host?code=REHEARSE (the team page links to it), never on /host itself, so rehearsal votes stay out of the live session. Leave the live session FOF1109 alone the night before: it holds everyone’s pre-brief answers, and the team page shows how many are in.',
   `Samples: ${fresh} in the Fresh Breath base and ${kids} in the Kids base, poured blind into coded cups. Set out water to rinse, cups to spit into and napkins.`,
@@ -42,6 +43,29 @@ export default function RunSheet() {
       <section className="rs-sec">
         <h2>From 9:30: set up the room</h2>
         <ol className="rs-check">{SETUP.map((x) => <li key={x}>{x}</li>)}</ol>
+      </section>
+
+      <section className="rs-sec">
+        <h2>At a glance: owners, kit and what each block should leave us with</h2>
+        <table className="rs-run rs-glance">
+          <thead><tr><th>Time</th><th>Block</th><th>Owner</th><th>Technology and materials</th><th>Output</th></tr></thead>
+          <tbody>{RUN.map((b) => [
+            <tr key={b.id}>
+              <td className="rs-t">{b.t}<small>to {b.end}</small></td>
+              <td><b>{b.title}</b></td>
+              <td className="rs-owner">To assign</td>
+              <td>{b.kit}</td>
+              <td>{b.output}</td>
+            </tr>,
+            b.after ? <tr key={b.id + '-after'} className="rs-after"><td className="rs-t">{b.end}</td><td colSpan={4}>{b.after}</td></tr> : null,
+          ])}</tbody>
+        </table>
+        <p className="rs-note">Owners are still to assign: nobody is named as presenting any part, so fill these in by hand once the team has agreed who runs what.</p>
+      </section>
+
+      <section className="rs-sec">
+        <h2>The tasting table (check before 10:40)</h2>
+        <ol className="rs-check">{TASTING_KIT.map((x) => <li key={x}>{x}</li>)}</ol>
       </section>
 
       <section className="rs-sec">

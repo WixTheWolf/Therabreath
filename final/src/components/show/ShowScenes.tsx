@@ -11,10 +11,10 @@ import { candidates } from '../scenes/Build';
 import { useQR } from '../scenes/Opening';
 import {
   EVENT, OBJECTIVES, TOPICS, RUN, TEAM, ABOUT, SCIENCE, IMAGINATION, ROSS_WORDS, SIGNALS, SAMPLES, PRIMARY_TERRITORIES as PLATFORMS,
-  SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY,
+  SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA,
 } from '@/lib/content';
 import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, SessionState } from '@/lib/state';
-import { Synced, PLAN_COLS, PlanLists, RemoveRow, planRows, planActions } from './Plan';
+import { Synced, PLAN_COLS, PlanLists, RemoveRow, planRows, planActions, planCell } from './Plan';
 
 export type Live = { send: (kind: string, data?: any, pid?: string) => any; still: boolean; joinUrl: string };
 export const LiveCtx = createContext<Live | null>(null);
@@ -140,7 +140,7 @@ export function SignalVoteShow({ s, step }: SceneProps) {
 export function TastingLive({ s, step }: SceneProps) {
   const rows = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code) }));
   const who = tasterCounts(s), n = who.phones + who.cards;
-  const metrics: ['appeal' | 'feels' | 'newness', string][] = [['appeal', 'Appeal'], ['feels', 'Feels like TheraBreath'], ['newness', 'Newness']];
+  const metrics = CRITERIA.map((c) => [c.key, c.l] as const);
   const cell = (v: number) => { const a = Math.max(0, Math.min(1, (v - 1) / 4)); return { background: `color-mix(in oklab, var(--accent) ${Math.round(a * 85)}%, transparent)`, opacity: v ? 1 : 0.4 }; };
   const guesses = Object.values(s.ratings[MYSTERY] || {}).map((r) => r.fruitGuess).filter(Boolean) as string[];
   const words = rows.flatMap((r) => r.sum.words.map((w) => ({ w, code: r.code })));
@@ -369,7 +369,7 @@ export function Board({ s }: SceneProps) {
                   <Synced className="sb-what" value={r.what} commit={(v: string) => act.set(r.id, { what: v })} placeholder="Direction or concept" aria-label={`${h.label}: direction or concept`} />
                   <div className="sb-meta">
                     {PLAN_COLS.map((c) => (
-                      <label key={c.f} data-nonav className={'sb-' + c.f}><span>{c.l}</span><Synced {...(c.f === 'next' ? { area: true, rows: 1 } : {})} list={'list' in c ? c.list : undefined} value={(r as any)[c.f] || ''} commit={(v: string) => act.set(r.id, { [c.f]: v })} aria-label={`${r.what || h.label}: ${c.l}`} /></label>
+                      <label key={c.f} data-nonav className={'sb-' + c.f}><span>{c.l}</span><Synced {...(c.f === 'brief' ? { area: true, rows: 1 } : 'date' in c ? { type: 'date' } : {})} list={'list' in c ? c.list : undefined} value={c.f === 'brief' ? r.brief || r.next || '' : (r as any)[c.f] || ''} commit={(v: string) => act.set(r.id, { [c.f]: v })} aria-label={`${r.what || h.label}: ${c.l}`} /></label>
                     ))}
                   </div>
                   {!live.still && <RemoveRow label={r.what || 'this line'} onRemove={() => act.remove(r.id)} />}
@@ -453,7 +453,7 @@ function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
         {d.directions.length ? <ol className="rp-rank">{d.directions.map((x, j) => <li key={x.t}><span className="num">{j + 1}</span><b>{x.t}</b><em>{x.n} {x.n === 1 ? 'chip' : 'chips'}</em></li>)}</ol> : none('No chips were placed.')}
         <div className="rp-taste">
           <span className="rp-cap">The tasting, averaged from 1 to 5</span>
-          {d.tasting.map((x) => <div key={x.code}><b>{x.code}. {x.name}</b><span>{x.sum.n ? `Appeal ${x.sum.appeal.toFixed(1)} · Feels like TheraBreath ${x.sum.feels.toFixed(1)} · Newness ${x.sum.newness.toFixed(1)}` : 'No scores'}</span></div>)}
+          {d.tasting.map((x) => <div key={x.code}><b>{x.code}. {x.name}</b><span>{x.sum.n ? CRITERIA.map((c) => `${c.l} ${x.sum[c.key].toFixed(1)}`).join(' · ') : 'No scores'}</span></div>)}
         </div>
       </>
     );
@@ -478,7 +478,7 @@ function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
           <tr key={r.id} className={r.h.toLowerCase()}>
             <td>{j === 0 || d.plan[j - 1].h !== r.h ? <span className="rp-h">{r.label}</span> : null}</td>
             <td><b>{r.what || 'Untitled'}</b></td>
-            {PLAN_COLS.map((c) => <td key={c.f}>{(r as any)[c.f] || <i>To agree</i>}</td>)}
+            {PLAN_COLS.map((c) => <td key={c.f}>{planCell(r, c.f) || <i>To agree</i>}</td>)}
           </tr>
         ))}</tbody>
       </table>

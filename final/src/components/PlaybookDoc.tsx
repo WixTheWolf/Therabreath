@@ -9,7 +9,7 @@ import { candidates, SEASONS } from './scenes/Build';
 import { decisions } from './scenes/Close';
 import { teamDials, baseTerritory, compass, readouts } from '@/lib/bench';
 import { Compass } from './scenes/Hybrid';
-import { DIALS } from '@/lib/content';
+import { DIALS, CRITERIA } from '@/lib/content';
 
 export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
   const { state: s, status } = useSession(code, { admin: true, interval: 2500 });
@@ -62,7 +62,7 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
             <div key={id} className={i < 3 && n > 0 ? 'top' : ''} style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1] }}><i /><div><b>{t.name}</b><p>{t.promise}</p><small>{t.fit}{t.fitNote ? `: ${t.fitNote}` : ''}</small></div><em>{n}</em></div>
           ); })}</div>
           <h3>Blind tasting</h3>
-          <table className="pb-table"><thead><tr><th>Sample</th><th>Appeal</th><th>Feels like TheraBreath</th><th>Newness</th><th>Tasters</th><th>Words / advance</th></tr></thead>
+          <table className="pb-table"><thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key}>{c.l}</th>)}<th>Tasters</th><th>Words / advance</th></tr></thead>
             <tbody>{SAMPLES.map((x) => { const r = tasteSummary(s, x.code); return <tr key={x.code}><td><b>{x.code}</b> {s.revealed?.samples[x.code]?.name || ''}</td><td>{r.n ? r.appeal.toFixed(1) : ''}</td><td>{r.n ? r.feels.toFixed(1) : ''}</td><td>{r.n ? r.newness.toFixed(1) : ''}</td><td>{r.n || ''}</td><td>{r.words.slice(0, 5).join(', ')}{Object.values(s.ratings[x.code] || {}).filter(v => v.advance === 'Yes').length > 0 && <small> · {Object.values(s.ratings[x.code] || {}).filter(v => v.advance === 'Yes').length} advance</small>}</td></tr>; })}</tbody></table>
           <p className="pb-note">Scores are 1 to 5, averaged across everyone who tasted.</p>
         </section>

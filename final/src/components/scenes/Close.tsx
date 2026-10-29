@@ -4,7 +4,7 @@ import { R, Enter, SceneProps } from './ui';
 import { EVENT, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, CODE, NEXT_STEPS } from '@/lib/content';
 import { SessionState, people, tallyPick, ranked } from '@/lib/state';
 import { candidates } from './Build';
-import { planRows } from '../show/Plan';
+import { planRows, dueLabel } from '../show/Plan';
 
 // What the room decided, in one place. Shared by the Stage close and the Playbook document.
 export function decisions(s: SessionState) {
@@ -63,7 +63,7 @@ export function Next({ s, step }: SceneProps) {
       <div className="steps">
         {NEXT_STEPS.map((n, i) => (
           <R key={n.t} b={i + 1} step={step} className="nstep"><span className="num">0{i + 1}</span><b className="h3">{n.t}</b>
-            {i === 0 && agreed.length ? <ul className="agreed">{agreed.map((r) => <li key={r.id}><b>{r.what}</b><span>{[r.owner && `TFF: ${r.owner}`, r.reviewer && `C&D: ${r.reviewer}`].filter(Boolean).join(' · ') || 'Owners to agree'}</span><em>{[r.label, r.base, r.next].filter(Boolean).join(' · ')}</em></li>)}</ul> : <p>{n.d}</p>}
+            {i === 0 && agreed.length ? <ul className="agreed">{agreed.map((r) => <li key={r.id}><b>{r.what}</b><span>{[r.owner && `TFF: ${r.owner}`, r.reviewer && `C&D: ${r.reviewer}`].filter(Boolean).join(' · ') || 'Owners to agree'}</span><em>{[r.label, r.base, r.due ? `next sample ${dueLabel(r.due)}` : ''].filter(Boolean).join(' · ')}</em></li>)}</ul> : <p>{n.d}</p>}
           </R>
         ))}
       </div>
@@ -87,7 +87,7 @@ export function Lunch({ s }: SceneProps) {
         {now.length > 0 && (
           <div className="lunch-plan">
             <span className="k">Now · In the next sample round</span>
-            <ul>{now.map((r) => <li key={r.id}><b>{r.what}</b><span>{[r.owner && `TFF: ${r.owner}`, r.reviewer && `C&D: ${r.reviewer}`, r.next].filter(Boolean).join(' · ')}</span></li>)}</ul>
+            <ul>{now.map((r) => <li key={r.id}><b>{r.what}</b><span>{[r.owner && `TFF: ${r.owner}`, r.reviewer && `C&D: ${r.reviewer}`, r.due ? `next sample ${dueLabel(r.due)}` : r.brief || r.next].filter(Boolean).join(' · ')}</span></li>)}</ul>
           </div>
         )}
       </div>

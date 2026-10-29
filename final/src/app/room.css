@@ -186,7 +186,7 @@
 .bw-timeline li.on { color: var(--fg); }
 .bw-timeline li.on::before { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
 .bw-timeline .num { font-size: 20px; color: var(--accent); }
-.bw-timeline .bw-o { display: inline-block; margin-left: 10px; font: 500 11px/1 var(--mono); font-style: normal; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); border: 1px solid currentColor; border-radius: 999px; padding: 4px 8px; vertical-align: 2px; white-space: nowrap; }
+.bw-timeline .bw-o { display: inline-block; margin-left: 10px; font: 500 12px/1 var(--mono); font-style: normal; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); border: 1px solid currentColor; border-radius: 999px; padding: 4px 8px; vertical-align: 2px; white-space: nowrap; }
 
 /* homework, one question at a time */
 .bw-home { padding-bottom: 40px; }
@@ -194,7 +194,7 @@
 .bw-wiz-top { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 14px; }
 .bw-wiz-orb { transition: width .6s var(--ease), height .6s var(--ease); flex: none; }
 .bw-dots { display: flex; flex-wrap: wrap; gap: 6px; }
-.bw-dots button { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 99px; font: 500 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg3); }
+.bw-dots button { display: flex; align-items: center; gap: 6px; min-height: 36px; padding: 8px 12px; border-radius: 99px; font: 500 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fg3); }
 .bw-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--rule); }
 .bw-dots button.on { background: var(--fg); color: var(--bg); }
 .bw-dots button.on i { background: var(--glacier); }
@@ -212,7 +212,7 @@
 .bw-wiz-nav .rm-btn { width: auto; min-width: 150px; margin-left: auto; }
 .bw-link { font: 500 14px var(--sans); color: var(--fg2); text-decoration: underline; text-underline-offset: 4px; }
 .bw-done { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; animation: bw-up .9s var(--ease); }
-.bw-done h2 { font: 300 42px var(--serif); }
+.bw-done h2, .bw-done h3 { font: 300 42px var(--serif); outline-offset: 6px; }
 .bw-done p { font: 400 16px/1.45 var(--sans); color: var(--fg2); max-width: 460px; }
 .bw-done-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px; }
 .bw-done-row .rm-btn { width: auto; }
@@ -228,7 +228,7 @@
 .bw-logi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 760px; margin: 0 auto 28px; text-align: left; }
 .bw-logi div { padding: 16px; border-top: 2px solid var(--accent); font: 400 15px/1.4 var(--sans); }
 .bw-logi small { display: block; font: 500 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--fg3); margin-bottom: 6px; }
-.bw-pdf { display: inline-block; padding: 10px 4px; margin-bottom: 12px; }
+.bw-pdf { display: inline-block; min-height: 44px; padding: 12px 4px; margin-bottom: 12px; }
 .bw-foot .k { font-size: 12px; }
 .bw-conf { max-width: 54ch; margin: 26px auto 0; font: 400 15px/1.55 var(--sans); color: var(--fg3); }
 @media (max-width: 600px) { .bw-qcards, .bw-think, .bw-logi { grid-template-columns: 1fr; } .bw-env-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .bw-env { height: 252px; } .bw-wiz { padding: 16px; } }
@@ -295,3 +295,30 @@
   .bw-qb p { font-size: 12px !important; }
   .bw-foot { padding-top: 10px; } .bw-promise { font-size: 22px; margin: 10px 0; }
 }
+
+/* The questions come first (October 29): the expectation line, inline errors, whether the answers went, and the line that
+   marks everything after them as optional. */
+.bw-expect { margin: -6px 0 18px; font: 400 italic 21px/1.4 var(--serif); color: var(--fg); }
+.bw-dots { list-style: none; }
+.bw-dots button:disabled { cursor: default; }
+.rm-btn[aria-disabled="true"] { opacity: .55; }
+.bw-err { margin-top: 12px; font: 500 15px/1.4 var(--sans); color: #A8322D; }
+.bw-sent { font: 500 14px/1.45 var(--sans) !important; color: #8A5A16 !important; }
+.bw-sent.ok { color: var(--accent) !important; }
+.bw-optional { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; padding-top: 72px; padding-bottom: 0; border-bottom: 1px solid var(--rule); }
+.bw-optional b { font: 300 italic 30px/1.1 var(--serif); }
+.bw-optional span { font: 400 15px/1.4 var(--sans); color: var(--fg2); padding-bottom: 14px; }
+.bw-math small { display: block; margin-top: 10px; font: 400 12px/1.45 var(--mono); color: var(--fg3); }
+.bw-notes { margin-top: 14px; }
+.bw-notes summary { cursor: pointer; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 0; font: 500 12px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--fg2); list-style: none; }
+.bw-notes summary::-webkit-details-marker { display: none; }
+.bw-notes summary::before { content: ''; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform .2s; }
+.bw-notes[open] summary::before { transform: rotate(45deg); }
+.bw-notes p { margin-top: 8px; font: 400 15px/1.6 var(--sans); color: var(--fg2); }
+.bw-notes a { color: var(--accent); text-underline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .bw-hero video { display: none; } .bw-poster { display: block; } }
+@media print { .bw-optional { padding-top: 18px; } .bw-optional span { padding-bottom: 6px; } .bw-notes { display: none; } .bw-expect { font-size: 15px; } }
+/* small type over the hero loop: a soft shadow keeps it readable where droplets pass behind it */
+.bw-hero-in .k, .bw-hero-in p { text-shadow: 0 1px 14px rgba(11, 27, 43, .9), 0 0 2px rgba(11, 27, 43, .6); }
+/* paper: the footer and its confidentiality line stay on the last page with the rest */
+@media print { .bw-foot { padding: 6px 0 0; break-inside: avoid; } .bw-logi { margin-bottom: 8px; } .bw-logi div { padding: 8px 10px; } .bw-conf { font-size: 8pt; margin-top: 0; } .bw-think { gap: 8px; } }

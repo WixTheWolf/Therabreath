@@ -55,7 +55,7 @@ The Flavor Factory is a wholesale flavor manufacturer making liquid and powder f
 ## Evidence on Hand
 
 - Church & Dwight Q2 2026 earnings call (July 31, 2026): TheraBreath had 25.3% of US mouthwash in Q2 2026, up 4.5 points, number 2 in the category; 14% of US households buy TheraBreath against 65% for mouthwash, which leaves 86 of every 100 who don't buy it yet.
-- Kenvue press release (June 2, 2026): 54% of Americans want a milder-tasting mouthwash.
+- Kenvue press release (June 2, 2026), “LISTERINE® introduces range of mouthwash intensities, including new Extra Mild”: 54% of American consumers are looking for a milder-tasting option. The release's footnote gives the survey: Kenvue / Suzy UA Refresh, 2024, US general population aged 15 and over, n = 1,019. Quote it as the release words it, with that basis.
 - Ross Conroy's invitation (September 18, 2026), quoted above.
 - Seven trends, each with two public sources, and competitor launches from public coverage, all in `src/lib/content.ts`.
 - Assets: The Flavor Factory logo (`public/img/tff-logo.webp`, `tff-logo-white.webp`), the TheraBreath logo (`public/img/therabreath-logo.png`), photography in `public/img`, the opening film and THE FLAVOR RACE in `public/media`.
@@ -71,6 +71,6 @@ The Flavor Factory is a wholesale flavor manufacturer making liquid and powder f
 
 ## Accessibility & Inclusion
 
-- The site was brought to WCAG 2.2 AA on October 28 (contrast, visible focus, one h1 per page, 44px phone targets, reduced motion respected); keep that floor.
+- Checked against WCAG 2.2 AA on October 28 and 29 with axe-core (no violations on any page or phone screen) and by hand: contrast, visible focus, heading order, one h1 per page, 44px phone targets, reduced motion, keyboard use of the film player and the questions. That's tooling and spot checks, not a formal audit or a compliance claim; keep that floor.
 - Slides must read from across a lit room on a TV.
 - Nobody needs a phone to take part: hand votes on screen and the paper scorecard cover it.

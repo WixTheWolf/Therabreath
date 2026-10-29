@@ -16,9 +16,10 @@ export default async function Team() {
     { href: '/host?code=REHEARSE', t: 'Rehearse the presentation', d: 'The whole presentation, running on a rehearsal session. Scan the code with your own phone to try the votes and the tasting. Nothing you do here reaches the live session.', c: '#8FE0F0' },
     { href: '/', t: 'The front door', d: 'What Church & Dwight sees after the password: the film, Ross’s brief, the four directions, the blind tasting, who they’ll meet and how the morning runs.', c: '#F4B860' },
     { href: prebrief, t: 'The pre-brief', d: 'The pre-read Ross sends out on November 3. This is a practice copy, so go ahead and try the questions. Answers here never reach the live session.', c: '#CFE8C6' },
-    { href: '/host/run', t: 'The run sheet', d: 'The morning minute by minute, the 9:30 setup and what we still need to confirm. It prints on two pages.', c: '#C9B8FF' },
+    { href: '/host/run', t: 'The run sheet', d: 'The morning minute by minute, the 9:30 setup and what we still need to confirm. It prints on three pages, with a column for who owns each block.', c: '#C9B8FF' },
     { href: '/scorecard', t: 'The paper scorecard', d: 'A backup for anyone who’d rather not score on a phone, with one page per person for samples A to D.', c: '#F7B6D2' },
-    { href: '/media/flavor-race.mp4', t: 'THE FLAVOR RACE', d: 'The 2:26 film that sends everyone off to lunch at 11:48. Turn the sound up.', c: '#F2677B' },
+    { href: '/media/flavor-race.mp4', t: 'THE FLAVOR RACE', d: 'The 2:26 film that sends everyone off to lunch at 11:48. Turn the sound up. Save a copy to the presenting laptop the day before, as the backup.', c: '#F2677B' },
+    { href: '/media/opening.mp4', t: 'The opening film', d: 'The 1:22 film on the front door and the pre-brief. Save a copy to the presenting laptop too, in case the site won’t play it.', c: '#8FE0F0' },
   ];
   return (
     <main className="site tm" data-theme="b">

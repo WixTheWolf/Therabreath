@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
-import { EVENT, SIGNALS, DIRECTIONS, SAMPLES, WHO_CHIPS, MYSTERY, HORIZONS, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
+import { EVENT, SIGNALS, DIRECTIONS, SAMPLES, WHO_CHIPS, MYSTERY, HORIZONS, CRITERIA, DEVELOP, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
 import { tallyPick, voteCounts, tasters, byHand, onPaper, people, uid, Ev, SessionState } from '@/lib/state';
 import { candidates } from './scenes/Build';
 import { Synced, PLAN_COLS, PlanLists, RemoveRow, planActions } from './show/Plan';
@@ -206,7 +206,7 @@ function PaperCards({ s, events, sendMany }: { s: SessionState; events: Ev[]; se
             return (
               <fieldset key={x.code} className="pv-sample">
                 <legend><b>{x.code}</b>{s.revealed?.samples[x.code]?.name ? ` · ${s.revealed.samples[x.code].name}` : ''}<small>{x.base}</small></legend>
-                {([['appeal', 'Appeal'], ['feels', 'Feels like TheraBreath'], ['newness', 'Newness']] as const).map(([key, l]) => (
+                {CRITERIA.map(({ key, l }) => (
                   <div key={key} className="pv-scale" role="group" aria-label={`${x.code}: ${l}`}>
                     <span>{l}</span>
                     <div>{[1, 2, 3, 4, 5].map((v) => <button type="button" key={v} aria-pressed={r[key] === v} onClick={() => set(x.code, { [key]: r[key] === v ? 0 : v })}>{v}</button>)}</div>
@@ -220,9 +220,9 @@ function PaperCards({ s, events, sendMany }: { s: SessionState; events: Ev[]; se
                   <span>Which direction</span>
                   <div>{TERRITORIES.map((t) => <button type="button" key={t.id} aria-pressed={r.guess === t.id} onClick={() => set(x.code, { guess: r.guess === t.id ? '' : t.id })}>{t.name}</button>)}</div>
                 </div>
-                <div className="pv-chips" role="group" aria-label={`${x.code}: next round`}>
-                  <span>Next round</span>
-                  <div>{['Yes', 'Maybe', 'No'].map((v) => <button type="button" key={v} aria-pressed={r.advance === v} onClick={() => set(x.code, { advance: r.advance === v ? '' : v })}>{v}</button>)}</div>
+                <div className="pv-chips" role="group" aria-label={`${x.code}: would you develop it further`}>
+                  <span>Develop further</span>
+                  <div>{DEVELOP.opts.map((v) => <button type="button" key={v} aria-pressed={r.advance === v} onClick={() => set(x.code, { advance: r.advance === v ? '' : v })}>{v}</button>)}</div>
                 </div>
                 <div className="pv-words">
                   <label className="pv-field"><span>One word</span><input value={r.word} onChange={(e) => set(x.code, { word: e.target.value.slice(0, 24) })} /></label>
@@ -255,7 +255,7 @@ function PlanEditor({ s, send }: { s: SessionState; send: Send }) {
             {mine.map((r) => (
               <div key={r.id} className="pv-prow">
                 <Synced className="pv-pwhat" value={r.what} commit={(v: string) => act.set(r.id, { what: v })} placeholder="Direction or concept" aria-label={`${h.label}: direction or concept`} />
-                {PLAN_COLS.map((c) => <label key={c.f} className="pv-field"><span>{c.l}</span><Synced list={'list' in c ? c.list : undefined} value={(r as any)[c.f] || ''} commit={(v: string) => act.set(r.id, { [c.f]: v })} /></label>)}
+                {PLAN_COLS.map((c) => <label key={c.f} className={'pv-field pv-p' + c.f}><span>{c.l}</span><Synced {...('date' in c ? { type: 'date' } : {})} list={'list' in c ? c.list : undefined} value={c.f === 'brief' ? r.brief || r.next || '' : (r as any)[c.f] || ''} commit={(v: string) => act.set(r.id, { [c.f]: v })} /></label>)}
                 <label className="pv-field"><span>Move to</span><select value={r.h} onChange={(e) => act.move(r.id, e.target.value)}>{HORIZONS.map((x) => <option key={x.id} value={x.id}>{x.label}</option>)}</select></label>
                 <RemoveRow label={r.what || 'this line'} onRemove={() => act.remove(r.id)} className="pv-premove" />
               </div>

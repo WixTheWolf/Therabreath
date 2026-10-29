@@ -1,11 +1,11 @@
-import { EVENT, SAMPLES, WHO_CHIPS, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
+import { EVENT, SAMPLES, WHO_CHIPS, CRITERIA, DEVELOP, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
 import PrintButton from './PrintButton';
 
 export const metadata = { title: 'Tasting scorecard' };
 
 // The tasting scorecard, on paper: the same questions the phones ask, one card per person. Prints to one page. The team
 // types each card into the presenter view (/host/presenter) on the tasting slide.
-const SCALES = ['Appeal', 'Feels like TheraBreath', 'Newness'];
+const SCALES = CRITERIA.map((c) => c.l);
 
 export default function Scorecard() {
   return (
@@ -24,7 +24,7 @@ export default function Scorecard() {
             <div className="sc-row"><span>Who would buy it?</span><div className="sc-boxes">{WHO_CHIPS.map((w) => <i key={w}>{w}</i>)}</div></div>
             <div className="sc-row"><span>Which direction do you think it comes from?</span><div className="sc-boxes">{TERRITORIES.map((t) => <i key={t.id}>{t.name}</i>)}</div></div>
             <div className="sc-row sc-pair">
-              <span>Should it get a next round?</span><div className="sc-boxes">{['Yes', 'Maybe', 'No'].map((w) => <i key={w}>{w}</i>)}</div>
+              <span>{DEVELOP.q}</span><div className="sc-boxes">{DEVELOP.opts.map((w) => <i key={w}>{w}</i>)}</div>
               <span>One word for it</span><u />
             </div>
             {x.mystery && <div className="sc-row"><span>Which fruits can you taste?</span><u /></div>}

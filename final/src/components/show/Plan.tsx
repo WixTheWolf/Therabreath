@@ -1,5 +1,6 @@
 'use client';
-// Now, Next, Later as rows: what goes forward, its TFF owner and C&D reviewer, the base and the next sample step. The
+// Now, Next, Later as rows: what goes forward, who it's for, the flavor brief, its TFF owner and C&D reviewer, the base and
+// when the next sample is due (the six fields the front door and the pre-brief promise). The
 // board scene types them on the TV and the presenter view types them on the laptop; both write `plan` events to the
 // same session, so the Playbook read-back, the last slides and the results page all show the same rows.
 import { useEffect, useRef, useState } from 'react';
@@ -22,18 +23,25 @@ export function Synced({ value, commit, area, ...rest }: { value: string; commit
   return area ? <textarea {...props} /> : <input {...props} />;
 }
 
+// What every direction leaves with (the same six the front door and the pre-brief promise).
 export const PLAN_COLS = [
+  { f: 'who', l: 'Consumer or occasion' },
+  { f: 'brief', l: 'Flavor brief' },
   { f: 'owner', l: 'TFF owner', list: 'plan-owner' },
   { f: 'reviewer', l: 'C&D reviewer' },
   { f: 'base', l: 'Base', list: 'plan-base' },
-  { f: 'next', l: 'Next sample' },
+  { f: 'due', l: 'Next sample due', date: true },
 ] as const;
+// "2026-12-04" as "Dec 4, 2026"; anything else as typed.
+export const dueLabel = (d?: string) => (d && /^\d{4}-\d{2}-\d{2}$/.test(d) ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : d || '');
+// A cell of the plan as it reads back: the date formatted, the flavor brief falling back to the older free-text step.
+export const planCell = (r: Record<string, any>, f: string) => (f === 'due' ? dueLabel(r.due) : f === 'brief' ? r.brief || r.next || '' : r[f] || '');
 const horizonOrder = (h: string) => Math.max(0, HORIZONS.findIndex((x) => x.id === h));
 
 // The rows in reading order: Now, then Next, then Later, each in the order they were added. Free text typed on the
 // board before it had rows still counts, one row per line.
 export function planRows(s: SessionState): (Omit<PlanRow, 't'> & { label: string })[] {
-  const rows = Object.values(s.plan || {}).filter((r) => r.what.trim() || r.owner || r.next);
+  const rows = Object.values(s.plan || {}).filter((r) => r.what.trim() || r.owner || r.brief || r.next);
   const legacy = HORIZONS.flatMap((h) => (s.board?.[h.id] || '').split('\n').map((x) => x.trim()).filter(Boolean).map((what, j) => ({ id: `board-${h.id}-${j}`, h: h.id, what, t: Infinity })));
   return [...rows, ...legacy]
     .sort((a, b) => horizonOrder(a.h) - horizonOrder(b.h) || a.t - b.t)

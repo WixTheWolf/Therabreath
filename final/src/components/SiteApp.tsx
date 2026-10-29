@@ -4,7 +4,8 @@
 // the end. An optional drawer holds the vocabulary of freshness, science and imagination, and the three shifts.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import FilmModal from './FilmModal';
-import { EVENT, FILM, PRIMARY_TERRITORIES, SAMPLES, VOCAB, SHIFTS, SCIENCE, IMAGINATION, AGENDA, OBJECTIVES, TOPICS, RUN, ROSS_GOAL, GAP, SOURCES, TEAM, ABOUT } from '@/lib/content';
+import Decisions from './Decisions';
+import { EVENT, FILM, PRIMARY_TERRITORIES, SAMPLES, VOCAB, SHIFTS, SCIENCE, IMAGINATION, AGENDA, OBJECTIVES, TOPICS, RUN, ROSS_GOAL, GAP, SOURCES, CITE, CRITERIA, DEVELOP, TEAM, ABOUT } from '@/lib/content';
 
 const clamp = (x: number, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const ease = (x: number) => 1 - Math.pow(1 - clamp(x), 3);
@@ -37,7 +38,7 @@ function useReveal() {
   }, []);
 }
 
-const NAV = [['hero', 'Film'], ['brief', 'Your brief'], ['why', 'Why flavor'], ['platforms', 'Four directions'], ['flight', 'Tasting'], ['team', 'Who you’ll meet'], ['close', 'The morning'], ['explore', 'More reading']];
+const NAV = [['hero', 'Film'], ['brief', 'Your brief'], ['why', 'Why flavor'], ['platforms', 'Four directions'], ['flight', 'Tasting'], ['decide', 'How we decide'], ['team', 'Who you’ll meet'], ['close', 'The morning'], ['explore', 'More reading']];
 
 // The bar opens THE FLAVOR RACE, the presentation, the run sheet and the team page for everyone past the password.
 // `prebrief` is the signed pre-brief link for the live session.
@@ -67,6 +68,7 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
       <YourBrief />
       <WhyFlavor />
       <WorkshopOverview />
+      <Decisions className="ws-section" id="decide" />
       <Team />
       <Close prebrief={prebrief} />
       <details id="explore" className="st-explore"><summary>More reading: the words we use for freshness, and three shifts we’re seeing</summary><p>This part is optional. It’s here to explain ideas, and it isn’t formula work or consumer research.</p><Vocab /><Worlds /><ShiftTrack /></details>
@@ -207,12 +209,16 @@ function WhyFlavor() {
         <div className="ws-glass" style={{ ['--f' as any]: GAP.category / 100 }}><i /><b>{GAP.category}%</b><span>of US households buy any mouthwash</span></div>
         <div className="ws-glass tb" style={{ ['--f' as any]: GAP.tb / 100 }}><i /><b>{GAP.tb}%</b><span>of US households buy TheraBreath</span></div>
         <div className="ws-facts">
-          <div><b>25.3%</b><span>TheraBreath’s share of US mouthwash in Q2 2026, up 4.5 points. That makes it number 2 in the category.</span></div>
-          <div><b>54%</b><span>of Americans want a milder-tasting mouthwash, and brands have started selling intensity as a choice.</span></div>
+          <div><b>25.3%</b><span>TheraBreath’s share of US mouthwash in Q2 2026, up 4.5 points. That makes it number 2 in the category.<small className="ws-cite">Source: {CITE.q2call.src}</small></span></div>
+          <div><b>54%</b><span>of American consumers are looking for a milder-tasting option, and brands have started selling intensity as a choice.<small className="ws-cite">Source: Kenvue press release, June 2, 2026, citing a 2024 Kenvue / Suzy survey (n = 1,019)</small></span></div>
           <p className="ws-lead">Flavor is one of the easiest ways to give them a reason to try it.</p>
         </div>
       </div>
-      <p className="ws-src">Sources: {SOURCES.q2call}; {SOURCES.kenvue}.</p>
+      <p className="ws-cite ws-cite-glass">The 65% and 14%: {CITE.q2call.src}.</p>
+      <details className="ws-notes"><summary>Source notes</summary>
+        <p><b>65%, 14% and 25.3%.</b> {CITE.q2call.src}. {CITE.q2call.basis}</p>
+        <p><b>54%.</b> <a href={CITE.kenvue.url} target="_blank" rel="noreferrer noopener">{CITE.kenvue.src}</a>. {CITE.kenvue.basis}</p>
+      </details>
     </section>
   );
 }
@@ -232,10 +238,22 @@ function WorkshopOverview() {
       <p className="ws-lead">Two of them are in the tasting, and the other two are there for discussion. You’ll help decide which ones get a next round.</p>
       <div className="ws-grid">{PRIMARY_TERRITORIES.map(t => <article className="ws-card ws-photo st-rise" key={t.id} style={{ borderTopColor: t.palette[1] }}>{t.image && <img src={t.image} alt="" loading="lazy" />}<div className="ws-photo-in"><span className="st-k">0{t.n} · {SAMPLES.some((x) => x.territory === t.id) ? 'In the tasting' : 'For discussion'}</span><h3>{t.name}</h3><p>{t.promise}</p><strong>{t.q}</strong></div></article>)}</div>
     </section>
-    <section id="flight" className="ws-section ws-flight"><div className="st-k">{tasting.t} · The tasting</div><h2>Four samples,<br /><em>tasted blind.</em></h2><p className="ws-lead">We made four samples in the unflavored bases you sent us, two in Fresh Breath and two in Kids. You’ll score them on your phone (or on a paper card, if you’d rather), and we’ll tell you what they are afterwards.</p>
+    <section id="flight" className="ws-section ws-flight"><div className="st-k">{tasting.t} · The tasting</div><h2>Four samples,<br /><em>tasted blind.</em></h2><p className="ws-lead">We made four samples in the unflavored bases you sent us: A and B in the Fresh Breath base, C and D in the Kids base. You’ll score each one on your phone (or on a paper card, if you’d rather), and the names stay sealed until everyone has scored.</p>
       <div className="ws-cups st-rise"><img src="/img/tasting-cups.webp" alt="" loading="lazy" /></div>
-      <div className="ws-grid ws-four">{SAMPLES.map((x, i) => <article className="ws-card ws-seal" key={x.code} style={{ ['--i' as any]: i }}><span className="ws-code">{x.code}</span><h3>Revealed after the tasting</h3><p>Made in your {x.base}.</p></article>)}</div>
-      <div className="ws-outcome"><span className="st-k">What you leave with</span><h3>Up to three directions, each with an owner.</h3><p>For each one we’ll agree who it’s for, what it should taste like, a TFF owner, a C&amp;D reviewer, the base and a date for the next round of samples.</p><p>The scores are this group’s first reactions. Consumer appeal and technical readiness will still need proper testing.</p></div>
+      <ul className="ws-grid ws-four ws-flight-cards" aria-label="The four samples">{SAMPLES.map((x, i) => (
+        <li className="ws-card ws-seal" key={x.code} style={{ ['--i' as any]: i }}>
+          <span className="ws-code">{x.code}</span><h3>{x.base.replace(/ base$/, '')} <em>base</em></h3>
+          <p className="ws-sealed"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.4" /><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" strokeWidth="1.4" /></svg>Sealed until everyone’s scored</p>
+        </li>
+      ))}</ul>
+      <div className="ws-score st-rise">
+        <h3>How you’ll score each one</h3>
+        <ol>
+          {CRITERIA.map((c) => <li key={c.key}><b>{c.l}</b><span>{c.d}</span><small>1 to 5</small></li>)}
+          <li><b>{DEVELOP.q}</b><span>Your call on whether it earns a next round</span><small>{DEVELOP.opts.join(' · ')}</small></li>
+        </ol>
+        <p className="ws-reveal"><span>Score all four</span><i aria-hidden="true" /><span>Then the names go up on screen</span></p>
+      </div>
     </section>
   </>;
 }

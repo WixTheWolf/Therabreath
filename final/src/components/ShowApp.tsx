@@ -25,9 +25,9 @@ import {
   LiveCtx, Live, ShowTitle, Team, ShowBrief, Opener, SignalVoteShow, TastingLive, NextRound, ConceptCanvas, DotsShow, WhiteSpaceShow, Board,
   Playbook, ShowFilm, JoinCorner, FIELDS, decided, markLabel,
 } from './show/ShowScenes';
-import { EVENT, TOPICS, RUN } from '@/lib/content';
+import { EVENT, TOPICS, RUN, CRITERIA } from '@/lib/content';
 import { runTiming } from '@/lib/time';
-import { PLAN_COLS } from './show/Plan';
+import { PLAN_COLS, planCell } from './show/Plan';
 import { showChannel, presenterUrl, ShowMsg } from '@/lib/showLink';
 
 type View = (p: SceneProps) => React.ReactNode;
@@ -249,11 +249,11 @@ function Results({ s, code }: { s: any; code: string }) {
       <h1 className="h1">What we <span className="it">decided.</span></h1>
       <p className="sr-sub">{Object.keys(s.participants).length} people joined on their phones.</p>
       <section><h2 className="h3">The three trends that matter most</h2><ul>{d.signals.map((x) => <li key={x.t}>{x.t} <em>{x.n} votes</em></li>)}{!d.signals.length && <li className="ghost">No votes yet</li>}</ul></section>
-      <section><h2 className="h3">The tasting</h2><table className="sr-taste"><thead><tr><th>Sample</th><th>Appeal</th><th>Feels like TheraBreath</th><th>Newness</th><th>Scores</th></tr></thead><tbody>{d.tasting.map((x) => <tr key={x.code}><td>{x.code}. {x.name}</td><td>{x.sum.n ? x.sum.appeal.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.feels.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.newness.toFixed(1) : ''}</td><td>{x.sum.n}</td></tr>)}</tbody></table></section>
+      <section><h2 className="h3">The tasting</h2><table className="sr-taste"><thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key}>{c.l}</th>)}<th>Scores</th></tr></thead><tbody>{d.tasting.map((x) => <tr key={x.code}><td>{x.code}. {x.name}</td><td>{x.sum.n ? x.sum.appeal.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.feels.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.newness.toFixed(1) : ''}</td><td>{x.sum.n}</td></tr>)}</tbody></table></section>
       <section><h2 className="h3">What gets a next round</h2><ul>{d.directions.map((x) => <li key={x.t}>{x.t} <em>{x.n} chips</em></li>)}{!d.directions.length && <li className="ghost">No votes yet</li>}</ul></section>
       <section><h2 className="h3">Concepts</h2>{cs.length ? cs.map((c: any) => <div key={c.id} className="sr-concept"><b>{c.name}</b><dl>{FIELDS.map((f) => c[f.key] ? <div key={f.f}><dt>{f.l}</dt><dd>{c[f.key]}</dd></div> : null)}</dl></div>) : <p className="ghost">None written</p>}
         {d.ideas.length > 0 && <p className="sr-dots">Dot vote: {d.ideas.map((x) => `${x.t} (${x.n})`).join(', ')}</p>}</section>
-      <section><h2 className="h3">Now, Next, Later</h2>{d.plan.length ? <table className="sr-plan"><thead><tr><th /><th>Direction</th>{PLAN_COLS.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead><tbody>{d.plan.map((r) => <tr key={r.id}><td>{r.label}</td><td><b>{r.what || 'Untitled'}</b></td>{PLAN_COLS.map((c) => <td key={c.f}>{(r as any)[c.f] || <span className="ghost">To agree</span>}</td>)}</tr>)}</tbody></table> : <p className="ghost">Nothing yet</p>}</section>
+      <section><h2 className="h3">Now, Next, Later</h2>{d.plan.length ? <table className="sr-plan"><thead><tr><th /><th>Direction</th>{PLAN_COLS.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead><tbody>{d.plan.map((r) => <tr key={r.id}><td>{r.label}</td><td><b>{r.what || 'Untitled'}</b></td>{PLAN_COLS.map((c) => <td key={c.f}>{planCell(r, c.f) || <span className="ghost">To agree</span>}</td>)}</tr>)}</tbody></table> : <p className="ghost">Nothing yet</p>}</section>
       <section><h2 className="h3">Where the ideas could fit in a day</h2><ul>{marks.map((c) => <li key={c}>{markLabel(s, c)}</li>)}{!marks.length && <li className="ghost">No cells marked</li>}</ul></section>
       <p className="src">Confidential. These are development samples and concepts made for this session. They aren’t finished products or claims.</p>
       <button className="sr-print" onClick={() => print()}>Print or save as PDF</button>

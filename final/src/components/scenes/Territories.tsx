@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Light from '../Light';
 import { Compass } from './Hybrid';
 import { R, Enter, Src, SceneProps, spectrumAt } from './ui';
-import { PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, ROSS_GOAL, MYSTERY } from '@/lib/content';
+import { PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, ROSS_GOAL, MYSTERY, CRITERIA } from '@/lib/content';
 import { tallyPick, ranked, tasteSummary } from '@/lib/state';
 
 // Map positions: x = character (familiar to adventurous), y = intensity (gentle to bold). Our perspective, illustrative.
@@ -120,7 +120,7 @@ export function Territory({ s, step, idx }: SceneProps) {
 // 31. Blind tasting: heat map fills as phones score, then the names flip in.
 export function Tasting({ s, step }: SceneProps) {
   const rows = SAMPLES.map((x) => { const g = Object.values(s.ratings[x.code] || {}).map((r) => r.guess).filter(Boolean); return { ...x, sum: tasteSummary(s, x.code), guessN: g.length, right: g.filter((v) => v === x.territory).length }; });
-  const metrics: ['appeal' | 'feels' | 'newness', string][] = [['appeal', 'Appeal'], ['feels', 'Feels like TheraBreath'], ['newness', 'Newness']];
+  const metrics = CRITERIA.map((c) => [c.key, c.l] as const);
   const cell = (v: number) => { const a = Math.max(0, Math.min(1, (v - 1) / 4)); return { background: `color-mix(in oklab, var(--accent) ${Math.round(a * 85)}%, transparent)`, opacity: v ? 1 : 0.35 }; };
   const mysteryGuesses = Object.values(s.ratings[MYSTERY] || {}).map(r => r.fruitGuess).filter(Boolean);
   const words = rows.flatMap((r) => r.sum.words.map((w) => ({ w, code: r.code })));
@@ -143,7 +143,7 @@ export function Tasting({ s, step }: SceneProps) {
   );
 }
 
-// The growth matrix: Ross's two goals as two axes. Feels like TheraBreath (loyal users) across, newness (new consumers) up, appeal as size.
+// The growth matrix: Ross's two goals as two axes. Fit with TheraBreath (loyal users) across, newness (new consumers) up, appeal as size.
 export function Matrix({ s, step }: SceneProps) {
   const pts = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code), c: x.color[1] }));
   const scored = pts.filter((p) => p.sum.n > 0);
@@ -163,9 +163,9 @@ export function Matrix({ s, step }: SceneProps) {
         <i className="mx-mid v" /><i className="mx-mid h" />
         <span className="mx-q tr">Does both<b>Develop first</b></span>
         <span className="mx-q tl">New, but doesn&rsquo;t feel like TheraBreath yet<b>Work on the finish</b></span>
-        <span className="mx-q br">Feels like TheraBreath<b>Could extend a line</b></span>
+        <span className="mx-q br">Fits TheraBreath<b>Could extend a line</b></span>
         <span className="mx-q bl">Neither yet<b>Rethink it</b></span>
-        <span className="mx-ax x">Feels like TheraBreath <em>strengthens loyal users</em> →</span>
+        <span className="mx-ax x">Fit with TheraBreath <em>strengthens loyal users</em> →</span>
         <span className="mx-ax y">Newness <em>attracts new consumers</em> →</span>
         {pts.map((p, i) => {
           const x = out && p.sum.n ? at(p.sum.feels) : 50, y = out && p.sum.n ? at(p.sum.newness) : 50;

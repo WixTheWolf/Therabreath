@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
-import { SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT, DIALS, MYSTERY, DIRECTIONS } from '@/lib/content';
+import { CRITERIA, DEVELOP, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT, DIALS, MYSTERY, DIRECTIONS } from '@/lib/content';
 import { DEFAULT_DIALS, readouts } from '@/lib/bench';
 import { uid } from '@/lib/state';
 import { candidates } from './scenes/Build';
@@ -123,14 +123,12 @@ function Taste({ s, me, p, step }: P) {
       <h1 className="h3">Sample {cur}{s.revealed ? <span className="it"> · {s.revealed.samples[cur]?.name}</span> : null}</h1>
       {s.revealed && <p>{s.revealed.samples[cur]?.note}</p>}
       {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess, before we tell you" /></label>}
-      <Scale label="Appeal" v={r.appeal} set={(n) => setR({ ...r, appeal: n })} />
-      <Scale label="Feels like TheraBreath" v={r.feels} set={(n) => setR({ ...r, feels: n })} />
-      <Scale label="Newness" v={r.newness} set={(n) => setR({ ...r, newness: n })} />
+      {CRITERIA.map((c) => <Scale key={c.key} label={c.l} v={r[c.key]} set={(n) => setR({ ...r, [c.key]: n })} />)}
       <div className="k" style={{ margin: '18px 0 10px' }}>Who would buy it?</div>
       <div className="rm-tags">{WHO_CHIPS.map((w) => <button key={w} className={r.who.includes(w) ? 'on' : ''} onClick={() => setR({ ...r, who: r.who.includes(w) ? r.who.filter((x: string) => x !== w) : [...r.who, w] })}>{w}</button>)}</div>
       <div className="k" style={{ margin: '4px 0 10px' }}>Which direction do you think it comes from?</div>
       <div className="rm-tags">{TERRITORIES.map((t) => <button key={t.id} className={r.guess === t.id ? 'on' : ''} onClick={() => setR({ ...r, guess: t.id })}>{t.name}</button>)}</div>
-      <div className="k">Should it get a next round?</div><div className="rm-tags">{['Yes', 'Maybe', 'No'].map(v => <button key={v} className={r.advance === v ? 'on' : ''} onClick={() => setR({ ...r, advance: v })}>{v}</button>)}</div>
+      <div className="k">{DEVELOP.q}</div><div className="rm-tags">{DEVELOP.opts.map(v => <button key={v} className={r.advance === v ? 'on' : ''} onClick={() => setR({ ...r, advance: v })}>{v}</button>)}</div>
       <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="Sum it up in one word" />
       <button className="rm-btn sticky" disabled={!ok} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
     </div>
