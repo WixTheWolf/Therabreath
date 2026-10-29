@@ -1,5 +1,6 @@
 import { EVENT, RUN } from '@/lib/content';
 import { joinToken } from '@/lib/auth';
+import LivePanel from './LivePanel';
 
 export const metadata = { title: 'Team page' };
 
@@ -13,7 +14,6 @@ export default async function Team() {
   const prebrief = `/survey/${PRACTICE}?k=${await joinToken(PRACTICE)}`;
   const items = [
     { href: '/host?code=REHEARSE', t: 'Rehearse the presentation', d: 'The whole presentation, running on a rehearsal session. Scan the code with your own phone to try the votes and the tasting. Nothing you do here reaches the live session.', c: '#8FE0F0' },
-    { href: '/host', t: 'Present on the day', d: 'The live presentation. Only the presenting laptop should open it, and only on November 9. Anything you click here shows up on everyone’s phones, so stick to the rehearsal until then.', c: '#9EF0C8' },
     { href: '/', t: 'The front door', d: 'What Church & Dwight sees after the password: the film, Ross’s brief, the four directions, the blind tasting, who they’ll meet and how the morning runs.', c: '#F4B860' },
     { href: prebrief, t: 'The pre-brief', d: 'The pre-read Ross sends out on November 3. This is a practice copy, so go ahead and try the questions. Answers here never reach the live session.', c: '#CFE8C6' },
     { href: '/host/run', t: 'The run sheet', d: 'The morning minute by minute, the 9:30 setup and what we still need to confirm. It prints on two pages.', c: '#C9B8FF' },
@@ -31,6 +31,7 @@ export default async function Team() {
         <div className="st-k">For The Flavor Factory team · {EVENT.date}</div>
         <h1>What we&rsquo;ve<br /><em>built.</em></h1>
         <p className="ws-lead">Everything for The Future of Freshness, in one place. Please keep this page and its link inside the team. The link is what opens the presentation and these pages, and Church &amp; Dwight’s password won’t. Until the day, stick to the rehearsal. On the day, open the live presentation on the presenting laptop only.</p>
+        <LivePanel code={EVENT.code} />
         <div className="ws-grid tm-grid">{items.map((x, i) => (
           <a key={x.t} href={x.href} className="ws-card tm-card" style={{ borderTopColor: x.c }}><span className="ws-code">{String(i + 1).padStart(2, '0')}</span><h2>{x.t}</h2><p>{x.d}</p></a>
         ))}</div>

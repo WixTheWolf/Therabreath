@@ -25,7 +25,8 @@ const hand = (live: Live, key: string, value: any) => live.send('pick', { key, v
 export const OBJ_HUE = [200, 32, 335, 262];
 const OBJ_IMG = ['/img/open-1-ice.webp', '/img/open-2-citrus.webp', '/img/open-3-bloom.webp', '/img/open-4-violet.webp'];
 export const when = (n: string) => { const bs = RUN.filter((b) => b.obj === n); return bs.length ? `${bs[0].t} to ${bs[bs.length - 1].end}` : ''; };
-export const directionName = (id: string) => DIRECTIONS.find((d) => d.id === id)?.label || id;
+// A sample's name lives in the session once it's known (see sealedClient.ts); until then a direction is its letter.
+export const directionName = (id: string, s?: SessionState | null) => s?.revealed?.samples[id]?.name || DIRECTIONS.find((d) => d.id === id)?.label || id;
 const dirColors = (id: string) => DIRECTIONS.find((x) => x.id === id)?.colors || ['#BFE9F2', '#6CC7DD'];
 
 export function ShowTitle() {
@@ -154,7 +155,7 @@ export function TastingLive({ s, step }: SceneProps) {
           <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}<span>Who it’s for</span></div>
           {rows.map((r) => (
             <div key={r.code} className="hrow">
-              <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? r.name : r.base}{step >= 2 && <small>{r.note}</small>}</span></div>
+              <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{step >= 2 && <small>{s.revealed?.samples[r.code]?.note}</small>}</span></div>
               {metrics.map(([m]) => <div key={m} className="hcell" style={cell(r.sum[m])}><b className="num">{r.sum[m] ? r.sum[m].toFixed(1) : ''}</b></div>)}
               <div className="hwho">{ranked(r.sum.who).slice(0, 3).map(([w, n]) => <span key={w}>{w} <b>{n}</b></span>)}</div>
             </div>
@@ -191,7 +192,7 @@ export function NextRound({ s, step }: SceneProps) {
             return (
               <button key={d.id} className={'orb' + (top ? ' top' : '') + (revealed && order.length && !top ? ' dim' : '')} style={{ ['--c1' as any]: c1, ['--c2' as any]: c2, ['--s' as any]: `${130 + (n / max) * 110}px`, ['--i' as any]: i }} data-nonav onClick={() => !live.still && hand(live, 'directions', { [d.id]: 1 })}>
                 <div className="orb-ball"><b className="num">{n}</b></div>
-                <span>{d.label}</span><small className="k">{d.sub}</small>
+                <span>{directionName(d.id, s)}</span><small className="k">{d.sub}</small>
                 {top && <em className="k">Number {rank + 1}</em>}
               </button>
             );
@@ -219,7 +220,7 @@ function Synced({ value, commit, area, ...rest }: { value: string; commit: (v: s
 // The concept cards: up to three, typed in as the room talks. Each box suggests the morning's own options.
 const GROWS = ['Loyal users', 'New consumers', 'Both'];
 export const FIELDS: { f: string; key: string; l: string; opts: string[] }[] = [
-  { f: 'dir', key: 'why', l: 'Starts from', opts: [...SAMPLES.map((x) => `${x.code}. ${x.name}`), ...PLATFORMS.map((t) => t.name)] },
+  { f: 'dir', key: 'why', l: 'Starts from', opts: [...SAMPLES.map((x) => `Sample ${x.code}`), ...PLATFORMS.map((t) => t.name)] },
   { f: 'who', key: 'segment', l: 'Who it’s for', opts: SURVEY.consumer.options },
   { f: 'when', key: 'occasion', l: 'When', opts: SURVEY.moment.options },
   { f: 'role', key: 'role', l: 'Role in the range', opts: ROLES.map((r) => r.id) },
@@ -250,7 +251,7 @@ export function ConceptCanvas({ s }: SceneProps) {
           );
         })}
       </div>
-      {FIELDS.map((x) => <datalist key={x.f} id={`ccv-${x.f}`}>{x.opts.map((o) => <option key={o} value={o} />)}</datalist>)}
+      {FIELDS.map((x) => <datalist key={x.f} id={`ccv-${x.f}`}>{(x.f === 'dir' ? [...SAMPLES.map((m) => `${m.code}. ${directionName(m.code, s)}`), ...x.opts.slice(SAMPLES.length)] : x.opts).map((o) => <option key={o} value={o} />)}</datalist>)}
     </div>
   );
 }
@@ -300,11 +301,11 @@ export function dayRows(s: SessionState) {
   const cs = teamConcepts(s);
   return cs.length
     ? cs.map((c) => ({ id: c.id, name: c.name, sub: c.segment ? `For ${c.segment}` : `Concept ${c.team}`, color: CONCEPT_COLORS[(c.team - 1) % 3] }))
-    : DIRECTIONS.map((d) => ({ id: d.id, name: d.label, sub: d.sub, color: d.colors[1] }));
+    : DIRECTIONS.map((d) => ({ id: d.id, name: directionName(d.id, s), sub: d.sub, color: d.colors[1] }));
 }
 export const markLabel = (s: SessionState, cell: string) => {
   const [id, m] = cell.split('|');
-  const name = teamConcepts(s).find((c) => c.id === id)?.name || DIRECTIONS.find((d) => d.id === id)?.label || id;
+  const name = teamConcepts(s).find((c) => c.id === id)?.name || directionName(id, s);
   return `${name} · ${m}`;
 };
 export function WhiteSpaceShow({ s, step }: SceneProps) {
@@ -360,7 +361,7 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
 // Now, Next, Later: typed in as the room decides, with the winners of the morning's votes in a tray above.
 export function Board({ s }: SceneProps) {
   const live = useLive();
-  const tray = [...ranked(tallyPick(s, 'concepts')).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => candidates(s).find((x) => x.id === id)?.name || id), ...ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => directionName(id))];
+  const tray = [...ranked(tallyPick(s, 'concepts')).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => candidates(s).find((x) => x.id === id)?.name || id), ...ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => directionName(id, s))];
   return (
     <div className="pad sb">
       <Enter i={0}><div className="k">Part 4 · Now, Next, Later</div></Enter>
@@ -387,11 +388,11 @@ export function decided(s: SessionState) {
   const items = candidates(s);
   return {
     signals: ranked(tallyPick(s, 'signals')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ t: SIGNALS.find((x) => x.id === id)?.title || id, n })),
-    directions: ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ t: directionName(id), n })),
+    directions: ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ t: directionName(id, s), n })),
     ideas: ranked(tallyPick(s, 'concepts')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ t: items.find((x) => x.id === id)?.name || id, n })),
     concepts: teamConcepts(s),
     plan: HORIZONS.flatMap((h) => lines(h.id).map((x) => ({ h: h.label, t: x }))),
-    tasting: SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code) })),
+    tasting: SAMPLES.map((x) => ({ ...x, name: directionName(x.code, s), sum: tasteSummary(s, x.code) })),
   };
 }
 

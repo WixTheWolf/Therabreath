@@ -97,7 +97,7 @@ function Chips({ s, me, p, room }: P) {
       <div className="rm-chipsleft">{Array.from({ length: room.total }, (_, i) => <i key={i} className={i < used ? 'used' : ''} />)}</div>
       <div className="rm-list">{DIRECTIONS.map((d) => { return (
         <div key={d.id} className="rm-chip" style={{ ['--c1' as any]: d.colors[0], ['--c2' as any]: d.colors[1] }}>
-          <span className="sw" /><b>{d.label}<small>{d.sub}</small></b>
+          <span className="sw" /><b>{s.revealed?.samples[d.id]?.name || d.label}<small>{d.sub}</small></b>
           <button onClick={() => add(d.id, -1)} disabled={!o[d.id] || v?.locked}>-</button><em className="num">{o[d.id] || 0}</em><button onClick={() => add(d.id, 1)} disabled={used >= room.total || v?.locked}>+</button>
         </div>
       ); })}</div>
@@ -119,8 +119,9 @@ function Taste({ s, me, p, step }: P) {
   return (
     <div className="rm-pad">
       <div className="rm-tabs">{SAMPLES.map((x) => <button key={x.code} className={(cur === x.code ? 'on' : '') + (done(x.code) ? ' done' : '')} onClick={() => setCur(x.code)}>{x.code}</button>)}</div>
-      <h1 className="h3">Sample {cur}{step >= 2 ? <span className="it"> · {SAMPLES.find((x) => x.code === cur)!.name}</span> : null}</h1>
-      {step >= 2 && <p>{SAMPLES.find(x => x.code === cur)?.note}</p>}
+      {/* the names arrive with the presentation's reveal, never before (see sealedClient.ts) */}
+      <h1 className="h3">Sample {cur}{s.revealed ? <span className="it"> · {s.revealed.samples[cur]?.name}</span> : null}</h1>
+      {s.revealed && <p>{s.revealed.samples[cur]?.note}</p>}
       {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess, before we tell you" /></label>}
       <Scale label="Appeal" v={r.appeal} set={(n) => setR({ ...r, appeal: n })} />
       <Scale label="Feels like TheraBreath" v={r.feels} set={(n) => setR({ ...r, feels: n })} />

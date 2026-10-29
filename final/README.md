@@ -101,7 +101,7 @@ npm start                   # PLAYBOOK_PASSWORD=... to rehearse with your own pa
 
 Offline at the venue: `npm run offline` serves the full app on the presenter laptop at `http://localhost:3000`.
 
-Rehearse: open `/host?code=REHEARSE` and join a phone or two from the QR code. Votes there never reach `FOF1109`. Wipe `FOF1109` from the Console the night before.
+Rehearse: open `/host?code=REHEARSE` and join a phone or two from the QR code. Votes there never reach `FOF1109`. Leave `FOF1109` alone the night before: it holds the pre-brief answers. A wipe from the Console clears the joins, votes, scores and board and keeps the pre-brief answers (`src/app/api/s/[code]/wipe/route.ts`).
 
 ## PDFs (`deliverables/`, not deployed)
 

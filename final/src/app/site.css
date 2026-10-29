@@ -336,6 +336,18 @@ html:has(.tm) { background: #0B1B2B; }
 .tm-card h3, .tm-card h2 { font-family: var(--serif); font-weight: 300; margin: 12px 0 8px; }
 .tm-card p { opacity: .78; }
 .tm-morning h2 { font-family: var(--serif); font-weight: 300; }
+/* The live session: its numbers, and a two-step way in, apart from the cards so it can't be opened by accident */
+.tm-live { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; margin-top: 42px; padding: 26px 30px; border: 1px solid rgba(255,255,255,.16); border-radius: 16px; background: rgba(255,255,255,.035); }
+.tm-live-stats { display: flex; flex-wrap: wrap; gap: 10px 32px; font-size: 19px; line-height: 1.4; }
+.tm-live-stats b { font-weight: 600; color: #8FE0F0; font-variant-numeric: tabular-nums; }
+.tm-live-go { display: inline-flex; align-items: center; min-height: 48px; padding: 0 24px; border: 0; border-radius: 12px; background: #F4B860; color: #0B1B2B; font: 600 18px/1 var(--sans); text-decoration: none; cursor: pointer; transition: background .2s, transform .2s; }
+.tm-live-go:hover { background: #F7CA82; transform: translateY(-1px); }
+.tm-live-go.armed { background: #F2677B; color: #0B1B2B; }
+.tm-live-go.armed:hover { background: #F58595; }
+.tm-live-confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; max-width: 760px; }
+.tm-live-confirm p { flex: 1 1 100%; margin: 0; font-size: 17px; line-height: 1.55; opacity: .86; }
+.tm-live-back { min-height: 48px; padding: 0 18px; border: 1px solid rgba(255,255,255,.28); border-radius: 12px; background: transparent; color: var(--fg); font: 500 17px/1 var(--sans); cursor: pointer; }
+.tm-live-back:hover { background: rgba(255,255,255,.06); }
 @media (max-width: 1100px) { .tm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 700px) { .tm-grid { grid-template-columns: 1fr; } .tm-top { padding-top: 110px; } }
 

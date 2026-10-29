@@ -10,6 +10,7 @@
 // Keys: right, space or click to go on; left to go back; F full screen; N talking points; B blank screen.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
+import { useSealed } from '@/lib/sealedClient';
 import { useScale, Clock } from './StageApp';
 import { SCENES, SECTIONS, Scene } from '@/lib/scenes';
 import type { SceneProps } from './scenes/ui';
@@ -39,6 +40,10 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const [still, setStill] = useState(false);
   const [mode, setMode] = useState<'' | 'results'>('');
   const { state: s, send, status } = useSession(code, { admin: true, interval: 500 });
+  // The team's own copy of the sample names (from the server): the scenes read them from the state they're handed, and the
+  // room learns them only from the reveal this window sends when the tasting flips the names.
+  const sealed = useSealed(s.revealed);
+  const sv = useMemo(() => (sealed.data && !s.revealed ? { ...s, revealed: sealed.data } : s), [s, sealed.data]);
   const told = Object.keys(s.survey || {}).length > 0;
   const n = SCENES.length;
   // "You told us" only appears once someone has answered the pre-brief. S (short) also skips the optional slides.
@@ -80,6 +85,12 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
     if (!hashed.current && s.scene > 0) setPos({ i: s.scene, step: s.step });
   }, [status.lastOk, still, mode, s.scene, s.step]);
   useEffect(() => { if (live.current && !still && !mode) send('goto', { scene: pos.i, step: pos.step }); }, [pos, still, mode, send]);
+  const revealSent = useRef(false);
+  useEffect(() => {
+    const ti = SCENES.findIndex((x) => x.id === 'tasting'); // the flip is build 2; skipping past the tasting reveals too
+    if (!live.current || still || mode || s.revealed || revealSent.current || !sealed.data) return;
+    if (pos.i > ti || (pos.i === ti && pos.step >= 2)) { revealSent.current = true; send('reveal', sealed.data); }
+  }, [pos, still, mode, s.revealed, sealed.data, send, status.lastOk]);
   useEffect(() => { history.replaceState(null, '', `${location.search}#${pos.i + 1}${pos.step ? '.' + pos.step : ''}`); }, [pos]);
 
   const posRef = useRef(pos); posRef.current = pos;
@@ -128,7 +139,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   // The export script (scripts/export-show.mjs) reads the run of show from here, and rehearsal scripts read the join link.
   useEffect(() => { Object.assign(window, { __join: joinUrl, __run: RUN, __show: SCENES.filter((_, i) => !skip(i)).map(({ id, title, builds, block, points, chapter, optional }) => ({ id, title, builds, block, optional: !!optional, notes: points, ch: chapter, at: SCENES.findIndex((x) => x.id === id) + 1 })) }); }, [skip, joinUrl]);
 
-  if (mode === 'results') return <Results s={s} code={code} />;
+  if (mode === 'results') return <Results s={sv} code={code} />;
 
   const click = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('input, textarea, button, label, video, a, [data-nonav]')) return;
@@ -147,7 +158,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
         <div className="stage-wrap" style={{ width: 1920 * scale, height: 1080 * scale }}>
           <div className="stage" data-theme={sc.theme} style={{ transform: `scale(${scale})` }}>
             <div className="stage-scene" key={sc.id} data-step={pos.step} data-scene={sc.id}>
-              {sc.id === 'film' ? <ShowFilm still={still} /> : View ? <View s={s} step={pos.step} scene={sc} idx={idx} ctx={ctx} send={send} /> : null}
+              {sc.id === 'film' ? <ShowFilm still={still} /> : View ? <View s={sv} step={pos.step} scene={sc} idx={idx} ctx={ctx} send={send} /> : null}
             </div>
             {sc.chapter >= 0 && <Chrome i={pos.i} clock={!still} />}
             {VOTING.has(sc.id) && joinUrl && <JoinCorner url={joinUrl} />}

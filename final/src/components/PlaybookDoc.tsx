@@ -63,7 +63,7 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
           ); })}</div>
           <h3>Blind tasting</h3>
           <table className="pb-table"><thead><tr><th>Sample</th><th>Appeal</th><th>Feels like TheraBreath</th><th>Newness</th><th>Tasters</th><th>Words / advance</th></tr></thead>
-            <tbody>{SAMPLES.map((x) => { const r = tasteSummary(s, x.code); return <tr key={x.code}><td><b>{x.code}</b> {x.name}</td><td>{r.n ? r.appeal.toFixed(1) : ''}</td><td>{r.n ? r.feels.toFixed(1) : ''}</td><td>{r.n ? r.newness.toFixed(1) : ''}</td><td>{r.n || ''}</td><td>{r.words.slice(0, 5).join(', ')}{Object.values(s.ratings[x.code] || {}).filter(v => v.advance === 'Yes').length > 0 && <small> · {Object.values(s.ratings[x.code] || {}).filter(v => v.advance === 'Yes').length} advance</small>}</td></tr>; })}</tbody></table>
+            <tbody>{SAMPLES.map((x) => { const r = tasteSummary(s, x.code); return <tr key={x.code}><td><b>{x.code}</b> {s.revealed?.samples[x.code]?.name || ''}</td><td>{r.n ? r.appeal.toFixed(1) : ''}</td><td>{r.n ? r.feels.toFixed(1) : ''}</td><td>{r.n ? r.newness.toFixed(1) : ''}</td><td>{r.n || ''}</td><td>{r.words.slice(0, 5).join(', ')}{Object.values(s.ratings[x.code] || {}).filter(v => v.advance === 'Yes').length > 0 && <small> · {Object.values(s.ratings[x.code] || {}).filter(v => v.advance === 'Yes').length} advance</small>}</td></tr>; })}</tbody></table>
           <p className="pb-note">Scores are 1 to 5, averaged across everyone who tasted.</p>
         </section>
 
@@ -80,7 +80,7 @@ export default function PlaybookDoc({ code, k }: { code: string; k: string }) {
             </div>
           )) : <p className="pb-lede">Team concepts appear here as the canvases fill.</p>}
           <h3>Seed cards the group backed</h3>
-          <ul className="pb-seeds">{items.filter((x) => x.kind === 'seed' && x.dots > 0).map((x) => { const sd = SEEDS.find((y) => y.id === x.id)!; return <li key={x.id}><b>{sd.name}</b> {sd.idea} <em>{x.dots} dots</em></li>; })}{!items.some((x) => x.kind === 'seed' && x.dots > 0) && <li className="ghost">None yet.</li>}</ul>
+          <ul className="pb-seeds">{items.filter((x) => x.kind === 'seed' && x.dots > 0).map((x) => { const sd = SEEDS.find((y) => y.id === x.id)!; return <li key={x.id}><b>{s.revealed?.samples[x.id.slice(-1)]?.name || sd.name}</b> {s.revealed?.samples[x.id.slice(-1)]?.note || sd.idea} <em>{x.dots} dots</em></li>; })}{!items.some((x) => x.kind === 'seed' && x.dots > 0) && <li className="ghost">None yet.</li>}</ul>
         </section>
 
         <section className="pb-page">

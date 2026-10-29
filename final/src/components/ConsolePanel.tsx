@@ -54,7 +54,7 @@ export default function ConsolePanel({ sess, ctx, compact }: { sess: any; ctx: C
   return (
     <div className={'console' + (compact ? ' compact' : '')} data-theme="b">
       <header className="cx-head">
-        <div><b>Console</b> <code>{ctx.code}</code></div>
+        <div><b>Console</b> <code>{ctx.code}</code> <span className="cx-survey">{Object.keys(s.survey).length} pre-brief {Object.keys(s.survey).length === 1 ? 'answer' : 'answers'} in</span></div>
         <div className={'cx-health ' + (status.online ? 'ok' : 'bad')}><i />{status.online ? `${status.store || 'store'} · ${status.rtt}ms${status.realtime ? ' · realtime' : ''}` : `offline${age ? ` ${age}s` : ''}`}</div>
       </header>
 
@@ -138,7 +138,7 @@ export default function ConsolePanel({ sess, ctx, compact }: { sess: any; ctx: C
           <a href={exportUrl('json')} target="_blank">JSON</a>
           <a href={exportUrl('csv')} target="_blank">CSV</a>
           <a href={`/playbook/${ctx.code}`} target="_blank">Playbook</a>
-          <button className="danger" onClick={async () => { if (prompt(`Type ${ctx.code} to wipe this session`) === ctx.code) { await fetch(`/api/s/${ctx.code}/wipe`, { method: 'POST' }); location.reload(); } }}>Wipe</button>
+          <button className="danger" onClick={async () => { if (prompt(`This clears the joins, votes, scores and the board in ${ctx.code}. Pre-brief answers are kept. Type ${ctx.code} to wipe it.`) === ctx.code) { await fetch(`/api/s/${ctx.code}/wipe`, { method: 'POST' }); location.reload(); } }}>Wipe</button>
         </div>
         <div className="cx-join">Join link: <code>{ctx.joinUrl}</code></div>
       </section>
@@ -163,7 +163,7 @@ function BenchPanel({ s, send, team }: { s: any; send: any; team: number }) {
   const OPTS: Record<string, string[]> = { stability: ['Low', 'Medium', 'High'], readiness: ['Proven today', 'Needs engineering', 'Screen first'], format: ['Rinse · Toothpaste', 'Strip · Gum · Sachet', 'Rinse · Spray', 'Kids rinse · Toothpaste'] };
   return (
     <section className="cx-box">
-      <div className="k">The Bench · Team {team} · {n} phones · built on {t.hero}</div>
+      <div className="k">The Bench · Team {team} · {n} phones · built on {t.hero || s.revealed?.heroes[t.id] || t.name}</div>
       <input className="cx-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Ryan's note for the next override (optional)" />
       {list.map((r) => (
         <div key={r.key} className="cx-item">

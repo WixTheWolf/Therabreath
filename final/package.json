@@ -9,7 +9,7 @@
     "start": "next start",
     "offline": "next build && next start -p 3000",
     "check:dashes": "node scripts/check-dashes.mjs ..",
-    "test": "node --experimental-strip-types --test tests/auth.test.mjs"
+    "test": "node --experimental-strip-types --test tests/auth.test.mjs tests/sealed.test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.2",

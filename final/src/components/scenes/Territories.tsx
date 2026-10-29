@@ -132,7 +132,7 @@ export function Tasting({ s, step }: SceneProps) {
         <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}<span>Who is it for</span></div>
         {rows.map((r) => (
           <div key={r.code} className="hrow">
-            <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{r.name}{step >= 2 && <small style={{ display: 'block', fontSize: 15 }}>{r.note} · {r.base}</small>}{step >= 2 && r.guessN > 0 && <em className="hguess">{r.right} of {r.guessN} guessed {TERRITORIES.find((x) => x.id === r.territory)?.name}</em>}</span></div>
+            <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{step >= 2 && <small style={{ display: 'block', fontSize: 15 }}>{s.revealed?.samples[r.code]?.note} · {r.base}</small>}{step >= 2 && r.guessN > 0 && <em className="hguess">{r.right} of {r.guessN} guessed {TERRITORIES.find((x) => x.id === r.territory)?.name}</em>}</span></div>
             {metrics.map(([k]) => <div key={k} className="hcell" style={cell(r.sum[k])}><b className="num">{r.sum[k] ? r.sum[k].toFixed(1) : ''}</b></div>)}
             <div className="hwho">{ranked(r.sum.who).slice(0, 3).map(([w, n]) => <span key={w}>{w} <b>{n}</b></span>)}</div>
           </div>
@@ -181,11 +181,11 @@ export function Matrix({ s, step }: SceneProps) {
       <R b={1} step={step} className="mx-legend">
         {[...pts].sort((x, y) => (y.sum.feels + y.sum.newness) - (x.sum.feels + x.sum.newness)).map((p) => (
           <div key={p.code} className={'mx-row' + (lead?.code === p.code ? ' lead' : '')} style={{ ['--c' as any]: p.c }}>
-            <i className="num">{p.code}</i><b>{p.name}</b>
+            <i className="num">{p.code}</i><b>{s.revealed?.samples[p.code]?.name || p.base}</b>
             <span>{p.sum.n ? <>Loyal {p.sum.feels.toFixed(1)} · New {p.sum.newness.toFixed(1)} · Appeal {p.sum.appeal.toFixed(1)}</> : 'Not scored'}</span>
           </div>
         ))}
-        <p className="mx-take">{lead ? <><b>{lead.name}</b> came closest to doing both. </> : null}Remember, these are this group’s first reactions, not consumer research.</p>
+        <p className="mx-take">{lead ? <><b>{s.revealed?.samples[lead.code]?.name || `Sample ${lead.code}`}</b> came closest to doing both. </> : null}Remember, these are this group’s first reactions, not consumer research.</p>
       </R>
     </div>
   );

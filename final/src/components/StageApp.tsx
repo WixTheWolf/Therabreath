@@ -1,6 +1,7 @@
 'use client';
 // STAGE: the room display. A fixed 1920 x 1080 canvas scaled to any screen.
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useSealed } from '@/lib/sealedClient';
 import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
 import { CHAPTERS } from '@/lib/content';
@@ -24,7 +25,9 @@ export function Clock() {
 
 export default function StageApp({ code, k, withConsole }: { code: string; k: string; withConsole?: boolean }) {
   const sess = useSession(code, { admin: true, interval: 400 });
-  const { state: s, send } = sess;
+  const { state: raw, send } = sess;
+  const sealed = useSealed(raw.revealed);
+  const s = useMemo(() => (sealed.data && !raw.revealed ? { ...raw, revealed: sealed.data } : raw), [raw, sealed.data]);
   const scale = useScale(withConsole ? 1920 + 560 : 1920, 1080);
   const scene = SCENES[s.scene];
   const [origin, setOrigin] = useState('');

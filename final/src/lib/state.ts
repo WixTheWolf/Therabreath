@@ -1,5 +1,6 @@
 // Event-sourced session. Every tap is an event; every surface folds the same log into the same state.
 import { SCENES } from './scenes';
+import type { Sealed } from './content';
 
 export type Ev = { id: string; seq?: number; t: number; kind: string; pid?: string; data?: any };
 
@@ -29,13 +30,14 @@ export type SessionState = {
   timer: { running: boolean; endsAt: number; remaining: number; total: number };
   spotlight: { kind: string; ref: string } | null;
   paper: boolean; blank: boolean; sound: boolean;
+  revealed: Sealed | null; // the sample names, once the presentation has flipped them (a `reveal` event, team only)
   lastEvent: number;
 };
 
 export const initialState = (): SessionState => ({
   scene: 0, step: 0, participants: {}, votes: {}, ratings: {}, guesses: {}, concepts: {},
   missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {}, board: {}, marks: [],
-  timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, paper: false, blank: false, sound: false, lastEvent: 0,
+  timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, paper: false, blank: false, sound: false, revealed: null, lastEvent: 0,
 });
 
 const vote = (s: SessionState, key: string) => (s.votes[key] ||= { open: false, locked: false, revealed: false, picks: {} });
@@ -76,6 +78,7 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'mark': s.marks = s.marks.includes(d.cell) ? s.marks.filter((x) => x !== d.cell) : [...s.marks, String(d.cell).slice(0, 120)]; break;
     case 'spotlight': s.spotlight = d.ref ? { kind: d.kind, ref: d.ref } : null; break;
     case 'flag': (s as any)[d.name] = !!d.value; break;
+    case 'reveal': if (d.samples) s.revealed = { samples: d.samples, heroes: d.heroes || {}, flavors: d.flavors || {} }; break;
     case 'wipe': return initialState();
   }
   return s;

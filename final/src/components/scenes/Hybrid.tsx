@@ -142,7 +142,7 @@ export function Clock({ s, step }: SceneProps) {
             <div className="num clock-time">{String(Math.floor(focus.h)).padStart(2, '0')}:{focus.h % 1 ? '30' : '00'}</div>
             <h2 className="h1">{focus.l}</h2>
             <p className="lede">{focus.need}</p>
-            <div className="clock-hero">{t.image && <img src={t.image} alt="" />}<div><span className="k">{t.name}</span><b className="h3 it">{t.hero}</b></div></div>
+            <div className="clock-hero">{t.image && <img src={t.image} alt="" />}<div><span className="k">{t.name}</span><b className="h3 it">{t.hero || s.revealed?.heroes[t.id] || t.name}</b></div></div>
           </div>
         )}
       </div>
@@ -169,7 +169,7 @@ export function BenchScene({ s, step }: SceneProps) {
       <div className="bench-head">
         <div className="k">The Bench · Team {team} of {MISSIONS.length} · {n} {n === 1 ? 'phone' : 'phones'} tuning{b?.locked ? ' · locked' : ''}</div>
         <h2 className="h2">{c?.name || mission?.title || `Team ${team}`}</h2>
-        <div className="bench-base"><span className="k">Platform</span> {t.name} · <span className="it">starting from {t.hero}</span></div>
+        <div className="bench-base"><span className="k">Platform</span> {t.name} · <span className="it">starting from {t.hero || s.revealed?.heroes[t.id] || t.name}</span></div>
       </div>
       <div className="bench-dials">
         {DIALS.map((d) => (

@@ -149,10 +149,10 @@ export const TERRITORIES: Territory[] = [
 // Four primary platforms for the November 9 live workshop. Legacy worlds remain available in the exploration tools.
 const platform = (id: string, changes: Partial<Territory>): Territory => ({ ...TERRITORIES.find(t => t.id === id)!, ...changes });
 export const PRIMARY_TERRITORIES: Territory[] = [
-  platform('warmcool', { n: 1, name: 'Plant-Powered Freshness', hero: 'Blossom Mint + Grove Mint', promise: 'Citrus, herbs and a touch of floral, always finished with mint.', why: 'We made two botanical samples for today, both in your Fresh Breath base.', flavors: ['Grapefruit, Lavender, Rose, Spearmint, Wintergreen', 'Spearmint, Peppermint, Wintergreen, Rosemary, Ylang Ylang, Eucalyptus'], signature: 'It opens bright with citrus and herbs and finishes on mint.', who: 'Adults who’d like something besides straight mint.', fit: 'Screen first', fitNote: 'These are still development samples, and we’re testing how well they hold up in the base.', image: '/img/botanicals.webp', palette: ['#F4D5E0', '#A0679F', '#7DB58A'], dark: false, arc: ['Citrus', 'Herbs and florals', 'Mint'], moment: 'Every day', q: 'Which of the two samples feels more like TheraBreath?', opts: ['Blossom Mint', 'Grove Mint', 'Both'] }),
+  platform('warmcool', { n: 1, name: 'Plant-Powered Freshness', hero: '', promise: 'Citrus, herbs and a touch of floral, always finished with mint.', why: 'We made two botanical samples for today, both in your Fresh Breath base.', flavors: [], signature: 'It opens bright with citrus and herbs and finishes on mint.', who: 'Adults who’d like something besides straight mint.', fit: 'Screen first', fitNote: 'These are still development samples, and we’re testing how well they hold up in the base.', image: '/img/botanicals.webp', palette: ['#F4D5E0', '#A0679F', '#7DB58A'], dark: false, arc: ['Citrus', 'Herbs and florals', 'Mint'], moment: 'Every day', q: 'Which of the two samples feels more like TheraBreath?', opts: ['Sample A', 'Sample B', 'Both'] }),
   platform('bright', { n: 2, name: 'Global Brightness', promise: 'Citrus people already know, taken somewhere new.', why: 'This one isn’t in today’s tasting, but we’d love your read on it.', signature: 'A burst of citrus, then a cold, clean finish.', who: 'Morning rinsers, people heading out the door, and markets outside the US.', fit: 'Screen first', fitNote: '', arc: ['Citrus', 'Yuzu', 'Cold and clean'], moment: 'Mornings and going out', q: 'Is there a citrus that could sit comfortably next to your mints?' }),
   platform('botanical', { n: 3, name: 'Modern Clean', promise: 'Green, gentle freshness for people who find mouthwash too strong.', why: 'It isn’t in today’s tasting, and it would need consumer testing in your base first.', signature: 'Soft cooling, a few green notes and a calm finish.', who: 'People who skip mouthwash because they find it too harsh.', fit: 'Screen first', fitNote: '', arc: ['Cucumber', 'Green tea', 'Soft cooling'], moment: 'Midday', q: 'Can a gentle flavor still feel fresh enough?' }),
-  platform('ladder', { n: 4, name: 'Next-Generation Kids', hero: 'Berry Blast + Mystery Flavor', promise: 'Flavors that make kids actually want to rinse.', why: 'We made two samples for kids today, both in your Kids base.', flavors: ['Blueberry, Blackberry, Raspberry', 'A mystery fruit blend'], signature: 'Fruity and fun. We especially want your read on the sweetness and the finish.', who: 'Kids and their parents. We haven’t tested it with consumers yet.', fit: 'Screen first', fitNote: 'Both are starting points rather than final picks.', image: '/img/kids-splash.webp', arc: ['Fruit', 'Sweet', 'Clean'], moment: 'Brushing and rinsing time', q: 'Would a mystery flavor get kids more interested in rinsing?', opts: ['Advance', 'Explore further', 'Not yet'] }),
+  platform('ladder', { n: 4, name: 'Next-Generation Kids', hero: '', promise: 'Flavors that make kids actually want to rinse.', why: 'We made two samples for kids today, both in your Kids base.', flavors: [], signature: 'Fruity and fun. We especially want your read on the sweetness and the finish.', who: 'Kids and their parents. We haven’t tested it with consumers yet.', fit: 'Screen first', fitNote: 'Both are starting points rather than final picks.', image: '/img/kids-splash.webp', arc: ['Fruit', 'Sweet', 'Clean'], moment: 'Brushing and rinsing time', q: 'Would a mystery flavor get kids more interested in rinsing?', opts: ['Advance', 'Explore further', 'Not yet'] }),
 ];
 
 // The freshness vocabulary: "Mint" is where it starts, not where it ends.
@@ -196,15 +196,20 @@ export const SAMPLES = [
   // status is client language: every sample is a development concept, nothing is a selection yet.
   // The lineup as Matt confirmed it on October 27, in tasting order. The Mystery Flavor is tasted last and the room
   // guesses its fruits before the reveal; `mystery` marks it everywhere (scorecard, deck, run sheet), not its letter.
-  { code: 'A', name: 'Blossom Mint', territory: 'warmcool', note: 'Grapefruit, Lavender, Rose, Spearmint, Wintergreen', base: 'Fresh Breath base', status: 'Botanical direction one', color: ['#F8CFDD', '#C77BA8'] },
-  { code: 'B', name: 'Grove Mint', territory: 'warmcool', note: 'Spearmint, Peppermint, Wintergreen, Rosemary, Ylang Ylang, Eucalyptus', base: 'Fresh Breath base', status: 'Botanical direction two', color: ['#CFEBD6', '#5E9F78'] },
-  { code: 'C', name: 'Berry Blast', territory: 'ladder', note: 'Blueberry, Blackberry, Raspberry', base: 'Kids base', status: 'Kids direction one', color: ['#D9C4F2', '#6E4BB8'] },
-  { code: 'D', name: 'Mystery Flavor', territory: 'ladder', note: 'Apple, Grape, Cherry, Strawberry, Lemon', base: 'Kids base', status: 'Kids direction two: guess the fruits', mystery: true, color: ['#FBE6A6', '#E39A35'] },
-];
+  // The names and what's in each sample stay sealed: they live in src/lib/sealed.ts, on the server, and reach the team's
+  // pages as props and the room's phones only when the presentation flips the names (a `reveal` event).
+  { code: 'A', territory: 'warmcool', base: 'Fresh Breath base', status: 'Botanical direction one', color: ['#F8CFDD', '#C77BA8'] },
+  { code: 'B', territory: 'warmcool', base: 'Fresh Breath base', status: 'Botanical direction two', color: ['#CFEBD6', '#5E9F78'] },
+  { code: 'C', territory: 'ladder', base: 'Kids base', status: 'Kids direction one', color: ['#D9C4F2', '#6E4BB8'] },
+  { code: 'D', territory: 'ladder', base: 'Kids base', status: 'Kids direction two: guess the fruits', mystery: true, color: ['#FBE6A6', '#E39A35'] },
+] as { code: string; territory: string; base: string; status: string; color: string[]; mystery?: boolean }[];
+// What sealed.ts holds, and what the reveal hands the room: each sample's name and what's in it, and each tasted
+// platform's sample pair.
+export type Sealed = { samples: Record<string, { name: string; note: string }>; heroes: Record<string, string>; flavors: Record<string, string[]> };
 export const MYSTERY = SAMPLES.find((x) => x.mystery)!.code;
 // What can get a next round: the four samples, then the two directions that are not in the tasting.
 export const DIRECTIONS = [
-  ...SAMPLES.map((x) => ({ id: x.code, label: x.name, sub: `Sample ${x.code}`, territory: x.territory, colors: x.color })),
+  ...SAMPLES.map((x) => ({ id: x.code, label: `Sample ${x.code}`, sub: x.base, territory: x.territory, colors: x.color })),
   ...PRIMARY_TERRITORIES.filter((t) => !SAMPLES.some((x) => x.territory === t.id)).map((t) => ({ id: t.id, label: t.name, sub: 'Not in the tasting', territory: t.id, colors: [t.palette[0], t.palette[1]] })),
 ];
 export const WHO_CHIPS = ['Gen Z', 'Want it milder', 'Families', '55+', 'Dry mouth', 'International', 'Me'];
@@ -226,7 +231,7 @@ export const MISSIONS = [
 
 export type Seed = { id: string; n: number; name: string; idea: string; territory: string; segment: string; occasion: string; format: string; horizon: 'Now' | 'Next' | 'Future'; incremental: string };
 export const SEEDS: Seed[] = SAMPLES.map((sample, i) => ({
-  id: 'workshop-' + sample.code, n: i + 1, name: sample.name, idea: sample.note,
+  id: 'workshop-' + sample.code, n: i + 1, name: `Sample ${sample.code}`, idea: sample.status,
   territory: sample.territory, segment: sample.territory === 'ladder' ? 'Kids and families' : 'Adults',
   occasion: 'To define together', format: sample.territory === 'ladder' ? 'Kids rinse' : 'Rinse',
   horizon: 'Next', incremental: 'Workshop hypothesis: define the consumer, portfolio role and reason to believe.',
