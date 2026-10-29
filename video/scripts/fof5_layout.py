@@ -61,19 +61,50 @@ rms = np.sqrt(np.convolve(x ** 2, np.ones(hop) / hop, mode="same"))[::hop] + 1e-
 db = 20 * np.log10(rms)
 quiet = db < -42
 def fr(t): return int(np.clip(t * 100, 0, len(db) - 1))
+silent = db < -45
+def silences(a, b, least=0.12):
+    """Runs of silence of at least `least` seconds inside [a, b], as (start, end) in seconds."""
+    out, s = [], None
+    for k in range(fr(a), fr(b) + 1):
+        if silent[k] and s is None: s = k
+        if s is not None and (not silent[k] or k == fr(b)):
+            e = k + 1 if silent[k] else k
+            if (e - s) / 100 >= least: out.append((s / 100, e / 100))
+            s = None
+    return out
+# The cut between two lines is the take's own pause between them: the longest silence near where the transcript puts
+# the boundary. Aligners place sentence ends loosely (Scribe hands the pause to the last word and can run 0.1 to 0.2 s
+# into the next sentence), so the transcript only says where to look; the audio says where to cut.
+LW = [[s for s in S if s[0] == li] for li in range(len(script))]
+cuts = []
+for li in range(len(script) - 1):
+    b, a = LW[li][-1][4], LW[li + 1][0][3]
+    runs = silences(min(a, b) - 0.6, max(a, b) + 0.3)
+    cuts.append(max(runs, key=lambda r: r[1] - r[0]) if runs else None)
 lines = []
 for li, ln in enumerate(script):
-    ws = [s for s in S if s[0] == li]
+    ws = LW[li]
     a, b = ws[0][3], ws[-1][4]
-    prev_end = lines[-1]["w1"] if lines else 0.0
-    nxt = next((s[3] for s in S if s[0] == li + 1), len(x) / 16000)
-    k = fr(a)
-    while k > fr(max(prev_end, a - 0.4)) and not quiet[k]: k -= 1
-    src0 = max(prev_end + 0.01, k / 100 - 0.03)
-    k = fr(b)
-    while k < fr(min(nxt - 0.02, b + 0.6)) and not all(quiet[k:k + 6]): k += 1
-    src1 = min(nxt - 0.02, k / 100 + 0.08)
-    lines.append({"id": ln["id"], "only": ln.get("only"), "gap": ln["gap"], "src0": round(src0, 3), "src1": round(src1, 3), "w0": a, "w1": b, "words": ws})
+    before = cuts[li - 1] if li > 0 else None
+    after = cuts[li] if li < len(cuts) else None
+    if before:
+        src0 = before[1] - 0.03
+    else:  # the first line: back from the first word to the silence before it
+        k = fr(a)
+        while k > fr(a - 0.4) and not quiet[k]: k -= 1
+        src0 = max(0.0, k / 100 - 0.03)
+    if after:
+        src1 = after[0] + 0.08
+    else:  # the last line: forward from the last word to the silence after it
+        k = fr(b)
+        while k > fr(a) and quiet[k]: k -= 1
+        while k < fr(b + 0.6) and not all(quiet[k:k + 6]): k += 1
+        src1 = k / 100 + 0.08
+    # words keep the transcript's order and spacing, held inside the line's voice
+    ws[0][3] = min(src0 + 0.03 if before else max(ws[0][3], src0 + 0.03), ws[0][4])  # her first word starts where the pause ends
+    ws[-1][4] = max(min(ws[-1][4], src1), ws[-1][3])
+    for s in ws: s[3], s[4] = min(max(s[3], src0), src1), min(max(s[4], src0), src1)
+    lines.append({"id": ln["id"], "only": ln.get("only"), "gap": ln["gap"], "src0": round(src0, 3), "src1": round(src1, 3), "w0": ws[0][3], "w1": ws[-1][4], "words": ws})
 
 # ---- film time, per ending ----
 def vtt_time(t):

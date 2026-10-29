@@ -105,13 +105,13 @@ env = np.clip(smooth(smooth(speech, kk), kk), 0, 1)
 duck = 0.58 - 0.40 * env
 tail = np.ones(N, np.float32); i0 = int((DUR - 2.6) * SR); tail[i0:] = np.linspace(1, 0, N - i0)
 music *= (duck * tail)[:, None]
-# and wherever the score swells under her anyway (the lift at 36 s), it steps down to stay 8 dB under the voice
+# and wherever the score swells under her anyway (the lift at 36 s, the finale under the title), it steps down to stay 9 dB under the voice
 VO_GAIN = 2.8
 win = int(0.25 * SR)
 rv = np.sqrt(smooth((vo[:, 0] * VO_GAIN) ** 2, win)) + 1e-6
 rm = np.sqrt(smooth(music[:, 0] ** 2, win)) + 1e-6
-guard = np.where(speech > 0, np.minimum(1.0, rv * 10 ** (-8 / 20) / rm), 1.0)
-guard = np.maximum(smooth(smooth(guard, win), win), 0.25).astype(np.float32)
+guard = np.where(speech > 0, np.minimum(1.0, rv * 10 ** (-9 / 20) / rm), 1.0)
+guard = np.maximum(smooth(guard, win), 0.16).astype(np.float32)
 music *= guard[:, None]
 
 # ---- Effects ----
@@ -199,8 +199,8 @@ cue(DING, noon + 0.4, 0.5)
 for kx in range(3): cue(POP, three2 + kx * 0.12, 0.35, 0.85 + kx * 0.1)
 for kx in range(3): cue(POP, owner + kx * 0.1, 0.18, 1.3)
 for kx in range(3): cue(POP, sample + kx * 0.1, 0.18, 1.15)
-for kx in range(8): cue(POP, every + kx * 0.05, 0.1, 1.4 + kx * 0.03)
-cue(FLIP, writeup - 0.1, 0.3); cue(POPB, writeup + 0.35, 0.34, 0.85)
+for kx in range(8): cue(POP, every + kx * 0.05, 0.07, 1.4 + kx * 0.03)
+cue(FLIP, writeup - 0.1, 0.12); cue(POPB, writeup + 0.35, 0.13, 0.85)  # under "write-up", so kept low
 for kx in range(8): cue(WHOOSHB, pb + 0.35 + kx * 0.07, 0.06, 1.2 + rnd(kx) * 0.3)
 for kx in range(8): cue(POP, pb + 0.95 + kx * 0.07, 0.12, 1.5)
 cue(WHOOSHB, at("ask") - 0.65, 0.45)
@@ -215,7 +215,7 @@ cue(WHOOSH, phw - 0.2, 0.3); cue(POP, phw + 0.5, 0.3, 1.0); cue(DINGS, phw + 0.9
 cue(RISER, at("title") - 0.5 - 2.9, 0.18)
 # 9. the title and end card
 t0 = at("title") - 0.5; end = LINES["see"]["end"] + 0.35
-cue(IMPACT, t0, 0.5); cue(DING, tw("freshness", t0) + 0.3, 0.3, 0.75)
+cue(IMPACT, t0, 0.38); cue(DING, tw("freshness", t0) + 0.3, 0.3, 0.75)
 cue(WHOOSH, end - 0.1, 0.2); cue(DINGS, end + 0.3, 0.7, 0.7); cue(IMPACTB, end + 0.3, 0.12)
 
 cache = {}
@@ -226,7 +226,7 @@ for path, t, gain, win, p in CUES:
     x = pitch(fade(x.copy(), 0.004, 0.05), p)
     place(sfx, x, t, gain)
 
-sfx *= (1 - 0.5 * env)[:, None]
+sfx *= (1 - 0.62 * env)[:, None]
 mix = music + vo * VO_GAIN + sfx
 w = int(0.25 * SR); worst = []
 for i in range(0, N - w, w):

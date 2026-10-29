@@ -1,0 +1,1408 @@
+{
+"words": [
+{
+"text": "TheraBreath",
+"start": 0.099,
+"end": 0.659,
+"type": "word"
+},
+{
+"text": "took",
+"start": 0.739,
+"end": 0.899,
+"type": "word"
+},
+{
+"text": "the",
+"start": 1.019,
+"end": 1.139,
+"type": "word"
+},
+{
+"text": "burn",
+"start": 1.339,
+"end": 1.539,
+"type": "word"
+},
+{
+"text": "out",
+"start": 1.619,
+"end": 1.699,
+"type": "word"
+},
+{
+"text": "of",
+"start": 1.739,
+"end": 1.779,
+"type": "word"
+},
+{
+"text": "mouthwash.",
+"start": 1.859,
+"end": 2.739,
+"type": "word"
+},
+{
+"text": "The",
+"start": 2.819,
+"end": 2.899,
+"type": "word"
+},
+{
+"text": "next",
+"start": 2.979,
+"end": 3.139,
+"type": "word"
+},
+{
+"text": "job",
+"start": 3.219,
+"end": 3.619,
+"type": "word"
+},
+{
+"text": "is",
+"start": 3.699,
+"end": 3.779,
+"type": "word"
+},
+{
+"text": "giving",
+"start": 3.859,
+"end": 4.099,
+"type": "word"
+},
+{
+"text": "more",
+"start": 4.219,
+"end": 4.339,
+"type": "word"
+},
+{
+"text": "people",
+"start": 4.499,
+"end": 4.659,
+"type": "word"
+},
+{
+"text": "a",
+"start": 4.819,
+"end": 4.859,
+"type": "word"
+},
+{
+"text": "reason",
+"start": 4.899,
+"end": 5.139,
+"type": "word"
+},
+{
+"text": "to",
+"start": 5.219,
+"end": 5.299,
+"type": "word"
+},
+{
+"text": "want",
+"start": 5.379,
+"end": 5.539,
+"type": "word"
+},
+{
+"text": "it.",
+"start": 5.619,
+"end": 6.179,
+"type": "word"
+},
+{
+"text": "Sixty-five",
+"start": 6.299,
+"end": 6.819,
+"type": "word"
+},
+{
+"text": "of",
+"start": 6.899,
+"end": 6.979,
+"type": "word"
+},
+{
+"text": "every",
+"start": 7.059,
+"end": 7.299,
+"type": "word"
+},
+{
+"text": "hundred",
+"start": 7.339,
+"end": 7.619,
+"type": "word"
+},
+{
+"text": "American",
+"start": 7.819,
+"end": 8.019,
+"type": "word"
+},
+{
+"text": "households",
+"start": 8.099,
+"end": 8.579,
+"type": "word"
+},
+{
+"text": "buy",
+"start": 8.659,
+"end": 8.739,
+"type": "word"
+},
+{
+"text": "mouthwash.",
+"start": 8.819,
+"end": 9.779,
+"type": "word"
+},
+{
+"text": "Fourteen",
+"start": 9.899,
+"end": 10.339,
+"type": "word"
+},
+{
+"text": "buy",
+"start": 10.419,
+"end": 10.579,
+"type": "word"
+},
+{
+"text": "TheraBreath,",
+"start": 10.659,
+"end": 11.379,
+"type": "word"
+},
+{
+"text": "which",
+"start": 11.459,
+"end": 11.539,
+"type": "word"
+},
+{
+"text": "leaves",
+"start": 11.619,
+"end": 11.859,
+"type": "word"
+},
+{
+"text": "eighty-six",
+"start": 11.939,
+"end": 12.499,
+"type": "word"
+},
+{
+"text": "who",
+"start": 12.579,
+"end": 12.659,
+"type": "word"
+},
+{
+"text": "don't",
+"start": 12.699,
+"end": 12.899,
+"type": "word"
+},
+{
+"text": "buy",
+"start": 12.979,
+"end": 13.059,
+"type": "word"
+},
+{
+"text": "it",
+"start": 13.139,
+"end": 13.219,
+"type": "word"
+},
+{
+"text": "yet.",
+"start": 13.339,
+"end": 13.859,
+"type": "word"
+},
+{
+"text": "In",
+"start": 13.939,
+"end": 14.019,
+"type": "word"
+},
+{
+"text": "July,",
+"start": 14.259,
+"end": 14.539,
+"type": "word"
+},
+{
+"text": "you",
+"start": 14.579,
+"end": 14.659,
+"type": "word"
+},
+{
+"text": "came",
+"start": 14.739,
+"end": 14.819,
+"type": "word"
+},
+{
+"text": "out",
+"start": 14.899,
+"end": 14.979,
+"type": "word"
+},
+{
+"text": "to",
+"start": 15.059,
+"end": 15.139,
+"type": "word"
+},
+{
+"text": "Norco",
+"start": 15.259,
+"end": 15.539,
+"type": "word"
+},
+{
+"text": "and",
+"start": 15.619,
+"end": 15.699,
+"type": "word"
+},
+{
+"text": "watched",
+"start": 15.819,
+"end": 16.019,
+"type": "word"
+},
+{
+"text": "us",
+"start": 16.099,
+"end": 16.179,
+"type": "word"
+},
+{
+"text": "make",
+"start": 16.259,
+"end": 16.339,
+"type": "word"
+},
+{
+"text": "flavor.",
+"start": 16.419,
+"end": 17.179,
+"type": "word"
+},
+{
+"text": "Then",
+"start": 17.219,
+"end": 17.459,
+"type": "word"
+},
+{
+"text": "Ross",
+"start": 17.539,
+"end": 17.779,
+"type": "word"
+},
+{
+"text": "invited",
+"start": 17.859,
+"end": 18.099,
+"type": "word"
+},
+{
+"text": "us",
+"start": 18.179,
+"end": 18.259,
+"type": "word"
+},
+{
+"text": "to",
+"start": 18.339,
+"end": 18.419,
+"type": "word"
+},
+{
+"text": "Princeton,",
+"start": 18.459,
+"end": 19.139,
+"type": "word"
+},
+{
+"text": "with",
+"start": 19.219,
+"end": 19.299,
+"type": "word"
+},
+{
+"text": "this",
+"start": 19.419,
+"end": 19.539,
+"type": "word"
+},
+{
+"text": "goal.",
+"start": 19.659,
+"end": 20.259,
+"type": "word"
+},
+{
+"text": "Our",
+"start": 20.344,
+"end": 20.584,
+"type": "word"
+},
+{
+"text": "goal,",
+"start": 20.664,
+"end": 21.144,
+"type": "word"
+},
+{
+"text": "as",
+"start": 21.224,
+"end": 21.304,
+"type": "word"
+},
+{
+"text": "R&D,",
+"start": 21.384,
+"end": 22.184,
+"type": "word"
+},
+{
+"text": "is",
+"start": 22.264,
+"end": 22.344,
+"type": "word"
+},
+{
+"text": "to",
+"start": 22.424,
+"end": 22.504,
+"type": "word"
+},
+{
+"text": "drive",
+"start": 22.664,
+"end": 22.824,
+"type": "word"
+},
+{
+"text": "incremental",
+"start": 23.064,
+"end": 23.384,
+"type": "word"
+},
+{
+"text": "growth",
+"start": 23.464,
+"end": 23.784,
+"type": "word"
+},
+{
+"text": "through",
+"start": 23.904,
+"end": 24.024,
+"type": "word"
+},
+{
+"text": "flavor",
+"start": 24.104,
+"end": 24.344,
+"type": "word"
+},
+{
+"text": "innovation",
+"start": 24.424,
+"end": 25.064,
+"type": "word"
+},
+{
+"text": "by",
+"start": 25.144,
+"end": 25.224,
+"type": "word"
+},
+{
+"text": "identifying",
+"start": 25.304,
+"end": 26.104,
+"type": "word"
+},
+{
+"text": "and",
+"start": 26.144,
+"end": 26.184,
+"type": "word"
+},
+{
+"text": "developing",
+"start": 26.264,
+"end": 26.824,
+"type": "word"
+},
+{
+"text": "new",
+"start": 26.904,
+"end": 27.064,
+"type": "word"
+},
+{
+"text": "flavor",
+"start": 27.144,
+"end": 27.464,
+"type": "word"
+},
+{
+"text": "experiences",
+"start": 27.544,
+"end": 28.264,
+"type": "word"
+},
+{
+"text": "that",
+"start": 28.504,
+"end": 28.664,
+"type": "word"
+},
+{
+"text": "both",
+"start": 28.784,
+"end": 28.904,
+"type": "word"
+},
+{
+"text": "strengthen",
+"start": 28.984,
+"end": 29.304,
+"type": "word"
+},
+{
+"text": "our",
+"start": 29.384,
+"end": 29.464,
+"type": "word"
+},
+{
+"text": "appeal",
+"start": 29.584,
+"end": 29.864,
+"type": "word"
+},
+{
+"text": "with",
+"start": 29.944,
+"end": 30.024,
+"type": "word"
+},
+{
+"text": "existing",
+"start": 30.264,
+"end": 30.504,
+"type": "word"
+},
+{
+"text": "loyal",
+"start": 30.584,
+"end": 30.824,
+"type": "word"
+},
+{
+"text": "users",
+"start": 30.904,
+"end": 31.304,
+"type": "word"
+},
+{
+"text": "and",
+"start": 31.544,
+"end": 31.864,
+"type": "word"
+},
+{
+"text": "create",
+"start": 32.024,
+"end": 32.184,
+"type": "word"
+},
+{
+"text": "opportunities",
+"start": 32.344,
+"end": 32.904,
+"type": "word"
+},
+{
+"text": "to",
+"start": 32.984,
+"end": 33.064,
+"type": "word"
+},
+{
+"text": "attract",
+"start": 33.144,
+"end": 33.464,
+"type": "word"
+},
+{
+"text": "new",
+"start": 33.544,
+"end": 33.704,
+"type": "word"
+},
+{
+"text": "consumers",
+"start": 33.904,
+"end": 34.264,
+"type": "word"
+},
+{
+"text": "to",
+"start": 34.304,
+"end": 34.344,
+"type": "word"
+},
+{
+"text": "the",
+"start": 34.424,
+"end": 34.464,
+"type": "word"
+},
+{
+"text": "franchise.",
+"start": 34.504,
+"end": 35.384,
+"type": "word"
+},
+{
+"text": "So",
+"start": 35.769,
+"end": 35.784,
+"type": "word"
+},
+{
+"text": "on",
+"start": 35.864,
+"end": 35.944,
+"type": "word"
+},
+{
+"text": "Monday,",
+"start": 36.024,
+"end": 36.384,
+"type": "word"
+},
+{
+"text": "November",
+"start": 36.424,
+"end": 36.744,
+"type": "word"
+},
+{
+"text": "ninth,",
+"start": 36.904,
+"end": 37.304,
+"type": "word"
+},
+{
+"text": "from",
+"start": 37.424,
+"end": 37.544,
+"type": "word"
+},
+{
+"text": "ten",
+"start": 37.624,
+"end": 37.704,
+"type": "word"
+},
+{
+"text": "to",
+"start": 37.784,
+"end": 37.944,
+"type": "word"
+},
+{
+"text": "noon",
+"start": 38.024,
+"end": 38.104,
+"type": "word"
+},
+{
+"text": "in",
+"start": 38.184,
+"end": 38.224,
+"type": "word"
+},
+{
+"text": "the",
+"start": 38.264,
+"end": 38.344,
+"type": "word"
+},
+{
+"text": "Darwin",
+"start": 38.424,
+"end": 38.664,
+"type": "word"
+},
+{
+"text": "room,",
+"start": 38.744,
+"end": 39.144,
+"type": "word"
+},
+{
+"text": "we'll",
+"start": 39.184,
+"end": 39.384,
+"type": "word"
+},
+{
+"text": "work",
+"start": 39.464,
+"end": 39.544,
+"type": "word"
+},
+{
+"text": "through",
+"start": 39.664,
+"end": 39.784,
+"type": "word"
+},
+{
+"text": "his",
+"start": 39.864,
+"end": 39.944,
+"type": "word"
+},
+{
+"text": "four",
+"start": 40.024,
+"end": 40.184,
+"type": "word"
+},
+{
+"text": "objectives",
+"start": 40.384,
+"end": 40.744,
+"type": "word"
+},
+{
+"text": "together.",
+"start": 40.824,
+"end": 41.544,
+"type": "word"
+},
+{
+"text": "It's",
+"start": 41.584,
+"end": 41.704,
+"type": "word"
+},
+{
+"text": "a",
+"start": 41.744,
+"end": 41.784,
+"type": "word"
+},
+{
+"text": "working",
+"start": 41.944,
+"end": 42.104,
+"type": "word"
+},
+{
+"text": "session,",
+"start": 42.184,
+"end": 42.664,
+"type": "word"
+},
+{
+"text": "not",
+"start": 42.744,
+"end": 42.824,
+"type": "word"
+},
+{
+"text": "a",
+"start": 42.864,
+"end": 42.904,
+"type": "word"
+},
+{
+"text": "pitch.",
+"start": 43.064,
+"end": 43.624,
+"type": "word"
+},
+{
+"text": "You'll",
+"start": 43.664,
+"end": 43.864,
+"type": "word"
+},
+{
+"text": "pick",
+"start": 43.944,
+"end": 44.024,
+"type": "word"
+},
+{
+"text": "the",
+"start": 44.104,
+"end": 44.184,
+"type": "word"
+},
+{
+"text": "three",
+"start": 44.264,
+"end": 44.424,
+"type": "word"
+},
+{
+"text": "trends",
+"start": 44.504,
+"end": 44.744,
+"type": "word"
+},
+{
+"text": "that",
+"start": 44.824,
+"end": 44.904,
+"type": "word"
+},
+{
+"text": "matter",
+"start": 44.984,
+"end": 45.224,
+"type": "word"
+},
+{
+"text": "most,",
+"start": 45.384,
+"end": 45.784,
+"type": "word"
+},
+{
+"text": "then",
+"start": 45.864,
+"end": 46.104,
+"type": "word"
+},
+{
+"text": "taste",
+"start": 46.211,
+"end": 46.424,
+"type": "word"
+},
+{
+"text": "four",
+"start": 46.504,
+"end": 46.584,
+"type": "word"
+},
+{
+"text": "samples",
+"start": 46.744,
+"end": 47.064,
+"type": "word"
+},
+{
+"text": "we",
+"start": 47.144,
+"end": 47.224,
+"type": "word"
+},
+{
+"text": "made",
+"start": 47.304,
+"end": 47.464,
+"type": "word"
+},
+{
+"text": "in",
+"start": 47.504,
+"end": 47.544,
+"type": "word"
+},
+{
+"text": "your",
+"start": 47.624,
+"end": 47.784,
+"type": "word"
+},
+{
+"text": "Fresh",
+"start": 47.904,
+"end": 48.024,
+"type": "word"
+},
+{
+"text": "Breath",
+"start": 48.104,
+"end": 48.344,
+"type": "word"
+},
+{
+"text": "and",
+"start": 48.384,
+"end": 48.424,
+"type": "word"
+},
+{
+"text": "Kids",
+"start": 48.584,
+"end": 48.744,
+"type": "word"
+},
+{
+"text": "bases.",
+"start": 48.824,
+"end": 49.544,
+"type": "word"
+},
+{
+"text": "They're",
+"start": 49.584,
+"end": 49.704,
+"type": "word"
+},
+{
+"text": "blind,",
+"start": 49.904,
+"end": 50.264,
+"type": "word"
+},
+{
+"text": "and",
+"start": 50.304,
+"end": 50.344,
+"type": "word"
+},
+{
+"text": "you'll",
+"start": 50.384,
+"end": 50.584,
+"type": "word"
+},
+{
+"text": "score",
+"start": 50.704,
+"end": 50.824,
+"type": "word"
+},
+{
+"text": "them",
+"start": 50.864,
+"end": 50.904,
+"type": "word"
+},
+{
+"text": "on",
+"start": 50.984,
+"end": 51.064,
+"type": "word"
+},
+{
+"text": "your",
+"start": 51.144,
+"end": 51.224,
+"type": "word"
+},
+{
+"text": "phone.",
+"start": 51.344,
+"end": 51.864,
+"type": "word"
+},
+{
+"text": "By",
+"start": 51.904,
+"end": 51.944,
+"type": "word"
+},
+{
+"text": "noon,",
+"start": 52.104,
+"end": 52.504,
+"type": "word"
+},
+{
+"text": "we'd",
+"start": 52.544,
+"end": 52.664,
+"type": "word"
+},
+{
+"text": "like",
+"start": 52.744,
+"end": 52.824,
+"type": "word"
+},
+{
+"text": "to",
+"start": 52.904,
+"end": 52.944,
+"type": "word"
+},
+{
+"text": "agree",
+"start": 52.984,
+"end": 53.304,
+"type": "word"
+},
+{
+"text": "on",
+"start": 53.344,
+"end": 53.384,
+"type": "word"
+},
+{
+"text": "up",
+"start": 53.464,
+"end": 53.544,
+"type": "word"
+},
+{
+"text": "to",
+"start": 53.624,
+"end": 53.784,
+"type": "word"
+},
+{
+"text": "three",
+"start": 53.864,
+"end": 53.944,
+"type": "word"
+},
+{
+"text": "directions,",
+"start": 54.024,
+"end": 54.824,
+"type": "word"
+},
+{
+"text": "each",
+"start": 54.904,
+"end": 55.064,
+"type": "word"
+},
+{
+"text": "with",
+"start": 55.144,
+"end": 55.224,
+"type": "word"
+},
+{
+"text": "an",
+"start": 55.264,
+"end": 55.304,
+"type": "word"
+},
+{
+"text": "owner",
+"start": 55.384,
+"end": 55.704,
+"type": "word"
+},
+{
+"text": "and",
+"start": 55.744,
+"end": 55.784,
+"type": "word"
+},
+{
+"text": "a",
+"start": 55.864,
+"end": 55.904,
+"type": "word"
+},
+{
+"text": "next",
+"start": 55.944,
+"end": 56.184,
+"type": "word"
+},
+{
+"text": "sample,",
+"start": 56.384,
+"end": 56.824,
+"type": "word"
+},
+{
+"text": "and",
+"start": 56.904,
+"end": 56.984,
+"type": "word"
+},
+{
+"text": "we'll",
+"start": 57.037,
+"end": 57.144,
+"type": "word"
+},
+{
+"text": "send",
+"start": 57.264,
+"end": 57.384,
+"type": "word"
+},
+{
+"text": "everyone",
+"start": 57.584,
+"end": 57.784,
+"type": "word"
+},
+{
+"text": "the",
+"start": 57.811,
+"end": 57.837,
+"type": "word"
+},
+{
+"text": "write-up,",
+"start": 57.864,
+"end": 58.504,
+"type": "word"
+},
+{
+"text": "The",
+"start": 58.544,
+"end": 58.584,
+"type": "word"
+},
+{
+"text": "Flavor",
+"start": 58.744,
+"end": 58.984,
+"type": "word"
+},
+{
+"text": "Playbook.",
+"start": 59.144,
+"end": 59.944,
+"type": "word"
+},
+{
+"text": "Before",
+"start": 60.104,
+"end": 60.264,
+"type": "word"
+},
+{
+"text": "you",
+"start": 60.344,
+"end": 60.424,
+"type": "word"
+},
+{
+"text": "come,",
+"start": 60.544,
+"end": 60.904,
+"type": "word"
+},
+{
+"text": "please",
+"start": 61.024,
+"end": 61.144,
+"type": "word"
+},
+{
+"text": "answer",
+"start": 61.224,
+"end": 61.464,
+"type": "word"
+},
+{
+"text": "the",
+"start": 61.584,
+"end": 61.704,
+"type": "word"
+},
+{
+"text": "four",
+"start": 61.784,
+"end": 61.864,
+"type": "word"
+},
+{
+"text": "quick",
+"start": 62.024,
+"end": 62.184,
+"type": "word"
+},
+{
+"text": "questions",
+"start": 62.384,
+"end": 62.584,
+"type": "word"
+},
+{
+"text": "on",
+"start": 62.664,
+"end": 62.744,
+"type": "word"
+},
+{
+"text": "this",
+"start": 62.864,
+"end": 62.984,
+"type": "word"
+},
+{
+"text": "page,",
+"start": 63.144,
+"end": 63.464,
+"type": "word"
+},
+{
+"text": "because",
+"start": 63.624,
+"end": 63.784,
+"type": "word"
+},
+{
+"text": "everyone's",
+"start": 63.864,
+"end": 64.264,
+"type": "word"
+},
+{
+"text": "answers",
+"start": 64.464,
+"end": 64.664,
+"type": "word"
+},
+{
+"text": "open",
+"start": 64.744,
+"end": 64.904,
+"type": "word"
+},
+{
+"text": "the",
+"start": 64.984,
+"end": 65.064,
+"type": "word"
+},
+{
+"text": "morning.",
+"start": 65.144,
+"end": 65.757,
+"type": "word"
+},
+{
+"text": "And",
+"start": 65.811,
+"end": 65.864,
+"type": "word"
+},
+{
+"text": "bring",
+"start": 65.944,
+"end": 66.024,
+"type": "word"
+},
+{
+"text": "your",
+"start": 66.104,
+"end": 66.184,
+"type": "word"
+},
+{
+"text": "phone.",
+"start": 66.344,
+"end": 66.984,
+"type": "word"
+},
+{
+"text": "Before",
+"start": 67.144,
+"end": 67.304,
+"type": "word"
+},
+{
+"text": "you",
+"start": 67.384,
+"end": 67.464,
+"type": "word"
+},
+{
+"text": "come,",
+"start": 67.584,
+"end": 67.944,
+"type": "word"
+},
+{
+"text": "please",
+"start": 68.064,
+"end": 68.184,
+"type": "word"
+},
+{
+"text": "answer",
+"start": 68.264,
+"end": 68.504,
+"type": "word"
+},
+{
+"text": "the",
+"start": 68.584,
+"end": 68.744,
+"type": "word"
+},
+{
+"text": "four",
+"start": 68.864,
+"end": 68.984,
+"type": "word"
+},
+{
+"text": "quick",
+"start": 69.064,
+"end": 69.224,
+"type": "word"
+},
+{
+"text": "questions",
+"start": 69.424,
+"end": 69.624,
+"type": "word"
+},
+{
+"text": "in",
+"start": 69.704,
+"end": 69.784,
+"type": "word"
+},
+{
+"text": "your",
+"start": 69.864,
+"end": 69.944,
+"type": "word"
+},
+{
+"text": "pre-brief,",
+"start": 70.024,
+"end": 70.664,
+"type": "word"
+},
+{
+"text": "because",
+"start": 70.784,
+"end": 70.904,
+"type": "word"
+},
+{
+"text": "everyone's",
+"start": 70.984,
+"end": 71.384,
+"type": "word"
+},
+{
+"text": "answers",
+"start": 71.464,
+"end": 71.864,
+"type": "word"
+},
+{
+"text": "open",
+"start": 71.944,
+"end": 72.104,
+"type": "word"
+},
+{
+"text": "the",
+"start": 72.184,
+"end": 72.264,
+"type": "word"
+},
+{
+"text": "morning.",
+"start": 72.344,
+"end": 72.957,
+"type": "word"
+},
+{
+"text": "And",
+"start": 73.011,
+"end": 73.064,
+"type": "word"
+},
+{
+"text": "bring",
+"start": 73.144,
+"end": 73.224,
+"type": "word"
+},
+{
+"text": "your",
+"start": 73.304,
+"end": 73.384,
+"type": "word"
+},
+{
+"text": "phone.",
+"start": 73.544,
+"end": 74.104,
+"type": "word"
+},
+{
+"text": "The",
+"start": 74.184,
+"end": 74.264,
+"type": "word"
+},
+{
+"text": "Future",
+"start": 74.344,
+"end": 74.664,
+"type": "word"
+},
+{
+"text": "of",
+"start": 74.744,
+"end": 74.824,
+"type": "word"
+},
+{
+"text": "Freshness.",
+"start": 74.904,
+"end": 75.784,
+"type": "word"
+},
+{
+"text": "See",
+"start": 75.864,
+"end": 75.944,
+"type": "word"
+},
+{
+"text": "you",
+"start": 75.984,
+"end": 76.024,
+"type": "word"
+},
+{
+"text": "in",
+"start": 76.104,
+"end": 76.184,
+"type": "word"
+},
+{
+"text": "Princeton.",
+"start": 76.224,
+"end": 76.904,
+"type": "word"
+}
+]
+}

@@ -47,9 +47,9 @@ A pass over every page with automated checks (axe-core for WCAG 2.2 AA, Lighthou
 
 ## The opening film
 
-`FILM` in `src/lib/content.ts` names the file for each cut and how long it runs: the site's (`public/media/opening.*`) and the pre-brief's (`opening.brief.*` once V5 ships; until then both play `opening.*`). Each plays with English captions from the `.vtt` beside it (the player's CC button), and the pre-brief and its signed link reach the captions the same way they reach the film. When the film ends on the pre-brief, the page goes straight to the four questions, with the first one ready to answer. The pre-brief letter quotes Ross's goal from `ROSS_GOAL` instead of paraphrasing it.
+`FILM` in `src/lib/content.ts` names the file for each cut and how long it runs: the site's (`public/media/opening.*`) and the pre-brief's (`public/media/opening.brief.*`). Each plays with English captions from the `.vtt` beside it (the player's CC button), and the pre-brief and its signed link reach the captions the same way they reach the film. When the film ends on the pre-brief, the page goes straight to the four questions, with the first one ready to answer. The pre-brief letter quotes Ross's goal from `ROSS_GOAL` instead of paraphrasing it.
 
-V5, the pre-brief intro, is built and waiting on its voice: `video/docs/fof/V5.md` has the script, the beats and the one command that turns a take into both cuts, their captions and the poster. Until it ships, the site plays V4 (1:27), with captions written from its own word times.
+Both cuts are V5, the pre-brief intro (1:22): `video/docs/fof/V5.md` has the script, the beats and the one command that turns a take into both cuts, their captions and the poster. The site's cut ends on "Open your pre-brief"; the pre-brief's on "The four questions are below".
 
 ## Surfaces
 
