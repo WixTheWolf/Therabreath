@@ -260,7 +260,7 @@ const Gauge: React.FC<{ t: number; at: number; split: number; r?: number }> = ({
   const len = Math.PI * r;
   const cols = [TEAL, GREEN, GOLD, CORAL];
   return (
-    <svg width={2 * r + 140} height={r + 100} viewBox={`${-r - 70} ${-r - 60} ${2 * r + 140} ${r + 100}`}>
+    <svg width={2 * r + 140} height={r + 140} viewBox={`${-r - 70} ${-r - 60} ${2 * r + 140} ${r + 140}`}>
       <path d={`M${-r} 0 A${r} ${r} 0 0 1 ${r} 0`} fill="none" stroke={LINE} strokeWidth={34} />
       <path d={`M${-r} 0 A${r} ${r} 0 0 1 ${r} 0`} fill="none" stroke={TEAL} strokeWidth={34} strokeDasharray={`${len * draw} ${len}`} opacity={t < split ? 1 : 0} />
       {cols.map((c, i) => {
@@ -314,18 +314,21 @@ const Plane: React.FC<{ size?: number; color?: string }> = ({ size = 54, color =
 const Pin: React.FC<{ color: string; size?: number }> = ({ color, size = 64 }) => (
   <svg width={size} height={size * 1.3} viewBox="0 0 64 84"><path d="M32 82 C14 54 4 42 4 30 a28 28 0 0 1 56 0 C60 42 50 54 32 82 Z" fill={color} stroke={INK} strokeWidth={3} strokeLinejoin="round" /><circle cx={32} cy={30} r={11} fill="#fff" /></svg>
 );
+/* The seven trends of the pre-brief and the morning (SIGNALS in final/src/lib/content.ts), one glyph each: milder
+   mouthwash, warm spice, fruit growing up, botanicals, dessert, how it feels, dry mouth. */
+const TRENDS = ["Milder", "Warm spice", "Grown-up fruit", "Botanicals", "Dessert", "How it feels", "Dry mouth"];
 const SignalIcon: React.FC<{ i: number; size?: number }> = ({ i, size = 96 }) => {
-  const c = [TEAL, GREEN, CORAL, GOLD, PINK, TEAL, GREEN][i];
+  const c = [TEAL, CORAL, PINK, GREEN, GOLD, TEAL, CORAL][i];
   const p = { fill: "none", stroke: c, strokeWidth: 6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   return (
     <svg width={size} height={size} viewBox="0 0 100 100">
-      {i === 0 && <g><circle cx={50} cy={50} r={10} fill={c} /><circle cx={50} cy={50} r={26} {...p} /><circle cx={50} cy={50} r={42} {...p} opacity={0.5} /></g>}
-      {i === 1 && <g><path d="M22 78 C22 40 50 22 80 22 C80 56 56 78 22 78 Z" {...p} /><path d="M22 78 L62 38" {...p} /></g>}
-      {i === 2 && <g><path d="M62 18 A34 34 0 1 0 82 56 A26 26 0 0 1 62 18 Z" {...p} /><circle cx={78} cy={22} r={4} fill={c} /><circle cx={88} cy={38} r={3} fill={c} /></g>}
-      {i === 3 && <g><circle cx={50} cy={30} r={14} {...p} /><path d="M24 82 V66 a26 26 0 0 1 52 0 V82" {...p} /><circle cx={78} cy={26} r={9} {...p} /><path d="M70 50 a14 14 0 0 1 22 10" {...p} /></g>}
-      {i === 4 && <g><circle cx={50} cy={50} r={36} {...p} /><path d="M14 50 H86 M50 14 C34 30 34 70 50 86 C66 70 66 30 50 14" {...p} /></g>}
-      {i === 5 && <g><path d="M50 14 L58 42 L86 50 L58 58 L50 86 L42 58 L14 50 L42 42 Z" {...p} /><circle cx={78} cy={20} r={4} fill={c} /></g>}
-      {i === 6 && <g><path d="M10 40 C25 20 40 20 50 40 S75 60 90 40" {...p} /><path d="M10 64 C25 44 40 44 50 64 S75 84 90 64" {...p} opacity={0.6} /></g>}
+      {i === 0 && <g>{[0, 1, 2, 3].map((k) => <rect key={k} x={14 + k * 20} y={70 - k * 16} width={13} height={18 + k * 16} rx={4} fill={k === 0 ? c : "none"} stroke={c} strokeWidth={5} opacity={k === 0 ? 1 : 0.45} />)}</g>}
+      {i === 1 && <g>{[0, 45, 90, 135, 180, 225, 270, 315].map((a) => <ellipse key={a} cx={50} cy={27} rx={8} ry={17} {...p} strokeWidth={5} transform={`rotate(${a} 50 50)`} />)}<circle cx={50} cy={50} r={5} fill={c} /></g>}
+      {i === 2 && <g><path d="M50 32 C30 20 14 34 18 56 C22 78 38 90 50 84 C62 90 78 78 82 56 C86 34 70 20 50 32 Z" {...p} /><path d="M50 32 C50 22 54 14 60 10" {...p} /><path d="M54 22 C62 14 74 16 78 22 C70 28 60 28 54 22 Z" {...p} /></g>}
+      {i === 3 && <g><path d="M22 78 C22 40 50 22 80 22 C80 56 56 78 22 78 Z" {...p} /><path d="M22 78 L62 38" {...p} /></g>}
+      {i === 4 && <g><path d="M30 50 L50 92 L70 50" {...p} /><path d="M38 66 L58 58 M44 78 L62 68" {...p} opacity={0.6} /><path d="M26 50 C22 34 34 22 50 22 C66 22 78 34 74 50 Z" {...p} /><circle cx={50} cy={14} r={5} fill={c} /></g>}
+      {i === 5 && <g><path d="M50 14 L58 42 L86 50 L58 58 L50 86 L42 58 L14 50 L42 42 Z" {...p} /><circle cx={80} cy={20} r={4} fill={c} /><circle cx={20} cy={80} r={3} fill={c} /></g>}
+      {i === 6 && <g><path d="M50 12 C38 32 24 46 24 62 a26 26 0 0 0 52 0 C76 46 62 32 50 12 Z" {...p} /><path d="M18 88 L82 22" {...p} /></g>}
     </svg>
   );
 };
@@ -413,12 +416,20 @@ const SceneBurn: React.FC = () => {
           <div style={{ position: "absolute", inset: 0, background: ICE, opacity: 0.35, mixBlendMode: "screen" }} />
         </div>
       )}
-      {gone > 0 && <Pop at={burn + 0.32} out={out} x={1355} y={480} rot={120}><Snowflake size={130} /></Pop>}
+      {gone > 0 && <Pop at={burn + 0.32} out={out} x={1320} y={440} rot={120}><div style={{ transform: `rotate(${(t - burn) * 18}deg)` }}><Snowflake size={200} /></div></Pop>}
+      {gone > 0 && [[1250, 380, 0], [1560, 420, 1], [1290, 690, 2], [1580, 650, 3], [1440, 330, 4]].map(([x, y, k]) => {
+        const a = burn + 0.45 + k * 0.09;
+        const tw8 = 0.8 + 0.2 * Math.sin((t - a) * 7 + k);
+        return <Pop key={k} at={a} out={out} x={x} y={y} rot={90}><div style={{ transform: `scale(${tw8})` }}><svg width={58} height={58} viewBox="0 0 100 100"><path d="M50 4 C54 34 66 46 96 50 C66 54 54 66 50 96 C46 66 34 54 4 50 C34 46 46 34 50 4 Z" fill={k % 2 ? GOLD : TEAL} /></svg></div></Pop>;
+      })}
     </Scene>
   );
 };
 
-/* 1. The want: a crowd pops in on "people"; each one gets a little teal bubble on "want it". */
+/* 1. The want: a crowd pops in on "people"; on "want it" a heart pops over each one and floats up. */
+const Heart: React.FC<{ color: string; size?: number }> = ({ color, size = 40 }) => (
+  <svg width={size} height={size} viewBox="0 0 100 100"><path d="M50 88 C20 66 8 50 8 34 a20 20 0 0 1 42 -10 a20 20 0 0 1 42 10 C92 50 80 66 50 88 Z" fill={color} stroke={INK} strokeWidth={5} strokeLinejoin="round" /></svg>
+);
 const SceneWant: React.FC = () => {
   const t = useT();
   const from = lineAt("want") - 0.1, out = lineAt("m65") - 0.15;
@@ -430,12 +441,15 @@ const SceneWant: React.FC = () => {
       {Array.from({ length: cols * rows }, (_, i) => {
         const c = i % cols, r = Math.floor(i / cols);
         const at = people - 0.1 + (c + r) * 0.05 + rnd(i) * 0.05;
-        const w = sp(t, want + 0.1 + rnd(i, 3) * 0.6, SNAP);
+        const ha = want + 0.1 + rnd(i, 3) * 0.6;
+        const w = sp(t, ha, SNAP);
+        const rise = Math.max(0, t - ha);
+        const bob = Math.sin(t * 3.2 + rnd(i, 7) * 6) * 4;
         return (
           <Pop key={i} at={at} out={out - 0.1 + rnd(i, 2) * 0.1} x={1010 + c * 142} y={250 + r * 190} rot={-20 + rnd(i, 1) * 40} origin="50% 100%">
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative", transform: `translateY(${w > 0 ? -6 * Math.sin(Math.min(1, rise / 0.3) * Math.PI) : bob * 0.4}px)` }}>
               <Person color={PALETTE[(i * 7) % 5]} size={86} />
-              {w > 0 && <div style={{ position: "absolute", left: 58, top: -40, transform: `scale(${w})`, transformOrigin: "0 100%", background: TEAL, borderRadius: "16px 16px 16px 3px", padding: "6px 13px", ...sans(24, 800) }}><span style={{ color: "#fff" }}>!</span></div>}
+              {w > 0 && <div style={{ position: "absolute", left: 40, top: -46 - rise * 34, transform: `scale(${w}) rotate(${Math.sin(rise * 4 + i) * 10}deg)`, transformOrigin: "50% 100%", opacity: Math.max(0, 1 - Math.max(0, rise - 1.1) * 1.5) }}><Heart color={[CORAL, PINK, GOLD, TEAL][i % 4]} size={42} /></div>}
             </div>
           </Pop>
         );
@@ -475,12 +489,15 @@ const SceneMath: React.FC = () => {
         const mw = ez(t, n65 + wave * 1.1, n65 + wave * 1.1 + 0.25);
         const tb = isTB ? sp(t, n14 + 0.05 + rnd(i, 5) * 0.5, SNAP) : 0;
         const wob = !isTB && t > n86 && t < n86 + 2.6 ? Math.sin((t - n86) * 14 + rnd(i) * 6) * 7 * Math.max(0, 1 - (t - n86) / 2.6) : 0;
-        const fill = isTB && tb > 0 ? TEAL : isMW ? `rgba(191,233,242,${mw})` : "rgba(255,255,255,0)";
+        /* three clear states: empty, buys mouthwash (a mid blue that reads on the paper), buys TheraBreath (teal with a
+           dot); on "eighty-six" every home but the 14 takes a coral outline, so 14 against 86 reads at a glance */
+        const fill = isTB && tb > 0 ? TEAL : isMW ? `rgba(124,196,216,${mw})` : "#FBFAF7";
+        const not = !isTB && t > n86 + wave * 0.5;
         const s = sp(t, at, POP);
         const pulse = i === hh && t > wipeAt - 0.4 ? 1 + 0.35 * Math.sin(Math.min(1, (t - wipeAt + 0.4) / 0.4) * Math.PI) : 1;
         return (
           <div key={i} style={{ position: "absolute", left: GX + c * CELL, top: GY + r * CELL, transform: `scale(${Math.min(1.25, s) * pulse * (isTB ? 1 + 0.25 * Math.max(0, tb - 1) : 1)}) rotate(${wob}deg)`, transformOrigin: "50% 80%", opacity: Math.min(1, s * 3) }}>
-            <House fill={fill} dot={isTB && tb > 0.4} size={50} stroke={isTB && tb > 0 ? TEAL : INK} />
+            <House fill={fill} dot={isTB && tb > 0.4} size={50} stroke={isTB && tb > 0 ? TEAL : not ? CORAL : INK} />
           </div>
         );
       })}
@@ -497,36 +514,53 @@ const SceneMath: React.FC = () => {
   );
 };
 
-/* 3. Norco: a hop across the map, and the lab at the far end. */
+/* 3. Norco: a hop west across the map (New Jersey on the right, California on the left, as on any map), then the map
+   zooms into Norco and opens on the lab, where a drop of flavor falls on "make" and bursts on "flavor". */
 const SceneNorco: React.FC = () => {
   const t = useT();
   const from = lineAt("norco") - 0.5;
   const to = lineAt("ross") - 0.02;
-  const july = tw("july", from), norco = tw("norco", from), make = tw("make", from);
-  const x0 = 330, x1 = 1590, y = 640;
+  const july = tw("july", from), norco = tw("norco", from), make = tw("make", from), flavor = tw("flavor", make);
+  const x0 = 1560, x1 = 420, y = 640; // New Jersey (east) to Norco (west)
   const fly = ez(t, july + 0.1, norco + 0.05, Easing.inOut(Easing.cubic));
   const px = x0 + (x1 - x0) * fly, py = y - Math.sin(fly * Math.PI) * 260;
   const ang = Math.atan2(-Math.cos(fly * Math.PI) * 260 * Math.PI, x1 - x0) * (180 / Math.PI);
+  /* the zoom: the map grows about the Norco pin and fades while the lab opens in a circle from the same point */
+  const zoomAt = Math.min(norco + 0.3, make - 0.9);
+  const zoom = ez(t, zoomAt, zoomAt + 0.75, Easing.inOut(Easing.cubic));
+  const WX = 300, WY = 330, WW = 1240, WH = 640;
+  const reveal = interpolate(t, [zoomAt + 0.05, zoomAt + 0.8], [0, 1500], { ...clamp, easing: Easing.inOut(Easing.cubic) });
+  const tipX = 1380, tipY = 380; // the pipette's tip, over the lab
   const drop = ez(t, make - 0.05, make + 0.3, Easing.in(Easing.quad));
   const splash = sp(t, make + 0.3, SNAP);
+  const burstAt = Math.max(flavor - 0.05, make + 0.28);
+  const burst = ez(t, burstAt, burstAt + 0.7, Easing.out(Easing.cubic));
+  const landY = 470;
+  const e = exitP(t, to, 0.2);
   return (
     <Scene from={from} to={to} wipe={{ x: GX + (ORDER[3] % 10) * CELL + 25, y: GY + Math.floor(ORDER[3] / 10) * CELL + 25 }}>
       <Say text="In July, you came out to Norco / and watched us make *flavor.*" after={lineAt("norco")} out={to} size={66} style={{ left: L, top: 130, width: 1200 }} />
       <Kick at={from + 0.3} out={to} style={{ right: L, top: 140 }}>July 2026</Kick>
-      <svg style={{ position: "absolute", left: 0, top: 0 }} width={1920} height={1080}>
-        <path d={`M${x0} ${y} Q${(x0 + x1) / 2} ${y - 520} ${x1} ${y}`} fill="none" stroke={INK} strokeWidth={3} strokeDasharray="2 16" strokeLinecap="round" opacity={ez(t, from + 0.3, from + 0.8)} />
-      </svg>
-      <Pop at={from + 0.2} out={to} x={x0 - 32} y={y - 84} origin="50% 100%"><Pin color={GOLD} /></Pop>
-      <Kick at={from + 0.4} out={to} style={{ left: x0 - 140, top: y + 16, width: 280, textAlign: "center" }}>New Jersey</Kick>
-      <Pop at={from + 0.35} out={to} x={x1 - 32} y={y - 84} origin="50% 100%"><div style={{ transform: `translateY(${-18 * Math.max(0, sp(t, norco, BOUNCE) - 1) * 4}px)` }}><Pin color={TEAL} /></div></Pop>
-      <Kick at={from + 0.55} out={to} style={{ left: x1 - 180, top: y + 16, width: 360, textAlign: "center" }}>Norco, California</Kick>
-      {fly > 0 && fly < 1 && <div style={{ position: "absolute", left: px - 27, top: py - 27, transform: `rotate(${ang}deg)` }}><Plane /></div>}
-      <Window at={norco + 0.15} out={to} x={1040} y={700} w={560} h={300} rot={4} origin="80% 0%">
-        <Clip at={norco + 0.15} name="lab" start={0.3} dur={3.4} />
-        {splash > 0 && <div style={{ position: "absolute", left: 280 - splash * 46, top: 96 - splash * 16, width: splash * 92, height: splash * 32, borderRadius: "50%", border: `3px solid ${GOLD}`, opacity: Math.max(0, 1.4 - splash) }} />}
-      </Window>
-      {drop > 0 && drop < 1 && <div style={{ position: "absolute", left: 1312, top: 700 + drop * 90, width: 16, height: 22, borderRadius: "50% 50% 50% 50% / 40% 40% 60% 60%", background: GOLD }} />}
-      <Pop at={norco + 0.25} out={to} x={1260} y={470} rot={-10} origin="50% 100%">
+      {zoom < 1 && (
+        <AbsoluteFill style={{ transform: `scale(${1 + 2.2 * zoom})`, transformOrigin: `${x1}px ${y}px`, opacity: Math.max(0, 1 - zoom * 1.7) }}>
+          <svg style={{ position: "absolute", left: 0, top: 0 }} width={1920} height={1080}>
+            <path d={`M${x0} ${y} Q${(x0 + x1) / 2} ${y - 520} ${x1} ${y}`} fill="none" stroke={INK} strokeWidth={3} strokeDasharray="2 16" strokeLinecap="round" opacity={ez(t, from + 0.3, from + 0.8)} />
+          </svg>
+          <Pop at={from + 0.2} x={x0 - 32} y={y - 84} origin="50% 100%"><Pin color={GOLD} /></Pop>
+          <Kick at={from + 0.4} style={{ left: x0 - 140, top: y + 16, width: 280, textAlign: "center" }}>New Jersey</Kick>
+          <Pop at={from + 0.35} x={x1 - 32} y={y - 84} origin="50% 100%"><div style={{ transform: `translateY(${-18 * Math.max(0, sp(t, norco, BOUNCE) - 1) * 4}px)` }}><Pin color={TEAL} /></div></Pop>
+          <Kick at={from + 0.55} style={{ left: x1 - 180, top: y + 16, width: 360, textAlign: "center" }}>Norco, California</Kick>
+          {fly > 0 && fly < 1 && <div style={{ position: "absolute", left: px - 27, top: py - 27, transform: `rotate(${ang + 157.6}deg) scaleX(-1)` }}><Plane /></div>}
+        </AbsoluteFill>
+      )}
+      {reveal > 0 && (
+        <div style={{ position: "absolute", left: WX, top: WY, width: WW, height: WH, borderRadius: 28, overflow: "hidden", background: INK, clipPath: reveal < 1500 ? `circle(${reveal}px at ${x1 - WX}px ${y - WY}px)` : undefined, boxShadow: "0 20px 50px rgba(11,27,43,.18)", opacity: 1 - e }}>
+          <Clip at={zoomAt} name="lab" start={0.3} dur={to - zoomAt + 0.1} style={{ transform: `scale(${1.25 - 0.17 * ez(t, zoomAt, to, Easing.out(Easing.quad))})` }} />
+          <div style={{ position: "absolute", inset: 0, borderRadius: 28, border: `3px solid ${INK}`, opacity: ez(t, zoomAt + 0.6, zoomAt + 0.9) }} />
+          {splash > 0 && [0, 1].map((k) => { const s = Math.max(0, splash - k * 0.25); return s > 0 && <div key={k} style={{ position: "absolute", left: tipX - WX - s * 70, top: landY - WY - s * 22, width: s * 140, height: s * 44, borderRadius: "50%", border: `3px solid ${GOLD}`, opacity: Math.max(0, 1.3 - s) }} />; })}
+        </div>
+      )}
+      <Pop at={zoomAt + 0.5} out={to} x={tipX - 60} y={tipY - 250} rot={-10} origin="50% 100%">
         <svg width={120} height={260} viewBox="0 0 60 130" style={{ transform: `translateY(${t > make - 0.4 && t < make ? Math.sin((t - make + 0.4) * 16) * 4 : 0}px)` }}>
           <rect x={22} y={2} width={16} height={24} rx={6} fill={CORAL} stroke={INK} strokeWidth={2.5} />
           <rect x={25} y={26} width={10} height={86} rx={4} fill="#fff" stroke={INK} strokeWidth={2.5} />
@@ -534,6 +568,11 @@ const SceneNorco: React.FC = () => {
           <rect x={27} y={60 + drop * 40} width={6} height={50 - drop * 40} fill={GOLD} />
         </svg>
       </Pop>
+      {drop > 0 && drop < 1 && <div style={{ position: "absolute", left: tipX - 13, top: tipY - 6 + drop * (landY - tipY), width: 26, height: 34, borderRadius: "50% 50% 50% 50% / 40% 40% 60% 60%", background: GOLD, border: `3px solid ${INK}` }} />}
+      {burst > 0 && burst < 1 && Array.from({ length: 12 }, (_, k) => {
+        const a = (k / 12) * Math.PI * 2 + rnd(k, 4) * 0.4, d = 90 + rnd(k, 6) * 120;
+        return <div key={k} style={{ position: "absolute", left: tipX + Math.cos(a) * d * burst - 15, top: landY + Math.sin(a) * d * burst * 0.75 - 15 - 60 * Math.sin(burst * Math.PI), width: 30, height: 30, borderRadius: k % 3 ? "50%" : 6, background: PALETTE[k % 5], border: `3px solid ${INK}`, transform: `rotate(${burst * 220}deg) scale(${1 - burst * burst * 0.7})` }} />;
+      })}
     </Scene>
   );
 };
@@ -557,15 +596,25 @@ const SceneGoal: React.FC = () => {
       {envGone < 1 && (
         <div style={{ position: "absolute", left: 700, top: 400 + (1 - sp(t, from + 0.05, SOFT)) * 600 + envGone * 700, opacity: 1 - envGone, perspective: 900 }}>
           <Envelope open={open} />
+          {/* the postmark lands on "Princeton" */}
+          <Pop at={tw("princeton", from)} x={330} y={150} rot={-40} cfg={SNAP}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, transform: "rotate(-10deg)" }}>
+              <div style={{ width: 150, height: 150, borderRadius: "50%", border: `4px solid ${CORAL}`, boxShadow: `inset 0 0 0 6px #fff, inset 0 0 0 9px ${CORAL}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,.35)" }}>
+                <div style={{ ...mono(17), color: CORAL, letterSpacing: "0.12em" }}>Princeton</div>
+                <div style={{ ...mono(13), color: CORAL, marginTop: 6, letterSpacing: "0.12em" }}>New Jersey</div>
+              </div>
+              <svg width={90} height={60} viewBox="0 0 90 60">{[12, 30, 48].map((y) => <path key={y} d={`M0 ${y} q11 -8 22 0 t22 0 t22 0 t22 0`} fill="none" stroke={CORAL} strokeWidth={4} strokeLinecap="round" />)}</svg>
+            </div>
+          </Pop>
         </div>
       )}
       {rise > 0 && ce < 1 && (
-        <div style={{ position: "absolute", left: 190, top: 190 + (1 - Math.min(1, rise)) * 560, width: 1540, transform: `scale(${0.6 + 0.4 * Math.min(1, rise)})`, transformOrigin: "50% 100%", opacity: Math.min(1, rise * 3) * (1 - ce), background: "#fff", border: `3px solid ${INK}`, borderRadius: 24, padding: "48px 70px 44px", boxShadow: "0 24px 60px rgba(11,27,43,.16)" }}>
+        <div style={{ position: "absolute", left: 190, top: 262 + (1 - Math.min(1, rise)) * 560, width: 1540, transform: `scale(${(0.6 + 0.4 * Math.min(1, rise)) * (1 + 0.035 * ez(t, goal + 0.4, wipeAt, Easing.inOut(Easing.quad)))})`, transformOrigin: "50% 60%", opacity: Math.min(1, rise * 3) * (1 - ce), background: "#fff", border: `3px solid ${INK}`, borderRadius: 24, padding: "48px 70px 44px", boxShadow: "0 24px 60px rgba(11,27,43,.16)" }}>
           <div style={{ ...mono(20), marginBottom: 26 }}>Ross Conroy’s invitation · September 18, 2026</div>
           <div style={{ position: "relative", minHeight: 372 }}>
             <Say text="“Our goal, as R&D, is to drive incremental growth through flavor innovation by identifying and developing new flavor experiences that both ^strengthen our appeal with existing loyal users^ and ~create opportunities to attract new consumers to the franchise.”~" after={goal} ghost={0.2} size={56} weight={350} style={{ left: 0, top: 0, width: 1250 }} hiAt={[strengthen + 0.1, create + 0.1]} hiColors={["rgba(191,233,242,.95)", "rgba(244,184,96,.75)"]} />
           </div>
-          <div style={{ ...mono(18), opacity: ez(t, franchise + 0.5, franchise + 0.9), letterSpacing: "0.1em" }}>Ross Conroy · Church & Dwight Oral Care R&D</div>
+          <div style={{ ...mono(18), opacity: ez(t, goal + 0.6, goal + 1.1), letterSpacing: "0.1em" }}>Ross Conroy · Church & Dwight Oral Care R&D</div>
           <Pop at={loyal + 0.4} x={1300} y={130} rot={25}><svg width={110} height={110} viewBox="0 0 100 100"><path d="M50 88 C20 66 8 50 8 34 a20 20 0 0 1 42 -10 a20 20 0 0 1 42 10 C92 50 80 66 50 88 Z" fill={ICE} stroke={INK} strokeWidth={3} strokeLinejoin="round" /><path d="M34 50 L46 62 L68 38" fill="none" stroke={TEAL} strokeWidth={7} strokeLinecap="round" strokeLinejoin="round" /></svg></Pop>
           <Pop at={franchise + 0.2} x={1300} y={280} rot={-25}><svg width={110} height={110} viewBox="0 0 100 100"><circle cx={42} cy={34} r={16} fill={GOLD} stroke={INK} strokeWidth={3} /><path d="M12 90 V76 a30 30 0 0 1 60 0 V90 Z" fill={GOLD} stroke={INK} strokeWidth={3} strokeLinejoin="round" /><circle cx={78} cy={26} r={17} fill={CORAL} stroke={INK} strokeWidth={3} /><path d="M78 17 V35 M69 26 H87" stroke="#fff" strokeWidth={4} strokeLinecap="round" /></svg></Pop>
         </div>
@@ -584,18 +633,28 @@ const SceneDay: React.FC = () => {
   const pitch = lineAt("pitch"), working = tw("working", pitch);
   const wipeAt = lineAt("trends") - 0.65;
   const to = wipeAt + 0.5;
-  const flip = sp(t, nov + 0.15, SNAP);
+  /* the calendar counts the days from the 1st as the scene opens, faster and faster, and lands on the 9 as she says
+     "ninth" (each page lifts off over the top; flip k ends at r0 + span * sqrt((k + 1) / 8)) */
+  const ninth = tw("ninth", nov);
+  const r0 = from + 0.45, span = ninth - r0;
+  const flipEnd = (k: number) => r0 + span * Math.sqrt((k + 1) / 8);
   const o = wipeAt + 0.45;
   return (
     <Scene from={from} to={to} wipe={{ x: 960, y: 560 }}>
       <Say text="So on Monday, *November 9*,|ninth / from 10|ten to noon in the *Darwin room,*" after={lineAt("day")} out={o} size={62} style={{ left: L, top: 110, width: 1600 }} />
-      <Pop at={from + 0.25} out={o} x={L + 20} y={330} rot={-6} origin="50% 0%">
+      <Pop at={from + 0.2} out={o} x={L + 20} y={330} rot={-6} origin="50% 0%">
         <div style={{ width: 330, borderRadius: 22, border: `3px solid ${INK}`, overflow: "hidden", background: "#fff", boxShadow: "0 18px 44px rgba(11,27,43,.14)" }}>
           <div style={{ background: CORAL, padding: "16px 0", textAlign: "center", ...mono(22), color: "#fff", letterSpacing: "0.28em" }}>November</div>
-          <div style={{ height: 220, display: "flex", alignItems: "center", justifyContent: "center", perspective: 700 }}>
-            <div style={{ ...sans(184, 800), letterSpacing: "-0.06em", transform: `rotateX(${(1 - Math.min(1, flip)) * -95}deg)`, transformOrigin: "50% 0%", opacity: flip > 0 ? 1 : 0 }}>9</div>
+          <div style={{ position: "relative", height: 220, perspective: 700 }}>
+            {[9, 8, 7, 6, 5, 4, 3, 2, 1].map((d) => {
+              const end = d === 9 ? 0 : flipEnd(d - 1), start = d === 1 ? r0 : flipEnd(d - 2);
+              const p = d === 9 ? 0 : ez(t, Math.max(start, end - 0.22), end, Easing.in(Easing.quad));
+              if (p >= 1) return null;
+              const land = d === 9 && t > ninth ? 1 + 0.08 * Math.sin(Math.min(1, (t - ninth) / 0.3) * Math.PI) : 1;
+              return <div key={d} style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "#fff", zIndex: 10 - d, transform: `rotateX(${p * 100}deg) scale(${land})`, transformOrigin: "50% 0%", opacity: 1 - p * 0.6, ...sans(184, 800), letterSpacing: "-0.06em", color: d === 9 ? INK : "rgba(11,27,43,.35)" }}>{d}</div>;
+            })}
           </div>
-          <div style={{ borderTop: `2px solid ${LINE}`, padding: "14px 0", textAlign: "center", ...mono(18), color: INK, letterSpacing: "0.12em" }}>Monday, 2026</div>
+          <div style={{ borderTop: `2px solid ${LINE}`, padding: "14px 0", textAlign: "center", ...mono(18), color: INK, letterSpacing: "0.12em" }}><span style={{ opacity: ez(t, ninth - 0.05, ninth + 0.35) }}>Monday, 2026</span></div>
         </div>
       </Pop>
       <div style={{ position: "absolute", left: 580, top: 320, opacity: ez(t, ten - 0.1, ten + 0.3) * (1 - exitP(t, o, 0.3)) }}>
@@ -634,29 +693,32 @@ const SceneDo: React.FC = () => {
   const wipeAt = lineAt("noon") - 0.65;
   const to = wipeAt + 0.5;
   const o = wipeAt + 0.45;
-  const tilesOut = then - 0.05;
-  const x0 = 222, size = 180, gap = 36;
-  const picks = [1, 3, 5];
+  const tilesOut = then + 0.2;
+  const size = 206, gap = 32, x0 = (1920 - 7 * size - 6 * gap) / 2;
+  const picks = [0, 3, 5];
   const cupsShift = ez(t, blindW - 0.2, blindW + 0.4);
   return (
     <Scene from={from} to={to} wipe={{ x: L + 185, y: 500 }}>
-      <Say text="You’ll pick the *three trends* / that matter most," after={lineAt("trends")} out={tilesOut} size={66} style={{ left: L, top: 120, width: 1400 }} />
-      <Kick at={from + 0.15} out={tilesOut} style={{ left: L, top: 80 }}>Part 1 · Seven trends</Kick>
+      <Kick at={from + 0.15} out={then - 0.05} style={{ left: L, top: 92 }}>Part 1 · Seven trends</Kick>
+      <Say text="You’ll pick the *three trends* / that matter most," after={lineAt("trends")} out={then - 0.05} size={66} style={{ left: L, top: 150, width: 1400 }} />
       {Array.from({ length: 7 }, (_, i) => {
         const pk = picks.indexOf(i);
         const ck = pk >= 0 ? sp(t, three + pk * 0.16, SNAP) : 0;
         const dim = pk < 0 ? 1 - 0.5 * ez(t, most, most + 0.4) : 1;
         return (
-          <Pop key={i} at={from + 0.2 + i * 0.07} out={tilesOut} x={x0 + i * (size + gap)} y={480} rot={-12 + (i % 2) * 24} origin="50% 100%">
-            <div style={{ width: size, height: size, borderRadius: 28, background: "#fff", border: `3px solid ${INK}`, display: "flex", alignItems: "center", justifyContent: "center", opacity: dim, boxShadow: "0 12px 30px rgba(11,27,43,.1)", position: "relative", transform: `translateY(${pk >= 0 ? -12 * Math.min(1, ck) : 0}px)` }}>
-              <SignalIcon i={i} size={104} />
-              <div style={{ position: "absolute", left: 14, top: 12, ...mono(16), color: DIM }}>0{i + 1}</div>
-              {ck > 0 && <div style={{ position: "absolute", right: -22, top: -22, transform: `scale(${2 - Math.min(1, ck)}) rotate(${(1 - Math.min(1, ck)) * -30}deg)`, opacity: Math.min(1, ck * 2) }}><Check size={64} /></div>}
+          <Pop key={i} at={from + 0.2 + i * 0.07} out={tilesOut} x={x0 + i * (size + gap)} y={470} rot={-12 + (i % 2) * 24} origin="50% 100%">
+            <div style={{ opacity: dim, transform: `translateY(${pk >= 0 ? -14 * Math.min(1, ck) : 0}px)` }}>
+              <div style={{ width: size, height: size, borderRadius: 30, background: "#fff", border: `3px solid ${INK}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 12px 30px rgba(11,27,43,.1)", position: "relative" }}>
+                <SignalIcon i={i} size={112} />
+                <div style={{ position: "absolute", left: 16, top: 14, ...mono(16), color: DIM }}>0{i + 1}</div>
+                {ck > 0 && <div style={{ position: "absolute", right: -22, top: -22, transform: `scale(${2 - Math.min(1, ck)}) rotate(${(1 - Math.min(1, ck)) * -30}deg)`, opacity: Math.min(1, ck * 2) }}><Check size={64} /></div>}
+              </div>
+              <div style={{ marginTop: 18, width: size, textAlign: "center", ...sans(24, 600) }}>{TRENDS[i]}</div>
             </div>
           </Pop>
         );
       })}
-      <Say text="then taste *four samples* we made / in your Fresh Breath and Kids bases." after={then} out={blindW - 0.15} size={66} style={{ left: L, top: 120, width: 1500 }} />
+      <Say text="then taste *four samples* we made / in your Fresh Breath and Kids bases." after={then} out={blindW - 0.15} size={66} style={{ left: L, top: 150, width: 1500 }} />
       {/* the drawn cups, with their bases */}
       {["A", "B", "C", "D"].map((ch, i) => (
         <Slide key={ch} at={four - 0.1 + i * 0.08} out={blindW - 0.05} x={420 + i * 360 - 125} y={430} dy={420} cfg={POP}>
@@ -709,16 +771,16 @@ const SceneNoon: React.FC = () => {
   const o = wipeAt + 0.45;
   const gather = ez(t, writeup - 0.1, writeup + 0.45, Easing.inOut(Easing.cubic));
   const book = sp(t, writeup + 0.35, SNAP);
-  const bx = 1060, by = 360;
+  const bx = 1060, by = 420;
   return (
     <Scene from={from} to={to} wipe={{ x: 1550, y: 420 }}>
-      <Say text="By noon, we’d like to agree on / up to *three directions,* / each with an owner and a next sample," after={lineAt("noon")} out={o} size={60} style={{ left: L, top: 130, width: 900, opacity: 1 - 0.62 * ez(t, and - 0.1, and + 0.3) }} />
-      <Say text="and we’ll send everyone / the write-up, / *The Flavor Playbook.*" after={and} out={o} size={66} style={{ left: L, top: 420, width: 820 }} />
-      <Pop at={from + 0.15} out={three + 0.6} x={1440} y={80} origin="50% 50%"><Clock t={t} at={noon - 0.15} from={11.8} to={12} dur={0.55} r={120} glow /></Pop>
+      <Say text="By noon, we’d like to agree on / up to *three directions,* / each with an owner and a next sample," after={lineAt("noon")} out={o} size={60} style={{ left: L, top: 210, width: 900, opacity: 1 - 0.62 * ez(t, and - 0.1, and + 0.3) }} />
+      <Say text="and we’ll send everyone / the write-up, / *The Flavor Playbook.*" after={and} out={o} size={66} style={{ left: L, top: 500, width: 820 }} />
+      <Pop at={from + 0.15} out={three} x={1230} y={250} origin="50% 50%"><Clock t={t} at={noon - 0.15} from={11.8} to={12} dur={0.55} r={170} glow /></Pop>
       {[0, 1, 2].map((k) => {
         const s = sp(t, three + k * 0.12, BOUNCE);
         if (s <= 0 || book > 0.95) return null;
-        const cx = 980 + k * 300, cy = 360;
+        const cx = 980 + k * 300, cy = 400;
         const gx = cx + (bx + 60 - cx) * gather, gy = cy + (by + 40 - cy) * gather;
         const ow = sp(t, owner + k * 0.1, SNAP), sm = sp(t, sample + k * 0.1, SNAP);
         return (
@@ -744,7 +806,7 @@ const SceneNoon: React.FC = () => {
         </div>
       )}
       {Array.from({ length: 8 }, (_, k) => {
-        const ax = 1460 + (k % 4) * 100, ay = 420 + Math.floor(k / 4) * 120;
+        const ax = 1460 + (k % 4) * 100, ay = 480 + Math.floor(k / 4) * 120;
         const s = sp(t, everyone + k * 0.05, SNAP);
         const a0 = pb + 0.35 + k * 0.07, p = ez(t, a0, a0 + 0.6, Easing.inOut(Easing.cubic));
         const sx = bx + 300, sy = by + 150;
@@ -789,16 +851,16 @@ const SceneAsk: React.FC<{ ending: Ending }> = ({ ending }) => {
   const to = wipeAt + 0.5;
   const o = wipeAt + 0.45;
   const toTv = ez(t, answers - 0.1, answers + 0.5, Easing.inOut(Easing.cubic));
-  const tv = sp(t, because, SOFT);
+  const tv = sp(t, answers - 0.4, SOFT); // the room's screen arrives as the cards head for it
   const where = ending === "brief" ? "on this page," : "in your pre-brief,";
   return (
     <Scene from={from} to={to} wipe={{ x: 1210, y: 560 }}>
-      <Kick at={from + 0.2} out={o} style={{ left: L, top: 80 }}>Before November 9</Kick>
-      <Say text={`Before you come, please answer the / *four quick questions* ${where}`} after={ask} out={because - 0.05} size={64} style={{ left: L, top: 120, width: 1600 }} />
-      <Say text="because everyone’s answers / *open the morning.*" after={because} out={o} size={64} style={{ left: L, top: 120, width: 900 }} />
+      <Kick at={from + 0.2} out={o} style={{ left: L, top: 92 }}>Before November 9</Kick>
+      <Say text={`Before you come, please answer the / *four quick questions* ${where}`} after={ask} out={because - 0.05} size={64} style={{ left: L, top: 150, width: 1600 }} />
+      <Say text="because everyone’s answers / *open the morning.*" after={because} out={o} size={64} style={{ left: L, top: 150, width: 900 }} />
       {/* the room's screen, where the answers come up at 10:00 */}
       {tv > 0 && (
-        <div style={{ position: "absolute", left: 1000, top: 300, transform: `scale(${Math.min(1, tv) * (1 - exitP(t, o, 0.3))})`, transformOrigin: "50% 100%", opacity: Math.min(1, tv * 3) }}>
+        <div style={{ position: "absolute", left: 820, top: 320, transform: `scale(${Math.min(1, tv) * (1 - exitP(t, o, 0.3))})`, transformOrigin: "50% 100%", opacity: Math.min(1, tv * 3) }}>
           <div style={{ width: 780, height: 440, background: INK, border: `3px solid ${INK}`, borderRadius: 22, position: "relative", overflow: "hidden", boxShadow: "0 24px 60px rgba(11,27,43,.22)" }}>
             <div style={{ position: "absolute", left: 40, top: 34, ...mono(18), color: "rgba(251,250,247,.7)" }}>10:00 · Your pre-brief answers</div>
             {[0.82, 0.56, 0.38, 0.66].map((h, k) => <div key={k} style={{ position: "absolute", left: 70 + k * 170, bottom: 50, width: 110, height: 260 * h * ez(t, morning + k * 0.1, morning + 0.6 + k * 0.1), borderRadius: 12, background: QUESTIONS[k].c }} />)}
@@ -810,7 +872,7 @@ const SceneAsk: React.FC<{ ending: Ending }> = ({ ending }) => {
         const s = sp(t, quick + k * 0.12, BOUNCE);
         if (s <= 0 || toTv >= 1) return null;
         const x = L + k * 430, y = 470;
-        const tx = 1070 + k * 170, ty = 460;
+        const tx = 890 + k * 170, ty = 480;
         return (
           <div key={k} style={{ position: "absolute", left: x + (tx - x) * toTv, top: y + (ty - y) * toTv, transform: `scale(${Math.min(1.05, s) * (1 - 0.75 * toTv)}) rotate(${(k % 2 ? 5 : -5) * (1 - Math.min(1, s))}deg)`, transformOrigin: "0 0", opacity: 1 - toTv * 0.6 }}>
             <div style={{ width: 380, height: 300, background: "#fff", border: `3px solid ${INK}`, borderRadius: 24, position: "relative", boxShadow: "0 14px 36px rgba(11,27,43,.1)" }}>
@@ -821,7 +883,7 @@ const SceneAsk: React.FC<{ ending: Ending }> = ({ ending }) => {
           </div>
         );
       })}
-      <Slide at={phoneW - 0.2} out={o} x={1520} y={250} dy={500} cfg={POP}>
+      <Slide at={phoneW - 0.2} out={o} x={1560} y={270} dy={500} cfg={POP}>
         <div style={{ transform: `rotate(${6 * Math.sin(Math.max(0, t - phoneW) * 4) * Math.max(0, 1 - (t - phoneW) / 1.2)}deg)` }}><Phone t={t} tapAt={phoneW + 0.2} w={240} join /></div>
       </Slide>
       <Say text="And bring your *phone.*" after={phoneL} out={o} size={64} style={{ left: L, top: 820 }} />
@@ -834,7 +896,7 @@ const SceneAsk: React.FC<{ ending: Ending }> = ({ ending }) => {
           <span style={{ ...mono(20), color: INK }}>{ending === "brief" ? "The four questions are below" : "Open your pre-brief"}</span>
         </div>
       </Pop>
-      <WipeOut at={wipeAt} x={1640} y={500} color={INK} />
+      <WipeOut at={wipeAt} x={1680} y={510} color={INK} />
     </Scene>
   );
 };
@@ -857,6 +919,8 @@ const SceneTitle: React.FC = () => {
         <Clip at={from} dir="fof3" name="crown_slow" start={0.9} dur={Math.min(8.6, end + 1.1 - from)} />
         {rings > 0 && <AbsoluteFill style={{ opacity: rings }}><Clip at={end + 0.3} dir="fof3" name="ripples_slow" start={0.6} dur={to - end} /></AbsoluteFill>}
         <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 52%, rgba(0,0,0,.5) 100%)" }} />
+        {/* a soft pool of dark behind the words, so the splash and the rings never cut through them */}
+        <AbsoluteFill style={{ background: "radial-gradient(ellipse 58% 30% at 50% 43%, rgba(4,7,11,.62), rgba(4,7,11,.28) 60%, rgba(4,7,11,0) 100%)", opacity: ez(t, lineAt("title") - 0.25, lineAt("title") + 0.5), transform: `translateY(${up}px)` }} />
         <AbsoluteFill style={{ background: "linear-gradient(0deg, rgba(4,7,11,.92), rgba(4,7,11,.55) 24%, rgba(4,7,11,0) 46%)", opacity: ez(t, end, end + 0.6) }} />
       </AbsoluteFill>
       <Say text="The Future of *Freshness.*" after={lineAt("title")} size={150} align="center" color={CREAM} accent={ICE} style={{ left: 0, right: 0, top: 340, transform: `translateY(${up}px)`, textShadow: "0 6px 40px rgba(0,0,0,.5)" }} />
