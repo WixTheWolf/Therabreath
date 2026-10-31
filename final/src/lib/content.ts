@@ -7,6 +7,7 @@ export const EVENT = {
   sub: 'A working session with Church & Dwight Oral Care R&D',
   lockup: 'TheraBreath × The Flavor Factory · Princeton, New Jersey · November 9, 2026',
   date: 'Monday, November 9, 2026',
+  day: '2026-11-09', // the same day, for counting the 8 business days to the write-up
   time: '10:00 to 12:00',
   dateLine: 'Monday, November 9, 2026 · 10:00 to 12:00 ET',
   place: 'Church & Dwight, 469 N Harrison St, Princeton, NJ 08540',

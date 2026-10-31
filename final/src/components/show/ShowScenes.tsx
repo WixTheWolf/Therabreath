@@ -26,7 +26,7 @@ const byHandNote = (n: number, one: string, many: string) => (n ? ` · ${n} ${n 
 
 // The four objectives: one hue and one photograph each.
 export const OBJ_HUE = [200, 32, 335, 262];
-const OBJ_IMG = ['/img/open-1-ice.webp', '/img/open-2-citrus.webp', '/img/open-3-bloom.webp', '/img/open-4-violet.webp'];
+export const OBJ_IMG = ['/img/open-1-ice.webp', '/img/open-2-citrus.webp', '/img/open-3-bloom.webp', '/img/open-4-violet.webp'];
 export const when = (n: string) => { const bs = RUN.filter((b) => b.obj === n); return bs.length ? `${bs[0].t} to ${bs[bs.length - 1].end}` : ''; };
 // A sample's name lives in the session once it's known (see sealedClient.ts); until then a direction is its letter.
 export const directionName = (id: string, s?: SessionState | null) => s?.revealed?.samples[id]?.name || DIRECTIONS.find((d) => d.id === id)?.label || id;

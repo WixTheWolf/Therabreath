@@ -34,6 +34,6 @@ export async function teamHash() { return process.env.PLAYBOOK_TEAM_KEY ? sha256
 export async function checkTeamKey(k: string) { return !!norm(k) && (await sha256(norm(k))) === (await teamHash()); }
 
 // The team's own pages need the team link (or the host password): the presentation, which moves everyone's phones, the
-// run sheet, the team page, the paper scorecard, the old Stage and THE FLAVOR RACE, which premieres in the room.
-// Church & Dwight's password opens the front door and the Playbook only.
-export const teamOnly = (p: string) => p === '/host' || p.startsWith('/host/') || p === '/team' || p === '/scorecard' || p.startsWith('/stage/') || p.startsWith('/media/flavor-race');
+// run sheet, the write-up, the team page, the paper scorecard, the old Stage, the PDFs (the decks show the sealed names)
+// and THE FLAVOR RACE, which premieres in the room. Church & Dwight's password opens the front door and the Playbook only.
+export const teamOnly = (p: string) => p === '/host' || p.startsWith('/host/') || p === '/team' || p === '/scorecard' || p.startsWith('/stage/') || p.startsWith('/files/') || p.startsWith('/media/flavor-race');

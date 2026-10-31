@@ -21,7 +21,7 @@ const SETUP = [
   'Bring a few paper scorecards and pens for anyone who’d rather not use a phone (print them from /scorecard). On the vote slides, the presenter view has a button to add a hand vote for each option, and one to take it back. On the tasting, type each paper card in with Add a paper card. A card typed in by mistake can be removed.',
 ];
 const AFTER = [
-  'Before you close the laptop, open /host?results=1 and print it to PDF. It has the votes, the tasting scores, the concepts, the white-space marks and Now, Next, Later.',
+  'Before you close the laptop, open /host?results=1 and print it to PDF: the votes, the scores, the concepts, the white-space marks and Now, Next, Later as we left them. The Playbook write-up (/host/writeup) fills in from the same session.',
   'Collect the paper scorecards, and check each one is typed in.',
   ...NEXT_STEPS.map((n) => `${n.t}: ${n.d}`),
 ];

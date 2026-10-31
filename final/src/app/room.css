@@ -101,7 +101,7 @@
 .gate-card input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .gate-card button { padding: 16px; border-radius: 14px; background: var(--fg); color: var(--bg); font: 500 16px/1 var(--sans); }
 .gate-card button:disabled { opacity: .4; }
-.gate-err { color: #F27A5E; font: 400 14px/1 var(--sans); }
+.gate-err { color: #F27A5E; font: 400 14px/1.4 var(--sans); }
 .bench-phone .rm-tags button { font-size: 13px; padding: 8px 11px; }
 .rm-dial { display: block; margin: 16px 0; }
 .rm-dial > span { display: flex; justify-content: space-between; align-items: baseline; font: 400 16px var(--sans); }

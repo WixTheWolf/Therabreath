@@ -32,6 +32,7 @@ export type SessionState = {
   board: Record<string, string>; // horizon (Now, Next, Future) -> free text, from before the plan had rows
   plan: Record<string, PlanRow>; // Now, Next, Later, one row per direction, typed in the presentation or the presenter view
   marks: string[]; // white-space cells marked in the presentation, as 'segment|moment'
+  notes: Record<string, string>; // the write-up's own words, typed by the team after the morning (summary, a note per objective)
   timer: { running: boolean; endsAt: number; remaining: number; total: number };
   spotlight: { kind: string; ref: string } | null;
   paper: boolean; blank: boolean; sound: boolean;
@@ -41,7 +42,7 @@ export type SessionState = {
 
 export const initialState = (): SessionState => ({
   scene: 0, step: 0, participants: {}, votes: {}, ratings: {}, guesses: {}, concepts: {},
-  missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {}, board: {}, plan: {}, marks: [],
+  missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {}, board: {}, plan: {}, marks: [], notes: {},
   timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, paper: false, blank: false, sound: false, revealed: null, lastEvent: 0,
 });
 
@@ -89,6 +90,7 @@ export function reduce(s: SessionState, e: Ev): SessionState {
       s.plan[r.id] = r; break;
     }
     case 'unplan': delete s.plan[d.id]; break;
+    case 'note': if (typeof d.key === 'string' && d.key) s.notes[d.key.slice(0, 24)] = String(d.text || '').slice(0, 2400); break;
     case 'mark': s.marks = s.marks.includes(d.cell) ? s.marks.filter((x) => x !== d.cell) : [...s.marks, String(d.cell).slice(0, 120)]; break;
     case 'spotlight': s.spotlight = d.ref ? { kind: d.kind, ref: d.ref } : null; break;
     case 'flag': (s as any)[d.name] = !!d.value; break;

@@ -106,7 +106,9 @@ Offline at the venue: `npm run offline` serves the full app on the presenter lap
 
 Rehearse: open `/host?code=REHEARSE` and join a phone or two from the QR code. Votes there never reach `FOF1109`. Leave `FOF1109` alone the night before: it holds the pre-brief answers. A wipe from the Console clears the joins, votes, scores and board and keeps the pre-brief answers (`src/app/api/s/[code]/wipe/route.ts`).
 
-## PDFs (`deliverables/`, not deployed)
+## PDFs (`public/files/`, team only)
+
+The site serves these to the team link (or the host password) at `/files/<name>`, and the team page links each one. The room password alone can't open them: the decks show the sample names.
 
 - `The-Future-of-Freshness-Pre-brief.pdf`: the 4-page pre-read for Ross to send on November 3 (regenerated October 28: every line of copy on the site, the presentation, the phones and the pre-brief rewritten to sound warmer and more conversational, with the meaning, numbers and sources unchanged).
 - `The-Future-of-Freshness-Presenter-Deck.pdf`: the final to send the team, landscape Letter: a cover with the run of show, then every scene as it looks on the TV at its last build, with its number, time, objective and talking points, and a page marking where the pre-brief answers appear once they are in.
@@ -117,10 +119,12 @@ Rehearse: open `/host?code=REHEARSE` and join a phone or two from the QR code. V
 The decks are exported from the running site in export mode (`?still=1`), which never writes to the session:
 
 ```bash
-node scripts/export-show.mjs https://<production-host> /t/<team key> deliverables/The-Future-of-Freshness
+node scripts/export-show.mjs https://<production-host> /t/<team key> public/files/The-Future-of-Freshness
 ```
 
 After the session, open `/host?results=1` on the presenting laptop and print it to PDF: the tasting scores, the votes, the concepts, the white-space marks and Now, Next, Later as we left them.
+
+The write-up we promise within 8 business days is `/host/writeup` (team only): the Flavor Playbook as a designed Letter or A4 document that fills in from the live session (pre-brief answers, trend vote, tasting, chips, concepts, dot vote, white-space marks, Now, Next, Later) with boxes for our summary and a note on each objective, saved to the session as `note` events. Its bar shows the send-by date and what's still missing; Save as PDF prints it. `?code=REHEARSE` is a practice copy, marked as one on every page. Sample names appear only once the presentation has revealed them.
 
 ## Before November 9 [CONFIRM]
 

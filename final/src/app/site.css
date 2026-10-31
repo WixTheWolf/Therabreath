@@ -357,6 +357,13 @@ html:has(.tm) { background: #0B1B2B; }
 .tm-card h3, .tm-card h2 { font-family: var(--serif); font-weight: 300; margin: 12px 0 8px; }
 .tm-card p { opacity: .78; }
 .tm-morning h2 { font-family: var(--serif); font-weight: 300; }
+.tm-files { margin-top: 56px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.16); }
+.tm-files h2 { font: 300 clamp(30px, 3.4vw, 44px)/1.1 var(--serif); letter-spacing: -.02em; margin: 0 0 18px; }
+.tm-files ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0 32px; }
+.tm-files li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+.tm-files a { font-size: 19px; line-height: 1.35; color: var(--fg); text-decoration: underline; text-decoration-color: rgba(143,224,240,.5); text-underline-offset: .22em; transition: text-decoration-color .2s; }
+.tm-files a:hover { text-decoration-color: #8FE0F0; }
+.tm-files span { font: 500 12px/1 var(--mono); letter-spacing: .12em; color: rgba(240,238,233,.6); }
 /* The live session: its numbers, and a two-step way in, apart from the cards so it can't be opened by accident */
 .tm-live { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; margin-top: 42px; padding: 26px 30px; border: 1px solid rgba(255,255,255,.16); border-radius: 16px; background: rgba(255,255,255,.035); }
 .tm-live-stats { display: flex; flex-wrap: wrap; gap: 10px 32px; font-size: 19px; line-height: 1.4; }

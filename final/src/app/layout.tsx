@@ -6,6 +6,7 @@ import './console.css';
 import './playbook.css';
 import './simple.css';
 import './show.css';
+import './writeup.css';
 import type { Metadata, Viewport } from 'next';
 import { preload } from 'react-dom';
 
