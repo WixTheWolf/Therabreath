@@ -1,0 +1,38 @@
+/* The Flavor Playbook. Clarity, refracted: colour only ever comes from light. */
+@font-face { font-family: 'Newsreader'; src: url(/fonts/newsreader-latin-opsz-normal.woff2) format('woff2'); font-weight: 200 800; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Newsreader'; src: url(/fonts/newsreader-latin-opsz-italic.woff2) format('woff2'); font-weight: 200 800; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Geist'; src: url(/fonts/Geist-Variable.woff2) format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Geist Mono'; src: url(/fonts/GeistMono-Variable.woff2) format('woff2'); font-weight: 100 900; font-display: swap; }
+
+:root {
+  --cloud: #F0EEE9; --paper: #F7F6F2; --ink: #0B1B2B; --glacier: #BFE9F2; --glacier-d: #6CC7DD; --teal: #2E8FA8;
+  --orange: #F5821F; /* placeholder until sampled from official TheraBreath assets */
+  --serif: 'Newsreader', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --mono: 'Geist Mono', ui-monospace, monospace;
+  --ease: cubic-bezier(.22, .8, .2, 1); --ease-in: cubic-bezier(.6, 0, .8, .2);
+}
+[data-theme="a"] { --bg: #F0EEE9; --fg: #0B1B2B; --fg2: rgba(11,27,43,.66); --fg3: rgba(11,27,43,.42); --rule: rgba(11,27,43,.14); --rule2: rgba(11,27,43,.07); --panel: rgba(255,255,255,.6); --panel2: rgba(255,255,255,.85); --accent: #2E8FA8; --accent-soft: rgba(108,199,221,.28); --glow: rgba(255,255,255,.9); color-scheme: light; }
+[data-theme="b"] { --bg: #0B1B2B; --fg: #F0EEE9; --fg2: rgba(240,238,233,.70); --fg3: rgba(240,238,233,.44); --rule: rgba(240,238,233,.16); --rule2: rgba(240,238,233,.07); --panel: rgba(255,255,255,.05); --panel2: rgba(255,255,255,.09); --accent: #8FE0F0; --accent-soft: rgba(143,224,240,.2); --glow: rgba(191,239,250,.9); color-scheme: dark; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg, #0B1B2B); color: var(--fg, #F0EEE9); }
+body { font-family: var(--sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+input, textarea, select { font: inherit; color: inherit; }
+a { color: inherit; }
+::selection { background: var(--glacier); color: var(--ink); }
+
+/* shared type */
+.k { font: 500 20px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--fg2); }
+.serif { font-family: var(--serif); font-variation-settings: "opsz" 72; }
+.hero { font: 300 172px/.9 var(--serif); letter-spacing: -.035em; font-variation-settings: "opsz" 72; }
+.h1 { font: 300 96px/.98 var(--serif); letter-spacing: -.03em; font-variation-settings: "opsz" 72; }
+.h2 { font: 300 68px/1.02 var(--serif); letter-spacing: -.02em; font-variation-settings: "opsz" 72; }
+.h3 { font: 300 46px/1.08 var(--serif); letter-spacing: -.015em; font-variation-settings: "opsz" 72; }
+.it { font-style: italic; }
+.lede { font: 400 36px/1.32 var(--sans); color: var(--fg2); letter-spacing: -.005em; }
+.body { font: 400 32px/1.38 var(--sans); color: var(--fg2); }
+.src { font: 400 18px/1.45 var(--mono); color: var(--fg3); letter-spacing: .01em; }
+.num { font-family: var(--serif); font-weight: 300; letter-spacing: -.04em; font-feature-settings: "lnum", "tnum"; }
+.accent { color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .2s !important; } }

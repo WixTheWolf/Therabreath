@@ -1,0 +1,84 @@
+{
+ "elements": [
+  {
+   "id": "title",
+   "label": "G title THE FLAVOR RACE",
+   "file": "G_title.mov",
+   "frames": 75,
+   "start": 734,
+   "alpha": true
+  },
+  {
+   "id": "super_norco",
+   "label": "G super NORCO, CALIFORNIA",
+   "file": "G_super_norco.mov",
+   "frames": 84,
+   "start": 815,
+   "alpha": true
+  },
+  {
+   "id": "card_partners",
+   "label": "G card THERABREATH + THE FLAVOR FACTORY",
+   "file": "G_card_partners.mp4",
+   "frames": 86,
+   "start": 899,
+   "alpha": false
+  },
+  {
+   "id": "super_lab",
+   "label": "G super FLAVOR LAB",
+   "file": "G_super_lab.mov",
+   "frames": 78,
+   "start": 2084,
+   "alpha": true
+  },
+  {
+   "id": "super_ewing",
+   "label": "G super EWING, NEW JERSEY",
+   "file": "G_super_ewing.mov",
+   "frames": 84,
+   "start": 3887,
+   "alpha": true
+  },
+  {
+   "id": "endcard",
+   "label": "G end card TASTE THE FUTURE",
+   "file": "G_endcard.mp4",
+   "frames": 180,
+   "start": 4190,
+   "alpha": false
+  },
+  {
+   "id": "flash_lights",
+   "label": "G flash every bank (35%)",
+   "file": "G_flash_lights.mov",
+   "frames": 9,
+   "start": 384,
+   "alpha": true
+  },
+  {
+   "id": "flash_ignition",
+   "label": "G flash ignition",
+   "file": "G_flash_ignition.mov",
+   "frames": 9,
+   "start": 1148,
+   "alpha": true
+  },
+  {
+   "id": "flash_relight",
+   "label": "G flash relight (warm)",
+   "file": "G_flash_relight.mov",
+   "frames": 10,
+   "start": 2753,
+   "alpha": true
+  },
+  {
+   "id": "letterbox",
+   "label": "G letterbox and vignette",
+   "file": "G_letterbox.mov",
+   "frames": 4415,
+   "start": 0,
+   "alpha": true
+  }
+ ]
+}

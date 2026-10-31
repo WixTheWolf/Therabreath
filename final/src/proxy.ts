@@ -1,0 +1,37 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { isAuthed, isHost, joinToken, teamOnly, COOKIE, HOST_COOKIE } from '@/lib/auth';
+
+// Church & Dwight's password opens the front door. The team's pages (see teamOnly) need the team link or the host
+// password; someone signed in with only the room password is asked for one of those, so a teammate who used the room
+// password can still get in. The old live-workshop Console and session list (unlinked; they can wipe a session) still
+// ask for the host password.
+const HOST_ONLY = (p: string) => p.startsWith('/console/') || p.startsWith('/sessions');
+
+// Stage, Console and the Playbook need the password. Phones join through signed links instead.
+export async function proxy(req: NextRequest) {
+  const authed = await isAuthed(req.cookies.get(COOKIE)?.value);
+  if (authed && HOST_ONLY(req.nextUrl.pathname) && !(await isHost(req.cookies.get(HOST_COOKIE)?.value))) {
+    const url = req.nextUrl.clone(); url.pathname = '/login'; url.search = ''; url.searchParams.set('host', '1'); url.searchParams.set('next', req.nextUrl.pathname + req.nextUrl.search);
+    return NextResponse.redirect(url);
+  }
+  if (authed && teamOnly(req.nextUrl.pathname) && !(await isHost(req.cookies.get(HOST_COOKIE)?.value))) {
+    if (req.nextUrl.pathname.startsWith('/media/')) return new NextResponse(null, { status: 403 });
+    const url = req.nextUrl.clone(); url.pathname = '/login'; url.search = ''; url.searchParams.set('team', '1'); url.searchParams.set('next', req.nextUrl.pathname + req.nextUrl.search);
+    return NextResponse.redirect(url);
+  }
+  if (authed) return NextResponse.next();
+  // The opening film also plays on the pre-brief, which carries a signed link instead of the password.
+  const { pathname, searchParams } = req.nextUrl, c = searchParams.get('c'), k = searchParams.get('k');
+  const film = pathname.startsWith('/media/opening.') || pathname === '/media/film-poster.jpg';
+  if (film && c && k && k === (await joinToken(c))) return NextResponse.next();
+  if (pathname.startsWith('/media/')) return new NextResponse(null, { status: 403 });
+  const url = req.nextUrl.clone();
+  url.pathname = '/login';
+  if (HOST_ONLY(pathname)) url.searchParams.set('host', '1');
+  else if (teamOnly(pathname)) url.searchParams.set('team', '1');
+  url.searchParams.set('next', req.nextUrl.pathname + req.nextUrl.search);
+  return NextResponse.redirect(url);
+}
+// THE FLAVOR RACE premieres in the room, so it sits behind the password. The opening film quotes Ross's invitation,
+// so it does too, and the pre-brief reaches it with its signed link.
+export const config = { matcher: ['/', '/host', '/host/:path*', '/team', '/scorecard', '/stage/:path*', '/console/:path*', '/playbook/:path*', '/sessions/:path*', '/files/:path*', '/media/flavor-race.mp4', '/media/flavor-race-poster.jpg', '/media/opening.mp4', '/media/opening.webm', '/media/opening.vtt', '/media/opening.brief.mp4', '/media/opening.brief.webm', '/media/opening.brief.vtt', '/media/film-poster.jpg'] };

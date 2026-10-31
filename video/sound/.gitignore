@@ -1,0 +1,7 @@
+# generated or bulky: ElevenLabs downloads, 48 kHz conversions, library copies, review sheets, signed download links
+raw/
+wav/
+lib/
+sheets/
+dl*.txt
+__pycache__/
