@@ -250,6 +250,7 @@ function Results({ s, code }: { s: any; code: string }) {
   const d = decided(s);
   const cs = d.concepts;
   const marks: string[] = s.marks || [];
+  useEffect(() => { document.title = 'What we decided | The Future of Freshness'; }, []);
   return (
     <main className="show-results">
       <p className="k">The Flavor Playbook · draft · {EVENT.date} · {EVENT.room} room, Princeton{code !== EVENT.code ? ` · rehearsal ${code}` : ''}</p>
@@ -263,7 +264,7 @@ function Results({ s, code }: { s: any; code: string }) {
       <section><h2 className="h3">Now, Next, Later</h2>{d.plan.length ? <table className="sr-plan"><thead><tr><th /><th>Direction</th>{PLAN_COLS.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead><tbody>{d.plan.map((r) => <tr key={r.id}><td>{r.label}</td><td><b>{r.what || 'Untitled'}</b></td>{PLAN_COLS.map((c) => <td key={c.f}>{planCell(r, c.f) || <span className="ghost">To agree</span>}</td>)}</tr>)}</tbody></table> : <p className="ghost">Nothing yet</p>}</section>
       <section><h2 className="h3">Where the ideas could fit in a day</h2><ul>{marks.map((c) => <li key={c}>{markLabel(s, c)}</li>)}{!marks.length && <li className="ghost">No cells marked</li>}</ul></section>
       <p className="src">Confidential. These are development samples and concepts made for this session. They aren’t finished products or claims.</p>
-      <button className="sr-print" onClick={() => print()}>Print or save as PDF</button>
+      <div className="sr-actions"><button className="sr-print" onClick={() => print()}>Print or save as PDF</button><a href={code === EVENT.code ? '/host/writeup' : `/host/writeup?code=${code}`}>Open the Playbook write-up</a></div>
     </main>
   );
 }

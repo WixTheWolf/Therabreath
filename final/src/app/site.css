@@ -265,7 +265,9 @@
 .st-agenda b { display: inline-block; width: 64px; font: 500 13px var(--mono); color: var(--teal-ink); }
 .st-close .st-play { background: var(--ink); color: var(--cloud); }
 .st-note { position: relative; font-size: 17px; }
-.st-foot { position: relative; margin-top: 60px; font: 400 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: rgba(11,27,43,.62); text-wrap: balance; }
+.st-foot { position: relative; margin-top: 60px; font: 400 12px/1.6 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: rgba(11,27,43,.62); text-wrap: balance; }
+.st-foot a { color: inherit; text-decoration: underline; text-decoration-color: rgba(11,27,43,.3); text-underline-offset: .3em; transition: color .2s, text-decoration-color .2s; }
+.st-foot a:hover { color: #0B1B2B; text-decoration-color: currentColor; }
 .st-k { text-wrap: balance; }
 
 /* phones and tablets */

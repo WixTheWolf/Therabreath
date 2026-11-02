@@ -29,8 +29,9 @@ const run = await page.evaluate(() => window.__run);
 const shots = [];
 for (let i = 0; i < scenes.length; i++) {
   await page.evaluate((h) => { location.hash = h; }, `#${scenes[i].at}.99`);
-  // Let the scene fade in and its builds land; the gap's glasses take longest to fill.
-  await page.waitForTimeout(scenes[i].id === 'gap' ? 6500 : 3200);
+  // Let the scene fade in and its builds land. The gap's glasses take longest to fill, and a site from before November 2
+  // only shows their percentages once the 3D starts (8 s at the latest), so wait past that.
+  await page.waitForTimeout(scenes[i].id === 'gap' ? 9000 : 3200);
   shots.push(await page.screenshot({ type: 'jpeg', quality: 90 }));
   console.log('scene', i + 1, 'of', scenes.length, scenes[i].id);
 }

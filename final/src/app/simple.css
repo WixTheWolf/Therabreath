@@ -59,3 +59,27 @@ html:has(.rs), html:has(.rs) body { background: #fff; }
 .rs-after td { padding-top: 4px; padding-bottom: 4px; background: #F2F6F7; font-style: italic; color: #1F6C82; }
 .rs-after .rs-t { font-style: normal; color: #1F6C82; }
 .rs-note { margin-top: 4px; font: 400 7.5pt/1.4 var(--mono); color: #555; }
+
+/* ---------- on a phone: one column, and the tables read as stacked rows (the printouts keep their columns) ---------- */
+@media screen and (max-width: 700px) {
+  .sc { padding: 24px 16px 40px; }
+  .sc-head { flex-wrap: wrap; align-items: flex-end; row-gap: 12px; }
+  .sc-head > div { flex: 1 1 100%; }
+  .sc-head label { max-width: none; flex: 1 1 50%; }
+  .sc-print { white-space: nowrap; }
+  .sc-card { grid-template-columns: 52px 1fr; }
+  .sc-id { padding: 6px 2px; }
+  .sc-id b { font-size: 30pt; }
+  .sc-id small { font-size: 6.5pt; }
+  .sc-row, .sc-pair { grid-template-columns: 1fr; row-gap: 5px; padding: 5px 0; }
+  .sc-pair > span:nth-of-type(2) { margin-left: 0; margin-top: 4px; }
+  .rs-check { columns: 1; }
+  .rs-two { grid-template-columns: 1fr; gap: 0; }
+  .rs-run thead { display: none; }
+  .rs-run, .rs-run tbody, .rs-run tr, .rs-run td { display: block; width: auto !important; }
+  .rs-run tr { padding: 10px 0; border-bottom: 1px solid #ccd; }
+  .rs-run td { border: 0; padding: 2px 0; }
+  .rs-run td[data-l]::before { content: attr(data-l); display: block; margin-top: 6px; font: 500 7pt/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; font-style: normal; color: #555; }
+  .rs-after { padding: 8px 10px !important; background: #F2F6F7; }
+  .rs-after td { background: none; }
+}

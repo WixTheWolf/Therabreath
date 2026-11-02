@@ -1,9 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Light, { project } from '../Light';
 import { R, Enter, SceneProps, Src, clean } from './ui';
 import { CLIMB, GAP, PORTFOLIO, MARKET, SIGNALS, SOURCES, WHITESPACE, OBJECTIVES } from '@/lib/content';
 import { tallyPick, ranked } from '@/lib/state';
+import { LiveCtx } from '../show/ShowScenes';
 
 // 6. The climb: a share line that draws itself.
 export function Climb({ step }: SceneProps) {
@@ -34,12 +35,16 @@ export function Climb({ step }: SceneProps) {
 // 7. The gap: 65 vs 14. The empty space fills with light.
 const GLASS_CAM = { pos: [0, 1.3, 10.8], target: [0, 0.98, 0], fov: 24, shift: [0.36, 0.0] };
 export function Gap({ step }: SceneProps) {
-  // The labels count up with the glasses, from the glasses' first drawn frame.
+  // The labels count up with the glasses, from the glasses' first drawn frame, and stay hidden until then so the TV never
+  // reads 0%. The PDF export (?still=1) shows the final figures straight away.
+  const still = !!useContext(LiveCtx)?.still;
   const [t0, setT0] = useState(0);
   const ease = (x: number) => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
   const [lab, setLab] = useState([0, 0]);
+  useEffect(() => { if (still) setLab([65, 14]); }, [still]);
   useEffect(() => { const id = setTimeout(() => setT0((v) => v || performance.now()), 8000); return () => clearTimeout(id); }, []);
-  useEffect(() => { if (!t0) return; let r = 0; const f = () => { const t = (performance.now() - t0) / 1000; setLab([Math.round(65 * ease((t - 0.4) / 2.6)), Math.round(14 * ease((t - 0.4) / 2.6))]); if (t < 3.2) r = requestAnimationFrame(f); }; r = requestAnimationFrame(f); return () => cancelAnimationFrame(r); }, [t0]);
+  useEffect(() => { if (!t0 || still) return; let r = 0; const f = () => { const t = (performance.now() - t0) / 1000; setLab([Math.round(65 * ease((t - 0.4) / 2.6)), Math.round(14 * ease((t - 0.4) / 2.6))]); if (t < 3.2) r = requestAnimationFrame(f); }; r = requestAnimationFrame(f); return () => cancelAnimationFrame(r); }, [t0, still]);
+  const shown = still || t0 > 0;
   const [x0, y0] = project([-0.95, 0, 0.9], GLASS_CAM), [x1, y1] = project([0.95, 0, 0.9], GLASS_CAM), [tx, ty] = project([1.61, 1.55, 0], GLASS_CAM);
   const stepRef = step;
   return (
@@ -52,8 +57,8 @@ export function Gap({ step }: SceneProps) {
         <Src k="q2call" extra="TheraBreath 14%, mouthwash category 65%" style={{ position: 'absolute', top: 700, left: 0, width: 760 }} />
         <Enter i={1} className="gap-share">TheraBreath had <b className="num">25.3%</b> of US mouthwash in Q2 2026, up 4.5 points, which makes it number 2 in the category. Even so, most households still don’t buy it.</Enter>
       </div>
-      <div className="glabel" style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}<sup>%</sup></div><div className="who">Mouthwash category</div></div>
-      <div className="glabel" style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}<sup>%</sup></div><div className="who">TheraBreath</div></div>
+      <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}<sup>%</sup></div><div className="who">Mouthwash category</div></div>
+      <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}<sup>%</sup></div><div className="who">TheraBreath</div></div>
       <R b={1} step={step} className="tag86" style={{ left: Math.min(tx + 10, 1600), top: ty }}>The other 86</R>
     </>
   );

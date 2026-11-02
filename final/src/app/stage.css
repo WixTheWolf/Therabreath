@@ -126,7 +126,8 @@
 .gap-copy { position: absolute; left: 120px; top: 190px; width: 820px; z-index: 3; }
 .gap-copy .h1 { margin-top: 34px; font-size: 84px; }
 .gap-second { font: 300 54px/1.1 var(--serif); color: var(--accent); margin-top: 40px; }
-.glabel { position: absolute; transform: translateX(-50%); text-align: center; z-index: 3; }
+.glabel { position: absolute; transform: translateX(-50%); text-align: center; z-index: 3; opacity: 0; transition: opacity .5s var(--ease); }
+.glabel.on { opacity: 1; }
 .glabel .num { font-size: 96px; line-height: 1; }
 .glabel sup { font-size: 40px; }
 .glabel .who { font: 500 16px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--fg2); margin-top: 8px; }

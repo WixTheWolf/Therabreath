@@ -72,7 +72,7 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
       <WorkshopOverview />
       <Decisions className="ws-section" id="decide" />
       <Team />
-      <Close prebrief={prebrief} />
+      <Close prebrief={prebrief} team={team} />
       <details id="explore" className="st-explore"><summary>More reading: the words we use for freshness, and three shifts we’re seeing</summary><p>This part is optional. It’s here to explain ideas, and it isn’t formula work or consumer research.</p><Vocab /><Worlds /><ShiftTrack /></details>
 
       {film && <FilmModal file={FILM.site.file} onClose={() => setFilm(false)} next={{ label: 'Open the pre-brief', href: prebrief, line: 'Next: the pre-brief and its four quick questions. We’ll open the morning with everyone’s answers.' }} />}
@@ -272,7 +272,7 @@ function Team() {
   );
 }
 
-function Close({ prebrief }: { prebrief: string }) {
+function Close({ prebrief, team }: { prebrief: string; team: boolean }) {
   return (
     <section id="close" className="st-close">
       <div className="st-close-orb" />
@@ -281,7 +281,7 @@ function Close({ prebrief }: { prebrief: string }) {
       <ol className="st-agenda st-rise">{AGENDA.map(([t, l, o]) => <li key={t}><b>{t}</b>{l}{o && <em className="st-obj">Objective {o}</em>}</li>)}</ol>
       <div className="st-before st-rise"><p>Before you come, please take a few minutes to answer four quick questions in the pre-brief. We’ll open the morning with everyone’s answers.</p><a className="st-play" href={prebrief}>Open the pre-brief</a></div>
       <p className="st-note">{EVENT.time} ET · {EVENT.room} room · {EVENT.place}</p>
-      <footer className="st-foot">Confidential and private · TheraBreath × The Flavor Factory</footer>
+      <footer className="st-foot">Confidential and private · TheraBreath × The Flavor Factory{!team && <> · <a href="/login?team=1&next=/team">Flavor Factory team sign-in</a></>}</footer>
     </section>
   );
 }

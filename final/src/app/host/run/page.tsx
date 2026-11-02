@@ -54,9 +54,9 @@ export default function RunSheet() {
             <tr key={b.id}>
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
               <td><b>{b.title}</b></td>
-              <td className="rs-owner">To assign</td>
-              <td>{RUN_NOTES[b.id].kit}</td>
-              <td>{RUN_NOTES[b.id].output}</td>
+              <td className="rs-owner" data-l="Owner">To assign</td>
+              <td data-l="Technology and materials">{RUN_NOTES[b.id].kit}</td>
+              <td data-l="Output">{RUN_NOTES[b.id].output}</td>
             </tr>,
             RUN_NOTES[b.id].after ? <tr key={b.id + '-after'} className="rs-after"><td className="rs-t">{b.end}</td><td colSpan={4}>{RUN_NOTES[b.id].after}</td></tr> : null,
           ])}</tbody>
@@ -77,7 +77,7 @@ export default function RunSheet() {
             <tr key={b.id}>
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
               <td><b>{b.title}</b>{b.obj && <em>Objective {b.obj}</em>}<small>{RUN_NOTES[b.id].slides}</small></td>
-              <td>{RUN_NOTES[b.id].does}</td>
+              <td data-l="What happens">{RUN_NOTES[b.id].does}</td>
             </tr>
           ))}</tbody>
         </table>

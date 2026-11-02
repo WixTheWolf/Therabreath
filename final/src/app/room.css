@@ -18,6 +18,7 @@
 .rm-drop { width: 72px; height: 96px; border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%; background: radial-gradient(circle at 35% 30%, #fff, var(--glacier) 35%, var(--glacier-d) 80%); box-shadow: 0 0 40px var(--glacier-d); animation: bob 4s ease-in-out infinite; margin-bottom: 10px; }
 .rm-join input, .rm-input { width: 100%; padding: 16px 18px; border-radius: 14px; border: 1px solid var(--rule); background: var(--panel2); font: 400 18px/1 var(--sans); outline: none; }
 .rm-join input { font-size: 22px; text-align: center; margin-top: 12px; }
+.rm-join .k { line-height: 1.5; text-wrap: balance; }
 .rm-input:focus, .rm-join input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .rm-btn { width: 100%; padding: 17px 20px; border-radius: 16px; background: var(--fg); color: var(--bg); font: 500 17px/1 var(--sans); transition: opacity .2s, transform .1s; }
 .rm-btn:active { transform: scale(.98); }
@@ -94,7 +95,7 @@
 .gate { min-height: 100dvh; background: var(--bg); display: grid; place-items: center; padding: 24px; position: relative; overflow: hidden; }
 .gate-drop { position: absolute; width: 700px; height: 900px; right: -160px; top: -120px; border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%; background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), rgba(191,233,242,.18) 35%, rgba(108,199,221,.05) 70%, transparent); filter: blur(4px); animation: bob 8s ease-in-out infinite; }
 .gate-card { position: relative; width: 100%; max-width: 420px; padding: 40px 34px; border-radius: 26px; background: var(--panel2); border: 1px solid var(--rule); backdrop-filter: blur(20px); display: flex; flex-direction: column; gap: 16px; }
-.gate-card .k { font-size: 12px; }
+.gate-card .k { font-size: 12px; line-height: 1.5; }
 .gate-card .h2 { font-size: 58px; }
 .gate-card p { font: 400 15px/1.4 var(--sans); color: var(--fg2); }
 .gate-card input { padding: 16px; border-radius: 14px; border: 1px solid var(--rule); background: var(--panel); font: 400 18px/1 var(--sans); outline: none; }

@@ -220,13 +220,15 @@
 
 /* what we decided, printable */
 .show-results { max-width: 960px; margin: 0 auto; padding: 72px 32px 96px; background: var(--bg); color: var(--fg); min-height: 100vh; }
+.show-results > .k { font-size: 13px; line-height: 1.6; }
 .show-results .h1 { font-size: clamp(44px, 7vw, 76px); margin: 16px 0 10px; }
 .sr-sub { font: 400 18px/1.4 var(--sans); color: var(--fg2); margin-bottom: 26px; }
 .show-results section { padding: 24px 0; border-top: 1px solid var(--rule); }
 .show-results .h3 { font-size: 30px; margin-bottom: 14px; }
 .show-results ul { margin-left: 20px; display: flex; flex-direction: column; gap: 6px; font: 400 18px/1.45 var(--sans); }
 .show-results li em { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-style: normal; margin-left: 8px; }
-.show-results .ghost { list-style: none; margin-left: -20px; }
+.show-results .ghost { color: var(--fg3); font-style: italic; }
+.show-results ul .ghost { list-style: none; margin-left: -20px; }
 .sr-taste { width: 100%; border-collapse: collapse; font: 400 16px/1.4 var(--sans); }
 .sr-taste th { text-align: left; font: 500 11px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg3); padding: 6px 8px 6px 0; border-bottom: 1px solid var(--rule); }
 .sr-taste td { padding: 8px 8px 8px 0; border-bottom: 1px solid var(--rule2); }
@@ -242,9 +244,11 @@
 .sr-nnl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .sr-nnl b { font: 300 32px/1 var(--serif); display: block; }
 .sr-nnl small { font: 500 12px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg3); display: block; margin: 6px 0 10px; }
-.sr-print { margin-top: 28px; padding: 14px 22px; border-radius: 30px; border: 1px solid var(--fg); background: var(--fg); color: var(--bg); font: 500 14px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.sr-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: 28px; }
+.sr-actions a { font: 500 14px/1.3 var(--sans); color: var(--accent-ink); text-underline-offset: .25em; }
+.sr-print { padding: 14px 22px; border-radius: 30px; border: 1px solid var(--fg); background: var(--fg); color: var(--bg); font: 500 14px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
 @media (max-width: 700px) { .sr-plan { font-size: 14px; } .sr-nnl { grid-template-columns: 1fr; } .sr-concept dl { grid-template-columns: 1fr; } }
-@media print { .sr-print { display: none; } .show-results { padding: 0; } }
+@media print { .sr-actions { display: none; } .show-results { padding: 0; } }
 
 /* The PDF export (?still=1): no staggered entrances, so every scene is fully drawn by the time it is captured. */
 .show.still .stage-scene * { animation-delay: 0s !important; transition-delay: 0s !important; }
