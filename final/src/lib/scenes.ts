@@ -74,7 +74,7 @@ const SHOW: Row[] = [
   { id: 'playbook', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 5, title: 'What we decided', block: 'close', room: W('Here’s what we decided') },
   { id: 'next', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 3, title: 'What happens next', block: 'close', room: { kind: 'thanks' } },
   { id: 'film', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 0, title: 'Before lunch', block: 'close', room: W('Phones down for a couple of minutes. Eyes on the screen.') },
-  { id: 'lunch', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 0, title: 'Lunch', block: 'close', room: { kind: 'thanks' } },
+  { id: 'lunch', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 0, title: 'Thank you', block: 'close', room: { kind: 'thanks' } },
 ];
 
 export const SCENES: Scene[] = SHOW.map((s, n) => ({ ...s, n }));

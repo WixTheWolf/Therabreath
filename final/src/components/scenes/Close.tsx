@@ -71,25 +71,18 @@ export function Next({ s, step }: SceneProps) {
   );
 }
 
-// 43. Lunch: an ambient field in the colors of the territories the room chose.
+// 43. Thank you: an ambient field in the colors of the territories the room chose.
 export function Lunch({ s }: SceneProps) {
+  // The last slide is a thank-you card (it said Lunch until November 2).
   const d = decisions(s);
-  // What goes first stays on screen through lunch.
-  const now = planRows(s).filter((r) => r.h === 'Now' && r.what).slice(0, 3);
   const cols = (d.ter.length ? d.ter : TERRITORIES.slice(0, 3)).flatMap((t) => t.palette.slice(0, 2));
   return (
     <div className="lunch">
       <div className="aurora">{cols.map((c, i) => <i key={i} style={{ ['--c' as any]: c, ['--i' as any]: i }} />)}</div>
       <div className="lunch-in">
         <div className="k">TheraBreath × The Flavor Factory</div>
-        <h1 className="hero center">Lunch.</h1>
-        <p className="sub it center">Thank you for spending the morning with us.</p>
-        {now.length > 0 && (
-          <div className="lunch-plan">
-            <span className="k">Now · In the next sample round</span>
-            <ul>{now.map((r) => <li key={r.id}><b>{r.what}</b><span>{[r.owner && `TFF: ${r.owner}`, r.reviewer && `C&D: ${r.reviewer}`, r.due ? `next sample ${dueLabel(r.due)}` : r.brief || r.next].filter(Boolean).join(' · ')}</span></li>)}</ul>
-          </div>
-        )}
+        <h1 className="hero center">Thank you.</h1>
+        <p className="sub it center">For spending the morning with us.</p>
       </div>
     </div>
   );

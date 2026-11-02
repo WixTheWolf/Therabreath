@@ -24,8 +24,11 @@ export function useSession(code: string, opts: Opts = {}) {
     if (busy.current) return;
     busy.current = true;
     const t0 = performance.now();
+    // A request that never answers (a dropped connection on the venue wifi) is cut off after 8 seconds, so one bad
+    // request can't stop the polling until someone reloads the page.
+    const ctl = new AbortController(); const cut = setTimeout(() => ctl.abort(), 8000);
     try {
-      const r = await fetch(`/api/s/${code}/events?after=${seq.current}${kq}`, { cache: 'no-store' });
+      const r = await fetch(`/api/s/${code}/events?after=${seq.current}${kq}`, { cache: 'no-store', signal: ctl.signal });
       if (!r.ok) throw new Error(String(r.status));
       const j = await r.json();
       if (j.events.length) {
@@ -39,7 +42,7 @@ export function useSession(code: string, opts: Opts = {}) {
       setStatus((s) => ({ ...s, online: true, store: j.store, realtime: j.realtime, lastOk: Date.now(), rtt: Math.round(performance.now() - t0), topic: j.topic } as any));
     } catch {
       setStatus((s) => ({ ...s, online: false }));
-    } finally { busy.current = false; }
+    } finally { clearTimeout(cut); busy.current = false; }
   }, [code, kq]);
 
   const flush = useCallback(async () => {
@@ -50,7 +53,9 @@ export function useSession(code: string, opts: Opts = {}) {
     try {
       while (box.length) {
         const chunk = box.slice(0, 200);
-        const r = await fetch(`/api/s/${code}/events`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ events: chunk, k: opts.k }) });
+        // Cut off after 10 seconds like the poll; the events stay in the outbox and go again (the server ignores an id it has).
+        const ctl = new AbortController(); const cut = setTimeout(() => ctl.abort(), 10000);
+        const r = await fetch(`/api/s/${code}/events`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ events: chunk, k: opts.k }), signal: ctl.signal }).finally(() => clearTimeout(cut));
         if (!r.ok) break;
         const sent = new Set(chunk.map((e) => e.id));
         try { box = JSON.parse(localStorage.getItem(OUTBOX(code)) || '[]').filter((e: Ev) => !sent.has(e.id)); localStorage.setItem(OUTBOX(code), JSON.stringify(box)); } catch { box = []; }

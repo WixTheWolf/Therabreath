@@ -93,7 +93,7 @@ export default function RunSheet() {
           <ol className="rs-check">{CONFIRM.map((x) => <li key={x}>{x}</li>)}</ol>
         </section>
       </div>
-      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on (clicks don’t move on while there are boxes to type in); left arrow to go back; ] for the next part and [ for the previous one; S to skip the optional slides; Home for the start; End for Lunch, which skips the film; F for full screen; P for the presenter view; N for the talking points on the TV itself; B to blank the screen. On THE FLAVOR RACE, space or K pauses and plays and R starts it again. The same keys work in the presenter view. If the page reloads, it picks up where the session left off.</p>
+      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on (clicks don’t move on while there are boxes to type in); left arrow to go back; ] for the next part and [ for the previous one; S to skip the optional slides; Home for the start; End for the thank-you card, which skips the film; F for full screen; P for the presenter view; N for the talking points on the TV itself; B to blank the screen. On THE FLAVOR RACE, space or K pauses and plays and R starts it again. The same keys work in the presenter view. If the page reloads, it picks up where the session left off.</p>
     </main>
   );
 }

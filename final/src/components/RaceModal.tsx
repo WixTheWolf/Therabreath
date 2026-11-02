@@ -16,7 +16,7 @@ export default function RaceModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="st-modal" ref={box} onClick={onClose} role="dialog" aria-modal="true" aria-label="THE FLAVOR RACE">
       <div className="st-modal-in" onClick={(e) => e.stopPropagation()}>
-        <video autoPlay controls playsInline poster="/media/flavor-race-poster.jpg" onEnded={onClose} aria-label="THE FLAVOR RACE"><source src="/media/flavor-race.mp4" type="video/mp4" /></video>
+        <video autoPlay controls playsInline onEnded={onClose} aria-label="THE FLAVOR RACE"><source src="/media/flavor-race.mp4" type="video/mp4" /></video>
       </div>
       <div className="st-modal-bar" onClick={(e) => e.stopPropagation()}><button className="st-x st-shut" onClick={onClose}>Close<span aria-hidden="true"> · Esc</span></button></div>
     </div>

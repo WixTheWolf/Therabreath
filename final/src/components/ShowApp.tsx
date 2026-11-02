@@ -43,6 +43,9 @@ const VIEWS: Record<string, View> = {
 const VOTING = new Set(['signalvote', 'tasting', 'nextround', 'dots']);
 // The scenes with boxes to type in or cells to mark: a click there never moves the room on.
 const TYPING = new Set(['concepts', 'whitespace', 'board']);
+// Two copies of the sample names are the same when every sample has the same name and note, in any key order.
+const sealKey = (x: { samples: Record<string, { name: string; note: string }> }) =>
+  Object.keys(x.samples).sort().map((c) => `${c}:${x.samples[c]?.name}|${x.samples[c]?.note}`).join(';');
 
 export default function ShowApp({ code, k }: { code: string; k: string }) {
   const [still, setStill] = useState(false);
@@ -51,7 +54,8 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   // The team's own copy of the sample names (from the server): the scenes read them from the state they're handed, and the
   // room learns them only from the reveal this window sends when the tasting flips the names.
   const sealed = useSealed(s.revealed);
-  const sv = useMemo(() => (sealed.data && !s.revealed ? { ...s, revealed: sealed.data } : s), [s, sealed.data]);
+  // The team's copy always wins on this screen, so a reveal saved before the samples changed never shows the old names.
+  const sv = useMemo(() => (sealed.data ? { ...s, revealed: sealed.data } : s), [s, sealed.data]);
   const told = Object.keys(s.survey || {}).length > 0;
   const n = SCENES.length;
   // "You told us" only appears once someone has answered the pre-brief. S (short) also skips the optional slides.
@@ -93,12 +97,28 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
     if (!hashed.current && s.scene > 0) setPos({ i: s.scene, step: s.step });
   }, [status.lastOk, still, mode, s.scene, s.step]);
   useEffect(() => { if (live.current && !still && !mode) send('goto', { scene: pos.i, step: pos.step }); }, [pos, still, mode, send]);
+  // The reveal. The flip is build 2 of the tasting, and skipping past the tasting reveals too. Two repairs keep the phones
+  // right: a reveal saved before the samples changed is sent again with the current names (a rehearsal on October 31 kept
+  // the old A to D order after the swap), and a rehearsal that goes back before the flip is sealed again, so every
+  // run-through tastes blind. The live session is never sealed again.
   const revealSent = useRef(false);
+  const repair = useRef('');
   useEffect(() => {
-    const ti = SCENES.findIndex((x) => x.id === 'tasting'); // the flip is build 2; skipping past the tasting reveals too
-    if (!live.current || still || mode || s.revealed || revealSent.current || !sealed.data) return;
-    if (pos.i > ti || (pos.i === ti && pos.step >= 2)) { revealSent.current = true; send('reveal', sealed.data); }
-  }, [pos, still, mode, s.revealed, sealed.data, send, status.lastOk]);
+    const ti = SCENES.findIndex((x) => x.id === 'tasting');
+    if (!live.current || still || mode || !sealed.data) return;
+    const past = pos.i > ti || (pos.i === ti && pos.step >= 2);
+    if (s.revealed) {
+      if (!past && code !== EVENT.code) {
+        if (repair.current !== 'seal') { repair.current = 'seal'; revealSent.current = false; send('seal', {}); }
+        return;
+      }
+      const want = sealKey(sealed.data);
+      if (sealKey(s.revealed) !== want && repair.current !== want) { repair.current = want; send('reveal', sealed.data); }
+      return;
+    }
+    repair.current = '';
+    if (past && !revealSent.current) { revealSent.current = true; send('reveal', sealed.data); }
+  }, [pos, still, mode, s.revealed, sealed.data, send, status.lastOk, code]);
   useEffect(() => { history.replaceState(null, '', `${location.search}#${pos.i + 1}${pos.step ? '.' + pos.step : ''}`); }, [pos]);
 
   const posRef = useRef(pos); posRef.current = pos;

@@ -98,7 +98,7 @@ export default function PresenterApp({ code }: { code: string }) {
           {sc.builds > 0 && <p className="pv-build">Build {step} of {sc.builds}</p>}
           <ul className="pv-points">{pointsOf(sc).map((x, j) => <li key={j}>{x}</li>)}</ul>
           {pos?.next && <p className="pv-next">Next: <b>{pos.next}</b></p>}
-          {sc.id === 'next' && <button className="pv-skipfilm" disabled={off} onClick={() => cmd({ c: 'goto', i: SCENES.length - 1 })}>Running late: skip the film, go to Lunch</button>}
+          {sc.id === 'next' && <button className="pv-skipfilm" disabled={off} onClick={() => cmd({ c: 'goto', i: SCENES.length - 1 })}>Running late: skip the film, go to the thank-you</button>}
         </section>
         <aside className="pv-room">{room}</aside>
       </div>
@@ -300,7 +300,7 @@ function FilmPanel({ f, now, cmd, next, prev }: { f?: FilmState; now: number; cm
         {next && <button disabled={!f} onClick={() => cmd({ c: 'go', d: 1 })}>Skip to {next}</button>}
         {prev && <button disabled={!f} onClick={() => cmd({ c: 'go', d: -1 })}>Back to {prev}</button>}
       </div>
-      <p className="pv-sub">Running late? Skip it. Every decision and owner is already saved, and the Lunch slide keeps the Now rows up.</p>
+      <p className="pv-sub">Running late? Skip it. Every decision and owner is already saved, and the write-up has them all.</p>
       <p className="pv-sub">Keys here or on the presentation: Space or K to pause and play, R to start again, the arrows to move on or back.</p>
     </>
   );

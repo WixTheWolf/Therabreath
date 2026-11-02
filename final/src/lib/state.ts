@@ -95,6 +95,7 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'spotlight': s.spotlight = d.ref ? { kind: d.kind, ref: d.ref } : null; break;
     case 'flag': (s as any)[d.name] = !!d.value; break;
     case 'reveal': if (d.samples) s.revealed = { samples: d.samples, heroes: d.heroes || {}, flavors: d.flavors || {} }; break;
+    case 'seal': s.revealed = null; break; // a rehearsal going back before the tasting, so the next run-through is blind
     case 'wipe': return initialState();
   }
   return s;

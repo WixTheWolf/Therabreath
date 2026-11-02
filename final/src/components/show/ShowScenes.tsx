@@ -504,13 +504,15 @@ export function JoinCorner({ url }: { url: string }) {
 // left. `ctl` lets the presentation and the presenter view pause, play and restart it (Space or K, and R), and read how
 // it's doing; `onChange` says when that changes. A browser that won't play sound before anyone has pressed a key or
 // clicked in this window plays it muted with a note on the TV; a click on the picture brings the sound in. On paper
-// (the PDF decks) it is the closing card, so a shared deck never gives the film away.
+// (the PDF decks) it is the closing card, so a shared deck never gives the film away. There is no poster: the film
+// fades up from black, so the screen stays black until it plays (a poster of the Moon flashed before the start).
 export type FilmCtl = { act: (a: FilmAct) => void; state: () => FilmState | undefined };
 export function ShowFilm({ still, ctl, onChange }: { still: boolean; ctl?: React.MutableRefObject<FilmCtl | null>; onChange?: () => void }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(false);
   const [done, setDone] = useState(false);
   const [paused, setPaused] = useState(false);
+  const [shown, setShown] = useState(false); // black until the first frame plays, so nothing flashes while it buffers
   const change = useRef(onChange); change.current = onChange;
   useEffect(() => {
     const v = ref.current; if (!v) return;
@@ -530,7 +532,7 @@ export function ShowFilm({ still, ctl, onChange }: { still: boolean; ctl?: React
   if (still) return <div className="film"><div className="film-end on"><div className="k">TheraBreath × The Flavor Factory</div><h1 className="hero center">The Future<br /><span className="it">of Freshness</span></h1></div></div>;
   return (
     <div className="film" data-nonav onClick={() => ctl?.current?.act(muted ? 'sound' : 'toggle')}>
-      <video ref={ref} playsInline preload="auto" poster="/media/flavor-race-poster.jpg"
+      <video ref={ref} playsInline preload="auto" className={shown ? 'on' : ''} onPlaying={() => setShown(true)}
         onPlay={ev(() => { setPaused(false); setDone(false); })} onPause={ev(() => setPaused(true))} onEnded={ev(() => setDone(true))}
         onVolumeChange={ev(() => setMuted(!!ref.current?.muted))} onLoadedMetadata={ev()} onSeeked={ev()}>
         <source src="/media/flavor-race.mp4" type="video/mp4" />
