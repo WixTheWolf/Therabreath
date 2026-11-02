@@ -32,6 +32,10 @@ for (let i = 0; i < scenes.length; i++) {
   // Let the scene fade in and its builds land. The gap's glasses take longest to fill, and a site from before November 2
   // only shows their percentages once the 3D starts (8 s at the latest), so wait past that.
   await page.waitForTimeout(scenes[i].id === 'gap' ? 9000 : 3200);
+  // A busy machine can fall behind that timer (the slide after the gap came out half faded), so also wait until every
+  // fade and build has finished. Looping motion, like the bobbing dots, never finishes and is left out.
+  const settled = await page.waitForFunction(() => document.getAnimations().every((a) => a.playState !== 'running' || a.effect?.getComputedTiming().endTime === Infinity), null, { timeout: 10000, polling: 200 }).then(() => true, () => false);
+  if (!settled) console.log('  still moving after 10 s, captured anyway');
   shots.push(await page.screenshot({ type: 'jpeg', quality: 90 }));
   console.log('scene', i + 1, 'of', scenes.length, scenes[i].id);
 }
