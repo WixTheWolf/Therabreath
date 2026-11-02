@@ -116,12 +116,14 @@ function Taste({ s, me, p, step }: P) {
   useEffect(() => { setR(s.ratings[cur]?.[me.pid] || { appeal: 0, feels: 0, newness: 0, who: [], word: '' }); }, [cur]);
   const done = (c: string) => !!s.ratings[c]?.[me.pid];
   const ok = r.appeal && r.feels && r.newness;
+  const named = s.revealed && SAMPLES.every((x) => done(x.code)) ? s.revealed.samples[cur] : null;
   return (
     <div className="rm-pad">
       <div className="rm-tabs">{SAMPLES.map((x) => <button key={x.code} className={(cur === x.code ? 'on' : '') + (done(x.code) ? ' done' : '')} onClick={() => setCur(x.code)}>{x.code}</button>)}</div>
-      {/* the names arrive with the presentation's reveal, never before (see sealedClient.ts) */}
-      <h1 className="h3">Sample {cur}{s.revealed ? <span className="it"> · {s.revealed.samples[cur]?.name}</span> : null}</h1>
-      {s.revealed && <p>{s.revealed.samples[cur]?.note}</p>}
+      {/* Blind until this person has scored all four: the names arrive with the presentation's reveal (see
+          sealedClient.ts), and even then a phone still scoring, or one that joined late, shows only the letter. */}
+      <h1 className="h3">Sample {cur}{named ? <span className="it"> · {named.name}</span> : null}</h1>
+      {named && <p>{named.note}</p>}
       {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess, before we tell you" /></label>}
       {CRITERIA.map((c) => <Scale key={c.key} label={c.l} v={r[c.key]} set={(n) => setR({ ...r, [c.key]: n })} />)}
       <div className="k" style={{ margin: '18px 0 10px' }}>Who would buy it?</div>
