@@ -90,7 +90,7 @@ export function Territory({ s, step, idx }: SceneProps) {
   useEffect(() => { const i = setInterval(() => setStage((x) => (x + 1) % 3), 2600); return () => clearInterval(i); }, []);
   return (
     <div className={'territory' + (t.dark ? ' dark' : '')} style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1], ['--c3' as any]: t.palette[2] }}>
-      {t.image ? <img className="terr-img" src={t.image} alt="" /> : <div className="terr-img terr-noimg" />}
+      {t.image ? <img className="terr-img" src={t.image} alt="" style={t.focus ? { objectPosition: t.focus } : undefined} /> : <div className="terr-img terr-noimg" />}
       {!t.image && <World t={t} />}
       <div className="terr-veil" />
       <div className="pad terr-in">
