@@ -80,3 +80,21 @@ test('the team pages and the closing film need the team link, the front door doe
   for (const p of ['/host', '/host/run', '/host/writeup', '/files/The-Future-of-Freshness-Deck.pdf', '/team', '/scorecard', '/stage/FOF1109', '/media/flavor-race.mp4', '/media/flavor-race-poster.jpg']) assert.equal(auth.teamOnly(p), true, p);
   for (const p of ['/', '/login', '/survey/FOF1109', '/j/FOF1109', '/playbook/FOF1109', '/media/opening.mp4', '/hostess', '/filesx']) assert.equal(auth.teamOnly(p), false, p);
 });
+
+test('the built-in client and team passwords are never the same', async () => {
+  // The sign-in checks the team password first, so one password for both would give Church & Dwight the team pages.
+  delete process.env.PLAYBOOK_PASSWORD; delete process.env.PLAYBOOK_HOST_PASSWORD;
+  assert.notEqual(await auth.passwordHash(), await auth.hostHash());
+});
+
+test('on the server, the signing key does not come from the password hashes in this repository', async () => {
+  delete process.env.PLAYBOOK_SECRET;
+  const fromHash = [await auth.authToken(), await auth.hostToken(), await auth.joinToken('FOF1109')];
+  process.env.POSTGRES_URL = 'postgres://user:server-only@db.example:5432/postgres';
+  try {
+    const fromDb = [await auth.authToken(), await auth.hostToken(), await auth.joinToken('FOF1109')];
+    fromDb.forEach((t, i) => assert.notEqual(t, fromHash[i]));
+    process.env.PLAYBOOK_SECRET = 'set-on-vercel';
+    assert.notEqual(await auth.authToken(), fromDb[0]);
+  } finally { delete process.env.POSTGRES_URL; delete process.env.PLAYBOOK_SECRET; }
+});

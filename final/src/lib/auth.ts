@@ -1,8 +1,8 @@
 // Password gate and signed join tokens. Web Crypto only, so it runs in proxy and in route handlers.
 // Two passwords, neither stored in plain text: the room password (site, Stage, Playbook, films) and the host password
 // (Host tools, Console, session list, export, wipe). Set PLAYBOOK_PASSWORD and PLAYBOOK_HOST_PASSWORD to change them.
-const DEFAULT_HASH = 'a47a1d697b3cf96db5d947f68a534e57ef7bd7fd48ebd3fda7070c7e9ec9e2a7';
-const DEFAULT_HOST_HASH = 'f7d5eebdbf27bbc99efccce18636b4ce0deb8e16d2b395707aa144ce9d318593';
+const DEFAULT_HASH = '2280a41151c51fc97ded31fde78388396343c39da87b54b9810353d86758c7c8';
+const DEFAULT_HOST_HASH = 'a47a1d697b3cf96db5d947f68a534e57ef7bd7fd48ebd3fda7070c7e9ec9e2a7';
 const enc = new TextEncoder();
 const hex = (b: ArrayBuffer) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
 
@@ -10,7 +10,11 @@ export async function sha256(s: string) { return hex(await crypto.subtle.digest(
 // Passwords ignore case and surrounding spaces, so phone keyboards that auto-capitalize still work.
 const norm = (p: string) => p.trim().toLowerCase();
 export async function passwordHash() { return process.env.PLAYBOOK_PASSWORD ? sha256(norm(process.env.PLAYBOOK_PASSWORD)) : DEFAULT_HASH; }
-async function secret() { return process.env.PLAYBOOK_SECRET || (await passwordHash()); }
+// The key that signs cookies and links. The hashes above are in a public repository, so on Vercel the key comes from
+// PLAYBOOK_SECRET or, failing that, from the database connection string, which only the server has. Changing either
+// signs everyone out and changes every pre-brief link. Locally, with neither set, the password hash stands in.
+const dbUrl = () => process.env.POSTGRES_URL || process.env.DATABASE_URL || process.env.POSTGRES_URL_NON_POOLING;
+async function secret() { const u = dbUrl(); return process.env.PLAYBOOK_SECRET || (u ? sha256('fof-signing-key:' + u) : await passwordHash()); }
 export async function hmac(msg: string) {
   const key = await crypto.subtle.importKey('raw', enc.encode(await secret()), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
   return hex(await crypto.subtle.sign('HMAC', key, enc.encode(msg)));
