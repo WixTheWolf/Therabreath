@@ -250,7 +250,6 @@ function Results({ s, code }: { s: any; code: string }) {
   const d = decided(s);
   const cs = d.concepts;
   const marks: string[] = s.marks || [];
-  useEffect(() => { document.title = 'What we decided | The Future of Freshness'; }, []);
   return (
     <main className="show-results">
       <p className="k">The Flavor Playbook · draft · {EVENT.date} · {EVENT.room} room, Princeton{code !== EVENT.code ? ` · rehearsal ${code}` : ''}</p>

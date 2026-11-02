@@ -4,7 +4,10 @@ import { SealedProvider } from '@/lib/sealedClient';
 import { EVENT } from '@/lib/content';
 import { joinToken } from '@/lib/auth';
 
-export const metadata = { title: 'Presentation' };
+// ?results=1 is the printable page of what was decided, so its tab says so.
+export async function generateMetadata({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
+  return { title: 'results' in (await searchParams) ? 'What we decided' : 'Presentation' };
+}
 
 // The presentation. It drives the live session (FOF1109) so the phones follow along; ?code=REHEARSE (or any other code)
 // runs a clean rehearsal session instead. The paper scorecard for the tasting is at /scorecard; the run sheet at
