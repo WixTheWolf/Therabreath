@@ -88,7 +88,7 @@ export function July({ step }: SceneProps) {
   return (
     <div className="pad">
       <Enter i={0}><div className="k">From July to today</div></Enter>
-      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1500 }}>When your team came to Norco in July, we talked about four things.<br /><span className="it">Today is about the fifth.</span></h2></Enter>
+      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1500 }}>When your team came to Norco in July, we covered the first four.<br /><span className="it">Today is about growth.</span></h2></Enter>
       <div className="july">
         {JULY.map((w, i) => (
           <div key={w} className={'jf' + (i === 4 ? ' grow' : '') + (i === 4 && step >= 1 ? ' lit' : '')} style={{ ['--i' as any]: i }}>
@@ -104,7 +104,7 @@ export function Brief({ step }: SceneProps) {
   return (
     <div className="pad">
       <Enter i={0}><div className="k">Your brief, our agenda</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>You asked for four things. <span className="it">Here is when we get to each one.</span></h2></Enter>
+      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>We’ve built the morning <span className="it">around your four objectives.</span></h2></Enter>
       <div className="brief-tiles">
         {OBJECTIVES.map((o, i) => (
           <R key={o.n} b={i + 1} step={step} className="bt">

@@ -83,8 +83,8 @@ export function Portfolio({ step }: SceneProps) {
       <div className="pad" style={{ position: 'absolute', zIndex: 2 }}>
         <Enter i={0}><div className="k">Your portfolio today · {PORTFOLIO.length} flavors across six formats</div></Enter>
         <div className="pf-title">
-          <div className={'pft' + (zoom ? ' out' : '')}><h2 className="h1">{PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length} of your {PORTFOLIO.length} flavors are mint.<br /><span className="it">You have mint covered.</span></h2></div>
-          <div className={'pft' + (zoom ? '' : ' out')}><h2 className="h1 it" style={{ maxWidth: 900 }}>So where else could flavor take you?</h2></div>
+          <div className={'pft' + (zoom ? ' out' : '')}><h2 className="h1">{PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length} of your {PORTFOLIO.length} flavors are mint,<br /><span className="it">and that’s a real strength.</span></h2></div>
+          <div className={'pft' + (zoom ? '' : ' out')}><h2 className="h1 it" style={{ maxWidth: 900 }}>There’s a lot of room around mint.</h2></div>
         </div>
       </div>
       <div className={'constellation' + (zoom ? ' zoom' : '')}>

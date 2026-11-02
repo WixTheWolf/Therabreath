@@ -42,7 +42,7 @@ The Flavor Factory is a wholesale flavor manufacturer making liquid and powder f
 ## Capabilities and Constraints
 
 - One source for the morning: `RUN` in `src/lib/content.ts` holds the blocks, times, objectives and scenes; `OBJECTIVES` and `ROSS_GOAL` hold Ross's words; `src/lib/scenes.ts` holds the run of show and talking points.
-- The blind flight: A Blossom Mint and B Grove Mint in the Fresh Breath base, C Berry Blast and D the Mystery Flavor in the Kids base. Names stay sealed on every surface until the room's reveal.
+- The blind flight, in tasting order: A Berry Blast and B the Mystery Flavor in the Kids base, then C Blossom Mint and D Grove Mint in the Fresh Breath base (Ryan moved the Kids samples first on November 2). Names stay sealed on every surface until the room's reveal.
 - **Confidentiality (binding):** password protected, noindex, no third-party analytics. No TheraBreath or The Flavor Factory formula details, codes or usage levels anywhere. The samples and concepts are development work made for this session, not finished products or claims.
 - **Copy rules (binding):** no em dashes or en dashes anywhere in the repo (`scripts/check-dashes.mjs` enforces it); curly quotes; no invented data, so every number carries its source; Ross's four objectives and his goal quoted word for word; nobody is named as presenting any part.
 - Open before November 9 (see the README's [CONFIRM] list): the bases and the Mystery Flavor's fruits with Ryan, the Flavor School and OXYD-8 wording, attendee names for the personal links, the Q3 earnings refresh after October 30, next-step dates (including a January 2027 review), the official TheraBreath orange and logo, and the Darwin room's TV, laptop and Wi-Fi.

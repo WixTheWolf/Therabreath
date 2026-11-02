@@ -32,7 +32,7 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
         <div className="st-hero-in">
           <h1>The Future<br /><em>of Freshness</em></h1>
           <p className="fd-when">{EVENT.date} · {EVENT.time} ET · {EVENT.room} room, {EVENT.city}</p>
-          <p>Two hours with Church &amp; Dwight Oral Care R&amp;D. We’ll work through the four things Ross asked for, taste four samples we made in your bases and vote on what to develop. By noon, every direction we pick will have a plan and an owner.</p>
+          <p>Two hours with Church &amp; Dwight Oral Care R&amp;D. We’ll work through your four objectives, taste four samples we made in your bases and vote on what to develop. By noon, every direction we pick will have a plan and an owner.</p>
           <div className="st-cta">
             <button className="st-play" onClick={() => setFilm(true)}><span className="st-tri" />Watch the film <small>{FILM.site.length} · sound on</small></button>
             <a className="st-ghost" href={prebrief}>Answer the pre-brief</a>
@@ -50,7 +50,7 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
 
         <section className="fd-sec" aria-labelledby="fd-morning">
           <h2 id="fd-morning">The morning</h2>
-          <p>Two hours in the {EVENT.room} room, built around the four objectives in Ross’s invitation.</p>
+          <p>We’ve built the morning around your four objectives.</p>
           <ol className="fd-agenda">{RUN.map((b) => (
             <li key={b.id}><time>{b.t}</time><div><b>{b.title}</b>{firstOf.has(b.id) && <q>{askFor(b.obj)}</q>}</div></li>
           ))}</ol>
@@ -66,7 +66,7 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
 
         <section className="fd-sec" aria-labelledby="fd-tasting">
           <h2 id="fd-tasting">A blind tasting</h2>
-          <p>We made four samples in the unflavored bases you sent us: A and B in the Fresh Breath base, C and D in the Kids base. You’ll score each one on your phone (or on a paper card, if you’d rather), and the names stay sealed until everyone has scored.</p>
+          <p>We made four samples in the unflavored bases you sent us: A and B in the Kids base, C and D in the Fresh Breath base. You’ll score each one on your phone (or on a paper card, if you’d rather), and the names stay sealed until everyone has scored.</p>
           <img className="fd-wide" src="/img/tasting-cups.webp" alt="" loading="lazy" />
         </section>
 

@@ -19,7 +19,7 @@ const TEXT: Record<string, Pick<BlockNotes, 'slides' | 'does'>> = {
   },
   tasting: {
     slides: 'The blind tasting, Where each sample landed, Vote: what gets a next round',
-    does: 'Pour A and B in the Fresh Breath base and C and D in the Kids base. Everyone scores each sample on their phone or the paper scorecard, and the scores fill the screen as they come in. Type the paper cards into the presenter view as they’re handed in. D is the Mystery Flavor, so get everyone’s fruit guesses before the names go up. Then show where each sample landed, and have everyone place five chips on what should get a next round.',
+    does: 'Pour A and B in the Kids base and C and D in the Fresh Breath base. Everyone scores each sample on their phone or the paper scorecard, and the scores fill the screen as they come in. Type the paper cards into the presenter view as they’re handed in. D is the Mystery Flavor, so get everyone’s fruit guesses before the names go up. Then show where each sample landed, and have everyone place five chips on what should get a next round.',
   },
   concepts: {
     slides: 'Part 3, Concepts, Vote: which ideas to develop',
@@ -40,7 +40,7 @@ const KIT: Record<string, Pick<BlockNotes, 'kit' | 'output' | 'after'>> = {
   welcome: { kit: 'Laptop on the TV as an extended display, the presenter view (P), the QR code on the arrival screen, Wi-Fi for the laptop.', output: 'Phones joined, and the pre-brief answers on screen if any came in.' },
   market: { kit: 'Phones for the trend vote; hand votes in the presenter view for anyone without one.', output: 'The three trends that matter most, and what we missed.' },
   school: { kit: 'The presentation only.', output: 'The room’s first reactions to each of the four directions, before anything is tasted.' },
-  tasting: { kit: 'Four samples in coded cups (A and B in the Fresh Breath base, C and D in the Kids base), water, spit cups, napkins, paper scorecards and pens, phones.', output: 'Scores for all four samples, the fruit guesses, the names revealed, and five chips each on what gets a next round.', after: 'Suggested transition: while the chips go in, clear the cups and pens so the table is free for the concept cards at 11:00.' },
+  tasting: { kit: 'Four samples in coded cups (A and B in the Kids base, C and D in the Fresh Breath base), water, spit cups, napkins, paper scorecards and pens, phones.', output: 'Scores for all four samples, the fruit guesses, the names revealed, and five chips each on what gets a next round.', after: 'Suggested transition: while the chips go in, clear the cups and pens so the table is free for the concept cards at 11:00.' },
   concepts: { kit: 'The concept cards on the TV, or typed in the presenter view; phones for the dot vote.', output: 'Up to three concepts, and the dot vote on which ones to develop.' },
   pipeline: { kit: 'The presenter view for Now, Next, Later (or type on the board).', output: 'Each direction under Now, Next or Later with its consumer or occasion, flavor brief, TFF owner, C&D reviewer, base and next-sample date.' },
   close: { kit: 'Speakers loud enough for THE FLAVOR RACE (checked before anyone arrives), the presenter view for its controls, and the film saved on the laptop as a backup.', output: 'The plan read back with its owners, the results page saved as a PDF, and the film (about 11:48 to 11:51, or skipped if we’re late).' },

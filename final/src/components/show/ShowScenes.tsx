@@ -73,7 +73,7 @@ export function ShowBrief({ step }: SceneProps) {
   return (
     <div className="pad">
       <Enter i={0}><div className="k">From Ross&rsquo;s invitation</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>You asked for four things. <span className="it">Here’s when we’ll get to each one.</span></h2></Enter>
+      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>We’ve built the morning <span className="it">around your four objectives.</span></h2></Enter>
       <div className="brief-tiles">
         {OBJECTIVES.map((o, i) => (
           <R key={o.n} b={i + 1} step={step} className="bt" style={{ ['--h' as any]: OBJ_HUE[i] }}>

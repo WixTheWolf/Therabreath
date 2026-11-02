@@ -6,10 +6,10 @@ import type { Sealed } from './content';
 
 export const SEALED: Sealed = {
   samples: {
-    A: { name: 'Blossom Mint', note: 'Grapefruit, Lavender, Rose, Spearmint, Wintergreen' },
-    B: { name: 'Grove Mint', note: 'Spearmint, Peppermint, Wintergreen, Rosemary, Ylang Ylang, Eucalyptus' },
-    C: { name: 'Berry Blast', note: 'Blueberry, Blackberry, Raspberry' },
-    D: { name: 'Mystery Flavor', note: 'Apple, Grape, Cherry, Strawberry, Lemon' },
+    A: { name: 'Berry Blast', note: 'Blueberry, Blackberry, Raspberry' },
+    B: { name: 'Mystery Flavor', note: 'Apple, Grape, Cherry, Strawberry, Lemon' },
+    C: { name: 'Blossom Mint', note: 'Grapefruit, Lavender, Rose, Spearmint, Wintergreen' },
+    D: { name: 'Grove Mint', note: 'Spearmint, Peppermint, Wintergreen, Rosemary, Ylang Ylang, Eucalyptus' },
   },
   heroes: { warmcool: 'Blossom Mint + Grove Mint', ladder: 'Berry Blast + Mystery Flavor' },
   flavors: {

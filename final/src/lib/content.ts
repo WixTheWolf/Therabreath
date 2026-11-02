@@ -202,14 +202,15 @@ export const DIALS = [
 
 export const SAMPLES = [
   // status is client language: every sample is a development concept, nothing is a selection yet.
-  // The lineup as Matt confirmed it on October 27, in tasting order. The Mystery Flavor is tasted last and the room
-  // guesses its fruits before the reveal; `mystery` marks it everywhere (scorecard, deck, run sheet), not its letter.
+  // The lineup as Matt confirmed it on October 27, in tasting order; on November 2 Ryan moved the Kids samples first, so A
+  // and B are the Kids base and C and D the Fresh Breath base. The room guesses the Mystery Flavor's fruits before the
+  // reveal; `mystery` marks it everywhere (scorecard, deck, run sheet), not its letter.
   // The names and what's in each sample stay sealed: they live in src/lib/sealed.ts, on the server, and reach the team's
   // pages as props and the room's phones only when the presentation flips the names (a `reveal` event).
-  { code: 'A', territory: 'warmcool', base: 'Fresh Breath base', status: 'Botanical direction one', color: ['#F8CFDD', '#C77BA8'] },
-  { code: 'B', territory: 'warmcool', base: 'Fresh Breath base', status: 'Botanical direction two', color: ['#CFEBD6', '#5E9F78'] },
-  { code: 'C', territory: 'ladder', base: 'Kids base', status: 'Kids direction one', color: ['#D9C4F2', '#6E4BB8'] },
-  { code: 'D', territory: 'ladder', base: 'Kids base', status: 'Kids direction two: guess the fruits', mystery: true, color: ['#FBE6A6', '#E39A35'] },
+  { code: 'A', territory: 'ladder', base: 'Kids base', status: 'Kids direction one', color: ['#D9C4F2', '#6E4BB8'] },
+  { code: 'B', territory: 'ladder', base: 'Kids base', status: 'Kids direction two: guess the fruits', mystery: true, color: ['#FBE6A6', '#E39A35'] },
+  { code: 'C', territory: 'warmcool', base: 'Fresh Breath base', status: 'Botanical direction one', color: ['#F8CFDD', '#C77BA8'] },
+  { code: 'D', territory: 'warmcool', base: 'Fresh Breath base', status: 'Botanical direction two', color: ['#CFEBD6', '#5E9F78'] },
 ] as { code: string; territory: string; base: string; status: string; color: string[]; mystery?: boolean }[];
 // What sealed.ts holds, and what the reveal hands the room: each sample's name and what's in it, and each tasted
 // platform's sample pair.

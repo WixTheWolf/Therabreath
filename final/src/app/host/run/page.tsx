@@ -16,7 +16,7 @@ const SETUP = [
   'Film backup: the day before, download THE FLAVOR RACE from the team page (flavor-race.mp4: 2:24, 2560 × 1440, with sound) and keep it on the laptop’s desktop. Open it once to check it plays. If the site won’t play it on the day, play the file from there, full screen, with the sound up. The opening film isn’t shown in the room: we open with our own welcome.',
   'Sound and picture check, before anyone arrives and on the rehearsal session so nobody’s phone moves: open /host?code=REHEARSE on the TV, press F for full screen, then End and the left arrow once to get to THE FLAVOR RACE. Check it fills the screen, play ten seconds through the speakers and set the volume, and press R to check it starts again. Then close that window and open Present on the day. Keep the film off the TV once people start arriving.',
   'Rehearse on /host?code=REHEARSE (the team page links to it), never on /host itself, so rehearsal votes stay out of the live session. Leave the live session FOF1109 alone the night before: it holds everyone’s pre-brief answers, and the team page shows how many are in.',
-  `Samples: ${fresh} in the Fresh Breath base and ${kids} in the Kids base, poured blind into coded cups. Set out water to rinse, cups to spit into and napkins.`,
+  `Samples: ${kids} in the Kids base and ${fresh} in the Fresh Breath base, poured blind into coded cups. Set out water to rinse, cups to spit into and napkins.`,
   'If we’re running late, press S to skip the optional slides (How cooling works, Flavor and OXYD-8, how a flavor is built, and the two directions that aren’t in the tasting), or ] to jump to the next part. The presenter view shows how far over the current part is and whether the short version is on.',
   'Bring a few paper scorecards and pens for anyone who’d rather not use a phone (print them from /scorecard). On the vote slides, the presenter view has a button to add a hand vote for each option, and one to take it back. On the tasting, type each paper card in with Add a paper card. A card typed in by mistake can be removed.',
 ];
@@ -27,7 +27,7 @@ const AFTER = [
 ];
 const CONFIRM = [
   'The Flavor School wording, with Ryan.',
-  `The bases: ${SEALED.samples.A.name} and ${SEALED.samples.B.name} in the Fresh Breath base, ${SEALED.samples.C.name} and the ${SEALED.samples.D.name} in the Kids base.`,
+  `The bases: ${SEALED.samples.A.name} and the ${SEALED.samples.B.name} in the Kids base, ${SEALED.samples.C.name} and ${SEALED.samples.D.name} in the Fresh Breath base.`,
   'The dates on What happens next, including the January 2027 review.',
   'A video call with Ross before the day. He asked to connect once or twice ahead of time.',
   'The pre-brief goes out November 3.',

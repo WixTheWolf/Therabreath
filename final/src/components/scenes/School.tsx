@@ -115,7 +115,7 @@ export function Anatomy({ step }: SceneProps) {
     <div className="pad anatomy">
       <div className="an-copy">
         <Enter i={0}><div className="k">Flavor School · How it’s built</div></Enter>
-        <Enter i={1}><h2 className="h1">It can start anywhere. <span className="it">It has to finish clean.</span></h2></Enter>
+        <Enter i={1}><h2 className="h1">A TheraBreath flavor can start anywhere, <span className="it">but it has to finish clean.</span></h2></Enter>
       </div>
       <div className="pyramid">
         {layers.map((l, i) => <R key={l.t} b={i + 1} step={step} className={'py py' + i} style={{ ['--w' as any]: `${40 + i * 20}%` }}><b>{l.t}</b><span>{l.d}</span></R>)}

@@ -719,13 +719,13 @@ const SceneDo: React.FC = () => {
         );
       })}
       <Say text="then taste *four samples* we made / in your Fresh Breath and Kids bases." after={then} out={blindW - 0.15} size={66} style={{ left: L, top: 150, width: 1500 }} />
-      {/* the drawn cups, with their bases */}
+      {/* the drawn cups, with their bases: the Kids samples first (A and B), then Fresh Breath (C and D), on Ryan's note of November 2 */}
       {["A", "B", "C", "D"].map((ch, i) => (
         <Slide key={ch} at={four - 0.1 + i * 0.08} out={blindW - 0.05} x={420 + i * 360 - 125} y={430} dy={420} cfg={POP}>
           <div style={{ transform: `scale(${1 - 0.1 * cupsShift})` }}><Cup t={t} size={250} letter={ch} letterAt={samples + i * 0.1} /></div>
         </Slide>
       ))}
-      {[[0, fresh, "Fresh Breath base", TEAL], [1, kids, "Kids base", CORAL]].map(([k, at, label, c]) => (
+      {[[0, kids, "Kids base", CORAL], [1, fresh, "Fresh Breath base", TEAL]].map(([k, at, label, c]) => (
         <Slide key={k as number} at={at as number} out={blindW - 0.05} x={420 + (k as number) * 720 - 160} y={735} dy={40}>
           <div style={{ width: 680 - 360 + 300, textAlign: "center" }}>
             <div style={{ height: 14, borderLeft: `3px solid ${c}`, borderRight: `3px solid ${c}`, borderBottom: `3px solid ${c}`, borderRadius: "0 0 10px 10px", margin: "0 40px" }} />
@@ -747,7 +747,7 @@ const SceneDo: React.FC = () => {
             </div>
           );
         })}
-        {[[0.255, "Fresh Breath base", TEAL], [0.7, "Kids base", CORAL]].map(([cx, label, c], k) => (
+        {[[0.255, "Kids base", CORAL], [0.7, "Fresh Breath base", TEAL]].map(([cx, label, c], k) => (
           <div key={k} style={{ position: "absolute", left: `calc(${(cx as number) * 100}% - 230px)`, bottom: 22, width: 460, textAlign: "center", opacity: ez(t, blindW + 0.4 + k * 0.15, blindW + 0.8 + k * 0.15) }}>
             <span style={{ display: "inline-block", background: c as string, borderRadius: 999, padding: "8px 20px", ...mono(20), color: "#fff" }}><span style={{ color: "#fff" }}>{label as string}</span></span>
           </div>
