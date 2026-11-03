@@ -1,0 +1,41 @@
+{
+ "tracks": [
+  {
+   "id": "vo",
+   "label": "A VO stem",
+   "file": "A_vo.wav",
+   "frames": 4595,
+   "depth": 24,
+   "enabled": true,
+   "trim_db": -2.5
+  },
+  {
+   "id": "sfx",
+   "label": "A effects stem",
+   "file": "A_sfx.wav",
+   "frames": 4595,
+   "depth": 24,
+   "enabled": true,
+   "trim_db": -2.5
+  },
+  {
+   "id": "music",
+   "label": "A music stem",
+   "file": "A_music.wav",
+   "frames": 4595,
+   "depth": 24,
+   "enabled": true,
+   "trim_db": -2.5
+  },
+  {
+   "id": "mix",
+   "label": "A final mix (reference)",
+   "file": "A_mix.wav",
+   "frames": 4595,
+   "depth": 24,
+   "enabled": false,
+   "trim_db": 0.0
+  }
+ ],
+ "trim_db": -2.5
+}

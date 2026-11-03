@@ -1,0 +1,52 @@
+{
+ "elements": [
+  {
+   "id": "super_mc",
+   "label": "G super MISSION CONTROL",
+   "file": "G_super_mc.mov",
+   "frames": 59,
+   "start": 442,
+   "alpha": true
+  },
+  {
+   "id": "super_lab",
+   "label": "G super THE FLAVOR FACTORY, FLAVOR LAB",
+   "file": "G_super_lab.mov",
+   "frames": 74,
+   "start": 2138,
+   "alpha": true
+  },
+  {
+   "id": "endcard",
+   "label": "G end card THE FUTURE OF FRESHNESS",
+   "file": "G_endcard.mp4",
+   "frames": 120,
+   "start": 4124,
+   "alpha": false
+  },
+  {
+   "id": "flash_erupt",
+   "label": "G flash eruption",
+   "file": "G_flash_erupt.mov",
+   "frames": 8,
+   "start": 778,
+   "alpha": true
+  },
+  {
+   "id": "flash_relight",
+   "label": "G flash relight (warm)",
+   "file": "G_flash_relight.mov",
+   "frames": 8,
+   "start": 2397,
+   "alpha": true
+  },
+  {
+   "id": "vignette",
+   "label": "G vignette",
+   "file": "G_vignette.mov",
+   "frames": 4406,
+   "start": 0,
+   "alpha": true
+  }
+ ]
+}

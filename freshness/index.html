@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Future of Freshness · TheraBreath × The Flavor Factory</title>
+<meta name="description" content="The Future of Freshness: a TheraBreath Flavor Playbook workshop by The Flavor Factory. Church &amp; Dwight, November 9, 2026.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F5F8F9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230B6B4F'/%3E%3Cpath d='M20 38c4-14 16-18 26-18-2 12-10 22-26 18z' fill='%23BFE6D2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="preload" href="img/mint.webp" as="image">
+</head>
+<body data-mode="present">
+<main id="deck"></main>
+
+<header id="hud">
+  <div class="hud-l"><img src="brand/therabreath-logo.png" alt="TheraBreath"><span>×</span><img src="brand/tff-logo.webp" alt="The Flavor Factory"></div>
+  <div class="hud-c"><span id="hud-ch"></span><b id="hud-t"></b><span id="hud-n"></span></div>
+  <div class="hud-r">
+    <span id="hud-tag" class="tag"></span>
+    <div class="md" role="group" aria-label="Mode"><button type="button" data-m="present" title="Presenter mode (P)">Present</button><button type="button" data-m="workshop" title="Workshop mode (W)">Workshop</button></div>
+    <button type="button" id="b-taste" title="Tasting mode (T)">Tasting</button>
+    <button type="button" id="b-ov" title="All screens (G)">Screens</button>
+    <button type="button" id="b-full" title="Full screen (F)" aria-label="Full screen">⤢</button>
+    <button type="button" id="b-more" aria-label="More options" title="More">⋯</button>
+    <div id="more">
+      <button type="button" data-a="console">Open presenter console</button>
+      <button type="button" data-a="print">Print the playbook</button>
+      <button type="button" data-a="export">Export answers (JSON)</button>
+      <button type="button" data-a="rehearse">Load rehearsal data</button>
+      <button type="button" data-a="help">Keyboard shortcuts</button>
+      <button type="button" data-a="reset" class="warn">Reset workshop</button>
+    </div>
+  </div>
+</header>
+<div id="rtag" aria-hidden="true"></div>
+<div id="tmode">Tasting mode · <b>Esc</b> to exit</div>
+<div id="prog"><i></i></div>
+
+<nav id="dock" aria-label="Workshop controls">
+  <button type="button" id="d-prev" aria-label="Back">‹</button>
+  <div id="dock-ch"></div>
+  <button type="button" id="d-next" aria-label="Next">›</button>
+  <span class="sep"></span>
+  <button type="button" id="d-notes" title="Room notes (N)">Notes</button>
+  <button type="button" id="d-undo" title="Undo (Z)">Undo</button>
+</nav>
+
+<aside id="notes" aria-label="Room notes">
+  <header><span class="k">Room notes</span><b class="nt"></b><button type="button" class="x" aria-label="Close">×</button></header>
+  <textarea placeholder="Capture what the room says on this screen…"></textarea>
+  <p>Saved on this device. Notes also show in the presenter console and in exported answers.</p>
+</aside>
+
+<div id="overview" role="dialog" aria-label="All screens">
+  <div class="ov-in"><header><b>All screens</b><span>G or Esc to close <button type="button" class="ov-x" aria-label="Close">×</button></span></header><div id="ov-grid"></div></div>
+</div>
+
+<div id="help" role="dialog" aria-label="Keyboard shortcuts">
+  <div class="hp"><button type="button" class="x" aria-label="Close">×</button>
+    <h3>Running the session</h3>
+    <dl>
+      <dt>→ · Space · Page Down</dt><dd>Next (works with a presentation clicker)</dd>
+      <dt>← · Page Up</dt><dd>Back</dd>
+      <dt>P / W</dt><dd>Presenter mode / workshop mode</dd>
+      <dt>T</dt><dd>Tasting mode: only the six tasting screens</dd>
+      <dt>Y</dt><dd>Jump to "Your turn"</dd>
+      <dt>1 to 4</dt><dd>Jump to a chapter</dd>
+      <dt>G</dt><dd>All screens</dd>
+      <dt>N</dt><dd>Room notes for this screen</dd>
+      <dt>Z</dt><dd>Undo the last vote or change</dd>
+      <dt>B or .</dt><dd>Blank the screen</dd>
+      <dt>F</dt><dd>Full screen</dd>
+    </dl>
+    <p>Open the presenter console (⋯ menu) on your laptop and drag this window to the projector: the two stay in sync, and so do votes.</p>
+  </div>
+</div>
+
+<div id="blank"><div><img src="brand/therabreath-logo.png" alt="TheraBreath"><span>×</span><img src="brand/tff-logo.webp" alt="The Flavor Factory"></div></div>
+<div id="toast" role="status"></div>
+<div id="narrow">Best on a laptop or the big screen. Turn your device sideways for the full experience.</div>
+
+<script src="js/data.js"></script>
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

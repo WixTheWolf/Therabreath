@@ -1,0 +1,22 @@
+[
+  {"id": "burn",      "src0": 0.10,  "src1": 2.25,  "at": 0.9},
+  {"id": "want",      "src0": 2.25,  "src1": 4.88,  "at": 3.3},
+  {"id": "math",      "src0": 4.88,  "src1": 5.93,  "at": 7.0},
+  {"id": "sixtyfive", "src0": 5.93,  "src1": 9.60,  "at": 8.3},
+  {"id": "fourteen",  "src0": 9.60,  "src1": 11.52, "at": 12.4},
+  {"id": "eightysix", "src0": 11.52, "src1": 14.40, "at": 14.7},
+  {"id": "hello",     "src0": 14.40, "src1": 16.48, "at": 18.0},
+  {"id": "norco",     "src0": 16.48, "src1": 19.76, "at": 21.3},
+  {"id": "ross",      "src0": 19.76, "src1": 21.50, "at": 25.0},
+  {"id": "ask",       "src0": 21.50, "src1": 27.83, "at": 26.9},
+  {"id": "day",       "src0": 27.83, "src1": 32.46, "at": 34.8},
+  {"id": "signals",   "src0": 32.46, "src1": 36.64, "at": 40.5},
+  {"id": "school",    "src0": 36.64, "src1": 41.86, "at": 45.1},
+  {"id": "territories","src0": 41.90, "src1": 46.06, "at": 50.8},
+  {"id": "cups",      "src0": 46.06, "src1": 49.60, "at": 55.3},
+  {"id": "concepts",  "src0": 49.66, "src1": 55.02, "at": 59.3},
+  {"id": "pipeline",  "src0": 55.02, "src1": 60.30, "at": 65.1},
+  {"id": "noon",      "src0": 60.30, "src1": 63.98, "at": 70.8},
+  {"id": "title",     "src0": 63.98, "src1": 65.66, "at": 75.7},
+  {"id": "together",  "src0": 65.66, "src1": 66.95, "at": 77.8}
+]
