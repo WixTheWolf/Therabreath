@@ -24,11 +24,16 @@ What changed against `final/`:
 - **Backup slides** after the thank-you card: the seven trends and their vote, Flavor School, the map and the four
   directions one by one, the concept cards, the dots, white space and the full Now, Next, Later board. The presenter
   view's Go to list opens them; Return (or Escape on the TV) comes back.
-- **Its own data**: without a database connection string this project stores sessions through the flavor-playbook
-  Supabase project's key-checked functions (`fof_events`), not the `pb_events` table the original uses, so nothing
-  here reaches the original's live session or its pre-brief answers. Its own `PLAYBOOK_SECRET` signs its cookies and
-  links. Until that's set in the Vercel project, the site signs nothing and refuses every sign-in (the public
+- **Data**: with a database connection string (`POSTGRES_URL`, `DATABASE_URL` or `POSTGRES_URL_NON_POOLING`) this
+  project uses the `pb_events` table in that database, the same table the original uses. On Vercel it points at the
+  original's database (checked November 3), so the two sites share one live session (`FOF1109`), its pre-brief answers
+  and the practice session, and a wipe on either site affects both. Without a connection string it stores sessions
+  through the flavor-playbook Supabase project's key-checked functions (`fof_events`) and shares nothing with the
+  original. Its own `PLAYBOOK_SECRET` signs its cookies and links, so the original's signed links don't open this
+  site. Until that's set in the Vercel project, the site signs nothing and refuses every sign-in (the public
   repository's default hash would otherwise let anyone forge a team cookie).
+- **Build settings** live in `vercel.json` (Next.js, `npm install`, `npm run build`), so the dashboard's settings can't
+  turn the deploy into a static copy of this folder.
 
 The notes below describe `final/`, which this copy started from.
 
