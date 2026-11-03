@@ -195,6 +195,7 @@
 .bw-signals, .bw-think { margin: 8px 0 0; padding-left: 1.4em; }
 .bw-signals li, .bw-think li { padding: 8px 0 8px 6px; }
 .bw-signals li::marker, .bw-think li::marker { font: 400 15px var(--sans); color: var(--fg3); }
+.bw-from { color: var(--fg3); white-space: nowrap; }
 .bw-signals b { display: block; font: 400 17px/1.45 var(--sans); color: var(--fg); }
 .bw-signals p { margin: 2px 0 0; font: 400 15px/1.5 var(--sans); color: var(--fg2); }
 .bw-think li { font: 400 17px/1.55 var(--sans); color: var(--fg2); }

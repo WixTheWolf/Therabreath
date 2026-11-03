@@ -41,13 +41,15 @@ export const SOURCES: Record<string, string> = {
   drbicuspid: 'DrBicuspid, March 3, 2026',
   kenvue: 'Kenvue press release, June 2, 2026 (the 54% figure: Kenvue / Suzy survey, 2024, n = 1,019)',
   hismile: 'Public press coverage, 2024 to 2026 [CONFIRM per item]',
-  dsm: 'dsm-firmenich press release, December 2025',
-  mccormick: 'McCormick, December 2025',
-  kerry: 'Kerry Taste Charts 2026',
-  vml: 'VML, The Future 100: 2026',
-  pf: 'Perfumer & Flavorist, “From Mint to Marshmallow,” April 29, 2026',
+  dsm: 'dsm-firmenich press release, December 5, 2025',
+  mccormick: 'McCormick press release, December 9, 2025',
+  kerry: 'Kerry, 2026 Global Taste Charts, January 2026',
+  pf: 'Perfumer & Flavorist, “From Mint to Marshmallow: The Sensory Revolution in Modern Oral Hygiene,” April 29, 2026',
   symrise: 'Symrise, February 13, 2025',
-  carequest: 'CareQuest Institute, August 2026',
+  carequest: 'CareQuest Institute for Oral Health, GLP-1s and oral health',
+  kff: 'KFF Health Tracking Poll, fielded October 27 to November 2, 2025',
+  licensing: 'The Licensing Letter, Hismile × Chupa Chups toothpaste',
+  tff: 'The Flavor Factory’s read, not a published finding',
   patent: 'US Patent 6,582,682 (public)',
   listings: 'TheraBreath public product listings [CONFIRM access date]',
   ross: 'Ross Conroy, Church & Dwight Oral Care R&D, workshop invitation, September 18, 2026',
@@ -55,6 +57,20 @@ export const SOURCES: Record<string, string> = {
 
 // The full notes behind the four numbers attendees see (the front door and the pre-brief), written out under each one.
 // Checked October 29 against the published release and public summaries of the call. Nothing here is a claim of ours.
+export const SOURCE_URLS: Record<string, string> = {
+  q3call: 'https://www.fool.com/earnings/call-transcripts/2026/10/31/church-dwight-chd-q3-2026-earnings-call-transcript/',
+  q3pr: 'https://investor.churchdwight.com/Investors/news/news-details/2026/Church--Dwight-Delivers-Strong-Third-Quarter-Results/default.aspx',
+  kenvue: 'https://www.kenvue.com/media/listerine-introduces-range-of-mouthwash-intensities',
+  dsm: 'https://www.dsm-firmenich.com/en/businesses/taste-texture-health/news-events/press-releases/dsm-firmenich-names-frosted-star-anise-as-flavor-of-the-year-2026-capturing-a-global-desire-for-warmth-and-freshness.html',
+  mccormick: 'https://news.mccormick.com/2025-12-09-McCormick-R-Unveils-the-2026-Flavor-of-the-Year-Black-Currant',
+  kerry: 'https://www.kerry.com/about/news-and-media/2026/kerry-launches-taste-charts-2026',
+  pf: 'https://www.cosmeticsandtoiletries.com/home/article/22963037/from-mint-to-marshmallow-the-sensory-revolution-in-modern-oral-hygiene',
+  symrise: 'https://www.symrise.com/newsroom/article/optacoolr-fuji-symrise-introduces-advanced-cooling-substance-for-a-broad-range-of-oral-care-products/',
+  kff: 'https://www.kff.org/health-costs/poll-1-in-8-adults-say-they-are-currently-taking-a-glp-1-drug-for-weight-loss-diabetes-or-another-condition-even-as-half-say-the-drugs-are-difficult-to-afford/',
+  carequest: 'https://carequest.org/?p=7123',
+  licensing: 'https://www.thelicensingletter.com/?p=26759',
+};
+
 export const CITE = {
   q3call: { src: 'Church & Dwight Q3 2026 earnings call, October 30, 2026', basis: 'CEO Richard Dierker’s prepared remarks: TheraBreath gained 3.5 share points to a record 26.8% of total mouthwash, number 2 in the category, and its household penetration is 14%, against 65% for the mouthwash category. Checked November 3, 2026 against the call transcript and the Q3 results release.', url: 'https://www.fool.com/earnings/call-transcripts/2026/10/31/church-dwight-chd-q3-2026-earnings-call-transcript/' },
   q2call: { src: 'Church & Dwight Q2 2026 earnings call, July 31, 2026', basis: 'Management’s remarks on the call: TheraBreath at 25.3% of US mouthwash, up 4.5 points and number 2 in the category; 14% of US households buy TheraBreath, against 65% for mouthwash.' },
@@ -128,15 +144,17 @@ export const MARKET = [
   { when: '2025 to 2026', who: 'Hismile', what: 'Toothpaste as entertainment, with tie-ins to Lucky Charms, Reese’s, KFC and more.', src: 'hismile' },
 ];
 
-export type Signal = { id: string; n: number; title: string; proofs: { t: string; src: string }[]; so: string; hue: number };
+// `from` says where the evidence comes from: oral care itself, or food and flavor more widely (a cue to discuss, not
+// proof of demand in oral care). `ask` is the question for the room.
+export type Signal = { id: string; n: number; title: string; from: 'Oral care' | 'Food and flavor'; proofs: { t: string; src: string }[]; so: string; ask: string; hue: number };
 export const SIGNALS: Signal[] = [
-  { id: 'mild', n: 1, hue: 190, title: 'People want milder mouthwash.', proofs: [{ t: '54% of Americans want a milder-tasting mouthwash.', src: 'kenvue' }, { t: 'Everyone in the category talks about gentleness now. TheraBreath’s “no burn” promise opened that door.', src: 'kenvue' }], so: 'Let people choose how strong they want it.' },
-  { id: 'warm', n: 2, hue: 28, title: 'Warm spices are showing up in fresh flavors.', proofs: [{ t: 'Frosted Star Anise is dsm-firmenich’s 2026 Flavor of the Year. Two in three consumers recognize star anise, but only 34% have actually tasted it.', src: 'dsm' }, { t: 'Sweet heat, or “swicy,” keeps on growing.', src: 'kerry' }], so: 'There’s room for a warm, spiced flavor for adults, as long as it still finishes cool.' },
-  { id: 'fruit', n: 3, hue: 330, title: 'Fruit flavors are growing up.', proofs: [{ t: 'Black Currant is McCormick’s 2026 Flavor of the Year.', src: 'mccormick' }, { t: 'Dragon fruit is breaking out around the world, and hibiscus and orange blossom are the ones to watch.', src: 'kerry' }], so: 'Fruit-forward mints, made with adults in mind.' },
-  { id: 'botanical', n: 4, hue: 140, title: 'Botanicals are showing up in daily routines.', proofs: [{ t: 'TheraBreath’s Eucalyptus Mint and Overnight Chamomile Mint are already on shelf. Both lead with a botanical, and one is named for a time of day.', src: 'drbicuspid' }, { t: '“Swishy Time” turned rinsing into a small self-care ritual, and share went up with it.', src: 'warc' }], so: 'Flavors made for a particular time of day, like first thing in the morning or right before bed.' },
-  { id: 'allure', n: 5, hue: 36, title: 'Dessert flavors are moving into oral care.', proofs: [{ t: 'Dessert-inspired flavors are on the rise in oral care.', src: 'vml' }, { t: 'Gen Z treats flavor as part of who they are.', src: 'vml' }], so: 'A sweeter start can work, as long as the finish is clean.' },
-  { id: 'sensation', n: 6, hue: 210, title: 'People judge whether it works by how it feels.', proofs: [{ t: 'Tingling, warming, salivating and fizzing all tell people a product is working.', src: 'pf' }, { t: 'New coolers, such as Symrise’s Optacool Fuji, promise a fast hit and a long linger.', src: 'symrise' }], so: 'Cooling, tingle and warmth are part of the product, so they deserve as much design as the taste.' },
-  { id: 'mouths', n: 7, hue: 260, title: 'Many people live with dry mouth or changed taste.', proofs: [{ t: 'Right now, 1 in 8 US adults takes a GLP-1. Many report dry mouth, bad breath or changes in taste, though studies haven’t shown that the drugs cause them.', src: 'carequest' }, { t: 'More than 25 million Americans live with dry mouth.', src: 'pf' }], so: 'A flavor that stays pleasant for people with a dry mouth or changed taste could be worth exploring, without any health claim.' },
+  { id: 'mild', n: 1, hue: 190, from: 'Oral care', title: 'People want milder mouthwash.', proofs: [{ t: '54% of Americans say they want a milder-tasting mouthwash, in a survey Kenvue cites.', src: 'kenvue' }, { t: 'Listerine now sells a range of intensities, down to Extra Mild.', src: 'kenvue' }], so: 'Let people choose how strong they want it.', ask: 'Is “milder” a flavor job, a cooling job, or both?' },
+  { id: 'warm', n: 2, hue: 28, from: 'Food and flavor', title: 'Warm spices are showing up in fresh flavors.', proofs: [{ t: 'Frosted Star Anise is dsm-firmenich’s 2026 Flavor of the Year. Two in three consumers recognize star anise, but only 34% have tasted it.', src: 'dsm' }, { t: 'Kerry’s 2026 charts call out sweet heat, or “swicy.”', src: 'kerry' }], so: 'There could be room for a warm, spiced flavor for adults, as long as it still finishes cool.', ask: 'Would a warm note read as fresh to a TheraBreath user, or as off-brand?' },
+  { id: 'fruit', n: 3, hue: 330, from: 'Food and flavor', title: 'Fruit flavors are growing up.', proofs: [{ t: 'Black Currant is McCormick’s 2026 Flavor of the Year.', src: 'mccormick' }, { t: 'Kerry names dragon fruit, hibiscus and orange blossom among the flavors to watch in 2026.', src: 'kerry' }], so: 'Fruit-forward mints, made with adults in mind.', ask: 'Which fruit notes could sit next to mint without reading as a kids’ product?' },
+  { id: 'botanical', n: 4, hue: 140, from: 'Oral care', title: 'Botanicals are showing up in daily routines.', proofs: [{ t: 'TheraBreath’s Eucalyptus Mint and Overnight Chamomile Mint are already on shelf. Both lead with a botanical, and one is named for a time of day.', src: 'drbicuspid' }, { t: '“Swishy Time” turned rinsing into a small self-care ritual, and share went up with it.', src: 'warc' }], so: 'Flavors made for a particular time of day, like first thing in the morning or right before bed.', ask: 'Which moment of the day could a botanical own?' },
+  { id: 'allure', n: 5, hue: 36, from: 'Oral care', title: 'Sweeter, more playful flavors are reaching oral care.', proofs: [{ t: 'Perfumer & Flavorist’s April 2026 review of oral care names fun flavors, brand tie-ups and functional confectionery among the forces behind new products.', src: 'pf' }, { t: 'Hismile sells candy-brand toothpaste, such as its Chupa Chups line.', src: 'licensing' }], so: 'A sweeter start can work, as long as the finish is clean.', ask: 'Where is the line between fun and too sweet for TheraBreath?' },
+  { id: 'sensation', n: 6, hue: 210, from: 'Oral care', title: 'How it feels is part of the product.', proofs: [{ t: 'Symrise launched Optacool Fuji for oral care, promising a quick burst of freshness and long-lasting cooling (Symrise’s own claim).', src: 'symrise' }, { t: 'Cooling, tingle and warmth tell people something is happening, which is why they can be designed as carefully as the taste.', src: 'tff' }], so: 'Cooling, tingle and warmth deserve as much design as the taste.', ask: 'What should TheraBreath feel like in the first ten seconds, and after a minute?' },
+  { id: 'mouths', n: 7, hue: 260, from: 'Oral care', title: 'Many people live with dry mouth or changed taste.', proofs: [{ t: 'About 1 in 8 US adults say they currently take a GLP-1 drug.', src: 'kff' }, { t: 'CareQuest Institute advises dental teams to ask about GLP-1 use: dry mouth has been reported, and research on oral effects is still early.', src: 'carequest' }], so: 'A flavor that stays pleasant for people with a dry mouth or changed taste could be worth exploring, without any health claim.', ask: 'What would a flavor need to do to stay pleasant in a dry mouth, and what could we never claim?' },
 ];
 
 export type Territory = {

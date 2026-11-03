@@ -150,7 +150,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
 
         <div className="bw-part"><h3>Seven trends</h3>
         <p className="bw-p">Discussion starters, not conclusions. Some come from oral care and some from food and flavor more widely, so part of the job is deciding which ones matter for TheraBreath. On the day, everyone picks the three that matter most.</p>
-        <ol className="bw-signals">{SIGNALS.map((x) => <li key={x.id}><b>{x.title}</b><p>{x.so}</p></li>)}</ol></div>
+        <ol className="bw-signals">{SIGNALS.map((x) => <li key={x.id}><b>{x.title}</b><p>{x.so} <span className="bw-from">Seen in {x.from === 'Oral care' ? 'oral care' : 'food and flavor'}.</span></p></li>)}</ol></div>
 
         <div className="bw-part"><h3>Three things to think about on the way in</h3>
         <ol className="bw-think">{THINK.map((x, i) => <li key={i}>{x}</li>)}</ol></div>

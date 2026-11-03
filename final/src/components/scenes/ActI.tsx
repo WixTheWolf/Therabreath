@@ -138,13 +138,14 @@ export function Signals({ step }: SceneProps) {
         </div>
         {sig && (
           <div className="sigs-focus" key={sig.id}>
-            <div className="k">Trend {sig.n} of 7</div>
+            <div className="k">Trend {sig.n} of 7 · Seen in {sig.from === 'Oral care' ? 'oral care' : 'food and flavor'}</div>
             <h3 className="sf-title">{sig.title}</h3>
             <div className="sf-proofs">{sig.proofs.map((p, i) => <div key={i} className="proof" style={{ ['--d' as any]: `${i * 180}ms` }}><p>{p.t}</p><div className="src">{clean(SOURCES[p.src])}</div></div>)}</div>
             <div className="sig-so"><span className="k">What it could mean for TheraBreath</span><div className="h3 it">{sig.so}</div></div>
           </div>
         )}
-        {!sig && <div className="sigs-hint">Each one comes with two public sources and our take on what it means for TheraBreath. You’ll vote on them right after.</div>}
+        {sig && <div className="sigs-ask" key={'ask-' + sig.id}><span className="k">For the room</span><p>{sig.ask}</p></div>}
+        {!sig && <div className="sigs-hint">Each one comes with its public sources, where the evidence comes from (oral care itself, or food and flavor more widely), what it could mean for TheraBreath and a question for the room. They’re discussion starters, and you’ll vote on them right after.</div>}
       </div>
     </div>
   );
