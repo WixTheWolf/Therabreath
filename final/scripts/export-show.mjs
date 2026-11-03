@@ -52,7 +52,9 @@ writeFileSync(`${out}-Deck.pdf`, await d.pdf({ width: '1920px', height: '1080px'
 
 // The presenter edition.
 const blockOf = (id) => run.find((b) => b.id === id);
-const range = (id) => { const ix = scenes.map((s, j) => (s.block === id ? j + 1 : 0)).filter(Boolean); return ix.length > 1 ? `${ix[0]} to ${ix[ix.length - 1]}` : `${ix[0] || ''}`; };
+// Scene numbers are the presentation's own (the presenter view's Go to list), so they never shift when a scene is skipped.
+const total = Math.max(...scenes.map((s) => s.at));
+const range = (id) => { const ix = scenes.filter((s) => s.block === id).map((s) => s.at); return ix.length > 1 ? `${ix[0]} to ${ix[ix.length - 1]}` : `${ix[0] || ''}`; };
 const told = scenes.some((s) => s.id === 'prework');
 const css = `@page{size:11in 8.5in;margin:.4in}*{box-sizing:border-box}body{margin:0;font:400 10pt/1.45 Geist,Helvetica,Arial,sans-serif;color:#0B1B2B;background:#fff}
 section{height:7.7in;page-break-after:always;display:flex;flex-direction:column;gap:.12in;overflow:hidden}
@@ -72,9 +74,9 @@ const cover = `<section><p class="k">Presenter edition · ${esc(run[0].t)} to ${
 <p class="foot">Confidential. For The Flavor Factory team; not for distribution.</p></section>`;
 const pages = scenes.map((s, j) => {
   const b = blockOf(s.block);
-  const pg = `<section><header><b>${j + 1} / ${scenes.length} · ${esc(s.title)}</b>${b ? `<span>${esc(b.t)} to ${esc(b.end)}</span>` : ''}${b?.obj ? `<span>Objective ${esc(b.obj)}</span>` : ''}${s.builds ? `<span>${s.builds} build${s.builds > 1 ? 's' : ''}</span>` : ''}${s.optional ? '<span>Optional if late</span>' : ''}</header>
+  const pg = `<section><header><b>${s.at} / ${total} · ${esc(s.title)}</b>${b ? `<span>${esc(b.t)} to ${esc(b.end)}</span>` : ''}${b?.obj ? `<span>Objective ${esc(b.obj)}</span>` : ''}${s.builds ? `<span>${s.builds} build${s.builds > 1 ? 's' : ''}</span>` : ''}${s.optional ? '<span>Optional if late</span>' : ''}</header>
 <img class="slide" src="${img(shots[j])}"><ul>${s.notes.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></section>`;
-  const wait = !told && s.id === 'brief' ? `<section><header><b>After ${j + 1} · Your pre-brief answers</b></header><div class="wait">This scene shows up once the pre-brief answers are in (Ross sends the pre-brief on November 3). It covers the consumer they most want TheraBreath to win, the moment TheraBreath is missing, and the flavors they’d never sign off on, without names. Every scene after it is numbered one higher.</div><ul><li>These are their pre-brief answers: the consumer they most want to win and the moment TheraBreath is missing.</li><li>Have some fun with the vetoes. There are no names on screen.</li></ul></section>` : '';
+  const wait = !told && s.id === 'brief' ? `<section><header><b>${s.at + 1} / ${total} · Your pre-brief answers</b></header><div class="wait">This scene shows up once at least one pre-brief answer is in (the pre-brief went out on November 3). It opens on who they think TheraBreath’s next flavor should be for, then the moment TheraBreath is missing with the group’s freshness profile, then what would feel off-brand, all without names. Until then the presentation goes straight from 5 to 7.</div><ul><li>These are their pre-brief answers: who they think TheraBreath’s next flavor should be for, and the moment TheraBreath is missing. Treat them as a starting point for the conversation, not consumer research.</li><li>Ask about the off-brand answers: what makes each one feel wrong for the brand? There are no names on screen.</li></ul></section>` : '';
   return pg + wait;
 }).join('');
 const p = await ctx.newPage();

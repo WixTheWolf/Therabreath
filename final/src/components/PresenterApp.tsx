@@ -13,6 +13,7 @@ import { tallyPick, voteCounts, tasters, byHand, onPaper, people, uid, Ev, Sessi
 import { candidates } from './scenes/Build';
 import { Synced, PLAN_COLS, PlanLists, RemoveRow, planActions } from './show/Plan';
 import { runTiming, etClock } from '@/lib/time';
+import { SLIDE_MIN, SLIDE_TIMES } from '@/lib/slideTimes';
 import { showChannel, ShowPos, ShowCmd, ShowMsg, FilmState } from '@/lib/showLink';
 
 type Send = (kind: string, data?: any, pid?: string) => any;
@@ -79,7 +80,7 @@ export default function PresenterApp({ code }: { code: string }) {
       <header className="pv-bar">
         <div className={'pv-link' + (linked ? ' ok' : pos ? ' stale' : '')}><i />{linked ? `Slide ${pos!.at} of ${pos!.total}` : pos ? 'The presentation isn’t answering' : 'Not linked to the presentation'}</div>
         <div className="pv-clock"><b className="num">{now ? etClock(new Date(now)) : ''}</b><span>Eastern</span></div>
-        {tm && <div className={'pv-run' + (tm.over ? ' over' : '')}>This part {tm.from} to {tm.to}{tm.over ? <b>{tm.over} min over</b> : null}</div>}
+        {tm && <div className={'pv-run' + (tm.over ? ' over' : '')}>This part {tm.from} to {tm.to}{SLIDE_MIN[sc.id] ? <span className="pv-slide"> · this slide {SLIDE_TIMES[sc.id].from} to {SLIDE_TIMES[sc.id].to}</span> : null}{tm.over ? <b>{tm.over} min over</b> : null}</div>}
         <div className="pv-flags">
           {pos?.short && <span className="pv-flag">Short version</span>}
           {pos?.blank && <span className="pv-flag warn">TV is blank</span>}

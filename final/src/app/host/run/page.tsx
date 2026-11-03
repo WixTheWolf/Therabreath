@@ -1,5 +1,8 @@
 import { EVENT, RUN, SAMPLES, NEXT_STEPS, TASTING_KIT } from '@/lib/content';
-import { RUN_NOTES, EXAMPLES, BEHIND } from '@/lib/runNotes';
+import { RUN_NOTES, EXAMPLES, BEHIND, SLIDES } from '@/lib/runNotes';
+import { SLIDE_MIN, SLIDE_TIMES } from '@/lib/slideTimes';
+import { SCENES } from '@/lib/scenes';
+import { titleOf } from '@/lib/sceneNotes';
 import { SEALED } from '@/lib/sealed';
 import PrintButton from '@/app/scorecard/PrintButton';
 
@@ -80,6 +83,29 @@ export default function RunSheet() {
               <td data-l="What happens">{RUN_NOTES[b.id].does}</td>
             </tr>
           ))}</tbody>
+        </table>
+      </section>
+
+      <section className="rs-sec rs-slides">
+        <h2>Slide by slide</h2>
+        <p className="rs-lead">Planned minutes, so each part ends on time; the presenter view shows each slide’s planned window. Numbers match the presenter view’s Go to list. Slides marked optional are the ones S skips. Your pre-brief answers (6) shows only once someone has answered; if nobody has, its three minutes are spare.</p>
+        <table className="rs-run rs-slide">
+          <thead><tr><th>Planned</th><th>#</th><th>Slide</th><th>On screen, click by click</th><th>Ask the room, and the phones</th></tr></thead>
+          <tbody>{RUN.map((b) => [
+            <tr key={b.id} className="rs-part"><td colSpan={5}>{b.t} to {b.end} · {b.title}{b.obj ? ` · Objective ${b.obj}` : ''}</td></tr>,
+            ...SCENES.filter((s) => s.block === b.id).map((s) => {
+              const p = SLIDES[s.id], t = SLIDE_TIMES[s.id], min = SLIDE_MIN[s.id];
+              return (
+                <tr key={s.id}>
+                  <td className="rs-t">{min ? <>{t.from}<small>{min} min</small></> : <>Before<small>10:00</small></>}</td>
+                  <td className="rs-n">{s.n + 1}</td>
+                  <td><b>{titleOf(s)}</b>{s.optional && <em>Optional</em>}{s.id === 'prework' && <em>If answered</em>}</td>
+                  <td data-l="On screen">{p.clicks && <ul className="rs-clicks">{p.clicks.map((c, i) => <li key={i}>{i > 0 && !c.startsWith('Clicks') && <span className="num">{i}</span>}{c}</li>)}</ul>}</td>
+                  <td data-l="Ask the room">{p.ask && <span>{p.ask}</span>}{p.phones && <i>Phones: {p.phones}</i>}</td>
+                </tr>
+              );
+            }),
+          ])}</tbody>
         </table>
       </section>
 

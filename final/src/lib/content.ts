@@ -40,7 +40,7 @@ export const SOURCES: Record<string, string> = {
   dtoday26: 'Dentistry Today, March 12, 2026',
   drbicuspid: 'DrBicuspid, March 3, 2026',
   kenvue: 'Kenvue press release, June 2, 2026 (the 54% figure: Kenvue / Suzy survey, 2024, n = 1,019)',
-  hismile: 'Public press coverage, 2024 to 2026 [CONFIRM per item]',
+  hismile: 'CTV News, June 1, 2025 (KFC); License Global, July 2, 2025 (Lucky Charms); DesignRush (Reese’s)',
   dsm: 'dsm-firmenich press release, December 5, 2025',
   mccormick: 'McCormick press release, December 9, 2025',
   kerry: 'Kerry, 2026 Global Taste Charts, January 2026',
@@ -58,6 +58,7 @@ export const SOURCES: Record<string, string> = {
 // The full notes behind the four numbers attendees see (the front door and the pre-brief), written out under each one.
 // Checked October 29 against the published release and public summaries of the call. Nothing here is a claim of ours.
 export const SOURCE_URLS: Record<string, string> = {
+  hismile: 'https://www.licenseglobal.com/food-beverages/hismile-launches-lucky-charms-flavored-toothpaste',
   q3call: 'https://www.fool.com/earnings/call-transcripts/2026/10/31/church-dwight-chd-q3-2026-earnings-call-transcript/',
   q3pr: 'https://investor.churchdwight.com/Investors/news/news-details/2026/Church--Dwight-Delivers-Strong-Third-Quarter-Results/default.aspx',
   kenvue: 'https://www.kenvue.com/media/listerine-introduces-range-of-mouthwash-intensities',

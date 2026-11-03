@@ -294,6 +294,12 @@ export const markLabel = (s: SessionState, cell: string) => {
   const name = teamConcepts(s).find((c) => c.id === id)?.name || directionName(id, s);
   return `${name} · ${m}`;
 };
+// The pre-brief's most common answer to who the next flavor is for, with its count, or that it was split.
+const segLine = (r: [string, number][], n: number) => {
+  if (!r.length) return '';
+  if (r[1] && r[1][1] === r[0][1]) return ` In the pre-brief, the answers were split on who the next flavor should be for.`;
+  return ` In the pre-brief, the most common answer for who the next flavor should be for was ${r[0][0].charAt(0).toLowerCase() + r[0][0].slice(1)} (${r[0][1]} of ${n}).`;
+};
 export function WhiteSpaceShow({ s, step }: SceneProps) {
   const live = useLive();
   const marks = s.marks || [];
@@ -301,7 +307,7 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
   const tally = (key: 'consumer' | 'moment') => { const t: Record<string, number> = {}; answers.forEach((a) => a[key] && (t[a[key]!] = (t[a[key]!] || 0) + 1)); return t; };
   const mom = tally('moment'), seg = tally('consumer');
   const maxM = Math.max(1, ...Object.values(mom));
-  const topMom = ranked(mom)[0]?.[0], topSeg = ranked(seg)[0];
+  const topMom = ranked(mom)[0]?.[0];
   const cols = [...WHITESPACE.moments.filter((m) => m !== 'On the go'), 'On the go'];
   const rows = dayRows(s);
   const now = (m: string) => step >= 1 && !!WHITESPACE.present[m];
@@ -339,7 +345,7 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
         ))}
       </div>
       <R b={3} step={step} className="dy-lede">Ross asked for flavors that <span className="it">unlock new usage occasions.</span> Every open moment is one. Click a cell to mark where an idea fits.</R>
-      <div className="src stage-src">{WHITESPACE.read}{step >= 2 && topSeg ? ` In the pre-brief, most of you said you want to win ${topSeg[0].charAt(0).toLowerCase() + topSeg[0].slice(1)}.` : ''}</div>
+      <div className="src stage-src">{WHITESPACE.read}{step >= 2 ? segLine(ranked(seg), answers.length) : ''}</div>
     </div>
   );
 }

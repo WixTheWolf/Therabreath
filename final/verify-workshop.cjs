@@ -26,4 +26,11 @@ const plan=fold([{id:'p1',t:10,kind:'plan',data:{id:'r1',h:'Now',fields:{what:'S
   {id:'c1',t:18,kind:'rate',pid:'paper-1',data:{sample:'A',appeal:3,feels:3,newness:3,who:[]}},{id:'c2',t:19,kind:'rate',pid:'paper-1',data:{sample:'B',appeal:3,feels:3,newness:3,who:[]}},{id:'c3',t:20,kind:'unrate',pid:'paper-1',data:{sample:'A'}}]);
 assert.deepEqual(Object.keys(plan.plan),['r1']);assert.equal(plan.plan.r1.h,'Future');assert.equal(plan.plan.r1.what,'Sample A, second round');assert.equal(plan.plan.r1.owner,'Test owner');
 assert.deepEqual(Object.keys(plan.votes.signals.picks),['hand-2']);assert.ok(!plan.ratings.A['paper-1']);assert.ok(plan.ratings.B['paper-1']);
-console.log('PASS: run of show ('+SCENES.length+' scenes), phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards and white-space marks.');
+// The slide-by-slide plan: every scene has one, each part's minutes fill its window exactly, and no slide lists more
+// clicks than it has builds.
+const {SLIDES}=load('runNotes'),{SLIDE_MIN,SLIDE_TIMES}=load('slideTimes');const mm=(t)=>{const [h,m]=t.split(':').map(Number);return h*60+m;};
+assert(SCENES.every(s=>SLIDES[s.id]&&SLIDE_TIMES[s.id]&&s.id in SLIDE_MIN),'a scene has no slide plan');
+for(const b of RUN){const sum=SCENES.filter(s=>s.block===b.id).reduce((n,s)=>n+SLIDE_MIN[s.id],0);assert.equal(sum,mm(b.end)-mm(b.t),'slide minutes for '+b.id+' do not fill '+b.t+' to '+b.end);}
+assert(SCENES.every(s=>!SLIDES[s.id].clicks||SLIDES[s.id].clicks.length<=s.builds+1),'a slide lists more clicks than builds');
+assert.equal(SLIDE_TIMES.film.from,'11:48');assert.equal(SLIDE_TIMES.tasting.from,'10:40');
+console.log('PASS: run of show and slide plan ('+SCENES.length+' scenes), phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards and white-space marks.');
