@@ -54,7 +54,7 @@ export default function RunSheet() {
             <tr key={b.id}>
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
               <td><b>{b.title}</b></td>
-              <td className="rs-owner" data-l="Owner" />
+              <td className="rs-owner" />
               <td data-l="Technology and materials">{RUN_NOTES[b.id].kit}</td>
               <td data-l="Output">{RUN_NOTES[b.id].output}</td>
             </tr>,
