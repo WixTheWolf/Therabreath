@@ -54,14 +54,13 @@ export default function RunSheet() {
             <tr key={b.id}>
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
               <td><b>{b.title}</b></td>
-              <td className="rs-owner" data-l="Owner">To assign</td>
+              <td className="rs-owner" data-l="Owner" />
               <td data-l="Technology and materials">{RUN_NOTES[b.id].kit}</td>
               <td data-l="Output">{RUN_NOTES[b.id].output}</td>
             </tr>,
             RUN_NOTES[b.id].after ? <tr key={b.id + '-after'} className="rs-after"><td className="rs-t">{b.end}</td><td colSpan={4}>{RUN_NOTES[b.id].after}</td></tr> : null,
           ])}</tbody>
         </table>
-        <p className="rs-note">Owners are still to assign: nobody is named as presenting any part, so fill these in by hand once the team has agreed who runs what.</p>
       </section>
 
       <section className="rs-sec">
@@ -97,3 +96,4 @@ export default function RunSheet() {
     </main>
   );
 }
+

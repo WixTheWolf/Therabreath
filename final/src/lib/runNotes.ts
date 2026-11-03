@@ -2,6 +2,8 @@
 // the technology and materials, what the block should leave us with, and any transition. Kept apart from RUN in
 // content.ts, which ships to attendee pages, so nothing written for the team (THE FLAVOR RACE above all) reaches them.
 // Import this only from team-only pages.
+import { MYSTERY } from './content';
+
 export type BlockNotes = { slides: string; does: string; kit: string; output: string; after?: string };
 
 const TEXT: Record<string, Pick<BlockNotes, 'slides' | 'does'>> = {
@@ -19,7 +21,7 @@ const TEXT: Record<string, Pick<BlockNotes, 'slides' | 'does'>> = {
   },
   tasting: {
     slides: 'The blind tasting, Where each sample landed, Vote: what gets a next round',
-    does: 'Pour A and B in the Kids base and C and D in the Fresh Breath base. Everyone scores each sample on their phone or the paper scorecard, and the scores fill the screen as they come in. Type the paper cards into the presenter view as they’re handed in. D is the Mystery Flavor, so get everyone’s fruit guesses before the names go up. Then show where each sample landed, and have everyone place five chips on what should get a next round.',
+    does: `Pour A and B in the Kids base and C and D in the Fresh Breath base. Everyone scores each sample on their phone or the paper scorecard, and the scores fill the screen as they come in. Type the paper cards into the presenter view as they’re handed in. ${MYSTERY} is the Mystery Flavor, so get everyone’s fruit guesses before the names go up. Then show where each sample landed, and have everyone place five chips on what should get a next round.`,
   },
   concepts: {
     slides: 'Part 3, Concepts, Vote: which ideas to develop',
@@ -47,3 +49,4 @@ const KIT: Record<string, Pick<BlockNotes, 'kit' | 'output' | 'after'>> = {
 };
 
 export const RUN_NOTES: Record<string, BlockNotes> = Object.fromEntries(Object.keys(TEXT).map((id) => [id, { ...TEXT[id], ...KIT[id] } as BlockNotes]));
+
