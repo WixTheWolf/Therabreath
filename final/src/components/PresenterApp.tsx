@@ -99,7 +99,7 @@ export default function PresenterApp({ code }: { code: string }) {
           {sc.builds > 0 && <p className="pv-build">Build {step} of {sc.builds}</p>}
           <ul className="pv-points">{pointsOf(sc).map((x, j) => <li key={j}>{x}</li>)}</ul>
           {pos?.next && <p className="pv-next">Next: <b>{pos.next}</b></p>}
-          {sc.id === 'next' && <button className="pv-skipfilm" disabled={off} onClick={() => cmd({ c: 'goto', i: SCENES.length - 1 })}>Running late: skip the film, go to the thank-you</button>}
+          {sc.id === 'platform4' && <button className="pv-skipfilm" disabled={off} onClick={() => cmd({ c: 'goto', i: SCENES.findIndex((x) => x.id === 'tasting') })}>Running late: skip the film, go to the tasting</button>}
         </section>
         <aside className="pv-room">{room}</aside>
       </div>

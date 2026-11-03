@@ -6,7 +6,7 @@ const {SCENES,EXECUTIVE}=load('scenes'),{SAMPLES,PRIMARY_TERRITORIES,SEEDS,MISSI
 // The run of show: Ross's four objectives as four parts, each opened by its own scene, with phone votes on the trends,
 // the tasting, the next round and the ideas.
 const ids=SCENES.map(s=>s.id),at=(id)=>ids.indexOf(id),room=(id)=>SCENES.find(s=>s.id===id).room;
-assert.equal(SCENES.length,36);assert.equal(ids[0],'arrival');assert.equal(ids[1],'title');assert.equal(ids.slice(-4).join(),'playbook,next,film,lunch');
+assert.equal(SCENES.length,36);assert.equal(ids[0],'arrival');assert.equal(ids[1],'title');assert.equal(ids.slice(-3).join(),'playbook,next,lunch');assert.equal(at('film'),at('tasting')-1,'THE FLAVOR RACE plays right before the tasting');
 for(const id of ['brief','prework','thesis','open1','gap','portfolio','market','signals','signalvote','open2','school','cooling','oxyd','anatomy','map','platform1','platform4','tasting','matrix','nextround','open3','concepts','dots','open4','whitespace','board'])assert(ids.includes(id),'missing scene '+id);
 for(const id of ['chips','canvas','bench','pipeline','assemble','climb','code'])assert(!ids.includes(id),'cut scene still live: '+id);
 assert(at('open1')<at('gap')&&at('signalvote')<at('open2')&&at('nextround')<at('open3')&&at('dots')<at('open4')&&at('board')<at('playbook'),'parts out of order');
@@ -32,5 +32,5 @@ const {SLIDES}=load('runNotes'),{SLIDE_MIN,SLIDE_TIMES}=load('slideTimes');const
 assert(SCENES.every(s=>SLIDES[s.id]&&SLIDE_TIMES[s.id]&&s.id in SLIDE_MIN),'a scene has no slide plan');
 for(const b of RUN){const sum=SCENES.filter(s=>s.block===b.id).reduce((n,s)=>n+SLIDE_MIN[s.id],0);assert.equal(sum,mm(b.end)-mm(b.t),'slide minutes for '+b.id+' do not fill '+b.t+' to '+b.end);}
 assert(SCENES.every(s=>!SLIDES[s.id].clicks||SLIDES[s.id].clicks.length<=s.builds+1),'a slide lists more clicks than builds');
-assert.equal(SLIDE_TIMES.film.from,'11:48');assert.equal(SLIDE_TIMES.tasting.from,'10:40');
+assert.equal(SLIDE_TIMES.film.from,'10:40');assert.equal(SLIDE_TIMES.tasting.from,'10:43');assert.equal(SLIDE_TIMES.nextround.to,'11:00');
 console.log('PASS: run of show and slide plan ('+SCENES.length+' scenes), phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards and white-space marks.');

@@ -23,7 +23,7 @@ export default async function Team() {
   const day = [
     { href: '/host/writeup?code=REHEARSE', t: 'The Playbook write-up', d: 'What we send everyone within 8 business days. This is a practice copy; after the morning, switch to the live session at the top.' },
     { href: '/scorecard', t: 'The paper scorecard', d: 'For anyone who’d rather not score on a phone. One page per person.' },
-    { href: '/media/flavor-race.mp4', t: 'THE FLAVOR RACE', d: '2:24, at 11:48. Save a copy to the presenting laptop the day before.' },
+    { href: '/media/flavor-race.mp4', t: 'THE FLAVOR RACE', d: '2:24, at 10:40, right before the tasting. Save a copy to the presenting laptop the day before.' },
   ];
   // Every PDF, to save or forward inside the team. The decks show the sample names, so they stay behind the team link.
   const pdfs = [

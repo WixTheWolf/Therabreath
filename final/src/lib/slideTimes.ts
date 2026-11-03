@@ -28,9 +28,9 @@ export const SLIDE_MIN: Record<string, number> = {
   platform2: 1,
   platform3: 1,
   platform4: 2,
-  tasting: 12,
-  matrix: 3,
-  nextround: 5,
+  tasting: 11,
+  matrix: 2,
+  nextround: 4,
   open3: 1,
   concepts: 15,
   dots: 4,
@@ -40,7 +40,7 @@ export const SLIDE_MIN: Record<string, number> = {
   playbook: 5,
   next: 3,
   film: 3,
-  lunch: 9,
+  lunch: 12,
 };
 
 const toMin = (t: string) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };

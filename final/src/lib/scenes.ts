@@ -58,6 +58,7 @@ const SHOW: Row[] = [
   { id: 'anatomy', optional: true, act: PART(2), chapter: 1, theme: 'b', builds: 4, title: 'How a TheraBreath flavor is built', block: 'school', room: W('Flavor School') },
   { id: 'map', act: PART(2), chapter: 1, theme: 'a', builds: 2, title: 'Four directions', block: 'school', room: W('Four directions') },
   platform(1), platform(2), platform(3), platform(4),
+  { id: 'film', act: PART(2), chapter: 1, theme: 'b', builds: 0, title: 'Before we taste', block: 'tasting', room: W('Phones down for a couple of minutes. Eyes on the screen.') },
   { id: 'tasting', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'The blind tasting', block: 'tasting', room: { kind: 'taste' } },
   { id: 'matrix', act: PART(2), chapter: 1, theme: 'b', builds: 1, title: 'Where each sample landed', block: 'tasting', room: W('Where each sample landed') },
   { id: 'nextround', act: PART(2), chapter: 1, theme: 'a', builds: 1, title: 'Vote: what gets a next round', block: 'tasting',
@@ -73,13 +74,13 @@ const SHOW: Row[] = [
 
   { id: 'playbook', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 5, title: 'What we decided', block: 'close', room: W('Here’s what we decided') },
   { id: 'next', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 3, title: 'What happens next', block: 'close', room: { kind: 'thanks' } },
-  { id: 'film', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 0, title: 'Before lunch', block: 'close', room: W('Phones down for a couple of minutes. Eyes on the screen.') },
   { id: 'lunch', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 0, title: 'Thank you', block: 'close', room: { kind: 'thanks' } },
 ];
 
 export const SCENES: Scene[] = SHOW.map((s, n) => ({ ...s, n }));
-// Where ] and [ jump in the presentation: the start of each part, plus the map and the tasting inside part 2.
-export const SECTIONS = ['arrival', 'open1', 'open2', 'map', 'tasting', 'open3', 'open4', 'playbook'];
+// Where ] and [ jump in the presentation: the start of each part, plus the map, THE FLAVOR RACE and the tasting inside
+// part 2 (so ] on the film skips straight to the tasting).
+export const SECTIONS = ['arrival', 'open1', 'open2', 'map', 'film', 'tasting', 'open3', 'open4', 'playbook'];
 export const sceneIndex = (id: string) => SCENES.findIndex((s) => s.id === id);
 // The Console's short version of the morning.
 export const EXECUTIVE = ['title', 'brief', 'gap', 'signalvote', 'tasting', 'matrix', 'nextround', 'concepts', 'dots', 'board', 'playbook', 'next'];
