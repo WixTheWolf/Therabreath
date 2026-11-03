@@ -1,6 +1,6 @@
 'use client';
 // Now, Next, Later as rows: what goes forward, who it's for, the flavor brief, its TFF owner and C&D reviewer, the base and
-// when the next sample is due (the six fields the front door and the pre-brief promise). The
+// when the next sample is due, the next test and the agreed next step. The
 // board scene types them on the TV and the presenter view types them on the laptop; both write `plan` events to the
 // same session, so the Playbook read-back, the last slides and the results page all show the same rows.
 import { useEffect, useRef, useState } from 'react';
@@ -23,15 +23,20 @@ export function Synced({ value, commit, area, ...rest }: { value: string; commit
   return area ? <textarea {...props} /> : <input {...props} />;
 }
 
-// What every direction leaves with (the same six the front door and the pre-brief promise).
+// What every direction leaves with: who it's for, the flavor brief, the next test, who takes it forward on each side, the
+// base, when the next sample is due and the next step the room agreed. Typed in the room; nothing here is assumed.
 export const PLAN_COLS = [
   { f: 'who', l: 'Consumer or occasion' },
   { f: 'brief', l: 'Flavor brief' },
+  { f: 'test', l: 'Next test' },
   { f: 'owner', l: 'TFF owner', list: 'plan-owner' },
   { f: 'reviewer', l: 'C&D reviewer' },
   { f: 'base', l: 'Base', list: 'plan-base' },
   { f: 'due', l: 'Next sample due', date: true },
+  { f: 'step', l: 'Agreed next step' },
 ] as const;
+// The read-back on the TV shows the columns a room can read at a glance; the write-up and the results page show them all.
+export const PLAN_READBACK = PLAN_COLS.filter((c) => ['who', 'test', 'owner', 'reviewer', 'due', 'step'].includes(c.f));
 // "2026-12-04" as "Dec 4, 2026"; anything else as typed.
 export const dueLabel = (d?: string) => (d && /^\d{4}-\d{2}-\d{2}$/.test(d) ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : d || '');
 // A cell of the plan as it reads back: the date formatted, the flavor brief falling back to the older free-text step.

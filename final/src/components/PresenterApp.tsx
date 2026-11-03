@@ -254,7 +254,7 @@ function PlanEditor({ s, send }: { s: SessionState; send: Send }) {
   return (
     <>
       <h2>Now, Next, Later</h2>
-      <p className="pv-sub">One line per direction, with its owners, base and next sample. It shows on the board, the Playbook and the last slides as you type.</p>
+      <p className="pv-sub">One line per direction, with its next test, owners, base, next sample and agreed next step. It shows on the board, the Playbook and the last slides as you type.</p>
       {HORIZONS.map((h) => {
         const mine = rows.filter((r) => r.h === h.id);
         return (

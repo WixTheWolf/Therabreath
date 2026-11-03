@@ -323,8 +323,8 @@ function savePdf() {
 // The team's bar: which session, the paper size, the date it's due, what's still missing, and Save as PDF. Not printed.
 function Toolbar({ code, s, d, size, setSize, online }: { code: string; s: SessionState; d: Digest; size: string; setSize: (v: 'Letter' | 'A4') => void; online: boolean }) {
   const live = code === EVENT.code;
-  const missing = (f: 'owner' | 'reviewer' | 'base' | 'due', l: string) => { const n = d.plan.filter((r) => !planCell(r, f)).length; return n ? `${plural(n, 'direction')} without ${l}` : ''; };
-  const gaps = [missing('owner', 'a TFF owner'), missing('reviewer', 'a C&D reviewer'), missing('base', 'a base'), missing('due', 'a next sample date')].filter(Boolean);
+  const missing = (f: 'owner' | 'reviewer' | 'base' | 'due' | 'test' | 'step', l: string) => { const n = d.plan.filter((r) => !planCell(r, f)).length; return n ? `${plural(n, 'direction')} without ${l}` : ''; };
+  const gaps = [missing('owner', 'a TFF owner'), missing('reviewer', 'a C&D reviewer'), missing('base', 'a base'), missing('due', 'a next sample date'), missing('test', 'a next test'), missing('step', 'an agreed next step')].filter(Boolean);
   const checks: { ok: boolean; t: string }[] = [
     { ok: !!s.revealed, t: s.revealed ? 'The sample names are in' : 'The sample names show once the tasting reveals them in the presentation' },
     { ok: d.tasting.every((x) => x.sum.n > 0), t: d.tasted ? (d.tasting.every((x) => x.sum.n > 0) ? 'Every sample has scores' : 'Some samples have no scores yet') : 'No tasting scores yet. Type in any paper cards from the presenter view' },

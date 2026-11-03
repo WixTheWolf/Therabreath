@@ -1,5 +1,5 @@
 import { EVENT, RUN, SAMPLES, NEXT_STEPS, TASTING_KIT } from '@/lib/content';
-import { RUN_NOTES } from '@/lib/runNotes';
+import { RUN_NOTES, EXAMPLES, BEHIND } from '@/lib/runNotes';
 import { SEALED } from '@/lib/sealed';
 import PrintButton from '@/app/scorecard/PrintButton';
 
@@ -17,7 +17,7 @@ const SETUP = [
   'Sound and picture check, before anyone arrives and on the rehearsal session so nobody’s phone moves: open /host?code=REHEARSE on the TV, press F for full screen, then End and the left arrow once to get to THE FLAVOR RACE. Check it fills the screen, play ten seconds through the speakers and set the volume, and press R to check it starts again. Then close that window and open Present on the day. Keep the film off the TV once people start arriving.',
   'Rehearse on /host?code=REHEARSE (the team page links to it), never on /host itself, so rehearsal votes stay out of the live session. Leave the live session FOF1109 alone the night before: it holds everyone’s pre-brief answers, and the team page shows how many are in.',
   `Samples: ${kids} in the Kids base and ${fresh} in the Fresh Breath base, poured blind into coded cups. Set out water to rinse, cups to spit into and napkins.`,
-  'If we’re running late, press S to skip the optional slides (How cooling works, Flavor and OXYD-8, how a flavor is built, and the two directions that aren’t in the tasting), or ] to jump to the next part. The presenter view shows how far over the current part is and whether the short version is on.',
+  'If we’re running late, see If we run behind below. The presenter view shows how far over the current part is and whether the short version is on.',
   'Bring a few paper scorecards and pens for anyone who’d rather not use a phone (print them from /scorecard). On the vote slides, the presenter view has a button to add a hand vote for each option, and one to take it back. On the tasting, type each paper card in with Add a paper card. A card typed in by mistake can be removed.',
 ];
 const AFTER = [
@@ -30,7 +30,8 @@ const CONFIRM = [
   `The bases: ${SEALED.samples.A.name} and the ${SEALED.samples.B.name} in the Kids base, ${SEALED.samples.C.name} and ${SEALED.samples.D.name} in the Fresh Breath base.`,
   'The dates on What happens next, including the January 2027 review.',
   'A video call with Ross before the day. He asked to connect once or twice ahead of time.',
-  'The pre-brief goes out November 3.',
+  `Whether to tell the room what’s in the ${SEALED.samples.B.name} once the names go up. The presentation, the phones and the write-up show its name but not its contents, so the room can keep guessing.`,
+  'That the samples were made in the unflavored bases Church & Dwight sent, as the front door says.',
 ];
 
 export default function RunSheet() {
@@ -80,6 +81,29 @@ export default function RunSheet() {
             </tr>
           ))}</tbody>
         </table>
+      </section>
+
+      <section className="rs-sec">
+        <h2>If we run behind</h2>
+        <ol className="rs-list">{BEHIND.map((x) => <li key={x}>{x}</li>)}</ol>
+      </section>
+
+      <section className="rs-sec rs-examples">
+        <h2>If the room needs a starting point: two example concepts</h2>
+        <p className="rs-lead">Offer one only if the room is stuck, and let them change it. The assumptions are ours, not facts.</p>
+        <div className="rs-two">{EXAMPLES.map((x) => (
+          <div key={x.name} className="rs-ex">
+            <b>{x.name}</b>
+            <dl>
+              <div><dt>For</dt><dd>{x.consumer}</dd></div>
+              <div><dt>When</dt><dd>{x.occasion}</dd></div>
+              <div><dt>Flavor direction</dt><dd>{x.direction}</dd></div>
+              <div><dt>How it feels</dt><dd>{x.sensory}</dd></div>
+              <div><dt>What we’d test</dt><dd>{x.test}</dd></div>
+            </dl>
+            <ul>{x.assume.map((a) => <li key={a}>{a}</li>)}</ul>
+          </div>
+        ))}</div>
       </section>
 
       <div className="rs-two">

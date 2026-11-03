@@ -15,7 +15,7 @@ import {
 } from '@/lib/content';
 import type { FilmAct, FilmState } from '@/lib/showLink';
 import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, SessionState } from '@/lib/state';
-import { Synced, PLAN_COLS, PlanLists, RemoveRow, planRows, planActions, planCell } from './Plan';
+import { Synced, PLAN_COLS, PLAN_READBACK, PlanLists, RemoveRow, planRows, planActions, planCell } from './Plan';
 
 export type Live = { send: (kind: string, data?: any, pid?: string) => any; still: boolean; joinUrl: string };
 export const LiveCtx = createContext<Live | null>(null);
@@ -474,12 +474,12 @@ function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
     title = 'Now, Next, Later, with the owners';
     body = d.plan.length ? (
       <table className={'rp-plan' + (d.plan.length > 7 ? ' many' : d.plan.length <= 4 ? ' few' : '')}>
-        <thead><tr><th /><th>Direction</th>{PLAN_COLS.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead>
+        <thead><tr><th /><th>Direction</th>{PLAN_READBACK.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead>
         <tbody>{d.plan.slice(0, 10).map((r, j) => (
           <tr key={r.id} className={r.h.toLowerCase()}>
             <td>{j === 0 || d.plan[j - 1].h !== r.h ? <span className="rp-h">{r.label}</span> : null}</td>
             <td><b>{r.what || 'Untitled'}</b></td>
-            {PLAN_COLS.map((c) => <td key={c.f}>{planCell(r, c.f) || <i>To agree</i>}</td>)}
+            {PLAN_READBACK.map((c) => <td key={c.f}>{planCell(r, c.f) || <i>To agree</i>}</td>)}
           </tr>
         ))}</tbody>
       </table>

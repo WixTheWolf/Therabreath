@@ -14,8 +14,8 @@ export type Concept = { id: string; team: number; slot: number; name: string; se
 export type Placement = { horizon: string; role: string; t: number };
 // One line of Now, Next, Later: what goes forward, who it's for, the flavor brief, who owns it on each side, the base and
 // when the next sample is due. `next` is the free-text next step rows had before the brief and the date (still shown).
-export type PlanRow = { id: string; h: string; what: string; who?: string; brief?: string; owner?: string; reviewer?: string; base?: string; due?: string; next?: string; t: number };
-export const PLAN_FIELDS = ['what', 'who', 'brief', 'owner', 'reviewer', 'base', 'due', 'next'] as const;
+export type PlanRow = { id: string; h: string; what: string; who?: string; brief?: string; test?: string; owner?: string; reviewer?: string; base?: string; due?: string; step?: string; next?: string; t: number };
+export const PLAN_FIELDS = ['what', 'who', 'brief', 'test', 'owner', 'reviewer', 'base', 'due', 'step', 'next'] as const;
 
 export type SessionState = {
   scene: number; step: number;

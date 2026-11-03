@@ -1,4 +1,4 @@
-import { EVENT } from '@/lib/content';
+import { EVENT, SOURCES, SOURCE_URLS } from '@/lib/content';
 import { joinToken } from '@/lib/auth';
 import LivePanel from './LivePanel';
 
@@ -56,6 +56,9 @@ export default async function Team() {
         {list(day)}
         <h2>PDFs</h2>
         <ul className="tm-pdfs">{pdfs.map(([f, l]) => <li key={f}><a href={`${FILES}/${f}`} download>{l}</a></li>)}</ul>
+        <h2>Sources behind the numbers</h2>
+        <p className="tm-src-note">Checked November 3, 2026. Each trend says on screen whether its evidence comes from oral care or from food and flavor more widely.</p>
+        <ul className="tm-src">{Object.keys(SOURCE_URLS).map((k) => <li key={k}><a href={SOURCE_URLS[k]} target="_blank" rel="noopener noreferrer">{SOURCES[k]}</a></li>)}</ul>
       </div>
       <footer className="fd-foot">Confidential · for The Flavor Factory team</footer>
     </main>

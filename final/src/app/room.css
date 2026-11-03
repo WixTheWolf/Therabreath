@@ -222,7 +222,7 @@
   .bw-agenda b, .bw-signals b, .bw-think li { font-size: 11pt; }
   .bw-agenda q, .bw-signals p { font-size: 10pt; }
   .bw-signals li, .bw-think li { padding: 3px 0 3px 4px; }
-  .bw-more { break-before: page; }
+  .bw-more { margin-top: 18pt; }
   .bw-part { break-inside: avoid; }
   .bw-print-only { display: block; font: 400 italic 15px var(--serif); }
   .bw-print-qs { margin: 10px 0 0 18px; font: 400 10.5pt/1.45 var(--sans); }

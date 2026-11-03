@@ -49,6 +49,14 @@ html:has(.rs), html:has(.rs) body { background: #fff; }
 .rs-t small { font-size: 7.5pt; }
 .rs-run td:nth-child(3) { width: 3.3in; }
 .rs-two { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.rs-list { margin-left: 16px; font-size: 9pt; line-height: 1.4; }
+.rs-list li { margin-bottom: 4px; }
+.rs-lead { font-size: 9pt; color: #555; margin-bottom: 6px; }
+.rs-ex { break-inside: avoid; border: 1px solid rgba(11,27,43,.18); border-radius: 6px; padding: 8px 10px; font-size: 9pt; line-height: 1.38; }
+.rs-ex > b { display: block; font: 400 12pt/1.2 var(--serif); margin-bottom: 4px; }
+.rs-ex dl div { display: grid; grid-template-columns: 92px 1fr; gap: 6px; margin-bottom: 2px; }
+.rs-ex dt { font: 500 7.5pt/1.5 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #1F6C82; }
+.rs-ex ul { margin: 4px 0 0 14px; font-style: italic; color: #333; }
 /* the facilitator's view: owners, kit and output per block, quieter than the run of show below it */
 .rs-glance { font-size: 8pt; }
 .rs-glance td:nth-child(2) { width: 1.7in; }

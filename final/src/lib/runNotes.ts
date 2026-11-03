@@ -29,7 +29,7 @@ const TEXT: Record<string, Pick<BlockNotes, 'slides' | 'does'>> = {
   },
   pipeline: {
     slides: 'Part 4, Where TheraBreath fits in a day, Now, Next, Later',
-    does: 'Walk through the day, moment by moment: where TheraBreath is today, the moment the pre-brief says is missing, and everything that’s still open. Click a cell to mark where each concept could fit. Then put each concept and direction under Now, Next or Later, one line each with its consumer or occasion, the flavor brief, a TFF owner, a C&D reviewer, the base and the date the next sample is due. Type them on the board or in the presenter view. The top votes sit in a tray above the board: click one to start its line under Now.',
+    does: 'Walk through the day, moment by moment: where TheraBreath is today, the moment the pre-brief says is missing, and everything that’s still open. Click a cell to mark where each concept could fit. Then put each concept and direction under Now, Next or Later, one line each with its consumer or occasion, the flavor brief, the next test, a TFF owner, a C&D reviewer, the base, the date the next sample is due and the agreed next step. Type them on the board or in the presenter view. The top votes sit in a tray above the board: click one to start its line under Now.',
   },
   close: {
     slides: 'What we decided, What happens next, THE FLAVOR RACE, Thank you',
@@ -49,4 +49,36 @@ const KIT: Record<string, Pick<BlockNotes, 'kit' | 'output' | 'after'>> = {
 };
 
 export const RUN_NOTES: Record<string, BlockNotes> = Object.fromEntries(Object.keys(TEXT).map((id) => [id, { ...TEXT[id], ...KIT[id] } as BlockNotes]));
+
+// Two example concepts the hosts can offer if the room needs a starting point (team pages only). They build on the
+// pre-brief's own choices and on directions already on screen; everything not yet known is marked as an assumption.
+export type Example = { name: string; consumer: string; occasion: string; direction: string; sensory: string; test: string; assume: string[] };
+export const EXAMPLES: Example[] = [
+  {
+    name: 'A calmer last rinse of the day',
+    consumer: 'Loyal TheraBreath users',
+    occasion: 'Wind-down, the last rinse before bed',
+    direction: 'A softer botanical mint, in the Fresh Breath base, next to what Overnight Chamomile Mint already does',
+    sensory: 'Gentle cooling that fades rather than lingers, no sting, a calm aromatic finish',
+    test: 'Does softer cooling still read as clean to a loyal user? Do the botanical notes hold up in the base over time?',
+    assume: ['Assumption: loyal users want a different feel at night than in the morning.', 'Assumption: the botanical notes stay stable in the base. That needs a bench check.'],
+  },
+  {
+    name: 'A guessing game at the sink',
+    consumer: 'Families with kids and tweens',
+    occasion: 'The evening routine with the kids',
+    direction: 'A fruit flavor sold as a mystery, in the Kids base, in the spirit of the Mystery Flavor sample',
+    sensory: 'A fruit-forward start, mild cooling, a clean finish',
+    test: 'Do kids enjoy guessing more than a named fruit? Do parents still see it as a real oral care product? How much cooling do kids accept?',
+    assume: ['Assumption: the guessing makes kids want to rinse.', 'Assumption: a mystery name works for parents in store. Both need testing with families.'],
+  },
+];
+
+// What to cut, in order, if the morning runs behind. The tasting and Now, Next, Later are what the morning is for.
+export const BEHIND = [
+  'A few minutes behind: press S. It skips the optional slides (How cooling works, Flavor and OXYD-8, how a flavor is built, and the two directions that aren’t in the tasting), and the presenter view shows the short version is on.',
+  'Further behind: take the seven trends as headlines only and go straight to the vote, and write one concept together instead of three. Press ] to jump to the next part.',
+  'Out of time: End goes straight to the thank-you card, so the film can be skipped without losing anything. Read back Now, Next, Later with its owners first, even if that means no film.',
+  'Never cut: the blind tasting, the chips on what gets a next round, and the owners and next steps on Now, Next, Later.',
+];
 
