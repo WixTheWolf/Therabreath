@@ -7,15 +7,17 @@ import { fold, type Ev } from '@/lib/state';
 export default function LivePanel({ code }: { code: string }) {
   const [n, setN] = useState<{ answers: number; joined: number } | null>(null);
   const [armed, setArmed] = useState(false);
+  const [err, setErr] = useState(false); // the last try failed; it tries again every 15 seconds
   useEffect(() => {
     let on = true;
     const load = async () => {
       try {
-        const r = await fetch(`/api/s/${code}/events`, { cache: 'no-store' });
-        if (!r.ok) return;
+        const ctl = new AbortController(); const cut = setTimeout(() => ctl.abort(), 10000);
+        const r = await fetch(`/api/s/${code}/events`, { cache: 'no-store', signal: ctl.signal }).finally(() => clearTimeout(cut));
+        if (!r.ok) { if (on) setErr(true); return; }
         const s = fold((await r.json()).events as Ev[]);
-        if (on) setN({ answers: Object.keys(s.survey).length, joined: Object.keys(s.participants).length });
-      } catch {}
+        if (on) { setN({ answers: Object.keys(s.survey).length, joined: Object.keys(s.participants).length }); setErr(false); }
+      } catch { if (on) setErr(true); }
     };
     load();
     const id = setInterval(load, 15000);
@@ -25,8 +27,12 @@ export default function LivePanel({ code }: { code: string }) {
   return (
     <section className="tm-live" aria-label="The live session">
       <div className="tm-live-stats" aria-live="polite">
-        <span><b>{count(n?.answers, 'pre-brief answer', 'pre-brief answers')}</b> in so far</span>
-        <span><b>{count(n?.joined, 'phone', 'phones')}</b> joined the live session</span>
+        {!n && err ? <span>Couldn’t reach the live session just now. It tries again every 15 seconds.</span>
+          : !n ? <span>Counting the pre-brief answers…</span> : <>
+            <span><b>{count(n.answers, 'pre-brief answer', 'pre-brief answers')}</b> in so far</span>
+            <span><b>{count(n.joined, 'phone', 'phones')}</b> joined the live session</span>
+            {err && <span className="tm-live-stale">Last count shown; trying again.</span>}
+          </>}
       </div>
       {!armed ? (
         <button type="button" className="tm-live-go" onClick={() => setArmed(true)}>Present on the day</button>

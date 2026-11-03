@@ -132,7 +132,7 @@ export function Tasting({ s, step }: SceneProps) {
         <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}<span>Who is it for</span></div>
         {rows.map((r) => (
           <div key={r.code} className="hrow">
-            <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{step >= 2 && <small style={{ display: 'block', fontSize: 15 }}>{s.revealed?.samples[r.code]?.note} · {r.base}</small>}{step >= 2 && r.guessN > 0 && <em className="hguess">{r.right} of {r.guessN} guessed {TERRITORIES.find((x) => x.id === r.territory)?.name}</em>}</span></div>
+            <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{step >= 2 && <small style={{ display: 'block', fontSize: 15 }}>{r.code !== MYSTERY && <>{s.revealed?.samples[r.code]?.note} · </>}{r.base}</small>}{step >= 2 && r.guessN > 0 && <em className="hguess">{r.right} of {r.guessN} guessed {TERRITORIES.find((x) => x.id === r.territory)?.name}</em>}</span></div>
             {metrics.map(([k]) => <div key={k} className="hcell" style={cell(r.sum[k])}><b className="num">{r.sum[k] ? r.sum[k].toFixed(1) : ''}</b></div>)}
             <div className="hwho">{ranked(r.sum.who).slice(0, 3).map(([w, n]) => <span key={w}>{w} <b>{n}</b></span>)}</div>
           </div>

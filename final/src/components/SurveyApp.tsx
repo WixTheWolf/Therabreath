@@ -13,13 +13,13 @@ import FilmModal from './FilmModal';
 // Each objective's words sit under the first block of the morning that answers it.
 const firstOf = new Set(RUN.filter((b, i) => b.obj && RUN.findIndex((x) => x.obj === b.obj) === i).map((b) => b.id));
 const askFor = (n?: string) => OBJECTIVES.find((o) => o.n === n)?.ask;
-const STEPS = ['You', 'Consumer', 'Moment', 'Veto', 'Profile'];
-// What a step says when Next is pressed before it's answered (the veto and the sliders can always go on).
+const STEPS = ['You', 'Consumer', 'Moment', 'Off-brand', 'Profile'];
+// What a step says when Next is pressed before it's answered (the off-brand question and the sliders can always go on).
 const NEEDS = ['Add your first name so we know whose answers these are.', 'Pick the one that comes closest. You can change it later.', 'Pick the one that comes closest. You can change it later.', '', ''];
 
 export default function SurveyApp({ code, k }: { code: string; k: string }) {
   const { send, status } = useSession(code, { k, interval: 4000 });
-  const [a, setA] = useState({ name: '', consumer: '', moment: '', veto: '' });
+  const [a, setA] = useState({ name: '', consumer: '', other: '', moment: '', veto: '' });
   const [profile, setProfile] = useState<Record<string, number>>(DEFAULT_PROFILE);
   const [step, setStep] = useState(0);
   const [err, setErr] = useState('');
@@ -32,7 +32,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
     document.documentElement.dataset.theme = 'a';
     const n = new URLSearchParams(location.search).get('n');
     if (n) setA((x) => ({ ...x, name: n.slice(0, 20) }));
-    try { const saved = JSON.parse(localStorage.getItem(`pb-brief-${code}`) || 'null'); if (saved?.done) { setA(saved.a); setProfile(saved.profile); setDone(true); } } catch {}
+    try { const saved = JSON.parse(localStorage.getItem(`pb-brief-${code}`) || 'null'); if (saved?.done) { setA({ other: '', ...saved.a }); setProfile(saved.profile); setDone(true); } } catch {}
   }, [code]);
 
   const first = a.name.trim().split(/\s+/)[0];
@@ -52,7 +52,8 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
     let pid = '';
     try { pid = JSON.parse(localStorage.getItem(`pb-me-${code}`) || 'null')?.pid; } catch {}
     if (!pid) { pid = uid(); try { localStorage.setItem(`pb-me-${code}`, JSON.stringify({ pid, name: first })); } catch {} }
-    send('survey', { ...a, name: first, profile }, pid);
+    const other = a.consumer === SURVEY.consumer.other ? a.other.trim() : '';
+    send('survey', { ...a, other, name: first, profile }, pid);
     try { localStorage.setItem(`pb-brief-${code}`, JSON.stringify({ done: true, a, profile })); } catch {}
     setSentAt(Date.now()); setDone(true);
   };
@@ -83,7 +84,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
       <section className="bw-sec bw-letter-sec" aria-label="A letter from The Flavor Factory">
         <p className="bw-letter">{first ? `Dear ${first},` : 'Hello,'}</p>
         <p className="bw-letter">In July your team came out to Norco and saw how we make flavor. On November 9 it’s our turn to come to Princeton. We’ll bring what we know about flavor, what we’re seeing in the market, the trends we’re watching and the innovation work we’ve been doing, all of it aimed at the goal in {first.toLowerCase() === 'ross' ? 'your' : 'Ross’s'} invitation: <em>“{ROSS_GOAL.lead.slice(ROSS_GOAL.lead.indexOf('new flavor'))} {ROSS_GOAL.loyal} {ROSS_GOAL.joiner} {ROSS_GOAL.fresh}”</em></p>
-        <p className="bw-letter">We’ve built the morning around your four objectives. We’re also bringing four samples from our development bench, made in the TheraBreath bases you sent us. You’ll taste them blind and score them on your phone, and we’ll all vote from our phones a few more times along the way. By noon, we’d like to agree on what to develop first, who owns it and when the next samples are due. Afterwards we’ll write it all up as <em>The Flavor Playbook</em> and send it to everyone who was there.</p>
+        <p className="bw-letter">We’ve built the morning around your four objectives. We’re also bringing four samples from our development bench, made in the TheraBreath bases you sent us. You’ll taste them blind and score them on your phone, and we’ll all vote from our phones a few more times along the way. Our goal for noon is to agree, together, on what to develop first, who will take each idea forward and when to look at the next samples. Afterwards we plan to write it up as <em>The Flavor Playbook</em> for everyone who was there.</p>
         <p className="bw-letter">You’ll meet four of us from The Flavor Factory: {TEAM.map((t, i) => `${i === TEAM.length - 1 ? 'and ' : ''}${t.name}, ${t.title}`).join('; ')}.</p>
         <p className="bw-letter">Just below are four quick questions, and we’ll open the morning with everyone’s answers. They take about five minutes. The rest of the page is there if you’d like more to read on the way in.</p>
         <p className="bw-sign"><img src="/img/tff-logo.webp" alt="The Flavor Factory" width={1200} height={264} />The Flavor Factory team</p>
@@ -91,7 +92,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
 
       <section className="bw-sec bw-home" id="homework" aria-labelledby="bw-q">
         <h2 id="bw-q">Four quick questions</h2>
-        <p className="bw-expect">They take about five minutes. Everything below them is optional.</p>
+        <p className="bw-expect">They take about five minutes. There are no right answers: they’re a starting point for the conversation, not consumer research, and they go on screen without names. Everything below them is optional.</p>
         {done ? (
           <div className="bw-done">
             <h3 id="bw-thanks" tabIndex={-1}>Thank you, {first}.</h3>
@@ -110,9 +111,9 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
             </div>
             <div className="bw-wiz-body" key={step}>
               {step === 0 && <label className="rm-field"><span>First, what should we call you?</span><input value={a.name} placeholder="Your first name" autoComplete="given-name" aria-invalid={!!err} aria-describedby={err ? 'bw-err' : undefined} onChange={(e) => { setErr(''); setA({ ...a, name: e.target.value.slice(0, 20) }); }} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); next(); } }} /></label>}
-              {step === 1 && <div className="rm-field" role="group" aria-labelledby="bw-q1" aria-describedby={err ? 'bw-err' : undefined}><span id="bw-q1">{SURVEY.consumer.q}</span><div className="bw-tiles">{SURVEY.consumer.options.map((o) => <button key={o} className={a.consumer === o ? 'on' : ''} aria-pressed={a.consumer === o} onClick={() => { setA({ ...a, consumer: o }); setErr(''); setTimeout(() => go(2), 280); }}>{o}</button>)}</div></div>}
+              {step === 1 && <div className="rm-field" role="group" aria-labelledby="bw-q1" aria-describedby={err ? 'bw-err' : undefined}><span id="bw-q1">{SURVEY.consumer.q}</span><div className="bw-tiles">{SURVEY.consumer.options.map((o) => <button key={o} className={a.consumer === o ? 'on' : ''} aria-pressed={a.consumer === o} onClick={() => { setA({ ...a, consumer: o }); setErr(''); if (o !== SURVEY.consumer.other) setTimeout(() => go(2), 280); }}>{o}</button>)}</div>{a.consumer === SURVEY.consumer.other && <label className="bw-other"><span>Who? A few words is plenty.</span><input value={a.other} maxLength={60} placeholder="Optional" autoFocus onChange={(e) => setA({ ...a, other: e.target.value.slice(0, 60) })} onKeyDown={(e) => { if (e.key === 'Enter') next(); }} /></label>}</div>}
               {step === 2 && <div className="rm-field" role="group" aria-labelledby="bw-q2" aria-describedby={err ? 'bw-err' : undefined}><span id="bw-q2">{SURVEY.moment.q}</span><div className="bw-tiles">{SURVEY.moment.options.map((o) => <button key={o} className={a.moment === o ? 'on' : ''} aria-pressed={a.moment === o} onClick={() => { setA({ ...a, moment: o }); setErr(''); setTimeout(() => go(3), 280); }}>{o}</button>)}</div></div>}
-              {step === 3 && <label className="rm-field"><span>{SURVEY.veto.q}</span><textarea rows={3} value={a.veto} placeholder="Optional. If you answer, it goes on screen without your name." onChange={(e) => setA({ ...a, veto: e.target.value.slice(0, 140) })} /></label>}
+              {step === 3 && <label className="rm-field"><span>{SURVEY.veto.q}</span><small className="bw-note" id="bw-q3-note">A flavor, an ingredient, a feeling or a style. Anything you think wouldn’t sit right with the brand.</small><textarea rows={3} value={a.veto} placeholder="Optional. If you answer, it goes on screen without your name." aria-describedby="bw-q3-note" onChange={(e) => setA({ ...a, veto: e.target.value.slice(0, 140) })} /></label>}
               {step === 4 && <div className="bw-sliders" role="group" aria-labelledby="bw-q4"><span className="bw-field-l" id="bw-q4">Slide each one toward how you like your freshness.</span>{PROFILE.map((x) => (
                 <label key={x.id} className="rm-dial"><small><i>{x.l}</i><i>{x.r}</i></small><input type="range" min={1} max={5} step={1} value={profile[x.id]} aria-label={`From ${x.l} to ${x.r}`} aria-valuetext={`${profile[x.id]} of 5, ${profile[x.id] < 3 ? 'toward ' + x.l : profile[x.id] > 3 ? 'toward ' + x.r : 'in between'}`} onChange={(e) => setProfile({ ...profile, [x.id]: Number(e.target.value) })} /></label>
               ))}<p className="bw-desc">{describe(profile)}</p></div>}
@@ -125,7 +126,13 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
             </div>
           </div>
         )}
-        <p className="bw-print-only">You’ll find the questions on the web version of this page, through your personal invitation link. We’ll share the answers at the start of the morning.</p>
+        <p className="bw-print-only">To answer, open the web version of this page through the link in your invitation email. Here are the questions, so you can think them over first. We’ll share everyone’s answers, without names, at the start of the morning.</p>
+        <ol className="bw-print-only bw-print-qs">
+          <li><b>{SURVEY.consumer.q}</b> Pick one: {SURVEY.consumer.options.join(', ')}.</li>
+          <li><b>{SURVEY.moment.q}</b> Pick one: {SURVEY.moment.options.join(', ')}.</li>
+          <li><b>{SURVEY.veto.q}</b> Optional.</li>
+          <li><b>How do you like your freshness?</b> Five sliders: {PROFILE.map((x) => `${x.l.toLowerCase()} or ${x.r.toLowerCase()}`).join('; ')}.</li>
+        </ol>
       </section>
 
       <section className="bw-sec bw-more" aria-labelledby="bw-more">
@@ -133,8 +140,8 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
         <p className="bw-expect">For the way in, or for later. None of it needs an answer.</p>
 
         <div className="bw-part"><h3>Why we’re here</h3>
-        <p className="bw-p">TheraBreath took the burn out of mouthwash. The next job is giving more people a reason to want it. Today {GAP.tb}% of US households buy TheraBreath, against {GAP.category}% for mouthwash, which leaves 86 of every 100 who don’t buy it yet.</p>
-        <p className="bw-src">Source: {CITE.q2call.src}</p></div>
+        <p className="bw-p">TheraBreath took the burn out of mouthwash, and it now holds a record {GAP.share}% of the category, number 2 in mouthwash. The next job is giving more people a reason to want it. Church &amp; Dwight puts TheraBreath’s household penetration at {GAP.tb}%, against {GAP.category}% for mouthwash as a whole. So {100 - GAP.tb} in 100 households don’t buy TheraBreath yet: some buy another mouthwash, and some don’t buy mouthwash at all.</p>
+        <p className="bw-src">Source: {CITE.q3call.src}</p></div>
 
         <div className="bw-part"><h3>The morning</h3>
         <ol className="bw-agenda">{RUN.map((b) => (
@@ -142,7 +149,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
         ))}</ol></div>
 
         <div className="bw-part"><h3>Seven trends</h3>
-        <p className="bw-p">On the day, everyone picks the three that matter most.</p>
+        <p className="bw-p">Discussion starters, not conclusions. Some come from oral care and some from food and flavor more widely, so part of the job is deciding which ones matter for TheraBreath. On the day, everyone picks the three that matter most.</p>
         <ol className="bw-signals">{SIGNALS.map((x) => <li key={x.id}><b>{x.title}</b><p>{x.so}</p></li>)}</ol></div>
 
         <div className="bw-part"><h3>Three things to think about on the way in</h3>
@@ -150,7 +157,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
       </section>
 
       <footer className="bw-foot">
-        <p className="bw-p">By noon, we’d like a short list of what to develop, with owners and dates.</p>
+        <p className="bw-p">Our goal for noon: a short list of what to develop next, with who will take each one forward and when to check in, agreed together.</p>
         <p className="bw-p">{EVENT.dateLine}. {EVENT.room} room, {EVENT.place}. Bring your phone: you’ll use it to score the samples and vote.</p>
         <button className="bw-link bw-pdf" onClick={() => print()}>Save this pre-brief as a PDF</button>
         <p className="bw-conf">Confidential. The samples are development work made just for this session. They aren’t finished products, and nothing on this page is a claim or a commercial formula. Please keep this page and the write-up within the group.</p>

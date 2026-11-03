@@ -124,6 +124,7 @@ html:has(.tm) { background: #0B1B2B; }
 .tm-live { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; margin-top: 40px; padding: 22px 26px; border: 1px solid var(--rule); border-radius: 12px; }
 .tm-live-stats { display: flex; flex-wrap: wrap; gap: 10px 32px; font-size: 18px; line-height: 1.4; }
 .tm-live-stats b { font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+.tm-live-stale { color: var(--fg3); }
 .tm-live-go { display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border: 1px solid #F4B860; border-radius: 99px; background: transparent; color: #F4B860; font: 500 16px/1 var(--sans); text-decoration: none; cursor: pointer; transition: background .2s, color .2s; }
 .tm-live-go:hover { background: #F4B860; color: #0B1B2B; }
 .tm-live-go.armed { border-color: #F2677B; background: #F2677B; color: #0B1B2B; }

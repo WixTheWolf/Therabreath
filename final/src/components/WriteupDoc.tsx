@@ -264,7 +264,7 @@ function digest(s: SessionState) {
     const rs = Object.values(s.ratings[x.code] || {});
     const dev = { Yes: 0, Maybe: 0, No: 0 } as Record<string, number>;
     rs.forEach((r) => { if (r.advance && r.advance in dev) dev[r.advance]++; });
-    return { ...x, name: s.revealed?.samples[x.code]?.name || '', note: s.revealed?.samples[x.code]?.note || '', sum: tasteSummary(s, x.code), dev };
+    return { ...x, name: s.revealed?.samples[x.code]?.name || '', note: x.code === MYSTERY ? '' : s.revealed?.samples[x.code]?.note || '', /* the Mystery Flavor's contents stay off the page */ sum: tasteSummary(s, x.code), dev };
   });
   const chipT = tallyPick(s, 'directions');
   const chips = DIRECTIONS.map((x) => ({ id: x.id, name: directionName(x.id, s), sub: x.sub, n: chipT[x.id] || 0 })).sort((a, b) => b.n - a.n);

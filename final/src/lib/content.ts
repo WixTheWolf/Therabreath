@@ -30,6 +30,8 @@ export const ROSS_GOAL = {
 };
 
 export const SOURCES: Record<string, string> = {
+  q3call: 'Church & Dwight Q3 2026 earnings call, October 30, 2026',
+  q3pr: 'Church & Dwight Q3 2026 results press release, October 30, 2026',
   q2call: 'Church & Dwight Q2 2026 earnings call, July 31, 2026',
   q2pr: 'Church & Dwight Q2 2026 results press release, July 31, 2026',
   q4call: 'Church & Dwight Q4 2025 earnings call, January 2026',
@@ -54,6 +56,7 @@ export const SOURCES: Record<string, string> = {
 // The full notes behind the four numbers attendees see (the front door and the pre-brief), written out under each one.
 // Checked October 29 against the published release and public summaries of the call. Nothing here is a claim of ours.
 export const CITE = {
+  q3call: { src: 'Church & Dwight Q3 2026 earnings call, October 30, 2026', basis: 'CEO Richard Dierker’s prepared remarks: TheraBreath gained 3.5 share points to a record 26.8% of total mouthwash, number 2 in the category, and its household penetration is 14%, against 65% for the mouthwash category. Checked November 3, 2026 against the call transcript and the Q3 results release.', url: 'https://www.fool.com/earnings/call-transcripts/2026/10/31/church-dwight-chd-q3-2026-earnings-call-transcript/' },
   q2call: { src: 'Church & Dwight Q2 2026 earnings call, July 31, 2026', basis: 'Management’s remarks on the call: TheraBreath at 25.3% of US mouthwash, up 4.5 points and number 2 in the category; 14% of US households buy TheraBreath, against 65% for mouthwash.' },
   kenvue: { src: 'Kenvue, “LISTERINE® introduces range of mouthwash intensities, including new Extra Mild,” press release, June 2, 2026', basis: 'The release says 54% of American consumers are looking for a milder-tasting option. Its footnote gives the survey: Kenvue / Suzy UA Refresh, 2024, US general population aged 15 and over, n = 1,019.', url: 'https://www.kenvue.com/media/listerine-introduces-range-of-mouthwash-intensities' },
 } as const;
@@ -71,9 +74,11 @@ export const OBJECTIVES = [
 export const CHAPTERS = ['Signals', 'Territories', 'Concepts', 'Pipeline', 'Flavor Code'];
 
 export const SURVEY = {
-  consumer: { q: 'Which consumer do you most want TheraBreath to win next?', options: ['The 86% who don\u2019t buy it yet', 'People who want it milder', 'Gen Z', 'Families with kids and tweens', 'People 55 and over', 'People on GLP-1s or with dry mouth', 'Shoppers outside the US'] },
+  consumer: { q: 'Who should TheraBreath’s next flavor be for?', options: ['Loyal TheraBreath users', 'Mouthwash users who buy another brand', 'People who don’t use mouthwash yet', 'People who want it milder', 'Gen Z', 'Families with kids and tweens', 'People 55 and over', 'People living with dry mouth', 'Shoppers outside the US', 'Someone else'], other: 'Someone else' },
   moment: { q: 'Which moment of the day is TheraBreath missing?', options: ['Wake-up', 'After coffee', 'After lunch', 'Afternoon meeting', 'After the gym', 'Before going out', 'Wind-down', 'On the go'] },
-  veto: { q: 'What’s one flavor you’d never sign off on for TheraBreath, and why?' },
+  veto: { q: 'Is there a flavor or direction that would feel off-brand for TheraBreath? Tell us which, and why.' },
+  // Answers given before November 3 used these labels; they count under the new ones.
+  legacy: { 'People on GLP-1s or with dry mouth': 'People living with dry mouth' } as Record<string, string>,
 };
 
 export const CLIMB: { label: string; v: number; src: string; note?: string; approx?: boolean }[] = [
@@ -81,9 +86,10 @@ export const CLIMB: { label: string; v: number; src: string; note?: string; appr
   { label: 'Swishy Time era', v: 15.6, src: 'warc' },
   { label: 'End of 2025', v: 22, src: 'q4call', note: 'just under 22%', approx: true },
   { label: 'Q2 2026', v: 25.3, src: 'q2call' },
+  { label: 'Q3 2026', v: 26.8, src: 'q3call' },
 ];
 
-export const GAP = { category: 65, tb: 14, src: 'q2call' };
+export const GAP = { category: 65, tb: 14, share: 26.8, src: 'q3call' };
 
 export type Variant = { format: string; line: string; flavor: string; kids?: boolean };
 export const PORTFOLIO: Variant[] = [
@@ -130,7 +136,7 @@ export const SIGNALS: Signal[] = [
   { id: 'botanical', n: 4, hue: 140, title: 'Botanicals are showing up in daily routines.', proofs: [{ t: 'TheraBreath’s Eucalyptus Mint and Overnight Chamomile Mint are already on shelf. Both lead with a botanical, and one is named for a time of day.', src: 'drbicuspid' }, { t: '“Swishy Time” turned rinsing into a small self-care ritual, and share went up with it.', src: 'warc' }], so: 'Flavors made for a particular time of day, like first thing in the morning or right before bed.' },
   { id: 'allure', n: 5, hue: 36, title: 'Dessert flavors are moving into oral care.', proofs: [{ t: 'Dessert-inspired flavors are on the rise in oral care.', src: 'vml' }, { t: 'Gen Z treats flavor as part of who they are.', src: 'vml' }], so: 'A sweeter start can work, as long as the finish is clean.' },
   { id: 'sensation', n: 6, hue: 210, title: 'People judge whether it works by how it feels.', proofs: [{ t: 'Tingling, warming, salivating and fizzing all tell people a product is working.', src: 'pf' }, { t: 'New coolers, such as Symrise’s Optacool Fuji, promise a fast hit and a long linger.', src: 'symrise' }], so: 'Cooling, tingle and warmth are part of the product, so they deserve as much design as the taste.' },
-  { id: 'mouths', n: 7, hue: 260, title: 'More people live with dry mouth or changed taste.', proofs: [{ t: 'Right now, 1 in 8 US adults takes a GLP-1. Many report dry mouth, bad breath or changes in taste, though studies haven’t shown that the drugs cause them.', src: 'carequest' }, { t: 'More than 25 million Americans live with dry mouth.', src: 'pf' }], so: 'Flavors made for dry mouth and changed taste could become a line of their own.' },
+  { id: 'mouths', n: 7, hue: 260, title: 'Many people live with dry mouth or changed taste.', proofs: [{ t: 'Right now, 1 in 8 US adults takes a GLP-1. Many report dry mouth, bad breath or changes in taste, though studies haven’t shown that the drugs cause them.', src: 'carequest' }, { t: 'More than 25 million Americans live with dry mouth.', src: 'pf' }], so: 'A flavor that stays pleasant for people with a dry mouth or changed taste could be worth exploring, without any health claim.' },
 ];
 
 export type Territory = {
@@ -257,7 +263,7 @@ export const SEEDS: Seed[] = SAMPLES.map((sample, i) => ({
 export const SENSORY = ['Cooling onset', 'Cooling linger', 'Tingle', 'Gentle warmth', 'Salivating', 'Sparkle and fizz', 'Smooth mouthfeel', 'Aroma burst', 'Bitterness masking', 'Sugar-free sweetness', 'Long finish'];
 export const FORMATS = ['Rinse', 'Toothpaste', 'Sachet', 'Strip', 'Spray', 'Lozenge', 'Gum', 'Kids rinse'];
 export const SEGMENTS = SURVEY.consumer.options;
-const DRY_MOUTH = SEGMENTS[5];
+const DRY_MOUTH = 'People living with dry mouth';
 // No launch years: the room sets the sequence, C&D sets the calendar.
 // White space: the moments of the day by the consumers in the pre-work. TheraBreath's presence today is our read, to challenge in the room:
 // the morning and bedtime rinse for every consumer (the sink), and the dry mouth lozenge on the go. Everything else is open.

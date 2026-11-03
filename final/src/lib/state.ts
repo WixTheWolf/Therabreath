@@ -1,6 +1,8 @@
 // Event-sourced session. Every tap is an event; every surface folds the same log into the same state.
 import { SCENES } from './scenes';
 import type { Sealed } from './content';
+import { SURVEY } from './content';
+const LEGACY = SURVEY.legacy;
 
 export type Ev = { id: string; seq?: number; t: number; kind: string; pid?: string; data?: any };
 
@@ -28,7 +30,7 @@ export type SessionState = {
   commitments: Record<string, { owner?: string; reviewer?: string; base?: string; action?: string; date?: string }>;
   calendar: Record<string, string>; // concept id -> season
   bench: Record<string, Bench>; // team -> bench
-  survey: Record<string, { name: string; consumer?: string; moment?: string; veto?: string; profile?: Record<string, number> }>;
+  survey: Record<string, { name: string; consumer?: string; other?: string; moment?: string; veto?: string; profile?: Record<string, number> }>;
   board: Record<string, string>; // horizon (Now, Next, Future) -> free text, from before the plan had rows
   plan: Record<string, PlanRow>; // Now, Next, Later, one row per direction, typed in the presentation or the presenter view
   marks: string[]; // white-space cells marked in the presentation, as 'segment|moment'
@@ -72,7 +74,7 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'benchbase': { const b = (s.bench[d.team] ||= { dials: {}, overrides: {} }); b.base = d.base; break; }
     case 'override': { const b = (s.bench[d.team] ||= { dials: {}, overrides: {} }); if (d.value) b.overrides[d.key] = { value: d.value, note: d.note }; else delete b.overrides[d.key]; break; }
     case 'benchlock': { const b = (s.bench[d.team] ||= { dials: {}, overrides: {} }); b.locked = d.dials || undefined; break; }
-    case 'survey': s.survey[e.pid!] = { name: d.name, consumer: d.consumer, moment: d.moment, veto: d.veto, profile: d.profile }; break;
+    case 'survey': s.survey[e.pid!] = { name: d.name, consumer: LEGACY[d.consumer] || d.consumer, other: typeof d.other === 'string' ? d.other.slice(0, 60) : undefined, moment: d.moment, veto: d.veto, profile: d.profile }; break;
     case 'timer': {
       const now = e.t;
       if (d.action === 'start') s.timer = { running: true, total: d.secs, remaining: d.secs, endsAt: now + d.secs * 1000 };

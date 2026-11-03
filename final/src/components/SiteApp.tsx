@@ -32,7 +32,7 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
         <div className="st-hero-in">
           <h1>The Future<br /><em>of Freshness</em></h1>
           <p className="fd-when">{EVENT.date} · {EVENT.time} ET · {EVENT.room} room, {EVENT.city}</p>
-          <p>Two hours with Church &amp; Dwight Oral Care R&amp;D. We’ll work through your four objectives, taste four samples we made in your bases and vote on what to develop. By noon, every direction we pick will have a plan and an owner.</p>
+          <p>Two hours with Church &amp; Dwight Oral Care R&amp;D. We’ll work through your four objectives, taste four samples we made in your bases and vote on what to develop. By noon, we aim to agree on a plan and an owner for each direction we pick.</p>
           <div className="st-cta">
             <button className="st-play" onClick={() => setFilm(true)}><span className="st-tri" />Watch the film <small>{FILM.site.length} · sound on</small></button>
             <a className="st-ghost" href={prebrief}>Answer the pre-brief</a>
@@ -44,8 +44,8 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
         <section className="fd-sec" aria-labelledby="fd-why">
           <h2 id="fd-why">Why we’re meeting</h2>
           <blockquote className="fd-quote"><p>“{ROSS_GOAL.lead} {ROSS_GOAL.loyal} {ROSS_GOAL.joiner} {ROSS_GOAL.fresh}”</p><cite>{SOURCES[ROSS_GOAL.src]}</cite></blockquote>
-          <p>TheraBreath took the burn out of mouthwash. The next job is giving more people a reason to want it. Today {GAP.tb}% of US households buy TheraBreath, against {GAP.category}% for mouthwash, which leaves 86 of every 100 who don’t buy it yet. Flavor is one of the easiest ways to give them a reason to try it.</p>
-          <p className="fd-src">Source: {CITE.q2call.src}</p>
+          <p>TheraBreath took the burn out of mouthwash, and it now holds a record {GAP.share}% of the category, number 2 in mouthwash. The next job is giving more people a reason to want it. Church &amp; Dwight puts TheraBreath’s household penetration at {GAP.tb}%, against {GAP.category}% for mouthwash as a whole. So {100 - GAP.tb} in 100 households don’t buy TheraBreath yet: some buy another mouthwash, and some don’t buy mouthwash at all. Flavor could give more of them a reason to try it.</p>
+          <p className="fd-src">Source: {CITE.q3call.src}</p>
         </section>
 
         <section className="fd-sec" aria-labelledby="fd-morning">

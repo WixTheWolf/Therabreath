@@ -123,8 +123,8 @@ function Taste({ s, me, p, step }: P) {
       {/* Blind until this person has scored all four: the names arrive with the presentation's reveal (see
           sealedClient.ts), and even then a phone still scoring, or one that joined late, shows only the letter. */}
       <h1 className="h3">Sample {cur}{named ? <span className="it"> · {named.name}</span> : null}</h1>
-      {named && <p>{named.note}</p>}
-      {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess, before we tell you" /></label>}
+      {named && cur !== MYSTERY && <p>{named.note}</p>}
+      {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess" /></label>}
       {CRITERIA.map((c) => <Scale key={c.key} label={c.l} v={r[c.key]} set={(n) => setR({ ...r, [c.key]: n })} />)}
       <div className="k" style={{ margin: '18px 0 10px' }}>Who would buy it?</div>
       <div className="rm-tags">{WHO_CHIPS.map((w) => <button key={w} className={r.who.includes(w) ? 'on' : ''} onClick={() => setR({ ...r, who: r.who.includes(w) ? r.who.filter((x: string) => x !== w) : [...r.who, w] })}>{w}</button>)}</div>

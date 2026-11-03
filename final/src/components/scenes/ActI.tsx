@@ -12,8 +12,8 @@ export function Climb({ step }: SceneProps) {
   const d = CLIMB.map((c, i) => `${i ? 'L' : 'M'}${X(i)} ${Y(c.v)}`).join(' ');
   return (
     <div className="pad">
-      <Enter i={0}><div className="k">The climb · US mouthwash share</div></Enter>
-      <Enter i={1}><h2 className="h1">Number 2 in US mouthwash.<br /><span className="it">Earned one flavor at a time.</span></h2></Enter>
+      <Enter i={0}><div className="k">The climb · share of mouthwash</div></Enter>
+      <Enter i={1}><h2 className="h1">Number 2 in mouthwash.<br /><span className="it">Earned one flavor at a time.</span></h2></Enter>
       <svg className="climb" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
         <defs><linearGradient id="cl" x1="0" x2="1"><stop offset="0" stopColor="var(--fg3)" /><stop offset="1" stopColor="var(--accent)" /></linearGradient></defs>
         {[0, 10, 20, 30].map((v) => <g key={v}><line x1={40} x2={W - 40} y1={Y(v)} y2={Y(v)} stroke="var(--rule2)" /><text x={0} y={Y(v) + 6} className="axis">{v}%</text></g>)}
@@ -26,8 +26,8 @@ export function Climb({ step }: SceneProps) {
           </g>
         ))}
       </svg>
-      <R b={1} step={step} className="climb-note lede">25.3% in Q2 2026, up 4.5 points.</R>
-      <Src k={['warc', 'q4call', 'q2call']} />
+      <R b={1} step={step} className="climb-note lede">A record 26.8% in Q3 2026, up from 25.3% in Q2.</R>
+      <Src k={['warc', 'q4call', 'q2call', 'q3call']} />
     </div>
   );
 }
@@ -51,11 +51,11 @@ export function Gap({ step }: SceneProps) {
     <>
       <Light scene="glasses" theme="a" camera={GLASS_CAM} frame={(t) => ({ fill: [Math.max(0.001, 0.65 * ease((t - 0.4) / 2.6)), Math.max(0.001, 0.14 * ease((t - 0.4) / 2.6))], glow: stepRef >= 1 ? 1 : 0 })} onStart={() => setT0(performance.now())} />
       <div className="gap-copy">
-        <div className="k">US households that buy mouthwash</div>
-        <R b={1} step={step}><h1 className="h1"><span className="it">86</span> out of 100 US households don&rsquo;t buy TheraBreath yet.</h1></R>
-        <R b={2} step={step}><div className="gap-second it">Flavor is one of the best ways to reach them.</div></R>
-        <Src k="q2call" extra="TheraBreath 14%, mouthwash category 65%" style={{ position: 'absolute', top: 700, left: 0, width: 760 }} />
-        <Enter i={1} className="gap-share">TheraBreath had <b className="num">25.3%</b> of US mouthwash in Q2 2026, up 4.5 points, which makes it number 2 in the category. Even so, most households still don’t buy it.</Enter>
+        <div className="k">Household penetration</div>
+        <R b={1} step={step}><h1 className="h1"><span className="it">86</span> out of 100 households don&rsquo;t buy TheraBreath yet.</h1></R>
+        <R b={2} step={step}><div className="gap-second it">Flavor could give more of them a reason to try it.</div></R>
+        <Src k="q3call" extra="TheraBreath 14%, mouthwash category 65%" style={{ position: 'absolute', top: 700, left: 0, width: 760 }} />
+        <Enter i={1} className="gap-share">TheraBreath reached a record <b className="num">26.8%</b> of mouthwash in Q3 2026, number 2 in the category. Even so, most households still don’t buy it, and 35 in 100 don’t buy mouthwash at all.</Enter>
       </div>
       <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}<sup>%</sup></div><div className="who">Mouthwash category</div></div>
       <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}<sup>%</sup></div><div className="who">TheraBreath</div></div>

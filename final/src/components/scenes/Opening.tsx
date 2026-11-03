@@ -123,6 +123,8 @@ export function Prework({ s, step }: SceneProps) {
   const answers = Object.values(s.survey);
   const count = (key: 'consumer' | 'moment') => { const t: Record<string, number> = {}; answers.forEach((a) => a[key] && (t[a[key]!] = (t[a[key]!] || 0) + 1)); return ranked(t); };
   const cons = count('consumer'), mom = count('moment');
+  // Who people typed when they picked "Someone else".
+  const others = [...new Set(answers.map((a) => a.other?.trim()).filter(Boolean) as string[])];
   // The same veto from several people shows once, with a count.
   const vetoCount: Record<string, [string, number]> = {};
   for (const v of answers.map((a) => a.veto).filter(Boolean) as string[]) { const key = v.trim().toLowerCase().replace(/[.!]+$/, ''); if (!key) continue; vetoCount[key] = [vetoCount[key]?.[0] || v.trim().replace(/[.!]+$/, ''), (vetoCount[key]?.[1] || 0) + 1]; }
@@ -135,12 +137,12 @@ export function Prework({ s, step }: SceneProps) {
     <div className="pad">
       <Enter i={0}><div className="k">From your pre-brief · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div></Enter>
       <div className="pw-grid">
-        <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} /></R>
+        <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} />{others.length > 0 && <p className="src pw-others">Someone else: {others.slice(0, 6).join(', ')}</p>}</R>
         <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} /></R>
       </div>
       {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">Your freshness, as a group</span><p className="h3 it">{describe(roomProfile(answers), 'As a group, you want freshness that’s')}</p></div></R>}
       <R b={2} step={step} className="vetoes">
-        <div className="k">The flavors you’d never sign off on</div>
+        <div className="k">What would feel off-brand</div>
         <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map(([v, n], i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 30 + ((i * 17) % 5) * 6 + Math.min(18, (n - 1) * 6) }}>{v}{n > 1 && <sup className="num">{n}</sup>}</span>) : <span className="empty">No answers yet.</span>}</div>
       </R>
     </div>
