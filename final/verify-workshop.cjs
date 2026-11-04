@@ -2,7 +2,7 @@ const fs=require('fs'),vm=require('vm'),ts=require('typescript'),assert=require(
 const {stripTypeScriptTypes}=require('node:module');
 const cache={};function load(name){if(cache[name])return cache[name];const module={exports:{}};let code=stripTypeScriptTypes(fs.readFileSync('src/lib/'+name+'.ts','utf8'));const names=[...code.matchAll(/export (?:const|function) (\w+)/g)].map(m=>m[1]);code=code.replace(/import \{ ([^}]+) \} from '([^']+)';/g,(_,n,p)=>`const {${n}} = require('${p}');`).replace(/export /g,'');code+='\nObject.assign(module.exports,{'+names.join(',')+'});';vm.runInNewContext(code,{module,exports:module.exports,require:p=>load(p.replace('./','')),globalThis,console});return cache[name]=module.exports;}
 
-const {SCENES,EXECUTIVE}=load('scenes'),{SAMPLES,PRIMARY_TERRITORIES,SEEDS,MISSIONS,EVENT,ROSS_GOAL,SOURCES,DIRECTIONS,RUN,TOPICS,OBJECTIVES}=load('content'),{fold}=load('state');
+const {SCENES,EXECUTIVE}=load('scenes'),{SAMPLES,PRIMARY_TERRITORIES,SEEDS,MISSIONS,EVENT,ROSS_GOAL,SOURCES,DIRECTIONS,RUN,TOPICS,OBJECTIVES,CRITERIA,JAR,JAR_OPTS,SIGNALS}=load('content'),{fold,tasteSummary,jarTop,jarAll}=load('state');
 // The run of show: eighteen slides for Ross's four objectives, discussion first. No part dividers: the first slide of
 // each part carries its objective tag. Phone votes on the trends, the tasting and the next round.
 const ids=SCENES.map(s=>s.id),at=(id)=>ids.indexOf(id),room=(id)=>SCENES.find(s=>s.id===id).room,sc=(id)=>SCENES.find(s=>s.id===id);
@@ -44,6 +44,7 @@ for(const c of L.LIBRARY){assert(L.STARTS.some(x=>x.id===c.start),c.id+' starts 
 assert(DIRECTIONS.every(d=>L.cardFor(d.id)),'every chips option has a starter card');assert(Object.values(L.MOMENT_WHEN).every(w=>L.WHEN.includes(w)));
 const pc=fold([{id:'q1',t:1,kind:'papercard',data:{d:1}},{id:'q2',t:2,kind:'papercard',data:{d:1}},{id:'q3',t:3,kind:'papercard',data:{d:-1}},{id:'q4',t:4,kind:'papercard',data:{d:-1}},{id:'q5',t:5,kind:'papercard',data:{d:-1}},{id:'q6',t:6,kind:'papercard',data:{d:1}}]);assert.equal(pc.paperCards,1,'the count never goes below zero');assert.equal(fold([]).paperCards,0);
 const tap=fold([{id:'t1',t:1,kind:'plan',data:{id:'r9',h:'Next',fields:{what:'Grove',ref:'D',draft:'1',brief:'x'.repeat(400),due:'January 2027 review'}}}]);assert.equal(tap.plan.r9.ref,'D');assert.equal(tap.plan.r9.draft,'1');assert.equal(tap.plan.r9.brief.length,400);assert.equal(tap.plan.r9.due,'January 2027 review');
+assert.equal(SIGNALS[5].title,'Mouthfeel matters as much as taste.','the sixth trend says mouthfeel');
 // The slide-by-slide plan: every scene has one, each part's minutes fill its window exactly, and no slide lists more
 // clicks than it has builds.
 const {SLIDES}=load('runNotes'),{SLIDE_MIN,SLIDE_TIMES}=load('slideTimes');const mm=(t)=>{const [h,m]=t.split(':').map(Number);return h*60+m;};
