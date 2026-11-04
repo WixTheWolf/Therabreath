@@ -33,7 +33,7 @@ const AFTER = [
   ...NEXT_STEPS.map((n) => `${n.t}: ${n.d}`),
 ];
 const CONFIRM = [
-  'Ryan to review the Flavor School slide (slide 9): his wording, merged onto one slide in three builds, now naming sodium chlorite rather than OXYD-8, with formulating and protecting the flavor.',
+  'Ryan to review the Flavor School slide (slide 11): his wording, merged onto one slide in three builds, now naming sodium chlorite rather than OXYD-8, with incorporating and protecting the flavor.',
   'Check the bottles and flavor names on Our flavors in your range (slide 3) against our portfolio record. Names only: no usage levels or flavor codes.',
   'Review the drafted concept cards and the option lists in src/lib/conceptLibrary.ts. Every starter card is marked DRAFT until we’ve checked it.',
   `The bases: ${SEALED.samples.A.name} and the ${SEALED.samples.B.name} in the Kids base, ${SEALED.samples.C.name} and ${SEALED.samples.D.name} in the Fresh Breath base.`,

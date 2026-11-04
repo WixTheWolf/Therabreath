@@ -183,7 +183,7 @@ export function TrendVote({ s, step }: SceneProps) {
 }
 
 // 9. Flavor School, as three things to know about flavor in a TheraBreath rinse: most of flavor is smell and feel,
-// cooling has a hit and a linger, and sodium chlorite is tough on flavor, so we formulate for it. One slide, three
+// cooling has a hit and a linger, and sodium chlorite is tough on flavor, so we incorporate and protect it. One slide, three
 // states, ending on the clean finish and a question. The words are Ryan's from the Flavor School slides.
 const FS = ['Smell and feel', 'Cooling', 'Sodium chlorite'];
 export function FlavorSchool({ step }: SceneProps) {
@@ -192,7 +192,7 @@ export function FlavorSchool({ step }: SceneProps) {
     { t: 'Aroma', w: 'The nose, both ways', d: 'What you sniff in, plus what rises from the back of your mouth as you swallow.' },
     { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming. Most of what mint does happens here.' },
   ];
-  const levers = ['Controlling pH', 'Formulating and protecting the flavor', 'Choosing materials that hold up'];
+  const levers = ['Controlling pH', 'Incorporating and protecting the flavor', 'Choosing materials that hold up'];
   const at = Math.min(2, step);
   return (
     <div className="fs">

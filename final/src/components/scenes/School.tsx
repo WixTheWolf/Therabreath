@@ -98,7 +98,7 @@ export function OxydField() {
 
 // 20. Flavor in an oxidizing world: flavor molecules drifting through an oxygen-rich field.
 export function Oxyd({ step }: SceneProps) {
-  const levers = ['Controlling pH', 'Formulating and protecting the flavor', 'Choosing materials that hold up'];
+  const levers = ['Controlling pH', 'Incorporating and protecting the flavor', 'Choosing materials that hold up'];
   return (
     <div className="oxyd">
       <OxydField />
