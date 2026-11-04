@@ -3,14 +3,9 @@
 // Profile keys, each 1 to 5: adv (familiar to adventurous), cool (cooling to soft), bot (classic to botanical),
 // exp (functional to experiential), occ (everyday to occasion-based).
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { PROFILE } from '@/lib/content';
 
-export const PROFILE = [
-  { id: 'adv', l: 'More familiar', r: 'More adventurous' },
-  { id: 'cool', l: 'Cooling', r: 'Soft' },
-  { id: 'bot', l: 'Classic mint', r: 'Botanical' },
-  { id: 'exp', l: 'Just does the job', r: 'Something to enjoy' },
-  { id: 'occ', l: 'Every day', r: 'For a moment' },
-];
+export { PROFILE };
 export const DEFAULT_PROFILE: Record<string, number> = { adv: 3, cool: 3, bot: 3, exp: 3, occ: 3 };
 
 export function describe(p: Record<string, number>, who = 'Your freshness is') {

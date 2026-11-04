@@ -3,6 +3,7 @@ import { list, append, storeKind } from '@/lib/server/store';
 import { nudge } from '@/lib/server/broadcast';
 import { SUPABASE_URL } from '@/lib/supabase';
 import { isAuthed, isHost, joinToken, COOKIE, HOST_COOKIE } from '@/lib/auth';
+import { redact, viewerOf } from '@/lib/server/redact';
 
 export const dynamic = 'force-dynamic';
 // Phones (signed link) may send these. Everything else, from moving the slides to the votes, the board and the marks,
@@ -16,7 +17,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ code
   const k = req.nextUrl.searchParams.get('k');
   if (!authed && k !== (await joinToken(code))) return NextResponse.json({ error: 'forbidden' }, { status: 403 });
   const after = Number(req.nextUrl.searchParams.get('after') || 0);
-  const events = await list(code, after);
+  // Pre-brief answers go out whole only to the owner; the team gets them without names, everyone else empty.
+  const events = await redact(await list(code, after), await viewerOf(req.cookies));
   return NextResponse.json({ events, store: storeKind(), topic: 'pb-' + (await joinToken(code)), realtime: !!SUPABASE_URL }, { headers: { 'Cache-Control': 'no-store' } });
 }
 

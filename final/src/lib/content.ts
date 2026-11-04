@@ -102,6 +102,15 @@ export const SURVEY = {
   legacy: { 'People on GLP-1s or with dry mouth': 'People living with dry mouth' } as Record<string, string>,
 };
 
+// The pre-brief's freshness profile, five scales from 1 to 5 (the orb in Orb.tsx is drawn from it).
+export const PROFILE = [
+  { id: 'adv', l: 'More familiar', r: 'More adventurous' },
+  { id: 'cool', l: 'Cooling', r: 'Soft' },
+  { id: 'bot', l: 'Classic mint', r: 'Botanical' },
+  { id: 'exp', l: 'Just does the job', r: 'Something to enjoy' },
+  { id: 'occ', l: 'Every day', r: 'For a moment' },
+];
+
 export const CLIMB: { label: string; v: number; src: string; note?: string; approx?: boolean }[] = [
   { label: 'Before Swishy Time', v: 5.6, src: 'warc', note: '[CONFIRM label]' },
   { label: 'Swishy Time era', v: 15.6, src: 'warc' },

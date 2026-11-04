@@ -37,6 +37,16 @@ const DEFAULT_TEAM_HASH = '6365923b5ee706dfbbbca21ea0e48c6046d86e23342c44cfc6391
 export async function teamHash() { return process.env.PLAYBOOK_TEAM_KEY ? sha256(norm(process.env.PLAYBOOK_TEAM_KEY)) : DEFAULT_TEAM_HASH; }
 export async function checkTeamKey(k: string) { return !!norm(k) && (await sha256(norm(k))) === (await teamHash()); }
 
+// The owner link (/o/KEY) is for one person: it opens the pre-brief answers with names (/answers). It exists only when
+// PLAYBOOK_OWNER_KEY is set on the server (at least 20 characters); nothing about the key is stored here. The cookie is
+// signed with the key, so changing the key signs the old browser out.
+export const OWNER_COOKIE = 'pb_owner';
+const ownerKey = () => (process.env.PLAYBOOK_OWNER_KEY || '').trim();
+export const ownerEnabled = () => ownerKey().length >= 20;
+export async function checkOwnerKey(k: string) { return ownerEnabled() && !!k && (await sha256(k.trim())) === (await sha256(ownerKey())); }
+export const ownerToken = async () => hmac('owner:' + (await sha256(ownerKey())));
+export async function isOwner(cookieValue?: string | null) { return ownerEnabled() && !!cookieValue && cookieValue === (await ownerToken()); }
+
 // The team's own pages need the team link (or the host password): the presentation, which moves everyone's phones, the
 // run sheet, the write-up, the team page, the paper scorecard, the old Stage, the PDFs (the decks show the sealed names)
 // and THE FLAVOR RACE, which premieres in the room. Church & Dwight's password opens the front door and the Playbook only.

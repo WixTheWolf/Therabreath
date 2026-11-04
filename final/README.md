@@ -65,8 +65,16 @@ Both cuts are V5, the pre-brief intro (1:22): `video/docs/fof/V5.md` has the scr
 | `/j/FOF1109?k=KEY` | Phones (signed link from the QR) | Follows the presentation: the trend vote, the tasting scores and the next-round chips. |
 | `/playbook/FOF1109` | Everyone after the session | The Playbook, assembled from the room's decisions, with a print PDF. |
 | `/host` | The TV (password) | The presentation: 18 slides run from the presenting laptop; phones follow it. |
+| `/answers` | Matt only (the owner link, `/o/KEY`) | The pre-brief answers with names, newest first, refreshing every 20 seconds; Live and Practice tabs. A plain 404 for anyone else. |
 
 `FOF1109` is the live session and is set once, in `src/lib/content.ts` (`EVENT.code`). Any other code is a clean rehearsal session.
+
+### Who sees the pre-brief answers
+
+- **Names: only the owner.** `/answers` opens after the owner link, `/o/KEY`, where `KEY` is `PLAYBOOK_OWNER_KEY` (at least 20 characters) set on the Vercel project and nowhere else; without it the page and the link don't exist. Changing the key signs the old browser out.
+- **The team and the TV get the answers without names** (`src/lib/server/redact.ts`): slide 5, the day map bars, the results page, the write-up and the export still work, and each person shows under a stand-in that can't be matched to their phone.
+- **Everyone else gets nothing:** the pre-brief pages and the phones only see that an answer arrived.
+- **The database table (`pb_events`) is closed to the public API:** row-level security is on and the `anon` and `authenticated` roles have no grants, so only the sites' servers (the `postgres` role) can read or write it.
 
 ## The run of show (`RUN` in `src/lib/content.ts`, scenes in `src/lib/scenes.ts`)
 
