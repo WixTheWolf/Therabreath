@@ -15,14 +15,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { useSealed } from '@/lib/sealedClient';
 import { useScale, Clock } from './StageApp';
-import { SCENES, SECTIONS, Scene, firstOfPart } from '@/lib/scenes';
+import { SCENES, SECTIONS, Scene } from '@/lib/scenes';
 import { pointsOf, titleOf } from '@/lib/sceneNotes';
 import type { SceneProps } from './scenes/ui';
 import { Arrival, Prework } from './scenes/Opening';
 import { Gap } from './scenes/ActI';
 import { Lunch } from './scenes/Close';
 import {
-  LiveCtx, Live, ShowBrief, TastingLive, ConceptCanvas, WhiteSpaceShow, Board, Playbook, ShowFilm, FilmCtl, JoinCorner, FIELDS, decided, markLabel,
+  LiveCtx, Live, ShowBrief, Opener, TastingLive, ConceptCanvas, WhiteSpaceShow, Board, Playbook, ShowFilm, FilmCtl, JoinCorner, FIELDS, decided, markLabel,
 } from './show/ShowScenes';
 import { TeamSince, OurFlavors, Shelf, TrendVote, FlavorSchool, DirectionsMap, Landed } from './show/Deck';
 import { starters } from './show/Concepts';
@@ -36,6 +36,7 @@ import { tasters as tasterCounts } from '@/lib/state';
 type View = (p: SceneProps) => React.ReactNode;
 const VIEWS: Record<string, View> = {
   arrival: Arrival, team: TeamSince, ours: OurFlavors, brief: ShowBrief, prework: Prework,
+  open: Opener,
   gap: Gap, market: Shelf, signals: TrendVote,
   school: FlavorSchool, map: DirectionsMap, tasting: TastingLive, nextround: Landed,
   whitespace: WhiteSpaceShow, concepts: ConceptCanvas, board: Board, playbook: Playbook, lunch: Lunch,
@@ -258,7 +259,6 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
               {sc.id === 'film' ? <ShowFilm still={still} ctl={film} onChange={filmChanged} /> : View ? <View s={sv} step={pos.step} scene={sc} idx={idx} ctx={ctx} send={send} /> : null}
             </div>
             {sc.chapter >= 0 && <Chrome i={pos.i} clock={!still} />}
-            {firstOfPart(sc) && <div className="obj-tag" key={'o' + sc.id}>Objective 0{sc.chapter + 1}</div>}
             {VOTING.has(sc.id) && joinUrl && <JoinCorner url={joinUrl} />}
             <div className="grain" />
             <div className={'blank' + (blank ? ' on' : '')} />

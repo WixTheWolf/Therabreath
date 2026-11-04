@@ -1,5 +1,5 @@
 'use client';
-// The slides of the 18-slide morning that are new or merge what used to be two or more: Who we are with July, the
+// The slides of the 22-slide morning that are new or merge what used to be two or more: Who we are with July, the
 // TheraBreath products our flavors are in today, the shelf, the trends as a vote first, Flavor School (flavor and sodium
 // chlorite), the four directions with their profile cards, and where each sample landed next to the chips vote. Built
 // for talking with the room: one question on screen where there is one, and nothing to type.
@@ -87,7 +87,7 @@ export function OurFlavors() {
   );
 }
 
-// 7. The shelf: the portfolio by format (mint in blue, everything else in amber) beside what competitors have launched.
+// 8. The shelf: the portfolio by format (mint in blue, everything else in amber) beside what competitors have launched.
 // Build 1: there's a lot of room around mint. Build 2: where TheraBreath stands, and the question.
 const FORMATS6 = ['Rinse', 'Toothpaste', 'Kids', 'Lozenge', 'Gum', 'Sachet'];
 export function Shelf({ step }: SceneProps) {
@@ -128,7 +128,7 @@ export function Shelf({ step }: SceneProps) {
   );
 }
 
-// 8. Seven trends: vote, then discuss. All seven show at once as one line each with where the evidence comes from, and
+// 9. Seven trends: vote, then discuss. All seven show at once as one line each with where the evidence comes from, and
 // the phones vote for three straight away while the bars fill. Builds 1 to 3 open the top three one at a time (the
 // vote closes on build 1 and reopens if we go back); the other four stay as one line.
 export function topTrends(s: SessionState) {
@@ -182,7 +182,7 @@ export function TrendVote({ s, step }: SceneProps) {
   );
 }
 
-// 9. Flavor School, as three things to know about flavor in a TheraBreath rinse: most of flavor is smell and feel,
+// 11. Flavor School, as three things to know about flavor in a TheraBreath rinse: most of flavor is smell and feel,
 // cooling has a hit and a linger, and sodium chlorite is tough on flavor, so we incorporate and protect it. One slide, three
 // states, ending on the clean finish and a question. The words are Ryan's from the Flavor School slides.
 const FS = ['Smell and feel', 'Cooling', 'Sodium chlorite'];
@@ -236,7 +236,7 @@ export function FlavorSchool({ step }: SceneProps) {
   );
 }
 
-// 10. Four directions. The map (familiar to adventurous, gentle to bold, our view) with all four; builds 1 to 4 open
+// 12. Four directions. The map (familiar to adventurous, gentle to bold, our view) with all four; builds 1 to 4 open
 // each direction's profile card. Clicking a direction on the TV opens its card; clicking it again goes back to the map.
 // Global Brightness and Modern Clean (builds 2 and 3) are the optional ones the short version skips.
 export function DirectionsMap({ step }: SceneProps) {

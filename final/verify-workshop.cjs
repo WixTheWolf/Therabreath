@@ -3,18 +3,19 @@ const {stripTypeScriptTypes}=require('node:module');
 const cache={};function load(name){if(cache[name])return cache[name];const module={exports:{}};let code=stripTypeScriptTypes(fs.readFileSync('src/lib/'+name+'.ts','utf8'));const names=[...code.matchAll(/export (?:const|function) (\w+)/g)].map(m=>m[1]);code=code.replace(/import \{ ([^}]+) \} from '([^']+)';/g,(_,n,p)=>`const {${n}} = require('${p}');`).replace(/export /g,'');code+='\nObject.assign(module.exports,{'+names.join(',')+'});';vm.runInNewContext(code,{module,exports:module.exports,require:p=>load(p.replace('./','')),globalThis,console});return cache[name]=module.exports;}
 
 const {SCENES,EXECUTIVE}=load('scenes'),{SAMPLES,PRIMARY_TERRITORIES,SEEDS,MISSIONS,EVENT,ROSS_GOAL,SOURCES,DIRECTIONS,RUN,TOPICS,OBJECTIVES,CRITERIA,JAR,JAR_OPTS,SIGNALS}=load('content'),{fold,tasteSummary,jarTop,jarAll}=load('state');
-// The run of show: eighteen slides for Ross's four objectives, discussion first. No part dividers: the first slide of
-// each part carries its objective tag. Phone votes on the trends, the tasting and the next round.
+// The run of show: twenty-two slides for Ross's four objectives, discussion first. Each part opens on a chapter slide
+// (open1 to open4) with Ross's objective. Phone votes on the trends, the tasting and the next round.
 const ids=SCENES.map(s=>s.id),at=(id)=>ids.indexOf(id),room=(id)=>SCENES.find(s=>s.id===id).room,sc=(id)=>SCENES.find(s=>s.id===id);
-assert.equal(SCENES.length,18);
-assert.equal(ids.join(),'arrival,team,ours,brief,prework,gap,market,signals,school,map,film,tasting,nextround,whitespace,concepts,board,playbook,lunch','the eighteen slides, in order');
-assert.equal(at('film'),10,'THE FLAVOR RACE is slide 11');assert.equal(at('film'),at('tasting')-1,'THE FLAVOR RACE plays right before the tasting');
-for(const id of ['title','july','thesis','open1','open2','open3','open4','portfolio','signalvote','cooling','oxyd','anatomy','platform1','platform2','platform3','platform4','matrix','dots','next'])assert(!ids.includes(id),'merged or cut slide still live: '+id);
+assert.equal(SCENES.length,22);
+assert.equal(ids.join(),'arrival,team,ours,brief,prework,open1,gap,market,signals,open2,school,map,film,tasting,nextround,open3,whitespace,concepts,open4,board,playbook,lunch','the twenty-two slides, in order');
+assert.equal(at('film'),12,'THE FLAVOR RACE is slide 13');assert.equal(at('school'),10,'Flavor School is slide 11');assert.equal(at('film'),at('tasting')-1,'THE FLAVOR RACE plays right before the tasting');
+for(const id of ['title','july','thesis','portfolio','signalvote','cooling','oxyd','anatomy','platform1','platform2','platform3','platform4','matrix','dots','next'])assert(!ids.includes(id),'merged or cut slide still live: '+id);
 assert.equal(room('signals').kind,'pick');assert.equal(room('signals').key,'signals');assert.equal(room('signals').max,3);assert.equal(room('tasting').kind,'taste');assert.equal(room('nextround').kind,'chips');assert.equal(room('nextround').key,'directions');assert.equal(room('nextround').total,5);
 assert(!SCENES.some(s=>s.room.kind==='dots'),'no dot vote on the day');
 assert.equal(String(sc('team').skip),'1','the July row is the optional build');assert.equal(String(sc('map').skip),'2,3','the two untasted directions are optional');assert.equal(sc('map').builds,4);assert.equal(sc('gap').builds,3);assert.equal(sc('signals').builds,3);assert.equal(sc('school').builds,2);assert.equal(sc('playbook').builds,7);
 assert(SCENES.every(s=>!s.optional),'no whole slide is optional: the short version skips builds');
-const {firstOfPart}=load('scenes');assert.equal(SCENES.filter(firstOfPart).map(s=>s.id+':'+s.chapter).join(),'gap:0,school:1,whitespace:2,board:3','objective tags on the first slide of each part');
+const {firstOfPart}=load('scenes');assert.equal(SCENES.filter(firstOfPart).map(s=>s.id+':'+s.chapter).join(),'open1:0,open2:1,open3:2,open4:3','a chapter slide opens each part');
+['gap','school','whitespace','board'].forEach((id,i)=>{const o=sc('open'+(i+1));assert.equal(ids[at(id)-1],o.id,o.id+' sits right before '+id);assert.equal(o.title,TOPICS[i].title);assert.equal(o.block,sc(id).block);assert.equal(o.builds,0);assert.equal(o.room.kind,'watch');});
 assert(EXECUTIVE.every(id=>ids.includes(id)),'executive cut names a missing scene');assert(SCENES.every(s=>RUN.some(b=>b.id===s.block)),'scene outside the run of show');assert.equal(TOPICS.length,4);assert.equal(OBJECTIVES.length,4);
 assert(DIRECTIONS.length>=4&&SAMPLES.every(s=>DIRECTIONS.some(d=>d.id===s.code||d.id===s.id)),'every sample is a direction to vote on');
 assert.equal(EVENT.code,'FOF1109');assert(EVENT.lockup.includes('Princeton, New Jersey'));assert(SOURCES[ROSS_GOAL.src]);assert(SAMPLES.every(s=>s.base));
@@ -44,6 +45,8 @@ for(const c of L.LIBRARY){assert(L.STARTS.some(x=>x.id===c.start),c.id+' starts 
 assert(DIRECTIONS.every(d=>L.cardFor(d.id)),'every chips option has a starter card');assert(Object.values(L.MOMENT_WHEN).every(w=>L.WHEN.includes(w)));
 const pc=fold([{id:'q1',t:1,kind:'papercard',data:{d:1}},{id:'q2',t:2,kind:'papercard',data:{d:1}},{id:'q3',t:3,kind:'papercard',data:{d:-1}},{id:'q4',t:4,kind:'papercard',data:{d:-1}},{id:'q5',t:5,kind:'papercard',data:{d:-1}},{id:'q6',t:6,kind:'papercard',data:{d:1}}]);assert.equal(pc.paperCards,1,'the count never goes below zero');assert.equal(fold([]).paperCards,0);
 const tap=fold([{id:'t1',t:1,kind:'plan',data:{id:'r9',h:'Next',fields:{what:'Grove',ref:'D',draft:'1',brief:'x'.repeat(400),due:'January 2027 review'}}}]);assert.equal(tap.plan.r9.ref,'D');assert.equal(tap.plan.r9.draft,'1');assert.equal(tap.plan.r9.brief.length,400);assert.equal(tap.plan.r9.due,'January 2027 review');
+// Every slide has a view on the TV (the presentation looks a slide up by its id without the trailing number).
+{const src=fs.readFileSync('src/components/ShowApp.tsx','utf8');const views=src.slice(src.indexOf('const VIEWS'),src.indexOf('};',src.indexOf('const VIEWS')));for(const s of SCENES){if(s.id==='film')continue;assert(new RegExp('\\b'+s.id.replace(/\d+$/,'')+':').test(views),'no view for slide '+s.id);}}
 assert.equal(SIGNALS[5].title,'Mouthfeel matters as much as taste.','the sixth trend says mouthfeel');
 // The slide-by-slide plan: every scene has one, each part's minutes fill its window exactly, and no slide lists more
 // clicks than it has builds.
@@ -51,6 +54,6 @@ const {SLIDES}=load('runNotes'),{SLIDE_MIN,SLIDE_TIMES}=load('slideTimes');const
 assert(SCENES.every(s=>SLIDES[s.id]&&SLIDE_TIMES[s.id]&&s.id in SLIDE_MIN),'a scene has no slide plan');
 for(const b of RUN){const sum=SCENES.filter(s=>s.block===b.id).reduce((n,s)=>n+SLIDE_MIN[s.id],0);assert.equal(sum,mm(b.end)-mm(b.t),'slide minutes for '+b.id+' do not fill '+b.t+' to '+b.end);}
 assert(SCENES.every(s=>!SLIDES[s.id].clicks||SLIDES[s.id].clicks.length<=s.builds+1),'a slide lists more clicks than builds');
-const T={arrival:'10:00',team:'10:01',ours:'10:03',brief:'10:04',prework:'10:06',gap:'10:10',market:'10:13',signals:'10:16',school:'10:25',map:'10:29',film:'10:37',tasting:'10:40',nextround:'10:53',whitespace:'11:00',concepts:'11:05',board:'11:20',playbook:'11:40',lunch:'11:48'};
+const T={arrival:'10:00',team:'10:01',ours:'10:03',brief:'10:04',prework:'10:06',open1:'10:10',gap:'10:11',market:'10:14',signals:'10:17',open2:'10:25',school:'10:26',map:'10:30',film:'10:37',tasting:'10:40',nextround:'10:53',open3:'11:00',whitespace:'11:01',concepts:'11:06',open4:'11:20',board:'11:21',playbook:'11:40',lunch:'11:48'};
 for(const [id,t] of Object.entries(T))assert.equal(SLIDE_TIMES[id].from,t,id+' starts at '+t);assert.equal(SLIDE_TIMES.lunch.to,'12:00');
-console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, objective tags, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');
+console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');
