@@ -112,6 +112,10 @@ html:has(.tm) { background: #0B1B2B; }
 .tm-start p { flex: 1 1 320px; max-width: 56ch; font: 400 16px/1.55 var(--sans); }
 .tm-go { display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 99px; background: var(--cloud); color: var(--ink); font: 500 17px var(--sans); text-decoration: none; transition: background .2s; }
 .tm-go:hover { background: #fff; }
+.tm-reset { flex: 1 1 100%; }
+.tm-reset > p { margin: 0; font: 400 16px/1.55 var(--sans); }
+.tm-reset-again { margin-left: 10px; min-height: 40px; padding: 0 16px; border: 1px solid rgba(255,255,255,.28); border-radius: 99px; background: transparent; color: var(--fg); font: 500 15px/1 var(--sans); cursor: pointer; }
+.tm-reset-again:hover { background: rgba(255,255,255,.06); }
 .tm h2 { margin: 64px 0 10px; font-size: clamp(28px, 3vw, 36px); line-height: 1.1; }
 .tm-list { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--rule2); }
 .tm-list li { display: grid; grid-template-columns: minmax(220px, 340px) 1fr; gap: 6px 32px; padding: 18px 0; border-top: 1px solid var(--rule2); }

@@ -1,6 +1,7 @@
 import { EVENT, SOURCES, SOURCE_URLS } from '@/lib/content';
 import { joinToken } from '@/lib/auth';
 import LivePanel from './LivePanel';
+import RehearsalReset from './RehearsalReset';
 
 export const metadata = { title: 'Team page' };
 
@@ -49,6 +50,7 @@ export default async function Team() {
         <div className="tm-start">
           <a className="tm-go" href="/host?code=REHEARSE#1">Rehearse the presentation</a>
           <p>Scan the code with your own phone to try the votes and the tasting, and press P for the presenter view. Nothing here reaches the live session.</p>
+          <RehearsalReset />
         </div>
         <LivePanel code={EVENT.code} />
         <h2>Before the day</h2>
