@@ -47,6 +47,13 @@ const pc=fold([{id:'q1',t:1,kind:'papercard',data:{d:1}},{id:'q2',t:2,kind:'pape
 const tap=fold([{id:'t1',t:1,kind:'plan',data:{id:'r9',h:'Next',fields:{what:'Grove',ref:'D',draft:'1',brief:'x'.repeat(400),due:'January 2027 review'}}}]);assert.equal(tap.plan.r9.ref,'D');assert.equal(tap.plan.r9.draft,'1');assert.equal(tap.plan.r9.brief.length,400);assert.equal(tap.plan.r9.due,'January 2027 review');
 // Every slide has a view on the TV (the presentation looks a slide up by its id without the trailing number).
 {const src=fs.readFileSync('src/components/ShowApp.tsx','utf8');const views=src.slice(src.indexOf('const VIEWS'),src.indexOf('};',src.indexOf('const VIEWS')));for(const s of SCENES){if(s.id==='film')continue;assert(new RegExp('\\b'+s.id.replace(/\d+$/,'')+':').test(views),'no view for slide '+s.id);}}
+// The tasting questions (November 4): liking, could it be a TheraBreath flavor and uniqueness from 1 to 5, then
+// sweetness and cooling as not enough, just right or too much. Ratings saved before then (with who, a direction guess
+// and develop it further) still read.
+assert.equal(CRITERIA.map(c=>c.key+':'+c.l).join(),'appeal:Liking,feels:Fit with TheraBreath,newness:Uniqueness');assert(CRITERIA[2].q.startsWith('Uniqueness:'));
+assert.equal(JAR.map(j=>j.key).join(),'sweet,cool');assert.equal(JAR_OPTS.join(),'Not enough,Just right,Too much');assert.equal(load('content').DEVELOP,undefined,'develop it further is no longer asked');
+const jr=fold([{id:'j1',t:1,kind:'rate',pid:'a',data:{sample:'C',appeal:4,feels:3,newness:5,sweet:'Just right',cool:'Too much',word:'Bright'}},{id:'j2',t:2,kind:'rate',pid:'b',data:{sample:'C',appeal:2,feels:4,newness:3,sweet:'Just right',cool:'Not enough'}},{id:'j3',t:3,kind:'rate',pid:'c',data:{sample:'C',appeal:3,feels:3,newness:3,who:['Families'],advance:'Maybe'}}]);
+const js=tasteSummary(jr,'C');assert.equal(js.n,3);assert.equal(js.sweet['Just right'],2);assert.equal(jarTop(js.sweet),'Just right, 2 of 2');assert.equal(jarAll(js.cool,JAR_OPTS),'1 not enough, 1 too much');assert.equal(jr.ratings.C.c.advance,'Maybe','an old rating keeps its answers');assert.equal(jarTop({}),'');
 assert.equal(SIGNALS[5].title,'Mouthfeel matters as much as taste.','the sixth trend says mouthfeel');
 // The slide-by-slide plan: every scene has one, each part's minutes fill its window exactly, and no slide lists more
 // clicks than it has builds.

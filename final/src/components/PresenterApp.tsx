@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
 import { pointsOf, titleOf } from '@/lib/sceneNotes';
-import { EVENT, SIGNALS, DIRECTIONS, SAMPLES, WHO_CHIPS, MYSTERY, HORIZONS, CRITERIA, DEVELOP, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
+import { EVENT, SIGNALS, DIRECTIONS, SAMPLES, MYSTERY, HORIZONS, CRITERIA, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
 import { tallyPick, voteCounts, tasters, byHand, onPaper, people, uid, Ev, SessionState } from '@/lib/state';
 import { PlanTap } from './show/Plan';
 import { ConceptEditor } from './show/Concepts';

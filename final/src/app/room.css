@@ -50,7 +50,10 @@
 .rm-tabs button.on { background: var(--fg); color: var(--bg); }
 .rm-tabs button.done::after { content: ''; position: absolute; right: 8px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #5FD39A; }
 .rm-scale { margin-bottom: 14px; }
-.rm-scale > span { display: block; font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--fg2); margin-bottom: 8px; }
+.rm-scale > span, .rm-jar > span { display: block; font: 500 16px/1.35 var(--sans); color: var(--fg); margin-bottom: 8px; } /* the tasting questions, asked in full */
+.rm-jar { margin-bottom: 14px; }
+.rm-jar .rm-tags { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 0; }
+.rm-jar .rm-tags button { padding: 10px 6px; border-radius: 12px; font-size: 14px; }
 .rm-scale > div { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
 .rm-scale button { padding: 14px 0; border-radius: 12px; border: 1px solid var(--rule); font: 400 18px/1 var(--sans); transition: all .15s; }
 .rm-scale button.on { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--bg); }

@@ -315,7 +315,7 @@ export function Landed({ s, step }: SceneProps) {
             <i className="mx-mid v" /><i className="mx-mid h" />
             <span className="mx-q tr">Does both<b>Develop first</b></span>
             <span className="mx-ax x">Fit with TheraBreath <em>strengthens loyal users</em> →</span>
-            <span className="mx-ax y">Newness <em>attracts new consumers</em> →</span>
+            <span className="mx-ax y">Uniqueness <em>attracts new consumers</em> →</span>
             {pts.map((p, i) => {
               const x = p.sum.n ? at(p.sum.feels) : 50, y = p.sum.n ? at(p.sum.newness) : 50;
               const size = p.sum.n ? 40 + at(p.sum.appeal) * 0.7 : 44;

@@ -5,7 +5,7 @@
 // write-up as soon as each one is saved here.
 import { useMemo, useState } from 'react';
 import { useSession } from '@/lib/useSession';
-import { EVENT, SAMPLES, WHO_CHIPS, MYSTERY, CRITERIA, DEVELOP, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
+import { EVENT, SAMPLES, MYSTERY, CRITERIA, JAR, JAR_OPTS } from '@/lib/content';
 import { tasters, onPaper, uid, Ev, SessionState } from '@/lib/state';
 
 function Icon({ d }: { d: string }) {
@@ -33,8 +33,8 @@ export default function PaperCardsPage({ code }: { code: string }) {
 
 // Paper scorecards, typed in from the card (the same questions as /scorecard and the phones). A card is one pid
 // (paper-...) across the samples it scored, so removing it takes back exactly that card.
-type Row = { appeal: number; feels: number; newness: number; who: string[]; guess: string; advance: string; word: string; fruitGuess: string };
-const blankRow = (): Row => ({ appeal: 0, feels: 0, newness: 0, who: [], guess: '', advance: '', word: '', fruitGuess: '' });
+type Row = { appeal: number; feels: number; newness: number; sweet: string; cool: string; word: string; fruitGuess: string };
+const blankRow = (): Row => ({ appeal: 0, feels: 0, newness: 0, sweet: '', cool: '', word: '', fruitGuess: '' });
 const blankCard = () => Object.fromEntries(SAMPLES.map((x) => [x.code, blankRow()])) as Record<string, Row>;
 export function PaperCards({ s, events, sendMany }: { s: SessionState; events: Ev[]; sendMany: (evs: { kind: string; data?: any; pid?: string }[]) => void }) {
   const [open, setOpen] = useState(false);
@@ -58,7 +58,7 @@ export function PaperCards({ s, events, sendMany }: { s: SessionState; events: E
     const full = rows.filter(({ r }) => r.appeal && r.feels && r.newness);
     if (!full.length) return setErr('Score at least one sample from the card.');
     const pid = 'paper-' + uid();
-    sendMany(full.map(({ code, r }) => ({ kind: 'rate', pid, data: { sample: code, appeal: r.appeal, feels: r.feels, newness: r.newness, who: r.who, guess: r.guess || undefined, advance: r.advance || undefined, word: r.word.trim().split(/\s+/)[0] || undefined, fruitGuess: r.fruitGuess.trim() || undefined, card: name.trim().slice(0, 40) || undefined } })));
+    sendMany(full.map(({ code, r }) => ({ kind: 'rate', pid, data: { sample: code, appeal: r.appeal, feels: r.feels, newness: r.newness, sweet: r.sweet || undefined, cool: r.cool || undefined, word: r.word.trim().split(/\s+/)[0] || undefined, fruitGuess: r.fruitGuess.trim() || undefined, card: name.trim().slice(0, 40) || undefined } })));
     setCard(blankCard()); setName(''); setErr(''); setOpen(false);
   };
   const remove = (pid: string, done: string[]) => { sendMany(done.map((code) => ({ kind: 'unrate', pid, data: { sample: code } }))); setConfirm(''); };
@@ -93,18 +93,12 @@ export function PaperCards({ s, events, sendMany }: { s: SessionState; events: E
                     <div>{[1, 2, 3, 4, 5].map((v) => <button type="button" key={v} aria-pressed={r[key] === v} onClick={() => set(x.code, { [key]: r[key] === v ? 0 : v })}>{v}</button>)}</div>
                   </div>
                 ))}
-                <div className="pv-chips" role="group" aria-label={`${x.code}: who would buy it`}>
-                  <span>Who would buy it</span>
-                  <div>{WHO_CHIPS.map((w) => <button type="button" key={w} aria-pressed={r.who.includes(w)} onClick={() => set(x.code, { who: r.who.includes(w) ? r.who.filter((y) => y !== w) : [...r.who, w] })}>{w}</button>)}</div>
-                </div>
-                <div className="pv-chips" role="group" aria-label={`${x.code}: which direction`}>
-                  <span>Which direction</span>
-                  <div>{TERRITORIES.map((t) => <button type="button" key={t.id} aria-pressed={r.guess === t.id} onClick={() => set(x.code, { guess: r.guess === t.id ? '' : t.id })}>{t.name}</button>)}</div>
-                </div>
-                <div className="pv-chips" role="group" aria-label={`${x.code}: would you develop it further`}>
-                  <span>Develop further</span>
-                  <div>{DEVELOP.opts.map((v) => <button type="button" key={v} aria-pressed={r.advance === v} onClick={() => set(x.code, { advance: r.advance === v ? '' : v })}>{v}</button>)}</div>
-                </div>
+                {JAR.map((j) => (
+                  <div key={j.key} className="pv-chips" role="group" aria-label={`${x.code}: ${j.l}`}>
+                    <span>{j.l}</span>
+                    <div>{JAR_OPTS.map((o) => <button type="button" key={o} aria-pressed={r[j.key] === o} onClick={() => set(x.code, { [j.key]: r[j.key] === o ? '' : o })}>{o}</button>)}</div>
+                  </div>
+                ))}
                 <div className="pv-words">
                   <label className="pv-field"><span>One word</span><input value={r.word} onChange={(e) => set(x.code, { word: e.target.value.slice(0, 24) })} /></label>
                   {x.code === MYSTERY && <label className="pv-field"><span>Fruits they tasted</span><input value={r.fruitGuess} onChange={(e) => set(x.code, { fruitGuess: e.target.value.slice(0, 160) })} /></label>}

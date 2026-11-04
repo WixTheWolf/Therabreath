@@ -261,13 +261,20 @@ export const DIRECTIONS = [
 ];
 export const WHO_CHIPS = ['Gen Z', 'Want it milder', 'Families', '55+', 'Dry mouth', 'International', 'Me'];
 // How each sample is scored, the same on the phones, the paper card, the presenter view and the TV: three scales from 1
-// (low) to 5 (high), then whether you'd develop it further. The keys stay as the session stores them.
+// (low) to 5 (high), asked as `q`, shown in tables and on the TV as `l`. The keys stay as the session stores them
+// (`newness` is now asked as uniqueness). Then two quick checks for the next round (JAR): is the sweetness and the
+// cooling just right? Answers given before November 4 also carried who would buy it, a direction guess and whether to
+// develop it further; they're kept but no longer asked.
 export const CRITERIA = [
-  { key: 'appeal', l: 'Flavor appeal', d: 'How much you like it' },
-  { key: 'feels', l: 'Fit with TheraBreath', d: 'Whether it feels like it belongs in the range' },
-  { key: 'newness', l: 'Newness', d: 'How new it feels next to what’s on the shelf' },
+  { key: 'appeal', l: 'Liking', q: 'How much do you like it?', d: 'How much you like it' },
+  { key: 'feels', l: 'Fit with TheraBreath', q: 'Could it be a TheraBreath flavor?', d: 'Whether it could sit in the range' },
+  { key: 'newness', l: 'Uniqueness', q: 'Uniqueness: how different is it from what’s on the shelf?', d: 'How different it is from what’s on the shelf' },
 ] as const;
-export const DEVELOP = { q: 'Would you develop it further?', opts: ['Yes', 'Maybe', 'No'] };
+export const JAR = [
+  { key: 'sweet', l: 'Sweetness' },
+  { key: 'cool', l: 'Cooling' },
+] as const;
+export const JAR_OPTS = ['Not enough', 'Just right', 'Too much'] as const;
 
 export const MOLECULES = [
   { id: 'menthol', sym: '◇', name: 'Menthol', source: 'Peppermint', note: 'The cool itself. It triggers the cold receptor, TRPM8.' },
@@ -384,7 +391,7 @@ export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title,
 // a date. The times come from RUN.
 export const DECIDE = [
   { v: 'Taste', when: '10:40', d: 'Four samples, blind, made in the bases you sent. Water between each one.' },
-  { v: 'Score', when: 'As you taste', d: 'Flavor appeal, fit with TheraBreath and newness from 1 to 5, and whether you’d develop it further. On your phone or a paper card.' },
+  { v: 'Score', when: 'As you taste', d: 'How much you like it, whether it could be a TheraBreath flavor and how different it is from what’s on the shelf, from 1 to 5. Then whether the sweetness and cooling are right. On your phone or a paper card.' },
   { v: 'Reveal', when: 'Once everyone’s scored', d: 'The names go up on screen, next to everyone’s scores.' },
   { v: 'Discuss', when: 'Before the vote', d: 'Where each sample landed, and what it would take to make it work.' },
   { v: 'Vote', when: 'Chips by 11:00', d: 'Five chips each on what gets a next round. After the concepts, three dots each on which to develop.' },

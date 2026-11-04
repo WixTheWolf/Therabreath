@@ -8,8 +8,8 @@
 // one on every page; it never touches the live session.
 import { useEffect, useMemo, useState } from 'react';
 import { useSession } from '@/lib/useSession';
-import { EVENT, OBJECTIVES, ROSS_GOAL, SIGNALS, SAMPLES, DIRECTIONS, PRIMARY_TERRITORIES, CRITERIA, SURVEY, HORIZONS, NEXT_STEPS, TEAM, SOURCES, MYSTERY } from '@/lib/content';
-import { tallyPick, ranked, tasteSummary, voteCounts, tasters, type SessionState } from '@/lib/state';
+import { EVENT, OBJECTIVES, ROSS_GOAL, SIGNALS, SAMPLES, DIRECTIONS, PRIMARY_TERRITORIES, CRITERIA, JAR, JAR_OPTS, SURVEY, HORIZONS, NEXT_STEPS, TEAM, SOURCES, MYSTERY } from '@/lib/content';
+import { tallyPick, ranked, tasteSummary, voteCounts, tasters, jarAll, type SessionState } from '@/lib/state';
 import { teamConcepts } from './scenes/CoCreate';
 import { candidates } from './scenes/Build';
 import { FIELDS, OBJ_IMG, directionName, markLabel } from './show/ShowScenes';
@@ -146,13 +146,13 @@ export default function WriteupDoc({ code }: { code: string }) {
           <h3 className="wu-h3">The blind tasting</h3>
           <p className="wu-small">Four samples, made in the Fresh Breath and Kids bases Church &amp; Dwight sent, tasted blind. {d.tasters.phones + d.tasters.cards ? `${d.tasters.phones} scored on phones${d.tasters.cards ? ` and ${d.tasters.cards} on paper` : ''}.` : ''} Scores run from 1 (low) to 5 (high), averaged across everyone who tasted.</p>
           <table className="wu-table wu-taste">
-            <thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key} className="r">{c.l}</th>)}<th className="r">Tasters</th><th>Develop it further?</th></tr></thead>
+            <thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key} className="r">{c.l}</th>)}<th className="r">Tasters</th>{JAR.map((j) => <th key={j.key}>{j.l}</th>)}</tr></thead>
             <tbody>{d.tasting.map((x) => (
               <tr key={x.code}>
                 <td><b>{x.code}{x.name ? `. ${x.name}` : ''}</b><small>{x.base}{x.note ? ` · ${x.note}` : ''}</small></td>
                 {CRITERIA.map((c) => <td key={c.key} className="r num">{x.sum.n ? avg(x.sum[c.key]) : ''}</td>)}
                 <td className="r num">{x.sum.n || ''}</td>
-                <td className="wu-dev">{x.sum.n ? `${x.dev.Yes} yes, ${x.dev.Maybe} maybe, ${x.dev.No} no` : ''}</td>
+                {JAR.map((j) => <td key={j.key} className="wu-dev">{jarAll(x.sum[j.key], JAR_OPTS)}</td>)}
               </tr>
             ))}</tbody>
           </table>
@@ -295,10 +295,7 @@ function digest(s: SessionState) {
   const vetoCount: Record<string, [string, number]> = {};
   for (const v of answers.map((a) => a.veto).filter(Boolean) as string[]) { const key = v.trim().toLowerCase().replace(/[.!]+$/, ''); if (!key) continue; vetoCount[key] = [vetoCount[key]?.[0] || v.trim().replace(/[.!]+$/, ''), (vetoCount[key]?.[1] || 0) + 1]; }
   const tasting = SAMPLES.map((x) => {
-    const rs = Object.values(s.ratings[x.code] || {});
-    const dev = { Yes: 0, Maybe: 0, No: 0 } as Record<string, number>;
-    rs.forEach((r) => { if (r.advance && r.advance in dev) dev[r.advance]++; });
-    return { ...x, name: s.revealed?.samples[x.code]?.name || '', note: x.code === MYSTERY ? '' : s.revealed?.samples[x.code]?.note || '', /* the Mystery Flavor's contents stay off the page */ sum: tasteSummary(s, x.code), dev };
+    return { ...x, name: s.revealed?.samples[x.code]?.name || '', note: x.code === MYSTERY ? '' : s.revealed?.samples[x.code]?.note || '', /* the Mystery Flavor's contents stay off the page */ sum: tasteSummary(s, x.code) };
   });
   const chipT = tallyPick(s, 'directions');
   const chips = DIRECTIONS.map((x) => ({ id: x.id, name: directionName(x.id, s), sub: x.sub, n: chipT[x.id] || 0 })).sort((a, b) => b.n - a.n);

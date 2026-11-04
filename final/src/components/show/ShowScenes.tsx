@@ -10,7 +10,7 @@ import { teamConcepts } from '../scenes/CoCreate';
 import { useQR } from '../scenes/Opening';
 import {
   EVENT, OBJECTIVES, TOPICS, RUN, TEAM, ABOUT, SCIENCE, IMAGINATION, ROSS_WORDS, SIGNALS, SAMPLES, PRIMARY_TERRITORIES as PLATFORMS,
-  SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA, NEXT_STEPS,
+  SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA, JAR, NEXT_STEPS,
 } from '@/lib/content';
 import type { FilmAct, FilmState } from '@/lib/showLink';
 import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, SessionState } from '@/lib/state';
@@ -157,12 +157,12 @@ export function TastingLive({ s, step }: SceneProps) {
         <Enter i={1}><h2 className="h1">Four samples, <span className="it">tasted blind.</span></h2></Enter>
         <Enter i={2}><p className="lede tl-lede">Score each one on your phone or on the paper card. Once everyone’s done, we’ll tell you what they are.</p></Enter>
         <div className="heat">
-          <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}<span>Who it’s for</span></div>
+          <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}{JAR.map((j) => <span key={j.key}>{j.l}</span>)}</div>
           {rows.map((r) => (
             <div key={r.code} className="hrow">
               <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{/* The Mystery Flavor stays a mystery: its name goes up, but what's in it isn't shown. */}{step >= 2 && r.code !== MYSTERY && <small>{s.revealed?.samples[r.code]?.note}</small>}</span></div>
               {metrics.map(([m]) => <div key={m} className="hcell" style={cell(r.sum[m])}><b className="num">{r.sum[m] ? r.sum[m].toFixed(1) : ''}</b></div>)}
-              <div className="hwho">{ranked(r.sum.who).slice(0, 3).map(([w, n]) => <span key={w}>{w} <b>{n}</b></span>)}</div>
+              {JAR.map((j) => { const top = ranked(r.sum[j.key])[0]; return <div key={j.key} className="hjar">{top ? <><span>{top[0]}</span><b className="num">{top[1]}</b></> : null}</div>; })}
             </div>
           ))}
         </div>

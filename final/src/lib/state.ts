@@ -7,7 +7,7 @@ const LEGACY = SURVEY.legacy;
 export type Ev = { id: string; seq?: number; t: number; kind: string; pid?: string; data?: any };
 
 export type Participant = { pid: string; name: string; role?: string; team?: number; joined: number; sim?: boolean; paper?: boolean };
-export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string; guess?: string; fruitGuess?: string; advance?: string; card?: string };
+export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string; guess?: string; fruitGuess?: string; advance?: string; card?: string; sweet?: string; cool?: string };
 export type Dials = Record<string, number>;
 export type Bench = { dials: Record<string, Dials>; base?: string; overrides: Record<string, { value: string; note?: string }>; locked?: Dials };
 export type Concept = { id: string; team: number; slot: number; name: string; segment: string; occasion: string; first: string; heart: string; finish: string; sensation: string[]; format: string; incremental: string; why: string; horizon: string; role?: string; suggestions: { pid: string; text: string }[] };
@@ -72,7 +72,7 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'vote': { const v = vote(s, d.key); if (d.action === 'open') { v.open = true; v.locked = false; } if (d.action === 'lock') { v.open = false; v.locked = true; } if (d.action === 'reveal') { v.revealed = true; v.open = false; v.locked = true; } if (d.action === 'reset') s.votes[d.key] = { open: false, locked: false, revealed: false, picks: {} }; break; }
     case 'pick': { const v = vote(s, d.key); if (!v.locked || d.paper) v.picks[e.pid!] = d.value; break; }
     case 'unpick': delete vote(s, d.key).picks[e.pid!]; break; // the presenter view taking back a hand vote
-    case 'rate': (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess, fruitGuess: d.fruitGuess, advance: d.advance, card: d.card }; break;
+    case 'rate': (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess, fruitGuess: d.fruitGuess, advance: d.advance, card: d.card, sweet: d.sweet, cool: d.cool }; break;
     case 'unrate': if (s.ratings[d.sample]) delete s.ratings[d.sample][e.pid!]; break; // removing a paper card typed in by mistake
     case 'guess': (s.guesses[d.molecule] ||= {})[e.pid!] = d.answer; break;
     case 'concept': { const id = `t${d.team}-${d.slot || 1}`; s.concepts[id] = { ...(s.concepts[id] || { suggestions: [] }), ...d.fields, id, team: d.team, slot: d.slot || 1 }; break; }
@@ -132,8 +132,13 @@ export function tasteSummary(s: SessionState, sample: string) {
   const rs = Object.values(s.ratings[sample] || {});
   const avg = (k: 'appeal' | 'feels' | 'newness') => (rs.length ? rs.reduce((a, r) => a + (r[k] || 0), 0) / rs.length : 0);
   const who: Record<string, number> = {}; rs.forEach((r) => r.who.forEach((w) => (who[w] = (who[w] || 0) + 1)));
-  return { n: rs.length, appeal: avg('appeal'), feels: avg('feels'), newness: avg('newness'), who, words: rs.map((r) => r.word).filter(Boolean) as string[] };
+  // The sweetness and cooling checks: how many said not enough, just right or too much.
+  const jar = (k: 'sweet' | 'cool') => { const t: Record<string, number> = {}; rs.forEach((r) => r[k] && (t[r[k]!] = (t[r[k]!] || 0) + 1)); return t; };
+  return { n: rs.length, appeal: avg('appeal'), feels: avg('feels'), newness: avg('newness'), who, words: rs.map((r) => r.word).filter(Boolean) as string[], sweet: jar('sweet'), cool: jar('cool') };
 }
+// The most common sweetness or cooling answer and how many gave it, e.g. "Just right, 4 of 6".
+export const jarTop = (t: Record<string, number>) => { const all = Object.values(t).reduce((a, b) => a + b, 0); const top = ranked(t)[0]; return top ? `${top[0]}, ${top[1]} of ${all}` : ''; };
+export const jarAll = (t: Record<string, number>, opts: readonly string[]) => opts.filter((o) => t[o]).map((o) => `${t[o]} ${o.toLowerCase()}`).join(', ');
 // Votes and scores typed in from the room: hand votes (pid hand-...) and paper scorecards (pid paper-...).
 export const byHand = (pid: string) => pid.startsWith('hand-');
 export const onPaper = (pid: string) => pid.startsWith('paper-');
