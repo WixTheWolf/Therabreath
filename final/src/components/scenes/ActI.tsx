@@ -32,8 +32,10 @@ export function Climb({ step }: SceneProps) {
   );
 }
 
-// 7. The other 86. It opens on the thesis; build 1 fills the glasses (65 for mouthwash, 14 for TheraBreath) with the
-// record share, build 2 names the 86 and splits them, build 3 says what flavor could do and asks the room.
+// 7. Out of every 100 households. It opens on the thesis; build 1 fills the glasses (65 of 100 buy mouthwash, 14 of 100
+// buy TheraBreath), build 2 splits the 100 into three groups that add up (14, 51, 35), build 3 says what flavor could do
+// and asks which group. One unit throughout: households out of 100. The record share of sales (a different measure) is
+// in the talking points, not on screen, so the two never sit side by side.
 const GLASS_CAM = { pos: [0, 1.3, 10.8], target: [0, 0.98, 0], fov: 24, shift: [0.36, 0.0] };
 const OTHER = { another: GAP.category - GAP.tb, none: 100 - GAP.category };
 export function Gap({ step }: SceneProps) {
@@ -58,26 +60,25 @@ function Glasses({ step }: { step: number }) {
   useEffect(() => { const id = setTimeout(() => setT0((v) => v || performance.now()), 8000); return () => clearTimeout(id); }, []);
   useEffect(() => { if (!t0 || still) return; let r = 0; const f = () => { const t = (performance.now() - t0) / 1000; setLab([Math.round(GAP.category * ease((t - 0.4) / 2.6)), Math.round(GAP.tb * ease((t - 0.4) / 2.6))]); if (t < 3.2) r = requestAnimationFrame(f); }; r = requestAnimationFrame(f); return () => cancelAnimationFrame(r); }, [t0, still]);
   const shown = still || t0 > 0;
-  const [x0, y0] = project([-0.95, 0, 0.9], GLASS_CAM), [x1, y1] = project([0.95, 0, 0.9], GLASS_CAM), [tx, ty] = project([1.61, 1.55, 0], GLASS_CAM);
+  const [x0, y0] = project([-0.95, 0, 0.9], GLASS_CAM), [x1, y1] = project([0.95, 0, 0.9], GLASS_CAM);
   const glow = step >= 2 ? 1 : 0;
   return (
     <>
       <Light scene="glasses" theme="a" camera={GLASS_CAM} frame={(t) => ({ fill: [Math.max(0.001, (GAP.category / 100) * ease((t - 0.4) / 2.6)), Math.max(0.001, (GAP.tb / 100) * ease((t - 0.4) / 2.6))], glow })} onStart={() => setT0(performance.now())} />
       <div className="gap-copy gap-talk">
-        <Enter i={0}><div className="k">Household penetration</div></Enter>
-        <Enter i={1} className="gap-share">TheraBreath reached a record <b className="num">{GAP.share}%</b> of mouthwash in Q3 2026, number 2 in the category.</Enter>
-        <R b={2} step={step}><h1 className="h1"><span className="it">86</span> out of 100 households don&rsquo;t buy TheraBreath yet.</h1></R>
-        <R b={2} step={step} className="gap-split">
+        <Enter i={0}><div className="k">Out of every 100 households</div></Enter>
+        <Enter i={1} className="gap-share">TheraBreath is already number 2 in mouthwash.</Enter>
+        <R b={2} step={step} className="gap-groups">
+          <div className="tb"><b className="num">{GAP.tb}</b><span>buy TheraBreath</span></div>
           <div><b className="num">{OTHER.another}</b><span>buy another mouthwash</span></div>
           <div><b className="num">{OTHER.none}</b><span>don&rsquo;t buy mouthwash at all</span></div>
         </R>
-        <R b={3} step={step}><div className="gap-second it">Flavor could give more of them a reason to try it.</div></R>
-        <R b={3} step={step} className="room-ask"><span className="k">For the room</span><p>Which group is a new flavor for?</p></R>
+        <R b={3} step={step}><div className="gap-second it">Flavor could give more of these households a reason to try it.</div></R>
+        <R b={3} step={step} className="room-ask"><span className="k">For the room</span><p>Which group is a new flavor for: the {OTHER.another} or the {OTHER.none}?</p></R>
       </div>
-      <Src k="q3call" extra={`TheraBreath ${GAP.tb}%, mouthwash category ${GAP.category}%`} style={{ left: 120, width: 820 }} />
-      <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}<sup>%</sup></div><div className="who">Mouthwash category</div></div>
-      <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}<sup>%</sup></div><div className="who">TheraBreath</div></div>
-      <R b={2} step={step} className="tag86" style={{ left: Math.min(tx + 10, 1600), top: ty }}>The other 86</R>
+      <Src k="q3call" extra={`Household penetration: TheraBreath ${GAP.tb}%, mouthwash ${GAP.category}%`} style={{ left: 120, width: 820 }} />
+      <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}</div><div className="who">of 100 buy mouthwash</div></div>
+      <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}</div><div className="who">of 100 buy TheraBreath</div></div>
     </>
   );
 }

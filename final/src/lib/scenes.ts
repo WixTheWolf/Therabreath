@@ -42,7 +42,7 @@ const SHOW: Row[] = [
   { id: 'prework', act: 'Welcome', chapter: -1, theme: 'a', builds: 2, title: 'Your pre-brief answers', block: 'welcome', room: W() },
 
   opener(1, 'market'),
-  { id: 'gap', act: PART(1), chapter: 0, theme: 'a', builds: 3, title: 'The other 86', block: 'market', room: W() },
+  { id: 'gap', act: PART(1), chapter: 0, theme: 'a', builds: 3, title: 'Out of every 100 households', block: 'market', room: W() },
   { id: 'market', act: PART(1), chapter: 0, theme: 'a', builds: 2, title: 'The shelf', block: 'market', room: W() },
   { id: 'signals', act: PART(1), chapter: 0, theme: 'a', builds: 3, title: 'Seven trends: vote, then discuss', block: 'market',
     room: { kind: 'pick', key: 'signals', max: 3, prompt: 'Pick the three trends that matter most for TheraBreath.' } },

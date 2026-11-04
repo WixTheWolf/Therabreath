@@ -47,6 +47,9 @@ const pc=fold([{id:'q1',t:1,kind:'papercard',data:{d:1}},{id:'q2',t:2,kind:'pape
 const tap=fold([{id:'t1',t:1,kind:'plan',data:{id:'r9',h:'Next',fields:{what:'Grove',ref:'D',draft:'1',brief:'x'.repeat(400),due:'January 2027 review'}}}]);assert.equal(tap.plan.r9.ref,'D');assert.equal(tap.plan.r9.draft,'1');assert.equal(tap.plan.r9.brief.length,400);assert.equal(tap.plan.r9.due,'January 2027 review');
 // Every slide has a view on the TV (the presentation looks a slide up by its id without the trailing number).
 {const src=fs.readFileSync('src/components/ShowApp.tsx','utf8');const views=src.slice(src.indexOf('const VIEWS'),src.indexOf('};',src.indexOf('const VIEWS')));for(const s of SCENES){if(s.id==='film')continue;assert(new RegExp('\\b'+s.id.replace(/\d+$/,'')+':').test(views),'no view for slide '+s.id);}}
+// The household slide speaks one unit (households out of 100): three groups that add up to 100, and the share of sales
+// (a different measure) stays off the screen.
+{const a=fs.readFileSync('src/components/scenes/ActI.tsx','utf8');const g=a.slice(a.indexOf('function Glasses'),a.indexOf('function Portfolio'));assert(!g.includes('GAP.share')&&!g.includes('>86<')&&!/other 86/i.test(g),'the share of sales or the 86 is back on the household slide');assert(g.includes('{GAP.tb}')&&g.includes('{OTHER.another}')&&g.includes('{OTHER.none}'));const {GAP}=load('content');assert.equal(GAP.tb+(GAP.category-GAP.tb)+(100-GAP.category),100);assert.equal(sc('gap').title,'Out of every 100 households');}
 // The tasting questions (November 4): liking, could it be a TheraBreath flavor and uniqueness from 1 to 5, then
 // sweetness and cooling as not enough, just right or too much. Ratings saved before then (with who, a direction guess
 // and develop it further) still read.

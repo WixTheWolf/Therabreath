@@ -464,7 +464,7 @@
 .ts-july .jf.grow.lit b { font-size: 64px; }
 .ts-july .jf.grow { transition: all 1s var(--ease); }
 
-/* 5. The other 86 */
+/* 7. Out of every 100 households */
 .gap-thesis { z-index: 4; transition: opacity 1s var(--ease), filter 1s var(--ease), transform 1s var(--ease); }
 .gap-thesis.away { opacity: 0; filter: blur(10px); transform: translateY(-30px); pointer-events: none; }
 .gap-thesis > div { font-size: 104px; }
@@ -477,7 +477,12 @@
 .gap-split > div { flex: 1; display: flex; align-items: baseline; gap: 14px; padding: 16px 20px; border-radius: 18px; background: var(--panel2); border: 1px solid var(--rule); }
 .gap-split b { font-size: 56px; line-height: 1; color: var(--accent-ink); }
 .gap-split span { font: 400 22px/1.25 var(--sans); color: var(--fg2); }
-.gap-talk .gap-second { margin-top: 4px; font-size: 46px; }
+.gap-groups { display: flex; flex-direction: column; gap: 10px; width: 640px; }
+.gap-groups > div { display: flex; align-items: baseline; gap: 22px; padding: 10px 24px; border-radius: 18px; background: var(--panel2); border: 1px solid var(--rule); }
+.gap-groups b { min-width: 86px; font-size: 64px; line-height: 1; color: var(--fg); }
+.gap-groups .tb b { color: var(--accent-ink); }
+.gap-groups span { font: 400 30px/1.25 var(--sans); color: var(--fg2); }
+.gap-talk .gap-second { margin-top: 4px; font-size: 46px; max-width: 760px; }
 .gap-talk .room-ask p { font-size: 34px; }
 
 /* 6. The shelf */
