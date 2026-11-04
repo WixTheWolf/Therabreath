@@ -7,8 +7,9 @@ import { SCENES } from './scenes';
 export const SLIDE_MIN: Record<string, number> = {
   arrival: 1,
   team: 2,
+  ours: 1,
   brief: 2,
-  prework: 5,
+  prework: 4,
   gap: 3,
   market: 3,
   signals: 9,

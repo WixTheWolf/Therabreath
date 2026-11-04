@@ -33,7 +33,8 @@ const AFTER = [
   ...NEXT_STEPS.map((n) => `${n.t}: ${n.d}`),
 ];
 const CONFIRM = [
-  'Ryan to review the Flavor in OXYD-8 slide (slide 8). It keeps his Flavor School wording, merged onto one slide in three builds.',
+  'Ryan to review the Flavor School slide (slide 9): his wording, merged onto one slide in three builds, now naming sodium chlorite rather than OXYD-8, with formulating and protecting the flavor.',
+  'Check the bottles and flavor names on Our flavors in your range (slide 3) against our portfolio record. Names only: no usage levels or flavor codes.',
   'Review the drafted concept cards and the option lists in src/lib/conceptLibrary.ts. Every starter card is marked DRAFT until we’ve checked it.',
   `The bases: ${SEALED.samples.A.name} and the ${SEALED.samples.B.name} in the Kids base, ${SEALED.samples.C.name} and ${SEALED.samples.D.name} in the Fresh Breath base.`,
   'The dates on What happens next, including the January 2027 review.',
@@ -93,7 +94,7 @@ export default function RunSheet() {
 
       <section className="rs-sec rs-slides">
         <h2>Slide by slide</h2>
-        <p className="rs-lead">Planned minutes, so each part ends on time; the presenter view shows each slide’s planned window. Numbers match the presenter view’s Go to list. Builds marked optional are the ones S skips. Your pre-brief answers (4) shows only once someone has answered; if nobody has, its five minutes are spare.</p>
+        <p className="rs-lead">Planned minutes, so each part ends on time; the presenter view shows each slide’s planned window. Numbers match the presenter view’s Go to list. Builds marked optional are the ones S skips. Your pre-brief answers (5) shows only once someone has answered; if nobody has, its four minutes are spare.</p>
         <table className="rs-run rs-slide">
           <thead><tr><th>Planned</th><th>#</th><th>Slide</th><th>On screen, click by click</th><th>Ask the room, and the phones</th></tr></thead>
           <tbody>{RUN.map((b) => [

@@ -27,12 +27,13 @@ const W = (line?: string): RoomMode => ({ kind: 'watch', line });
 const PART = (n: number) => `Part ${n} · ${TOPICS[n - 1].title}`;
 
 type Row = Omit<Scene, 'n'>;
-// Seventeen slides, built for talking with the room rather than at it. Each part's first slide carries a small
+// Eighteen slides, built for talking with the room rather than at it. Each part's first slide carries a small
 // "Objective 0N" tag instead of a divider. `skip` lists the builds the short version (S) leaves out: the July row on
 // Who we are, and the two directions that are not in the tasting.
 const SHOW: Row[] = [
   { id: 'arrival', act: 'Before we start', chapter: -1, theme: 'b', builds: 0, title: 'The Future of Freshness', block: 'welcome', room: W('Welcome. We start at 10:00.') },
   { id: 'team', act: 'Welcome', chapter: -1, theme: 'a', builds: 1, skip: [1], title: 'Who we are, since July', block: 'welcome', room: W() },
+  { id: 'ours', act: 'Welcome', chapter: -1, theme: 'a', builds: 0, title: 'Our flavors in your range', block: 'welcome', room: W() },
   { id: 'brief', act: 'Welcome', chapter: -1, theme: 'a', builds: 5, title: 'Your four objectives', block: 'welcome', room: W() },
   { id: 'prework', act: 'Welcome', chapter: -1, theme: 'a', builds: 2, title: 'Your pre-brief answers', block: 'welcome', room: W() },
 
@@ -41,7 +42,7 @@ const SHOW: Row[] = [
   { id: 'signals', act: PART(1), chapter: 0, theme: 'a', builds: 3, title: 'Seven trends: vote, then discuss', block: 'market',
     room: { kind: 'pick', key: 'signals', max: 3, prompt: 'Pick the three trends that matter most for TheraBreath.' } },
 
-  { id: 'school', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'Flavor in OXYD-8', block: 'school', room: W('Flavor School') },
+  { id: 'school', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'Flavor School: flavor and sodium chlorite', block: 'school', room: W('Flavor School') },
   { id: 'map', act: PART(2), chapter: 1, theme: 'a', builds: 4, skip: [2, 3], title: 'Four directions', block: 'school', room: W('Four directions') },
   { id: 'film', act: PART(2), chapter: 1, theme: 'b', builds: 0, title: 'Before we taste', block: 'school', room: W('Phones down for a couple of minutes. Eyes on the screen.') },
   { id: 'tasting', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'The blind tasting', block: 'tasting', room: { kind: 'taste' } },

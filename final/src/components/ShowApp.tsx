@@ -24,7 +24,7 @@ import { Lunch } from './scenes/Close';
 import {
   LiveCtx, Live, ShowBrief, TastingLive, ConceptCanvas, WhiteSpaceShow, Board, Playbook, ShowFilm, FilmCtl, JoinCorner, FIELDS, decided, markLabel,
 } from './show/ShowScenes';
-import { TeamSince, Shelf, TrendVote, FlavorSchool, DirectionsMap, Landed } from './show/Deck';
+import { TeamSince, OurFlavors, Shelf, TrendVote, FlavorSchool, DirectionsMap, Landed } from './show/Deck';
 import { starters } from './show/Concepts';
 import { unconfirmed } from '@/lib/conceptLibrary';
 import { EVENT, TOPICS, RUN, CRITERIA } from '@/lib/content';
@@ -35,7 +35,7 @@ import { tasters as tasterCounts } from '@/lib/state';
 
 type View = (p: SceneProps) => React.ReactNode;
 const VIEWS: Record<string, View> = {
-  arrival: Arrival, team: TeamSince, brief: ShowBrief, prework: Prework,
+  arrival: Arrival, team: TeamSince, ours: OurFlavors, brief: ShowBrief, prework: Prework,
   gap: Gap, market: Shelf, signals: TrendVote,
   school: FlavorSchool, map: DirectionsMap, tasting: TastingLive, nextround: Landed,
   whitespace: WhiteSpaceShow, concepts: ConceptCanvas, board: Board, playbook: Playbook, lunch: Lunch,

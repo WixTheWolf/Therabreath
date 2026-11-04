@@ -8,31 +8,31 @@ export type BlockNotes = { slides: string; does: string; kit: string; output: st
 
 const TEXT: Record<string, Pick<BlockNotes, 'slides' | 'does'>> = {
   welcome: {
-    slides: 'The Future of Freshness (1), Who we are, since July (2), Your four objectives (3), Your pre-brief answers (4, only if answers came in)',
-    does: 'As people sit down, the arrival screen shows the title, the QR code and the first names as phones join. At 10:00, thank Ross for having us. Introduce the four of us, with the July row if there’s time. Read Ross’s four objectives and his goal, and show the pre-brief answers if any came in.',
+    slides: 'The Future of Freshness (1), Who we are, since July (2), Our flavors in your range (3), Your four objectives (4), Your pre-brief answers (5, only if answers came in)',
+    does: 'As people sit down, the arrival screen shows the title, the QR code and the first names as phones join. At 10:00, thank Ross for having us. Introduce the four of us, with the July row if there’s time. Then the TheraBreath products our flavors are in today. Read Ross’s four objectives and his goal, and show the pre-brief answers if any came in.',
   },
   market: {
-    slides: 'The other 86 (5), The shelf (6), Seven trends: vote, then discuss (7)',
+    slides: 'The other 86 (6), The shelf (7), Seven trends: vote, then discuss (8)',
     does: 'Open on why we’re here, then the household gap and who the other 86 are, and ask which group a new flavor is for. Put the portfolio next to what competitors are launching, and ask what keeps TheraBreath ahead. Then all seven trends go up at once and everyone votes for three on their phone straight away; the presenter view adds a vote by hand for anyone without one. The next click closes the vote and the top three open one at a time for discussion. They go into the Playbook. Ask out loud what we missed.',
   },
   school: {
-    slides: 'Flavor in OXYD-8 (8), Four directions (9), THE FLAVOR RACE (10)',
-    does: 'One slide on flavor: smell and feel, cooling, then what we control in OXYD-8, ending on the clean finish. Then the four directions on one map: click a direction to open its profile card. Two have samples in the tasting; the other two are optional cards that S skips. At 10:37, THE FLAVOR RACE: a surprise for the room, so don’t announce it. Lights down, sound up, 2:24 of film. It starts only when you move onto it, and you can pause, restart or skip it from the presenter view or the keys. It ends on four glasses on a tray: lights up and bring out the covered trays. Its flavor montage shows the flight’s own fruits, the Mystery Flavor’s among them, so treat it as a hint. If we’re running late, skip it: nothing is decided on it.',
+    slides: 'Flavor School: flavor and sodium chlorite (9), Four directions (10), THE FLAVOR RACE (11)',
+    does: 'One slide on flavor, three things to know: smell and feel, cooling, then why sodium chlorite is tough on flavor and what we control, ending on the clean finish. Then the four directions on one map: click a direction to open its profile card. Two have samples in the tasting; the other two are optional cards that S skips. At 10:37, THE FLAVOR RACE: a surprise for the room, so don’t announce it. Lights down, sound up, 2:24 of film. It starts only when you move onto it, and you can pause, restart or skip it from the presenter view or the keys. It ends on four glasses on a tray: lights up and bring out the covered trays. Its flavor montage shows the flight’s own fruits, the Mystery Flavor’s among them, so treat it as a hint. If we’re running late, skip it: nothing is decided on it.',
   },
   tasting: {
-    slides: 'The blind tasting (11), Where each sample landed, then what gets a next round (12)',
+    slides: 'The blind tasting (12), Where each sample landed, then what gets a next round (13)',
     does: `At 10:40, uncover the trays poured during setup: A and B in the Kids base, C and D in the Fresh Breath base. Everyone scores each sample on their phone, and the scores fill the screen as they come in. The loaner phone or tablet is there for anyone without one; paper cards are the last resort. For each paper card handed in, tap +1 paper card in the presenter view; we type them in after the morning. ${MYSTERY} is the Mystery Flavor, so get everyone’s fruit guesses before the names go up. Then the bubble chart from the scores stays up while everyone places five chips on what gets a next round, and the top three go up.`,
   },
   concepts: {
-    slides: 'Where TheraBreath fits in a day (13), Concepts (14)',
+    slides: 'Where TheraBreath fits in a day (14), Concepts (15)',
     does: 'Walk through the day, moment by moment: where TheraBreath is today, the moment the pre-brief says is missing, and everything that’s still open. The rows are the top three from the chips: click a cell to mark where each could fit. Then the concept cards start themselves from those three, with When from the marks. Change any field by tapping in the presenter view, or swap a card for one from our library (the two example concepts are in it). Up to three, and nothing to type.',
   },
   pipeline: {
-    slides: 'Now, Next, Later (15)',
+    slides: 'Now, Next, Later (16)',
     does: 'Tap a concept or direction in the tray, then tap Now, Next or Later to place it. Placing it is the vote. Tap a line to move it or take it back. In the presenter view, tap its fields: the consumer or occasion, the next test, a TFF owner, a C&D reviewer, the base, the date the next sample is due (the January review unless the room says otherwise) and the agreed next step. The flavor brief drafts itself from the direction’s profile and is finished in the write-up. Tap To confirm where nobody can say yet.',
   },
   close: {
-    slides: 'What we decided and what happens next (16), Thank you (17)',
+    slides: 'What we decided and what happens next (17), Thank you (18)',
     does: 'The Playbook fills in from the votes and the board and opens one chapter at a time so it can be read back, the plan with its owners last. Then the three next steps, and thank you. The last slide is a thank-you card, and the time until 12:00 is for questions. Then lunch, hosted by Church & Dwight.',
   },
 };
@@ -85,18 +85,19 @@ export const BEHIND = [
 
 // The morning slide by slide, for the team: what each click shows on the TV, the question to put to the room, and what
 // the phones do. The planned minutes and windows live in slideTimes.ts, which the presenter view also reads. Numbers are
-// the presentation's own (the presenter view's Go to list): "Your pre-brief answers" is always 4, and is skipped while
+// the presentation's own (the presenter view's Go to list): "Your pre-brief answers" is always 5, and is skipped while
 // nobody has answered.
 export type SlidePlan = { clicks?: string[]; ask?: string; phones?: string };
 export const SLIDES: Record<string, SlidePlan> = {
   arrival: { clicks: ['The title, the QR code, the number of phones joined and their first names.'], ask: 'At 10:00: welcome, thank Ross, and set up the two hours: four objectives, four samples, a plan to leave with.', phones: 'Scan the code and type a first name.' },
   team: { clicks: ['The four of us, what we test in the lab and what we bring in from outside oral care.', 'Optional (S skips it): the four July themes, and Growth, November, lights up.'] },
+  ours: { clicks: ['The 14 TheraBreath rinses on shelf today with our flavors in them, each bottle with its flavor and product line.'] },
   brief: { clicks: ['“We’ve built the morning around your four objectives.”', 'Objective 01 and its time, 10:10 to 10:25.', 'Objective 02, 10:25 to 11:00.', 'Objective 03, 11:00 to 11:20.', 'Objective 04, 11:20 to 11:40.', 'Ross’s goal, in his words.'] },
   prework: { clicks: ['Who the next flavor should be for, with any “Someone else” answers.', 'The moment TheraBreath is missing, and the group’s freshness profile.', 'What would feel off-brand, without names.'], ask: 'What makes each off-brand answer feel wrong for the brand?' },
   gap: { clicks: ['Objective 01. “TheraBreath took the burn out of mouthwash. The next job is giving more people a reason to want it.”', 'Two glasses fill: 65 for mouthwash, 14 for TheraBreath, with the record 26.8% share and its source (Church & Dwight’s Q3 call).', '“86 out of 100 households don’t buy TheraBreath yet”: 51 buy another mouthwash, 35 don’t buy mouthwash at all.', '“Flavor could give more of them a reason to try it.”'], ask: 'Which group is a new flavor for?' },
   market: { clicks: ['21 of 25 flavors are mint, across six formats, beside what competitors are launching.', '“There’s a lot of room around mint.”', 'Where TheraBreath stands.'], ask: 'TheraBreath already has what they’re chasing. What keeps it ahead?' },
   signals: { clicks: ['All seven trends, one line each with where the evidence comes from. The bars fill as phones vote.', 'The vote closes. Number 1 opens: its evidence, what it could mean and its question.', 'Number 2.', 'Number 3. The top three go into the Playbook.'], ask: 'Each trend’s own question on screen. Then, out loud only: what are you seeing that we missed?', phones: 'Pick three trends straight away. Hand votes in the presenter view for anyone without a phone.' },
-  school: { clicks: ['Objective 02. Flavor in OXYD-8: “Most of what we call flavor is really smell. The rest is how it feels.” Taste, aroma and feel.', 'Cooling does two jobs: three curves, drawn to explain, not measured.', 'What we control in OXYD-8: pH, dissolving and protecting the flavor, materials that hold up. “It has to finish clean.”'], ask: 'Where has flavor been hardest to get right in OXYD-8 for you?' },
+  school: { clicks: ['Objective 02. Flavor School, three things to know. Smell and feel: “Most of what we call flavor is really smell. The rest is how it feels.” Taste, aroma and feel.', 'Cooling does two jobs: three curves, drawn to explain, not measured.', 'Sodium chlorite is tough on flavor. What we control: pH, formulating and protecting the flavor, materials that hold up. “It has to finish clean.”'], ask: 'Where has flavor been hardest to get right with sodium chlorite for you?' },
   map: { clicks: ['The map: familiar to adventurous, gentle to bold, all four directions. Our view, not data.', 'Plant-Powered Freshness: its profile card.', 'Optional (S skips it): Global Brightness.', 'Optional (S skips it): Modern Clean.', 'Next-Generation Kids.'], ask: 'Which direction feels most like TheraBreath, and which stretches it most? Click a direction to open its card.' },
   film: { clicks: ['THE FLAVOR RACE, 2:24, lights down and sound up. Don’t announce it. It ends on four glasses on a tray: lights up and bring out the samples.'], ask: 'Nothing: let it play. Its montage shows the flight’s fruits, so it doubles as a hint for the Mystery Flavor.', phones: 'Phones show “Phones down for a couple of minutes.”' },
   tasting: { clicks: ['Four coded samples and how many have scored. A and B first, then C and D, with water between.', 'Their one-word answers and fruit guesses.', `The names, after everyone has scored. ${MYSTERY} shows its name only.`], phones: 'Score each sample: appeal, fit with TheraBreath and newness from 1 to 5, who would buy it, which direction it comes from, whether to develop it, one word. Fruit guesses for the Mystery Flavor. Paper cards counted with +1 in the presenter view and typed in after the morning.' },

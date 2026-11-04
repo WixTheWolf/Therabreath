@@ -1,7 +1,8 @@
 'use client';
-// The slides of the 17-slide morning that merge what used to be two or more: Who we are with July, the shelf, the trends
-// as a vote first, Flavor in OXYD-8, the four directions with their profile cards, and where each sample landed next to
-// the chips vote. Built for talking with the room: one question on screen where there is one, and nothing to type.
+// The slides of the 18-slide morning that are new or merge what used to be two or more: Who we are with July, the
+// TheraBreath products our flavors are in today, the shelf, the trends as a vote first, Flavor School (flavor and sodium
+// chlorite), the four directions with their profile cards, and where each sample landed next to the chips vote. Built
+// for talking with the room: one question on screen where there is one, and nothing to type.
 import React, { useEffect, useState } from 'react';
 import { R, Enter, Src, SceneProps, clean } from '../scenes/ui';
 import { CoolingPlot, OxydField } from '../scenes/School';
@@ -11,6 +12,7 @@ import {
   TEAM, SCIENCE, IMAGINATION, JULY, PORTFOLIO, MARKET, SOURCES, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, DIRECTIONS,
 } from '@/lib/content';
 import { tallyPick, ranked, voteCounts, tasteSummary, SessionState } from '@/lib/state';
+import { OUR_RINSES, OUR_KIDS, OUR_COUNT, type OurProduct } from '@/lib/ourFlavors';
 
 const useLive = () => React.useContext(LiveCtx)!;
 const tally = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
@@ -53,7 +55,39 @@ export function TeamSince({ step }: SceneProps) {
   );
 }
 
-// 6. The shelf: the portfolio by format (mint in blue, everything else in amber) beside what competitors have launched.
+// 3. Our flavors in your range: every TheraBreath product on shelf today with a Flavor Factory flavor in it, as its
+// own bottle on one shelf, the rinses and then the kids rinses. Flavor names only: usage levels and flavor codes never
+// go on this slide.
+const Bottles = ({ label, items, from }: { label: string; items: OurProduct[]; from: number }) => (
+  <div className="of-g" style={{ flexGrow: items.length }}>
+    <Enter i={2} className="of-gl"><span className="k">{label}</span></Enter>
+    <div className="of-row">
+      {items.map((p, j) => (
+        <figure key={p.img} className="of-b" style={{ ['--i' as any]: from + j }}>
+          <div className="of-img"><img src={`/img/bottles/${p.img}.webp`} alt={`TheraBreath ${p.line} rinse, ${p.flavor}`} /></div>
+          <figcaption><b>{p.flavor}</b>{p.line !== p.flavor && <span>{p.line}</span>}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+);
+export function OurFlavors() {
+  return (
+    <div className="pad of">
+      <div className="of-head">
+        <Enter i={0}><div className="k">The Flavor Factory in TheraBreath</div></Enter>
+        <Enter i={1}><h2 className="h2 of-title">Our flavors are in {OUR_COUNT} TheraBreath rinses on shelf today.</h2></Enter>
+      </div>
+      <div className="of-shelf">
+        <Bottles label="Oral rinses" items={OUR_RINSES} from={0} />
+        <Bottles label="Kids rinses" items={OUR_KIDS} from={OUR_RINSES.length} />
+      </div>
+      <Src k={['tffport', 'bottles']} />
+    </div>
+  );
+}
+
+// 7. The shelf: the portfolio by format (mint in blue, everything else in amber) beside what competitors have launched.
 // Build 1: there's a lot of room around mint. Build 2: where TheraBreath stands, and the question.
 const FORMATS6 = ['Rinse', 'Toothpaste', 'Kids', 'Lozenge', 'Gum', 'Sachet'];
 export function Shelf({ step }: SceneProps) {
@@ -94,7 +128,7 @@ export function Shelf({ step }: SceneProps) {
   );
 }
 
-// 7. Seven trends: vote, then discuss. All seven show at once as one line each with where the evidence comes from, and
+// 8. Seven trends: vote, then discuss. All seven show at once as one line each with where the evidence comes from, and
 // the phones vote for three straight away while the bars fill. Builds 1 to 3 open the top three one at a time (the
 // vote closes on build 1 and reopens if we go back); the other four stay as one line.
 export function topTrends(s: SessionState) {
@@ -148,22 +182,23 @@ export function TrendVote({ s, step }: SceneProps) {
   );
 }
 
-// 8. Flavor in OXYD-8: what flavor is, then how cooling works, then what we control in OXYD-8, ending on the clean
-// finish and a question. One slide, three states. The words are Ryan's from the Flavor School slides.
-const FS = ['What flavor is', 'Cooling', 'OXYD-8'];
+// 9. Flavor School, as three things to know about flavor in a TheraBreath rinse: most of flavor is smell and feel,
+// cooling has a hit and a linger, and sodium chlorite is tough on flavor, so we formulate for it. One slide, three
+// states, ending on the clean finish and a question. The words are Ryan's from the Flavor School slides.
+const FS = ['Smell and feel', 'Cooling', 'Sodium chlorite'];
 export function FlavorSchool({ step }: SceneProps) {
   const parts = [
     { t: 'Taste', w: 'The tongue', d: 'Sweet, sour, salty, bitter, umami.' },
     { t: 'Aroma', w: 'The nose, both ways', d: 'What you sniff in, plus what rises from the back of your mouth as you swallow.' },
     { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming. Most of what mint does happens here.' },
   ];
-  const levers = ['Controlling pH', 'Dissolving and protecting the flavor', 'Choosing materials that hold up'];
+  const levers = ['Controlling pH', 'Formulating and protecting the flavor', 'Choosing materials that hold up'];
   const at = Math.min(2, step);
   return (
     <div className="fs">
       {at === 2 && <OxydField />}
       <div className="pad fs-head">
-        <Enter i={0}><div className="k">Flavor School · Flavor in OXYD-8</div></Enter>
+        <Enter i={0}><div className="k">Flavor School · Three things to know</div></Enter>
         <ol className="fs-steps">{FS.map((x, i) => <li key={x} className={i === at ? 'on' : i < at ? 'done' : ''}><span className="num">0{i + 1}</span>{x}</li>)}</ol>
       </div>
       <div className={'fs-state school' + (at === 0 ? ' on' : '')}>
@@ -188,11 +223,11 @@ export function FlavorSchool({ step }: SceneProps) {
       <div className={'fs-state oxyd' + (at === 2 ? ' on' : '')}>
         {step >= 2 && (
           <div className="pad">
-            <h2 className="h2 fs-ox">OXYD-8 is built to be tough on the bacteria behind bad breath, and that makes it tough on flavor too.</h2>
-            <div className="k fs-ctl">What we control in OXYD-8</div>
+            <h2 className="h2 fs-ox">Sodium chlorite is tough on the bacteria behind bad breath, and that makes it tough on flavor too.</h2>
+            <div className="k fs-ctl">What we control</div>
             <div className="levers">{levers.map((l, i) => <div key={l} className="lever" style={{ animationDelay: `${300 + i * 160}ms` }}><span className="num">0{i + 1}</span>{l}</div>)}</div>
             <p className="h2 fs-pay">A TheraBreath flavor can start anywhere, <span className="it">but it has to finish clean.</span></p>
-            <Ask step={step} q="Where has flavor been hardest to get right in OXYD-8 for you?" className="fs-ask" />
+            <Ask step={step} q="Where has flavor been hardest to get right with sodium chlorite for you?" className="fs-ask" />
             <Src k="patent" extra="Public chemistry only. No TheraBreath or TFF formula details" style={{ position: 'absolute', left: 120, bottom: 118 }} />
           </div>
         )}
@@ -201,7 +236,7 @@ export function FlavorSchool({ step }: SceneProps) {
   );
 }
 
-// 9. Four directions. The map (familiar to adventurous, gentle to bold, our view) with all four; builds 1 to 4 open
+// 10. Four directions. The map (familiar to adventurous, gentle to bold, our view) with all four; builds 1 to 4 open
 // each direction's profile card. Clicking a direction on the TV opens its card; clicking it again goes back to the map.
 // Global Brightness and Modern Clean (builds 2 and 3) are the optional ones the short version skips.
 export function DirectionsMap({ step }: SceneProps) {
@@ -252,7 +287,7 @@ export function DirectionsMap({ step }: SceneProps) {
   );
 }
 
-// 12. Where each sample landed, then what gets a next round. The bubble chart from the scores stays up while the phones
+// 13. Where each sample landed, then what gets a next round. The bubble chart from the scores stays up while the phones
 // place five chips each on the four samples and the two directions not in the tasting; build 1 ranks the top three.
 export function topDirections(s: SessionState) {
   return ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ id, n, name: directionName(id, s) }));

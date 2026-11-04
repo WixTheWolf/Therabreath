@@ -52,6 +52,9 @@ export const SOURCES: Record<string, string> = {
   tff: 'The Flavor Factory’s read, not a published finding',
   patent: 'US Patent 6,582,682 (public)',
   listings: 'TheraBreath public product listings [CONFIRM access date]',
+  tffport: 'The Flavor Factory portfolio record, November 4, 2026',
+  bottles: 'TheraBreath product photos (therabreath.com, Walmart and Target)',
+  pepvan: 'Target listing for TheraBreath Peppermint Vanilla, 16 oz, checked November 4, 2026',
   ross: 'Ross Conroy, Church & Dwight Oral Care R&D, workshop invitation, September 18, 2026',
 };
 
@@ -70,6 +73,7 @@ export const SOURCE_URLS: Record<string, string> = {
   kff: 'https://www.kff.org/health-costs/poll-1-in-8-adults-say-they-are-currently-taking-a-glp-1-drug-for-weight-loss-diabetes-or-another-condition-even-as-half-say-the-drugs-are-difficult-to-afford/',
   carequest: 'https://carequest.org/?p=7123',
   licensing: 'https://www.thelicensingletter.com/?p=26759',
+  pepvan: 'https://www.target.com/p/therabreath-mouth-wash-peppermint-vanilla-16oz/-/A-1011892002',
 };
 
 export const CITE = {
@@ -420,7 +424,7 @@ export const TOPICS = [
 export const TEAM = [
   { name: 'Dan Wixted', title: 'President' },
   { name: 'Alex Wixted', title: 'Business Operations' },
-  { name: 'Ryan Wixted', title: 'QC/QA Manager' },
+  { name: 'Ryan Wixted', title: 'QC/Product Development' },
   { name: 'Matt Wixted', title: 'Production Manager' },
 ];
 

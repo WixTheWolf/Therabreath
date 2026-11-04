@@ -24,7 +24,7 @@ export function School({ step }: SceneProps) {
   );
 }
 
-// 19. How cool works (illustrative curves). The plot on its own is shared with Flavor in OXYD-8.
+// 19. How cool works (illustrative curves). The plot on its own is shared with the Flavor School slide.
 export function CoolingPlot({ shown = 3, frost = true }: { shown?: number; frost?: boolean }) {
   const W = 1080, H = 640, ml = 90, mb = 90, mt = 40, mr = 40;
   const X = (v: number) => ml + v * (W - ml - mr), Y = (v: number) => H - mb - v * (H - mb - mt);
@@ -98,7 +98,7 @@ export function OxydField() {
 
 // 20. Flavor in an oxidizing world: flavor molecules drifting through an oxygen-rich field.
 export function Oxyd({ step }: SceneProps) {
-  const levers = ['Controlling pH', 'Dissolving and protecting the flavor', 'Choosing materials that hold up'];
+  const levers = ['Controlling pH', 'Formulating and protecting the flavor', 'Choosing materials that hold up'];
   return (
     <div className="oxyd">
       <OxydField />

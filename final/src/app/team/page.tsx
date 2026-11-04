@@ -14,8 +14,8 @@ const FILES = '/files';
 export default async function Team() {
   const prebrief = `/survey/${PRACTICE}?k=${await joinToken(PRACTICE)}`;
   const before = [
-    { href: `${FILES}/The-Future-of-Freshness-Presenter-Deck.pdf`, t: 'The presentation, page by page', d: 'All 17 slides with their builds, times and talking points. The easiest way to read it on a phone.' },
-    { href: '/host/run', t: 'The run sheet', d: 'The morning minute by minute, the 9:30 setup and what we still need to confirm, including the drafted concept cards and the Flavor in OXYD-8 slide.' },
+    { href: `${FILES}/The-Future-of-Freshness-Presenter-Deck.pdf`, t: 'The presentation, page by page', d: 'Every slide with its builds, times and talking points. The easiest way to read it on a phone.' },
+    { href: '/host/run', t: 'The run sheet', d: 'The morning minute by minute, the 9:30 setup and what we still need to confirm, including the drafted concept cards, the Flavor School slide and the bottles on slide 3.' },
     { href: '/', t: 'The front door', d: 'What Church & Dwight sees after their password.' },
     { href: prebrief, t: 'The pre-brief', d: 'The pre-read Ross sends on November 3. A practice copy, so try the questions freely.' },
     { href: '/media/opening.mp4', t: 'The opening film', d: '1:22, on the front door and the pre-brief. It isn’t shown in the room.' },

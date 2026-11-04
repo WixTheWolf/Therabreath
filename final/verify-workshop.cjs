@@ -3,12 +3,12 @@ const {stripTypeScriptTypes}=require('node:module');
 const cache={};function load(name){if(cache[name])return cache[name];const module={exports:{}};let code=stripTypeScriptTypes(fs.readFileSync('src/lib/'+name+'.ts','utf8'));const names=[...code.matchAll(/export (?:const|function) (\w+)/g)].map(m=>m[1]);code=code.replace(/import \{ ([^}]+) \} from '([^']+)';/g,(_,n,p)=>`const {${n}} = require('${p}');`).replace(/export /g,'');code+='\nObject.assign(module.exports,{'+names.join(',')+'});';vm.runInNewContext(code,{module,exports:module.exports,require:p=>load(p.replace('./','')),globalThis,console});return cache[name]=module.exports;}
 
 const {SCENES,EXECUTIVE}=load('scenes'),{SAMPLES,PRIMARY_TERRITORIES,SEEDS,MISSIONS,EVENT,ROSS_GOAL,SOURCES,DIRECTIONS,RUN,TOPICS,OBJECTIVES}=load('content'),{fold}=load('state');
-// The run of show: seventeen slides for Ross's four objectives, discussion first. No part dividers: the first slide of
+// The run of show: eighteen slides for Ross's four objectives, discussion first. No part dividers: the first slide of
 // each part carries its objective tag. Phone votes on the trends, the tasting and the next round.
 const ids=SCENES.map(s=>s.id),at=(id)=>ids.indexOf(id),room=(id)=>SCENES.find(s=>s.id===id).room,sc=(id)=>SCENES.find(s=>s.id===id);
-assert.equal(SCENES.length,17);
-assert.equal(ids.join(),'arrival,team,brief,prework,gap,market,signals,school,map,film,tasting,nextround,whitespace,concepts,board,playbook,lunch','the seventeen slides, in order');
-assert.equal(at('film'),9,'THE FLAVOR RACE is slide 10');assert.equal(at('film'),at('tasting')-1,'THE FLAVOR RACE plays right before the tasting');
+assert.equal(SCENES.length,18);
+assert.equal(ids.join(),'arrival,team,ours,brief,prework,gap,market,signals,school,map,film,tasting,nextround,whitespace,concepts,board,playbook,lunch','the eighteen slides, in order');
+assert.equal(at('film'),10,'THE FLAVOR RACE is slide 11');assert.equal(at('film'),at('tasting')-1,'THE FLAVOR RACE plays right before the tasting');
 for(const id of ['title','july','thesis','open1','open2','open3','open4','portfolio','signalvote','cooling','oxyd','anatomy','platform1','platform2','platform3','platform4','matrix','dots','next'])assert(!ids.includes(id),'merged or cut slide still live: '+id);
 assert.equal(room('signals').kind,'pick');assert.equal(room('signals').key,'signals');assert.equal(room('signals').max,3);assert.equal(room('tasting').kind,'taste');assert.equal(room('nextround').kind,'chips');assert.equal(room('nextround').key,'directions');assert.equal(room('nextround').total,5);
 assert(!SCENES.some(s=>s.room.kind==='dots'),'no dot vote on the day');
@@ -50,6 +50,6 @@ const {SLIDES}=load('runNotes'),{SLIDE_MIN,SLIDE_TIMES}=load('slideTimes');const
 assert(SCENES.every(s=>SLIDES[s.id]&&SLIDE_TIMES[s.id]&&s.id in SLIDE_MIN),'a scene has no slide plan');
 for(const b of RUN){const sum=SCENES.filter(s=>s.block===b.id).reduce((n,s)=>n+SLIDE_MIN[s.id],0);assert.equal(sum,mm(b.end)-mm(b.t),'slide minutes for '+b.id+' do not fill '+b.t+' to '+b.end);}
 assert(SCENES.every(s=>!SLIDES[s.id].clicks||SLIDES[s.id].clicks.length<=s.builds+1),'a slide lists more clicks than builds');
-const T={arrival:'10:00',team:'10:01',brief:'10:03',prework:'10:05',gap:'10:10',market:'10:13',signals:'10:16',school:'10:25',map:'10:29',film:'10:37',tasting:'10:40',nextround:'10:53',whitespace:'11:00',concepts:'11:05',board:'11:20',playbook:'11:40',lunch:'11:48'};
+const T={arrival:'10:00',team:'10:01',ours:'10:03',brief:'10:04',prework:'10:06',gap:'10:10',market:'10:13',signals:'10:16',school:'10:25',map:'10:29',film:'10:37',tasting:'10:40',nextround:'10:53',whitespace:'11:00',concepts:'11:05',board:'11:20',playbook:'11:40',lunch:'11:48'};
 for(const [id,t] of Object.entries(T))assert.equal(SLIDE_TIMES[id].from,t,id+' starts at '+t);assert.equal(SLIDE_TIMES.lunch.to,'12:00');
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, objective tags, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');
