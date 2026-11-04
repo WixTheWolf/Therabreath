@@ -388,11 +388,11 @@ export const RECORD = [
 ];
 // The tasting table, for the team: a checklist on the run sheet. Items are to-dos to confirm, not things already done.
 export const TASTING_KIT = [
-  'Cups labeled A to D, nothing else on the label: no names, no fruits.',
+  'Cups labeled A to D, nothing else on the label: no names, no fruits. Pour them during setup onto covered trays, and bring the trays out as THE FLAVOR RACE ends.',
   'Backup samples of each, in case of a spill or a second pour.',
   'Tasting cups, spit cups and napkins at every seat.',
   'Water to rinse between samples.',
-  'Paper scorecards and pens, and the QR code on screen for phones.',
+  'The QR code on screen for phones, and the loaner phone or tablet joined at setup. A few paper scorecards and pens as a last resort.',
   'Reveal: the names flip on screen at the second build of the tasting. Reveal cards only if you’re bringing printed ones.',
 ];
 

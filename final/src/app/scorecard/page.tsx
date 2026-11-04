@@ -3,8 +3,8 @@ import PrintButton from './PrintButton';
 
 export const metadata = { title: 'Tasting scorecard' };
 
-// The tasting scorecard, on paper: the same questions the phones ask, one card per person. Prints to one page. The team
-// types each card into the presenter view (/host/presenter) on the tasting slide.
+// The tasting scorecard, on paper: the same questions the phones ask, one card per person. Prints to one page. On the day
+// the presenter view only counts the cards; the team types them in after the morning on /host/cards.
 const SCALES = CRITERIA.map((c) => c.l);
 
 export default function Scorecard() {
