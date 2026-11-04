@@ -54,6 +54,8 @@ assert.equal(CRITERIA.map(c=>c.key+':'+c.l).join(),'appeal:Liking,feels:Fit with
 assert.equal(JAR.map(j=>j.key).join(),'sweet,cool');assert.equal(JAR_OPTS.join(),'Not enough,Just right,Too much');assert.equal(load('content').DEVELOP,undefined,'develop it further is no longer asked');
 const jr=fold([{id:'j1',t:1,kind:'rate',pid:'a',data:{sample:'C',appeal:4,feels:3,newness:5,sweet:'Just right',cool:'Too much',word:'Bright'}},{id:'j2',t:2,kind:'rate',pid:'b',data:{sample:'C',appeal:2,feels:4,newness:3,sweet:'Just right',cool:'Not enough'}},{id:'j3',t:3,kind:'rate',pid:'c',data:{sample:'C',appeal:3,feels:3,newness:3,who:['Families'],advance:'Maybe'}}]);
 const js=tasteSummary(jr,'C');assert.equal(js.n,3);assert.equal(js.sweet['Just right'],2);assert.equal(jarTop(js.sweet),'Just right, 2 of 2');assert.equal(jarAll(js.cool,JAR_OPTS),'1 not enough, 1 too much');assert.equal(jr.ratings.C.c.advance,'Maybe','an old rating keeps its answers');assert.equal(jarTop({}),'');
+// The chips: the four samples under Tasted today, then the two directions not tasted today.
+assert.equal(DIRECTIONS.filter(d=>d.tasted).map(d=>d.id).join(),'A,B,C,D');assert.equal(DIRECTIONS.filter(d=>!d.tasted).length,2);assert(DIRECTIONS.filter(d=>d.tasted).every(d=>PRIMARY_TERRITORIES.some(t=>t.name===d.sub)),'a sample chip names its direction underneath');
 assert.equal(SIGNALS[5].title,'Mouthfeel matters as much as taste.','the sixth trend says mouthfeel');
 // The slide-by-slide plan: every scene has one, each part's minutes fill its window exactly, and no slide lists more
 // clicks than it has builds.

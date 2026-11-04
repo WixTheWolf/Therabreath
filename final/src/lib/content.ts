@@ -255,9 +255,11 @@ export const SAMPLES = [
 export type Sealed = { samples: Record<string, { name: string; note: string }>; heroes: Record<string, string>; flavors: Record<string, string[]> };
 export const MYSTERY = SAMPLES.find((x) => x.mystery)!.code;
 // What can get a next round: the four samples, then the two directions that are not in the tasting.
+// What the five chips go on after the tasting: the four flavors tasted today (by name once revealed, with their direction
+// underneath) and the two directions not tasted today. `tasted` groups them on the phones.
 export const DIRECTIONS = [
-  ...SAMPLES.map((x) => ({ id: x.code, label: `Sample ${x.code}`, sub: x.base, territory: x.territory, colors: x.color })),
-  ...PRIMARY_TERRITORIES.filter((t) => !SAMPLES.some((x) => x.territory === t.id)).map((t) => ({ id: t.id, label: t.name, sub: 'Not in the tasting', territory: t.id, colors: [t.palette[0], t.palette[1]] })),
+  ...SAMPLES.map((x) => ({ id: x.code, label: `Sample ${x.code}`, sub: PRIMARY_TERRITORIES.find((t) => t.id === x.territory)?.name || '', territory: x.territory, colors: x.color, tasted: true })),
+  ...PRIMARY_TERRITORIES.filter((t) => !SAMPLES.some((x) => x.territory === t.id)).map((t) => ({ id: t.id, label: t.name, sub: 'New direction, not tasted today', territory: t.id, colors: [t.palette[0], t.palette[1]], tasted: false })),
 ];
 export const WHO_CHIPS = ['Gen Z', 'Want it milder', 'Families', '55+', 'Dry mouth', 'International', 'Me'];
 // How each sample is scored, the same on the phones, the paper card, the presenter view and the TV: three scales from 1
@@ -394,7 +396,7 @@ export const DECIDE = [
   { v: 'Score', when: 'As you taste', d: 'How much you like it, whether it could be a TheraBreath flavor and how different it is from what’s on the shelf, from 1 to 5. Then whether the sweetness and cooling are right. On your phone or a paper card.' },
   { v: 'Reveal', when: 'Once everyone’s scored', d: 'The names go up on screen, next to everyone’s scores.' },
   { v: 'Discuss', when: 'Before the vote', d: 'Where each sample landed, and what it would take to make it work.' },
-  { v: 'Vote', when: 'Chips by 11:00', d: 'Five chips each on what gets a next round. After the concepts, three dots each on which to develop.' },
+  { v: 'Vote', when: 'Chips by 11:00', d: 'Five chips each on the flavors or directions we should develop next. After the concepts, three dots each on which to develop.' },
   { v: 'Assign', when: '11:20', d: 'Each direction goes under Now, Next or Later with everything below, and we read it back before noon.' },
 ];
 // What every direction leaves with: the same six the presentation's Now, Next, Later rows ask for.

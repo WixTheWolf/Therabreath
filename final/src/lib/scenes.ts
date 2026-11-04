@@ -53,7 +53,7 @@ const SHOW: Row[] = [
   { id: 'film', act: PART(2), chapter: 1, theme: 'b', builds: 0, title: 'Before we taste', block: 'school', room: W('Phones down for a couple of minutes. Eyes on the screen.') },
   { id: 'tasting', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'The blind tasting', block: 'tasting', room: { kind: 'taste' } },
   { id: 'nextround', act: PART(2), chapter: 1, theme: 'b', builds: 1, title: 'Where each sample landed, then what gets a next round', block: 'tasting',
-    room: { kind: 'chips', key: 'directions', total: 5, prompt: 'Put your five chips on what you’d develop next. You can stack them.' } },
+    room: { kind: 'chips', key: 'directions', total: 5, prompt: 'Which flavors or directions should we develop next? Put your five chips on them. You can stack them.' } },
 
   opener(3, 'concepts'),
   { id: 'whitespace', act: PART(3), chapter: 2, theme: 'a', builds: 3, title: 'Where TheraBreath fits in a day', block: 'concepts', room: W('Where TheraBreath fits in a day') },

@@ -627,6 +627,8 @@
 .landed .lm-list .dl-dots i { width: 16px; height: 16px; }
 .landed .lm-list .dl-n { font-size: 36px; }
 .landed .lm-list .dl.dim { opacity: .4; }
+.lm-ask { font: 300 26px/1.2 var(--serif); margin: -4px 0 2px; }
+.landed .lm-list .lm-group { font-size: 13px; color: var(--fg3); margin: 6px 0 -2px; }
 .lm-q3 { margin-top: auto; }
 .lm-q3 p { font-size: 28px; }
 

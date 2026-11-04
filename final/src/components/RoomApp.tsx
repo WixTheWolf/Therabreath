@@ -95,12 +95,19 @@ function Chips({ s, me, p, room }: P) {
     <div className="rm-pad">
       <h1 className="h3">{room.prompt}</h1><Lock v={v} />
       <div className="rm-chipsleft">{Array.from({ length: room.total }, (_, i) => <i key={i} className={i < used ? 'used' : ''} />)}</div>
-      <div className="rm-list">{DIRECTIONS.map((d) => { return (
-        <div key={d.id} className="rm-chip" style={{ ['--c1' as any]: d.colors[0], ['--c2' as any]: d.colors[1] }}>
-          <span className="sw" /><b>{s.revealed?.samples[d.id]?.name || d.label}<small>{d.sub}</small></b>
-          <button onClick={() => add(d.id, -1)} disabled={!o[d.id] || v?.locked}>-</button><em className="num">{o[d.id] || 0}</em><button onClick={() => add(d.id, 1)} disabled={used >= room.total || v?.locked}>+</button>
-        </div>
-      ); })}</div>
+      {/* Two groups, so it's clear what a chip is for: the flavors just tasted (by name once revealed, with their
+          direction), then the two directions nobody has tasted yet. */}
+      {[{ h: 'Tasted today', ds: DIRECTIONS.filter((d) => d.tasted) }, { h: 'New directions, not tasted today', ds: DIRECTIONS.filter((d) => !d.tasted) }].map((g) => (
+        <section key={g.h} className="rm-chipgroup" aria-label={g.h}>
+          <div className="k">{g.h}</div>
+          <div className="rm-list">{g.ds.map((d) => (
+            <div key={d.id} className="rm-chip" style={{ ['--c1' as any]: d.colors[0], ['--c2' as any]: d.colors[1] }}>
+              <span className="sw" /><b>{s.revealed?.samples[d.id]?.name || d.label}{d.tasted && <small>{d.sub}</small>}</b>
+              <button onClick={() => add(d.id, -1)} disabled={!o[d.id] || v?.locked} aria-label={`One chip off ${s.revealed?.samples[d.id]?.name || d.label}`}>-</button><em className="num">{o[d.id] || 0}</em><button onClick={() => add(d.id, 1)} disabled={used >= room.total || v?.locked} aria-label={`One chip on ${s.revealed?.samples[d.id]?.name || d.label}`}>+</button>
+            </div>
+          ))}</div>
+        </section>
+      ))}
       <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{JSON.stringify(o) === JSON.stringify(mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} chips`}</button>
     </div>
   );

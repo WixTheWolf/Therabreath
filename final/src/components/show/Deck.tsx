@@ -287,8 +287,9 @@ export function DirectionsMap({ step }: SceneProps) {
   );
 }
 
-// 13. Where each sample landed, then what gets a next round. The bubble chart from the scores stays up while the phones
-// place five chips each on the four samples and the two directions not in the tasting; build 1 ranks the top three.
+// 15. Where each sample landed, then what gets a next round. The bubble chart from the scores stays up while the phones
+// place five chips each on which flavors or directions to develop next: the four tasted today, then the two directions
+// not tasted today (grouped the same way as on the phones). Build 1 ranks the top three.
 export function topDirections(s: SessionState) {
   return ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ id, n, name: directionName(id, s) }));
 }
@@ -335,17 +336,20 @@ export function Landed({ s, step }: SceneProps) {
         </div>
         <div className="lm-chips">
           <div className="k">Five chips each · {tally(c.phones, 'person has', 'people have')} voted{byHandNote(c.hand, 'chip', 'chips')}</div>
+          <p className="lm-ask">Which flavors or directions should we develop next?</p>
           <div className="dotlist lm-list">
-            {DIRECTIONS.map((d, i) => {
+            {DIRECTIONS.flatMap((d, i) => {
               const n = t[d.id] || 0; const rank = top.indexOf(d.id);
-              return (
+              // The same two groups as the phones: the four flavors tasted today, then the two directions nobody has tasted.
+              const head = i === 0 || DIRECTIONS[i - 1].tasted !== d.tasted ? [<div key={'h' + d.id} className="k lm-group">{d.tasted ? 'Tasted today' : 'New directions, not tasted today'}</div>] : [];
+              return [...head, (
                 <div key={d.id} className={'dl' + (step >= 1 && rank > -1 ? ' top' : '') + (step >= 1 && top.length && rank < 0 ? ' dim' : '')} style={{ ['--c' as any]: d.colors[1], ['--i' as any]: i }} data-nonav>
-                  <span className="dl-name"><b>{directionName(d.id, s)}</b><small>{d.label !== directionName(d.id, s) ? `${d.label} · ${d.sub}` : d.sub}</small></span>
+                  <span className="dl-name"><b>{directionName(d.id, s)}</b>{d.tasted && <small>{d.label !== directionName(d.id, s) ? `${d.label} · ${d.sub}` : d.sub}</small>}</span>
                   <span className="dl-dots">{Array.from({ length: Math.min(n, 24) }, (_, j) => <i key={j} style={{ ['--j' as any]: j }} />)}</span>
                   <b className="num dl-n">{n}</b>
                   {step >= 1 && rank > -1 ? <em className="k">Number {rank + 1}</em> : <em />}
                 </div>
-              );
+              )];
             })}
           </div>
           <Ask b={1} step={step} q="What would set TheraBreath’s flavors apart from what competitors are launching?" className="lm-q3" />
