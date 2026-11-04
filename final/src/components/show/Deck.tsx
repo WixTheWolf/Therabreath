@@ -87,42 +87,57 @@ export function OurFlavors() {
   );
 }
 
-// 8. The shelf: the portfolio by format (mint in blue, everything else in amber) beside what competitors have launched.
-// Build 1: there's a lot of room around mint. Build 2: where TheraBreath stands, and the question.
-const FORMATS6 = ['Rinse', 'Toothpaste', 'Kids', 'Lozenge', 'Gum', 'Sachet'];
+// 8. The shelf. Left: TheraBreath's range as dots, one per flavor (mint in blue, everything else in amber), a row per
+// format, with only the flavors that aren't mint named, so the point reads from the back of the room. Right: what
+// competitors have launched (TheraBreath's own Target exclusive is in the talking points, not among the competitors),
+// with their sources on one line. Build 1: there's a lot of room around mint. Build 2: where TheraBreath stands.
+const SHELF_FORMATS = ['Rinse', 'Toothpaste', 'Kids', 'Lozenge', 'Gum'];
+const isMint = (flavor: string) => /mint/i.test(flavor);
+const RIVAL_SOURCES = 'Dentistry Today (July 2025 and March 2026), Kenvue (June 2026), CTV News, License Global and DesignRush (Hismile)';
 export function Shelf({ step }: SceneProps) {
-  const mint = PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length;
-  const formats = FORMATS6.filter((f) => PORTFOLIO.some((v) => v.format === f));
+  const mint = PORTFOLIO.filter((v) => isMint(v.flavor)).length;
+  const formats = SHELF_FORMATS.filter((f) => PORTFOLIO.some((v) => v.format === f));
+  const rivals = MARKET.filter((m) => m.who !== 'TheraBreath');
   return (
     <div className="pad shelf">
       <div className="sh-left">
         <Enter i={0}><div className="k">Your portfolio today</div></Enter>
         <Enter i={1}><h2 className="h2 sh-title">{mint} of {PORTFOLIO.length} flavors are mint, across {WORDS[formats.length] || formats.length} formats.</h2></Enter>
-        <div className={'sh-rows' + (step >= 1 ? ' room' : '')}>
-          {formats.map((f, r) => (
-            <Enter key={f} i={2 + r} className="sh-row">
-              <span className="k">{f}</span>
-              <div>{PORTFOLIO.filter((v) => v.format === f).map((v, j) => <span key={j} className={/mint/i.test(v.flavor) ? 'mint' : 'other'}>{v.flavor}</span>)}</div>
-            </Enter>
-          ))}
+        <div className={'sh-rows' + (step >= 1 ? ' sh-lit' : '')}>
+          {formats.map((f, r) => {
+            const vs = PORTFOLIO.filter((v) => v.format === f).sort((a, b) => Number(isMint(b.flavor)) - Number(isMint(a.flavor)));
+            const others = vs.filter((v) => !isMint(v.flavor));
+            const nMint = vs.length - others.length;
+            return (
+              <Enter key={f} i={2 + r} className="sh-row">
+                <span className="k">{f}</span>
+                <div>
+                  <div className="sh-dots" aria-hidden="true">{vs.map((v, j) => <i key={j} className={isMint(v.flavor) ? 'mint' : 'other'} />)}</div>
+                  <span className="sh-note">{others.length ? <><b>{others.map((v) => v.flavor).join(', ')}</b>{nMint ? `, and ${nMint} mint` : ''}</> : `${vs.length}, all mint`}</span>
+                </div>
+              </Enter>
+            );
+          })}
         </div>
-        <R b={1} step={step}><p className="h2 it sh-room">There’s a lot of room around mint.</p></R>
-        <Src k="listings" style={{ position: 'static', marginTop: 18 }} />
+        <Enter i={2 + formats.length} className="sh-key"><span><i className="mint" />Mint</span><span><i className="other" />Everything else</span></Enter>
+        <R b={1} step={step}><p className="h2 it sh-room">There&rsquo;s a lot of room around mint.</p></R>
+        <Src k="listings" style={{ position: 'static', marginTop: 14 }} />
       </div>
       <div className="sh-right">
         <Enter i={1}><div className="k">What competitors are launching · all public</div></Enter>
         <ol className="sh-launch">
-          {MARKET.map((m, i) => (
-            <Enter key={i} i={2 + i} className={'sh-mk' + (m.who === 'TheraBreath' ? ' tb' : '')}>
+          {rivals.map((m, i) => (
+            <Enter key={i} i={2 + i} className="sh-mk">
               <span className="sh-when">{m.when}</span>
-              <div><b>{m.who}</b><p>{m.what}</p><span className="src">{clean(SOURCES[m.src])}</span></div>
+              <div><b>{m.who}</b><p>{m.what}</p></div>
             </Enter>
           ))}
         </ol>
+        <Enter i={2 + rivals.length}><p className="src sh-srcs">Sources: {RIVAL_SOURCES}</p></Enter>
       </div>
       <R b={2} step={step} className="mk-turn sh-turn">
         <span className="k">Where TheraBreath stands</span>
-        <p>TheraBreath has been alcohol-free and dye-free from the start. It has OXYD-8, and it already has a kids line. <span className="it">TheraBreath already has what they’re chasing. What keeps it ahead?</span></p>
+        <p>TheraBreath has been alcohol-free and dye-free from the start, it uses sodium chlorite, and it already has a kids line. <span className="it">TheraBreath already has what they&rsquo;re chasing. What keeps it ahead?</span></p>
       </R>
     </div>
   );

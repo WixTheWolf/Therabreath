@@ -51,7 +51,7 @@ export const SOURCES: Record<string, string> = {
   licensing: 'The Licensing Letter, Hismile × Chupa Chups toothpaste',
   tff: 'The Flavor Factory’s read, not a published finding',
   patent: 'US Patent 6,582,682 (public)',
-  listings: 'TheraBreath public product listings [CONFIRM access date]',
+  listings: 'therabreath.com product pages, checked November 4, 2026, with Target and Walmart listings for three retailer-only flavors',
   tffport: 'The Flavor Factory portfolio record, November 4, 2026',
   bottles: 'TheraBreath product photos (therabreath.com, Walmart and Target)',
   pepvan: 'Target listing for TheraBreath Peppermint Vanilla, 16 oz, checked November 4, 2026',
@@ -63,6 +63,7 @@ export const SOURCES: Record<string, string> = {
 export const SOURCE_URLS: Record<string, string> = {
   hismile: 'https://www.licenseglobal.com/food-beverages/hismile-launches-lucky-charms-flavored-toothpaste',
   q3call: 'https://www.fool.com/earnings/call-transcripts/2026/10/31/church-dwight-chd-q3-2026-earnings-call-transcript/',
+  listings: 'https://www.therabreath.com/collections/all',
   q3pr: 'https://investor.churchdwight.com/Investors/news/news-details/2026/Church--Dwight-Delivers-Strong-Third-Quarter-Results/default.aspx',
   kenvue: 'https://www.kenvue.com/media/listerine-introduces-range-of-mouthwash-intensities',
   dsm: 'https://www.dsm-firmenich.com/en/businesses/taste-texture-health/news-events/press-releases/dsm-firmenich-names-frosted-star-anise-as-flavor-of-the-year-2026-capturing-a-global-desire-for-warmth-and-freshness.html',
@@ -121,33 +122,40 @@ export const CLIMB: { label: string; v: number; src: string; note?: string; appr
 
 export const GAP = { category: 65, tb: 14, share: 26.8, src: 'q3call' };
 
-export type Variant = { format: string; line: string; flavor: string; kids?: boolean };
+export type Variant = { format: string; line: string; flavor: string; kids?: boolean; where?: string };
+// TheraBreath's range as it's sold today, one entry per product (format, product line, flavor), checked November 4, 2026
+// on therabreath.com (Shop all, three pages; bundles, travel sizes and trial sizes left out), plus three retailer-only
+// products: Eucalyptus Mint at Target (DrBicuspid, March 3, 2026), Peppermint Vanilla at Target and Grapes Galore at
+// Walmart (their listings, checked November 4 for slide 3). No TheraBreath sachets were found anywhere, so there are
+// five formats. A flavor is mint if its name says so.
 export const PORTFOLIO: Variant[] = [
   { format: 'Rinse', line: 'Fresh Breath', flavor: 'Invigorating Icy Mint' },
   { format: 'Rinse', line: 'Fresh Breath', flavor: 'Mild Mint' },
   { format: 'Rinse', line: 'Fresh Breath', flavor: 'Rainforest Mint' },
-  { format: 'Rinse', line: 'Fresh Breath (Target)', flavor: 'Eucalyptus Mint' },
+  { format: 'Rinse', line: 'Fresh Breath', flavor: 'Eucalyptus Mint', where: 'Target' },
   { format: 'Rinse', line: 'Healthy Gums', flavor: 'Clean Mint' },
-  { format: 'Rinse', line: 'Whitening', flavor: 'Dazzling Mint' },
-  { format: 'Rinse', line: 'Healthy Smile', flavor: 'Sparkle Mint' },
+  { format: 'Rinse', line: 'Whitening Fresh Breath', flavor: 'Dazzling Mint' },
+  { format: 'Rinse', line: 'Whitening + Oil Blend', flavor: 'Smooth Mint' },
+  { format: 'Rinse', line: 'Anticavity', flavor: 'Sparkle Mint' },
   { format: 'Rinse', line: 'Deep Clean', flavor: 'Fresh Mint' },
   { format: 'Rinse', line: 'Overnight', flavor: 'Chamomile Mint' },
   { format: 'Rinse', line: 'Dry Mouth', flavor: 'Tingling Mint' },
   { format: 'Rinse', line: 'Complete', flavor: 'Revitalizing Mint' },
-  { format: 'Kids', line: 'For Kids!', flavor: 'Strawberry Splash', kids: true },
-  { format: 'Kids', line: 'For Kids!', flavor: 'Wacky Watermelon', kids: true },
+  { format: 'Rinse', line: 'Plaque Control', flavor: 'Refreshing Mint' },
+  { format: 'Rinse', line: 'Fresh & Festive', flavor: 'Peppermint Vanilla', where: 'Target' },
+  { format: 'Kids', line: 'For Kids! Anticavity', flavor: 'Strawberry Splash', kids: true },
+  { format: 'Kids', line: 'For Kids! Anticavity', flavor: 'Wacky Watermelon', kids: true },
   { format: 'Kids', line: 'For Kids!', flavor: 'Bubblegum Blast', kids: true },
+  { format: 'Kids', line: 'Kids Anticavity', flavor: 'Grapes Galore', kids: true, where: 'Walmart' },
   { format: 'Toothpaste', line: 'Fresh Breath', flavor: 'Mild Mint' },
   { format: 'Toothpaste', line: 'Healthy Gums', flavor: 'Clean Mint' },
   { format: 'Toothpaste', line: 'Deep Clean', flavor: 'Fresh Mint' },
   { format: 'Toothpaste', line: 'Whitening', flavor: 'Dazzling Mint' },
-  { format: 'Toothpaste', line: 'Sensitive', flavor: 'Mild Mint' },
+  { format: 'Toothpaste', line: 'Sensitive', flavor: 'Gentle Mint' },
   { format: 'Lozenge', line: 'Dry Mouth', flavor: 'Mandarin Mint' },
   { format: 'Lozenge', line: 'Dry Mouth', flavor: 'Tart Berry' },
   { format: 'Gum', line: 'Fresh Breath', flavor: 'Invigorating Icy Mint' },
   { format: 'Gum', line: 'Fresh Breath', flavor: 'Citrus Mint' },
-  { format: 'Sachet', line: 'On the go', flavor: 'Invigorating Icy Mint' },
-  { format: 'Sachet', line: 'On the go', flavor: 'Sparkle Mint' },
 ];
 
 export const MARKET = [
@@ -314,9 +322,9 @@ export const WHITESPACE = {
   sink: ['Wake-up', 'Wind-down'],
   extra: [[DRY_MOUTH, 'On the go']] as [string, string][],
   today: (segment: string, moment: string) => ['Wake-up', 'Wind-down'].includes(moment) || (segment === DRY_MOUTH && moment === 'On the go'),
-  // Where we think TheraBreath already is in a day, from the public product listings (rinse; dry mouth lozenges, gum and
-  // rinse sachets). Our read, to challenge on the day.
-  present: { 'Wake-up': 'Rinse', 'Wind-down': 'Rinse', 'On the go': 'Lozenges, gum, sachets' } as Record<string, string>,
+  // Where we think TheraBreath already is in a day, from the public product listings (rinse; dry mouth lozenges and
+  // gum on the go; no sachets were found on November 4). Our read, to challenge on the day.
+  present: { 'Wake-up': 'Rinse', 'Wind-down': 'Rinse', 'On the go': 'Lozenges, gum' } as Record<string, string>,
   read: 'This is our read of the public product listings, not measured data, so tell us where we’ve got it wrong.',
 };
 
@@ -332,7 +340,7 @@ export const CODE = [
   { n: 1, t: 'Fresh first.', d: 'Every flavor finishes clean and fresh, wherever it starts.' },
   { n: 2, t: 'Never the burn.', d: 'Gentle intensity, no alcohol bite.' },
   { n: 3, t: 'Clean by design.', d: 'Dye-free and alcohol-free, with natural flavors wherever possible.' },
-  { n: 4, t: 'Built for OXYD-8.', d: 'Every flavor is screened for stability in TheraBreath’s chemistry.' },
+  { n: 4, t: 'Built for sodium chlorite.', d: 'Every flavor is screened for stability in TheraBreath’s chemistry.' },
   { n: 5, t: 'Built to last.', d: 'A linger that supports all-day freshness claims.' },
   { n: 6, t: 'A name you can taste.', d: 'Each flavor is distinct and nameable, not “another mint.”' },
   { n: 7, t: 'Dentist credible.', d: 'Fun is welcome. Frivolous is not.' },
@@ -427,7 +435,7 @@ export const TOPICS = [
     points: [`${MINT} of TheraBreath\u2019s ${PORTFOLIO.length} flavors are mint.`, '86 out of 100 US households don\u2019t buy TheraBreath yet.', 'Competitors are adding flavors, mostly as limited editions.', 'Then seven trends we think matter for oral care.'],
     questions: ['Which three trends matter most for TheraBreath?', 'What are you seeing that we missed?'] },
   { title: 'Where flavor could go',
-    points: ['Most of what people call flavor is smell. The rest is how it feels.', 'OXYD-8 is hard on flavor, so everything we make has to hold up in it.', 'We’ll show four directions, and two of them are in the tasting.', 'Four samples, all made in your Fresh Breath and Kids bases.'],
+    points: ['Most of what people call flavor is smell. The rest is how it feels.', 'Sodium chlorite is hard on flavor, so everything we make has to hold up in it.', 'We’ll show four directions, and two of them are in the tasting.', 'Four samples, all made in your Fresh Breath and Kids bases.'],
     questions: ['Which direction feels most like TheraBreath, and which one stretches it the most?', 'What would set TheraBreath\u2019s flavors apart from what competitors are launching?'] },
   { title: 'What we could make',
     points: ['Start from the samples and directions that did well.', 'For each concept, agree who it’s for, when they’d use it, its role in the range, the format and what it grows.', 'Aim for up to three.'],

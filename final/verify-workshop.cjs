@@ -50,6 +50,10 @@ const tap=fold([{id:'t1',t:1,kind:'plan',data:{id:'r9',h:'Next',fields:{what:'Gr
 // The household slide speaks one unit (households out of 100): three groups that add up to 100, and the share of sales
 // (a different measure) stays off the screen.
 {const a=fs.readFileSync('src/components/scenes/ActI.tsx','utf8');const g=a.slice(a.indexOf('function Glasses'),a.indexOf('function Portfolio'));assert(!g.includes('GAP.share')&&!g.includes('>86<')&&!/other 86/i.test(g),'the share of sales or the 86 is back on the household slide');assert(g.includes('{GAP.tb}')&&g.includes('{OTHER.another}')&&g.includes('{OTHER.none}'));const {GAP}=load('content');assert.equal(GAP.tb+(GAP.category-GAP.tb)+(100-GAP.category),100);assert.equal(sc('gap').title,'Out of every 100 households');}
+// The shelf (slide 8): the range as checked on November 4, five formats (no sachets were found), no flavor listed twice
+// in one format, no open source note, and sodium chlorite rather than OXYD-8 wherever the room or the Playbook reads it.
+{const C=load('content');const P=C.PORTFOLIO;assert(P.every(v=>['Rinse','Toothpaste','Kids','Lozenge','Gum'].includes(v.format)),'a format outside the five');assert.equal(new Set(P.map(v=>v.format+'|'+v.flavor)).size,P.length,'a flavor listed twice in one format');assert.equal(P.length,27);assert.equal(P.filter(v=>/mint/i.test(v.flavor)).length,22);assert(!/CONFIRM/.test(C.SOURCES.listings));assert(!/sachet/i.test(C.WHITESPACE.present['On the go']));
+for(const f of ['src/lib/content.ts','src/lib/sceneNotes.ts','src/lib/runNotes.ts','src/components/show/Deck.tsx','src/components/scenes/ActI.tsx','src/components/scenes/School.tsx'])assert(!fs.readFileSync(f,'utf8').includes('OXYD'),'OXYD-8 is back in '+f);}
 // The tasting questions (November 4): liking, could it be a TheraBreath flavor and uniqueness from 1 to 5, then
 // sweetness and cooling as not enough, just right or too much. Ratings saved before then (with who, a direction guess
 // and develop it further) still read.

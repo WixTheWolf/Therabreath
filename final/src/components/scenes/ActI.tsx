@@ -137,7 +137,7 @@ export function Market({ step }: SceneProps) {
           </R>
         ))}
       </div>
-      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">Where you stand</span><p>TheraBreath has been alcohol-free and dye-free from the start. It has OXYD-8, and it already has a kids line. <span className="it">So the real question is how flavor keeps it ahead.</span></p></R>
+      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">Where you stand</span><p>TheraBreath has been alcohol-free and dye-free from the start. It uses sodium chlorite, and it already has a kids line. <span className="it">So the real question is how flavor keeps it ahead.</span></p></R>
     </div>
   );
 }

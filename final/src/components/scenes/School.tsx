@@ -70,7 +70,7 @@ export function Cooling({ step }: SceneProps) {
   );
 }
 
-// The oxygen-rich field behind Flavor and OXYD-8: flavor molecules drifting through it, some holding their color.
+// The field behind Flavor and sodium chlorite: flavor molecules drifting through it, some holding their color.
 export function OxydField() {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -103,8 +103,8 @@ export function Oxyd({ step }: SceneProps) {
     <div className="oxyd">
       <OxydField />
       <div className="pad" style={{ position: 'relative' }}>
-        <Enter i={0}><div className="k">Flavor School · Flavor and OXYD-8</div></Enter>
-        <Enter i={1}><h2 className="h2" style={{ maxWidth: 1050 }}>OXYD-8 is built to be tough on the bacteria behind bad breath, and that makes it tough on flavor too.</h2></Enter>
+        <Enter i={0}><div className="k">Flavor School · Flavor and sodium chlorite</div></Enter>
+        <Enter i={1}><h2 className="h2" style={{ maxWidth: 1050 }}>Sodium chlorite is tough on the bacteria behind bad breath, and that makes it tough on flavor too.</h2></Enter>
         <div className="levers">{levers.map((l, i) => <R key={l} b={i + 1} step={step} className="lever"><span className="num">0{i + 1}</span>{l}</R>)}</div>
         <R b={3} step={step} className="oxyd-pay h2 it">A flavor only counts if it still tastes right after months on the shelf.</R>
       </div>
