@@ -24,8 +24,8 @@ export function School({ step }: SceneProps) {
   );
 }
 
-// 19. How cool works (illustrative curves)
-export function Cooling({ step }: SceneProps) {
+// 19. How cool works (illustrative curves). The plot on its own is shared with Flavor in OXYD-8.
+export function CoolingPlot({ shown = 3, frost = true }: { shown?: number; frost?: boolean }) {
   const W = 1080, H = 640, ml = 90, mb = 90, mt = 40, mr = 40;
   const X = (v: number) => ml + v * (W - ml - mr), Y = (v: number) => H - mb - v * (H - mb - mt);
   const curves = [
@@ -36,8 +36,27 @@ export function Cooling({ step }: SceneProps) {
   const path = (pts: number[][]) => { const P = pts.map(([a, b]) => [X(a), Y(b)]); let d = `M${P[0][0]} ${P[0][1]}`; for (let i = 0; i < P.length - 1; i++) { const p0 = P[i - 1] || P[i], p1 = P[i], p2 = P[i + 1], p3 = P[i + 2] || p2; d += ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]} ${p2[1]}`; } return d; };
   const ticks: [string, number][] = [['1 sec', 0], ['10 sec', .24], ['1 min', .428], ['10 min', .668], ['1 hr', .855], ['4 hr', 1]];
   const sig = curves[2].pts;
-  const frost = Array.from({ length: 24 }, (_, i) => { const x = 0.06 + i * 0.038; let y = 0; for (let k = 0; k < sig.length - 1; k++) if (x >= sig[k][0] && x <= sig[k + 1][0]) y = sig[k][1] + (sig[k + 1][1] - sig[k][1]) * ((x - sig[k][0]) / (sig[k + 1][0] - sig[k][0])); return { x: X(x), y: Y(y) - 30 - ((i * 37) % 11) * 2, r: 6 + y * 14, i }; });
+  const flakes = Array.from({ length: 24 }, (_, i) => { const x = 0.06 + i * 0.038; let y = 0; for (let k = 0; k < sig.length - 1; k++) if (x >= sig[k][0] && x <= sig[k + 1][0]) y = sig[k][1] + (sig[k + 1][1] - sig[k][1]) * ((x - sig[k][0]) / (sig[k + 1][0] - sig[k][0])); return { x: X(x), y: Y(y) - 30 - ((i * 37) % 11) * 2, r: 6 + y * 14, i }; });
   const crystal = (cx: number, cy: number, r: number) => { let d = ''; for (let k = 0; k < 6; k++) { const a = k * Math.PI / 3, ca = Math.cos(a), sa = Math.sin(a); d += `M${cx} ${cy}L${cx + ca * r} ${cy + sa * r}`; for (const f of [0.45, 0.72]) { const bx = cx + ca * r * f, by = cy + sa * r * f, bl = r * 0.28 * (1.1 - f); for (const sgn of [-1, 1]) { const b = a + sgn * Math.PI / 4; d += `M${bx} ${by}L${bx + Math.cos(b) * bl} ${by + Math.sin(b) * bl}`; } } } return d; };
+  return (
+    <svg className="cool-plot" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
+      <defs><filter id="cglow"><feGaussianBlur stdDeviation="7" /></filter></defs>
+      {ticks.map(([t, v]) => <g key={t}><line x1={X(v)} x2={X(v)} y1={Y(0)} y2={Y(1)} stroke="var(--rule2)" /><text x={X(v)} y={Y(0) + 36} textAnchor="middle" className="axis">{t.toUpperCase()}</text></g>)}
+      <line x1={X(0)} x2={X(1)} y1={Y(0)} y2={Y(0)} stroke="var(--fg3)" strokeWidth={1.4} /><line x1={X(0)} x2={X(0)} y1={Y(0)} y2={Y(1)} stroke="var(--fg3)" strokeWidth={1.4} />
+      <text x={(X(0) + X(1)) / 2} y={Y(0) + 72} textAnchor="middle" className="axis strong">TIME AFTER RINSING</text>
+      <text transform={`translate(${X(0) - 34} ${(Y(0) + Y(1)) / 2}) rotate(-90)`} textAnchor="middle" className="axis strong">PERCEIVED COOLING</text>
+      {curves.map((c, i) => i < shown && (
+        <g key={c.id} className="cc">
+          <path d={path(c.pts)} stroke={c.col} strokeWidth={c.w * 3} fill="none" opacity={0.35} filter="url(#cglow)" className="draw" />
+          <path d={path(c.pts)} stroke={c.col} strokeWidth={c.w} fill="none" strokeDasharray={c.dash || undefined} strokeLinecap="round" className={c.dash ? 'fade' : 'draw'} />
+          <text x={X(c.lab[0]) + 14} y={Y(c.lab[1]) - 14} fill={c.col} className="clab">{c.id}</text>
+        </g>
+      ))}
+      {frost && flakes.map((f) => <path key={f.i} d={crystal(f.x, f.y, f.r)} stroke="rgba(220,246,252,.8)" strokeWidth={1.6} fill="none" strokeLinecap="round" className="frost" style={{ ['--i' as any]: f.i }} />)}
+    </svg>
+  );
+}
+export function Cooling({ step }: SceneProps) {
   return (
     <div className="pad cooling">
       <div className="cool-copy">
@@ -46,27 +65,13 @@ export function Cooling({ step }: SceneProps) {
         <R b={3} step={step}><p className="h3 it accent">There’s the hit when you first rinse, and there’s how long it lasts. We tune both.</p></R>
         <div className="src" style={{ marginTop: 40 }}>Drawn to explain the idea. These aren’t measured curves.</div>
       </div>
-      <svg className="cool-plot" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
-        <defs><filter id="cglow"><feGaussianBlur stdDeviation="7" /></filter></defs>
-        {ticks.map(([t, v]) => <g key={t}><line x1={X(v)} x2={X(v)} y1={Y(0)} y2={Y(1)} stroke="var(--rule2)" /><text x={X(v)} y={Y(0) + 36} textAnchor="middle" className="axis">{t.toUpperCase()}</text></g>)}
-        <line x1={X(0)} x2={X(1)} y1={Y(0)} y2={Y(0)} stroke="var(--fg3)" strokeWidth={1.4} /><line x1={X(0)} x2={X(0)} y1={Y(0)} y2={Y(1)} stroke="var(--fg3)" strokeWidth={1.4} />
-        <text x={(X(0) + X(1)) / 2} y={Y(0) + 72} textAnchor="middle" className="axis strong">TIME AFTER RINSING</text>
-        <text transform={`translate(${X(0) - 34} ${(Y(0) + Y(1)) / 2}) rotate(-90)`} textAnchor="middle" className="axis strong">PERCEIVED COOLING</text>
-        {curves.map((c, i) => step >= i && (
-          <g key={c.id} className="cc">
-            <path d={path(c.pts)} stroke={c.col} strokeWidth={c.w * 3} fill="none" opacity={0.35} filter="url(#cglow)" className="draw" />
-            <path d={path(c.pts)} stroke={c.col} strokeWidth={c.w} fill="none" strokeDasharray={c.dash || undefined} strokeLinecap="round" className={c.dash ? 'fade' : 'draw'} />
-            <text x={X(c.lab[0]) + 14} y={Y(c.lab[1]) - 14} fill={c.col} className="clab">{c.id}</text>
-          </g>
-        ))}
-        {step >= 2 && frost.map((f) => <path key={f.i} d={crystal(f.x, f.y, f.r)} stroke="rgba(220,246,252,.8)" strokeWidth={1.6} fill="none" strokeLinecap="round" className="frost" style={{ ['--i' as any]: f.i }} />)}
-      </svg>
+      <CoolingPlot shown={step + 1} frost={step >= 2} />
     </div>
   );
 }
 
-// 20. Flavor in an oxidizing world: flavor molecules drifting through an oxygen-rich field.
-export function Oxyd({ step }: SceneProps) {
+// The oxygen-rich field behind Flavor and OXYD-8: flavor molecules drifting through it, some holding their color.
+export function OxydField() {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = ref.current!, g = c.getContext('2d')!; let raf = 0; const W = c.width, H = c.height;
@@ -88,10 +93,15 @@ export function Oxyd({ step }: SceneProps) {
     };
     raf = requestAnimationFrame(f); return () => cancelAnimationFrame(raf);
   }, []);
+  return <canvas ref={ref} width={1920} height={1080} className="oxyd-cv" />;
+}
+
+// 20. Flavor in an oxidizing world: flavor molecules drifting through an oxygen-rich field.
+export function Oxyd({ step }: SceneProps) {
   const levers = ['Controlling pH', 'Dissolving and protecting the flavor', 'Choosing materials that hold up'];
   return (
     <div className="oxyd">
-      <canvas ref={ref} width={1920} height={1080} className="oxyd-cv" />
+      <OxydField />
       <div className="pad" style={{ position: 'relative' }}>
         <Enter i={0}><div className="k">Flavor School · Flavor and OXYD-8</div></Enter>
         <Enter i={1}><h2 className="h2" style={{ maxWidth: 1050 }}>OXYD-8 is built to be tough on the bacteria behind bad breath, and that makes it tough on flavor too.</h2></Enter>

@@ -11,13 +11,14 @@ import { candidates } from '../scenes/Build';
 import { useQR } from '../scenes/Opening';
 import {
   EVENT, OBJECTIVES, TOPICS, RUN, TEAM, ABOUT, SCIENCE, IMAGINATION, ROSS_WORDS, SIGNALS, SAMPLES, PRIMARY_TERRITORIES as PLATFORMS,
-  SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA,
+  SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA, NEXT_STEPS,
 } from '@/lib/content';
 import type { FilmAct, FilmState } from '@/lib/showLink';
 import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, SessionState } from '@/lib/state';
 import { Synced, PLAN_COLS, PLAN_READBACK, PlanLists, RemoveRow, planRows, planActions, planCell } from './Plan';
 
-export type Live = { send: (kind: string, data?: any, pid?: string) => any; still: boolean; joinUrl: string };
+// goStep moves to a build of the current slide (a direction's profile card on the map, say).
+export type Live = { send: (kind: string, data?: any, pid?: string) => any; still: boolean; joinUrl: string; goStep: (step: number) => void };
 export const LiveCtx = createContext<Live | null>(null);
 const useLive = () => useContext(LiveCtx)!;
 // "12 people have voted · 3 chips by hand": the phones, then what the presenter view added for people without one.
@@ -219,7 +220,7 @@ export function ConceptCanvas({ s }: SceneProps) {
   const set = (team: number, key: string, v: string) => live.send('concept', { team, slot: 1, fields: { [key]: v.slice(0, 120) } });
   return (
     <div className="pad ccv">
-      <Enter i={0}><div className="k">Part 3 · Up to three concepts</div></Enter>
+      <Enter i={0}><div className="k">Up to three concepts</div></Enter>
       <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>{TOPICS[2].questions[0]} <span className="it">{TOPICS[2].questions[1]}</span></h2></Enter>
       <div className="ccv-grid">
         {[1, 2, 3].map((c, i) => {
@@ -280,14 +281,13 @@ export function DotsShow({ s, step }: SceneProps) {
 
 // Where TheraBreath fits in a day: the moments from morning to night on one line, with "On the go" set apart. Build 1
 // shows where we think TheraBreath already is (our read of the public listings, to challenge), build 2 the moment the
-// pre-brief answers say is missing, build 3 everything still open. Below, one row per concept written this morning (or
-// the samples and directions before any are written): click a cell to mark where that idea could fit.
-const CONCEPT_COLORS = ['#3FB6D3', '#E39A35', '#D96C9C'];
+// pre-brief answers say is missing, build 3 everything still open. Below, one row for each of the top three from the
+// chips vote (or every sample and direction if no chips came in): click a cell to mark where it could fit.
 export function dayRows(s: SessionState) {
-  const cs = teamConcepts(s);
-  return cs.length
-    ? cs.map((c) => ({ id: c.id, name: c.name, sub: c.segment ? `For ${c.segment}` : `Concept ${c.team}`, color: CONCEPT_COLORS[(c.team - 1) % 3] }))
-    : DIRECTIONS.map((d) => ({ id: d.id, name: directionName(d.id, s), sub: d.sub, color: d.colors[1] }));
+  const t = tallyPick(s, 'directions');
+  const top = ranked(t).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => id);
+  const list = top.length ? top.map((id) => DIRECTIONS.find((d) => d.id === id)).filter(Boolean) as typeof DIRECTIONS : DIRECTIONS;
+  return list.map((d) => ({ id: d.id, name: directionName(d.id, s), sub: t[d.id] ? `${t[d.id]} ${t[d.id] === 1 ? 'chip' : 'chips'} · ${d.sub}` : d.sub, color: d.colors[1] }));
 }
 export const markLabel = (s: SessionState, cell: string) => {
   const [id, m] = cell.split('|');
@@ -314,7 +314,7 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
   const open = (m: string) => step >= 3 && !WHITESPACE.present[m];
   return (
     <div className="pad dy">
-      <Enter i={0}><div className="k">Part 4 · White-space opportunities · our read, so correct us where we’re wrong</div></Enter>
+      <Enter i={0}><div className="k">White-space opportunities · our read, so correct us where we’re wrong</div></Enter>
       <div className="wsp-head">
         <div className={'wsp-h' + (step < 3 ? ' on' : '')}><h2 className="h2">Where TheraBreath shows up <span className="it">in a day.</span></h2></div>
         <div className={'wsp-h' + (step >= 3 ? ' on' : '')}><h2 className="h2">Most of the day <span className="it">is still open.</span></h2></div>
@@ -362,7 +362,7 @@ export function Board({ s }: SceneProps) {
   const legacy = (h: string) => (s.board?.[h] || '').split('\n').map((x) => x.trim()).filter(Boolean);
   return (
     <div className="pad sb">
-      <Enter i={0}><div className="k">Part 4 · Now, Next, Later</div></Enter>
+      <Enter i={0}><div className="k">Now, Next, Later</div></Enter>
       <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>What should go first? <span className="it">And what has to be true for it to work?</span></h2></Enter>
       <Enter i={2} className="sb-tray"><span className="k">Top votes this morning</span>{tray.length ? tray.map((x) => <button key={x} type="button" className="tchip" data-nonav disabled={live.still || onBoard.has(x.toLowerCase())} onClick={() => act.add('Now', x)}>{x}</button>) : <em>The top concepts and directions from the votes will show up here.</em>}</Enter>
       <div className="sb-cols">
@@ -405,9 +405,9 @@ export function decided(s: SessionState) {
   };
 }
 
-// What the morning decided. Build 0 fans the four chapters out; builds 1 to 4 open each one at reading size (the trends,
-// the directions with the tasting, the concepts, and the plan with its owners), so it can be read back to the room;
-// build 5 closes them into the cover.
+// What we decided and what happens next. Build 0 fans the four chapters out; builds 1 to 4 open each one at reading
+// size (the trends, the directions with the tasting, the concepts, and the plan with its owners last), so it can be read
+// back to the room; builds 5 to 7 close them into the cover and bring in the three next steps one at a time.
 export function Playbook({ s, step }: SceneProps) {
   const d = decided(s);
   const pages = [
@@ -417,10 +417,13 @@ export function Playbook({ s, step }: SceneProps) {
     { k: 'Chapter 4', t: 'The plan', l: d.plan.slice(0, 6).map((x) => `${x.label} · ${x.what}`) },
   ];
   const reading = step >= 1 && step <= 4;
+  const next = step >= 5;
+  // The first step names what goes forward from Now, Next, Later and who has it.
+  const agreed = d.plan.filter((r) => r.what).slice(0, 3);
   return (
-    <div className={'assemble' + (reading ? ' reading' : '')}>
+    <div className={'assemble' + (reading ? ' reading' : '') + (next ? ' pb-next' : '')}>
       <Light scene="drop" theme="b" camera={{ pos: [0, 0.4, 9.5], target: [0, -0.4, 0], fov: 26, shift: [0, 0.1] }} frame={(t) => ({ rot: t * 0.08 })} fallback="/img/cover-drop.jpg" style={{ position: 'absolute', inset: 0, opacity: 0.55 }} />
-      <div className={'stack' + (step >= 5 ? ' closed' : '')}>
+      <div className={'stack' + (next ? ' closed' : '')}>
         {pages.map((p, i) => (
           <div key={p.t} className="page" style={{ ['--i' as any]: i }}>
             <div className="k">{p.k}</div><b>{p.t}</b>
@@ -435,11 +438,27 @@ export function Playbook({ s, step }: SceneProps) {
           <div className="k" style={{ marginTop: 'auto' }}>Draft · {EVENT.city}</div>
         </div>
       </div>
-      <div className="as-copy">
-        <Enter i={0}><div className="k">Wrapping up</div></Enter>
-        <Enter i={1}><h2 className="h1">Here’s what<br /><span className="it">we decided.</span></h2></Enter>
-        <Enter i={2}><p className="lede as-lede">We’ll write it all up and send it to everyone here within 8 business days.</p></Enter>
-      </div>
+      {!next ? (
+        <div className="as-copy">
+          <Enter i={0}><div className="k">Wrapping up</div></Enter>
+          <Enter i={1}><h2 className="h1">Here’s what<br /><span className="it">we decided.</span></h2></Enter>
+          <Enter i={2}><p className="lede as-lede">We’ll write it all up and send it to everyone here within 8 business days.</p></Enter>
+        </div>
+      ) : (
+        <div className="as-copy pb-steps" key="next">
+          <Enter i={0}><div className="k">What happens next</div></Enter>
+          <Enter i={1}><h2 className="h1">Thank you. <span className="it">Here’s what happens next.</span></h2></Enter>
+          <ol className="pb-list">
+            {NEXT_STEPS.map((n, i) => (
+              <R key={n.t} as="li" b={5 + i} step={step} className="pb-step"><span className="num">0{i + 1}</span>
+                <div><b>{n.t}</b>
+                  {i === 0 && agreed.length ? <ul className="agreed">{agreed.map((r) => <li key={r.id}><b>{r.what}</b><span>{[r.owner && `TFF: ${r.owner}`, r.reviewer && `C&D: ${r.reviewer}`].filter(Boolean).join(' · ') || 'Owners to agree'}</span></li>)}</ul> : <p>{n.d}</p>}
+                </div>
+              </R>
+            ))}
+          </ol>
+        </div>
+      )}
       {reading && <ReadPage key={step} n={step} d={d} />}
     </div>
   );

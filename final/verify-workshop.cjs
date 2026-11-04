@@ -3,15 +3,18 @@ const {stripTypeScriptTypes}=require('node:module');
 const cache={};function load(name){if(cache[name])return cache[name];const module={exports:{}};let code=stripTypeScriptTypes(fs.readFileSync('src/lib/'+name+'.ts','utf8'));const names=[...code.matchAll(/export (?:const|function) (\w+)/g)].map(m=>m[1]);code=code.replace(/import \{ ([^}]+) \} from '([^']+)';/g,(_,n,p)=>`const {${n}} = require('${p}');`).replace(/export /g,'');code+='\nObject.assign(module.exports,{'+names.join(',')+'});';vm.runInNewContext(code,{module,exports:module.exports,require:p=>load(p.replace('./','')),globalThis,console});return cache[name]=module.exports;}
 
 const {SCENES,EXECUTIVE}=load('scenes'),{SAMPLES,PRIMARY_TERRITORIES,SEEDS,MISSIONS,EVENT,ROSS_GOAL,SOURCES,DIRECTIONS,RUN,TOPICS,OBJECTIVES}=load('content'),{fold}=load('state');
-// The run of show: Ross's four objectives as four parts, each opened by its own scene, with phone votes on the trends,
-// the tasting, the next round and the ideas.
-const ids=SCENES.map(s=>s.id),at=(id)=>ids.indexOf(id),room=(id)=>SCENES.find(s=>s.id===id).room;
-assert.equal(SCENES.length,36);assert.equal(ids[0],'arrival');assert.equal(ids[1],'title');assert.equal(ids.slice(-3).join(),'playbook,next,lunch');assert.equal(at('film'),at('tasting')-1,'THE FLAVOR RACE plays right before the tasting');
-for(const id of ['brief','prework','thesis','open1','gap','portfolio','market','signals','signalvote','open2','school','cooling','oxyd','anatomy','map','platform1','platform4','tasting','matrix','nextround','open3','concepts','dots','open4','whitespace','board'])assert(ids.includes(id),'missing scene '+id);
-for(const id of ['chips','canvas','bench','pipeline','assemble','climb','code'])assert(!ids.includes(id),'cut scene still live: '+id);
-assert(at('open1')<at('gap')&&at('signalvote')<at('open2')&&at('nextround')<at('open3')&&at('dots')<at('open4')&&at('board')<at('playbook'),'parts out of order');
-assert.equal(at('signalvote'),at('signals')+1);assert.equal(at('matrix'),at('tasting')+1);assert.equal(at('nextround'),at('matrix')+1);assert.equal(SCENES.find(s=>s.id==='signals').builds,7);
-assert.equal(room('signalvote').kind,'pick');assert.equal(room('signalvote').max,3);assert.equal(room('tasting').kind,'taste');assert.equal(room('nextround').kind,'chips');assert.equal(room('nextround').key,'directions');assert.equal(room('dots').kind,'dots');assert.equal(room('dots').total,3);
+// The run of show: seventeen slides for Ross's four objectives, discussion first. No part dividers: the first slide of
+// each part carries its objective tag. Phone votes on the trends, the tasting and the next round.
+const ids=SCENES.map(s=>s.id),at=(id)=>ids.indexOf(id),room=(id)=>SCENES.find(s=>s.id===id).room,sc=(id)=>SCENES.find(s=>s.id===id);
+assert.equal(SCENES.length,17);
+assert.equal(ids.join(),'arrival,team,brief,prework,gap,market,signals,school,map,film,tasting,nextround,whitespace,concepts,board,playbook,lunch','the seventeen slides, in order');
+assert.equal(at('film'),9,'THE FLAVOR RACE is slide 10');assert.equal(at('film'),at('tasting')-1,'THE FLAVOR RACE plays right before the tasting');
+for(const id of ['title','july','thesis','open1','open2','open3','open4','portfolio','signalvote','cooling','oxyd','anatomy','platform1','platform2','platform3','platform4','matrix','dots','next'])assert(!ids.includes(id),'merged or cut slide still live: '+id);
+assert.equal(room('signals').kind,'pick');assert.equal(room('signals').key,'signals');assert.equal(room('signals').max,3);assert.equal(room('tasting').kind,'taste');assert.equal(room('nextround').kind,'chips');assert.equal(room('nextround').key,'directions');assert.equal(room('nextround').total,5);
+assert(!SCENES.some(s=>s.room.kind==='dots'),'no dot vote on the day');
+assert.equal(String(sc('team').skip),'1','the July row is the optional build');assert.equal(String(sc('map').skip),'2,3','the two untasted directions are optional');assert.equal(sc('map').builds,4);assert.equal(sc('gap').builds,3);assert.equal(sc('signals').builds,3);assert.equal(sc('school').builds,2);assert.equal(sc('playbook').builds,7);
+assert(SCENES.every(s=>!s.optional),'no whole slide is optional: the short version skips builds');
+const {firstOfPart}=load('scenes');assert.equal(SCENES.filter(firstOfPart).map(s=>s.id+':'+s.chapter).join(),'gap:0,school:1,whitespace:2,board:3','objective tags on the first slide of each part');
 assert(EXECUTIVE.every(id=>ids.includes(id)),'executive cut names a missing scene');assert(SCENES.every(s=>RUN.some(b=>b.id===s.block)),'scene outside the run of show');assert.equal(TOPICS.length,4);assert.equal(OBJECTIVES.length,4);
 assert(DIRECTIONS.length>=4&&SAMPLES.every(s=>DIRECTIONS.some(d=>d.id===s.code||d.id===s.id)),'every sample is a direction to vote on');
 assert.equal(EVENT.code,'FOF1109');assert(EVENT.lockup.includes('Princeton, New Jersey'));assert(SOURCES[ROSS_GOAL.src]);assert(SAMPLES.every(s=>s.base));
@@ -19,7 +22,12 @@ assert.equal(PRIMARY_TERRITORIES.length,4);assert.equal(MISSIONS.length,2);asser
 const events=[{id:'1',t:1,kind:'rate',pid:'p',data:{sample:'D',appeal:4,feels:4,newness:5,who:['Families'],fruitGuess:'apple, grape',advance:'Yes'}},{id:'2',t:2,kind:'commitment',data:{ref:'workshop-D',fields:{owner:'Test owner',date:'2026-12-01'}}},{id:'3',t:3,kind:'commitment',data:{ref:'workshop-D',fields:{action:'Revise sweetness'}}}];
 const state=fold(events);assert.equal(state.ratings.D.p.fruitGuess,'apple, grape');assert.equal(state.ratings.D.p.advance,'Yes');assert.equal(state.commitments['workshop-D'].owner,'Test owner');assert.equal(state.commitments['workshop-D'].action,'Revise sweetness');assert.equal(state.commitments['workshop-D'].date,'2026-12-01');
 const live=fold([{id:'4',t:4,kind:'board',data:{horizon:'now',text:'Sample A, second round'}},{id:'5',t:5,kind:'mark',data:{cell:'am|loyal'}},{id:'6',t:6,kind:'mark',data:{cell:'pm|new'}},{id:'7',t:7,kind:'mark',data:{cell:'am|loyal'}},{id:'8',t:8,kind:'goto',data:{scene:3,step:1}}]);
-assert.equal(live.board.now,'Sample A, second round');assert.equal(live.marks.join(),'pm|new');assert.equal(live.scene,3);assert.equal(live.step,1);
+assert.equal(live.board.now,'Sample A, second round');assert.equal(live.marks.join(),'pm|new');assert.equal(live.scene,3);assert.equal(live.step,1);assert.equal(live.sceneId,undefined,'a move without a slide name names no slide');
+// A move names its slide: the name wins over the position, so a position from the old 36-slide order never steers the
+// room, and nothing resumes from a move that names no slide.
+const named=fold([{id:'g1',t:1,kind:'goto',data:{scene:24,step:2}},{id:'g2',t:2,kind:'goto',data:{scene:0,step:1,id:'tasting'}}]);assert.equal(named.scene,at('tasting'));assert.equal(named.sceneId,'tasting');assert.equal(named.step,1);
+const old=fold([{id:'o1',t:1,kind:'goto',data:{scene:30,step:3}}]);assert.equal(old.sceneId,undefined);assert.equal(old.scene,SCENES.length-1);
+const unknown=fold([{id:'u1',t:1,kind:'goto',data:{scene:2,step:0,id:'signalvote'}}]);assert.equal(unknown.sceneId,undefined);assert.equal(unknown.scene,2);
 // the plan rows, hand votes taken back and a paper card removed
 const plan=fold([{id:'p1',t:10,kind:'plan',data:{id:'r1',h:'Now',fields:{what:'Sample A, second round'}}},{id:'p2',t:11,kind:'plan',data:{id:'r1',fields:{owner:'Test owner',next:'Two versions'}}},{id:'p3',t:12,kind:'plan',data:{id:'r2',h:'Next',fields:{what:'Gone'}}},{id:'p4',t:13,kind:'unplan',data:{id:'r2'}},{id:'p5',t:14,kind:'plan',data:{id:'r1',h:'Future'}},
   {id:'h1',t:15,kind:'pick',pid:'hand-1',data:{key:'signals',value:['mild'],paper:true}},{id:'h2',t:16,kind:'pick',pid:'hand-2',data:{key:'signals',value:['mild'],paper:true}},{id:'h3',t:17,kind:'unpick',pid:'hand-1',data:{key:'signals'}},
@@ -32,5 +40,6 @@ const {SLIDES}=load('runNotes'),{SLIDE_MIN,SLIDE_TIMES}=load('slideTimes');const
 assert(SCENES.every(s=>SLIDES[s.id]&&SLIDE_TIMES[s.id]&&s.id in SLIDE_MIN),'a scene has no slide plan');
 for(const b of RUN){const sum=SCENES.filter(s=>s.block===b.id).reduce((n,s)=>n+SLIDE_MIN[s.id],0);assert.equal(sum,mm(b.end)-mm(b.t),'slide minutes for '+b.id+' do not fill '+b.t+' to '+b.end);}
 assert(SCENES.every(s=>!SLIDES[s.id].clicks||SLIDES[s.id].clicks.length<=s.builds+1),'a slide lists more clicks than builds');
-assert.equal(SLIDE_TIMES.film.from,'10:40');assert.equal(SLIDE_TIMES.tasting.from,'10:43');assert.equal(SLIDE_TIMES.nextround.to,'11:00');
-console.log('PASS: run of show and slide plan ('+SCENES.length+' scenes), phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards and white-space marks.');
+const T={arrival:'10:00',team:'10:01',brief:'10:03',prework:'10:05',gap:'10:10',market:'10:13',signals:'10:16',school:'10:25',map:'10:29',film:'10:37',tasting:'10:40',nextround:'10:53',whitespace:'11:00',concepts:'11:05',board:'11:20',playbook:'11:40',lunch:'11:48'};
+for(const [id,t] of Object.entries(T))assert.equal(SLIDE_TIMES[id].from,t,id+' starts at '+t);assert.equal(SLIDE_TIMES.lunch.to,'12:00');
+console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, objective tags, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards and white-space marks.');

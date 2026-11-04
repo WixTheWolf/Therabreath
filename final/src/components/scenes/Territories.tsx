@@ -7,7 +7,7 @@ import { PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, ROSS_GOAL, MYST
 import { tallyPick, ranked, tasteSummary } from '@/lib/state';
 
 // Map positions: x = character (familiar to adventurous), y = intensity (gentle to bold). Our perspective, illustrative.
-const POS: Record<string, [number, number]> = { mint: [0.16, 0.58], bright: [0.5, 0.74], botanical: [0.3, 0.3], warmcool: [0.66, 0.6], fruit: [0.62, 0.42], night: [0.7, 0.16], ladder: [0.3, 0.1] };
+export const POS: Record<string, [number, number]> = { mint: [0.16, 0.58], bright: [0.5, 0.74], botanical: [0.3, 0.3], warmcool: [0.66, 0.6], fruit: [0.62, 0.42], night: [0.7, 0.16], ladder: [0.3, 0.1] };
 
 // 23. The map
 export function MapScene({ step }: SceneProps) {

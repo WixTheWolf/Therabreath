@@ -18,7 +18,9 @@ export type PlanRow = { id: string; h: string; what: string; who?: string; brief
 export const PLAN_FIELDS = ['what', 'who', 'brief', 'test', 'owner', 'reviewer', 'base', 'due', 'step', 'next'] as const;
 
 export type SessionState = {
-  scene: number; step: number;
+  // Where the presentation is. `sceneId` names the slide; moves saved before the 17-slide deck carry only a position in
+  // the old 36-slide order, so they leave it empty and nothing resumes from them.
+  scene: number; step: number; sceneId?: string;
   participants: Record<string, Participant>;
   votes: Record<string, { open: boolean; locked: boolean; revealed: boolean; picks: Record<string, any> }>;
   ratings: Record<string, Record<string, Rating>>; // sample -> pid -> rating
@@ -56,7 +58,14 @@ export function reduce(s: SessionState, e: Ev): SessionState {
   switch (e.kind) {
     case 'join': s.participants[e.pid!] = { ...(s.participants[e.pid!] || {}), pid: e.pid!, name: String(d.name || 'Guest').slice(0, 24), role: d.role, joined: s.participants[e.pid!]?.joined || e.t, sim: !!d.sim, paper: !!d.paper }; break;
     case 'team': if (s.participants[e.pid!]) s.participants[e.pid!].team = d.team; break;
-    case 'goto': s.scene = Math.max(0, Math.min(SCENES.length - 1, d.scene)); s.step = Math.max(0, Math.min(SCENES[s.scene].builds, d.step || 0)); s.spotlight = null; break;
+    case 'goto': {
+      // A move names its slide (`id`) as well as its position. The name wins, so a position saved against an older order
+      // of slides can never land the room somewhere else; a move with an unknown name or none clears `sceneId`.
+      const byId = typeof d.id === 'string' ? SCENES.findIndex((x) => x.id === d.id) : -1;
+      s.scene = byId >= 0 ? byId : Math.max(0, Math.min(SCENES.length - 1, Number(d.scene) || 0));
+      s.sceneId = byId >= 0 ? d.id : undefined;
+      s.step = Math.max(0, Math.min(SCENES[s.scene].builds, d.step || 0)); s.spotlight = null; break;
+    }
     case 'vote': { const v = vote(s, d.key); if (d.action === 'open') { v.open = true; v.locked = false; } if (d.action === 'lock') { v.open = false; v.locked = true; } if (d.action === 'reveal') { v.revealed = true; v.open = false; v.locked = true; } if (d.action === 'reset') s.votes[d.key] = { open: false, locked: false, revealed: false, picks: {} }; break; }
     case 'pick': { const v = vote(s, d.key); if (!v.locked || d.paper) v.picks[e.pid!] = d.value; break; }
     case 'unpick': delete vote(s, d.key).picks[e.pid!]; break; // the presenter view taking back a hand vote

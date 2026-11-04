@@ -14,18 +14,16 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { useSealed } from '@/lib/sealedClient';
 import { useScale, Clock } from './StageApp';
-import { SCENES, SECTIONS, Scene } from '@/lib/scenes';
+import { SCENES, SECTIONS, Scene, firstOfPart } from '@/lib/scenes';
 import { pointsOf, titleOf } from '@/lib/sceneNotes';
 import type { SceneProps } from './scenes/ui';
-import { Arrival, July, Prework, Thesis } from './scenes/Opening';
-import { Gap, Portfolio, Market, Signals } from './scenes/ActI';
-import { School, Cooling, Oxyd, Anatomy } from './scenes/School';
-import { MapScene, Territory, Matrix } from './scenes/Territories';
-import { Next, Lunch } from './scenes/Close';
+import { Arrival, Prework } from './scenes/Opening';
+import { Gap } from './scenes/ActI';
+import { Lunch } from './scenes/Close';
 import {
-  LiveCtx, Live, ShowTitle, Team, ShowBrief, Opener, SignalVoteShow, TastingLive, NextRound, ConceptCanvas, DotsShow, WhiteSpaceShow, Board,
-  Playbook, ShowFilm, FilmCtl, JoinCorner, FIELDS, decided, markLabel,
+  LiveCtx, Live, ShowBrief, TastingLive, ConceptCanvas, WhiteSpaceShow, Board, Playbook, ShowFilm, FilmCtl, JoinCorner, FIELDS, decided, markLabel,
 } from './show/ShowScenes';
+import { TeamSince, Shelf, TrendVote, FlavorSchool, DirectionsMap, Landed } from './show/Deck';
 import { EVENT, TOPICS, RUN, CRITERIA } from '@/lib/content';
 import { runTiming } from '@/lib/time';
 import { PLAN_COLS, planCell } from './show/Plan';
@@ -33,14 +31,13 @@ import { showChannel, presenterUrl, ShowMsg } from '@/lib/showLink';
 
 type View = (p: SceneProps) => React.ReactNode;
 const VIEWS: Record<string, View> = {
-  arrival: Arrival, title: ShowTitle, team: Team, july: July, brief: ShowBrief, prework: Prework, thesis: Thesis,
-  open: Opener, gap: Gap, portfolio: Portfolio, market: Market, signals: Signals, signalvote: SignalVoteShow,
-  school: School, cooling: Cooling, oxyd: Oxyd, anatomy: Anatomy, map: MapScene, platform: Territory,
-  tasting: TastingLive, matrix: Matrix, nextround: NextRound, concepts: ConceptCanvas, dots: DotsShow,
-  whitespace: WhiteSpaceShow, board: Board, playbook: Playbook, next: Next, lunch: Lunch,
+  arrival: Arrival, team: TeamSince, brief: ShowBrief, prework: Prework,
+  gap: Gap, market: Shelf, signals: TrendVote,
+  school: FlavorSchool, map: DirectionsMap, tasting: TastingLive, nextround: Landed,
+  whitespace: WhiteSpaceShow, concepts: ConceptCanvas, board: Board, playbook: Playbook, lunch: Lunch,
 };
 // The scenes where phones are in use: the code stays in the corner for anyone who has not joined.
-const VOTING = new Set(['signalvote', 'tasting', 'nextround', 'dots']);
+const VOTING = new Set(['signals', 'tasting', 'nextround']);
 // The scenes with boxes to type in or cells to mark: a click there never moves the room on.
 const TYPING = new Set(['concepts', 'whitespace', 'board']);
 // Two copies of the sample names are the same when every sample has the same name and note, in any key order.
@@ -58,9 +55,11 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const sv = useMemo(() => (sealed.data ? { ...s, revealed: sealed.data } : s), [s, sealed.data]);
   const told = Object.keys(s.survey || {}).length > 0;
   const n = SCENES.length;
-  // "You told us" only appears once someone has answered the pre-brief. S (short) also skips the optional slides.
+  // "You told us" only appears once someone has answered the pre-brief. S (short) also skips the optional slides and the
+  // optional builds (the July row, and the two directions that are not in the tasting).
   const [short, setShort] = useState(false);
   const skip = useCallback((i: number) => (SCENES[i].id === 'prework' && !told) || (short && !!SCENES[i].optional), [told, short]);
+  const skipBuild = useCallback((i: number, b: number) => short && !!SCENES[i].skip?.includes(b), [short]);
 
   const [pos, setPos] = useState({ i: 0, step: 0 });
   const [notes, setNotes] = useState(false);
@@ -94,9 +93,22 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   useEffect(() => {
     if (live.current || !status.lastOk || still || mode) return;
     live.current = true;
-    if (!hashed.current && s.scene > 0) setPos({ i: s.scene, step: s.step });
-  }, [status.lastOk, still, mode, s.scene, s.step]);
-  useEffect(() => { if (live.current && !still && !mode) send('goto', { scene: pos.i, step: pos.step }); }, [pos, still, mode, send]);
+    // Only a move that names this slide resumes: positions saved before the 17-slide deck name nothing, so a session that
+    // has them (the live one does) starts from the arrival screen.
+    if (!hashed.current && s.scene > 0 && s.sceneId === SCENES[s.scene]?.id) setPos({ i: s.scene, step: s.step });
+  }, [status.lastOk, still, mode, s.scene, s.step, s.sceneId]);
+  useEffect(() => { if (live.current && !still && !mode) send('goto', { scene: pos.i, step: pos.step, id: SCENES[pos.i].id }); }, [pos, still, mode, send]);
+  // The trend vote closes when the top three start to open (build 1) and opens again if we go back to build 0, so the
+  // three we talk about are the three that go into the Playbook. Hand votes from the presenter view still count.
+  const lockWant = useRef('');
+  useEffect(() => {
+    if (!live.current || still || mode || SCENES[pos.i].id !== 'signals') return;
+    const want = pos.step >= 1 ? 'lock' : 'open';
+    const locked = !!s.votes.signals?.locked;
+    if ((want === 'lock') === locked) { lockWant.current = ''; return; }
+    if (lockWant.current === want) return;
+    lockWant.current = want; send('vote', { key: 'signals', action: want });
+  }, [pos, still, mode, s.votes.signals?.locked, send, status.lastOk]);
   // The reveal. The flip is build 2 of the tasting, and skipping past the tasting reveals too. Two repairs keep the phones
   // right: a reveal saved before the samples changed is sent again with the current names (a rehearsal on October 31 kept
   // the old A to D order after the swap), and a rehearsal that goes back before the flip is sealed again, so every
@@ -126,15 +138,17 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const go = useCallback((d: number) => {
     const { i, step } = posRef.current, sc = SCENES[i];
     if (d > 0) {
-      if (step < sc.builds) return setPos({ i, step: step + 1 });
+      let b = step + 1; while (b <= sc.builds && skipBuild(i, b)) b++;
+      if (b <= sc.builds) return setPos({ i, step: b });
       let j = i + 1; while (j < n && skip(j)) j++;
       if (j < n) setPos({ i: j, step: 0 });
     } else {
-      if (step > 0) return setPos({ i, step: step - 1 });
+      let b = step - 1; while (b > 0 && skipBuild(i, b)) b--;
+      if (step > 0) return setPos({ i, step: Math.max(0, b) });
       let j = i - 1; while (j > 0 && skip(j)) j--;
-      if (j >= 0) setPos({ i: j, step: SCENES[j].builds });
+      if (j >= 0) { let last = SCENES[j].builds; while (last > 0 && skipBuild(j, last)) last--; setPos({ i: j, step: last }); }
     }
-  }, [n, skip]);
+  }, [n, skip, skipBuild]);
   // ] and [ jump to the next or previous part (the map and the tasting count as their own stops).
   const jump = useCallback((d: number) => {
     const stops = SECTIONS.map((id) => SCENES.findIndex((x) => x.id === id)).filter((x) => x >= 0);
@@ -171,8 +185,9 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
     const { i, step } = posRef.current;
     const nx = SCENES.slice(i + 1).find((_, j) => !skip(i + 1 + j)); const next = nx ? titleOf(nx) : '';
     const pv = SCENES.slice(0, i).reverse().find((x) => !skip(x.n)); const prev = pv ? titleOf(pv) : '';
-    return { t: 'pos', pos: { i, step, short, blank, at: shownList.indexOf(SCENES[i]) + 1, total: shownList.length, next, prev, film: film.current?.state() } };
-  }, [skip, short, blank, shownList]);
+    let nb = step + 1; while (nb <= SCENES[i].builds && skipBuild(i, nb)) nb++;
+    return { t: 'pos', pos: { i, step, short, blank, at: shownList.indexOf(SCENES[i]) + 1, total: shownList.length, next, prev, build: nb <= SCENES[i].builds, film: film.current?.state() } };
+  }, [skip, skipBuild, short, blank, shownList]);
   useEffect(() => {
     if (still || mode) return;
     const ch = showChannel(code); link.current = ch; if (!ch) return;
@@ -200,10 +215,11 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const sc = SCENES[Math.min(pos.i, n - 1)];
   useEffect(() => { document.documentElement.dataset.theme = mode === 'results' ? 'a' : sc.theme; }, [sc.theme, mode]);
   const joinUrl = origin ? `${origin}/j/${code}?k=${k}` : '';
-  const ctxLive: Live = useMemo(() => ({ send, still, joinUrl }), [send, still, joinUrl]);
+  const goStep = useCallback((b: number) => setPos((p) => ({ i: p.i, step: Math.max(0, Math.min(SCENES[p.i].builds, b)) })), []);
+  const ctxLive: Live = useMemo(() => ({ send, still, joinUrl, goStep }), [send, still, joinUrl, goStep]);
   const ctx = useMemo(() => ({ code, k, origin, joinUrl }), [code, k, origin, joinUrl]);
   // The export script (scripts/export-show.mjs) reads the run of show from here, and rehearsal scripts read the join link.
-  useEffect(() => { Object.assign(window, { __join: joinUrl, __run: RUN, __show: SCENES.filter((_, i) => !skip(i)).map((x) => ({ id: x.id, title: titleOf(x), builds: x.builds, block: x.block, optional: !!x.optional, notes: pointsOf(x), ch: x.chapter, at: SCENES.findIndex((y) => y.id === x.id) + 1 })) }); }, [skip, joinUrl]);
+  useEffect(() => { Object.assign(window, { __join: joinUrl, __run: RUN, __show: SCENES.filter((_, i) => !skip(i)).map((x) => ({ id: x.id, title: titleOf(x), builds: x.builds, skip: x.skip || [], block: x.block, optional: !!x.optional, notes: pointsOf(x), ch: x.chapter, at: SCENES.findIndex((y) => y.id === x.id) + 1 })) }); }, [skip, joinUrl]);
 
   if (mode === 'results') return <Results s={sv} code={code} />;
 
@@ -228,6 +244,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
               {sc.id === 'film' ? <ShowFilm still={still} ctl={film} onChange={filmChanged} /> : View ? <View s={sv} step={pos.step} scene={sc} idx={idx} ctx={ctx} send={send} /> : null}
             </div>
             {sc.chapter >= 0 && <Chrome i={pos.i} clock={!still} />}
+            {firstOfPart(sc) && <div className="obj-tag" key={'o' + sc.id}>Objective 0{sc.chapter + 1}</div>}
             {VOTING.has(sc.id) && joinUrl && <JoinCorner url={joinUrl} />}
             <div className="grain" />
             <div className={'blank' + (blank ? ' on' : '')} />
@@ -240,7 +257,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
             <b>{titleOf(sc)}</b>
             <ul>{pointsOf(sc).map((x, j) => <li key={j}>{x}</li>)}</ul>
             {pos.i + 1 < n && <small>Next: {(() => { const x = SCENES.slice(pos.i + 1).find((_, j) => !skip(pos.i + 1 + j)); return x ? titleOf(x) : ''; })()}{nextStop ? ` · ] jumps to ${nextStop.title}` : ''}</small>}
-            <small>{timing}{short ? ' · Short version: optional slides skipped (S to undo)' : ''}</small>
+            <small>{timing}{short ? ' · Short version: optional builds skipped (S to undo)' : ''}</small>
           </aside>
         )}
         {hint && <div className="show-hint">Right arrow or click to go on · Left arrow back · ] next part · S short version · F full screen · P presenter view</div>}

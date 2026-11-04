@@ -1,0 +1,321 @@
+'use client';
+// The slides of the 17-slide morning that merge what used to be two or more: Who we are with July, the shelf, the trends
+// as a vote first, Flavor in OXYD-8, the four directions with their profile cards, and where each sample landed next to
+// the chips vote. Built for talking with the room: one question on screen where there is one, and nothing to type.
+import React, { useEffect, useState } from 'react';
+import { R, Enter, Src, SceneProps, clean } from '../scenes/ui';
+import { CoolingPlot, OxydField } from '../scenes/School';
+import { POS } from '../scenes/Territories';
+import { LiveCtx, OBJ_HUE, directionName } from './ShowScenes';
+import {
+  TEAM, SCIENCE, IMAGINATION, JULY, PORTFOLIO, MARKET, SOURCES, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, DIRECTIONS,
+} from '@/lib/content';
+import { tallyPick, ranked, voteCounts, tasteSummary, SessionState } from '@/lib/state';
+
+const useLive = () => React.useContext(LiveCtx)!;
+const tally = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+const byHandNote = (n: number, one: string, many: string) => (n ? ` · ${n} ${n === 1 ? one : many} by hand` : '');
+const WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+const Ask = ({ q, b, step, className = '' }: { q: string; b?: number; step: number; className?: string }) => (
+  <R b={b ?? 0} step={step} className={'room-ask ' + className}><span className="k">For the room</span><p>{q}</p></R>
+);
+
+// 2. Who we are, since July. The four of us and one line each on the lab and what we bring in from outside oral care.
+// Build 1 (optional, S skips it) brings in July's four themes with Growth, November, lighting up.
+export function TeamSince({ step }: SceneProps) {
+  const still = !!useLive()?.still;
+  const [lit, setLit] = useState(false);
+  useEffect(() => { if (step < 1) return setLit(false); if (still) return setLit(true); const t = setTimeout(() => setLit(true), 900); return () => clearTimeout(t); }, [step, still]);
+  return (
+    <div className="st ts">
+      <img className="st-img" src="/img/lab-bench.webp" alt="" />
+      <div className="pad">
+        <Enter i={0}><div className="k">The Flavor Factory · Norco, California</div></Enter>
+        <Enter i={1}><h2 className="h1">Who we are</h2></Enter>
+        <div className="ts-people">
+          {TEAM.map((t, i) => <Enter key={t.name} i={2 + i} className="st-person"><b>{t.name}</b><span className="k">{t.title}</span></Enter>)}
+        </div>
+        <Enter i={6} className="ts-lines">
+          <div className="ts-line sci"><span className="k">What we test in the lab</span><div className="st-chips">{SCIENCE.map((x) => <span key={x}>{x}</span>)}</div></div>
+          <div className="ts-line ima"><span className="k">What we bring in from outside oral care</span><div className="st-chips">{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</div></div>
+        </Enter>
+        {step >= 1 && (
+          <div className="july ts-july">
+            {JULY.map((w, i) => (
+              <div key={w} className={'jf' + (i === 4 ? ' grow' : '') + (i === 4 && lit ? ' lit' : '')} style={{ ['--i' as any]: i }}>
+                <span className="num">0{i + 1}</span><b>{w}</b><em>{i === 4 ? 'November' : 'July'}</em>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// 6. The shelf: the portfolio by format (mint in blue, everything else in amber) beside what competitors have launched.
+// Build 1: there's a lot of room around mint. Build 2: where TheraBreath stands, and the question.
+const FORMATS6 = ['Rinse', 'Toothpaste', 'Kids', 'Lozenge', 'Gum', 'Sachet'];
+export function Shelf({ step }: SceneProps) {
+  const mint = PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length;
+  const formats = FORMATS6.filter((f) => PORTFOLIO.some((v) => v.format === f));
+  return (
+    <div className="pad shelf">
+      <div className="sh-left">
+        <Enter i={0}><div className="k">Your portfolio today</div></Enter>
+        <Enter i={1}><h2 className="h2 sh-title">{mint} of {PORTFOLIO.length} flavors are mint, across {WORDS[formats.length] || formats.length} formats.</h2></Enter>
+        <div className={'sh-rows' + (step >= 1 ? ' room' : '')}>
+          {formats.map((f, r) => (
+            <Enter key={f} i={2 + r} className="sh-row">
+              <span className="k">{f}</span>
+              <div>{PORTFOLIO.filter((v) => v.format === f).map((v, j) => <span key={j} className={/mint/i.test(v.flavor) ? 'mint' : 'other'}>{v.flavor}</span>)}</div>
+            </Enter>
+          ))}
+        </div>
+        <R b={1} step={step}><p className="h2 it sh-room">There’s a lot of room around mint.</p></R>
+        <Src k="listings" style={{ position: 'static', marginTop: 18 }} />
+      </div>
+      <div className="sh-right">
+        <Enter i={1}><div className="k">What competitors are launching · all public</div></Enter>
+        <ol className="sh-launch">
+          {MARKET.map((m, i) => (
+            <Enter key={i} i={2 + i} className={'sh-mk' + (m.who === 'TheraBreath' ? ' tb' : '')}>
+              <span className="sh-when">{m.when}</span>
+              <div><b>{m.who}</b><p>{m.what}</p><span className="src">{clean(SOURCES[m.src])}</span></div>
+            </Enter>
+          ))}
+        </ol>
+      </div>
+      <R b={2} step={step} className="mk-turn sh-turn">
+        <span className="k">Where TheraBreath stands</span>
+        <p>TheraBreath has been alcohol-free and dye-free from the start. It has OXYD-8, and it already has a kids line. <span className="it">TheraBreath already has what they’re chasing. What keeps it ahead?</span></p>
+      </R>
+    </div>
+  );
+}
+
+// 7. Seven trends: vote, then discuss. All seven show at once as one line each with where the evidence comes from, and
+// the phones vote for three straight away while the bars fill. Builds 1 to 3 open the top three one at a time (the
+// vote closes on build 1 and reopens if we go back); the other four stay as one line.
+export function topTrends(s: SessionState) {
+  const t = tallyPick(s, 'signals');
+  const voted = ranked(t).filter(([, n]) => n > 0).map(([id]) => id);
+  // Fewer than three with votes: the rest come in list order, so every build has a trend to open.
+  return [...voted, ...SIGNALS.map((x) => x.id).filter((id) => !voted.includes(id))].slice(0, 3).map((id) => ({ sig: SIGNALS.find((x) => x.id === id)!, n: t[id] || 0 }));
+}
+export function TrendVote({ s, step }: SceneProps) {
+  const t = tallyPick(s, 'signals');
+  const c = voteCounts(s, 'signals');
+  const max = Math.max(1, ...Object.values(t));
+  const top = topTrends(s);
+  const k = Math.min(3, Math.max(0, step));
+  const focus = k > 0 ? top[k - 1] : null;
+  const isTop = (id: string) => step >= 1 && top.some((x) => x.sig.id === id);
+  return (
+    <div className="signal sigs tv" style={{ ['--h' as any]: focus ? focus.sig.hue : OBJ_HUE[0] }}>
+      <div className="sig-light" style={{ opacity: focus ? 1 : 0.35 }} />
+      <div className="pad" style={{ position: 'relative' }}>
+        <Enter i={0}><div className="k">{step === 0 ? `Vote on your phone · pick three · ${tally(c.phones, 'vote', 'votes')} so far${byHandNote(c.hand, 'vote', 'votes')}` : `The vote is in · ${tally(c.phones + c.hand, 'vote', 'votes')}`}</div></Enter>
+        <Enter i={1}><h2 className="h2">Seven trends. <span className="it">Which three matter most for TheraBreath?</span></h2></Enter>
+        <div className="tv-list">
+          {SIGNALS.map((x, i) => {
+            const n = t[x.id] || 0; const rank = top.findIndex((y) => y.sig.id === x.id);
+            const on = focus?.sig.id === x.id;
+            return (
+              <div key={x.id} className={'tv-row' + (on ? ' on' : '') + (isTop(x.id) && !on ? ' top' : '') + (step >= 1 && !isTop(x.id) ? ' dim' : '')} style={{ ['--h' as any]: x.hue, ['--i' as any]: i }}>
+                <span className="num">0{x.n}</span>
+                <div className="tv-t"><b>{x.title.replace(/\.$/, '')}</b><small className="tv-tag">{x.from}</small></div>
+                <div className="tv-bar"><i style={{ width: `${(n / max) * 100}%` }} /></div>
+                <b className="num tv-n">{n}</b>
+                {step >= 1 && rank > -1 && <em className="k tv-rank">Number {rank + 1}</em>}
+              </div>
+            );
+          })}
+        </div>
+        {focus ? (
+          <div className="sigs-focus tv-focus" key={focus.sig.id}>
+            <div className="k">{focus.n ? `Number ${k} of 3 · ${tally(focus.n, 'vote', 'votes')}` : `Trend ${focus.sig.n} of 7`} · Seen in {focus.sig.from === 'Oral care' ? 'oral care' : 'food and flavor'}</div>
+            <h3 className="sf-title">{focus.sig.title}</h3>
+            <div className="sf-proofs">{focus.sig.proofs.map((p, i) => <div key={i} className="proof" style={{ ['--d' as any]: `${i * 180}ms` }}><p>{p.t}</p><div className="src">{clean(SOURCES[p.src])}</div></div>)}</div>
+            <div className="sig-so"><span className="k">What it could mean for TheraBreath</span><div className="h3 it">{focus.sig.so}</div></div>
+            <div className="tv-ask"><span className="k">For the room</span><p>{focus.sig.ask}</p></div>
+          </div>
+        ) : (
+          <div className="sigs-hint tv-hint">Vote first. Then we’ll open the top three one at a time: the evidence, what it could mean for TheraBreath and a question for the room.</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// 8. Flavor in OXYD-8: what flavor is, then how cooling works, then what we control in OXYD-8, ending on the clean
+// finish and a question. One slide, three states. The words are Ryan's from the Flavor School slides.
+const FS = ['What flavor is', 'Cooling', 'OXYD-8'];
+export function FlavorSchool({ step }: SceneProps) {
+  const parts = [
+    { t: 'Taste', w: 'The tongue', d: 'Sweet, sour, salty, bitter, umami.' },
+    { t: 'Aroma', w: 'The nose, both ways', d: 'What you sniff in, plus what rises from the back of your mouth as you swallow.' },
+    { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming. Most of what mint does happens here.' },
+  ];
+  const levers = ['Controlling pH', 'Dissolving and protecting the flavor', 'Choosing materials that hold up'];
+  const at = Math.min(2, step);
+  return (
+    <div className="fs">
+      {at === 2 && <OxydField />}
+      <div className="pad fs-head">
+        <Enter i={0}><div className="k">Flavor School · Flavor in OXYD-8</div></Enter>
+        <ol className="fs-steps">{FS.map((x, i) => <li key={x} className={i === at ? 'on' : i < at ? 'done' : ''}><span className="num">0{i + 1}</span>{x}</li>)}</ol>
+      </div>
+      <div className={'fs-state school' + (at === 0 ? ' on' : '')}>
+        <div className="pad">
+          <h2 className="h1 fs-h">Most of what we call flavor is really smell. <span className="it">The rest is how it feels.</span></h2>
+          <div className="venn">{parts.map((p, i) => <div key={p.t} className={'vc vc' + i}><div className="vc-in"><b className="h3">{p.t}</b><span className="k">{p.w}</span><p>{p.d}</p></div></div>)}</div>
+          <Src k="pf" style={{ position: 'absolute', left: 120, bottom: 118 }} />
+        </div>
+      </div>
+      <div className={'fs-state cooling' + (at === 1 ? ' on' : '')}>
+        {step >= 1 && (
+          <div className="pad">
+            <div className="cool-copy">
+              <h2 className="h1">Cooling does<br />two jobs.</h2>
+              <p className="h3 it accent">There’s the hit when you first rinse, and there’s how long it lasts. We tune both.</p>
+              <div className="src fs-drawn">Drawn to explain, not measured.</div>
+            </div>
+            <CoolingPlot shown={3} frost />
+          </div>
+        )}
+      </div>
+      <div className={'fs-state oxyd' + (at === 2 ? ' on' : '')}>
+        {step >= 2 && (
+          <div className="pad">
+            <h2 className="h2 fs-ox">OXYD-8 is built to be tough on the bacteria behind bad breath, and that makes it tough on flavor too.</h2>
+            <div className="k fs-ctl">What we control in OXYD-8</div>
+            <div className="levers">{levers.map((l, i) => <div key={l} className="lever" style={{ animationDelay: `${300 + i * 160}ms` }}><span className="num">0{i + 1}</span>{l}</div>)}</div>
+            <p className="h2 fs-pay">A TheraBreath flavor can start anywhere, <span className="it">but it has to finish clean.</span></p>
+            <Ask step={step} q="Where has flavor been hardest to get right in OXYD-8 for you?" className="fs-ask" />
+            <Src k="patent" extra="Public chemistry only. No TheraBreath or TFF formula details" style={{ position: 'absolute', left: 120, bottom: 118 }} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// 9. Four directions. The map (familiar to adventurous, gentle to bold, our view) with all four; builds 1 to 4 open
+// each direction's profile card. Clicking a direction on the TV opens its card; clicking it again goes back to the map.
+// Global Brightness and Modern Clean (builds 2 and 3) are the optional ones the short version skips.
+export function DirectionsMap({ step }: SceneProps) {
+  const live = useLive();
+  const W = 1160, H = 700;
+  const t = step >= 1 ? TERRITORIES[step - 1] : null;
+  const tasted = (id: string) => SAMPLES.some((x) => x.territory === id);
+  const open = (n: number) => { if (!live.still) live.goStep(step === n ? 0 : n); };
+  return (
+    <div className={'pad dm' + (t ? ' open' : '')}>
+      <div className="map-copy dm-copy">
+        <Enter i={0}><div className="k">Four directions</div></Enter>
+        <Enter i={1}><h2 className="h1">Where we think <span className="it">flavor could go.</span></h2></Enter>
+        <Enter i={2}><p className="lede dm-lede">Two of these are in today’s tasting. For the other two, we just want your opinion.</p></Enter>
+        <div className="src dm-view">Our view, not data.</div>
+        <Ask step={step} q="Which direction feels most like TheraBreath, and which stretches it most?" className="dm-ask" />
+      </div>
+      <div className="map-plot dm-plot" style={{ width: W, height: H }}>
+        <div className="map-glow on" />
+        <div className="ax ax-x"><span>Familiar</span><span>Character</span><span>Adventurous</span></div>
+        <div className="ax ax-y"><span>Bold</span><span>Intensity</span><span>Gentle</span></div>
+        {TERRITORIES.map((x, i) => {
+          const [px, py] = POS[x.id];
+          return (
+            <button key={x.id} type="button" data-nonav className={'mp dm-pt' + (t?.id === x.id ? ' on' : '')} style={{ left: px * W, top: (1 - py) * H, ['--c1' as any]: x.palette[0], ['--c2' as any]: x.palette[1], ['--i' as any]: 2 + i }}
+              onClick={() => open(x.n)} aria-label={`${x.name}: ${t?.id === x.id ? 'back to the map' : 'open its profile'}`}>
+              <i /><span className="num">0{x.n}</span><span className="dm-lab"><b>{x.name}</b><small className="k">{tasted(x.id) ? 'In today’s tasting' : 'For discussion'}</small></span>
+            </button>
+          );
+        })}
+      </div>
+      {t && (
+        <section className="dm-card" key={t.id} style={{ ['--c1' as any]: t.palette[0], ['--c2' as any]: t.palette[1], ['--c3' as any]: t.palette[2] }}>
+          <div className="dm-hero">{t.image ? <img src={t.image} alt="" style={t.focus ? { objectPosition: t.focus } : undefined} /> : <i />}</div>
+          <div className="dm-body">
+            <div className="k">Direction {t.n} of 4 · {tasted(t.id) ? 'In today’s tasting' : 'For discussion'}</div>
+            <h2 className="dm-name">{t.name}</h2>
+            <p className="dm-promise">{t.promise}</p>
+            <div className="dm-arc"><span className="k">The flavor arc</span><ol>{t.arc.map((a, i) => <li key={a}><span className="k">{['First', 'Then', 'Finish'][i]}</span><b>{a}</b></li>)}</ol></div>
+            <div className="dm-two">
+              <div><span className="k">What it tastes like</span><p>{t.signature}</p>{tasted(t.id) && <p className="dm-note">We’ll tell you which samples these are after the tasting.</p>}</div>
+              <div><span className="k">Who it’s for</span><p>{t.who}</p></div>
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
+// 12. Where each sample landed, then what gets a next round. The bubble chart from the scores stays up while the phones
+// place five chips each on the four samples and the two directions not in the tasting; build 1 ranks the top three.
+export function topDirections(s: SessionState) {
+  return ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ id, n, name: directionName(id, s) }));
+}
+export function Landed({ s, step }: SceneProps) {
+  const pts = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code), c: x.color[1] }));
+  const scored = pts.filter((p) => p.sum.n > 0);
+  const lead = scored.length ? scored.reduce((a, b) => (b.sum.feels + b.sum.newness > a.sum.feels + a.sum.newness ? b : a)) : null;
+  // Kept inside the frame (8% to 92%) so a sample scored 5 never sits on the plot's edge.
+  const at = (v: number) => 8 + Math.max(0, Math.min(1, (v - 1.5) / 3)) * 84;
+  const scorers = Math.max(0, ...pts.map((p) => p.sum.n));
+  const t = tallyPick(s, 'directions');
+  const c = voteCounts(s, 'directions');
+  const max = Math.max(1, ...Object.values(t));
+  const top = ranked(t).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => id);
+  const fresh = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.code).join(' and ');
+  return (
+    <div className="vt landed" style={{ ['--h' as any]: OBJ_HUE[1] }}>
+      <div className="vt-glow" />
+      <div className="pad">
+        <Enter i={0}><div className="k">From your scores · {tally(scorers, 'person', 'people')} · then five chips each on your phone</div></Enter>
+        <Enter i={1}><h2 className="h2 lm-title">Where each sample landed, <span className="it">then what gets a next round.</span></h2></Enter>
+        <div className="matrix lm-m">
+          <div className="mx-plot">
+            <i className="mx-mid v" /><i className="mx-mid h" />
+            <span className="mx-q tr">Does both<b>Develop first</b></span>
+            <span className="mx-ax x">Fit with TheraBreath <em>strengthens loyal users</em> →</span>
+            <span className="mx-ax y">Newness <em>attracts new consumers</em> →</span>
+            {pts.map((p, i) => {
+              const x = p.sum.n ? at(p.sum.feels) : 50, y = p.sum.n ? at(p.sum.newness) : 50;
+              const size = p.sum.n ? 40 + at(p.sum.appeal) * 0.7 : 44;
+              return (
+                <div key={p.code} className={'mx-b' + (lead?.code === p.code ? ' lead' : '') + (p.sum.n ? '' : ' none')} style={{ left: `${x}%`, top: `${100 - y}%`, ['--s' as any]: `${size}px`, ['--c' as any]: p.c, ['--i' as any]: i }}>
+                  <b className="num">{p.code}</b>
+                </div>
+              );
+            })}
+            {!scored.length && <span className="mx-empty">Your tasting scores show up here.</span>}
+          </div>
+        </div>
+        <div className="lm-asks">
+          <div className="room-ask"><span className="k">For the room</span><p>Of {fresh || 'C and D'}, which feels more like TheraBreath?</p></div>
+          <div className="room-ask"><p>Top right is what Ross asked for: both at once. What would it take to move the others there?</p></div>
+          <p className="src">These are this group’s first reactions, not consumer research.</p>
+        </div>
+        <div className="lm-chips">
+          <div className="k">Five chips each · {tally(c.phones, 'person has', 'people have')} voted{byHandNote(c.hand, 'chip', 'chips')}</div>
+          <div className="dotlist lm-list">
+            {DIRECTIONS.map((d, i) => {
+              const n = t[d.id] || 0; const rank = top.indexOf(d.id);
+              return (
+                <div key={d.id} className={'dl' + (step >= 1 && rank > -1 ? ' top' : '') + (step >= 1 && top.length && rank < 0 ? ' dim' : '')} style={{ ['--c' as any]: d.colors[1], ['--i' as any]: i }} data-nonav>
+                  <span className="dl-name"><b>{directionName(d.id, s)}</b><small>{d.label !== directionName(d.id, s) ? `${d.label} · ${d.sub}` : d.sub}</small></span>
+                  <span className="dl-dots">{Array.from({ length: Math.min(n, 24) }, (_, j) => <i key={j} style={{ ['--j' as any]: j }} />)}</span>
+                  <b className="num dl-n">{n}</b>
+                  {step >= 1 && rank > -1 ? <em className="k">Number {rank + 1}</em> : <em />}
+                </div>
+              );
+            })}
+          </div>
+          <Ask b={1} step={step} q="What would set TheraBreath’s flavors apart from what competitors are launching?" className="lm-q3" />
+        </div>
+      </div>
+    </div>
+  );
+}

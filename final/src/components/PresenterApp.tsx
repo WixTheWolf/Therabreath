@@ -10,7 +10,6 @@ import { SCENES } from '@/lib/scenes';
 import { pointsOf, titleOf } from '@/lib/sceneNotes';
 import { EVENT, SIGNALS, DIRECTIONS, SAMPLES, WHO_CHIPS, MYSTERY, HORIZONS, CRITERIA, DEVELOP, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
 import { tallyPick, voteCounts, tasters, byHand, onPaper, people, uid, Ev, SessionState } from '@/lib/state';
-import { candidates } from './scenes/Build';
 import { Synced, PLAN_COLS, PlanLists, RemoveRow, planActions } from './show/Plan';
 import { runTiming, etClock } from '@/lib/time';
 import { SLIDE_MIN, SLIDE_TIMES } from '@/lib/slideTimes';
@@ -65,11 +64,11 @@ export default function PresenterApp({ code }: { code: string }) {
   onFilm.current = linked && sc.id === 'film';
   const tm = now ? runTiming(sc.block, new Date(now)) : null;
   const joined = people(s).filter((p) => !p.paper).length;
-  const room = sc.id === 'signalvote' ? <HandVotes s={s} events={events} send={send} k="signals" title="Hand votes: the three trends" items={SIGNALS.map((x) => ({ id: x.id, label: x.title.replace(/\.$/, '') }))} value={(id) => [id]} />
+  const room = sc.id === 'signals' ? <HandVotes s={s} events={events} send={send} k="signals" title="Hand votes: the three trends" items={SIGNALS.map((x) => ({ id: x.id, label: x.title.replace(/\.$/, '') }))} value={(id) => [id]} />
     : sc.id === 'nextround' ? <HandVotes s={s} events={events} send={send} k="directions" title="Hand votes: chips for a next round" items={DIRECTIONS.map((d) => ({ id: d.id, label: dirName(s, d.id), sub: d.sub }))} value={(id) => ({ [id]: 1 })} />
-    : sc.id === 'dots' ? <HandVotes s={s} events={events} send={send} k="concepts" title="Hand votes: dots for the ideas" items={candidates(s).map((x) => ({ id: x.id, label: x.name || 'Untitled concept', sub: x.sub }))} value={(id) => ({ [id]: 1 })} />
-    : sc.id === 'tasting' || sc.id === 'matrix' ? <PaperCards s={s} events={events} sendMany={sendMany} />
-    : sc.id === 'board' || sc.id === 'playbook' || sc.id === 'next' ? <PlanEditor s={s} send={send} />
+    : sc.id === 'tasting' ? <PaperCards s={s} events={events} sendMany={sendMany} />
+    : sc.id === 'board' || sc.id === 'playbook' ? <PlanEditor s={s} send={send} />
+    : sc.id === 'map' ? <Profiles step={step} off={off} cmd={cmd} i={i} short={!!pos?.short} />
     : sc.id === 'film' ? <FilmPanel f={linked ? pos?.film : undefined} now={now} cmd={cmd} next={pos?.next || ''} prev={pos?.prev || ''} />
     : <Joined s={s} />;
 
@@ -93,20 +92,20 @@ export default function PresenterApp({ code }: { code: string }) {
         <p className="pv-alert" role="status">This window moves the presentation only when both are open in this browser. Open the presentation from the team page (Present on the day), then press P there. Hand votes and paper cards still go in from here.</p>
       )}
 
-      <div className={'pv-main' + (['tasting', 'matrix', 'board', 'playbook', 'next'].includes(sc.id) ? ' wide' : '')}>
+      <div className={'pv-main' + (['tasting', 'board', 'playbook'].includes(sc.id) ? ' wide' : '')}>
         <section className="pv-now" aria-live="polite">
           <h1>{titleOf(sc)}</h1>
           {sc.builds > 0 && <p className="pv-build">Build {step} of {sc.builds}</p>}
           <ul className="pv-points">{pointsOf(sc).map((x, j) => <li key={j}>{x}</li>)}</ul>
           {pos?.next && <p className="pv-next">Next: <b>{pos.next}</b></p>}
-          {sc.id === 'platform4' && <button className="pv-skipfilm" disabled={off} onClick={() => cmd({ c: 'goto', i: SCENES.findIndex((x) => x.id === 'tasting') })}>Running late: skip the film, go to the tasting</button>}
+          {sc.id === 'map' && <button className="pv-skipfilm" disabled={off} onClick={() => cmd({ c: 'goto', i: SCENES.findIndex((x) => x.id === 'tasting') })}>Running late: skip the film, go to the tasting</button>}
         </section>
         <aside className="pv-room">{room}</aside>
       </div>
 
       <footer className="pv-ctl">
         <button disabled={off} onClick={() => cmd({ c: 'go', d: -1 })}><Icon d="M10 3 5 8l5 5" />Back</button>
-        <button disabled={off} className="primary" onClick={() => cmd({ c: 'go', d: 1 })}>{step < sc.builds ? 'Next build' : 'Next slide'}<Icon d="m6 3 5 5-5 5" /></button>
+        <button disabled={off} className="primary" onClick={() => cmd({ c: 'go', d: 1 })}>{(pos ? pos.build : step < sc.builds) ? 'Next build' : 'Next slide'}<Icon d="m6 3 5 5-5 5" /></button>
         <button disabled={off} onClick={() => cmd({ c: 'jump', d: -1 })}>Previous part</button>
         <button disabled={off} onClick={() => cmd({ c: 'jump', d: 1 })}>Next part</button>
         <label className="pv-goto"><span>Go to</span>
@@ -303,6 +302,24 @@ function FilmPanel({ f, now, cmd, next, prev }: { f?: FilmState; now: number; cm
       </div>
       <p className="pv-sub">Running late? Skip it. Every decision and owner is already saved, and the write-up has them all.</p>
       <p className="pv-sub">Keys here or on the presentation: Space or K to pause and play, R to start again, the arrows to move on or back.</p>
+    </>
+  );
+}
+
+// The four directions: open any profile card on the TV, or go back to the map. The short version skips the two that
+// aren't in the tasting when stepping through, but any card can still be opened here.
+function Profiles({ step, off, cmd, i, short }: { step: number; off: boolean; cmd: (c: ShowCmd) => void; i: number; short: boolean }) {
+  const skipped = SCENES[i]?.skip || [];
+  return (
+    <>
+      <h2>Profile cards</h2>
+      <p className="pv-sub">Open a direction’s card on the TV, or click it on the TV itself. {short ? 'Short version: the arrows skip the two that aren’t in the tasting.' : 'The arrows step through all four.'}</p>
+      <ul className="pv-profiles">
+        <li><button disabled={off} aria-pressed={step === 0} onClick={() => cmd({ c: 'goto', i, step: 0 })}>The map, all four</button></li>
+        {TERRITORIES.map((t) => (
+          <li key={t.id}><button disabled={off} aria-pressed={step === t.n} onClick={() => cmd({ c: 'goto', i, step: t.n })}>{t.n}. {t.name}{skipped.includes(t.n) ? <small>Optional</small> : <small>In the tasting</small>}</button></li>
+        ))}
+      </ul>
     </>
   );
 }
