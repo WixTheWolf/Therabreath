@@ -322,10 +322,10 @@ export const WHITESPACE = {
   sink: ['Wake-up', 'Wind-down'],
   extra: [[DRY_MOUTH, 'On the go']] as [string, string][],
   today: (segment: string, moment: string) => ['Wake-up', 'Wind-down'].includes(moment) || (segment === DRY_MOUTH && moment === 'On the go'),
-  // Where we think TheraBreath already is in a day, from the public product listings (rinse; dry mouth lozenges and
-  // gum on the go; no sachets were found on November 4). Our read, to challenge on the day.
-  present: { 'Wake-up': 'Rinse', 'Wind-down': 'Rinse', 'On the go': 'Lozenges, gum' } as Record<string, string>,
-  read: 'This is our read of the public product listings, not measured data, so tell us where we’ve got it wrong.',
+  // Where we think TheraBreath already is in a day, from the public product listings and C&D's Q3 2026 release (rinse;
+  // lozenges, gum and the new portable rinse sachets on the go). Our read, to challenge on the day.
+  present: { 'Wake-up': 'Rinse', 'Wind-down': 'Rinse', 'On the go': 'Lozenges, gum, sachets' } as Record<string, string>,
+  read: 'This is our read of the product listings and C&D’s Q3 release, not measured data, so tell us where we’ve got it wrong.',
 };
 
 export const HORIZONS = [{ id: 'Now', label: 'Now', when: 'In the next sample round' }, { id: 'Next', label: 'Next', when: 'Once the first results are in' }, { id: 'Future', label: 'Later', when: 'Worth exploring further' }];

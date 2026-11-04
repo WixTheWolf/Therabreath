@@ -222,7 +222,7 @@ export function ConceptCanvas({ s }: SceneProps) {
 
 // Where TheraBreath fits in a day: the moments from morning to night on one line, with "On the go" set apart. Build 1
 // shows where we think TheraBreath already is (our read of the public listings, to challenge), build 2 the moment the
-// pre-brief answers say is missing, build 3 everything still open. Below, one row for each of the top three from the
+// pre-brief answers say is missing, build 3 the moments to explore. Below, one row for each of the top three from the
 // chips vote (or every sample and direction if no chips came in): click a cell to mark where it could fit.
 export function dayRows(s: SessionState) {
   const t = tallyPick(s, 'directions');
@@ -241,51 +241,74 @@ const segLine = (r: [string, number][], n: number) => {
   if (r[1] && r[1][1] === r[0][1]) return ` In the pre-brief, the answers were split on who the next flavor should be for.`;
   return ` In the pre-brief, the most common answer for who the next flavor should be for was ${r[0][0].charAt(0).toLowerCase() + r[0][0].slice(1)} (${r[0][1]} of ${n}).`;
 };
+// 17. Bookends of the day. One arc from morning to night with the moments of the day on it, and On the go in the middle
+// (any time). Build 1 lights the two ends, where the rinse is today (wake-up and wind-down; lozenges, gum and sachets on
+// the go). Build 2 adds the pre-brief's missing moment, with how many said each (every moment tied for the most is lit).
+// Build 3 asks which occasions TheraBreath could serve better and marks the rest To explore: a question, not a finding.
+// The top three from the chips sit in a tray: tap one, then a moment, to place it (the same `mark` cells as before, so
+// the first mark for each becomes the When on its concept card, and the tray says so).
+const ARC = { cx: 960, cy: 780, rx: 760, ry: 400 };
+const arcAt = (deg: number) => { const a = (deg * Math.PI) / 180; return { x: ARC.cx + ARC.rx * Math.cos(a), y: ARC.cy - ARC.ry * Math.sin(a) }; };
+const arcPath = (from: number, to: number) => { const a = arcAt(from), b = arcAt(to); return `M ${a.x} ${a.y} A ${ARC.rx} ${ARC.ry} 0 0 1 ${b.x} ${b.y}`; };
 export function WhiteSpaceShow({ s, step }: SceneProps) {
   const live = useLive();
   const marks = s.marks || [];
   const answers = Object.values(s.survey || {});
   const tally = (key: 'consumer' | 'moment') => { const t: Record<string, number> = {}; answers.forEach((a) => a[key] && (t[a[key]!] = (t[a[key]!] || 0) + 1)); return t; };
   const mom = tally('moment'), seg = tally('consumer');
-  const maxM = Math.max(1, ...Object.values(mom));
-  const topMom = ranked(mom)[0]?.[0];
-  const cols = [...WHITESPACE.moments.filter((m) => m !== 'On the go'), 'On the go'];
+  const most = Math.max(0, ...Object.values(mom));
+  const day = WHITESPACE.moments.filter((m) => m !== 'On the go');
   const rows = dayRows(s);
+  const [pick, setPick] = useState('');
+  const sel = rows.find((r) => r.id === pick) ? pick : rows[0]?.id;
   const now = (m: string) => step >= 1 && !!WHITESPACE.present[m];
   const open = (m: string) => step >= 3 && !WHITESPACE.present[m];
+  const place = (m: string) => { if (!live.still && sel) live.send('mark', { cell: `${sel}|${m}` }); };
+  // The moments sit evenly from 160 degrees (wake-up, left) to 20 degrees (wind-down, right).
+  const deg = (i: number) => 160 - (i * 140) / Math.max(1, day.length - 1);
+  // Each label leans in toward the middle of the arc, so the line never runs through the words under a stop.
+  const stop = (m: string, x: number, y: number, extra = '', lean = 0) => {
+    const placed = rows.filter((r) => marks.includes(`${r.id}|${m}`));
+    const n = mom[m] || 0;
+    return (
+      <button key={m} type="button" data-nonav onClick={() => place(m)} aria-label={`Place ${rows.find((r) => r.id === sel)?.name || 'a flavor'} at ${m}`}
+        className={'bk-stop' + extra + (now(m) ? ' now' : '') + (open(m) ? ' open' : '') + (step >= 2 && most > 0 && mom[m] === most ? ' top' : '')} style={{ left: x, top: y, ['--lean' as any]: `${Math.round(lean)}px` }}>
+        <i className="bk-dot" />
+        <span className="bk-name">{m}</span>
+        <span className="bk-tags">
+          {now(m) && <em className="bk-tag now">{WHITESPACE.present[m]}</em>}
+          {open(m) && <em className="bk-tag open">To explore</em>}
+          {step >= 2 && n > 0 && <em className="bk-tag vote">{n} in the pre-brief</em>}
+        </span>
+        <span className="bk-orbs">{placed.map((r) => <i key={r.id} style={{ ['--rc' as any]: r.color }} title={r.name} />)}</span>
+      </button>
+    );
+  };
+  const mid = [deg(1), deg(day.length - 2)];
   return (
-    <div className="pad dy">
+    <div className="pad bk">
       <Enter i={0}><div className="k">White-space opportunities · our read, so correct us where we’re wrong</div></Enter>
-      <div className="wsp-head">
-        <div className={'wsp-h' + (step < 3 ? ' on' : '')}><h2 className="h2">Where TheraBreath shows up <span className="it">in a day.</span></h2></div>
-        <div className={'wsp-h' + (step >= 3 ? ' on' : '')}><h2 className="h2">Most of the day <span className="it">is still open.</span></h2></div>
+      <div className="bk-head">
+        <div className={'wsp-h' + (step === 0 ? ' on' : '')}><h2 className="h2">Where TheraBreath shows up <span className="it">in a day.</span></h2></div>
+        <div className={'wsp-h' + (step === 1 || step === 2 ? ' on' : '')}><h2 className="h2">The rinse bookends the day: <span className="it">morning and night.</span></h2></div>
+        <div className={'wsp-h' + (step >= 3 ? ' on' : '')}><h2 className="h2">Which occasions could TheraBreath <span className="it">serve better?</span></h2><p className="bk-lede">For each idea: what need would it serve better than what’s already there?</p></div>
       </div>
-      <div className="dy-grid" style={{ ['--cols' as any]: cols.length, ['--rows' as any]: rows.length }}>
-        <div className="dy-key">
-          <R b={1} step={step} className="dy-k"><i className="now" />TheraBreath today</R>
-          <R b={2} step={step} className="dy-k"><i className="vote" />{answers.length ? `Missing, from ${answers.length} pre-briefs` : 'Missing, from your pre-briefs'}</R>
-          <R b={3} step={step} className="dy-k"><i className="open" />Still open</R>
-        </div>
-        {cols.map((m, c) => (
-          <div key={m} className={'dy-col' + (m === 'On the go' ? ' any' : '') + (step >= 2 && m === topMom ? ' top' : '')} style={{ ['--c' as any]: c }}>
-            <div className="dy-bar"><i style={{ height: step >= 2 ? `${((mom[m] || 0) / maxM) * 64}px` : 0 }} />{step >= 2 && mom[m] ? <b className="num">{mom[m]}</b> : null}</div>
-            <span className="dy-dot" />
-            <span className="dy-name">{m}</span>
-            <em className={'dy-now' + (now(m) ? ' on' : '') + (open(m) ? ' open' : '')}>{now(m) ? WHITESPACE.present[m] : open(m) ? 'Open' : ''}</em>
-          </div>
-        ))}
-        {rows.map((r) => (
-          <React.Fragment key={r.id}>
-            <div className="dy-row" style={{ ['--rc' as any]: r.color }}><i /><b>{r.name}</b><small>{r.sub}</small></div>
-            {cols.map((m) => {
-              const cell = `${r.id}|${m}`;
-              return <button key={m} data-nonav onClick={() => !live.still && live.send('mark', { cell })} aria-label={`${r.name}, ${m}`} style={{ ['--rc' as any]: r.color }}
-                className={'dy-cell' + (now(m) ? ' now' : '') + (open(m) ? ' open' : '') + (marks.includes(cell) ? ' mark' : '') + (m === 'On the go' ? ' any' : '')} />;
-            })}
-          </React.Fragment>
-        ))}
+      <svg className="bk-arc" viewBox="0 0 1920 1080" aria-hidden="true">
+        <defs>
+          <linearGradient id="bk-day" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stopColor="#F4B860" /><stop offset=".5" stopColor="#6CC7DD" /><stop offset="1" stopColor="#7B6FD1" /></linearGradient>
+        </defs>
+        <path d={arcPath(deg(0), deg(day.length - 1))} className="bk-line" stroke="url(#bk-day)" />
+        <path d={arcPath(mid[0], mid[1])} className={'bk-middle' + (step >= 3 ? ' on' : '')} />
+      </svg>
+      {day.map((m, i) => { const p = arcAt(deg(i)); return stop(m, p.x, p.y, '', -Math.cos((deg(i) * Math.PI) / 180) * 70); })}
+      {stop('On the go', ARC.cx, 680, ' any')}
+      <div className="bk-tray">
+        <span className="k">Place a flavor</span>
+        <div className="bk-chips">{rows.map((r) => (
+          <button key={r.id} type="button" data-nonav aria-pressed={r.id === sel} onClick={() => setPick(r.id)} className={'bk-chip' + (r.id === sel ? ' on' : '')} style={{ ['--rc' as any]: r.color }}><i /><b>{r.name}</b></button>
+        ))}</div>
+        <span className="bk-how">Tap a flavor, then a moment. Its first moment goes on its concept card. Tap again to take it back.</span>
       </div>
-      <R b={3} step={step} className="dy-lede">Ross asked for flavors that <span className="it">unlock new usage occasions.</span> Every open moment is one. Click a cell to mark where an idea fits.</R>
       <div className="src stage-src">{WHITESPACE.read}{step >= 2 ? segLine(ranked(seg), answers.length) : ''}</div>
     </div>
   );
