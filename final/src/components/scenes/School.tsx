@@ -30,13 +30,13 @@ export function CoolingPlot({ shown = 3, frost = true }: { shown?: number; frost
   const X = (v: number) => ml + v * (W - ml - mr), Y = (v: number) => H - mb - v * (H - mb - mt);
   const curves = [
     { id: 'Classic menthol', col: '#9FE6F4', w: 3, dash: '', pts: [[0, .02], [.12, .55], [.25, .95], [.38, .70], [.50, .30], [.62, .08], [.80, .02], [1, .01]], lab: [.27, .97] },
-    { id: 'Long-lasting cooler', col: '#C9B8FF', w: 3, dash: '10 8', pts: [[0, 0], [.20, .12], [.40, .45], [.55, .60], [.70, .50], [.85, .32], [1, .20]], lab: [.60, .44] },
+    { id: 'Long-lasting cooler', col: '#C9B8FF', w: 3, dash: '10 8', pts: [[0, 0], [.20, .12], [.40, .45], [.55, .60], [.70, .50], [.85, .32], [1, .20]], lab: [.99, .12], end: true },
     { id: 'A signature curve', col: '#FFFFFF', w: 5, dash: '', pts: [[0, .02], [.12, .50], [.25, .86], [.40, .74], [.55, .62], [.70, .52], [.85, .42], [1, .32]], lab: [.80, .52] },
   ];
   const path = (pts: number[][]) => { const P = pts.map(([a, b]) => [X(a), Y(b)]); let d = `M${P[0][0]} ${P[0][1]}`; for (let i = 0; i < P.length - 1; i++) { const p0 = P[i - 1] || P[i], p1 = P[i], p2 = P[i + 1], p3 = P[i + 2] || p2; d += ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]} ${p2[1]}`; } return d; };
   const ticks: [string, number][] = [['1 sec', 0], ['10 sec', .24], ['1 min', .428], ['10 min', .668], ['1 hr', .855], ['4 hr', 1]];
   const sig = curves[2].pts;
-  const flakes = Array.from({ length: 24 }, (_, i) => { const x = 0.06 + i * 0.038; let y = 0; for (let k = 0; k < sig.length - 1; k++) if (x >= sig[k][0] && x <= sig[k + 1][0]) y = sig[k][1] + (sig[k + 1][1] - sig[k][1]) * ((x - sig[k][0]) / (sig[k + 1][0] - sig[k][0])); return { x: X(x), y: Y(y) - 30 - ((i * 37) % 11) * 2, r: 6 + y * 14, i }; });
+  const flakes = Array.from({ length: 17 }, (_, i) => { const x = 0.06 + i * 0.038; let y = 0; for (let k = 0; k < sig.length - 1; k++) if (x >= sig[k][0] && x <= sig[k + 1][0]) y = sig[k][1] + (sig[k + 1][1] - sig[k][1]) * ((x - sig[k][0]) / (sig[k + 1][0] - sig[k][0])); return { x: X(x), y: Y(y) - 30 - ((i * 37) % 11) * 2, r: 6 + y * 14, i }; });
   const crystal = (cx: number, cy: number, r: number) => { let d = ''; for (let k = 0; k < 6; k++) { const a = k * Math.PI / 3, ca = Math.cos(a), sa = Math.sin(a); d += `M${cx} ${cy}L${cx + ca * r} ${cy + sa * r}`; for (const f of [0.45, 0.72]) { const bx = cx + ca * r * f, by = cy + sa * r * f, bl = r * 0.28 * (1.1 - f); for (const sgn of [-1, 1]) { const b = a + sgn * Math.PI / 4; d += `M${bx} ${by}L${bx + Math.cos(b) * bl} ${by + Math.sin(b) * bl}`; } } } return d; };
   return (
     <svg className="cool-plot" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
@@ -49,7 +49,7 @@ export function CoolingPlot({ shown = 3, frost = true }: { shown?: number; frost
         <g key={c.id} className="cc">
           <path d={path(c.pts)} stroke={c.col} strokeWidth={c.w * 3} fill="none" opacity={0.35} filter="url(#cglow)" className="draw" />
           <path d={path(c.pts)} stroke={c.col} strokeWidth={c.w} fill="none" strokeDasharray={c.dash || undefined} strokeLinecap="round" className={c.dash ? 'fade' : 'draw'} />
-          <text x={X(c.lab[0]) + 14} y={Y(c.lab[1]) - 14} fill={c.col} className="clab">{c.id}</text>
+          <text x={X(c.lab[0]) + ((c as any).end ? 0 : 14)} y={Y(c.lab[1]) - ((c as any).end ? 0 : 14)} textAnchor={(c as any).end ? 'end' : undefined} fill={c.col} className="clab">{c.id}</text>
         </g>
       ))}
       {frost && flakes.map((f) => <path key={f.i} d={crystal(f.x, f.y, f.r)} stroke="rgba(220,246,252,.8)" strokeWidth={1.6} fill="none" strokeLinecap="round" className="frost" style={{ ['--i' as any]: f.i }} />)}

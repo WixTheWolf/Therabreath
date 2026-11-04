@@ -272,7 +272,7 @@ export function DirectionsMap({ step }: SceneProps) {
       <div className="map-plot dm-plot" style={{ width: W, height: H }}>
         <div className="map-glow on" />
         <div className="ax ax-x"><span>Familiar</span><span>Character</span><span>Adventurous</span></div>
-        <div className="ax ax-y"><span>Bold</span><span>Intensity</span><span>Gentle</span></div>
+        <div className="ax ax-y dm-ay"><span>Gentle</span><span>Intensity</span><span>Bold</span></div>
         {TERRITORIES.map((x, i) => {
           const [px, py] = POS[x.id];
           return (
@@ -308,12 +308,26 @@ export function DirectionsMap({ step }: SceneProps) {
 export function topDirections(s: SessionState) {
   return ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ id, n, name: directionName(id, s) }));
 }
+// Bubbles that would land on top of each other (close scores, or none yet) are spread around their middle, so every
+// letter stays readable. Positions are percents of the plot, which is wider than it is tall, hence the two radii.
+const spread = (ps: number[][], near = 9, rx = 7, ry = 11) => {
+  const out = ps.map((p) => [...p]); const done = new Set<number>();
+  ps.forEach((p, i) => {
+    if (done.has(i)) return;
+    const g = ps.map((_, j) => j).filter((j) => !done.has(j) && Math.hypot(ps[j][0] - p[0], ps[j][1] - p[1]) < near);
+    if (g.length < 2) return;
+    const cx = g.reduce((a, j) => a + ps[j][0], 0) / g.length, cy = g.reduce((a, j) => a + ps[j][1], 0) / g.length;
+    g.forEach((j, k) => { done.add(j); const a = (k / g.length) * Math.PI * 2 - Math.PI / 2; out[j] = [Math.max(8, Math.min(92, cx + Math.cos(a) * rx)), Math.max(8, Math.min(92, cy + Math.sin(a) * ry))]; });
+  });
+  return out;
+};
 export function Landed({ s, step }: SceneProps) {
   const pts = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code), c: x.color[1] }));
   const scored = pts.filter((p) => p.sum.n > 0);
   const lead = scored.length ? scored.reduce((a, b) => (b.sum.feels + b.sum.newness > a.sum.feels + a.sum.newness ? b : a)) : null;
   // Kept inside the frame (8% to 92%) so a sample scored 5 never sits on the plot's edge.
   const at = (v: number) => 8 + Math.max(0, Math.min(1, (v - 1.5) / 3)) * 84;
+  const spot = spread(pts.map((p) => (p.sum.n ? [at(p.sum.feels), at(p.sum.newness)] : [50, 50])));
   const scorers = Math.max(0, ...pts.map((p) => p.sum.n));
   const t = tallyPick(s, 'directions');
   const c = voteCounts(s, 'directions');
@@ -333,7 +347,7 @@ export function Landed({ s, step }: SceneProps) {
             <span className="mx-ax x">Fit with TheraBreath <em>strengthens loyal users</em> →</span>
             <span className="mx-ax y">Uniqueness <em>attracts new consumers</em> →</span>
             {pts.map((p, i) => {
-              const x = p.sum.n ? at(p.sum.feels) : 50, y = p.sum.n ? at(p.sum.newness) : 50;
+              const [x, y] = spot[i];
               const size = p.sum.n ? 40 + at(p.sum.appeal) * 0.7 : 44;
               return (
                 <div key={p.code} className={'mx-b' + (lead?.code === p.code ? ' lead' : '') + (p.sum.n ? '' : ' none')} style={{ left: `${x}%`, top: `${100 - y}%`, ['--s' as any]: `${size}px`, ['--c' as any]: p.c, ['--i' as any]: i }}>
