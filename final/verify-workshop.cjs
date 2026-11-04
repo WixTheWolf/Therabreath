@@ -34,6 +34,16 @@ const plan=fold([{id:'p1',t:10,kind:'plan',data:{id:'r1',h:'Now',fields:{what:'S
   {id:'c1',t:18,kind:'rate',pid:'paper-1',data:{sample:'A',appeal:3,feels:3,newness:3,who:[]}},{id:'c2',t:19,kind:'rate',pid:'paper-1',data:{sample:'B',appeal:3,feels:3,newness:3,who:[]}},{id:'c3',t:20,kind:'unrate',pid:'paper-1',data:{sample:'A'}}]);
 assert.deepEqual(Object.keys(plan.plan),['r1']);assert.equal(plan.plan.r1.h,'Future');assert.equal(plan.plan.r1.what,'Sample A, second round');assert.equal(plan.plan.r1.owner,'Test owner');
 assert.deepEqual(Object.keys(plan.votes.signals.picks),['hand-2']);assert.ok(!plan.ratings.A['paper-1']);assert.ok(plan.ratings.B['paper-1']);
+// Nothing typed on the day: the concept library and its option lists, the paper card counter, and plan lines placed by
+// tapping (with the concept or direction they came from, and a drafted brief that runs longer than the other fields).
+const L=load('conceptLibrary');
+assert.equal(L.WHO.length,6);assert.equal(L.WHEN.length,5);assert.equal(L.ROLE.join(),'Core range,Limited edition,New sub-line,Kids range');assert.equal(L.FORMAT.length,5);assert.equal(L.GROWS.join(),'Loyal users,New users,Both');
+assert.equal(L.STARTS.length,8,'four samples and four directions');assert.equal(L.TESTS.length,5);assert.equal(L.OWNERS.join(),'Dan,Alex,Ryan,Matt');assert.equal(L.DUE_DEFAULT,'January 2027 review');assert(L.STEPS.includes('To confirm')&&L.DUES.includes('To confirm'));
+assert(L.LIBRARY.length>=10&&L.LIBRARY.every(c=>c.status==='DRAFT'),'every drafted card is marked DRAFT');
+for(const c of L.LIBRARY){assert(L.STARTS.some(x=>x.id===c.start),c.id+' starts somewhere real');assert(L.WHO.includes(c.segment)&&L.WHEN.includes(c.occasion)&&L.ROLE.includes(c.role)&&L.FORMAT.includes(c.format)&&L.GROWS.includes(c.incremental),c.id+' uses the option lists');}
+assert(DIRECTIONS.every(d=>L.cardFor(d.id)),'every chips option has a starter card');assert(Object.values(L.MOMENT_WHEN).every(w=>L.WHEN.includes(w)));
+const pc=fold([{id:'q1',t:1,kind:'papercard',data:{d:1}},{id:'q2',t:2,kind:'papercard',data:{d:1}},{id:'q3',t:3,kind:'papercard',data:{d:-1}},{id:'q4',t:4,kind:'papercard',data:{d:-1}},{id:'q5',t:5,kind:'papercard',data:{d:-1}},{id:'q6',t:6,kind:'papercard',data:{d:1}}]);assert.equal(pc.paperCards,1,'the count never goes below zero');assert.equal(fold([]).paperCards,0);
+const tap=fold([{id:'t1',t:1,kind:'plan',data:{id:'r9',h:'Next',fields:{what:'Grove',ref:'D',draft:'1',brief:'x'.repeat(400),due:'January 2027 review'}}}]);assert.equal(tap.plan.r9.ref,'D');assert.equal(tap.plan.r9.draft,'1');assert.equal(tap.plan.r9.brief.length,400);assert.equal(tap.plan.r9.due,'January 2027 review');
 // The slide-by-slide plan: every scene has one, each part's minutes fill its window exactly, and no slide lists more
 // clicks than it has builds.
 const {SLIDES}=load('runNotes'),{SLIDE_MIN,SLIDE_TIMES}=load('slideTimes');const mm=(t)=>{const [h,m]=t.split(':').map(Number);return h*60+m;};
@@ -42,4 +52,4 @@ for(const b of RUN){const sum=SCENES.filter(s=>s.block===b.id).reduce((n,s)=>n+S
 assert(SCENES.every(s=>!SLIDES[s.id].clicks||SLIDES[s.id].clicks.length<=s.builds+1),'a slide lists more clicks than builds');
 const T={arrival:'10:00',team:'10:01',brief:'10:03',prework:'10:05',gap:'10:10',market:'10:13',signals:'10:16',school:'10:25',map:'10:29',film:'10:37',tasting:'10:40',nextround:'10:53',whitespace:'11:00',concepts:'11:05',board:'11:20',playbook:'11:40',lunch:'11:48'};
 for(const [id,t] of Object.entries(T))assert.equal(SLIDE_TIMES[id].from,t,id+' starts at '+t);assert.equal(SLIDE_TIMES.lunch.to,'12:00');
-console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, objective tags, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards and white-space marks.');
+console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, objective tags, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');

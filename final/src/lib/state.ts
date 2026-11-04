@@ -14,8 +14,10 @@ export type Concept = { id: string; team: number; slot: number; name: string; se
 export type Placement = { horizon: string; role: string; t: number };
 // One line of Now, Next, Later: what goes forward, who it's for, the flavor brief, who owns it on each side, the base and
 // when the next sample is due. `next` is the free-text next step rows had before the brief and the date (still shown).
-export type PlanRow = { id: string; h: string; what: string; who?: string; brief?: string; test?: string; owner?: string; reviewer?: string; base?: string; due?: string; step?: string; next?: string; t: number };
-export const PLAN_FIELDS = ['what', 'who', 'brief', 'test', 'owner', 'reviewer', 'base', 'due', 'step', 'next'] as const;
+// `ref` is the concept or direction a line was placed from, and `draft` marks a flavor brief drafted from its profile
+// (finalized in the write-up). `due` is a date from before November 4, or one of the morning's options.
+export type PlanRow = { id: string; h: string; what: string; who?: string; brief?: string; test?: string; owner?: string; reviewer?: string; base?: string; due?: string; step?: string; next?: string; ref?: string; draft?: string; t: number };
+export const PLAN_FIELDS = ['what', 'who', 'brief', 'test', 'owner', 'reviewer', 'base', 'due', 'step', 'next', 'ref', 'draft'] as const;
 
 export type SessionState = {
   // Where the presentation is. `sceneId` names the slide; moves saved before the 17-slide deck carry only a position in
@@ -37,6 +39,7 @@ export type SessionState = {
   plan: Record<string, PlanRow>; // Now, Next, Later, one row per direction, typed in the presentation or the presenter view
   marks: string[]; // white-space cells marked in the presentation, as 'segment|moment'
   notes: Record<string, string>; // the write-up's own words, typed by the team after the morning (summary, a note per objective)
+  paperCards: number; // paper scorecards handed in on the day, counted with +1 and -1; the cards are typed in after the morning
   timer: { running: boolean; endsAt: number; remaining: number; total: number };
   spotlight: { kind: string; ref: string } | null;
   paper: boolean; blank: boolean; sound: boolean;
@@ -46,7 +49,7 @@ export type SessionState = {
 
 export const initialState = (): SessionState => ({
   scene: 0, step: 0, participants: {}, votes: {}, ratings: {}, guesses: {}, concepts: {},
-  missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {}, board: {}, plan: {}, marks: [], notes: {},
+  missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {}, board: {}, plan: {}, marks: [], notes: {}, paperCards: 0,
   timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, paper: false, blank: false, sound: false, revealed: null, lastEvent: 0,
 });
 
@@ -97,10 +100,11 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'plan': {
       const r = s.plan[d.id] || { id: String(d.id), h: 'Now', what: '', t: e.t };
       if (d.h) r.h = String(d.h);
-      for (const f of PLAN_FIELDS) if (typeof d.fields?.[f] === 'string') (r as any)[f] = d.fields[f].slice(0, 160);
+      for (const f of PLAN_FIELDS) if (typeof d.fields?.[f] === 'string') (r as any)[f] = d.fields[f].slice(0, f === 'brief' ? 600 : 160); // a drafted brief runs longer
       s.plan[r.id] = r; break;
     }
     case 'unplan': delete s.plan[d.id]; break;
+    case 'papercard': s.paperCards = Math.max(0, (s.paperCards || 0) + (Number(d.d) > 0 ? 1 : -1)); break;
     case 'note': if (typeof d.key === 'string' && d.key) s.notes[d.key.slice(0, 24)] = String(d.text || '').slice(0, 2400); break;
     case 'mark': s.marks = s.marks.includes(d.cell) ? s.marks.filter((x) => x !== d.cell) : [...s.marks, String(d.cell).slice(0, 120)]; break;
     case 'spotlight': s.spotlight = d.ref ? { kind: d.kind, ref: d.ref } : null; break;

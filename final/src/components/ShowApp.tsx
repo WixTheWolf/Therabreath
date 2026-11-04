@@ -1,15 +1,16 @@
 'use client';
 // The presentation (/host). The Stage's look (the glass drop, the light, the trend colors, the direction photographs),
 // driving the shared session: when the presenter moves on, every phone moves too. People join by scanning the code on
-// the arrival screen; they vote on the trends, score the tasting, place chips on what gets a next round and dot-vote the
-// concepts, and the results fill the screen as they land. The concept cards, the white-space marks and Now, Next and
-// Later are typed here into the same session, and the Playbook scene near the end puts it all together. The talking
-// points (N) name nobody. ?code=REHEARSE runs a separate rehearsal session with its own code; ?results=1 is a printable
-// page of what was decided; ?still=1 is for the PDF export (it never writes to the session); #12 or #12.3 jumps to a
-// scene and build. P opens the presenter view (/host/presenter) in its own window for the laptop's screen: the talking
-// points, the clock, the controls, and the hand votes and paper scorecards for anyone without a phone.
-// Keys: right, space or click to go on (not on the scenes with boxes to type in); left to go back; F full screen;
-// N talking points on this screen; P presenter view; B blank screen.
+// the arrival screen; they vote on the trends, score the tasting and place chips on what gets a next round, and the
+// results fill the screen as they land. The white-space marks, the concept cards and Now, Next and Later go into the
+// same session by tapping (nothing is typed on the day), and the Playbook slide near the end puts it all together. The
+// talking points (N) name nobody. ?code=REHEARSE runs a separate rehearsal session with its own code; ?results=1 is a
+// printable page of what was decided; ?still=1 is for the PDF export (it never writes to the session); #12 or #12.3
+// jumps to a slide and build. P opens the presenter view (/host/presenter) in its own window for the laptop's screen:
+// the talking points, the clock, the controls, the hand votes, the paper card count, the concept cards and the plan.
+// Keys: right, space or click to go on (a click on the slides with things to tap never moves on); left to go back;
+// ] and [ next and previous part; S short version; F full screen; N talking points on this screen; P presenter view;
+// B blank screen.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { useSealed } from '@/lib/sealedClient';
@@ -24,10 +25,13 @@ import {
   LiveCtx, Live, ShowBrief, TastingLive, ConceptCanvas, WhiteSpaceShow, Board, Playbook, ShowFilm, FilmCtl, JoinCorner, FIELDS, decided, markLabel,
 } from './show/ShowScenes';
 import { TeamSince, Shelf, TrendVote, FlavorSchool, DirectionsMap, Landed } from './show/Deck';
+import { starters } from './show/Concepts';
+import { unconfirmed } from '@/lib/conceptLibrary';
 import { EVENT, TOPICS, RUN, CRITERIA } from '@/lib/content';
 import { runTiming } from '@/lib/time';
 import { PLAN_COLS, planCell } from './show/Plan';
 import { showChannel, presenterUrl, ShowMsg } from '@/lib/showLink';
+import { tasters as tasterCounts } from '@/lib/state';
 
 type View = (p: SceneProps) => React.ReactNode;
 const VIEWS: Record<string, View> = {
@@ -38,8 +42,8 @@ const VIEWS: Record<string, View> = {
 };
 // The scenes where phones are in use: the code stays in the corner for anyone who has not joined.
 const VOTING = new Set(['signals', 'tasting', 'nextround']);
-// The scenes with boxes to type in or cells to mark: a click there never moves the room on.
-const TYPING = new Set(['concepts', 'whitespace', 'board']);
+// The slides with things to tap (day-map cells, the board): a click there never moves the room on.
+const STAY = new Set(['whitespace', 'concepts', 'board']);
 // Two copies of the sample names are the same when every sample has the same name and note, in any key order.
 const sealKey = (x: { samples: Record<string, { name: string; note: string }> }) =>
   Object.keys(x.samples).sort().map((c) => `${c}:${x.samples[c]?.name}|${x.samples[c]?.note}`).join(';');
@@ -132,6 +136,16 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
     if (past && !revealSent.current) { revealSent.current = true; send('reveal', sealed.data); }
   }, [pos, still, mode, s.revealed, sealed.data, send, status.lastOk, code]);
   useEffect(() => { history.replaceState(null, '', `${location.search}#${pos.i + 1}${pos.step ? '.' + pos.step : ''}`); }, [pos]);
+  // The concept slide starts its cards from the top three of the chips vote, once: only on a session that has never had a
+  // concept card, so the team's changes (or a cleared card) are never written over.
+  const started = useRef(false);
+  useEffect(() => {
+    if (!live.current || still || mode || started.current || SCENES[pos.i].id !== 'concepts' || !status.lastOk) return;
+    if (Object.keys(s.concepts || {}).length) { started.current = true; return; }
+    const cards = starters(sv); if (!cards.length) return;
+    started.current = true;
+    cards.forEach((fields, j) => send('concept', { team: j + 1, slot: 1, fields }));
+  }, [pos, still, mode, s.concepts, sv, send, status.lastOk]);
 
   const posRef = useRef(pos); posRef.current = pos;
   const film = useRef<FilmCtl | null>(null); // set while THE FLAVOR RACE is on screen
@@ -224,7 +238,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   if (mode === 'results') return <Results s={sv} code={code} />;
 
   const click = (e: React.MouseEvent) => {
-    if (TYPING.has(sc.id) || (e.target as HTMLElement).closest('input, textarea, button, label, video, a, [data-nonav]')) return;
+    if (STAY.has(sc.id) || (e.target as HTMLElement).closest('input, textarea, button, label, video, a, [data-nonav]')) return;
     go(e.clientX < innerWidth / 3 ? -1 : 1);
   };
   const key = sc.id.replace(/\d+$/, '');
@@ -282,6 +296,12 @@ function Chrome({ i, clock }: { i: number; clock: boolean }) {
   );
 }
 
+// Paper cards counted on the day and not yet typed in, as a line under the tasting.
+export const paperNote = (s: any) => {
+  const left = Math.max(0, (s.paperCards || 0) - tasterCounts(s).cards);
+  return left ? `Plus ${left} paper ${left === 1 ? 'card' : 'cards'}, added after the morning.` : '';
+};
+
 // What we decided, on one printable page: open /host?results=1 after the session and print it to PDF.
 function Results({ s, code }: { s: any; code: string }) {
   const d = decided(s);
@@ -293,11 +313,10 @@ function Results({ s, code }: { s: any; code: string }) {
       <h1 className="h1">What we <span className="it">decided.</span></h1>
       <p className="sr-sub">{Object.keys(s.participants).length} people joined on their phones.</p>
       <section><h2 className="h3">The three trends that matter most</h2><ul>{d.signals.map((x) => <li key={x.t}>{x.t} <em>{x.n} votes</em></li>)}{!d.signals.length && <li className="ghost">No votes yet</li>}</ul></section>
-      <section><h2 className="h3">The tasting</h2><table className="sr-taste"><thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key}>{c.l}</th>)}<th>Scores</th></tr></thead><tbody>{d.tasting.map((x) => <tr key={x.code}><td>{x.code}. {x.name}</td><td>{x.sum.n ? x.sum.appeal.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.feels.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.newness.toFixed(1) : ''}</td><td>{x.sum.n}</td></tr>)}</tbody></table></section>
+      <section><h2 className="h3">The tasting</h2>{paperNote(s) && <p className="sr-dots">{paperNote(s)}</p>}<table className="sr-taste"><thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key}>{c.l}</th>)}<th>Scores</th></tr></thead><tbody>{d.tasting.map((x) => <tr key={x.code}><td>{x.code}. {x.name}</td><td>{x.sum.n ? x.sum.appeal.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.feels.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.newness.toFixed(1) : ''}</td><td>{x.sum.n}</td></tr>)}</tbody></table></section>
       <section><h2 className="h3">What gets a next round</h2><ul>{d.directions.map((x) => <li key={x.t}>{x.t} <em>{x.n} chips</em></li>)}{!d.directions.length && <li className="ghost">No votes yet</li>}</ul></section>
-      <section><h2 className="h3">Concepts</h2>{cs.length ? cs.map((c: any) => <div key={c.id} className="sr-concept"><b>{c.name}</b><dl>{FIELDS.map((f) => c[f.key] ? <div key={f.f}><dt>{f.l}</dt><dd>{c[f.key]}</dd></div> : null)}</dl></div>) : <p className="ghost">None written</p>}
-        {d.ideas.length > 0 && <p className="sr-dots">Dot vote: {d.ideas.map((x) => `${x.t} (${x.n})`).join(', ')}</p>}</section>
-      <section><h2 className="h3">Now, Next, Later</h2>{d.plan.length ? <table className="sr-plan"><thead><tr><th /><th>Direction</th>{PLAN_COLS.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead><tbody>{d.plan.map((r) => <tr key={r.id}><td>{r.label}</td><td><b>{r.what || 'Untitled'}</b></td>{PLAN_COLS.map((c) => <td key={c.f}>{planCell(r, c.f) || <span className="ghost">To agree</span>}</td>)}</tr>)}</tbody></table> : <p className="ghost">Nothing yet</p>}</section>
+      <section><h2 className="h3">Concepts</h2>{cs.length ? cs.map((c: any) => <div key={c.id} className="sr-concept"><b>{c.name}</b><dl>{FIELDS.map((f) => c[f.key] ? <div key={f.f}><dt>{f.l}</dt><dd>{c[f.key]}</dd></div> : null)}</dl></div>) : <p className="ghost">None yet</p>}</section>
+      <section><h2 className="h3">Now, Next, Later</h2>{d.plan.length ? <table className="sr-plan"><thead><tr><th /><th>Direction</th>{PLAN_COLS.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead><tbody>{d.plan.map((r) => <tr key={r.id}><td>{r.label}</td><td><b>{r.what || 'Untitled'}</b></td>{PLAN_COLS.map((c) => { const v = planCell(r, c.f); return <td key={c.f} className={unconfirmed(v) ? 'tbc' : ''}>{v || <span className="ghost">To agree</span>}{c.f === 'brief' && r.draft && v ? <em className="ghost"> (draft, finalized in the write-up)</em> : null}</td>; })}</tr>)}</tbody></table> : <p className="ghost">Nothing yet</p>}</section>
       <section><h2 className="h3">Where the ideas could fit in a day</h2><ul>{marks.map((c) => <li key={c}>{markLabel(s, c)}</li>)}{!marks.length && <li className="ghost">No cells marked</li>}</ul></section>
       <p className="src">Confidential. These are development samples and concepts made for this session. They aren’t finished products or claims.</p>
       <div className="sr-actions"><button className="sr-print" onClick={() => print()}>Print or save as PDF</button><a href={code === EVENT.code ? '/host/writeup' : `/host/writeup?code=${code}`}>Open the Playbook write-up</a></div>
