@@ -98,20 +98,26 @@ export const OBJECTIVES = [
 export const CHAPTERS = ['Signals', 'Territories', 'Concepts', 'Pipeline', 'Flavor Code'];
 
 export const SURVEY = {
-  consumer: { q: 'Who should TheraBreath’s next flavor be for?', options: ['Loyal TheraBreath users', 'Mouthwash users who buy another brand', 'People who don’t use mouthwash yet', 'People who want it milder', 'Gen Z', 'Families with kids and tweens', 'People 55 and over', 'People living with dry mouth', 'Shoppers outside the US', 'Someone else'], other: 'Someone else' },
-  moment: { q: 'Which moment of the day is TheraBreath missing?', options: ['Wake-up', 'After coffee', 'After lunch', 'Afternoon meeting', 'After the gym', 'Before going out', 'Wind-down', 'On the go'] },
+  consumer: { q: 'Which audience should a new flavor focus on first?', options: ['Loyal TheraBreath users', 'Mouthwash users who buy another brand', 'People who don’t use mouthwash yet', 'People who want it milder', 'Gen Z', 'Families with kids and tweens', 'People 55 and over', 'People living with dry mouth', 'Shoppers outside the US', 'Someone else'], other: 'Someone else' },
+  // `options` are the moments on the day map (slide 17); `other` is offered after them on the pre-brief and isn't a place on
+  // the day, so it only shows with the answers.
+  moment: { q: 'Which occasion would be most useful to explore together?', options: ['Wake-up', 'After coffee', 'After lunch', 'Afternoon meeting', 'After the gym', 'Before going out', 'Wind-down', 'On the go'], other: 'Another occasion' },
   veto: { q: 'Is there a flavor or direction that would feel off-brand for TheraBreath? Tell us which, and why.' },
-  // Answers given before November 3 used these labels; they count under the new ones.
+  // Answers given before November 3 used these labels; they count under the new ones. The first two questions used to
+  // read “Who should TheraBreath’s next flavor be for?” and “Which moment of the day is TheraBreath missing?”, with the
+  // same options, so the answers given to them stand as they are.
   legacy: { 'People on GLP-1s or with dry mouth': 'People living with dry mouth' } as Record<string, string>,
 };
 
 // The pre-brief's freshness profile, five scales from 1 to 5 (the orb in Orb.tsx is drawn from it).
+// Each pair is two ends of one scale. Three used to read Cooling / Soft, Classic mint / Botanical and Every day / For a
+// moment; 1 still means the left end, so the answers given to them read the same way.
 export const PROFILE = [
   { id: 'adv', l: 'More familiar', r: 'More adventurous' },
-  { id: 'cool', l: 'Cooling', r: 'Soft' },
-  { id: 'bot', l: 'Classic mint', r: 'Botanical' },
+  { id: 'cool', l: 'Strong cooling', r: 'Gentle cooling' },
+  { id: 'bot', l: 'Classic mint', r: 'Mint with other notes' },
   { id: 'exp', l: 'Just does the job', r: 'Something to enjoy' },
-  { id: 'occ', l: 'Every day', r: 'For a moment' },
+  { id: 'occ', l: 'Any time of day', r: 'Made for one moment' },
 ];
 
 export const CLIMB: { label: string; v: number; src: string; note?: string; approx?: boolean }[] = [
@@ -389,7 +395,7 @@ export const REGIONS: Region[] = [
 export const THINK = [
   'One flavor a loyal TheraBreath user would love, and one that might win over someone who has never bought it.',
   'The flavor note you think would struggle most in an oxidizing base, and why.',
-  'A moment in the day where TheraBreath isn’t showing up yet, and what it would need to taste like to earn a place there.',
+  'An occasion TheraBreath could serve better, and what it would need to taste like to earn a place there.',
 ];
 
 // The run of show: one source for the agenda (site and pre-brief), the presentation's chapter times, and the hosts'
@@ -441,7 +447,7 @@ export const TOPICS = [
     questions: ['Which direction feels most like TheraBreath, and which one stretches it in a useful way?', 'What would set TheraBreath\u2019s flavors apart from what competitors are launching?'] },
   { title: 'What we could make',
     points: ['Start from the samples and directions that did well.', 'For each concept, agree who it’s for, when they’d use it, its role in the range, the format, the intended growth opportunity and what the next sample should do differently.', 'One or two well-defined concepts, up to three.'],
-    questions: ['Which moment of the day is TheraBreath missing?', 'Who could a new flavor bring in?'] },
+    questions: ['Which occasions could TheraBreath serve better?', 'Who could a new flavor bring in?'] },
   { title: 'What to do first',
     points: ['Where TheraBreath shows up in a day now, and where the concepts could fit.', 'Then Now, Next and Later: the next sample round, what follows the first results, and what’s worth exploring further.', 'Every direction leaves with its consumer or occasion, a flavor brief, the next test, a TFF owner, a C&D reviewer, a base, a next-sample date and an agreed next step.'],
     questions: ['What should go first, and what has to be true for it to work?', 'What would you need to see in the next round of samples?'] },

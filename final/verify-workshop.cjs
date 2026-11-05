@@ -133,7 +133,7 @@ assert.equal(sc('brief').builds,1,'the four objectives in one click, then the go
 const sig=Object.fromEntries(SIGNALS.map(s=>[s.id,s]));assert.equal(sig.allure.title,'Playful flavors are expanding in oral care.');assert(/counts use, not dry mouth/.test(sig.mouths.proofs[0].t));assert(!/54% of Americans/.test(fs.readFileSync('src/lib/content.ts','utf8')),'the 54% is the survey Kenvue cites');assert(/florals like hibiscus/.test(sig.fruit.proofs[1].t));assert(/Emotion360/.test(sig.warm.proofs[0].t));assert(!/share went up with it/.test(sig.botanical.proofs[1].t));
 assert(/\.sigs\.tv h2\.h2 \{ max-width: 1480px/.test(fs.readFileSync('src/app/show.css','utf8')),'the QR gutter on slide 9');}
 // Slide 5: off-brand answers as a list, one per line in quotes; the freshness read-back in the sliders' own words.
-{const o=fs.readFileSync('src/components/scenes/Opening.tsx','utf8');assert(o.includes('className="pw-off"')&&o.includes('Your answers lean ${listOf(l)}.')&&!o.includes('className="cloud"'),'slide 5 lists the off-brand answers and reads back the sliders');}
+{const o=fs.readFileSync('src/components/scenes/Opening.tsx','utf8');assert(o.includes('className="pw-off"')&&o.includes('Your answers lean toward ${listOf(l)}.')&&!o.includes('className="cloud"'),'slide 5 lists the off-brand answers and reads back the sliders');}
 // Review step 9, slide 15: the chart is talked about first. Build 0 holds the two questions with the chips closed (the
 // phones wait), build 1 swaps in the chip question and opens the chips, build 2 shows the top three and closes them.
 {assert.equal(sc('nextround').builds,2,'slide 15 has its talk, chips and results builds');assert.equal(room('nextround').opens,1,'the chips open at build 1');
@@ -166,4 +166,14 @@ assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("cmd({
 // a deeper wash.
 {const n=fs.readFileSync('src/lib/sceneNotes.ts','utf8');assert(n.includes('save the record')&&n.includes('what have we missed or left unclear')&&n.includes('reaching a decision, not starting another presentation'),'slides 19, 21 and 22 talking points');
 assert(fs.readFileSync('src/app/show.css','utf8').includes('rgba(11,27,43,.62)'),'slide 22 subtitle contrast');}
+// Review step 12: the pre-brief asks for a priority, offers Another occasion (kept off the day map), and its sliders have
+// two ends of one scale; the first answers still count under the same options and slider numbers.
+{const C=load('content');assert.equal(C.SURVEY.consumer.q,'Which audience should a new flavor focus on first?');assert.equal(C.SURVEY.moment.q,'Which occasion would be most useful to explore together?');
+assert.equal(C.SURVEY.moment.other,'Another occasion');assert(!C.SURVEY.moment.options.includes('Another occasion')&&C.SURVEY.moment.options.length===8,'Another occasion is not a moment on the day map');
+assert.equal(C.PROFILE.map((x)=>x.id).join(),'adv,cool,bot,exp,occ');assert.equal(C.PROFILE.map((x)=>x.l+'/'+x.r).join('|'),'More familiar/More adventurous|Strong cooling/Gentle cooling|Classic mint/Mint with other notes|Just does the job/Something to enjoy|Any time of day/Made for one moment');
+const st=load('state');const f=st.fold([{seq:1,id:'x1',t:1,kind:'survey',pid:'p1',data:{name:'A',consumer:'Gen Z',moment:'Another occasion',momentOther:'Before a date'}},{seq:2,id:'x2',t:2,kind:'survey',pid:'p2',data:{name:'B',consumer:'Gen Z',moment:'Wind-down'}}]);
+assert.equal(f.survey.p1.momentOther,'Before a date');assert.equal(f.survey.p2.momentOther,undefined);
+const sa=fs.readFileSync('src/components/SurveyApp.tsx','utf8'),fd=fs.readFileSync('src/components/SiteApp.tsx','utf8');assert(sa.includes('[...SURVEY.moment.options, SURVEY.moment.other]')&&sa.includes('momentOther'),'the pre-brief offers Another occasion');
+const ws=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');assert(ws.includes('...WHITESPACE.moments.map((m) => mom[m] || 0)'),'only moments on the arc glow');
+assert(fs.readFileSync('src/components/scenes/Opening.tsx','utf8').includes('SURVEY.moment.other}: {otherMoments'),'slide 5 lists Another occasion answers');}
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');

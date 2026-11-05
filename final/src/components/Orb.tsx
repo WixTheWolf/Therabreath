@@ -1,7 +1,7 @@
 'use client';
 // A living orb whose colour, softness and shape come from a freshness profile.
-// Profile keys, each 1 to 5: adv (familiar to adventurous), cool (cooling to soft), bot (classic to botanical),
-// exp (functional to experiential), occ (everyday to occasion-based).
+// Profile keys, each 1 to 5: adv (familiar to adventurous), cool (strong to gentle cooling), bot (classic mint to mint
+// with other notes), exp (functional to experiential), occ (any time of day to made for one moment).
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { PROFILE } from '@/lib/content';
 
@@ -10,7 +10,7 @@ export const DEFAULT_PROFILE: Record<string, number> = { adv: 3, cool: 3, bot: 3
 
 export function describe(p: Record<string, number>, who = 'Your freshness is') {
   const w = (id: string, lo: string, hi: string) => (p[id] <= 2 ? lo : p[id] >= 4 ? hi : '');
-  const words = [w('adv', 'familiar', 'adventurous'), w('cool', 'cold', 'soft'), w('bot', 'classic', 'botanical'), w('exp', 'practical', 'something to enjoy'), w('occ', 'for every day', 'for a moment')].filter(Boolean);
+  const words = [w('adv', 'familiar', 'adventurous'), w('cool', 'strongly cooling', 'gently cooling'), w('bot', 'classic mint', 'mint with other notes'), w('exp', 'practical', 'something to enjoy'), w('occ', 'for any time of day', 'made for one moment')].filter(Boolean);
   return words.length ? `${who} ${words.join(', ')}.` : `${who} right in the middle.`;
 }
 

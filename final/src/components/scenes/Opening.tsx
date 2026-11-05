@@ -130,6 +130,8 @@ export function Prework({ s, step }: SceneProps) {
   const cons = count('consumer'), mom = count('moment');
   // Who people typed when they picked "Someone else".
   const others = [...new Set(answers.map((a) => a.other?.trim()).filter(Boolean) as string[])];
+  // And the occasions people typed when they picked "Another occasion".
+  const otherMoments = [...new Set(answers.map((a) => a.momentOther?.trim()).filter(Boolean) as string[])];
   // The same veto from several people shows once, with a count.
   const vetoCount: Record<string, [string, number]> = {};
   for (const v of answers.map((a) => a.veto).filter(Boolean) as string[]) { const key = v.trim().toLowerCase().replace(/[.!]+$/, ''); if (!key) continue; vetoCount[key] = [vetoCount[key]?.[0] || v.trim().replace(/[.!]+$/, ''), (vetoCount[key]?.[1] || 0) + 1]; }
@@ -144,7 +146,7 @@ export function Prework({ s, step }: SceneProps) {
       <Enter i={0}><div className="k">From your pre-brief · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div></Enter>
       <div className="pw-grid">
         <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} />{others.length > 0 && <p className="src pw-others">Someone else: {others.slice(0, 6).join(', ')}</p>}</R>
-        <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} /></R>
+        <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} />{otherMoments.length > 0 && <p className="src pw-others">{SURVEY.moment.other}: {otherMoments.slice(0, 6).join(', ')}</p>}</R>
       </div>
       {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">Your own taste in freshness</span><p className="h3 it">{leanLine(roomProfile(answers))}</p><p className="pw-avg">{leanNote(roomProfile(answers), profiled)}</p></div></R>}
       <R b={2} step={step} className="vetoes">
@@ -157,14 +159,14 @@ export function Prework({ s, step }: SceneProps) {
   );
 }
 
-// The freshness sliders, read back in the slider's own words: which way the answers lean on each, and how many sit in the
-// middle. An average of 2 or less leans to the left label, 4 or more to the right; 3 is the middle.
-const LEAN: Record<string, [string, string]> = { adv: ['more familiar', 'more adventurous'], cool: ['more cooling', 'softer'], bot: ['closer to classic mint', 'more botanical'], exp: ['more practical', 'more like something to enjoy'], occ: ['more for every day', 'more for a moment'] };
+// The freshness sliders, read back in the slider's own words: what the answers lean toward on each, and how many sit in
+// the middle. An average of 2 or less leans to the left label, 4 or more to the right; 3 is the middle.
+const LEAN: Record<string, [string, string]> = { adv: ['the familiar', 'the adventurous'], cool: ['strong cooling', 'gentle cooling'], bot: ['classic mint', 'mint with other notes'], exp: ['a rinse that just does the job', 'something to enjoy'], occ: ['a flavor for any time of day', 'a flavor made for one moment'] };
 const listOf = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
 const leans = (p: Record<string, number>) => Object.keys(LEAN).filter((k) => p[k] <= 2 || p[k] >= 4).map((k) => LEAN[k][p[k] <= 2 ? 0 : 1]);
 function leanLine(p: Record<string, number>) {
   const l = leans(p);
-  return l.length ? `Your answers lean ${listOf(l)}.` : 'Your answers sit in the middle on every slider.';
+  return l.length ? `Your answers lean toward ${listOf(l)}.` : 'Your answers sit in the middle on every slider.';
 }
 function leanNote(p: Record<string, number>, n: number) {
   const mid = Object.keys(LEAN).length - leans(p).length, words = ['', 'one', 'two', 'three', 'four'];

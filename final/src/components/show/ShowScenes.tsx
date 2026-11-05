@@ -243,8 +243,8 @@ export function ConceptCanvas({ s }: SceneProps) {
 }
 
 // Where TheraBreath fits in a day: the moments from morning to night on one line, with "On the go" set apart. Build 1
-// shows where we think TheraBreath already is (our read of the public listings, to challenge), build 2 the moment the
-// pre-brief answers say is missing, build 3 the moments to explore. Below, one row for each of the top three from the
+// shows where we think TheraBreath already is (our read of the public listings, to challenge), build 2 the occasions the
+// pre-brief answers would most like to explore, build 3 the moments to explore. Below, one row for each of the top three from the
 // chips vote (or every sample and direction if no chips came in): click a cell to mark where it could fit.
 export function dayRows(s: SessionState) {
   const t = tallyPick(s, 'directions');
@@ -257,15 +257,16 @@ export const markLabel = (s: SessionState, cell: string) => {
   const name = teamConcepts(s).find((c) => c.id === id)?.name || directionName(id, s);
   return `${name} · ${m}`;
 };
-// The pre-brief's most common answer to who the next flavor is for, with its count, or that it was split.
+// The pre-brief's most common answer to which audience to focus on first, with its count, or that it was split.
 const segLine = (r: [string, number][], n: number) => {
   if (!r.length) return '';
-  if (r[1] && r[1][1] === r[0][1]) return ` In the pre-brief, the answers were split on who the next flavor should be for.`;
-  return ` In the pre-brief, the most common answer for who the next flavor should be for was ${r[0][0].charAt(0).toLowerCase() + r[0][0].slice(1)} (${r[0][1]} of ${n}).`;
+  if (r[1] && r[1][1] === r[0][1]) return ` In the pre-brief, the answers were split on which audience to focus on first.`;
+  return ` In the pre-brief, the most common answer for which audience to focus on first was ${/^Gen Z/.test(r[0][0]) ? r[0][0] : r[0][0].charAt(0).toLowerCase() + r[0][0].slice(1)} (${r[0][1]} of ${n}).`;
 };
 // 17. Bookends of the day. One arc from morning to night with the moments of the day on it, and On the go in the middle
 // (any time). Build 1 lights the two ends, where the rinse is today (wake-up and wind-down; lozenges, gum and sachets on
-// the go). Build 2 adds the pre-brief's missing moment, with how many said each (every moment tied for the most is lit).
+// the go). Build 2 adds the pre-brief's occasions to explore, with how many said each (every moment tied for the most is
+// lit).
 // Build 3 asks which occasions TheraBreath could serve better and marks the rest To explore: a question, not a finding.
 // The top three from the chips sit in a tray: tap one, then a moment, to place it (the same `mark` cells as before, so
 // the first mark for each becomes the When on its concept card, and the tray says so).
@@ -278,7 +279,8 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
   const answers = Object.values(s.survey || {});
   const tally = (key: 'consumer' | 'moment') => { const t: Record<string, number> = {}; answers.forEach((a) => a[key] && (t[a[key]!] = (t[a[key]!] || 0) + 1)); return t; };
   const mom = tally('moment'), seg = tally('consumer');
-  const most = Math.max(0, ...Object.values(mom));
+  // Only the moments on the arc can glow: "Another occasion" answers aren't a place on the day.
+  const most = Math.max(0, ...WHITESPACE.moments.map((m) => mom[m] || 0));
   const day = WHITESPACE.moments.filter((m) => m !== 'On the go');
   const rows = dayRows(s);
   const [pick, setPick] = useState('');

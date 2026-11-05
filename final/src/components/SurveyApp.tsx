@@ -19,7 +19,7 @@ const NEEDS = ['Add your first name so we know whose answers these are.', 'Pick 
 
 export default function SurveyApp({ code, k }: { code: string; k: string }) {
   const { send, status } = useSession(code, { k, interval: 4000 });
-  const [a, setA] = useState({ name: '', consumer: '', other: '', moment: '', veto: '' });
+  const [a, setA] = useState({ name: '', consumer: '', other: '', moment: '', momentOther: '', veto: '' });
   const [profile, setProfile] = useState<Record<string, number>>(DEFAULT_PROFILE);
   const [step, setStep] = useState(0);
   const [err, setErr] = useState('');
@@ -32,7 +32,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
     document.documentElement.dataset.theme = 'a';
     const n = new URLSearchParams(location.search).get('n');
     if (n) setA((x) => ({ ...x, name: n.slice(0, 20) }));
-    try { const saved = JSON.parse(localStorage.getItem(`pb-brief-${code}`) || 'null'); if (saved?.done) { setA({ other: '', ...saved.a }); setProfile(saved.profile); setDone(true); } } catch {}
+    try { const saved = JSON.parse(localStorage.getItem(`pb-brief-${code}`) || 'null'); if (saved?.done) { setA({ other: '', momentOther: '', ...saved.a }); setProfile(saved.profile); setDone(true); } } catch {}
   }, [code]);
 
   const first = a.name.trim().split(/\s+/)[0];
@@ -53,7 +53,8 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
     try { pid = JSON.parse(localStorage.getItem(`pb-me-${code}`) || 'null')?.pid; } catch {}
     if (!pid) { pid = uid(); try { localStorage.setItem(`pb-me-${code}`, JSON.stringify({ pid, name: first })); } catch {} }
     const other = a.consumer === SURVEY.consumer.other ? a.other.trim() : '';
-    send('survey', { ...a, other, name: first, profile }, pid);
+    const momentOther = a.moment === SURVEY.moment.other ? a.momentOther.trim() : '';
+    send('survey', { ...a, other, momentOther, name: first, profile }, pid);
     try { localStorage.setItem(`pb-brief-${code}`, JSON.stringify({ done: true, a, profile })); } catch {}
     setSentAt(Date.now()); setDone(true);
   };
@@ -112,7 +113,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
             <div className="bw-wiz-body" key={step}>
               {step === 0 && <label className="rm-field"><span>First, what should we call you?</span><input value={a.name} placeholder="Your first name" autoComplete="given-name" aria-invalid={!!err} aria-describedby={err ? 'bw-err' : undefined} onChange={(e) => { setErr(''); setA({ ...a, name: e.target.value.slice(0, 20) }); }} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); next(); } }} /></label>}
               {step === 1 && <div className="rm-field" role="group" aria-labelledby="bw-q1" aria-describedby={err ? 'bw-err' : undefined}><span id="bw-q1">{SURVEY.consumer.q}</span><div className="bw-tiles">{SURVEY.consumer.options.map((o) => <button key={o} className={a.consumer === o ? 'on' : ''} aria-pressed={a.consumer === o} onClick={() => { setA({ ...a, consumer: o }); setErr(''); if (o !== SURVEY.consumer.other) setTimeout(() => go(2), 280); }}>{o}</button>)}</div>{a.consumer === SURVEY.consumer.other && <label className="bw-other"><span>Who? A few words is plenty.</span><input value={a.other} maxLength={60} placeholder="Optional" autoFocus onChange={(e) => setA({ ...a, other: e.target.value.slice(0, 60) })} onKeyDown={(e) => { if (e.key === 'Enter') next(); }} /></label>}</div>}
-              {step === 2 && <div className="rm-field" role="group" aria-labelledby="bw-q2" aria-describedby={err ? 'bw-err' : undefined}><span id="bw-q2">{SURVEY.moment.q}</span><div className="bw-tiles">{SURVEY.moment.options.map((o) => <button key={o} className={a.moment === o ? 'on' : ''} aria-pressed={a.moment === o} onClick={() => { setA({ ...a, moment: o }); setErr(''); setTimeout(() => go(3), 280); }}>{o}</button>)}</div></div>}
+              {step === 2 && <div className="rm-field" role="group" aria-labelledby="bw-q2" aria-describedby={err ? 'bw-err' : undefined}><span id="bw-q2">{SURVEY.moment.q}</span><div className="bw-tiles">{[...SURVEY.moment.options, SURVEY.moment.other].map((o) => <button key={o} className={a.moment === o ? 'on' : ''} aria-pressed={a.moment === o} onClick={() => { setA({ ...a, moment: o }); setErr(''); if (o !== SURVEY.moment.other) setTimeout(() => go(3), 280); }}>{o}</button>)}</div>{a.moment === SURVEY.moment.other && <label className="bw-other"><span>Which one? A few words is plenty.</span><input value={a.momentOther} maxLength={60} placeholder="Optional" autoFocus onChange={(e) => setA({ ...a, momentOther: e.target.value.slice(0, 60) })} onKeyDown={(e) => { if (e.key === 'Enter') next(); }} /></label>}</div>}
               {step === 3 && <label className="rm-field"><span>{SURVEY.veto.q}</span><small className="bw-note" id="bw-q3-note">A flavor, an ingredient, a feeling or a style. Anything you think wouldn’t sit right with the brand.</small><textarea rows={3} value={a.veto} placeholder="Optional. If you answer, it goes on screen without your name." aria-describedby="bw-q3-note" onChange={(e) => setA({ ...a, veto: e.target.value.slice(0, 140) })} /></label>}
               {step === 4 && <div className="bw-sliders" role="group" aria-labelledby="bw-q4"><span className="bw-field-l" id="bw-q4">Slide each one toward how you like your freshness.</span>{PROFILE.map((x) => (
                 <label key={x.id} className="rm-dial"><small><i>{x.l}</i><i>{x.r}</i></small><input type="range" min={1} max={5} step={1} value={profile[x.id]} aria-label={`From ${x.l} to ${x.r}`} aria-valuetext={`${profile[x.id]} of 5, ${profile[x.id] < 3 ? 'toward ' + x.l : profile[x.id] > 3 ? 'toward ' + x.r : 'in between'}`} onChange={(e) => setProfile({ ...profile, [x.id]: Number(e.target.value) })} /></label>
@@ -129,7 +130,7 @@ export default function SurveyApp({ code, k }: { code: string; k: string }) {
         <p className="bw-print-only">To answer, open the web version of this page through the link in your invitation email. Here are the questions, so you can think them over first. We’ll share everyone’s answers, without names, at the start of the morning.</p>
         <ol className="bw-print-only bw-print-qs">
           <li><b>{SURVEY.consumer.q}</b> Pick one: {SURVEY.consumer.options.join(', ')}.</li>
-          <li><b>{SURVEY.moment.q}</b> Pick one: {SURVEY.moment.options.join(', ')}.</li>
+          <li><b>{SURVEY.moment.q}</b> Pick one: {[...SURVEY.moment.options, SURVEY.moment.other].join(', ')}.</li>
           <li><b>{SURVEY.veto.q}</b> Optional.</li>
           <li><b>How do you like your freshness?</b> Five sliders: {PROFILE.map((x) => `${x.l.toLowerCase()} or ${x.r.toLowerCase()}`).join('; ')}.</li>
         </ol>

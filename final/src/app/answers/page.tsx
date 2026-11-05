@@ -47,12 +47,13 @@ export default async function Answers({ searchParams }: { searchParams: Promise<
             {answers.map((r) => {
               const d = (r.data || {}) as Record<string, any>;
               const forWho = d.consumer === SURVEY.consumer.other && d.other ? `${d.consumer}: ${d.other}` : d.consumer;
+              const occasion = d.moment === SURVEY.moment.other && d.momentOther ? `${d.moment}: ${d.momentOther}` : d.moment;
               return (
                 <li key={r.pid} className="an-item">
                   <div className="an-head"><b>{d.name || 'No name given'}</b><span>{when(r.t)}</span></div>
                   <dl>
                     <div><dt>{SURVEY.consumer.q}</dt><dd>{label(forWho)}</dd></div>
-                    <div><dt>{SURVEY.moment.q}</dt><dd>{label(d.moment)}</dd></div>
+                    <div><dt>{SURVEY.moment.q}</dt><dd>{label(occasion)}</dd></div>
                     <div><dt>{SURVEY.veto.q}</dt><dd>{label(d.veto)}</dd></div>
                     {d.profile && <div><dt>Their freshness profile</dt><dd><ul className="an-prof">{PROFILE.map((p) => {
                       const v = Number(d.profile[p.id]);
