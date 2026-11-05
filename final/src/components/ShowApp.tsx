@@ -130,8 +130,13 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   // Only the presenter view's Reopen scoring opens it again (for someone who genuinely hadn't finished). Skipping past
   // the tasting without showing the scores only closes it, so coming back reopens it as before.
   const lockWant = useRef<Record<string, string>>({});
+  // Only the window that's driving acts on its own: the one on the session's last move. A second window left open on
+  // another slide (a teammate's laptop during a rehearsal, say) stays passive, so it never re-locks a vote, hides the
+  // names again or starts the concept cards from where it's parked. Every send updates the session here at once, so
+  // the driving window is back in step as soon as it moves.
+  const inSync = s.scene === pos.i && s.step === pos.step;
   useEffect(() => {
-    if (!live.current || still || mode) return;
+    if (!live.current || still || mode || !inSync) return;
     for (const l of LOCKS) {
       const at = SCENES.findIndex((x) => x.id === l.id);
       if (at < 0 || pos.i < at) continue;
@@ -145,7 +150,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       if (lockWant.current[l.key] === want) continue;
       lockWant.current[l.key] = want; send('vote', { key: l.key, action: want });
     }
-  }, [pos, still, mode, s.votes, send, status.lastOk]);
+  }, [pos, still, mode, s.votes, send, status.lastOk, inSync]);
   // The reveal. The flip is build 2 of the tasting, and skipping past the tasting reveals too. Two repairs keep the phones
   // right: a reveal saved before the samples changed is sent again with the current names (a rehearsal on October 31 kept
   // the old A to D order after the swap), and a rehearsal that goes back before the flip is sealed again, so every
@@ -154,7 +159,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const repair = useRef('');
   useEffect(() => {
     const ti = SCENES.findIndex((x) => x.id === 'tasting');
-    if (!live.current || still || mode || !sealed.data) return;
+    if (!live.current || still || mode || !sealed.data || !inSync) return;
     const past = pos.i > ti || (pos.i === ti && pos.step >= 2);
     if (s.revealed) {
       if (!past && code !== EVENT.code) {
@@ -167,18 +172,18 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
     }
     repair.current = '';
     if (past && !revealSent.current) { revealSent.current = true; send('reveal', sealed.data); }
-  }, [pos, still, mode, s.revealed, sealed.data, send, status.lastOk, code]);
+  }, [pos, still, mode, s.revealed, sealed.data, send, status.lastOk, code, inSync]);
   useEffect(() => { history.replaceState(null, '', `${location.search}#${pos.i + 1}${pos.step ? '.' + pos.step : ''}`); }, [pos]);
   // The concept slide starts its cards from the top three of the chips vote, once: only on a session that has never had a
   // concept card, so the team's changes (or a cleared card) are never written over.
   const started = useRef(false);
   useEffect(() => {
-    if (!live.current || still || mode || started.current || SCENES[pos.i].id !== 'concepts' || !status.lastOk) return;
+    if (!live.current || still || mode || started.current || SCENES[pos.i].id !== 'concepts' || !status.lastOk || !inSync) return;
     if (Object.keys(s.concepts || {}).length) { started.current = true; return; }
     const cards = starters(sv); if (!cards.length) return;
     started.current = true;
     cards.forEach((fields, j) => send('concept', { team: j + 1, slot: 1, fields }));
-  }, [pos, still, mode, s.concepts, sv, send, status.lastOk]);
+  }, [pos, still, mode, s.concepts, sv, send, status.lastOk, inSync]);
 
   const posRef = useRef(pos); posRef.current = pos;
   useEffect(() => { setPick(0); }, [pos.i, pos.step]);

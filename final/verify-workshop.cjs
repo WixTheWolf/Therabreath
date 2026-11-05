@@ -183,4 +183,7 @@ const rs=fs.readFileSync('src/app/host/run/page.tsx','utf8');assert(rs.includes(
 const RN=load('runNotes');for(const b of C.RUN)assert(RN.RUN_NOTES[b.id].act&&RN.RUN_NOTES[b.id].act.length<90,'one-line action for '+b.id);}
 // Review step 13: the run sheet's still-to-confirm list carries the review's checks for the team and the venue.
 {const rs=fs.readFileSync('src/app/host/run/page.tsx','utf8');for(const x of ['Ryan to confirm each sample','The shelf (slide 8)','only what Ryan can back with data','Owners: which of us takes each kind of direction forward','The room, with Ross'])assert(rs.includes(x),'still to confirm: '+x);}
+// A second presentation window left on another slide stays passive: the vote locks, the reveal and the re-seal, and the
+// starter cards only run in the window on the session's latest move.
+{const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes('const inSync = s.scene === pos.i && s.step === pos.step;'),'inSync defined');assert.equal((sh.match(/\|\| !inSync\) return;/g)||[]).length,3,'locks, reveal and starters wait for inSync');}
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');
