@@ -25,8 +25,8 @@ export const SLIDE_MIN: Record<string, number> = {
   concepts: 14,
   open4: 1,
   board: 19,
-  playbook: 8,
-  lunch: 12,
+  playbook: 4,
+  lunch: 16,
 };
 
 const toMin = (t: string) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };

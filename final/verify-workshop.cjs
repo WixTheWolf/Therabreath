@@ -120,7 +120,7 @@ const {SLIDES}=load('runNotes'),{SLIDE_MIN,SLIDE_TIMES}=load('slideTimes');const
 assert(SCENES.every(s=>SLIDES[s.id]&&SLIDE_TIMES[s.id]&&s.id in SLIDE_MIN),'a scene has no slide plan');
 for(const b of RUN){const sum=SCENES.filter(s=>s.block===b.id).reduce((n,s)=>n+SLIDE_MIN[s.id],0);assert.equal(sum,mm(b.end)-mm(b.t),'slide minutes for '+b.id+' do not fill '+b.t+' to '+b.end);}
 assert(SCENES.every(s=>!SLIDES[s.id].clicks||SLIDES[s.id].clicks.length<=s.builds+1),'a slide lists more clicks than builds');
-const T={arrival:'10:00',team:'10:01',ours:'10:03',brief:'10:04',prework:'10:06',open1:'10:10',gap:'10:11',market:'10:14',signals:'10:17',open2:'10:25',school:'10:26',map:'10:30',film:'10:37',tasting:'10:40',nextround:'10:53',open3:'11:00',whitespace:'11:01',concepts:'11:06',open4:'11:20',board:'11:21',playbook:'11:40',lunch:'11:48'};
+const T={arrival:'10:00',team:'10:01',ours:'10:03',brief:'10:04',prework:'10:06',open1:'10:10',gap:'10:11',market:'10:14',signals:'10:17',open2:'10:25',school:'10:26',map:'10:30',film:'10:37',tasting:'10:40',nextround:'10:53',open3:'11:00',whitespace:'11:01',concepts:'11:06',open4:'11:20',board:'11:21',playbook:'11:40',lunch:'11:44'};
 for(const [id,t] of Object.entries(T))assert.equal(SLIDE_TIMES[id].from,t,id+' starts at '+t);assert.equal(SLIDE_TIMES.lunch.to,'12:00');
 // Review step 6, slides 1 to 5: no big zero before anyone joins, short capability rows, the objectives in two states,
 // and on the pre-brief slide ties lit together, one type size for off-brand answers and no "as a group" claim.
