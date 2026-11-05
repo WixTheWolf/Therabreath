@@ -918,3 +918,8 @@
 .pv-tie { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; padding: 14px 16px; border-radius: 12px; border: 1px solid #F4B860; }
 .pv-tie h3 { font-size: 20px; line-height: 1.25; }
 .pv-reagree { padding: 10px 14px; border-radius: 10px; background: rgba(244, 184, 96, .14); color: var(--fg); }
+/* Review step 11, slide 22: the subtitle and the partnership line sit on a deeper wash, so they read over the bright
+   yellow and green of the background on the room's TV. */
+.lunch-in::before { width: 1500px; height: 720px; background: radial-gradient(closest-side, rgba(11,27,43,.62), rgba(11,27,43,0)); }
+.lunch-in .sub, .lunch-in .k { text-shadow: 0 1px 18px rgba(11,27,43,.5); }
+.lunch-in .k { color: rgba(240,238,233,.92); }

@@ -162,4 +162,8 @@ assert(!fs.readFileSync('src/lib/content.ts','utf8').includes('three dots each')
 {const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes("/^[0-7]$/.test(e.key)) pickTrend(Number(e.key))")&&sh.includes("SCENES[posRef.current.i]?.id === 'signals'")&&sh.includes('pick={pick}'),'keys 1 to 7 on the trends slide');
 const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');assert(d.includes('SIGNALS.find((x) => x.n === pick)'),'the trends slide opens the picked trend');
 assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("cmd({ c: 'pick', n: x.n })"),'the presenter view can open a trend');}
+// Review step 11: a two to four minute read-back leaves the time to 12:00 for questions, and slide 22's subtitle sits on
+// a deeper wash.
+{const n=fs.readFileSync('src/lib/sceneNotes.ts','utf8');assert(n.includes('save the record')&&n.includes('what have we missed or left unclear')&&n.includes('reaching a decision, not starting another presentation'),'slides 19, 21 and 22 talking points');
+assert(fs.readFileSync('src/app/show.css','utf8').includes('rgba(11,27,43,.62)'),'slide 22 subtitle contrast');}
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');
