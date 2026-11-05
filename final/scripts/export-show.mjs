@@ -90,6 +90,34 @@ const pages = caps.map(({ s, b: bn, k, of }, j) => {
 const p = await ctx.newPage();
 await p.setContent(`<!doctype html><html><head><meta charset="utf-8">${fonts}<style>${css}</style></head><body>${cover}${pages}</body></html>`, { waitUntil: 'networkidle' });
 await p.evaluate(() => document.fonts.ready);
+// A page whose talking points run past the bottom gets a slightly smaller slide picture first, then slightly smaller
+// notes, so no note is ever cut off. Anything that still doesn't fit is reported.
+const fit = await p.evaluate(() => {
+  document.body.style.width = '10.2in'; // measure at the printed width (11in less the margins), not the window's
+  const out = [];
+  for (const sec of document.querySelectorAll('section')) {
+    const img = sec.querySelector('img.slide'), ul = sec.querySelector('ul'); if (!img || !ul) continue;
+    let h = 5.6, f = 10;
+    // The notes sit in two columns, so too much text spills into a hidden third column as well as down the page.
+    const over = () => sec.scrollHeight > sec.clientHeight + 1 || ul.scrollWidth > ul.clientWidth + 1;
+    while (over() && (h > 4.4 || f > 8.5)) {
+      if (h > 4.4) { h = Math.round((h - 0.1) * 10) / 10; img.style.height = h + 'in'; } else { f -= 0.25; ul.style.fontSize = f + 'pt'; }
+    }
+    const t = sec.querySelector('header b')?.textContent || '';
+    if (h < 5.6 || f < 10) out.push(`${t}: slide ${h}in, notes ${f}pt`);
+    // Still too long: the last notes move to a page of their own right after, under the same header.
+    if (over()) {
+      const cont = document.createElement('section'); const hd = sec.querySelector('header').cloneNode(true);
+      hd.querySelector('b').textContent = t + ', notes continued'; const ul2 = document.createElement('ul'); ul2.style.fontSize = f + 'pt';
+      cont.append(hd, ul2); sec.after(cont);
+      while (over() && ul.children.length > 1) ul2.prepend(ul.lastElementChild);
+      out.push(`${t}: ${ul2.children.length} notes on a continuation page`);
+      if (over()) out.push(`${t}: STILL OVERFLOWS`);
+    }
+  }
+  return out;
+});
+fit.forEach((x) => console.log('fit', x));
 writeFileSync(`${out}-Presenter-Deck.pdf`, await p.pdf({ width: '11in', height: '8.5in', printBackground: true }));
 console.log(`${scenes.length} slides, ${shots.length} pages to ${out}-Deck.pdf and ${out}-Presenter-Deck.pdf`);
 await browser.close();
