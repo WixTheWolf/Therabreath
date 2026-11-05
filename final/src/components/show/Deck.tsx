@@ -303,32 +303,35 @@ export function DirectionsMap({ step }: SceneProps) {
   );
 }
 
-// 15. Where each sample landed, then what gets a next round. The bubble chart from the scores stays up while the phones
+// 15. What deserves the next round? The bubble chart from the scores (fit and uniqueness 1 to 5, liking as size) stays up while the phones
 // place five chips each on which flavors or directions to develop next: the four tasted today, then the two directions
 // not tasted today (grouped the same way as on the phones). Build 1 ranks the top three.
 export function topDirections(s: SessionState) {
   return ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ id, n, name: directionName(id, s) }));
 }
-// Bubbles that would land on top of each other (close scores, or none yet) are spread around their middle, so every
-// letter stays readable. Positions are percents of the plot, which is wider than it is tall, hence the two radii.
-const spread = (ps: number[][], near = 9, rx = 7, ry = 11) => {
+// Letters that would sit on top of each other (close scores, or none yet) are nudged apart around their middle, and the
+// key says so. Positions are percents of the plot, which is wider than it is tall, hence the two radii.
+const spread = (ps: number[][], rx = 6, ry = 11.5) => {
   const out = ps.map((p) => [...p]); const done = new Set<number>();
+  const near = (a: number[], b: number[]) => Math.hypot((a[0] - b[0]) / rx, (a[1] - b[1]) / ry) < 1;
+  const edge = (v: number) => Math.max(6, Math.min(94, v));
   ps.forEach((p, i) => {
     if (done.has(i)) return;
-    const g = ps.map((_, j) => j).filter((j) => !done.has(j) && Math.hypot(ps[j][0] - p[0], ps[j][1] - p[1]) < near);
+    const g = ps.map((_, j) => j).filter((j) => !done.has(j) && near(ps[j], p));
     if (g.length < 2) return;
     const cx = g.reduce((a, j) => a + ps[j][0], 0) / g.length, cy = g.reduce((a, j) => a + ps[j][1], 0) / g.length;
-    g.forEach((j, k) => { done.add(j); const a = (k / g.length) * Math.PI * 2 - Math.PI / 2; out[j] = [Math.max(8, Math.min(92, cx + Math.cos(a) * rx)), Math.max(8, Math.min(92, cy + Math.sin(a) * ry))]; });
+    const r = g.length === 2 ? 0.55 : 0.85, turn = g.length === 2 ? 0 : -Math.PI / 2;
+    g.forEach((j, k) => { done.add(j); const a = (k / g.length) * Math.PI * 2 + turn; out[j] = [edge(cx + Math.cos(a) * rx * r), edge(cy + Math.sin(a) * ry * r)]; });
   });
-  return out;
+  return { spot: out, moved: done.size > 0 };
 };
 export function Landed({ s, step }: SceneProps) {
-  const pts = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code), c: x.color[1] }));
+  const pts = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code), c: x.color[1], c0: x.color[0] }));
   const scored = pts.filter((p) => p.sum.n > 0);
-  const lead = scored.length ? scored.reduce((a, b) => (b.sum.feels + b.sum.newness > a.sum.feels + a.sum.newness ? b : a)) : null;
-  // Kept inside the frame (8% to 92%) so a sample scored 5 never sits on the plot's edge.
-  const at = (v: number) => 8 + Math.max(0, Math.min(1, (v - 1.5) / 3)) * 84;
-  const spot = spread(pts.map((p) => (p.sum.n ? [at(p.sum.feels), at(p.sum.newness)] : [50, 50])));
+  // The scores that were collected, mapped straight onto the plot: each average from 1 to 5, with 1 at 8% and 5 at 92%
+  // so a bubble never sits on the frame. No leader and no "develop first" corner: the room makes that call.
+  const at = (v: number) => 8 + ((Math.max(1, Math.min(5, v)) - 1) / 4) * 84;
+  const { spot, moved } = spread(pts.map((p) => (p.sum.n ? [at(p.sum.feels), at(p.sum.newness)] : [50, 50])));
   const scorers = Math.max(0, ...pts.map((p) => p.sum.n));
   const t = tallyPick(s, 'directions');
   const c = voteCounts(s, 'directions');
@@ -340,29 +343,29 @@ export function Landed({ s, step }: SceneProps) {
       <div className="vt-glow" />
       <div className="pad">
         <Enter i={0}><div className="k">From your scores · {tally(scorers, 'person', 'people')} · then five chips each on your phone</div></Enter>
-        <Enter i={1}><h2 className="h2 lm-title">Where each sample landed, <span className="it">then what gets a next round.</span></h2></Enter>
+        <Enter i={1}><h2 className="h2 lm-title">What deserves <span className="it">the next round?</span></h2></Enter>
         <div className="matrix lm-m">
           <div className="mx-plot">
             <i className="mx-mid v" /><i className="mx-mid h" />
-            <span className="mx-q tr">Does both<b>Develop first</b></span>
-            <span className="mx-ax x">Fit with TheraBreath <em>strengthens loyal users</em> →</span>
-            <span className="mx-ax y">Uniqueness <em>attracts new consumers</em> →</span>
+            <span className="mx-ax x">Fit with TheraBreath <em>1 to 5</em> →</span>
+            <span className="mx-ax y">Uniqueness <em>1 to 5</em> →</span>
+            {[1, 3, 5].map((v) => <span key={'x' + v} className="mx-tk x num" style={{ left: `${at(v)}%` }}>{v}</span>)}
+            {[1, 3, 5].map((v) => <span key={'y' + v} className="mx-tk y num" style={{ bottom: `${at(v)}%` }}>{v}</span>)}
             {pts.map((p, i) => {
               const [x, y] = spot[i];
-              const size = p.sum.n ? 40 + at(p.sum.appeal) * 0.7 : 44;
-              return (
-                <div key={p.code} className={'mx-b' + (lead?.code === p.code ? ' lead' : '') + (p.sum.n ? '' : ' none')} style={{ left: `${x}%`, top: `${100 - y}%`, ['--s' as any]: `${size}px`, ['--c' as any]: p.c, ['--i' as any]: i }}>
-                  <b className="num">{p.code}</b>
-                </div>
-              );
+              // Bubble size is liking, from 1 (smallest) to 5.
+              const size = p.sum.n ? 46 + ((Math.max(1, Math.min(5, p.sum.appeal)) - 1) / 4) * 44 : 46;
+              return <div key={p.code} className={'mx-b' + (p.sum.n ? '' : ' none')} style={{ left: `${x}%`, top: `${100 - y}%`, ['--s' as any]: `${size}px`, ['--c' as any]: p.c, ['--i' as any]: i }} />;
             })}
+            {/* The letters sit in a layer of their own, on a solid light disk, so no bubble ever covers one. */}
+            {pts.map((p, i) => <b key={'l' + p.code} className={'mx-lt num' + (p.sum.n ? '' : ' none')} style={{ left: `${spot[i][0]}%`, top: `${100 - spot[i][1]}%`, ['--c0' as any]: p.c0, ['--i' as any]: i }}>{p.code}</b>)}
             {!scored.length && <span className="mx-empty">Your tasting scores show up here.</span>}
           </div>
         </div>
         <div className="lm-asks">
           <div className="room-ask"><span className="k">For the room</span><p>Of {fresh || 'C and D'}, which feels more like TheraBreath?</p></div>
-          <div className="room-ask"><p>Top right is what Ross asked for: both at once. What would it take to move the others there?</p></div>
-          <p className="src">These are this group’s first reactions, not consumer research.</p>
+          <div className="room-ask"><p>Which of these deserves another round, and what would you change?</p></div>
+          <p className="src">Bubble size is liking. Scores: {pts.map((p) => `${p.code} ${p.sum.n}`).join(', ')}.{moved ? ' Close scores are nudged apart.' : ''} First reactions, not consumer research.</p>
         </div>
         <div className="lm-chips">
           <div className="k">Five chips each · {tally(c.phones, 'person has', 'people have')} voted{byHandNote(c.hand, 'chip', 'chips')}</div>
@@ -382,7 +385,6 @@ export function Landed({ s, step }: SceneProps) {
               )];
             })}
           </div>
-          <Ask b={1} step={step} q="What would set TheraBreath’s flavors apart from what competitors are launching?" className="lm-q3" />
         </div>
       </div>
     </div>

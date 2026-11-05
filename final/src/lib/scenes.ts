@@ -52,7 +52,7 @@ const SHOW: Row[] = [
   { id: 'map', act: PART(2), chapter: 1, theme: 'a', builds: 4, skip: [2, 3], title: 'Four directions', block: 'school', room: W('Four directions') },
   { id: 'film', act: PART(2), chapter: 1, theme: 'b', builds: 0, title: 'Before we taste', block: 'school', room: W('Phones down for a couple of minutes. Eyes on the screen.') },
   { id: 'tasting', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'The blind tasting', block: 'tasting', room: { kind: 'taste' } },
-  { id: 'nextround', act: PART(2), chapter: 1, theme: 'b', builds: 1, title: 'Where each sample landed, then what gets a next round', block: 'tasting',
+  { id: 'nextround', act: PART(2), chapter: 1, theme: 'b', builds: 1, title: 'What deserves the next round', block: 'tasting',
     room: { kind: 'chips', key: 'directions', total: 5, prompt: 'Which flavors or directions should we develop next? Put your five chips on them. You can stack them.' } },
 
   opener(3, 'concepts'),
