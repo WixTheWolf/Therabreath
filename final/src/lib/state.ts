@@ -17,9 +17,10 @@ export type Placement = { horizon: string; role: string; t: number };
 // One line of Now, Next, Later: what goes forward, who it's for, the flavor brief, who owns it on each side, the base and
 // when the next sample is due. `next` is the free-text next step rows had before the brief and the date (still shown).
 // `ref` is the concept or direction a line was placed from, and `draft` marks a flavor brief drafted from its profile
-// (finalized in the write-up). `due` is a date from before November 4, or one of the morning's options.
-export type PlanRow = { id: string; h: string; what: string; who?: string; brief?: string; test?: string; owner?: string; reviewer?: string; base?: string; due?: string; step?: string; next?: string; ref?: string; draft?: string; t: number };
-export const PLAN_FIELDS = ['what', 'who', 'brief', 'test', 'owner', 'reviewer', 'base', 'due', 'step', 'next', 'ref', 'draft'] as const;
+// (finalized in the write-up). `due` is a date from before November 4, or one of the morning's options. `change` is
+// what the next sample should do differently (added November 5; older rows don't have it).
+export type PlanRow = { id: string; h: string; what: string; who?: string; brief?: string; change?: string; test?: string; owner?: string; reviewer?: string; base?: string; due?: string; step?: string; next?: string; ref?: string; draft?: string; t: number };
+export const PLAN_FIELDS = ['what', 'who', 'brief', 'change', 'test', 'owner', 'reviewer', 'base', 'due', 'step', 'next', 'ref', 'draft'] as const;
 
 export type SessionState = {
   // Where the presentation is. `sceneId` names the slide; moves saved before the 17-slide deck carry only a position in

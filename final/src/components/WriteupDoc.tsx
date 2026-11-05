@@ -14,7 +14,7 @@ import { teamConcepts } from './scenes/CoCreate';
 import { candidates } from './scenes/Build';
 import { FIELDS, OBJ_IMG, directionName, markLabel } from './show/ShowScenes';
 import { PLAN_COLS, planCell, planRows, reviewers, Synced } from './show/Plan';
-import { TESTS, OWNERS, BASES, DUES, STEPS, WHO, WHEN, unconfirmed } from '@/lib/conceptLibrary';
+import { TESTS, OWNERS, BASES, DUES, STEPS, WHO, WHEN, CHANGES, OTHER, unconfirmed } from '@/lib/conceptLibrary';
 
 // 8 business days after the morning: weekdays only, counted from the day after.
 function sendBy(day: string, n = 8) {
@@ -239,7 +239,7 @@ const dueOrder = (v?: string) => { const i = ['December 2026', 'January 2027 rev
 // After the morning, a line of Now, Next, Later typed in: each field with the morning's options to pick from, and the
 // flavor brief in full. Finishing the brief clears its draft label.
 function PlanEdit({ r, s, send }: { r: any; s: SessionState; send: (kind: string, data?: any) => any }) {
-  const opts: Record<string, string[]> = { who: [...WHO, ...WHEN], test: TESTS, owner: OWNERS, reviewer: reviewers(s), base: BASES, due: DUES, step: STEPS };
+  const opts: Record<string, string[]> = { who: [...WHO, ...WHEN], change: [...CHANGES, OTHER], test: TESTS, owner: OWNERS, reviewer: reviewers(s), base: BASES, due: DUES, step: STEPS };
   const set = (f: string, v: string) => send('plan', { id: r.id, fields: f === 'brief' ? { brief: v, draft: '' } : { [f]: v } });
   return (
     <div className="wu-edit">

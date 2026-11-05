@@ -81,11 +81,12 @@ export const cardFor = (start: string) => LIBRARY.find((c) => c.id === (STARTS.f
 
 // Now, Next, Later: the options for each field. "To confirm" is always there, and is highlighted in the write-up.
 export const TO_CONFIRM = 'To confirm';
-export const TESTS = ['Bench stability in the base', 'C&D internal tasting', 'Small consumer panel', 'Kids and parents panel', TO_CONFIRM];
+export const TESTS = ['Bench stability in the base', 'C&D internal tasting', 'Small consumer panel', 'Kids and parents panel', OTHER, TO_CONFIRM];
 export const OWNERS = TEAM.map((t) => t.name.split(' ')[0]);
 export const BASES = ['Kids base', 'Fresh Breath base', 'Another base, to confirm'];
-export const DUES = ['January 2027 review', 'December 2026', 'February 2027', TO_CONFIRM];
-export const DUE_DEFAULT = DUES[0];
-export const STEPS = ['Make a next round in the base', 'Refine the brief first', 'Park it for Later', TO_CONFIRM];
+// A date is To confirm until the room agrees one: placing a line on the board doesn't set a review date.
+export const DUES = ['December 2026', 'January 2027 review', 'February 2027', TO_CONFIRM];
+export const DUE_DEFAULT = TO_CONFIRM;
+export const STEPS = ['Make a next round in the base', 'Refine the brief first', 'Park it for Later', OTHER, TO_CONFIRM];
 // A value that still needs confirming, or one written on the notes sheet: the write-up highlights both.
 export const unconfirmed = (v?: string) => !v || /to confirm|in the notes/i.test(v);

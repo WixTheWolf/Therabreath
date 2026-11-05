@@ -189,7 +189,7 @@ function PlanEditor({ s, send }: { s: SessionState; send: Send }) {
   return (
     <>
       <h2>Now, Next, Later</h2>
-      <p className="pv-sub">Tap a concept or direction, then Now, Next or Later. Tap a line to fill in its fields, move it or take it back. Nothing to type.</p>
+      <p className="pv-sub">Place it when the group agrees: tap a concept or direction, then Now, Next or Later. More ideas holds the rest. Tap a line to fill in its fields, move it or take it back. Nothing to type.</p>
       <PlanTap s={s} send={send} edit />
     </>
   );
