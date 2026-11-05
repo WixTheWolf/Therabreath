@@ -5,7 +5,7 @@ import Light, { project } from '../Light';
 import { R, Enter, SceneProps, Src } from './ui';
 import { EVENT, JULY, OBJECTIVES, SURVEY } from '@/lib/content';
 import { people, ranked } from '@/lib/state';
-import Orb, { describe } from '../Orb';
+import Orb from '../Orb';
 
 export function useQR(text: string) {
   const [svg, setSvg] = useState('');
@@ -146,13 +146,30 @@ export function Prework({ s, step }: SceneProps) {
         <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} />{others.length > 0 && <p className="src pw-others">Someone else: {others.slice(0, 6).join(', ')}</p>}</R>
         <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} /></R>
       </div>
-      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">Your own taste in freshness</span><p className="h3 it">{describe(roomProfile(answers), `Across the ${profiled} ${profiled === 1 ? 'answer' : 'answers'} so far, you like freshness that’s`)}</p></div></R>}
+      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">Your own taste in freshness</span><p className="h3 it">{leanLine(roomProfile(answers))}</p><p className="pw-avg">{leanNote(roomProfile(answers), profiled)}</p></div></R>}
       <R b={2} step={step} className="vetoes">
         <div className="k">What would feel off-brand</div>
-        <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map(([v, n], i) => <span key={i} style={{ ['--i' as any]: i }}>{v}{n > 1 && <sup className="num">{n}</sup>}</span>) : <span className="empty">No answers yet.</span>}</div>
+        {/* One answer per line, each in its own quotes, in the words people typed; a repeat shows once with how many said it. */}
+        {vetoes.length ? <ul className="pw-off">{vetoes.slice(0, 6).map(([v, n], i) => <li key={i} style={{ ['--i' as any]: i }}>&ldquo;{v}&rdquo;{n > 1 && <span className="pw-n">{n} people</span>}</li>)}</ul> : <p className="empty pw-none">No answers yet.</p>}
+        {vetoes.length > 6 && <p className="pw-more">And {vetoes.length - 6} more.</p>}
       </R>
     </div>
   );
+}
+
+// The freshness sliders, read back in the slider's own words: which way the answers lean on each, and how many sit in the
+// middle. An average of 2 or less leans to the left label, 4 or more to the right; 3 is the middle.
+const LEAN: Record<string, [string, string]> = { adv: ['more familiar', 'more adventurous'], cool: ['more cooling', 'softer'], bot: ['closer to classic mint', 'more botanical'], exp: ['more practical', 'more like something to enjoy'], occ: ['more for every day', 'more for a moment'] };
+const listOf = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
+const leans = (p: Record<string, number>) => Object.keys(LEAN).filter((k) => p[k] <= 2 || p[k] >= 4).map((k) => LEAN[k][p[k] <= 2 ? 0 : 1]);
+function leanLine(p: Record<string, number>) {
+  const l = leans(p);
+  return l.length ? `Your answers lean ${listOf(l)}.` : 'Your answers sit in the middle on every slider.';
+}
+function leanNote(p: Record<string, number>, n: number) {
+  const mid = Object.keys(LEAN).length - leans(p).length, words = ['', 'one', 'two', 'three', 'four'];
+  const avg = `The average of ${n} ${n === 1 ? 'answer' : 'answers'}`;
+  return mid > 0 && mid < Object.keys(LEAN).length ? `${avg}; the other ${words[mid]} ${mid === 1 ? 'sits' : 'sit'} in the middle.` : `${avg}.`;
 }
 
 function roomProfile(answers: any[]) {
