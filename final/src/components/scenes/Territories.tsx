@@ -143,7 +143,7 @@ export function Tasting({ s, step }: SceneProps) {
   );
 }
 
-// The score chart on the old stage route: fit with TheraBreath across, uniqueness up, liking as size. Scores, not a measure of loyalty or recruitment.
+// The score chart on the old stage route: fit with TheraBreath across, perceived difference up, liking as size. Scores, not a measure of loyalty or recruitment.
 export function Matrix({ s, step }: SceneProps) {
   const pts = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code), c: x.color[1] }));
   const scored = pts.filter((p) => p.sum.n > 0);
@@ -166,7 +166,7 @@ export function Matrix({ s, step }: SceneProps) {
         <span className="mx-q br">Fits TheraBreath<b>Could extend a line</b></span>
         <span className="mx-q bl">Neither yet<b>Rethink it</b></span>
         <span className="mx-ax x">Fit with TheraBreath <em>1 to 5</em> →</span>
-        <span className="mx-ax y">Uniqueness <em>1 to 5</em> →</span>
+        <span className="mx-ax y">Perceived difference <em>1 to 5</em> →</span>
         {pts.map((p, i) => {
           const x = out && p.sum.n ? at(p.sum.feels) : 50, y = out && p.sum.n ? at(p.sum.newness) : 50;
           const size = out && p.sum.n ? 70 + at(p.sum.appeal) * 1.3 : 56;

@@ -310,7 +310,7 @@ export function DirectionsMap({ step }: SceneProps) {
   );
 }
 
-// 15. What deserves the next round? The bubble chart from the scores (fit and uniqueness 1 to 5, liking as size) stays up while the phones
+// 15. What deserves the next round? The bubble chart from the scores (fit and perceived difference 1 to 5, liking as size) stays up while the phones
 // place five chips each on which flavors or directions to develop next: the four tasted today, then the two directions
 // not tasted today (grouped the same way as on the phones). Build 1 ranks the top three.
 export function topDirections(s: SessionState) {
@@ -357,7 +357,7 @@ export function Landed({ s, step }: SceneProps) {
           <div className="mx-plot">
             <i className="mx-mid v" /><i className="mx-mid h" />
             <span className="mx-ax x">Fit with TheraBreath <em>1 to 5</em> →</span>
-            <span className="mx-ax y">Uniqueness <em>1 to 5</em> →</span>
+            <span className="mx-ax y">Perceived difference <em>1 to 5</em> →</span>
             {[1, 3, 5].map((v) => <span key={'x' + v} className="mx-tk x num" style={{ left: `${at(v)}%` }}>{v}</span>)}
             {[1, 3, 5].map((v) => <span key={'y' + v} className="mx-tk y num" style={{ bottom: `${at(v)}%` }}>{v}</span>)}
             {pts.map((p, i) => {

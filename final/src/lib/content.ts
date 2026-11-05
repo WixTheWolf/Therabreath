@@ -279,7 +279,7 @@ export const DIRECTIONS = [
 export const WHO_CHIPS = ['Gen Z', 'Want it milder', 'Families', '55+', 'Dry mouth', 'International', 'Me'];
 // How each sample is scored, the same on the phones, the paper card, the presenter view and the TV: three scales from 1
 // (low) to 5 (high), asked as `q`, shown in tables and on the TV as `l`. The keys stay as the session stores them
-// (`newness` is now asked as uniqueness). Then two quick checks for the next round (JAR): is the sweetness and the
+// (`newness` is now asked as perceived difference). Then two quick checks for the next round (JAR): is the sweetness and the
 // cooling just right? Answers given before November 4 also carried who would buy it, a direction guess and whether to
 // develop it further; they're kept but no longer asked.
 // The three scores, asked the same way on the phones and the paper card, each with its two ends named (the November 4
@@ -287,7 +287,7 @@ export const WHO_CHIPS = ['Gen Z', 'Want it milder', 'Families', '55+', 'Dry mou
 export const CRITERIA = [
   { key: 'appeal', l: 'Liking', q: 'How much do you like the flavor?', d: 'How much you like the flavor', lo: 'Not at all', hi: 'Very much' },
   { key: 'feels', l: 'Fit with TheraBreath', q: 'How well does this fit TheraBreath?', d: 'How well it fits TheraBreath', lo: 'Poor fit', hi: 'Strong fit' },
-  { key: 'newness', l: 'Uniqueness', q: 'How different is it from current mouthwash flavors?', d: 'How different it is from current mouthwash flavors', lo: 'Very similar', hi: 'Very different' },
+  { key: 'newness', l: 'Perceived difference', q: 'How different is it from current mouthwash flavors?', d: 'How different it is from current mouthwash flavors', lo: 'Very similar', hi: 'Very different' },
 ] as const;
 // Who each sample is judged for: the kids samples as a kids rinse, the others as a Fresh Breath rinse.
 export const judgeAs = (base: string) => (/kids/i.test(base) ? 'a kids rinse' : 'a Fresh Breath rinse');
