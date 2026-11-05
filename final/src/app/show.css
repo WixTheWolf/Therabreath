@@ -892,3 +892,7 @@
 .vetoes .cloud span { font-size: 32px; line-height: 1.25; }
 /* Review step 6, slide 2: the shorter capability rows hug their chips instead of running the full width. */
 .ts-lines .ts-line { align-self: flex-start; grid-template-columns: 300px auto; }
+
+/* Review step 7, slide 9: a fixed gutter for the QR code at the top right, so a longer title wraps instead of running
+   into it. */
+.sigs.tv h2.h2 { max-width: 1480px; }
