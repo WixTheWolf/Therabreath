@@ -887,5 +887,8 @@
 .presence.quiet .lbl { font: 500 20px/1 var(--mono); letter-spacing: .14em; color: var(--fg2); }
 .presence.quiet .lbl b { font: 400 44px/1 var(--serif); letter-spacing: 0; color: var(--fg); margin-right: 10px; vertical-align: -6px; }
 .presence.quiet .presence-names { margin-top: 10px; font-size: 24px; }
+
+/* Review step 6, slide 5: every off-brand answer in one size, so none looks more important than another. */
+.vetoes .cloud span { font-size: 32px; line-height: 1.25; }
 /* Review step 6, slide 2: the shorter capability rows hug their chips instead of running the full width. */
 .ts-lines .ts-line { align-self: flex-start; grid-template-columns: 300px auto; }

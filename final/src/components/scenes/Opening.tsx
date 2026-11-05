@@ -135,8 +135,9 @@ export function Prework({ s, step }: SceneProps) {
   for (const v of answers.map((a) => a.veto).filter(Boolean) as string[]) { const key = v.trim().toLowerCase().replace(/[.!]+$/, ''); if (!key) continue; vetoCount[key] = [vetoCount[key]?.[0] || v.trim().replace(/[.!]+$/, ''), (vetoCount[key]?.[1] || 0) + 1]; }
   const vetoes = Object.values(vetoCount).sort((a, b) => b[1] - a[1]);
   const max = (l: [string, number][]) => Math.max(1, ...l.map((x) => x[1]));
+  const profiled = answers.filter((a) => a.profile).length;
   const Bars = ({ list }: { list: [string, number][] }) => (
-    <div className="pw-bars">{list.slice(0, 5).map(([k, v], i) => <div key={k} className={i === 0 ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">No answers yet.</div>}</div>
+    <div className="pw-bars">{list.slice(0, 5).map(([k, v]) => <div key={k} className={v === max(list) ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">No answers yet.</div>}</div>
   );
   return (
     <div className="pad">
@@ -145,10 +146,10 @@ export function Prework({ s, step }: SceneProps) {
         <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} />{others.length > 0 && <p className="src pw-others">Someone else: {others.slice(0, 6).join(', ')}</p>}</R>
         <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} /></R>
       </div>
-      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">Your freshness, as a group</span><p className="h3 it">{describe(roomProfile(answers), 'As a group, you want freshness that’s')}</p></div></R>}
+      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">Your own taste in freshness</span><p className="h3 it">{describe(roomProfile(answers), `Across the ${profiled} ${profiled === 1 ? 'answer' : 'answers'} so far, you like freshness that’s`)}</p></div></R>}
       <R b={2} step={step} className="vetoes">
         <div className="k">What would feel off-brand</div>
-        <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map(([v, n], i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 30 + ((i * 17) % 5) * 6 + Math.min(18, (n - 1) * 6) }}>{v}{n > 1 && <sup className="num">{n}</sup>}</span>) : <span className="empty">No answers yet.</span>}</div>
+        <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map(([v, n], i) => <span key={i} style={{ ['--i' as any]: i }}>{v}{n > 1 && <sup className="num">{n}</sup>}</span>) : <span className="empty">No answers yet.</span>}</div>
       </R>
     </div>
   );
