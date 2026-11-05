@@ -153,8 +153,9 @@ export function TastingLive({ s, step }: SceneProps) {
   // Build 0 is the blind round: the TV shows how far everyone has got, never the averages, so nobody still scoring is
   // swayed by them. Build 1 shows the scores (the phones close then), build 2 the names.
   const scoring = step === 0;
+  // With no phones joined (the offline backup, or before anyone scans), the count gives way to how to score.
   const head = scoring
-    ? `${prog.done} of ${prog.phones} ${prog.phones === 1 ? 'phone has' : 'phones have'} finished all four`
+    ? (prog.phones ? `${prog.done} of ${prog.phones} ${prog.phones === 1 ? 'phone has' : 'phones have'} finished all four` : 'Score on your phone or a paper card')
     : `${who.cards ? `${who.phones} scored on phones, ${who.cards} on paper` : `${n} ${n === 1 ? 'person' : 'people'} scored`}${left ? ` · phone scores only so far: ${left} paper ${left === 1 ? 'card' : 'cards'} to add` : ''}`;
   return (
     <div className="tl">
@@ -172,7 +173,7 @@ export function TastingLive({ s, step }: SceneProps) {
             <div key={r.code} className="hrow">
               <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{/* The Mystery Flavor stays a mystery: its name goes up, but what's in it isn't shown. */}{step >= 2 && r.code !== MYSTERY && <small>{s.revealed?.samples[r.code]?.note}</small>}{!scoring && step < 2 && <em className="tl-n">{r.sum.n} {r.sum.n === 1 ? 'score' : 'scores'}</em>}</span></div>
               {scoring ? (
-                <div className="tl-prog"><i style={{ width: `${prog.phones ? Math.round((prog.per[r.code] / prog.phones) * 100) : 0}%` }} /><b className="num">{prog.per[r.code]}</b><span>of {prog.phones} {prog.phones === 1 ? 'phone has' : 'phones have'} scored {r.code}</span></div>
+                prog.phones ? <div className="tl-prog"><i style={{ width: `${prog.phones ? Math.round((prog.per[r.code] / prog.phones) * 100) : 0}%` }} /><b className="num">{prog.per[r.code]}</b><span>of {prog.phones} {prog.phones === 1 ? 'phone has' : 'phones have'} scored {r.code}</span></div> : <div className="tl-prog"><span>Score {r.code} before we talk about it</span></div>
               ) : (
                 <>
                   {metrics.map(([m]) => <div key={m} className={'hcell' + (r.sum[m] >= 3.4 ? ' hi' : '')} style={cell(r.sum[m])}><b className="num">{r.sum[m] ? r.sum[m].toFixed(1) : ''}</b></div>)}

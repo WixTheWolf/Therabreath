@@ -27,8 +27,9 @@ await page.waitForFunction(() => Array.isArray(window.__show), null, { timeout: 
 await page.waitForTimeout(2500);
 const scenes = await page.evaluate(() => window.__show);
 const run = await page.evaluate(() => window.__run);
-// The slides whose builds replace each other rather than add up: one page per state, so the PDF shows all of them.
-const PAGES = { gap: [0, 3], signals: [0, 1], school: [0, 1, 2], map: [0, 1, 2, 3, 4], playbook: [0, 7] };
+// The slides whose builds replace each other rather than add up: one page per state, so the PDF shows all of them. The
+// tasting gets its blind state (coded A to D, no names) before the reveal, so the backup can run the tasting blind.
+const PAGES = { gap: [0, 3], signals: [0, 1], school: [0, 1, 2], map: [0, 1, 2, 3, 4], tasting: [0, 2], playbook: [0, 7] };
 const caps = scenes.flatMap((s) => (PAGES[s.id] || [99]).map((b, k) => ({ s, b, k, of: (PAGES[s.id] || [99]).length })));
 const shots = [];
 for (let i = 0; i < caps.length; i++) {
@@ -50,7 +51,11 @@ const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const fonts = '<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=Geist:wght@400;500&family=Geist+Mono:wght@500&display=block" rel="stylesheet">';
 
 // The deck: one 16:9 page per slide (or per state).
-const deck = `<!doctype html><html><head><style>@page{size:1920px 1080px;margin:0}body{margin:0}img{display:block;width:1920px;height:1080px;page-break-after:always}</style></head><body>${shots.map((b) => `<img src="${img(b)}">`).join('')}</body></html>`;
+// Each page carries a small label in its bottom corner, below the chapter bar: the slide's number and title as the
+// presenter view's Go to list has them, and which state it is when a slide has more than one page.
+const slides = Math.max(...scenes.map((s) => s.at));
+const label = (c) => `${c.s.at} / ${slides} · ${esc(c.s.title)}${c.of > 1 ? ` · ${c.k + 1} of ${c.of}` : ''}`;
+const deck = `<!doctype html><html><head><style>@page{size:1920px 1080px;margin:0}body{margin:0}.pg{position:relative;width:1920px;height:1080px;page-break-after:always}img{display:block;width:1920px;height:1080px}.lab{position:absolute;right:24px;bottom:12px;font:500 15px/1 Menlo,monospace;letter-spacing:.06em;color:#F0EEE9;background:rgba(11,27,43,.62);padding:6px 11px;border-radius:99px}</style></head><body>${shots.map((b, j) => `<div class="pg"><img src="${img(b)}"><span class="lab">${label(caps[j])}</span></div>`).join('')}</body></html>`;
 const d = await ctx.newPage();
 await d.setContent(deck, { waitUntil: 'load' });
 writeFileSync(`${out}-Deck.pdf`, await d.pdf({ width: '1920px', height: '1080px', printBackground: true }));
