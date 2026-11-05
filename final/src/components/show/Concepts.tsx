@@ -5,8 +5,9 @@
 // fits in a day. Only the places the vote settled start a card: a tie at the cutoff (two tied for third) leaves the
 // card open, the TV names the tied ideas, and the presenter starts it from the room's pick. In the presenter view any
 // card can be swapped for another library card, and any field changed by tapping an option. The TV only shows the
-// cards. Every card is a starting point for discussion until the presenter marks it agreed, and the read-back and the
-// write-up say which cards the room agreed.
+// cards. Every card is a starting point for discussion until the presenter marks it agreed; changing a field on an
+// agreed card takes the agreement off until the room says yes again. The read-back and the write-up say which cards
+// the room agreed.
 import React, { useState } from 'react';
 import { STARTS, CONCEPT_FIELDS, LIBRARY, Card, cardFor, MOMENT_WHEN, toggleIn, hasOpt } from '@/lib/conceptLibrary';
 import { tallyPick, shortlist, SessionState, tasteSummary, jarAll } from '@/lib/state';
@@ -87,14 +88,17 @@ export function ConceptEditor({ s, send }: { s: SessionState; send: Send }) {
   const [slot, setSlot] = useState(1);
   const [swap, setSwap] = useState(false);
   const [clearing, setClearing] = useState(false); // clearing a card asks once
+  const [reagree, setReagree] = useState(false); // an agreed card was changed, so it needs the room's yes again
   const c = conceptAt(s, slot);
   const tie = openTie(s);
   const set = (fields: Record<string, string>) => send('concept', { team: slot, slot: 1, fields });
+  // A change to an agreed card takes the agreement off: the room agreed the card as it was, not as it is now.
+  const edit = (fields: Record<string, string>) => { if (c?.agreed) { setReagree(true); set({ ...fields, agreed: '' }); } else set(fields); };
   const use = (card: Card) => { set(fromCard(card, s)); setSwap(false); };
   const setStart = (id: string) => {
     // The name follows the start while it's still the start's own name.
     const auto = !c || c.name === startName(c.start || '', s) || c.name === c.why;
-    set({ start: id, why: startLabel(id, s), ...(auto ? { name: startName(id, s) } : {}) });
+    edit({ start: id, why: startLabel(id, s), ...(auto ? { name: startName(id, s) } : {}) });
   };
   const library = (
     <ul className="pv-lib">
@@ -111,7 +115,7 @@ export function ConceptEditor({ s, send }: { s: SessionState; send: Send }) {
       <h2>Concepts</h2>
       <p className="pv-sub">Starter cards: every field is a proposal until the room agrees it. One or two well-defined cards beat three thin ones. Tap to change anything; nothing to type. {teamConcepts(s).length ? '' : 'The cards start from the top three chips when the slide opens; a tie at the cutoff waits for the room’s pick.'}</p>
       <div className="pv-tabs" role="tablist">
-        {SLOTS.map((n) => { const x = conceptAt(s, n); return <button key={n} role="tab" aria-selected={slot === n} aria-pressed={slot === n} onClick={() => { setSlot(n); setSwap(false); setClearing(false); }}>{n}. {x ? x.name : 'Open'}</button>; })}
+        {SLOTS.map((n) => { const x = conceptAt(s, n); return <button key={n} role="tab" aria-selected={slot === n} aria-pressed={slot === n} onClick={() => { setSlot(n); setSwap(false); setClearing(false); setReagree(false); }}>{n}. {x ? x.name : 'Open'}</button>; })}
       </div>
       {!c ? (
         <section className="pv-concept">
@@ -131,12 +135,13 @@ export function ConceptEditor({ s, send }: { s: SessionState; send: Send }) {
         <section className="pv-concept">
           <div className="pv-chead">
             <h3>{c.name}</h3>
-            <button className={'pv-agree' + (c.agreed ? ' on' : '')} aria-pressed={!!c.agreed} onClick={() => set({ agreed: c.agreed ? '' : '1' })}>{c.agreed ? 'Agreed by the room' : 'Mark as agreed'}</button>
+            <button className={'pv-agree' + (c.agreed ? ' on' : '')} aria-pressed={!!c.agreed} onClick={() => { setReagree(false); set({ agreed: c.agreed ? '' : '1' }); }}>{c.agreed ? 'Agreed by the room' : 'Mark as agreed'}</button>
             <button onClick={() => setSwap((v) => !v)} aria-pressed={swap}>Swap for a library card</button>
             {clearing
               ? <span className="pv-confirm">Clear this card? <button onClick={() => { set({ name: '' }); setClearing(false); }}>Clear</button><button onClick={() => setClearing(false)}>Keep</button></span>
               : <button onClick={() => setClearing(true)}>Clear this card</button>}
           </div>
+          {reagree && !c.agreed && <p className="pv-sub pv-reagree" role="status">Changed after the room agreed it, so it’s a proposal again. Read the card back, then mark it agreed.</p>}
           {swap ? library : (
             <>
               <div className="pt-group" role="group" aria-label="Where it starts">
@@ -148,8 +153,8 @@ export function ConceptEditor({ s, send }: { s: SessionState; send: Send }) {
                   <span>{f.l}{f.multi ? <small> (one or more)</small> : null}</span>
                   <div>
                     {f.opts!.map((o) => f.multi
-                      ? <button key={o} type="button" aria-pressed={hasOpt(c[f.key], o)} onClick={() => set({ [f.key]: toggleIn(c[f.key], o) })}>{o}</button>
-                      : <button key={o} type="button" aria-pressed={c[f.key] === o} onClick={() => set({ [f.key]: c[f.key] === o ? '' : o })}>{o}</button>)}
+                      ? <button key={o} type="button" aria-pressed={hasOpt(c[f.key], o)} onClick={() => edit({ [f.key]: toggleIn(c[f.key], o) })}>{o}</button>
+                      : <button key={o} type="button" aria-pressed={c[f.key] === o} onClick={() => edit({ [f.key]: c[f.key] === o ? '' : o })}>{o}</button>)}
                     {f.key === 'change' && tastingRead(c.start, s) && <p className="pv-taste">From the tasting. {tastingRead(c.start, s)}.</p>}
                   </div>
                 </div>

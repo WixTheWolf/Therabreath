@@ -154,4 +154,5 @@ x=shortlist({C:4,D:3,A:2});assert.equal(x.sure.join(),'C,D,A');assert.equal(x.ti
 x=shortlist({C:2,D:2,A:2,bright:2});assert.equal(x.sure.length,0);assert.equal(x.tied.length,4);assert.equal(x.seats,3,'four tied for first: the room picks three');
 x=shortlist({C:3,D:3,A:3,B:1});assert.equal(x.sure.join(),'C,D,A','three tied for first all fit');
 const c=fs.readFileSync('src/components/show/Concepts.tsx','utf8');assert(c.includes("shortlist(tallyPick(s, 'directions')).sure")&&!c.includes('.slice(0, 3)')&&c.includes('Tied in the chips'),'concept cards start only from settled places');}
+assert(fs.readFileSync('src/components/show/Concepts.tsx','utf8').includes("set({ ...fields, agreed: '' })"),'an edit takes agreement off');
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');
