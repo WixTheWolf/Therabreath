@@ -165,8 +165,12 @@ The run sheet carries most of this list too (`CONFIRM` in `src/app/host/run/page
 2. Slide 3: the bottles and flavor names against our portfolio record, and the claim that our flavors are in 14 TheraBreath rinses on shelf today against our current customer records.
 3. Slide 2's July themes (Resiliency, Innovation, Operations, Partnership) against the team's record of the Norco visit.
 4. The drafted concept cards and option lists in `src/lib/conceptLibrary.ts`. Every starter card is marked DRAFT, and the room sees them as proposals.
-5. The bases for each sample, and that the samples were made in the unflavored bases Church & Dwight sent.
+5. Ryan to confirm each sample's name, its base and what's in it as the phones show it after the reveal, and that the samples were made in the unflavored bases Church & Dwight sent.
 6. Whether to tell the room what's in the Mystery Flavor once the names go up.
 7. The commitments on slide 21: the write-up within 8 business days and the next samples in January 2027 (kept for now).
 8. A video call with Ross before the day.
 9. On the presenting laptop: download the current PDFs and THE FLAVOR RACE, and run the presentation once on the actual TV.
+10. Slide 8's range is as listed on therabreath.com and three retailer listings on November 4, so the US range. Check it's still current.
+11. Shelf life, stability and sensory performance: only what Ryan can back with data, on screen or out loud.
+12. Owners: which of us takes each kind of direction forward. The C&D reviewers are confirmed in the room, by name.
+13. The room, with Ross: numbers and seating for the tasting, who pours and serves, how many phones join at once, the mobile signal in the Darwin room, whether the TV reads from the back row, and the speaker volume for THE FLAVOR RACE.

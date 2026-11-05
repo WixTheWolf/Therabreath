@@ -181,4 +181,6 @@ const ws=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');assert(ws.
 assert(fs.readFileSync('src/components/scenes/Opening.tsx','utf8').includes('SURVEY.moment.other}: {otherMoments'),'slide 5 lists Another occasion answers');
 const rs=fs.readFileSync('src/app/host/run/page.tsx','utf8');assert(rs.includes('It stays with that one person all morning')&&rs.includes('Who votes:')&&rs.includes('RUN_NOTES[b.id].act'),'run sheet: loaner, who votes, one-line actions');
 const RN=load('runNotes');for(const b of C.RUN)assert(RN.RUN_NOTES[b.id].act&&RN.RUN_NOTES[b.id].act.length<90,'one-line action for '+b.id);}
+// Review step 13: the run sheet's still-to-confirm list carries the review's checks for the team and the venue.
+{const rs=fs.readFileSync('src/app/host/run/page.tsx','utf8');for(const x of ['Ryan to confirm each sample','The shelf (slide 8)','only what Ryan can back with data','Owners: which of us takes each kind of direction forward','The room, with Ross'])assert(rs.includes(x),'still to confirm: '+x);}
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');
