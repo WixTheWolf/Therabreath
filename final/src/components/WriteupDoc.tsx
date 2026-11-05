@@ -144,7 +144,7 @@ export default function WriteupDoc({ code }: { code: string }) {
             return <li key={t.id}><i style={{ background: `radial-gradient(circle at 35% 30%, #fff, ${t.palette[0]} 45%, ${t.palette[1]})` }} /><div><b>{t.name}</b><p>{t.promise}</p><small>{tasted.length ? `In the tasting as samples ${tasted.join(' and ')}` : 'Not in the tasting'}</small></div></li>;
           })}</ul>
           <h3 className="wu-h3">The blind tasting</h3>
-          <p className="wu-small">Four samples, made in the Fresh Breath and Kids bases Church &amp; Dwight sent, tasted blind. {d.tasters.phones + d.tasters.cards ? `${d.tasters.phones} scored on phones${d.tasters.cards ? ` and ${d.tasters.cards} on paper` : ''}.` : ''} Scores run from 1 (low) to 5 (high), averaged across everyone who tasted.</p>
+          <p className="wu-small">Four samples, made in the Fresh Breath and Kids bases Church &amp; Dwight sent, tasted blind. {d.tasters.phones + d.tasters.cards ? `${d.tasters.phones} scored on phones${d.tasters.cards ? ` and ${d.tasters.cards} on paper` : ''}.` : ''} Scores run from 1 to 5 (liking: not at all to very much; fit: poor to strong; uniqueness: very similar to very different), averaged across everyone who scored that sample.</p>
           <table className="wu-table wu-taste">
             <thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key} className="r">{c.l}</th>)}<th className="r">Tasters</th>{JAR.map((j) => <th key={j.key}>{j.l}</th>)}</tr></thead>
             <tbody>{d.tasting.map((x) => (

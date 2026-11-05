@@ -282,11 +282,15 @@ export const WHO_CHIPS = ['Gen Z', 'Want it milder', 'Families', '55+', 'Dry mou
 // (`newness` is now asked as uniqueness). Then two quick checks for the next round (JAR): is the sweetness and the
 // cooling just right? Answers given before November 4 also carried who would buy it, a direction guess and whether to
 // develop it further; they're kept but no longer asked.
+// The three scores, asked the same way on the phones and the paper card, each with its two ends named (the November 4
+// review: a bare 1 to 5 doesn't say what 1 and 5 mean). The keys stay as they were, so scores saved earlier still read.
 export const CRITERIA = [
-  { key: 'appeal', l: 'Liking', q: 'How much do you like it?', d: 'How much you like it' },
-  { key: 'feels', l: 'Fit with TheraBreath', q: 'Could it be a TheraBreath flavor?', d: 'Whether it could sit in the range' },
-  { key: 'newness', l: 'Uniqueness', q: 'Uniqueness: how different is it from what’s on the shelf?', d: 'How different it is from what’s on the shelf' },
+  { key: 'appeal', l: 'Liking', q: 'How much do you like the flavor?', d: 'How much you like the flavor', lo: 'Not at all', hi: 'Very much' },
+  { key: 'feels', l: 'Fit with TheraBreath', q: 'How well does this fit TheraBreath?', d: 'How well it fits TheraBreath', lo: 'Poor fit', hi: 'Strong fit' },
+  { key: 'newness', l: 'Uniqueness', q: 'How different is it from current mouthwash flavors?', d: 'How different it is from current mouthwash flavors', lo: 'Very similar', hi: 'Very different' },
 ] as const;
+// Who each sample is judged for: the kids samples as a kids rinse, the others as a Fresh Breath rinse.
+export const judgeAs = (base: string) => (/kids/i.test(base) ? 'a kids rinse' : 'a Fresh Breath rinse');
 export const JAR = [
   { key: 'sweet', l: 'Sweetness' },
   { key: 'cool', l: 'Cooling' },
@@ -408,7 +412,7 @@ export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title,
 // a date. The times come from RUN.
 export const DECIDE = [
   { v: 'Taste', when: '10:40', d: 'Four samples, blind, made in the bases you sent. Water between each one.' },
-  { v: 'Score', when: 'As you taste', d: 'How much you like it, whether it could be a TheraBreath flavor and how different it is from what’s on the shelf, from 1 to 5. Then whether the sweetness and cooling are right. On your phone or a paper card.' },
+  { v: 'Score', when: 'As you taste', d: 'How much you like the flavor, how well it fits TheraBreath and how different it is from current mouthwash flavors, from 1 to 5. Then whether the sweetness and cooling are right. On your phone or a paper card.' },
   { v: 'Reveal', when: 'Once everyone’s scored', d: 'The names go up on screen, next to everyone’s scores.' },
   { v: 'Discuss', when: 'Before the vote', d: 'Where each sample landed, and what it would take to make it work.' },
   { v: 'Vote', when: 'Chips by 11:00', d: 'Five chips each on the flavors or directions we should develop next. After the concepts, three dots each on which to develop.' },

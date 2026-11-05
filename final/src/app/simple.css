@@ -23,6 +23,7 @@ html:has(.sc), html:has(.sc) body { background: #fff; color-scheme: light; }
 .sc-boxes i { font-style: normal; font-size: 8pt; display: inline-flex; align-items: center; gap: 4px; }
 .sc-boxes i::before { content: ''; width: 9pt; height: 9pt; border: 1px solid #0B1B2B; display: inline-block; }
 .sc-row u { display: block; border-bottom: 1px solid #0B1B2B; height: 14pt; text-decoration: none; }
+.sc-anch { display: block; font: 400 7pt/1.25 var(--sans); color: #555; }
 .sc-pair { grid-template-columns: 1.45in auto auto 1fr; column-gap: 12px; }
 .sc-pair > span:nth-of-type(2) { margin-left: 10px; }
 .sc-foot { font: 400 7.5pt/1.4 var(--mono); color: #666; margin-top: 4px; }

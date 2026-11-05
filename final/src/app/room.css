@@ -59,6 +59,9 @@
 .rm-scale > div { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
 .rm-scale button { padding: 14px 0; border-radius: 12px; border: 1px solid var(--rule); font: 400 18px/1 var(--sans); transition: all .15s; }
 .rm-scale button.on { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--bg); }
+/* The two ends of each scale, named under the buttons, and who the sample is judged for. */
+.rm-anch { display: flex; justify-content: space-between; margin-top: 6px; font: 400 13px/1.3 var(--sans); color: var(--fg2); }
+.rm-ctx { margin: 0 0 14px; font: 400 15px/1.4 var(--sans); color: var(--fg2); }
 .rm-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .rm-tags button { min-height: 44px; padding: 10px 16px; border-radius: 22px; border: 1px solid var(--rule); font: 400 15px/1 var(--sans); }
 .rm-tags button.on { background: var(--accent-soft); border-color: var(--accent); }
