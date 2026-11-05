@@ -73,7 +73,7 @@ export default function RunSheet() {
         </table>
       </section>
 
-      <section className="rs-sec">
+      <section className="rs-sec rs-keep">
         <h2>The tasting table (check before 10:40)</h2>
         <ol className="rs-check">{TASTING_KIT.map((x) => <li key={x}>{x}</li>)}</ol>
       </section>
