@@ -167,13 +167,15 @@ assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("cmd({
 {const n=fs.readFileSync('src/lib/sceneNotes.ts','utf8');assert(n.includes('save the record')&&n.includes('what have we missed or left unclear')&&n.includes('reaching a decision, not starting another presentation'),'slides 19, 21 and 22 talking points');
 assert(fs.readFileSync('src/app/show.css','utf8').includes('rgba(11,27,43,.62)'),'slide 22 subtitle contrast');}
 // Review step 12: the pre-brief asks for a priority, offers Another occasion (kept off the day map), and its sliders have
-// two ends of one scale; the first answers still count under the same options and slider numbers.
+// two ends of one scale; the first answers still count under the same options and slider numbers. The letter says coded
+// samples and both pages use the deck's household wording.
 {const C=load('content');assert.equal(C.SURVEY.consumer.q,'Which audience should a new flavor focus on first?');assert.equal(C.SURVEY.moment.q,'Which occasion would be most useful to explore together?');
 assert.equal(C.SURVEY.moment.other,'Another occasion');assert(!C.SURVEY.moment.options.includes('Another occasion')&&C.SURVEY.moment.options.length===8,'Another occasion is not a moment on the day map');
 assert.equal(C.PROFILE.map((x)=>x.id).join(),'adv,cool,bot,exp,occ');assert.equal(C.PROFILE.map((x)=>x.l+'/'+x.r).join('|'),'More familiar/More adventurous|Strong cooling/Gentle cooling|Classic mint/Mint with other notes|Just does the job/Something to enjoy|Any time of day/Made for one moment');
 const st=load('state');const f=st.fold([{seq:1,id:'x1',t:1,kind:'survey',pid:'p1',data:{name:'A',consumer:'Gen Z',moment:'Another occasion',momentOther:'Before a date'}},{seq:2,id:'x2',t:2,kind:'survey',pid:'p2',data:{name:'B',consumer:'Gen Z',moment:'Wind-down'}}]);
 assert.equal(f.survey.p1.momentOther,'Before a date');assert.equal(f.survey.p2.momentOther,undefined);
 const sa=fs.readFileSync('src/components/SurveyApp.tsx','utf8'),fd=fs.readFileSync('src/components/SiteApp.tsx','utf8');assert(sa.includes('[...SURVEY.moment.options, SURVEY.moment.other]')&&sa.includes('momentOther'),'the pre-brief offers Another occasion');
+assert(!sa.includes('taste them blind')&&sa.includes('as coded samples'),'the letter says coded samples');for(const x of [sa,fd])assert(!x.includes('took the burn out')&&x.includes('buy mouthwash but not TheraBreath'),'household wording matches the deck');
 const ws=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');assert(ws.includes('...WHITESPACE.moments.map((m) => mom[m] || 0)'),'only moments on the arc glow');
 assert(fs.readFileSync('src/components/scenes/Opening.tsx','utf8').includes('SURVEY.moment.other}: {otherMoments'),'slide 5 lists Another occasion answers');}
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');
