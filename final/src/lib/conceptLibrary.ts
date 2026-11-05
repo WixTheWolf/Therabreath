@@ -61,9 +61,9 @@ export type Card = { id: string; status: 'DRAFT' | 'READY'; title?: string; star
 const DIRECTION_DEFAULTS: Record<string, Omit<Card, 'id' | 'status' | 'title' | 'start'>> = {
   // Plant-Powered Freshness: "Adults who'd like something besides straight mint."
   warmcool: { segment: 'Adults who want something new', occasion: 'After meals', role: '', format: 'Rinse', incremental: '' },
-  // Global Brightness: "Morning rinsers, people heading out the door, and markets outside the US."
+  // Global Brightness: "Morning rinsers and people heading out the door."
   bright: { segment: 'Adults who want something new', occasion: 'First thing in the morning', role: '', format: 'Rinse', incremental: '' },
-  // Modern Clean: "People who skip mouthwash because they find it too harsh."
+  // Modern Clean: "Possibly people who find mouthwash too harsh." A hypothesis to test.
   botanical: { segment: 'People who find mouthwash too strong', occasion: 'After meals', role: '', format: 'Rinse', incremental: '' },
   // Next-Generation Kids: "Kids and their parents."
   ladder: { segment: 'Families with kids and tweens', occasion: 'Wind-down, before bed', role: '', format: 'Rinse', incremental: '' },

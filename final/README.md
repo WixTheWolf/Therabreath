@@ -55,7 +55,7 @@ Every page is noindex, and there are no analytics.
 | 9 | Seven trends: vote, then discuss (phone vote) | 3 |
 | 10 | Part 2: Where flavor could go | 0 |
 | 11 | Flavor School: flavor and sodium chlorite | 2 |
-| 12 | Four directions (the two not in the tasting are optional) | 4 |
+| 12 | Four directions (the two not in the tasting get a short card each, since they're on the chips) | 4 |
 | 13 | THE FLAVOR RACE, right before the tasting | 0 |
 | 14 | The blind tasting (scores on phones; the names flip at build 2) | 2 |
 | 15 | What deserves the next round: where each sample landed, then five chips each | 1 |

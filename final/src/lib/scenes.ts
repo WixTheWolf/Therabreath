@@ -49,7 +49,7 @@ const SHOW: Row[] = [
 
   opener(2, 'school'),
   { id: 'school', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'Flavor School: flavor and sodium chlorite', block: 'school', room: W('Flavor School') },
-  { id: 'map', act: PART(2), chapter: 1, theme: 'a', builds: 4, skip: [2, 3], title: 'Four directions', block: 'school', room: W('Four directions') },
+  { id: 'map', act: PART(2), chapter: 1, theme: 'a', builds: 4, title: 'Four directions', block: 'school', room: W('Four directions') },
   { id: 'film', act: PART(2), chapter: 1, theme: 'b', builds: 0, title: 'Before we taste', block: 'school', room: W('Phones down for a couple of minutes. Eyes on the screen.') },
   { id: 'tasting', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'The blind tasting', block: 'tasting', room: { kind: 'taste' } },
   { id: 'nextround', act: PART(2), chapter: 1, theme: 'b', builds: 1, title: 'What deserves the next round', block: 'tasting',

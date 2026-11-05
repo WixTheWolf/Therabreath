@@ -227,16 +227,18 @@ function FilmPanel({ f, now, cmd, next, prev }: { f?: FilmState; now: number; cm
 
 // The four directions: open any profile card on the TV, or go back to the map. The short version skips the two that
 // aren't in the tasting when stepping through, but any card can still be opened here.
+// The directions with samples in today's tasting; the other two are discussed and on the chips, but not tasted.
+const TASTED = [...new Set(SAMPLES.map((x) => x.territory))];
 function Profiles({ step, off, cmd, i, short }: { step: number; off: boolean; cmd: (c: ShowCmd) => void; i: number; short: boolean }) {
   const skipped = SCENES[i]?.skip || [];
   return (
     <>
       <h2>Profile cards</h2>
-      <p className="pv-sub">Open a direction’s card on the TV, or click it on the TV itself. {short ? 'Short version: the arrows skip the two that aren’t in the tasting.' : 'The arrows step through all four.'}</p>
+      <p className="pv-sub">Open a direction’s card on the TV, or click it on the TV itself. The arrows step through all four. The two not in the tasting get a short, fair explanation even in the short version: the room can put chips on them.</p>
       <ul className="pv-profiles">
         <li><button disabled={off} aria-pressed={step === 0} onClick={() => cmd({ c: 'goto', i, step: 0 })}>The map, all four</button></li>
         {TERRITORIES.map((t) => (
-          <li key={t.id}><button disabled={off} aria-pressed={step === t.n} onClick={() => cmd({ c: 'goto', i, step: t.n })}>{t.n}. {t.name}{skipped.includes(t.n) ? <small>Optional</small> : <small>In the tasting</small>}</button></li>
+          <li key={t.id}><button disabled={off} aria-pressed={step === t.n} onClick={() => cmd({ c: 'goto', i, step: t.n })}>{t.n}. {t.name}{skipped.includes(t.n) ? <small>Optional</small> : <small>{TASTED.includes(t.id) ? 'In the tasting' : 'Not tasted, on the chips'}</small>}</button></li>
         ))}
       </ul>
     </>

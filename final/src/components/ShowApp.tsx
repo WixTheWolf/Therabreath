@@ -71,7 +71,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const told = Object.keys(sv.survey || {}).length > 0;
   const n = SCENES.length;
   // "You told us" only appears once someone has answered the pre-brief. S (short) also skips the optional slides and the
-  // optional builds (the July row, and the two directions that are not in the tasting).
+  // optional build (the July row). The two directions not in the tasting always show: the room can put chips on them.
   const [short, setShort] = useState(false);
   const skip = useCallback((i: number) => (SCENES[i].id === 'prework' && !told) || (short && !!SCENES[i].optional), [told, short]);
   const skipBuild = useCallback((i: number, b: number) => short && !!SCENES[i].skip?.includes(b), [short]);

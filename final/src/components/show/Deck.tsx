@@ -275,7 +275,7 @@ export function DirectionsMap({ step }: SceneProps) {
         <Enter i={1}><h2 className="h1">Where we think <span className="it">flavor could go.</span></h2></Enter>
         <Enter i={2}><p className="lede dm-lede">Two of these are in today’s tasting. For the other two, we just want your opinion.</p></Enter>
         <div className="src dm-view">Our view, not data.</div>
-        <Ask step={step} q="Which direction feels most like TheraBreath, and which stretches it most?" className="dm-ask" />
+        <Ask step={step} q="Which direction feels most like TheraBreath, and which stretches it in a useful way?" className="dm-ask" />
       </div>
       <div className="map-plot dm-plot" style={{ width: W, height: H }}>
         <div className="map-glow on" />
