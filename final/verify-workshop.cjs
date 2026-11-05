@@ -142,4 +142,8 @@ const d=fs.readFileSync('src/components/show/Deck.tsx','utf8'),l=d.slice(d.index
 assert(fs.readFileSync('src/components/RoomApp.tsx','utf8').includes('room.opens && step < room.opens'),'the phones wait for the chips to open');
 assert(fs.readFileSync('scripts/export-show.mjs','utf8').includes('nextround: [0, 2]'),'the PDF shows slide 15 before the chips and with the top three');
 assert(fs.readFileSync('src/app/show.css','utf8').includes('.tl .pad > .enter:first-child .k, .landed .pad > .enter:first-child .k { max-width: 1480px;'),'slides 14 and 15 keep their header clear of the QR code');}
+// Review step 10: slide 16 is a ten-second signpost, a marked moment keeps the pre-brief's words on the card, and slide
+// 18 says that what's filled in is a proposal.
+{const n=fs.readFileSync('src/lib/sceneNotes.ts','utf8');assert(n.includes('We have a starting shortlist')&&n.includes('Start with the moment and the need'),'slide 16 talking points');
+assert(fs.readFileSync('src/components/show/ShowScenes.tsx','utf8').includes('what’s filled in is a proposal until we agree it'),'slide 18 says the cards are proposals');}
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');

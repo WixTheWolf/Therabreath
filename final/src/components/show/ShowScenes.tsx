@@ -229,12 +229,13 @@ export function NextRound({ s, step }: SceneProps) {
 }
 
 // The concept cards: up to three, started from the chips vote and changed by tapping in the presenter view (see
-// Concepts.tsx). The TV shows them; nothing here is typed.
+// Concepts.tsx). The TV shows them; nothing here is typed. The label says what the cards are: anything filled in is a
+// proposal until the room agrees the card, and To agree is still open.
 export const FIELDS = CONCEPT_FIELDS.map((x) => ({ f: x.key, key: x.key, l: x.l, opts: x.opts || [] }));
 export function ConceptCanvas({ s }: SceneProps) {
   return (
     <div className="pad ccv">
-      <Enter i={0}><div className="k">Up to three concepts</div></Enter>
+      <Enter i={0}><div className="k">Up to three concepts · what’s filled in is a proposal until we agree it</div></Enter>
       <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>What should each idea <span className="it">become?</span></h2></Enter>
       <ConceptCards s={s} />
     </div>
