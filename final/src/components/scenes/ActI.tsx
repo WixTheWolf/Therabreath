@@ -70,7 +70,7 @@ function Glasses({ step }: { step: number }) {
         <Enter i={1} className="gap-share">TheraBreath is already number 2 in mouthwash.</Enter>
         <R b={2} step={step} className="gap-groups">
           <div className="tb"><b className="num">{GAP.tb}</b><span>buy TheraBreath</span></div>
-          <div><b className="num">{OTHER.another}</b><span>buy mouthwash, but not TheraBreath</span></div>
+          <div><b className="num">{OTHER.another}</b><span>buy mouthwash, not TheraBreath</span></div>
           <div><b className="num">{OTHER.none}</b><span>don&rsquo;t buy mouthwash</span></div>
         </R>
         <R b={3} step={step}><div className="gap-second it">Flavor could give more of these households a reason to try it.</div></R>
