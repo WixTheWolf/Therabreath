@@ -430,7 +430,7 @@ export const TASTING_KIT = [
   'Backup samples of each, in case of a spill or a second pour.',
   'Tasting cups, spit cups and napkins at every seat.',
   'Water to rinse between samples.',
-  'The QR code on screen for phones, and the loaner phone or tablet joined at setup. A few paper scorecards and pens as a last resort.',
+  'The QR code on screen for phones, and the loaner phone or tablet for one person, set up on its name screen. A few paper scorecards and pens for anyone else without a phone.',
   'Reveal: the names flip on screen at the second build of the tasting. Reveal cards only if you’re bringing printed ones.',
 ];
 

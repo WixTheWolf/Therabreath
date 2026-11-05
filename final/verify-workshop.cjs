@@ -168,7 +168,8 @@ assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("cmd({
 assert(fs.readFileSync('src/app/show.css','utf8').includes('rgba(11,27,43,.62)'),'slide 22 subtitle contrast');}
 // Review step 12: the pre-brief asks for a priority, offers Another occasion (kept off the day map), and its sliders have
 // two ends of one scale; the first answers still count under the same options and slider numbers. The letter says coded
-// samples and both pages use the deck's household wording.
+// samples, both pages use the deck's household wording, and the run sheet keeps the loaner with one person, says who
+// votes and gives each block a one-line action.
 {const C=load('content');assert.equal(C.SURVEY.consumer.q,'Which audience should a new flavor focus on first?');assert.equal(C.SURVEY.moment.q,'Which occasion would be most useful to explore together?');
 assert.equal(C.SURVEY.moment.other,'Another occasion');assert(!C.SURVEY.moment.options.includes('Another occasion')&&C.SURVEY.moment.options.length===8,'Another occasion is not a moment on the day map');
 assert.equal(C.PROFILE.map((x)=>x.id).join(),'adv,cool,bot,exp,occ');assert.equal(C.PROFILE.map((x)=>x.l+'/'+x.r).join('|'),'More familiar/More adventurous|Strong cooling/Gentle cooling|Classic mint/Mint with other notes|Just does the job/Something to enjoy|Any time of day/Made for one moment');
@@ -177,5 +178,7 @@ assert.equal(f.survey.p1.momentOther,'Before a date');assert.equal(f.survey.p2.m
 const sa=fs.readFileSync('src/components/SurveyApp.tsx','utf8'),fd=fs.readFileSync('src/components/SiteApp.tsx','utf8');assert(sa.includes('[...SURVEY.moment.options, SURVEY.moment.other]')&&sa.includes('momentOther'),'the pre-brief offers Another occasion');
 assert(!sa.includes('taste them blind')&&sa.includes('as coded samples'),'the letter says coded samples');for(const x of [sa,fd])assert(!x.includes('took the burn out')&&x.includes('buy mouthwash but not TheraBreath'),'household wording matches the deck');
 const ws=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');assert(ws.includes('...WHITESPACE.moments.map((m) => mom[m] || 0)'),'only moments on the arc glow');
-assert(fs.readFileSync('src/components/scenes/Opening.tsx','utf8').includes('SURVEY.moment.other}: {otherMoments'),'slide 5 lists Another occasion answers');}
+assert(fs.readFileSync('src/components/scenes/Opening.tsx','utf8').includes('SURVEY.moment.other}: {otherMoments'),'slide 5 lists Another occasion answers');
+const rs=fs.readFileSync('src/app/host/run/page.tsx','utf8');assert(rs.includes('It stays with that one person all morning')&&rs.includes('Who votes:')&&rs.includes('RUN_NOTES[b.id].act'),'run sheet: loaner, who votes, one-line actions');
+const RN=load('runNotes');for(const b of C.RUN)assert(RN.RUN_NOTES[b.id].act&&RN.RUN_NOTES[b.id].act.length<90,'one-line action for '+b.id);}
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');

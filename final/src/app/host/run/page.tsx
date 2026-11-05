@@ -21,10 +21,11 @@ const SETUP = [
   `Sound and picture check, before anyone arrives and on the rehearsal session so nobody’s phone moves: open /host?code=REHEARSE on the TV, press F for full screen, then Go to THE FLAVOR RACE (slide ${FILM_AT}) in the presenter view, or open /host?code=REHEARSE#${FILM_AT}. Check it fills the screen, play ten seconds through the speakers and set the volume, and press R to check it starts again. Then close that window and open Present on the day. Keep the film off the TV once people start arriving.`,
   'Rehearse on /host?code=REHEARSE (the team page links to it), never on /host itself, so rehearsal votes stay out of the live session. Leave the live session FOF1109 alone the night before: it holds everyone’s pre-brief answers, and the team page shows how many are in.',
   `Samples: ${kids} in the Kids base and ${fresh} in the Fresh Breath base. During setup, pre-pour them into cups coded A to D on covered trays, out of sight, and bring the trays out as THE FLAVOR RACE ends. Set out water to rinse, cups to spit into and napkins.`,
-  'Join one loaner phone or tablet to the live session at setup (scan the code on the arrival screen), for anyone who arrives without a phone. Keep it charged and on the table.',
+  'Set up one loaner phone or tablet for someone who arrives without a phone: at setup, scan the code on the arrival screen and leave it on the name screen, so whoever uses it types their own first name. It stays with that one person all morning. A phone keeps one identity, so if it’s passed round, the next person’s votes and scores replace the first person’s. Anyone else without a phone votes by hand and scores on a paper card. Keep it charged and on the table.',
+  'Who votes: the Church & Dwight people in the room. The four of us don’t vote, on our phones or by hand, so every count on screen is theirs. To check a phone works, use the rehearsal session (Rehearse on the team page), never the live one.',
   'If we’re running late, see If we run behind below. The presenter view shows how far over the current part is and whether the short version is on.',
   'Nothing gets typed on the day. On the vote slides, the presenter view has a button to add a hand vote for each option, and one to take it back. The concept cards and Now, Next, Later are filled in by tapping options.',
-  'Paper scorecards are the last resort (print a few from /scorecard, with pens). On the tasting, tap +1 paper card in the presenter view for each one handed in, and -1 for a mistake. The cards are typed in after the morning.',
+  'Paper scorecards are for anyone without a phone once the loaner is taken (print a few from /scorecard, with pens). On the tasting, tap +1 paper card in the presenter view for each one handed in, and -1 for a mistake. The cards are typed in after the morning.',
 ];
 const AFTER = [
   'Before you close the laptop, open /host?results=1 and print it to PDF: the votes, the scores, the concepts, the white-space marks and Now, Next, Later as we left them. The Playbook write-up (/host/writeup) fills in from the same session.',
@@ -57,13 +58,13 @@ export default function RunSheet() {
       </section>
 
       <section className="rs-sec">
-        <h2>At a glance: kit and what each block should leave us with</h2>
+        <h2>At a glance: what we do, the kit and what each block should leave us with</h2>
         <table className="rs-run rs-glance">
           <thead><tr><th>Time</th><th>Block</th><th>Technology and materials</th><th>Output</th></tr></thead>
           <tbody>{RUN.map((b) => [
             <tr key={b.id}>
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
-              <td><b>{b.title}</b></td>
+              <td><b>{b.title}</b><small>{RUN_NOTES[b.id].act}</small></td>
               <td data-l="Technology and materials">{RUN_NOTES[b.id].kit}</td>
               <td data-l="Output">{RUN_NOTES[b.id].output}</td>
             </tr>,
