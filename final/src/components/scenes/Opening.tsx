@@ -35,11 +35,14 @@ function Bubbles({ s, cam }: { s: any; cam: any }) {
         const [sx, sy] = project([x, y, 0.3 * narrow], cam);
         const r = (0.058 - i * 0.002) * px * (settled ? 0.7 : 1);
         const burst = !settled ? Math.max(0, 1 - Math.abs(u - 0.9) * 10) : 0;
+        // People who join within a second or so of each other rise together: each later name drops a line, so the
+        // names never print on top of each other.
+        const k = list.slice(0, i).filter((q) => Math.abs(q.joined - p.joined) < 1500).length;
         return (
           <div key={p.pid}>
             <i className="bubble" style={{ left: sx, top: sy, width: r * 2, height: r * 2, opacity: settled ? 0.55 : 1 }} />
             {burst > 0 && <i className="spark" style={{ left: sx, top: sy, opacity: burst }} />}
-            <span className="bname" style={{ left: sx + r + 12, top: sy, opacity: settled ? 0 : Math.min(1, age * 2) }}>{p.name}</span>
+            <span className="bname" style={{ left: sx + r + 12, top: sy + k * 34, opacity: settled ? 0 : Math.min(1, age * 2) }}>{p.name}</span>
           </div>
         );
       })}
