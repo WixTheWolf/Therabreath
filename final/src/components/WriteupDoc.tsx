@@ -156,7 +156,7 @@ export default function WriteupDoc({ code }: { code: string }) {
               </tr>
             ))}</tbody>
           </table>
-          {d.paperLeft > 0 && <p className="wu-small">Plus {plural(d.paperLeft, 'paper card')}, added after the morning.</p>}
+          {d.paperLeft > 0 && <p className="wu-small">Phone scores only so far: {plural(d.paperLeft, 'paper card')} still to be typed in.</p>}
           {!d.tasted && <p className="wu-ghost">No scores yet. The table fills in as people score on their phones or the paper cards are typed in.</p>}
           {d.tasting.some((x) => x.sum.words.length) && <dl className="wu-words">{d.tasting.filter((x) => x.sum.words.length).map((x) => <div key={x.code}><dt>{x.code} in one word</dt><dd>{x.sum.words.join(', ')}</dd></div>)}</dl>}
           {d.guesses.length > 0 && <p className="wu-small">The room’s guesses at the fruits in {MYSTERY}: {d.guesses.join(', ')}.</p>}

@@ -2,7 +2,7 @@
 // The presentation (/host). The Stage's look (the glass drop, the light, the trend colors, the direction photographs),
 // driving the shared session: when the presenter moves on, every phone moves too. People join by scanning the code on
 // the arrival screen; they vote on the trends, score the tasting and place chips on what gets a next round, and the
-// results fill the screen as they land. The white-space marks, the concept cards and Now, Next and Later go into the
+// results fill the screen as they land (the tasting averages wait until everyone has scored). The white-space marks, the concept cards and Now, Next and Later go into the
 // same session by tapping (nothing is typed on the day), and the Playbook slide near the end puts it all together. The
 // talking points (N) name nobody. ?code=REHEARSE runs a separate rehearsal session with its own code; ?results=1 is a
 // printable page of what was decided; ?still=1 is for the PDF export (it never writes to the session); #12 or #12.3
@@ -27,11 +27,11 @@ import {
 import { TeamSince, OurFlavors, Shelf, TrendVote, FlavorSchool, DirectionsMap, Landed } from './show/Deck';
 import { starters } from './show/Concepts';
 import { unconfirmed } from '@/lib/conceptLibrary';
-import { EVENT, TOPICS, RUN, CRITERIA, JAR } from '@/lib/content';
+import { EVENT, TOPICS, RUN, CRITERIA, JAR, JAR_OPTS, SAMPLES } from '@/lib/content';
 import { runTiming } from '@/lib/time';
 import { PLAN_COLS, planCell } from './show/Plan';
 import { showChannel, presenterUrl, ShowMsg } from '@/lib/showLink';
-import { tasters as tasterCounts, jarTop } from '@/lib/state';
+import { tasters as tasterCounts, jarAll, tastingProgress } from '@/lib/state';
 
 type View = (p: SceneProps) => React.ReactNode;
 const VIEWS: Record<string, View> = {
@@ -43,6 +43,8 @@ const VIEWS: Record<string, View> = {
 };
 // The scenes where phones are in use: the code stays in the corner for anyone who has not joined.
 const VOTING = new Set(['signals', 'tasting', 'nextround']);
+// The votes that close when their results go up (see the effect in ShowApp): the vote's key and its slide.
+const LOCKS = [{ key: 'signals', id: 'signals' }, { key: 'tasting', id: 'tasting' }, { key: 'directions', id: 'nextround' }];
 // The slides with things to tap (day-map cells, the board): a click there never moves the room on.
 const STAY = new Set(['whitespace', 'concepts', 'board']);
 // Two copies of the sample names are the same when every sample has the same name and note, in any key order.
@@ -70,6 +72,9 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const [notes, setNotes] = useState(false);
   const [blank, setBlank] = useState(false);
   const [hint, setHint] = useState(true);
+  // A short message on the TV, such as the check before the tasting scores go up.
+  const [toast, setToast] = useState('');
+  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(''), 8000); return () => clearTimeout(t); }, [toast]);
   const [origin, setOrigin] = useState('');
   const scale = useScale(1920, 1080);
 
@@ -103,17 +108,22 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
     if (!hashed.current && s.scene > 0 && s.sceneId === SCENES[s.scene]?.id) setPos({ i: s.scene, step: s.step });
   }, [status.lastOk, still, mode, s.scene, s.step, s.sceneId]);
   useEffect(() => { if (live.current && !still && !mode) send('goto', { scene: pos.i, step: pos.step, id: SCENES[pos.i].id }); }, [pos, still, mode, send]);
-  // The trend vote closes when the top three start to open (build 1) and opens again if we go back to build 0, so the
-  // three we talk about are the three that go into the Playbook. Hand votes from the presenter view still count.
-  const lockWant = useRef('');
+  // Three things close when their results go up, and open again if we go back to the build before: the trend vote (the
+  // top three start to open at build 1), the tasting scores (the averages show at build 1, so nobody still scoring sees
+  // them and nobody changes a score once the names are out) and the chips (the top three show at build 1). Moving past
+  // the slide closes it too. Hand votes and paper cards from the presenter view still count.
+  const lockWant = useRef<Record<string, string>>({});
   useEffect(() => {
-    if (!live.current || still || mode || SCENES[pos.i].id !== 'signals') return;
-    const want = pos.step >= 1 ? 'lock' : 'open';
-    const locked = !!s.votes.signals?.locked;
-    if ((want === 'lock') === locked) { lockWant.current = ''; return; }
-    if (lockWant.current === want) return;
-    lockWant.current = want; send('vote', { key: 'signals', action: want });
-  }, [pos, still, mode, s.votes.signals?.locked, send, status.lastOk]);
+    if (!live.current || still || mode) return;
+    for (const l of LOCKS) {
+      const at = SCENES.findIndex((x) => x.id === l.id);
+      if (at < 0 || pos.i < at) continue;
+      const want = pos.i > at || pos.step >= 1 ? 'lock' : 'open';
+      if ((want === 'lock') === !!s.votes[l.key]?.locked) { lockWant.current[l.key] = ''; continue; }
+      if (lockWant.current[l.key] === want) continue;
+      lockWant.current[l.key] = want; send('vote', { key: l.key, action: want });
+    }
+  }, [pos, still, mode, s.votes, send, status.lastOk]);
   // The reveal. The flip is build 2 of the tasting, and skipping past the tasting reveals too. Two repairs keep the phones
   // right: a reveal saved before the samples changed is sent again with the current names (a rehearsal on October 31 kept
   // the old A to D order after the swap), and a rehearsal that goes back before the flip is sealed again, so every
@@ -149,9 +159,22 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   }, [pos, still, mode, s.concepts, sv, send, status.lastOk]);
 
   const posRef = useRef(pos); posRef.current = pos;
+  const sRef = useRef(s); sRef.current = s;
+  // The blind round closes when the scores go up (build 1 of the tasting). If some phones haven't scored all four, the
+  // first press says how many and a second press within ten seconds goes on, so the scores never go up by accident.
+  const held = useRef(0);
   const film = useRef<FilmCtl | null>(null); // set while THE FLAVOR RACE is on screen
   const go = useCallback((d: number) => {
     const { i, step } = posRef.current, sc = SCENES[i];
+    if (d > 0 && sc.id === 'tasting' && step === 0 && live.current && !still) {
+      const left = tastingProgress(sRef.current, SAMPLES.map((x) => x.code)).left;
+      if (left > 0 && Date.now() - held.current > 10000) {
+        held.current = Date.now();
+        setToast(`${left} ${left === 1 ? 'person is' : 'people are'} still scoring. Press again to show the scores.`);
+        return;
+      }
+      held.current = 0; setToast('');
+    }
     if (d > 0) {
       let b = step + 1; while (b <= sc.builds && skipBuild(i, b)) b++;
       if (b <= sc.builds) return setPos({ i, step: b });
@@ -163,7 +186,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       let j = i - 1; while (j > 0 && skip(j)) j--;
       if (j >= 0) { let last = SCENES[j].builds; while (last > 0 && skipBuild(j, last)) last--; setPos({ i: j, step: last }); }
     }
-  }, [n, skip, skipBuild]);
+  }, [n, skip, skipBuild, still]);
   // ] and [ jump to the next or previous part (the map and the tasting count as their own stops).
   const jump = useCallback((d: number) => {
     const stops = SECTIONS.map((id) => SCENES.findIndex((x) => x.id === id)).filter((x) => x >= 0);
@@ -274,6 +297,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
             <small>{timing}{short ? ' · Short version: optional builds skipped (S to undo)' : ''}</small>
           </aside>
         )}
+        {toast && <div className="show-toast" role="status">{toast}</div>}
         {hint && <div className="show-hint">Right arrow or click to go on · Left arrow back · ] next part · S short version · F full screen · P presenter view</div>}
         {code !== EVENT.code && !still && <div className="show-rehearse">Rehearsal session {code}. Votes here never reach the live session.</div>}
       </div>
@@ -299,7 +323,7 @@ function Chrome({ i, clock }: { i: number; clock: boolean }) {
 // Paper cards counted on the day and not yet typed in, as a line under the tasting.
 export const paperNote = (s: any) => {
   const left = Math.max(0, (s.paperCards || 0) - tasterCounts(s).cards);
-  return left ? `Plus ${left} paper ${left === 1 ? 'card' : 'cards'}, added after the morning.` : '';
+  return left ? `Phone scores only so far: ${left} paper ${left === 1 ? 'card is' : 'cards are'} still to be typed in.` : '';
 };
 
 // What we decided, on one printable page: open /host?results=1 after the session and print it to PDF.
@@ -313,7 +337,7 @@ function Results({ s, code }: { s: any; code: string }) {
       <h1 className="h1">What we <span className="it">decided.</span></h1>
       <p className="sr-sub">{Object.keys(s.participants).length} people joined on their phones.</p>
       <section><h2 className="h3">The three trends that matter most</h2><ul>{d.signals.map((x) => <li key={x.t}>{x.t} <em>{x.n} votes</em></li>)}{!d.signals.length && <li className="ghost">No votes yet</li>}</ul></section>
-      <section><h2 className="h3">The tasting</h2>{paperNote(s) && <p className="sr-dots">{paperNote(s)}</p>}<table className="sr-taste"><thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key}>{c.l}</th>)}{JAR.map((j) => <th key={j.key}>{j.l}</th>)}<th>Scores</th></tr></thead><tbody>{d.tasting.map((x) => <tr key={x.code}><td>{x.code}. {x.name}</td><td>{x.sum.n ? x.sum.appeal.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.feels.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.newness.toFixed(1) : ''}</td>{JAR.map((j) => <td key={j.key}>{jarTop(x.sum[j.key])}</td>)}<td>{x.sum.n}</td></tr>)}</tbody></table></section>
+      <section><h2 className="h3">The tasting</h2>{paperNote(s) && <p className="sr-dots">{paperNote(s)}</p>}<table className="sr-taste"><thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key}>{c.l}</th>)}{JAR.map((j) => <th key={j.key}>{j.l}</th>)}<th>Scores</th></tr></thead><tbody>{d.tasting.map((x) => <tr key={x.code}><td>{x.code}. {x.name}</td><td>{x.sum.n ? x.sum.appeal.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.feels.toFixed(1) : ''}</td><td>{x.sum.n ? x.sum.newness.toFixed(1) : ''}</td>{JAR.map((j) => <td key={j.key}>{jarAll(x.sum[j.key], JAR_OPTS)}</td>)}<td>{x.sum.n}</td></tr>)}</tbody></table></section>
       <section><h2 className="h3">What gets a next round</h2><ul>{d.directions.map((x) => <li key={x.t}>{x.t} <em>{x.n} chips</em></li>)}{!d.directions.length && <li className="ghost">No votes yet</li>}</ul></section>
       <section><h2 className="h3">Concepts</h2>{cs.length ? cs.map((c: any) => <div key={c.id} className="sr-concept"><b>{c.name}</b><dl>{FIELDS.map((f) => c[f.key] ? <div key={f.f}><dt>{f.l}</dt><dd>{c[f.key]}</dd></div> : null)}</dl></div>) : <p className="ghost">None yet</p>}</section>
       <section><h2 className="h3">Now, Next, Later</h2>{d.plan.length ? <table className="sr-plan"><thead><tr><th /><th>Direction</th>{PLAN_COLS.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead><tbody>{d.plan.map((r) => <tr key={r.id}><td>{r.label}</td><td><b>{r.what || 'Untitled'}</b></td>{PLAN_COLS.map((c) => { const v = planCell(r, c.f); return <td key={c.f} className={unconfirmed(v) ? 'tbc' : ''}>{v || <span className="ghost">To agree</span>}{c.f === 'brief' && r.draft && v ? <em className="ghost"> (draft, finalized in the write-up)</em> : null}</td>; })}</tr>)}</tbody></table> : <p className="ghost">Nothing yet</p>}</section>

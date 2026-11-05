@@ -66,6 +66,19 @@ for(const f of ['src/lib/content.ts','src/lib/sceneNotes.ts','src/lib/runNotes.t
 // Slide 17 asks a question rather than announcing white space: the blank moments say To explore, ties in the pre-brief
 // all glow, and the tray says that the first moment becomes the When on the concept card.
 {const w=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');const g=w.slice(w.indexOf('export function WhiteSpaceShow'),w.indexOf('export function Board'));assert(g.includes('Which occasions could TheraBreath')&&g.includes('To explore')&&g.includes('first moment goes on its concept card'),'slide 17 wording');assert(!/still open|Every open moment|>Open</.test(g),'slide 17 announces open space again');assert(g.includes('mom[m] === most'),'a tied pre-brief moment would not glow');}
+// The blind round (November 4 review): scoring closes when the scores go up (a `tasting` lock); a phone's score after
+// that is ignored, a paper card typed in afterwards still counts, and going back reopens it. The TV shows counts, not
+// averages, until then, and the first press with people still scoring only warns.
+{const {tastingProgress,tastingClosed}=load('state');const ev=(id,kind,pid,data)=>({id,t:id.length,kind,pid,data});
+const base=[ev('j1','join','p1',{name:'A'}),ev('j2','join','p2',{name:'B'}),ev('j3','join','pp',{name:'C',paper:true})];
+const r=(id,pid,sample)=>ev(id,'rate',pid,{sample,appeal:4,feels:4,newness:3,sweet:'Just right',cool:'Too much'});
+let st=fold([...base,...['A','B','C','D'].map((c,i)=>r('r1'+i,'p1',c)),r('r2','p2','A')]);let pr=tastingProgress(st,['A','B','C','D']);
+assert.equal(pr.phones,2,'a person on paper is not a phone');assert.equal(pr.done,1);assert.equal(pr.left,1);assert.equal(pr.per.A,2);assert(!tastingClosed(st));
+st=fold([...base,r('x1','p1','A'),ev('lk','vote',null,{key:'tasting',action:'lock'}),r('x2','p2','A'),r('x3','paper-1','A')]);
+assert(tastingClosed(st));assert(!st.ratings.A.p2,'a phone scored after the scores went up');assert(st.ratings.A['paper-1'],'a paper card typed in afterwards');
+st=fold([...base,ev('lk','vote',null,{key:'tasting',action:'lock'}),ev('op','vote',null,{key:'tasting',action:'open'}),r('x4','p2','B')]);assert(st.ratings.B.p2,'going back reopens scoring');
+const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(/key: 'tasting', id: 'tasting'/.test(sh)&&/key: 'directions', id: 'nextround'/.test(sh)&&sh.includes('still scoring. Press again'),'the locks and the press-again check');
+const tl=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');const g=tl.slice(tl.indexOf('export function TastingLive'),tl.indexOf('// The chip vote'));assert(g.includes('const scoring = step === 0')&&g.includes('finished all four')&&g.includes('JAR_OPTS.map'),'the tasting slide: counts first, then every answer');}
 // The tasting questions (November 4): liking, could it be a TheraBreath flavor and uniqueness from 1 to 5, then
 // sweetness and cooling as not enough, just right or too much. Ratings saved before then (with who, a direction guess
 // and develop it further) still read.

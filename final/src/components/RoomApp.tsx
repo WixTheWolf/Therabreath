@@ -5,7 +5,7 @@ import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
 import { CRITERIA, judgeAs, JAR, JAR_OPTS, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT, DIALS, MYSTERY, DIRECTIONS } from '@/lib/content';
 import { DEFAULT_DIALS, readouts } from '@/lib/bench';
-import { uid } from '@/lib/state';
+import { uid, tastingClosed } from '@/lib/state';
 import { candidates } from './scenes/Build';
 
 type Me = { pid: string; name: string };
@@ -113,8 +113,8 @@ function Chips({ s, me, p, room }: P) {
   );
 }
 
-function Scale({ label, lo, hi, v, set }: { label: string; lo: string; hi: string; v: number; set: (n: number) => void }) {
-  return <div className="rm-scale" role="group" aria-label={`${label} 1 is ${lo}, 5 is ${hi}`}><span>{label}</span><div>{[1, 2, 3, 4, 5].map((n) => <button key={n} className={n <= v ? 'on' : ''} aria-pressed={n === v} onClick={() => set(n)}>{n}</button>)}</div><small className="rm-anch"><span>1 = {lo}</span><span>5 = {hi}</span></small></div>;
+function Scale({ label, lo, hi, v, set, off }: { label: string; lo: string; hi: string; v: number; set: (n: number) => void; off?: boolean }) {
+  return <div className="rm-scale" role="group" aria-label={`${label} 1 is ${lo}, 5 is ${hi}`}><span>{label}</span><div>{[1, 2, 3, 4, 5].map((n) => <button key={n} className={n <= v ? 'on' : ''} aria-pressed={n === v} disabled={off} onClick={() => set(n)}>{n}</button>)}</div><small className="rm-anch"><span>1 = {lo}</span><span>5 = {hi}</span></small></div>;
 }
 function Taste({ s, me, p, step }: P) {
   const [cur, setCur] = useState('A');
@@ -125,6 +125,8 @@ function Taste({ s, me, p, step }: P) {
   const done = (c: string) => !!s.ratings[c]?.[me.pid];
   const ok = r.appeal && r.feels && r.newness && r.sweet && r.cool;
   const named = s.revealed && SAMPLES.every((x) => done(x.code)) ? s.revealed.samples[cur] : null;
+  // Once the scores are on the TV, scoring is closed: what was saved stays as it was.
+  const closed = tastingClosed(s);
   return (
     <div className="rm-pad">
       <div className="rm-tabs">{SAMPLES.map((x) => <button key={x.code} className={(cur === x.code ? 'on' : '') + (done(x.code) ? ' done' : '')} onClick={() => setCur(x.code)}>{x.code}</button>)}</div>
@@ -134,15 +136,16 @@ function Taste({ s, me, p, step }: P) {
       {named && cur !== MYSTERY && <p>{named.note}</p>}
       {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess" /></label>}
       <p className="rm-ctx">{SAMPLES.find((x) => x.code === cur)?.base}: judge it as {judgeAs(SAMPLES.find((x) => x.code === cur)?.base || '')}.</p>
-      {CRITERIA.map((c) => <Scale key={c.key} label={c.q} lo={c.lo} hi={c.hi} v={r[c.key]} set={(n) => setR({ ...r, [c.key]: n })} />)}
+      {closed && <div className="rm-lock">Scoring is closed. {SAMPLES.every((x) => done(x.code)) ? 'Thanks, all four of your scores are in.' : 'The scores you saved are in.'}</div>}
+      {CRITERIA.map((c) => <Scale key={c.key} label={c.q} lo={c.lo} hi={c.hi} v={r[c.key]} off={closed} set={(n) => setR({ ...r, [c.key]: n })} />)}
       {JAR.map((j) => (
         <div key={j.key} className="rm-jar" role="group" aria-label={j.l}>
           <span>{j.l}</span>
-          <div className="rm-tags">{JAR_OPTS.map((o) => <button key={o} aria-pressed={r[j.key] === o} className={r[j.key] === o ? 'on' : ''} onClick={() => setR({ ...r, [j.key]: o })}>{o}</button>)}</div>
+          <div className="rm-tags">{JAR_OPTS.map((o) => <button key={o} aria-pressed={r[j.key] === o} className={r[j.key] === o ? 'on' : ''} disabled={closed} onClick={() => setR({ ...r, [j.key]: o })}>{o}</button>)}</div>
         </div>
       ))}
       <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="One word for it (optional)" aria-label="One word for it (optional)" />
-      <button className="rm-btn sticky" disabled={!ok} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
+      <button className="rm-btn sticky" disabled={!ok || closed} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
     </div>
   );
 }

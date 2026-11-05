@@ -10,10 +10,10 @@ import { teamConcepts } from '../scenes/CoCreate';
 import { useQR } from '../scenes/Opening';
 import {
   EVENT, OBJECTIVES, TOPICS, RUN, TEAM, ABOUT, SCIENCE, IMAGINATION, ROSS_WORDS, SIGNALS, SAMPLES, PRIMARY_TERRITORIES as PLATFORMS,
-  SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA, JAR, NEXT_STEPS,
+  SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA, JAR, JAR_OPTS, judgeAs, NEXT_STEPS,
 } from '@/lib/content';
 import type { FilmAct, FilmState } from '@/lib/showLink';
-import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, SessionState } from '@/lib/state';
+import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, tastingProgress, SessionState } from '@/lib/state';
 import { PLAN_READBACK, PlanTap, planRows, planCell } from './Plan';
 import { ConceptCards } from './Concepts';
 import { CONCEPT_FIELDS } from '@/lib/conceptLibrary';
@@ -143,26 +143,43 @@ export function SignalVoteShow({ s, step }: SceneProps) {
 export function TastingLive({ s, step }: SceneProps) {
   const rows = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code) }));
   const who = tasterCounts(s), n = who.phones + who.cards;
+  const prog = tastingProgress(s, SAMPLES.map((x) => x.code));
   const left = Math.max(0, (s.paperCards || 0) - who.cards); // paper cards counted on the day, typed in after the morning
   const metrics = CRITERIA.map((c) => [c.key, c.l] as const);
   const cell = (v: number) => { const a = Math.max(0, Math.min(1, (v - 1) / 4)); return { background: `color-mix(in oklab, var(--accent) ${Math.round(a * 85)}%, transparent)`, opacity: v ? 1 : 0.4 }; };
   const guesses = Object.values(s.ratings[MYSTERY] || {}).map((r) => r.fruitGuess).filter(Boolean) as string[];
   const words = rows.flatMap((r) => r.sum.words.map((w) => ({ w, code: r.code })));
+  const judge = (kids: boolean) => SAMPLES.filter((x) => (judgeAs(x.base) === 'a kids rinse') === kids).map((x) => x.code).join(' and ');
+  // Build 0 is the blind round: the TV shows how far everyone has got, never the averages, so nobody still scoring is
+  // swayed by them. Build 1 shows the scores (the phones close then), build 2 the names.
+  const scoring = step === 0;
+  const head = scoring
+    ? `${prog.done} of ${prog.phones} ${prog.phones === 1 ? 'phone has' : 'phones have'} finished all four`
+    : `${who.cards ? `${who.phones} scored on phones, ${who.cards} on paper` : `${n} ${n === 1 ? 'person' : 'people'} scored`}${left ? ` · phone scores only so far: ${left} paper ${left === 1 ? 'card' : 'cards'} to add` : ''}`;
   return (
     <div className="tl">
       <img className="tl-img" src="/img/tasting-cups.webp" alt="" />
       <div className="tl-shade" />
       <div className="pad">
-        <Enter i={0}><div className="k">The blind tasting · made in the bases you sent · {who.cards ? `${who.phones} scored on phones, ${who.cards} on paper` : `${n} ${n === 1 ? 'person has' : 'people have'} scored`}{left ? ` · plus ${left} paper ${left === 1 ? 'card' : 'cards'}, added after the morning` : ''}</div></Enter>
+        <Enter i={0}><div className="k">The blind tasting · made in the bases you sent · {head}</div></Enter>
         <Enter i={1}><h2 className="h1">Four samples, <span className="it">tasted blind.</span></h2></Enter>
-        <Enter i={2}><p className="lede tl-lede">Score each one on your phone or on the paper card. Once everyone’s done, we’ll tell you what they are.</p></Enter>
-        <div className="heat">
-          <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}{JAR.map((j) => <span key={j.key}>{j.l}</span>)}</div>
+        <Enter i={2}><p className="lede tl-lede">{scoring
+          ? `Judge ${judge(true)} as kids rinses and ${judge(false)} as Fresh Breath rinses. Score each one before we talk about it. When everyone has finished all four, we’ll show the scores, then the names.`
+          : 'First reactions from this room, not consumer research.'}</p></Enter>
+        <div className={'heat' + (scoring ? ' tl-blind' : '')}>
+          <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}{JAR.map((j) => <span key={j.key}>{j.l}<small>low · right · high</small></span>)}</div>
           {rows.map((r) => (
             <div key={r.code} className="hrow">
-              <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{/* The Mystery Flavor stays a mystery: its name goes up, but what's in it isn't shown. */}{step >= 2 && r.code !== MYSTERY && <small>{s.revealed?.samples[r.code]?.note}</small>}</span></div>
-              {metrics.map(([m]) => <div key={m} className="hcell" style={cell(r.sum[m])}><b className="num">{r.sum[m] ? r.sum[m].toFixed(1) : ''}</b></div>)}
-              {JAR.map((j) => { const top = ranked(r.sum[j.key])[0]; return <div key={j.key} className="hjar">{top ? <><span>{top[0]}</span><b className="num">{top[1]}</b></> : null}</div>; })}
+              <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{/* The Mystery Flavor stays a mystery: its name goes up, but what's in it isn't shown. */}{step >= 2 && r.code !== MYSTERY && <small>{s.revealed?.samples[r.code]?.note}</small>}{!scoring && <em className="tl-n">{r.sum.n} {r.sum.n === 1 ? 'score' : 'scores'}</em>}</span></div>
+              {scoring ? (
+                <div className="tl-prog"><i style={{ width: `${prog.phones ? Math.round((prog.per[r.code] / prog.phones) * 100) : 0}%` }} /><b className="num">{prog.per[r.code]}</b><span>of {prog.phones} {prog.phones === 1 ? 'phone has' : 'phones have'} scored {r.code}</span></div>
+              ) : (
+                <>
+                  {metrics.map(([m]) => <div key={m} className={'hcell' + (r.sum[m] >= 4 ? ' hi' : '')} style={cell(r.sum[m])}><b className="num">{r.sum[m] ? r.sum[m].toFixed(1) : ''}</b></div>)}
+                  {/* All three answers, not only the most common one, so a split (too little and too much) shows. */}
+                  {JAR.map((j) => <div key={j.key} className="hjar">{r.sum.n ? JAR_OPTS.map((o) => <b key={o} className="num" title={o}>{r.sum[j.key][o] || 0}</b>) : null}</div>)}
+                </>
+              )}
             </div>
           ))}
         </div>
@@ -335,6 +352,8 @@ export function decided(s: SessionState) {
     concepts: teamConcepts(s),
     plan: planRows(s),
     tasting: SAMPLES.map((x) => ({ ...x, name: directionName(x.code, s), sum: tasteSummary(s, x.code) })),
+    // Paper cards counted on the day and not yet typed in: their scores aren't in the averages yet.
+    paperLeft: Math.max(0, (s.paperCards || 0) - tasterCounts(s).cards),
   };
 }
 
@@ -411,7 +430,7 @@ function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
       <>
         {d.directions.length ? <ol className="rp-rank">{d.directions.map((x, j) => <li key={x.t}><span className="num">{j + 1}</span><b>{x.t}</b><em>{x.n} {x.n === 1 ? 'chip' : 'chips'}</em></li>)}</ol> : none('No chips were placed.')}
         <div className="rp-taste">
-          <span className="rp-cap">The tasting, averaged from 1 to 5</span>
+          <span className="rp-cap">The tasting, averaged from 1 to 5{d.paperLeft ? ` · phone scores only so far: ${d.paperLeft} paper ${d.paperLeft === 1 ? 'card' : 'cards'} to add` : ''}</span>
           {d.tasting.map((x) => <div key={x.code}><b>{x.code}. {x.name}</b><span>{x.sum.n ? CRITERIA.map((c) => `${c.l} ${x.sum[c.key].toFixed(1)}`).join(' · ') : 'No scores'}</span></div>)}
         </div>
       </>

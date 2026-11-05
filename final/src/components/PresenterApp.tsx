@@ -9,7 +9,7 @@ import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
 import { pointsOf, titleOf } from '@/lib/sceneNotes';
 import { EVENT, SIGNALS, DIRECTIONS, SAMPLES, MYSTERY, HORIZONS, CRITERIA, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
-import { tallyPick, voteCounts, tasters, byHand, onPaper, people, uid, Ev, SessionState } from '@/lib/state';
+import { tallyPick, voteCounts, tasters, tastingProgress, byHand, onPaper, people, uid, Ev, SessionState } from '@/lib/state';
 import { PlanTap } from './show/Plan';
 import { ConceptEditor } from './show/Concepts';
 import { runTiming, etClock } from '@/lib/time';
@@ -165,8 +165,12 @@ function HandVotes({ s, events, send, k, title, items, value }: { s: SessionStat
 function PaperCount({ s, send, code }: { s: SessionState; send: Send; code: string }) {
   const who = tasters(s);
   const n = s.paperCards || 0;
+  const prog = tastingProgress(s, SAMPLES.map((x) => x.code));
   return (
     <>
+      <h2>Who has finished</h2>
+      <p className="pv-sub"><b className="num">{prog.done}</b> of {prog.phones} {prog.phones === 1 ? 'phone has' : 'phones have'} scored all four. {SAMPLES.map((x) => `${x.code} ${prog.per[x.code]}`).join(' · ')}.</p>
+      <p className="pv-sub">The TV shows only these counts until the next build, which puts the scores up and closes scoring on the phones. If anyone is still scoring, the first press says so and a second press goes on.</p>
       <h2>Paper scorecards</h2>
       <p className="pv-sub">{who.phones} scored on phones. Tap +1 for each paper card handed in. You type them in after the morning, so nothing to type now.</p>
       <div className="pv-paper">

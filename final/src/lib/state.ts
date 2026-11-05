@@ -72,7 +72,7 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'vote': { const v = vote(s, d.key); if (d.action === 'open') { v.open = true; v.locked = false; } if (d.action === 'lock') { v.open = false; v.locked = true; } if (d.action === 'reveal') { v.revealed = true; v.open = false; v.locked = true; } if (d.action === 'reset') s.votes[d.key] = { open: false, locked: false, revealed: false, picks: {} }; break; }
     case 'pick': { const v = vote(s, d.key); if (!v.locked || d.paper) v.picks[e.pid!] = d.value; break; }
     case 'unpick': delete vote(s, d.key).picks[e.pid!]; break; // the presenter view taking back a hand vote
-    case 'rate': (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess, fruitGuess: d.fruitGuess, advance: d.advance, card: d.card, sweet: d.sweet, cool: d.cool }; break;
+    case 'rate': if (s.votes.tasting?.locked && !onPaper(e.pid || '')) break; (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess, fruitGuess: d.fruitGuess, advance: d.advance, card: d.card, sweet: d.sweet, cool: d.cool }; break;
     case 'unrate': if (s.ratings[d.sample]) delete s.ratings[d.sample][e.pid!]; break; // removing a paper card typed in by mistake
     case 'guess': (s.guesses[d.molecule] ||= {})[e.pid!] = d.answer; break;
     case 'concept': { const id = `t${d.team}-${d.slot || 1}`; s.concepts[id] = { ...(s.concepts[id] || { suggestions: [] }), ...d.fields, id, team: d.team, slot: d.slot || 1 }; break; }
@@ -152,5 +152,16 @@ export function tasters(s: SessionState) {
   const cards = [...pids].filter(onPaper).length;
   return { phones: pids.size - cards, cards };
 }
+// How far the blind tasting has got: the phones that joined (anyone on paper is counted separately), how many have
+// scored all four samples, and how many have scored each one. The TV shows this while people score, not the averages.
+export function tastingProgress(s: SessionState, codes: string[]) {
+  const phones = Object.values(s.participants).filter((p) => !p.paper).map((p) => p.pid);
+  const done = phones.filter((pid) => codes.every((c) => s.ratings[c]?.[pid])).length;
+  const per = Object.fromEntries(codes.map((c) => [c, Object.keys(s.ratings[c] || {}).filter((pid) => !onPaper(pid)).length])) as Record<string, number>;
+  return { phones: phones.length, done, left: Math.max(0, phones.length - done), per };
+}
+// The scoring closes when the scores go up (a `tasting` lock, sent by the presentation); a phone can't change a score
+// after that. Paper cards typed in afterwards still go in.
+export const tastingClosed = (s: SessionState) => !!s.votes.tasting?.locked;
 export const people = (s: SessionState) => Object.values(s.participants).sort((a, b) => a.joined - b.joined);
 export const uid = () => (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2) + Date.now().toString(36));

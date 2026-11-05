@@ -11,7 +11,7 @@ import { LiveCtx, OBJ_HUE, directionName } from './ShowScenes';
 import {
   TEAM, SCIENCE, IMAGINATION, JULY, PORTFOLIO, MARKET, SOURCES, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, DIRECTIONS,
 } from '@/lib/content';
-import { tallyPick, ranked, voteCounts, tasteSummary, SessionState } from '@/lib/state';
+import { tallyPick, ranked, voteCounts, tasteSummary, tasters, SessionState } from '@/lib/state';
 import { OUR_RINSES, OUR_KIDS, OUR_COUNT, type OurProduct } from '@/lib/ourFlavors';
 
 const useLive = () => React.useContext(LiveCtx)!;
@@ -331,6 +331,7 @@ export function Landed({ s, step }: SceneProps) {
   // The scores that were collected, mapped straight onto the plot: each average from 1 to 5, with 1 at 8% and 5 at 92%
   // so a bubble never sits on the frame. No leader and no "develop first" corner: the room makes that call.
   const at = (v: number) => 8 + ((Math.max(1, Math.min(5, v)) - 1) / 4) * 84;
+  const paperLeft = Math.max(0, (s.paperCards || 0) - tasters(s).cards); // paper cards counted on the day, not yet typed in
   const { spot, moved } = spread(pts.map((p) => (p.sum.n ? [at(p.sum.feels), at(p.sum.newness)] : [50, 50])));
   const scorers = Math.max(0, ...pts.map((p) => p.sum.n));
   const t = tallyPick(s, 'directions');
@@ -365,7 +366,7 @@ export function Landed({ s, step }: SceneProps) {
         <div className="lm-asks">
           <div className="room-ask"><span className="k">For the room</span><p>Of {fresh || 'C and D'}, which feels more like TheraBreath?</p></div>
           <div className="room-ask"><p>Which of these deserves another round, and what would you change?</p></div>
-          <p className="src">Bubble size is liking. Scores: {pts.map((p) => `${p.code} ${p.sum.n}`).join(', ')}.{moved ? ' Close scores are nudged apart.' : ''} First reactions, not consumer research.</p>
+          <p className="src">Bubble size is liking. Scores: {pts.map((p) => `${p.code} ${p.sum.n}`).join(', ')}.{moved ? ' Close scores are nudged apart.' : ''} {paperLeft ? `Phone scores only so far: ${paperLeft} paper ${paperLeft === 1 ? 'card' : 'cards'} to add.` : 'First reactions, not consumer research.'}</p>
         </div>
         <div className="lm-chips">
           <div className="k">Five chips each · {tally(c.phones, 'person has', 'people have')} voted{byHandNote(c.hand, 'chip', 'chips')}</div>
