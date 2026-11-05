@@ -14,7 +14,7 @@ import {
 } from '@/lib/content';
 import type { FilmAct, FilmState } from '@/lib/showLink';
 import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, tastingProgress, places, topIds, SessionState } from '@/lib/state';
-import { PLAN_READBACK, PlanTap, planRows, planCell } from './Plan';
+import { PlanTap, planRows, planCell } from './Plan';
 import { ConceptCards } from './Concepts';
 import { CONCEPT_FIELDS, unconfirmed } from '@/lib/conceptLibrary';
 
@@ -453,16 +453,26 @@ function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
     ) : none('No concepts were put together.');
   } else {
     title = 'Now, Next, Later, with the owners';
+    // Four columns the back of the room can read: the idea, what the next version changes or tests, who has it on each
+    // side and when the next sample is due. Anything still open reads To agree or To confirm, in amber. The full set of
+    // fields is in the results page and the write-up.
+    const tbc = (v?: string) => (unconfirmed(v) ? 'tbc' : undefined);
     body = d.plan.length ? (
-      <table className={'rp-plan' + (d.plan.length > 7 ? ' many' : d.plan.length <= 4 ? ' few' : '')}>
-        <thead><tr><th /><th>Direction</th>{PLAN_READBACK.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead>
-        <tbody>{d.plan.slice(0, 10).map((r, j) => (
-          <tr key={r.id} className={r.h.toLowerCase()}>
-            <td>{j === 0 || d.plan[j - 1].h !== r.h ? <span className="rp-h">{r.label}</span> : null}</td>
-            <td><b>{r.what || 'Untitled'}</b></td>
-            {PLAN_READBACK.map((c) => <td key={c.f}>{planCell(r, c.f) || <i>To agree</i>}</td>)}
-          </tr>
-        ))}</tbody>
+      <table className={'rp-plan short' + (d.plan.length > 7 ? ' many' : d.plan.length <= 4 ? ' few' : '')}>
+        <colgroup><col /><col className="c-idea" /><col className="c-next" /><col className="c-own" /><col className="c-due" /></colgroup>
+        <thead><tr><th /><th>Idea</th><th>Next version or test</th><th>Owners</th><th>Next sample due</th></tr></thead>
+        <tbody>{d.plan.slice(0, 10).map((r, j) => {
+          const due = planCell(r, 'due');
+          return (
+            <tr key={r.id} className={r.h.toLowerCase()}>
+              <td>{j === 0 || d.plan[j - 1].h !== r.h ? <span className="rp-h">{r.label}</span> : null}</td>
+              <td><b>{r.what || 'Untitled'}</b></td>
+              <td><span className={tbc(r.change)}>{r.change || 'To agree'}</span><small className={tbc(r.test)}>Next test: {r.test || 'To agree'}</small></td>
+              <td><span className={tbc(r.owner)}>TFF: {r.owner || 'To agree'}</span><small className={tbc(r.reviewer)}>C&amp;D: {r.reviewer || 'To agree'}</small></td>
+              <td className={tbc(due)}>{due || 'To confirm'}</td>
+            </tr>
+          );
+        })}</tbody>
       </table>
     ) : none('The plan fills in from Now, Next, Later.');
   }

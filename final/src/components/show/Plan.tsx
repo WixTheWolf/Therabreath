@@ -40,8 +40,6 @@ export const PLAN_COLS = [
   { f: 'due', l: 'Next sample due' },
   { f: 'step', l: 'Agreed next step' },
 ] as const;
-// The read-back on the TV shows the columns a room can read at a glance; the write-up and the results page show them all.
-export const PLAN_READBACK = PLAN_COLS.filter((c) => ['who', 'test', 'owner', 'reviewer', 'due', 'step'].includes(c.f));
 // A line on the board, on the TV: what the next version changes or tests, the next test and the next step, large; then
 // the owners and the date on one line.
 const PLAN_KEY = PLAN_COLS.filter((c) => ['change', 'test', 'step'].includes(c.f));
