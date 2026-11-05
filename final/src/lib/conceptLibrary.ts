@@ -5,7 +5,7 @@
 // typed into the write-up afterward.
 // Samples are named here only by their code: their names stay sealed (sealed.ts) until the tasting reveal, and the
 // presentation shows the revealed name wherever a card starts from a sample.
-import { SAMPLES, PRIMARY_TERRITORIES, TEAM } from './content';
+import { SAMPLES, PRIMARY_TERRITORIES, TEAM, SURVEY } from './content';
 
 // Where a concept starts: the four samples (by code; the screen shows each one's name once revealed), then the four
 // directions on the map.
@@ -15,7 +15,10 @@ export const STARTS: { id: string; label: string; kind: 'sample' | 'direction'; 
 ];
 
 export const WHO = ['Loyal TheraBreath users', 'People who find mouthwash too strong', 'People who buy another mouthwash', 'People who don’t buy mouthwash yet', 'Families with kids and tweens', 'Adults who want something new'];
-export const WHEN = ['First thing in the morning', 'After meals', 'On the go', 'Before a social moment', 'Wind-down, before bed'];
+// When: the eight moments from the pre-brief and the day map, word for word, then four broader ones the room can choose
+// if it agrees to widen a moment (the starter cards use these).
+export const MOMENTS: string[] = [...SURVEY.moment.options];
+export const WHEN = [...MOMENTS, 'First thing in the morning', 'After meals', 'Before a social moment', 'Wind-down, before bed'];
 export const ROLE = ['Core range', 'Limited edition', 'New sub-line', 'Kids range'];
 export const FORMAT = ['Rinse', 'Portable rinse sachet', 'Spray', 'Lozenge, mint or gum', 'Toothpaste'];
 export const GROWS = ['Loyal users', 'New users', 'Both'];
@@ -46,12 +49,10 @@ export const CONCEPT_FIELDS: { key: ConceptKey; l: string; opts?: string[]; mult
   { key: 'change', l: 'Next version or question to test', opts: [...CHANGES, OTHER], multi: true },
 ];
 
-// A moment marked on Where TheraBreath fits in a day, as the card's When.
-export const MOMENT_WHEN: Record<string, string> = {
-  'Wake-up': 'First thing in the morning', 'After coffee': 'First thing in the morning', 'After lunch': 'After meals',
-  'Afternoon meeting': 'Before a social moment', 'After the gym': 'On the go', 'Before going out': 'Before a social moment',
-  'Wind-down': 'Wind-down, before bed', 'On the go': 'On the go',
-};
+// A moment marked on Where TheraBreath fits in a day goes on the card's When as it is: After coffee stays After coffee,
+// not First thing in the morning (the November 4 review: a specific need shouldn't vanish into a broader label).
+// Widening it is the room's call, by tapping one of the broader options.
+export const MOMENT_WHEN: Record<string, string> = Object.fromEntries(MOMENTS.map((m) => [m, m]));
 
 // The starter cards. A card that starts from a sample has no title of its own: it takes the sample's name once the
 // tasting has revealed it. The defaults come from the direction's profile on the map (who it's for, its moment) and
