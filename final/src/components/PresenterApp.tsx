@@ -68,7 +68,7 @@ export default function PresenterApp({ code }: { code: string }) {
   const joined = people(s).filter((p) => !p.paper).length;
   const room = sc.id === 'signals' ? <HandVotes s={s} events={events} send={send} k="signals" title="Hand votes: the three trends" items={SIGNALS.map((x) => ({ id: x.id, label: x.title.replace(/\.$/, '') }))} value={(id) => [id]} />
     : sc.id === 'nextround' ? <HandVotes s={s} events={events} send={send} k="directions" title="Hand chips: what deserves the next round" how="Each person without a phone has five chips too, and can stack them. Ask where their five go and add one per chip." items={DIRECTIONS.map((d) => ({ id: d.id, label: dirName(s, d.id), sub: d.sub }))} value={(id) => ({ [id]: 1 })} />
-    : sc.id === 'tasting' ? <PaperCount s={s} send={send} code={code} />
+    : sc.id === 'tasting' ? <PaperCount s={s} send={send} code={code} step={step} />
     : sc.id === 'concepts' ? <ConceptEditor s={s} send={send} />
     : sc.id === 'board' || sc.id === 'playbook' ? <PlanEditor s={s} send={send} />
     : sc.id === 'map' ? <Profiles step={step} off={off} cmd={cmd} i={i} short={!!pos?.short} />
@@ -163,7 +163,11 @@ function HandVotes({ s, events, send, k, title, items, value, how }: { s: Sessio
 
 // Paper scorecards on the day: count each card as it's handed in, with +1 (and -1 for a mistake). The cards themselves
 // are typed in after the morning, on /host/cards, and their scores join the results and the write-up from there.
-function PaperCount({ s, send, code }: { s: SessionState; send: Send; code: string }) {
+// Once the scores have been on the TV, scoring stays closed even back on the blind build; Reopen scoring (on the blind
+// build, asked twice) is the one way to open it again, for someone who genuinely hadn't finished.
+function PaperCount({ s, send, code, step }: { s: SessionState; send: Send; code: string; step: number }) {
+  const [reopening, setReopening] = useState(false);
+  const t = s.votes.tasting;
   const who = tasters(s);
   const n = s.paperCards || 0;
   const prog = tastingProgress(s, SAMPLES.map((x) => x.code));
@@ -180,6 +184,15 @@ function PaperCount({ s, send, code }: { s: SessionState; send: Send; code: stri
         <button className="primary" onClick={() => send('papercard', { d: 1 })}><Icon d="M3.5 8h9M8 3.5v9" />+1 paper card</button>
       </div>
       {who.cards > 0 && <p className="pv-sub">{who.cards} already typed in.</p>}
+      {t?.locked && (
+        <>
+          <h2>Scoring is closed</h2>
+          <p className="pv-sub">{t.revealed ? 'The scores have been on the TV, so going back to the blind build doesn’t reopen scoring on the phones.' : 'Scoring closed when we moved past the tasting.'}{step >= 1 ? ' To let someone finish, go back to the blind build first.' : ''}</p>
+          {step === 0 && (reopening
+            ? <span className="pv-confirm">Reopen scoring on the phones? <button onClick={() => { send('vote', { key: 'tasting', action: 'open' }); setReopening(false); }}>Reopen</button><button onClick={() => setReopening(false)}>Keep it closed</button></span>
+            : <button onClick={() => setReopening(true)}>Reopen scoring</button>)}
+        </>
+      )}
       <p className="pv-sub">After the morning: <a href={`/host/cards${code === EVENT.code ? '' : `?code=${code}`}`} target="_blank" rel="noreferrer">type in the paper cards</a>.</p>
     </>
   );

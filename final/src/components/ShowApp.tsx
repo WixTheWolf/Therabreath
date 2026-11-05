@@ -122,14 +122,23 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   // them and nobody changes a score once the names are out) and the chips. The chips also wait for the room to talk
   // about the chart: they open at build 1 (the slide's `opens`) and close when the top three show at build 2. Moving
   // past the slide closes it too. Hand votes and paper cards from the presenter view still count.
+  // The tasting is one way: the build that puts the scores up marks them shown (the vote's `reveal`), and from then on
+  // going back to the blind build doesn't reopen scoring, so nobody changes a first reaction after seeing the averages.
+  // Only the presenter view's Reopen scoring opens it again (for someone who genuinely hadn't finished). Skipping past
+  // the tasting without showing the scores only closes it, so coming back reopens it as before.
   const lockWant = useRef<Record<string, string>>({});
   useEffect(() => {
     if (!live.current || still || mode) return;
     for (const l of LOCKS) {
       const at = SCENES.findIndex((x) => x.id === l.id);
       if (at < 0 || pos.i < at) continue;
-      const want = pos.i > at || pos.step < l.opens || pos.step >= l.opens + 1 ? 'lock' : 'open';
-      if ((want === 'lock') === !!s.votes[l.key]?.locked) { lockWant.current[l.key] = ''; continue; }
+      const v = s.votes[l.key];
+      let want = pos.i > at || pos.step < l.opens || pos.step >= l.opens + 1 ? 'lock' : 'open';
+      if (l.key === 'tasting') {
+        if (pos.i === at && pos.step >= 1 && !v?.revealed) want = 'reveal';
+        else if (v?.revealed && want === 'open') { lockWant.current[l.key] = ''; continue; }
+      }
+      if (want === 'reveal' ? !!v?.revealed : (want === 'lock') === !!v?.locked) { lockWant.current[l.key] = ''; continue; }
       if (lockWant.current[l.key] === want) continue;
       lockWant.current[l.key] = want; send('vote', { key: l.key, action: want });
     }
