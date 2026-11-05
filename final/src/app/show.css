@@ -911,3 +911,6 @@
 .lm-layer.on { opacity: 1; transform: none; visibility: visible; transition: opacity .6s var(--ease) .15s, transform .6s var(--ease) .15s, visibility 0s; }
 .landed .lm-list { transition: opacity .6s var(--ease); }
 .landed .lm-list.wait { opacity: .55; }
+/* Review step 9, slides 14 and 15: the header line keeps clear of the QR code at the top right. With paper cards still
+   to type in, the tasting's line runs long, so it wraps before the code instead of running under it. */
+.tl .pad > .enter:first-child .k, .landed .pad > .enter:first-child .k { max-width: 1480px; line-height: 1.45; }
