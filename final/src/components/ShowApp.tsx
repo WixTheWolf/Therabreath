@@ -232,8 +232,8 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
     const nx = SCENES.slice(i + 1).find((_, j) => !skip(i + 1 + j)); const next = nx ? titleOf(nx) : '';
     const pv = SCENES.slice(0, i).reverse().find((x) => !skip(x.n)); const prev = pv ? titleOf(pv) : '';
     let nb = step + 1; while (nb <= SCENES[i].builds && skipBuild(i, nb)) nb++;
-    return { t: 'pos', pos: { i, step, short, blank, at: shownList.indexOf(SCENES[i]) + 1, total: shownList.length, next, prev, build: nb <= SCENES[i].builds, film: film.current?.state() } };
-  }, [skip, skipBuild, short, blank, shownList]);
+    return { t: 'pos', pos: { i, step, short, blank, at: shownList.indexOf(SCENES[i]) + 1, total: shownList.length, next, prev, build: nb <= SCENES[i].builds, film: film.current?.state(), told } };
+  }, [skip, skipBuild, short, blank, shownList, told]);
   useEffect(() => {
     if (still || mode) return;
     const ch = showChannel(code); link.current = ch; if (!ch) return;

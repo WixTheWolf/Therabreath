@@ -113,7 +113,7 @@ export default function PresenterApp({ code }: { code: string }) {
         <button disabled={off} onClick={() => cmd({ c: 'jump', d: 1 })}>Next part</button>
         <label className="pv-goto"><span>Go to</span>
           <select disabled={off} value={i} onChange={(e) => cmd({ c: 'goto', i: Number(e.target.value) })}>
-            {SCENES.map((x, j) => <option key={x.id} value={j}>{j + 1}. {titleOf(x)}{x.optional ? ' (optional)' : ''}</option>)}
+            {SCENES.map((x, j) => { const empty = x.id === 'prework' && pos?.told === false; return <option key={x.id} value={j} disabled={empty}>{j + 1}. {titleOf(x)}{x.optional ? ' (optional)' : ''}{empty ? ' (skipped: no answers yet)' : ''}</option>; })}
           </select>
         </label>
         <button disabled={off} aria-pressed={!!pos?.short} onClick={() => cmd({ c: 'short' })}>Short version</button>

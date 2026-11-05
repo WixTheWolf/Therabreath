@@ -6,7 +6,7 @@
 // can run the clock between heartbeats), and the presenter view can play, pause or restart it.
 export type FilmState = { playing: boolean; ended: boolean; muted: boolean; t: number; d: number; ts: number };
 // `build` is whether the next move shows another build of this slide (the short version skips some).
-export type ShowPos = { i: number; step: number; short: boolean; blank: boolean; at: number; total: number; next: string; prev: string; build?: boolean; film?: FilmState };
+export type ShowPos = { i: number; step: number; short: boolean; blank: boolean; at: number; total: number; next: string; prev: string; build?: boolean; film?: FilmState; told?: boolean };
 export type FilmAct = 'toggle' | 'restart' | 'sound';
 export type ShowCmd = { c: 'go'; d: number } | { c: 'jump'; d: number } | { c: 'goto'; i: number; step?: number } | { c: 'short' } | { c: 'blank' } | { c: 'film'; a: FilmAct };
 export type ShowMsg = { t: 'pos'; pos: ShowPos } | { t: 'hello' } | { t: 'cmd'; cmd: ShowCmd };
