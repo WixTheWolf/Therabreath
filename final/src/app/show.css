@@ -914,3 +914,6 @@
 /* Review step 9, slides 14 and 15: the header line keeps clear of the QR code at the top right. With paper cards still
    to type in, the tasting's line runs long, so it wraps before the code instead of running under it. */
 .tl .pad > .enter:first-child .k, .landed .pad > .enter:first-child .k { max-width: 1480px; line-height: 1.45; }
+/* A tie in the chips at the concept cards' cutoff waits for the room. */
+.pv-tie { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; padding: 14px 16px; border-radius: 12px; border: 1px solid #F4B860; }
+.pv-tie h3 { font-size: 20px; line-height: 1.25; }

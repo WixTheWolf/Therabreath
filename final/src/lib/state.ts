@@ -140,6 +140,16 @@ export function places(t: Record<string, number>) {
   return out;
 }
 export const topIds = (t: Record<string, number>) => { const p = places(t); return ranked(t).filter(([id, n]) => n > 0 && p[id].place <= 3).map(([id]) => id); };
+// The shortlist for the three concept cards. `sure` is every id whose place fits inside three seats with all of its tie
+// (1, 1, 3 fits; so does a three-way tie for first). `tied` is a tie that straddles the cutoff (two tied for third, or
+// four tied for first): the vote can't choose among them, so the room does, for the `seats` left. The totals stay as
+// voted; this only says which ideas the vote settled.
+export function shortlist(t: Record<string, number>) {
+  const p = places(t), ids = topIds(t);
+  const fits = (id: string) => p[id].place + ids.filter((x) => p[x].n === p[id].n).length - 1 <= 3;
+  const sure = ids.filter(fits), tied = ids.filter((id) => !fits(id));
+  return { ids, sure, tied, seats: tied.length ? 3 - sure.length : 0 };
+}
 const ORD = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'];
 export const placeLabel = (p?: { place: number; tied: boolean }) => (!p ? '' : p.tied ? `Tied for ${ORD[p.place] || p.place}` : `Number ${p.place}`);
 export function tasteSummary(s: SessionState, sample: string) {

@@ -2,12 +2,14 @@
 // Concepts on November 9, with nothing to type. When the concept slide opens on a session with no concepts yet, the
 // presentation starts up to three cards from the top three of the chips vote: where it starts is the pick, the rest
 // comes from its starter card in conceptLibrary.ts, and When takes the first moment marked for it on Where TheraBreath
-// fits in a day. In the presenter view any card can be swapped for another library card, and any field changed by
-// tapping an option. The TV only shows the cards. Every card is a starting point for discussion until the presenter
-// marks it agreed, and the read-back and the write-up say which cards the room agreed.
+// fits in a day. Only the places the vote settled start a card: a tie at the cutoff (two tied for third) leaves the
+// card open, the TV names the tied ideas, and the presenter starts it from the room's pick. In the presenter view any
+// card can be swapped for another library card, and any field changed by tapping an option. The TV only shows the
+// cards. Every card is a starting point for discussion until the presenter marks it agreed, and the read-back and the
+// write-up say which cards the room agreed.
 import React, { useState } from 'react';
 import { STARTS, CONCEPT_FIELDS, LIBRARY, Card, cardFor, MOMENT_WHEN, toggleIn, hasOpt } from '@/lib/conceptLibrary';
-import { tallyPick, ranked, SessionState, tasteSummary, jarAll } from '@/lib/state';
+import { tallyPick, shortlist, SessionState, tasteSummary, jarAll } from '@/lib/state';
 import { JAR, JAR_OPTS } from '@/lib/content';
 import { teamConcepts } from '../scenes/CoCreate';
 
@@ -38,16 +40,27 @@ export function tastingRead(start: string, s: SessionState) {
   const sum = tasteSummary(s, st.id);
   return JAR.map((j) => { const v = jarAll(sum[j.key], JAR_OPTS); return v ? `${j.l}: ${v}` : ''; }).filter(Boolean).join('. ');
 }
-// The cards the concept slide starts with: one for each of the top three from the chips vote.
+// The cards the concept slide starts with: one for each place the chips vote settled in the top three. A tie at the
+// cutoff isn't broken by the order of a list: those cards wait for the room.
 export function starters(s: SessionState) {
-  const top = ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => id);
-  return top.map((id) => { const c = cardFor(id); return c ? fromCard(c, s, id) : null; }).filter(Boolean) as ReturnType<typeof fromCard>[];
+  return shortlist(tallyPick(s, 'directions')).sure.map((id) => { const c = cardFor(id); return c ? fromCard(c, s, id) : null; }).filter(Boolean) as ReturnType<typeof fromCard>[];
 }
+// A tie at the cutoff the room still has to settle: the tied ideas no card has started from yet, and how many seats are
+// left for them.
+export function openTie(s: SessionState) {
+  const sl = shortlist(tallyPick(s, 'directions'));
+  const used = SLOTS.map((n) => conceptAt(s, n)?.start).filter(Boolean);
+  const left = sl.tied.filter((id) => !used.includes(id));
+  const free = SLOTS.filter((n) => !conceptAt(s, n)).length;
+  return left.length && free ? { ids: left, t: tallyPick(s, 'directions') } : null;
+}
+const orList = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} or ${xs[xs.length - 1]}`);
 export const conceptAt = (s: SessionState, slot: number) => { const c: any = s.concepts[`t${slot}-1`]; return c && c.name ? c : null; };
 
 // The TV: up to three cards, read-only. Each says whether the room has agreed it yet.
 export function ConceptCards({ s }: { s: SessionState }) {
   const cs = SLOTS.map((n) => conceptAt(s, n));
+  const tie = openTie(s), firstOpen = cs.findIndex((c) => !c);
   return (
     <div className="ccv-grid">
       {cs.map((c, i) => (
@@ -62,7 +75,7 @@ export function ConceptCards({ s }: { s: SessionState }) {
               {c.why && <span className="ccv-from">Starts from {c.why}</span>}
               <dl>{CONCEPT_FIELDS.filter((f) => f.key !== 'why').map((f) => <div key={f.key} className={(c[f.key] ? 'on' : '') + (f.key === 'change' ? ' ccv-next' : '')}><dt>{f.l}</dt><dd>{c[f.key] || 'To agree'}</dd></div>)}</dl>
             </>
-          ) : <p className="ccv-none">{i === 0 && !cs.some(Boolean) ? 'The top three from the chips vote start the cards. More come from our library.' : 'Open'}</p>}
+          ) : <p className="ccv-none">{tie && i === firstOpen ? `Tied in the chips: ${orList(tie.ids.map((id) => startName(id, s)))}. The room picks which goes on.` : i === 0 && !cs.some(Boolean) ? 'The top three from the chips vote start the cards. More come from our library.' : 'Open'}</p>}
         </div>
       ))}
     </div>
@@ -75,6 +88,7 @@ export function ConceptEditor({ s, send }: { s: SessionState; send: Send }) {
   const [swap, setSwap] = useState(false);
   const [clearing, setClearing] = useState(false); // clearing a card asks once
   const c = conceptAt(s, slot);
+  const tie = openTie(s);
   const set = (fields: Record<string, string>) => send('concept', { team: slot, slot: 1, fields });
   const use = (card: Card) => { set(fromCard(card, s)); setSwap(false); };
   const setStart = (id: string) => {
@@ -95,12 +109,21 @@ export function ConceptEditor({ s, send }: { s: SessionState; send: Send }) {
   return (
     <>
       <h2>Concepts</h2>
-      <p className="pv-sub">Starter cards: every field is a proposal until the room agrees it. One or two well-defined cards beat three thin ones. Tap to change anything; nothing to type. {teamConcepts(s).length ? '' : 'The cards start from the top three chips when the slide opens.'}</p>
+      <p className="pv-sub">Starter cards: every field is a proposal until the room agrees it. One or two well-defined cards beat three thin ones. Tap to change anything; nothing to type. {teamConcepts(s).length ? '' : 'The cards start from the top three chips when the slide opens; a tie at the cutoff waits for the room’s pick.'}</p>
       <div className="pv-tabs" role="tablist">
         {SLOTS.map((n) => { const x = conceptAt(s, n); return <button key={n} role="tab" aria-selected={slot === n} aria-pressed={slot === n} onClick={() => { setSlot(n); setSwap(false); setClearing(false); }}>{n}. {x ? x.name : 'Open'}</button>; })}
       </div>
       {!c ? (
         <section className="pv-concept">
+          {tie && (
+            <div className="pv-tie">
+              <h3>Tied in the chips: ask the room which goes on, then start this card from its pick.</h3>
+              <div className="pt-group" role="group" aria-label="Tied in the chips"><span>Tied</span>
+                <div>{tie.ids.map((id) => { const card = cardFor(id); return card ? <button key={id} type="button" onClick={() => use(card)}>{startLabel(id, s)} · {tie.t[id]} {tie.t[id] === 1 ? 'chip' : 'chips'}</button> : null; })}</div>
+              </div>
+              <p className="pv-sub">The chip totals stay as voted. The one the room leaves out can still go in Later on the board.</p>
+            </div>
+          )}
           <h3>Concept {slot} is open. Start it from a library card:</h3>
           {library}
         </section>
