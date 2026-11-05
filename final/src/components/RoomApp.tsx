@@ -70,6 +70,9 @@ function JoinForm({ onJoin }: { onJoin: (n: string) => void }) {
 }
 
 type P = { s: any; me: Me; p: (k: string, d: any) => void; step: number; room?: any };
+// Two chip allocations are the same when every option has the same count, whatever order the keys are in (the review
+// saw a sent vote flip back to Send because the saved copy came back with its keys in another order).
+const sameChips = (a: Record<string, number>, b: Record<string, number>) => [...new Set([...Object.keys(a), ...Object.keys(b)])].every((k) => (Number(a[k]) || 0) === (Number(b[k]) || 0));
 const Lock = ({ v }: { v: any }) => (v?.locked ? <div className="rm-lock">This vote is closed.</div> : null);
 
 function Pick({ s, me, p, room }: P) {
@@ -108,7 +111,7 @@ function Chips({ s, me, p, room }: P) {
           ))}</div>
         </section>
       ))}
-      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{JSON.stringify(o) === JSON.stringify(mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} chips`}</button>
+      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{sameChips(o, mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} chips`}</button>
     </div>
   );
 }
@@ -227,7 +230,7 @@ function DotsVote({ s, me, p, room }: P) {
           <button onClick={() => setO({ ...o, [x.id]: Math.max(0, (o[x.id] || 0) - 1) })} disabled={!o[x.id] || v?.locked}>-</button><em className="num">{o[x.id] || 0}</em><button onClick={() => used < room.total && setO({ ...o, [x.id]: (o[x.id] || 0) + 1 })} disabled={used >= room.total || v?.locked}>+</button>
         </div>
       ))}</div>
-      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{JSON.stringify(o) === JSON.stringify(mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} dots`}</button>
+      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{sameChips(o, mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} dots`}</button>
     </div>
   );
 }

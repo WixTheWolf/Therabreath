@@ -66,7 +66,7 @@ export default function PresenterApp({ code }: { code: string }) {
   const tm = now ? runTiming(sc.block, new Date(now)) : null;
   const joined = people(s).filter((p) => !p.paper).length;
   const room = sc.id === 'signals' ? <HandVotes s={s} events={events} send={send} k="signals" title="Hand votes: the three trends" items={SIGNALS.map((x) => ({ id: x.id, label: x.title.replace(/\.$/, '') }))} value={(id) => [id]} />
-    : sc.id === 'nextround' ? <HandVotes s={s} events={events} send={send} k="directions" title="Hand votes: chips for a next round" items={DIRECTIONS.map((d) => ({ id: d.id, label: dirName(s, d.id), sub: d.sub }))} value={(id) => ({ [id]: 1 })} />
+    : sc.id === 'nextround' ? <HandVotes s={s} events={events} send={send} k="directions" title="Hand chips: what deserves the next round" how="Each person without a phone has five chips too, and can stack them. Ask where their five go and add one per chip." items={DIRECTIONS.map((d) => ({ id: d.id, label: dirName(s, d.id), sub: d.sub }))} value={(id) => ({ [id]: 1 })} />
     : sc.id === 'tasting' ? <PaperCount s={s} send={send} code={code} />
     : sc.id === 'concepts' ? <ConceptEditor s={s} send={send} />
     : sc.id === 'board' || sc.id === 'playbook' ? <PlanEditor s={s} send={send} />
@@ -129,7 +129,7 @@ function Icon({ d }: { d: string }) {
 // One row per option: the count so far, and buttons to add a vote for someone without a phone or take the latest
 // one back. A hand vote is a pick from a one-off id (hand-...), so taking it back removes exactly that one.
 const counts = (v: any, id: string) => (Array.isArray(v) ? v.includes(id) : !!v && typeof v === 'object' && Number(v[id]) > 0);
-function HandVotes({ s, events, send, k, title, items, value }: { s: SessionState; events: Ev[]; send: Send; k: string; title: string; items: { id: string; label: string; sub?: string }[]; value: (id: string) => any }) {
+function HandVotes({ s, events, send, k, title, items, value, how }: { s: SessionState; events: Ev[]; send: Send; k: string; title: string; items: { id: string; label: string; sub?: string }[]; value: (id: string) => any; how?: string }) {
   const t = tallyPick(s, k), c = voteCounts(s, k);
   const picks = s.votes[k]?.picks || {};
   const handFor = (id: string) => Object.entries(picks).filter(([pid, v]) => byHand(pid) && counts(v, id)).length;
@@ -141,7 +141,7 @@ function HandVotes({ s, events, send, k, title, items, value }: { s: SessionStat
   return (
     <>
       <h2>{title}</h2>
-      <p className="pv-sub">{c.phones} on phones · {c.hand} by hand. Add one for each person voting by show of hands.</p>
+      <p className="pv-sub">{c.phones} on phones · {c.hand} by hand. {how || 'Add one for each person voting by show of hands.'}</p>
       <ul className="pv-votes">
         {items.map((x) => {
           const h = handFor(x.id);

@@ -5,7 +5,7 @@
 // read-back, the results page and the write-up all show the same rows. Only the write-up, after the morning, types.
 import { useEffect, useRef, useState } from 'react';
 import { HORIZONS, SAMPLES, TEAM, PRIMARY_TERRITORIES } from '@/lib/content';
-import { uid, SessionState, PlanRow, tallyPick, ranked, people } from '@/lib/state';
+import { uid, SessionState, PlanRow, tallyPick, ranked, topIds, people } from '@/lib/state';
 import { STARTS, WHO, WHEN, TESTS, OWNERS, BASES, DUES, STEPS, DUE_DEFAULT, TO_CONFIRM, cardFor, unconfirmed } from '@/lib/conceptLibrary';
 import { teamConcepts } from '../scenes/CoCreate';
 
@@ -71,7 +71,8 @@ export type TrayItem = { ref: string; name: string; sub: string; kind: 'concept'
 const nameOf = (id: string, s: SessionState) => s.revealed?.samples[id]?.name || STARTS.find((x) => x.id === id)?.label || id;
 export function trayItems(s: SessionState): TrayItem[] {
   const cs: TrayItem[] = teamConcepts(s).map((c: any) => ({ ref: c.id, name: c.name, sub: 'Concept', kind: 'concept', start: c.start || STARTS.find((x) => x.label === c.why || nameOf(x.id, s) === c.why)?.id || '' }));
-  const chips = ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3);
+  const tl = tallyPick(s, 'directions');
+  const chips = topIds(tl).map((id) => [id, tl[id]] as const); // the top three, plus anything tied with the third
   const ds: TrayItem[] = chips.map(([id, n]) => ({ ref: id, name: nameOf(id, s), sub: `${n} ${n === 1 ? 'chip' : 'chips'}`, kind: 'direction', start: id }));
   const seen = new Set(cs.map((x) => x.name.trim().toLowerCase()));
   return [...cs, ...ds.filter((x) => !seen.has(x.name.trim().toLowerCase()))];

@@ -11,7 +11,7 @@ import { LiveCtx, OBJ_HUE, directionName } from './ShowScenes';
 import {
   TEAM, SCIENCE, IMAGINATION, JULY, PORTFOLIO, MARKET, SOURCES, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, DIRECTIONS,
 } from '@/lib/content';
-import { tallyPick, ranked, voteCounts, tasteSummary, tasters, SessionState } from '@/lib/state';
+import { tallyPick, ranked, voteCounts, tasteSummary, tasters, places, topIds, placeLabel, SessionState } from '@/lib/state';
 import { OUR_RINSES, OUR_KIDS, OUR_COUNT, type OurProduct } from '@/lib/ourFlavors';
 
 const useLive = () => React.useContext(LiveCtx)!;
@@ -157,18 +157,22 @@ export function TrendVote({ s, step }: SceneProps) {
   const c = voteCounts(s, 'signals');
   const max = Math.max(1, ...Object.values(t));
   const top = topTrends(s);
+  const pl = places(t), cut = topIds(t);
   const k = Math.min(3, Math.max(0, step));
   const focus = k > 0 ? top[k - 1] : null;
-  const isTop = (id: string) => step >= 1 && top.some((x) => x.sig.id === id);
+  // Anything tied with the third is lit too, and the kicker says so: the room picks which one to open.
+  const isTop = (id: string) => step >= 1 && (top.some((x) => x.sig.id === id) || cut.includes(id));
+  const votes = c.phones + c.hand;
+  const label = (id: string) => (t[id] ? placeLabel(pl[id]) : 'To discuss');
   return (
     <div className="signal sigs tv" style={{ ['--h' as any]: focus ? focus.sig.hue : OBJ_HUE[0] }}>
       <div className="sig-light" style={{ opacity: focus ? 1 : 0.35 }} />
       <div className="pad" style={{ position: 'relative' }}>
-        <Enter i={0}><div className="k">{step === 0 ? `Vote on your phone · pick three · ${tally(c.phones, 'vote', 'votes')} so far${byHandNote(c.hand, 'vote', 'votes')}` : `The vote is in · ${tally(c.phones + c.hand, 'vote', 'votes')}`}</div></Enter>
+        <Enter i={0}><div className="k">{step === 0 ? `Vote on your phone · pick three · ${tally(c.phones, 'vote', 'votes')} so far${byHandNote(c.hand, 'vote', 'votes')}` : votes ? `The vote is in · ${tally(votes, 'vote', 'votes')}${cut.length > 3 ? ' · a tie: pick which three to open' : ''}` : 'No votes came in · three trends to discuss'}</div></Enter>
         <Enter i={1}><h2 className="h2">Seven trends. <span className="it">Which three matter most for TheraBreath?</span></h2></Enter>
         <div className="tv-list">
           {SIGNALS.map((x, i) => {
-            const n = t[x.id] || 0; const rank = top.findIndex((y) => y.sig.id === x.id);
+            const n = t[x.id] || 0;
             const on = focus?.sig.id === x.id;
             return (
               <div key={x.id} className={'tv-row' + (on ? ' on' : '') + (isTop(x.id) && !on ? ' top' : '') + (step >= 1 && !isTop(x.id) ? ' dim' : '')} style={{ ['--h' as any]: x.hue, ['--i' as any]: i }}>
@@ -176,14 +180,14 @@ export function TrendVote({ s, step }: SceneProps) {
                 <div className="tv-t"><b>{x.title.replace(/\.$/, '')}</b><small className="tv-tag">{x.from}</small></div>
                 <div className="tv-bar"><i style={{ width: `${(n / max) * 100}%` }} /></div>
                 <b className="num tv-n">{n}</b>
-                {step >= 1 && rank > -1 && <em className="k tv-rank">Number {rank + 1}</em>}
+                {isTop(x.id) && <em className="k tv-rank">{label(x.id)}</em>}
               </div>
             );
           })}
         </div>
         {focus ? (
           <div className="sigs-focus tv-focus" key={focus.sig.id}>
-            <div className="k">{focus.n ? `Number ${k} of 3 · ${tally(focus.n, 'vote', 'votes')}` : `Trend ${focus.sig.n} of 7`} · Seen in {focus.sig.from === 'Oral care' ? 'oral care' : 'food and flavor'}</div>
+            <div className="k">{focus.n ? `${label(focus.sig.id)} · ${tally(focus.n, 'vote', 'votes')}` : `To discuss · trend ${focus.sig.n} of 7`} · Seen in {focus.sig.from === 'Oral care' ? 'oral care' : 'food and flavor'}</div>
             <h3 className="sf-title">{focus.sig.title}</h3>
             <div className="sf-proofs">{focus.sig.proofs.map((p, i) => <div key={i} className="proof" style={{ ['--d' as any]: `${i * 180}ms` }}><p>{p.t}</p><div className="src">{clean(SOURCES[p.src])}</div></div>)}</div>
             <div className="sig-so"><span className="k">What it could mean for TheraBreath</span><div className="h3 it">{focus.sig.so}</div></div>
@@ -307,7 +311,8 @@ export function DirectionsMap({ step }: SceneProps) {
 // place five chips each on which flavors or directions to develop next: the four tasted today, then the two directions
 // not tasted today (grouped the same way as on the phones). Build 1 ranks the top three.
 export function topDirections(s: SessionState) {
-  return ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ id, n, name: directionName(id, s) }));
+  const t = tallyPick(s, 'directions');
+  return topIds(t).map((id) => ({ id, n: t[id], name: directionName(id, s) }));
 }
 // Letters that would sit on top of each other (close scores, or none yet) are nudged apart around their middle, and the
 // key says so. Positions are percents of the plot, which is wider than it is tall, hence the two radii.
@@ -337,7 +342,7 @@ export function Landed({ s, step }: SceneProps) {
   const t = tallyPick(s, 'directions');
   const c = voteCounts(s, 'directions');
   const max = Math.max(1, ...Object.values(t));
-  const top = ranked(t).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => id);
+  const top = topIds(t), pl = places(t); // the top three, plus anything tied with the third
   const fresh = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.code).join(' and ');
   return (
     <div className="vt landed" style={{ ['--h' as any]: OBJ_HUE[1] }}>
@@ -381,11 +386,12 @@ export function Landed({ s, step }: SceneProps) {
                   <span className="dl-name"><b>{directionName(d.id, s)}</b>{d.tasted && <small>{d.label !== directionName(d.id, s) ? `${d.label} · ${d.sub}` : d.sub}</small>}</span>
                   <span className="dl-dots">{Array.from({ length: Math.min(n, 24) }, (_, j) => <i key={j} style={{ ['--j' as any]: j }} />)}</span>
                   <b className="num dl-n">{n}</b>
-                  {step >= 1 && rank > -1 ? <em className="k">Number {rank + 1}</em> : <em />}
+                  {step >= 1 && rank > -1 ? <em className="k">{placeLabel(pl[d.id])}</em> : <em />}
                 </div>
               )];
             })}
           </div>
+          {step >= 1 && top.length > 3 && <p className="src lm-tie">A tie for third: the room decides which goes on.</p>}
         </div>
       </div>
     </div>

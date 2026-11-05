@@ -647,7 +647,7 @@
 .lm-chips { position: absolute; left: 1060px; right: 120px; top: 300px; bottom: 110px; display: flex; flex-direction: column; gap: 14px; }
 .lm-chips > .k { font-size: 16px; }
 .landed .dotlist.lm-list { position: static; gap: 8px; }
-.landed .lm-list .dl { grid-template-columns: 320px 1fr 50px 124px; gap: 14px; padding: 10px 18px; }
+.landed .lm-list .dl { grid-template-columns: 300px 1fr 50px 160px; gap: 14px; padding: 10px 18px; }
 .landed .lm-list .dl-name small { font-size: 12px; white-space: nowrap; }
 .landed .lm-list .dl em { white-space: nowrap; font-size: 14px; }
 .landed .lm-list .dl.top { transform: none; }
@@ -818,7 +818,9 @@
 .lm-asks .src { font-size: 18px; }
 .landed .lm-list .lm-group { font-size: 16px; }
 .landed .lm-list .dl-name small { font: 400 16px/1.2 var(--sans); letter-spacing: 0; text-transform: none; }
-.landed .lm-list .dl em { font-size: 16px; }
+.landed .lm-list .dl em { font-size: 16px; letter-spacing: .08em; }
+/* With no scores yet, the note sits below the four letters waiting in the middle. */
+.landed .mx-empty { top: 84%; }
 .pt-tray .tchip small { font-size: 16px; }
 .pt-head .k { font-size: 16px; }
 .show dl dt { font-size: 16px; }

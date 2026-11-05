@@ -13,7 +13,7 @@ import {
   SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA, JAR, JAR_OPTS, judgeAs, NEXT_STEPS,
 } from '@/lib/content';
 import type { FilmAct, FilmState } from '@/lib/showLink';
-import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, tastingProgress, SessionState } from '@/lib/state';
+import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, tastingProgress, places, topIds, SessionState } from '@/lib/state';
 import { PLAN_READBACK, PlanTap, planRows, planCell } from './Plan';
 import { ConceptCards } from './Concepts';
 import { CONCEPT_FIELDS } from '@/lib/conceptLibrary';
@@ -243,7 +243,7 @@ export function ConceptCanvas({ s }: SceneProps) {
 // chips vote (or every sample and direction if no chips came in): click a cell to mark where it could fit.
 export function dayRows(s: SessionState) {
   const t = tallyPick(s, 'directions');
-  const top = ranked(t).filter(([, n]) => n > 0).slice(0, 3).map(([id]) => id);
+  const top = topIds(t); // the top three, plus anything tied with the third
   const list = top.length ? top.map((id) => DIRECTIONS.find((d) => d.id === id)).filter(Boolean) as typeof DIRECTIONS : DIRECTIONS;
   return list.map((d) => ({ id: d.id, name: directionName(d.id, s), sub: t[d.id] ? `${t[d.id]} ${t[d.id] === 1 ? 'chip' : 'chips'} · ${d.sub}` : d.sub, color: d.colors[1] }));
 }
@@ -347,8 +347,9 @@ export function Board({ s }: SceneProps) {
 // What the morning decided, in one place: shared by the Playbook scene and the results page.
 export function decided(s: SessionState) {
   return {
-    signals: ranked(tallyPick(s, 'signals')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ t: SIGNALS.find((x) => x.id === id)?.title || id, so: SIGNALS.find((x) => x.id === id)?.so || '', n })),
-    directions: ranked(tallyPick(s, 'directions')).filter(([, n]) => n > 0).slice(0, 3).map(([id, n]) => ({ t: directionName(id, s), n })),
+    // The top three with their places, ties kept (two trends on the same votes share a place).
+    signals: (() => { const t = tallyPick(s, 'signals'), p = places(t); return topIds(t).map((id) => ({ t: SIGNALS.find((x) => x.id === id)?.title || id, so: SIGNALS.find((x) => x.id === id)?.so || '', n: t[id], place: p[id].place })); })(),
+    directions: (() => { const t = tallyPick(s, 'directions'), p = places(t); return topIds(t).map((id) => ({ t: directionName(id, s), n: t[id], place: p[id].place })); })(),
     concepts: teamConcepts(s),
     plan: planRows(s),
     tasting: SAMPLES.map((x) => ({ ...x, name: directionName(x.code, s), sum: tasteSummary(s, x.code) })),
@@ -423,12 +424,12 @@ function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
   let body: React.ReactNode = null, title = '';
   if (n === 1) {
     title = 'The three trends that matter most';
-    body = d.signals.length ? <ol className="rp-rank">{d.signals.map((x, j) => <li key={x.t}><span className="num">{j + 1}</span><span><b>{x.t.replace(/\.$/, '')}</b>{x.so && <small>{x.so}</small>}</span><em>{x.n} {x.n === 1 ? 'vote' : 'votes'}</em></li>)}</ol> : none('No trend votes came in.');
+    body = d.signals.length ? <ol className="rp-rank">{d.signals.map((x) => <li key={x.t}><span className="num">{x.place}</span><span><b>{x.t.replace(/\.$/, '')}</b>{x.so && <small>{x.so}</small>}</span><em>{x.n} {x.n === 1 ? 'vote' : 'votes'}</em></li>)}</ol> : none('No trend votes came in.');
   } else if (n === 2) {
     title = 'What gets a next round';
     body = (
       <>
-        {d.directions.length ? <ol className="rp-rank">{d.directions.map((x, j) => <li key={x.t}><span className="num">{j + 1}</span><b>{x.t}</b><em>{x.n} {x.n === 1 ? 'chip' : 'chips'}</em></li>)}</ol> : none('No chips were placed.')}
+        {d.directions.length ? <ol className="rp-rank">{d.directions.map((x) => <li key={x.t}><span className="num">{x.place}</span><b>{x.t}</b><em>{x.n} {x.n === 1 ? 'chip' : 'chips'}</em></li>)}</ol> : none('No chips were placed.')}
         <div className="rp-taste">
           <span className="rp-cap">The tasting, averaged from 1 to 5{d.paperLeft ? ` · phone scores only so far: ${d.paperLeft} paper ${d.paperLeft === 1 ? 'card' : 'cards'} to add` : ''}</span>
           {d.tasting.map((x) => <div key={x.code}><b>{x.code}. {x.name}</b><span>{x.sum.n ? CRITERIA.map((c) => `${c.l} ${x.sum[c.key].toFixed(1)}`).join(' · ') : 'No scores'}</span></div>)}

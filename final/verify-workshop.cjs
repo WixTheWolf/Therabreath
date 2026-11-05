@@ -79,6 +79,14 @@ assert(tastingClosed(st));assert(!st.ratings.A.p2,'a phone scored after the scor
 st=fold([...base,ev('lk','vote',null,{key:'tasting',action:'lock'}),ev('op','vote',null,{key:'tasting',action:'open'}),r('x4','p2','B')]);assert(st.ratings.B.p2,'going back reopens scoring');
 const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(/key: 'tasting', id: 'tasting'/.test(sh)&&/key: 'directions', id: 'nextround'/.test(sh)&&sh.includes('still scoring. Press again'),'the locks and the press-again check');
 const tl=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');const g=tl.slice(tl.indexOf('export function TastingLive'),tl.indexOf('// The chip vote'));assert(g.includes('const scoring = step === 0')&&g.includes('finished all four')&&g.includes('JAR_OPTS.map'),'the tasting slide: counts first, then every answer');}
+// Ties (November 4 review): equal totals share a place, the top three keep anything tied with the third, and a sent
+// chip vote stays Sent whatever order its keys come back in.
+{const {places,topIds,placeLabel}=load('state');const t={a:5,b:3,c:3,d:3,e:1};const p=places(t);
+assert.equal(p.a.place,1);assert.equal(p.b.place,2);assert.equal(p.d.place,2);assert(p.b.tied&&!p.a.tied);assert.equal(placeLabel(p.c),'Tied for second');assert.equal(placeLabel(p.a),'Number 1');
+assert.equal(topIds(t).join(),'a,b,c,d','a tie at third keeps every tied option');assert.equal(topIds({x:4,y:4,z:2,w:1}).join(),'x,y,z');assert.equal(topIds({}).length,0);
+const rm=fs.readFileSync('src/components/RoomApp.tsx','utf8');assert(!rm.includes('JSON.stringify(o) === JSON.stringify(mine)')&&rm.includes('sameChips(o, mine)'),'the Sent check compares by option');
+const dk=fs.readFileSync('src/components/show/Deck.tsx','utf8');assert(dk.includes("'No votes came in · three trends to discuss'")&&dk.includes('placeLabel(pl[d.id])')&&!/>Number \{rank \+ 1\}</.test(dk),'ties and the no-vote fallback on slides 9 and 15');
+assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes('Ask where their five go and add one per chip'),'hand chips use the five-chip budget');}
 // The tasting questions (November 4): liking, could it be a TheraBreath flavor and uniqueness from 1 to 5, then
 // sweetness and cooling as not enough, just right or too much. Ratings saved before then (with who, a direction guess
 // and develop it further) still read.

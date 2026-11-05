@@ -128,6 +128,17 @@ export function tallyPick(s: SessionState, key: string): Record<string, number> 
   return out;
 }
 export const ranked = (t: Record<string, number>) => Object.entries(t).sort((a, b) => b[1] - a[1]);
+// Places that keep ties (the November 4 review): equal totals share a place (1, 1, 3), so a tie is never settled by the
+// order of a list. The top three are the first three places, plus anything tied with the third.
+export function places(t: Record<string, number>) {
+  const r = ranked(t).filter(([, n]) => n > 0);
+  const out: Record<string, { n: number; place: number; tied: boolean }> = {};
+  for (const [id, n] of r) out[id] = { n, place: 1 + r.filter(([, m]) => m > n).length, tied: r.filter(([, m]) => m === n).length > 1 };
+  return out;
+}
+export const topIds = (t: Record<string, number>) => { const p = places(t); return ranked(t).filter(([id, n]) => n > 0 && p[id].place <= 3).map(([id]) => id); };
+const ORD = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'];
+export const placeLabel = (p?: { place: number; tied: boolean }) => (!p ? '' : p.tied ? `Tied for ${ORD[p.place] || p.place}` : `Number ${p.place}`);
 export function tasteSummary(s: SessionState, sample: string) {
   const rs = Object.values(s.ratings[sample] || {});
   const avg = (k: 'appeal' | 'feels' | 'newness') => (rs.length ? rs.reduce((a, r) => a + (r[k] || 0), 0) / rs.length : 0);
