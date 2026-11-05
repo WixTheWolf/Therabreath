@@ -6,6 +6,7 @@
 // and where the concept cards and Now, Next, Later are filled in, all by tapping. Nothing here is on the TV.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
+import { useLiveSurvey } from '@/lib/liveSurvey';
 import { SCENES } from '@/lib/scenes';
 import { pointsOf, titleOf } from '@/lib/sceneNotes';
 import { EVENT, SIGNALS, DIRECTIONS, SAMPLES, MYSTERY, HORIZONS, CRITERIA, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
@@ -72,7 +73,7 @@ export default function PresenterApp({ code }: { code: string }) {
     : sc.id === 'board' || sc.id === 'playbook' ? <PlanEditor s={s} send={send} />
     : sc.id === 'map' ? <Profiles step={step} off={off} cmd={cmd} i={i} short={!!pos?.short} />
     : sc.id === 'film' ? <FilmPanel f={linked ? pos?.film : undefined} now={now} cmd={cmd} next={pos?.next || ''} prev={pos?.prev || ''} />
-    : <Joined s={s} />;
+    : <Joined s={s} code={code} />;
 
   return (
     // A click never leaves a button focused, so Space and the arrows keep moving the presentation instead of pressing
@@ -243,13 +244,16 @@ function Profiles({ step, off, cmd, i, short }: { step: number; off: boolean; cm
 }
 
 // Everywhere else: who's in the room on a phone.
-function Joined({ s }: { s: SessionState }) {
+function Joined({ s, code }: { s: SessionState; code: string }) {
   const list = people(s).filter((p) => !p.paper);
-  const pre = Object.keys(s.survey || {}).length;
+  const own = Object.keys(s.survey || {}).length;
+  // A rehearsal counts the live answers it shows on "Your pre-brief answers" (read only).
+  const live = Object.keys(useLiveSurvey(code, own === 0)).length;
+  const pre = own || live;
   return (
     <>
       <h2>In the room</h2>
-      <p className="pv-sub">{list.length} {list.length === 1 ? 'phone' : 'phones'} joined · {pre} pre-brief {pre === 1 ? 'answer' : 'answers'}. Hand votes go in here on the vote slides, and paper cards are counted on the tasting.</p>
+      <p className="pv-sub">{list.length} {list.length === 1 ? 'phone' : 'phones'} joined · {pre} pre-brief {pre === 1 ? 'answer' : 'answers'}{!own && live ? ' (from the live session)' : ''}. Hand votes go in here on the vote slides, and paper cards are counted on the tasting.</p>
       {list.length > 0 ? <ul className="pv-people">{list.map((p) => <li key={p.pid}>{p.name}</li>)}</ul> : <p className="pv-empty">Nobody has joined yet. The code is on the arrival screen.</p>}
     </>
   );

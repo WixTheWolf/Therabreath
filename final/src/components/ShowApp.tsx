@@ -14,6 +14,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { useSealed } from '@/lib/sealedClient';
+import { useLiveSurvey } from '@/lib/liveSurvey';
 import { useScale, Clock } from './StageApp';
 import { SCENES, SECTIONS, Scene } from '@/lib/scenes';
 import { pointsOf, titleOf } from '@/lib/sceneNotes';
@@ -59,8 +60,15 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   // room learns them only from the reveal this window sends when the tasting flips the names.
   const sealed = useSealed(s.revealed);
   // The team's copy always wins on this screen, so a reveal saved before the samples changed never shows the old names.
-  const sv = useMemo(() => (sealed.data ? { ...s, revealed: sealed.data } : s), [s, sealed.data]);
-  const told = Object.keys(s.survey || {}).length > 0;
+  // A rehearsal with no pre-brief answers of its own shows the live session's (read only, without names), so "Your
+  // pre-brief answers" can be rehearsed. The PDF export (?still=1) never reads them.
+  const own = Object.keys(s.survey || {}).length > 0;
+  const liveSurvey = useLiveSurvey(code, !own && !still);
+  const sv = useMemo(() => {
+    const x = sealed.data ? { ...s, revealed: sealed.data } : s;
+    return own || !Object.keys(liveSurvey).length ? x : { ...x, survey: liveSurvey };
+  }, [s, sealed.data, own, liveSurvey]);
+  const told = Object.keys(sv.survey || {}).length > 0;
   const n = SCENES.length;
   // "You told us" only appears once someone has answered the pre-brief. S (short) also skips the optional slides and the
   // optional builds (the July row, and the two directions that are not in the tasting).
@@ -300,7 +308,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
         )}
         {toast && <div className="show-toast" role="status">{toast}</div>}
         {hint && <div className="show-hint">Right arrow or click to go on · Left arrow back · ] next part · S short version · F full screen · P presenter view</div>}
-        {code !== EVENT.code && !still && <div className="show-rehearse">Rehearsal session {code}. Votes here never reach the live session.</div>}
+        {code !== EVENT.code && !still && <div className="show-rehearse">Rehearsal session {code}. Votes here never reach the live session.{sc.id === 'prework' && !own && told ? ' These pre-brief answers are the live ones.' : ''}</div>}
       </div>
     </LiveCtx.Provider>
   );
