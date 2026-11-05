@@ -16,7 +16,7 @@ import type { FilmAct, FilmState } from '@/lib/showLink';
 import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, tastingProgress, places, topIds, SessionState } from '@/lib/state';
 import { PLAN_READBACK, PlanTap, planRows, planCell } from './Plan';
 import { ConceptCards } from './Concepts';
-import { CONCEPT_FIELDS } from '@/lib/conceptLibrary';
+import { CONCEPT_FIELDS, unconfirmed } from '@/lib/conceptLibrary';
 
 // goStep moves to a build of the current slide (a direction's profile card on the map, say).
 export type Live = { send: (kind: string, data?: any, pid?: string) => any; still: boolean; joinUrl: string; goStep: (step: number) => void };
@@ -231,7 +231,7 @@ export function ConceptCanvas({ s }: SceneProps) {
   return (
     <div className="pad ccv">
       <Enter i={0}><div className="k">Up to three concepts</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>{TOPICS[2].questions[0]} <span className="it">{TOPICS[2].questions[1]}</span></h2></Enter>
+      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>What should each idea <span className="it">become?</span></h2></Enter>
       <ConceptCards s={s} />
     </div>
   );
@@ -438,11 +438,13 @@ function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
     );
   } else if (n === 3) {
     title = 'The concepts we put together';
+    // Agreed cards say so; the rest read as proposals, and a field nobody settled reads To agree.
     body = d.concepts.length ? (
       <div className="rp-concepts" style={{ gridTemplateColumns: `repeat(${Math.min(3, d.concepts.length)}, 1fr)` }}>{d.concepts.slice(0, 3).map((c: any) => (
-        <div key={c.id} className="rp-concept">
+        <div key={c.id} className={'rp-concept' + (c.agreed ? ' agreed' : ' proposed')}>
+          <em className="rp-state">{c.agreed ? 'Agreed' : 'Proposed, not agreed yet'}</em>
           <b>{c.name || 'Untitled concept'}</b>
-          <dl>{FIELDS.map((f) => c[f.key] ? <div key={f.f}><dt>{f.l}</dt><dd>{c[f.key]}</dd></div> : null)}</dl>
+          <dl>{FIELDS.filter((f) => f.key !== 'why').map((f) => <div key={f.f} className={(unconfirmed(c[f.key]) ? 'tbc' : '') + (f.key === 'change' ? ' rp-next' : '')}><dt>{f.l}</dt><dd>{c[f.key] || 'To agree'}</dd></div>)}</dl>
         </div>
       ))}</div>
     ) : none('No concepts were put together.');

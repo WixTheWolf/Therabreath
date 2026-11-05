@@ -3,10 +3,12 @@
 // presentation starts up to three cards from the top three of the chips vote: where it starts is the pick, the rest
 // comes from its starter card in conceptLibrary.ts, and When takes the first moment marked for it on Where TheraBreath
 // fits in a day. In the presenter view any card can be swapped for another library card, and any field changed by
-// tapping an option. The TV only shows the cards.
+// tapping an option. The TV only shows the cards. Every card is a starting point for discussion until the presenter
+// marks it agreed, and the read-back and the write-up say which cards the room agreed.
 import React, { useState } from 'react';
-import { STARTS, CONCEPT_FIELDS, LIBRARY, Card, cardFor, MOMENT_WHEN } from '@/lib/conceptLibrary';
-import { tallyPick, ranked, SessionState } from '@/lib/state';
+import { STARTS, CONCEPT_FIELDS, LIBRARY, Card, cardFor, MOMENT_WHEN, toggleIn, hasOpt } from '@/lib/conceptLibrary';
+import { tallyPick, ranked, SessionState, tasteSummary, jarAll } from '@/lib/state';
+import { JAR, JAR_OPTS } from '@/lib/content';
 import { teamConcepts } from '../scenes/CoCreate';
 
 type Send = (kind: string, data?: any, pid?: string) => any;
@@ -20,13 +22,21 @@ export const startLabel = (id: string, s?: SessionState | null) => {
 };
 export const cardTitle = (c: Card, s?: SessionState | null) => c.title || startName(c.start, s);
 
-// A concept's fields from a library card, with When from the day map's marks when there is one.
+// A concept's fields from a library card, with When from the day map's marks when there is one. A new or swapped card
+// starts unagreed, with the next version still to agree.
 export function fromCard(c: Card, s: SessionState, start = c.start) {
   const mark = (s.marks || []).map((m) => m.split('|')).find(([id]) => id === start);
   return {
     name: c.title || startName(start, s), why: startLabel(start, s), start, card: c.id,
     segment: c.segment, occasion: (mark && MOMENT_WHEN[mark[1]]) || c.occasion, role: c.role, format: c.format, incremental: c.incremental,
+    change: '', agreed: '',
   };
+}
+// What the tasting said about a sample's sweetness and cooling, for the presenter deciding the next version.
+export function tastingRead(start: string, s: SessionState) {
+  const st = STARTS.find((x) => x.id === start); if (st?.kind !== 'sample') return '';
+  const sum = tasteSummary(s, st.id);
+  return JAR.map((j) => { const v = jarAll(sum[j.key], JAR_OPTS); return v ? `${j.l}: ${v}` : ''; }).filter(Boolean).join('. ');
 }
 // The cards the concept slide starts with: one for each of the top three from the chips vote.
 export function starters(s: SessionState) {
@@ -35,18 +45,22 @@ export function starters(s: SessionState) {
 }
 export const conceptAt = (s: SessionState, slot: number) => { const c: any = s.concepts[`t${slot}-1`]; return c && c.name ? c : null; };
 
-// The TV: up to three cards, read-only.
+// The TV: up to three cards, read-only. Each says whether the room has agreed it yet.
 export function ConceptCards({ s }: { s: SessionState }) {
   const cs = SLOTS.map((n) => conceptAt(s, n));
   return (
     <div className="ccv-grid">
       {cs.map((c, i) => (
-        <div key={i} className={'cv-card ccv-card ccv-show' + (c ? ' named' : ' empty')} style={{ ['--i' as any]: 2 + i }}>
-          <span className="k">Concept {i + 1}</span>
+        <div key={i} className={'cv-card ccv-card ccv-show' + (c ? ' named' : ' empty') + (c?.agreed ? ' agreed' : '')} style={{ ['--i' as any]: 2 + i }}>
+          <div className="ccv-head">
+            <span className="k">Concept {i + 1}</span>
+            {c && <span className="ccv-state">{c.agreed ? 'Agreed' : 'Starting point for discussion'}</span>}
+          </div>
           {c ? (
             <>
               <b className="ccv-name">{c.name}</b>
-              <dl>{CONCEPT_FIELDS.map((f) => <div key={f.key} className={c[f.key] ? 'on' : ''}><dt>{f.l}</dt><dd>{c[f.key] || 'To agree'}</dd></div>)}</dl>
+              {c.why && <span className="ccv-from">Starts from {c.why}</span>}
+              <dl>{CONCEPT_FIELDS.filter((f) => f.key !== 'why').map((f) => <div key={f.key} className={(c[f.key] ? 'on' : '') + (f.key === 'change' ? ' ccv-next' : '')}><dt>{f.l}</dt><dd>{c[f.key] || 'To agree'}</dd></div>)}</dl>
             </>
           ) : <p className="ccv-none">{i === 0 && !cs.some(Boolean) ? 'The top three from the chips vote start the cards. More come from our library.' : 'Open'}</p>}
         </div>
@@ -81,7 +95,7 @@ export function ConceptEditor({ s, send }: { s: SessionState; send: Send }) {
   return (
     <>
       <h2>Concepts</h2>
-      <p className="pv-sub">Up to three. Tap to change anything; nothing to type. {teamConcepts(s).length ? '' : 'The cards start from the top three chips when the slide opens.'}</p>
+      <p className="pv-sub">Starter cards: every field is a proposal until the room agrees it. One or two well-defined cards beat three thin ones. Tap to change anything; nothing to type. {teamConcepts(s).length ? '' : 'The cards start from the top three chips when the slide opens.'}</p>
       <div className="pv-tabs" role="tablist">
         {SLOTS.map((n) => { const x = conceptAt(s, n); return <button key={n} role="tab" aria-selected={slot === n} aria-pressed={slot === n} onClick={() => { setSlot(n); setSwap(false); setClearing(false); }}>{n}. {x ? x.name : 'Open'}</button>; })}
       </div>
@@ -94,6 +108,7 @@ export function ConceptEditor({ s, send }: { s: SessionState; send: Send }) {
         <section className="pv-concept">
           <div className="pv-chead">
             <h3>{c.name}</h3>
+            <button className={'pv-agree' + (c.agreed ? ' on' : '')} aria-pressed={!!c.agreed} onClick={() => set({ agreed: c.agreed ? '' : '1' })}>{c.agreed ? 'Agreed by the room' : 'Mark as agreed'}</button>
             <button onClick={() => setSwap((v) => !v)} aria-pressed={swap}>Swap for a library card</button>
             {clearing
               ? <span className="pv-confirm">Clear this card? <button onClick={() => { set({ name: '' }); setClearing(false); }}>Clear</button><button onClick={() => setClearing(false)}>Keep</button></span>
@@ -107,10 +122,16 @@ export function ConceptEditor({ s, send }: { s: SessionState; send: Send }) {
               </div>
               {CONCEPT_FIELDS.filter((f) => f.opts).map((f) => (
                 <div key={f.key} className="pt-group" role="group" aria-label={f.l}>
-                  <span>{f.l}</span>
-                  <div>{f.opts!.map((o) => <button key={o} type="button" aria-pressed={c[f.key] === o} onClick={() => set({ [f.key]: c[f.key] === o ? '' : o })}>{o}</button>)}</div>
+                  <span>{f.l}{f.multi ? <small> (one or more)</small> : null}</span>
+                  <div>
+                    {f.opts!.map((o) => f.multi
+                      ? <button key={o} type="button" aria-pressed={hasOpt(c[f.key], o)} onClick={() => set({ [f.key]: toggleIn(c[f.key], o) })}>{o}</button>
+                      : <button key={o} type="button" aria-pressed={c[f.key] === o} onClick={() => set({ [f.key]: c[f.key] === o ? '' : o })}>{o}</button>)}
+                    {f.key === 'change' && tastingRead(c.start, s) && <p className="pv-taste">From the tasting. {tastingRead(c.start, s)}.</p>}
+                  </div>
                 </div>
               ))}
+              <p className="pv-sub">An answer that isn’t here: tap Other, in the notes, write it on the notes sheet and read it back before moving on.</p>
             </>
           )}
         </section>

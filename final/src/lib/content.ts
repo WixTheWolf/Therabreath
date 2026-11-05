@@ -449,7 +449,7 @@ export const TOPICS = [
     points: ['Flavor combines taste, aroma and mouthfeel.', 'The flavor has to work in your base, sodium chlorite included, through shelf life.', 'We’ll show four directions, and two of them are in the tasting.', 'Four samples, all made in your Fresh Breath and Kids bases.'],
     questions: ['Which direction feels most like TheraBreath, and which one stretches it the most?', 'What would set TheraBreath\u2019s flavors apart from what competitors are launching?'] },
   { title: 'What we could make',
-    points: ['Start from the samples and directions that did well.', 'For each concept, agree who it’s for, when they’d use it, its role in the range, the format and what it grows.', 'Aim for up to three.'],
+    points: ['Start from the samples and directions that did well.', 'For each concept, agree who it’s for, when they’d use it, its role in the range, the format, the intended growth opportunity and what the next sample should do differently.', 'One or two well-defined concepts, up to three.'],
     questions: ['Which moment of the day is TheraBreath missing?', 'Who could a new flavor bring in?'] },
   { title: 'What to do first',
     points: ['Where TheraBreath shows up in a day now, and where the concepts could fit.', 'Then Now, Next and Later: the next sample round, what follows the first results, and what’s worth exploring further.', 'Every direction leaves with its consumer or occasion, a flavor brief, the next test, a TFF owner, a C&D reviewer, a base, a next-sample date and an agreed next step.'],

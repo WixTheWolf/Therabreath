@@ -214,3 +214,7 @@ html:has(.wu) { background: var(--desk, #E4E1DA); scrollbar-color: rgba(11,27,43
 .wu-edit textarea { resize: vertical; }
 @media print { .wu-edit { display: none; } }
 @media screen { .wu-row.editing > dl { display: none; } }
+
+/* Whether the room agreed a concept card, next to its name. */
+.wu-state { display: inline-block; margin-left: 10px; font: 600 7pt/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: #1F6C82; vertical-align: middle; }
+.wu-state.open { color: #A4581E; }

@@ -10,7 +10,9 @@ export type Participant = { pid: string; name: string; role?: string; team?: num
 export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string; guess?: string; fruitGuess?: string; advance?: string; card?: string; sweet?: string; cool?: string };
 export type Dials = Record<string, number>;
 export type Bench = { dials: Record<string, Dials>; base?: string; overrides: Record<string, { value: string; note?: string }>; locked?: Dials };
-export type Concept = { id: string; team: number; slot: number; name: string; segment: string; occasion: string; first: string; heart: string; finish: string; sensation: string[]; format: string; incremental: string; why: string; horizon: string; role?: string; suggestions: { pid: string; text: string }[] };
+// `change` is what the next sample should do differently, and `agreed` is '1' once the room has said yes to the card:
+// until then every field on it is a proposal.
+export type Concept = { id: string; team: number; slot: number; name: string; segment: string; occasion: string; first: string; heart: string; finish: string; sensation: string[]; format: string; incremental: string; why: string; horizon: string; role?: string; change?: string; agreed?: string; suggestions: { pid: string; text: string }[] };
 export type Placement = { horizon: string; role: string; t: number };
 // One line of Now, Next, Later: what goes forward, who it's for, the flavor brief, who owns it on each side, the base and
 // when the next sample is due. `next` is the free-text next step rows had before the brief and the date (still shown).

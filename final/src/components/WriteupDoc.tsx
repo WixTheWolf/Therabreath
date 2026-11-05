@@ -171,10 +171,11 @@ export default function WriteupDoc({ code }: { code: string }) {
           <PracticeMark code={code} />
           <ObjHead i={2} />
           <h3 className="wu-h3">The concepts we put together</h3>
+          {/* A card the room didn't mark agreed is reported as a proposal, and every field still open is highlighted. */}
           {d.concepts.length ? <div className="wu-concepts">{d.concepts.map((c) => (
             <article key={c.id} className="wu-concept">
-              <h4>{c.name}</h4>
-              <dl>{FIELDS.map((f) => { const v = (c as any)[f.key]; return <div key={f.f}><dt>{f.l}</dt><dd>{v || <span className="wu-ghost">To agree</span>}</dd></div>; })}</dl>
+              <h4>{c.name}<span className={'wu-state' + (c.agreed ? '' : ' open')}>{c.agreed ? 'Agreed in the room' : 'Proposed, not agreed in the room'}</span></h4>
+              <dl>{FIELDS.map((f) => { const v = (c as any)[f.key]; return <div key={f.f} className={f.key !== 'why' && unconfirmed(v) ? 'wu-tbc' : ''}><dt>{f.l}</dt><dd>{v || <span className="wu-ghost">To agree</span>}</dd></div>; })}</dl>
             </article>
           ))}</div> : <p className="wu-ghost">No concepts yet. Up to three, from the concept slide in the presentation.</p>}
           {/* The dot vote left the morning on November 4; a session that has one still shows it. */}
