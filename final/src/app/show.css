@@ -942,3 +942,8 @@
 .fs .fs-col .fs-list .lever .num { font-size: 32px; color: var(--accent); min-width: 46px; }
 .fs .fs-col .fs-pay { margin-top: 52px; font: 400 italic 38px/1.25 var(--serif); color: var(--accent); }
 .fs .fs-col .fs-ask { margin-top: 44px; }
+/* November 5, slide 5: the question for the room sits on the same line as the count, so it's there for every build and
+   the off-brand list below keeps its room. */
+.pw-top { display: flex; justify-content: space-between; align-items: baseline; gap: 40px; }
+.pw-top .pw-ask { flex-direction: row; align-items: baseline; gap: 18px; }
+.pw-top .pw-ask p { font-size: 32px; }

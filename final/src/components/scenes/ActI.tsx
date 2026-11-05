@@ -74,7 +74,7 @@ function Glasses({ step }: { step: number }) {
           <div><b className="num">{OTHER.none}</b><span>don&rsquo;t buy mouthwash</span></div>
         </R>
         <R b={3} step={step}><div className="gap-second it">Flavor could give more of these households a reason to try it.</div></R>
-        <R b={3} step={step} className="room-ask"><span className="k">For the room</span><p>Which should a new flavor focus on first: the {GAP.tb}, the {OTHER.another} or the {OTHER.none}?</p></R>
+        <R b={3} step={step} className="room-ask"><span className="k">For the room</span><p>Who should the next flavor win over first: the {GAP.tb} who buy it, the {OTHER.another} who buy another brand or the {OTHER.none} who don’t buy mouthwash?</p></R>
       </div>
       <Src k="q3call" extra={`Household penetration: TheraBreath ${GAP.tb}%, mouthwash ${GAP.category}%`} style={{ left: 120, width: 820 }} />
       <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}</div><div className="who">of 100 buy mouthwash</div></div>

@@ -61,7 +61,7 @@ export function Arrival({ s, ctx }: SceneProps) {
       <div className="arrival-copy">
         <Enter i={0}><div className="k">Welcome. We start at 10:00.</div></Enter>
         <Enter i={1}><h1 className="hero">The Future<br /><span className="it">of Freshness</span></h1></Enter>
-        <Enter i={2}><div className="sub">Grab a seat and scan the code. We’ll be using phones a few times this morning.</div></Enter>
+        <Enter i={2}><div className="sub">Grab a seat and scan the code. Your phone is your scorecard this morning.</div></Enter>
         <Enter i={3}><div className="meta">{EVENT.lockup}</div></Enter>
       </div>
       <Enter i={4} className="join">
@@ -143,14 +143,16 @@ export function Prework({ s, step }: SceneProps) {
   );
   return (
     <div className="pad">
-      <Enter i={0}><div className="k">From your pre-brief · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div></Enter>
+      {/* The question sits beside the count from the first build: it's for the whole slide, and the list of off-brand
+          answers below can run long. */}
+      <Enter i={0} className="pw-top"><div className="k">You told us · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div><div className="room-ask pw-ask"><span className="k">For the room</span><p>Anything here you’d argue with?</p></div></Enter>
       <div className="pw-grid">
-        <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} />{others.length > 0 && <p className="src pw-others">Someone else: {others.slice(0, 6).join(', ')}</p>}</R>
-        <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} />{otherMoments.length > 0 && <p className="src pw-others">{SURVEY.moment.other}: {otherMoments.slice(0, 6).join(', ')}</p>}</R>
+        <R b={0} step={step} className="pw-card"><h3 className="h3">Who you’d focus on first</h3><Bars list={cons} />{others.length > 0 && <p className="src pw-others">Someone else: {others.slice(0, 6).join(', ')}</p>}</R>
+        <R b={1} step={step} className="pw-card"><h3 className="h3">The occasion you’d explore first</h3><Bars list={mom} />{otherMoments.length > 0 && <p className="src pw-others">{SURVEY.moment.other}: {otherMoments.slice(0, 6).join(', ')}</p>}</R>
       </div>
       {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">Your own taste in freshness</span><p className="h3 it">{leanLine(roomProfile(answers))}</p><p className="pw-avg">{leanNote(roomProfile(answers), profiled)}</p></div></R>}
       <R b={2} step={step} className="vetoes">
-        <div className="k">What would feel off-brand</div>
+        <div className="k">What would feel wrong for TheraBreath</div>
         {/* One answer per line, each in its own quotes, in the words people typed; a repeat shows once with how many said it. */}
         {vetoes.length ? <ul className="pw-off">{vetoes.slice(0, 6).map(([v, n], i) => <li key={i} style={{ ['--i' as any]: i }}>&ldquo;{v}&rdquo;{n > 1 && <span className="pw-n">{n} people</span>}</li>)}</ul> : <p className="empty pw-none">No answers yet.</p>}
         {vetoes.length > 6 && <p className="pw-more">And {vetoes.length - 6} more.</p>}

@@ -32,13 +32,13 @@ export function TeamSince({ step }: SceneProps) {
       <img className="st-img" src="/img/lab-bench.webp" alt="" />
       <div className="pad">
         <Enter i={0}><div className="k">The Flavor Factory · Norco, California</div></Enter>
-        <Enter i={1}><h2 className="h1">Who we are</h2></Enter>
+        <Enter i={1}><h2 className="h1">Hi. <span className="it">We’re The Flavor Factory.</span></h2></Enter>
         <div className="ts-people">
           {TEAM.map((t, i) => <Enter key={t.name} i={2 + i} className="st-person"><b>{t.name}</b><span className="k">{t.title}</span></Enter>)}
         </div>
         <Enter i={6} className="ts-lines">
-          <div className="ts-line sci"><span className="k">What we test in the lab</span><div className="st-chips">{SCIENCE.map((x) => <span key={x}>{x}</span>)}</div></div>
-          <div className="ts-line ima"><span className="k">What we bring in from outside oral care</span><div className="st-chips">{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</div></div>
+          <div className="ts-line sci"><span className="k">In the lab</span><div className="st-chips">{SCIENCE.map((x) => <span key={x}>{x}</span>)}</div></div>
+          <div className="ts-line ima"><span className="k">From outside oral care</span><div className="st-chips">{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</div></div>
         </Enter>
         {step >= 1 && (
           <div className="july ts-july">
@@ -75,7 +75,7 @@ export function OurFlavors() {
     <div className="pad of">
       <div className="of-head">
         <Enter i={0}><div className="k">The Flavor Factory in TheraBreath</div></Enter>
-        <Enter i={1}><h2 className="h2 of-title">Our flavors are in {OUR_COUNT} TheraBreath rinses on shelf today.</h2></Enter>
+        <Enter i={1}><h2 className="h2 of-title">You already know our work. <span className="it">It’s in {OUR_COUNT} TheraBreath rinses on shelf today.</span></h2></Enter>
       </div>
       <div className="of-shelf">
         <Bottles label="Oral rinses" items={OUR_RINSES} from={0} />
@@ -102,7 +102,7 @@ export function Shelf({ step }: SceneProps) {
     <div className="pad shelf">
       <div className="sh-left">
         <Enter i={0}><div className="k">Your portfolio today</div></Enter>
-        <Enter i={1}><h2 className="h2 sh-title">Mint is the center of the range: {mint} of {PORTFOLIO.length} products.</h2></Enter>
+        <Enter i={1}><h2 className="h2 sh-title">Mint is home base: {mint} of {PORTFOLIO.length} products.</h2></Enter>
         <div className={'sh-rows' + (step >= 1 ? ' sh-lit' : '')}>
           {formats.map((f, r) => {
             const vs = PORTFOLIO.filter((v) => v.format === f).sort((a, b) => Number(isMint(b.flavor)) - Number(isMint(a.flavor)));
@@ -120,11 +120,11 @@ export function Shelf({ step }: SceneProps) {
           })}
         </div>
         <Enter i={2 + formats.length} className="sh-key"><span><i className="mint" />Mint</span><span><i className="other" />Everything else</span></Enter>
-        <R b={1} step={step}><p className="h2 it sh-room">Where could flavor add something useful?</p></R>
+        <R b={1} step={step}><p className="h2 it sh-room">Where’s the gap on this shelf?</p></R>
         <Src k="listings" style={{ position: 'static', marginTop: 14 }} />
       </div>
       <div className="sh-right">
-        <Enter i={1}><div className="k">What competitors are launching · all public</div></Enter>
+        <Enter i={1}><div className="k">What competitors are launching</div></Enter>
         <ol className="sh-launch">
           {rivals.map((m, i) => (
             <Enter key={i} i={2 + i} className="sh-mk">
@@ -136,8 +136,8 @@ export function Shelf({ step }: SceneProps) {
         <Enter i={2 + rivals.length}><p className="src sh-srcs">Sources: {RIVAL_SOURCES}</p></Enter>
       </div>
       <R b={2} step={step} className="mk-turn sh-turn">
-        <span className="k">Where TheraBreath stands</span>
-        <p>TheraBreath has been alcohol-free and dye-free from the start, its original rinse is made with sodium chlorite, and it already has a kids line. <span className="it">Where can flavor add another reason to choose TheraBreath?</span></p>
+        <span className="k">What’s already yours</span>
+        <p>TheraBreath has been alcohol-free and dye-free from the start, its original rinse is made with sodium chlorite, and it already has a kids line. <span className="it">Finish the sentence: “I’d choose TheraBreath for its flavor if it&hellip;”</span></p>
       </R>
     </div>
   );
@@ -171,7 +171,7 @@ export function TrendVote({ s, step, pick = 0 }: SceneProps) {
       <div className="sig-light" style={{ opacity: focus ? 1 : 0.35 }} />
       <div className="pad" style={{ position: 'relative' }}>
         <Enter i={0}><div className="k">{step === 0 ? `Vote on your phone · pick three · ${tally(c.phones, 'vote', 'votes')} so far${byHandNote(c.hand, 'vote', 'votes')}` : votes ? `The vote is in · ${tally(votes, 'vote', 'votes')}${cut.length > 3 ? ' · a tie: pick which three to open' : ''}` : 'No votes came in · three trends to discuss'}</div></Enter>
-        <Enter i={1}><h2 className="h2">Seven trends. <span className="it">Which three matter most for TheraBreath?</span></h2></Enter>
+        <Enter i={1}><h2 className="h2">Seven trends. <span className="it">You pick three.</span></h2></Enter>
         <div className="tv-list">
           {SIGNALS.map((x, i) => {
             const n = t[x.id] || 0;
@@ -196,7 +196,7 @@ export function TrendVote({ s, step, pick = 0 }: SceneProps) {
             <div className="tv-ask"><span className="k">For the room</span><p>{focus.sig.ask}</p></div>
           </div>
         ) : (
-          <div className="sigs-hint tv-hint">Vote first. Then we’ll open the top three one at a time: the evidence, what it could mean for TheraBreath and a question for the room.</div>
+          <div className="sigs-hint tv-hint">Vote first. Then we’ll open your top three, one at a time.</div>
         )}
       </div>
     </div>

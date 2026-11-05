@@ -129,7 +129,7 @@ const c=fs.readFileSync('src/lib/content.ts','utf8');const sci=c.match(/export c
 assert.equal(sc('brief').builds,1,'the four objectives in one click, then the goal');}
 // Review step 7, slides 6 to 9: the households slide names its groups exactly and keeps loyal users in the question; the
 // trends say what their evidence shows; the trend vote title stops before the QR code.
-{const a=fs.readFileSync('src/components/scenes/ActI.tsx','utf8');assert(a.includes('buy mouthwash, not TheraBreath')&&a.includes('the {GAP.tb}, the {OTHER.another} or the {OTHER.none}')&&!a.includes('took the burn out'),'slide 7 wording');
+{const a=fs.readFileSync('src/components/scenes/ActI.tsx','utf8');assert(a.includes('buy mouthwash, not TheraBreath')&&a.includes('the {GAP.tb} who buy it, the {OTHER.another} who buy another brand or the {OTHER.none} who don’t buy mouthwash')&&!a.includes('took the burn out'),'slide 7 wording');
 const sig=Object.fromEntries(SIGNALS.map(s=>[s.id,s]));assert.equal(sig.allure.title,'Playful flavors are expanding in oral care.');assert(/counts use, not dry mouth/.test(sig.mouths.proofs[0].t));assert(!/54% of Americans/.test(fs.readFileSync('src/lib/content.ts','utf8')),'the 54% is the survey Kenvue cites');assert(/florals like hibiscus/.test(sig.fruit.proofs[1].t));assert(/Emotion360/.test(sig.warm.proofs[0].t));assert(!/share went up with it/.test(sig.botanical.proofs[1].t));
 assert(/\.sigs\.tv h2\.h2 \{ max-width: 1480px/.test(fs.readFileSync('src/app/show.css','utf8')),'the QR gutter on slide 9');}
 // Slide 5: off-brand answers as a list, one per line in quotes; the freshness read-back in the sliders' own words.
