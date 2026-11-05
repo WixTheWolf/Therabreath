@@ -38,7 +38,7 @@ const SHOW: Row[] = [
   { id: 'arrival', act: 'Before we start', chapter: -1, theme: 'b', builds: 0, title: 'The Future of Freshness', block: 'welcome', room: W('Welcome. We start at 10:00.') },
   { id: 'team', act: 'Welcome', chapter: -1, theme: 'a', builds: 1, skip: [1], title: 'Who we are, since July', block: 'welcome', room: W() },
   { id: 'ours', act: 'Welcome', chapter: -1, theme: 'a', builds: 0, title: 'Our flavors in your range', block: 'welcome', room: W() },
-  { id: 'brief', act: 'Welcome', chapter: -1, theme: 'a', builds: 5, title: 'Your four objectives', block: 'welcome', room: W() },
+  { id: 'brief', act: 'Welcome', chapter: -1, theme: 'a', builds: 1, title: 'Your four objectives', block: 'welcome', room: W() },
   { id: 'prework', act: 'Welcome', chapter: -1, theme: 'a', builds: 2, title: 'Your pre-brief answers', block: 'welcome', room: W() },
 
   opener(1, 'market'),

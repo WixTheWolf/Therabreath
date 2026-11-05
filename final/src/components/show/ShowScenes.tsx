@@ -78,14 +78,14 @@ export function ShowBrief({ step }: SceneProps) {
       <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>We’ve built the morning <span className="it">around your four objectives.</span></h2></Enter>
       <div className="brief-tiles">
         {OBJECTIVES.map((o, i) => (
-          <R key={o.n} b={i + 1} step={step} className="bt" style={{ ['--h' as any]: OBJ_HUE[i] }}>
+          <R key={o.n} b={0} d={i * 120} step={step} className="bt" style={{ ['--h' as any]: OBJ_HUE[i] }}>
             <div className="bt-n num">{o.n}</div>
             <p className="bt-ask">{o.ask}</p>
             <div className="bt-to"><span>{when(o.n)}</span><b>{TOPICS[i].title}</b></div>
           </R>
         ))}
       </div>
-      <R b={5} step={step} className="bt-goal"><span className="k">And the goal behind them</span><p>&ldquo;&hellip;new flavor experiences that both <em>{ROSS_GOAL.loyal}</em> and <em>{ROSS_GOAL.fresh.replace(/\.$/, '')}</em>.&rdquo;</p><Src k="ross" style={{ position: 'static' }} /></R>
+      <R b={1} step={step} className="bt-goal"><span className="k">And the goal behind them</span><p>&ldquo;&hellip;new flavor experiences that both <em>{ROSS_GOAL.loyal}</em> and <em>{ROSS_GOAL.fresh.replace(/\.$/, '')}</em>.&rdquo;</p><Src k="ross" style={{ position: 'static' }} /></R>
     </div>
   );
 }
