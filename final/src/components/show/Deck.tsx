@@ -310,9 +310,11 @@ export function DirectionsMap({ step }: SceneProps) {
   );
 }
 
-// 15. What deserves the next round? The bubble chart from the scores (fit and perceived difference 1 to 5, liking as size) stays up while the phones
-// place five chips each on which flavors or directions to develop next: the four tasted today, then the two directions
-// not tasted today (grouped the same way as on the phones). Build 1 ranks the top three.
+// 15. What deserves the next round? The bubble chart from the scores (fit and perceived difference 1 to 5, liking as
+// size), with one prompt at a time under it. Build 0 is the talk about the chart: two questions for the room, and the
+// chips still closed. Build 1 swaps them for the chip question and opens the chips on the phones: five each on which
+// flavors or directions to develop next, the four tasted today, then the two directions not tasted today (grouped the
+// same way as on the phones). Build 2 ranks the top three and closes the chips.
 export function topDirections(s: SessionState) {
   const t = tallyPick(s, 'directions');
   return topIds(t).map((id) => ({ id, n: t[id], name: directionName(id, s) }));
@@ -372,29 +374,35 @@ export function Landed({ s, step }: SceneProps) {
           </div>
         </div>
         <div className="lm-asks">
-          <div className="room-ask"><span className="k">For the room</span><p>Of {fresh || 'C and D'}, which feels more like TheraBreath?</p></div>
-          <div className="room-ask"><p>Which of these deserves another round, and what would you change?</p></div>
+          <div className="lm-swap">
+            <div className={'lm-layer' + (step === 0 ? ' on' : '')}>
+              <div className="room-ask"><span className="k">For the room</span><p>Of {fresh || 'C and D'}, which feels more like TheraBreath?</p></div>
+              <div className="room-ask"><p>Which of these deserves another round, and what would you change?</p></div>
+            </div>
+            <div className={'lm-layer' + (step >= 1 ? ' on' : '')}>
+              <div className="room-ask"><span className="k">Now on your phone</span><p>Which flavors or directions should we develop next? Five chips each. You can stack them.</p></div>
+            </div>
+          </div>
           <p className="src">Bubble size is liking. Scores: {pts.map((p) => `${p.code} ${p.sum.n}`).join(', ')}.{moved ? ' Close scores are nudged apart.' : ''} {paperLeft ? `Phone scores only so far: ${paperLeft} paper ${paperLeft === 1 ? 'card' : 'cards'} to add.` : 'First reactions, not consumer research.'}</p>
         </div>
         <div className="lm-chips">
-          <div className="k">Five chips each · {tally(c.phones, 'person has', 'people have')} voted{byHandNote(c.hand, 'chip', 'chips')}</div>
-          <p className="lm-ask">Which flavors or directions should we develop next?</p>
-          <div className="dotlist lm-list">
+          <div className="k">{step === 0 ? 'Next: five chips each, once we’ve talked' : <>Five chips each · {tally(c.phones, 'person has', 'people have')} voted{byHandNote(c.hand, 'chip', 'chips')}</>}</div>
+          <div className={'dotlist lm-list' + (step === 0 ? ' wait' : '')}>
             {DIRECTIONS.flatMap((d, i) => {
               const n = t[d.id] || 0; const rank = top.indexOf(d.id);
               // The same two groups as the phones: the four flavors tasted today, then the two directions nobody has tasted.
               const head = i === 0 || DIRECTIONS[i - 1].tasted !== d.tasted ? [<div key={'h' + d.id} className="k lm-group">{d.tasted ? 'Tasted today' : 'New directions, not tasted today'}</div>] : [];
               return [...head, (
-                <div key={d.id} className={'dl' + (step >= 1 && rank > -1 ? ' top' : '') + (step >= 1 && top.length && rank < 0 ? ' dim' : '')} style={{ ['--c' as any]: d.colors[1], ['--i' as any]: i }} data-nonav>
+                <div key={d.id} className={'dl' + (step >= 2 && rank > -1 ? ' top' : '') + (step >= 2 && top.length && rank < 0 ? ' dim' : '')} style={{ ['--c' as any]: d.colors[1], ['--i' as any]: i }} data-nonav>
                   <span className="dl-name"><b>{directionName(d.id, s)}</b>{d.tasted && <small>{d.label !== directionName(d.id, s) ? `${d.label} · ${d.sub}` : d.sub}</small>}</span>
                   <span className="dl-dots">{Array.from({ length: Math.min(n, 24) }, (_, j) => <i key={j} style={{ ['--j' as any]: j }} />)}</span>
                   <b className="num dl-n">{n}</b>
-                  {step >= 1 && rank > -1 ? <em className="k">{placeLabel(pl[d.id])}</em> : <em />}
+                  {step >= 2 && rank > -1 ? <em className="k">{placeLabel(pl[d.id])}</em> : <em />}
                 </div>
               )];
             })}
           </div>
-          {step >= 1 && top.length > 3 && <p className="src lm-tie">A tie for third: the room decides which goes on.</p>}
+          {step >= 2 && top.length > 3 && <p className="src lm-tie">A tie for third: the room decides which goes on.</p>}
         </div>
       </div>
     </div>

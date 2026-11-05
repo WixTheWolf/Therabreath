@@ -45,7 +45,8 @@ const VIEWS: Record<string, View> = {
 // The scenes where phones are in use: the code stays in the corner for anyone who has not joined.
 const VOTING = new Set(['signals', 'tasting', 'nextround']);
 // The votes that close when their results go up (see the effect in ShowApp): the vote's key and its slide.
-const LOCKS = [{ key: 'signals', id: 'signals' }, { key: 'tasting', id: 'tasting' }, { key: 'directions', id: 'nextround' }];
+const LOCKS = [{ key: 'signals', id: 'signals' }, { key: 'tasting', id: 'tasting' }, { key: 'directions', id: 'nextround' }]
+  .map((l) => ({ ...l, opens: (SCENES.find((x) => x.id === l.id)?.room as { opens?: number } | undefined)?.opens || 0 }));
 // The slides with things to tap (day-map cells, the board): a click there never moves the room on.
 const STAY = new Set(['whitespace', 'concepts', 'board']);
 // Two copies of the sample names are the same when every sample has the same name and note, in any key order.
@@ -118,15 +119,16 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   useEffect(() => { if (live.current && !still && !mode) send('goto', { scene: pos.i, step: pos.step, id: SCENES[pos.i].id }); }, [pos, still, mode, send]);
   // Three things close when their results go up, and open again if we go back to the build before: the trend vote (the
   // top three start to open at build 1), the tasting scores (the averages show at build 1, so nobody still scoring sees
-  // them and nobody changes a score once the names are out) and the chips (the top three show at build 1). Moving past
-  // the slide closes it too. Hand votes and paper cards from the presenter view still count.
+  // them and nobody changes a score once the names are out) and the chips. The chips also wait for the room to talk
+  // about the chart: they open at build 1 (the slide's `opens`) and close when the top three show at build 2. Moving
+  // past the slide closes it too. Hand votes and paper cards from the presenter view still count.
   const lockWant = useRef<Record<string, string>>({});
   useEffect(() => {
     if (!live.current || still || mode) return;
     for (const l of LOCKS) {
       const at = SCENES.findIndex((x) => x.id === l.id);
       if (at < 0 || pos.i < at) continue;
-      const want = pos.i > at || pos.step >= 1 ? 'lock' : 'open';
+      const want = pos.i > at || pos.step < l.opens || pos.step >= l.opens + 1 ? 'lock' : 'open';
       if ((want === 'lock') === !!s.votes[l.key]?.locked) { lockWant.current[l.key] = ''; continue; }
       if (lockWant.current[l.key] === want) continue;
       lockWant.current[l.key] = want; send('vote', { key: l.key, action: want });

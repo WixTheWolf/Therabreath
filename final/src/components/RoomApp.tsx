@@ -89,11 +89,15 @@ function Pick({ s, me, p, room }: P) {
   );
 }
 
-function Chips({ s, me, p, room }: P) {
+function Chips({ s, me, p, room, step }: P) {
   const v = s.votes[room.key]; const mine: Record<string, number> = v?.picks?.[me.pid] || {};
   const [o, setO] = useState<Record<string, number>>(mine);
   const used = Object.values(o).reduce((a, b) => a + b, 0);
   const add = (id: string, d: number) => setO((x) => { const n = Math.max(0, (x[id] || 0) + d); if (d > 0 && used >= room.total) return x; return { ...x, [id]: n }; });
+  // The room talks about the chart first, so the chips wait for the build that opens them.
+  if (room.opens && step < room.opens) return (
+    <div className="rm-center"><div className="rm-drop" /><div className="k">Next: five chips each</div><h1 className="h3">First, the chart on the screen.</h1><p className="rm-p">Talk about where each sample landed and what you’d change. The chips open here in a moment.</p></div>
+  );
   return (
     <div className="rm-pad">
       <h1 className="h3">{room.prompt}</h1><Lock v={v} />

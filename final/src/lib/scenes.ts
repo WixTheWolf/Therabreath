@@ -10,7 +10,7 @@ import { TOPICS } from './content';
 export type RoomMode =
   | { kind: 'watch'; line?: string }
   | { kind: 'pick'; key: string; max: number; prompt: string }
-  | { kind: 'chips'; key: string; total: number; prompt: string }
+  | { kind: 'chips'; key: string; total: number; prompt: string; opens?: number }
   | { kind: 'taste' }
   | { kind: 'guess' }
   | { kind: 'team' }
@@ -52,8 +52,9 @@ const SHOW: Row[] = [
   { id: 'map', act: PART(2), chapter: 1, theme: 'a', builds: 4, title: 'Four directions', block: 'school', room: W('Four directions') },
   { id: 'film', act: PART(2), chapter: 1, theme: 'b', builds: 0, title: 'Before we taste', block: 'school', room: W('Phones down for a couple of minutes. Eyes on the screen.') },
   { id: 'tasting', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'The blind tasting', block: 'tasting', room: { kind: 'taste' } },
-  { id: 'nextround', act: PART(2), chapter: 1, theme: 'b', builds: 1, title: 'What deserves the next round', block: 'tasting',
-    room: { kind: 'chips', key: 'directions', total: 5, prompt: 'Which flavors or directions should we develop next? Put your five chips on them. You can stack them.' } },
+  { id: 'nextround', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'What deserves the next round', block: 'tasting',
+    // The chart is talked about first; the chips open on the phones at build 1 (`opens`) and close at build 2.
+    room: { kind: 'chips', key: 'directions', total: 5, opens: 1, prompt: 'Which flavors or directions should we develop next? Put your five chips on them. You can stack them.' } },
 
   opener(3, 'concepts'),
   { id: 'whitespace', act: PART(3), chapter: 2, theme: 'a', builds: 3, title: 'Where TheraBreath fits in a day', block: 'concepts', room: W('Where TheraBreath fits in a day') },

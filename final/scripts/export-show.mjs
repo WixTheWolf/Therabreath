@@ -28,8 +28,9 @@ await page.waitForTimeout(2500);
 const scenes = await page.evaluate(() => window.__show);
 const run = await page.evaluate(() => window.__run);
 // The slides whose builds replace each other rather than add up: one page per state, so the PDF shows all of them. The
-// tasting gets its blind state (coded A to D, no names) before the reveal, so the backup can run the tasting blind.
-const PAGES = { gap: [0, 3], signals: [0, 1], school: [0, 1, 2], map: [0, 1, 2, 3, 4], tasting: [0, 2], playbook: [0, 7] };
+// tasting gets its blind state (coded A to D, no names) before the reveal, so the backup can run the tasting blind, and
+// slide 15 its two questions about the chart before the chips and their top three.
+const PAGES = { gap: [0, 3], signals: [0, 1], school: [0, 1, 2], map: [0, 1, 2, 3, 4], tasting: [0, 2], nextround: [0, 2], playbook: [0, 7] };
 const caps = scenes.flatMap((s) => (PAGES[s.id] || [99]).map((b, k) => ({ s, b, k, of: (PAGES[s.id] || [99]).length })));
 const shots = [];
 for (let i = 0; i < caps.length; i++) {

@@ -134,4 +134,11 @@ const sig=Object.fromEntries(SIGNALS.map(s=>[s.id,s]));assert.equal(sig.allure.t
 assert(/\.sigs\.tv h2\.h2 \{ max-width: 1480px/.test(fs.readFileSync('src/app/show.css','utf8')),'the QR gutter on slide 9');}
 // Slide 5: off-brand answers as a list, one per line in quotes; the freshness read-back in the sliders' own words.
 {const o=fs.readFileSync('src/components/scenes/Opening.tsx','utf8');assert(o.includes('className="pw-off"')&&o.includes('Your answers lean ${listOf(l)}.')&&!o.includes('className="cloud"'),'slide 5 lists the off-brand answers and reads back the sliders');}
+// Review step 9, slide 15: the chart is talked about first. Build 0 holds the two questions with the chips closed (the
+// phones wait), build 1 swaps in the chip question and opens the chips, build 2 shows the top three and closes them.
+{assert.equal(sc('nextround').builds,2,'slide 15 has its talk, chips and results builds');assert.equal(room('nextround').opens,1,'the chips open at build 1');
+const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes('pos.step < l.opens || pos.step >= l.opens + 1'),'the chips lock before build 1 and from build 2');
+const d=fs.readFileSync('src/components/show/Deck.tsx','utf8'),l=d.slice(d.indexOf('export function Landed'));assert(l.includes("'lm-layer' + (step === 0 ? ' on' : '')")&&l.includes("'lm-layer' + (step >= 1 ? ' on' : '')")&&l.includes("step >= 2 && rank > -1")&&!l.includes('step >= 1 && rank'),'slide 15 builds');
+assert(fs.readFileSync('src/components/RoomApp.tsx','utf8').includes('room.opens && step < room.opens'),'the phones wait for the chips to open');
+assert(fs.readFileSync('scripts/export-show.mjs','utf8').includes('nextround: [0, 2]'),'the PDF shows slide 15 before the chips and with the top three');}
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');
