@@ -57,18 +57,17 @@ export default function RunSheet() {
       </section>
 
       <section className="rs-sec">
-        <h2>At a glance: owners, kit and what each block should leave us with</h2>
+        <h2>At a glance: kit and what each block should leave us with</h2>
         <table className="rs-run rs-glance">
-          <thead><tr><th>Time</th><th>Block</th><th>Owner</th><th>Technology and materials</th><th>Output</th></tr></thead>
+          <thead><tr><th>Time</th><th>Block</th><th>Technology and materials</th><th>Output</th></tr></thead>
           <tbody>{RUN.map((b) => [
             <tr key={b.id}>
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
               <td><b>{b.title}</b></td>
-              <td className="rs-owner" />
               <td data-l="Technology and materials">{RUN_NOTES[b.id].kit}</td>
               <td data-l="Output">{RUN_NOTES[b.id].output}</td>
             </tr>,
-            RUN_NOTES[b.id].after ? <tr key={b.id + '-after'} className="rs-after"><td className="rs-t">{b.end}</td><td colSpan={4}>{RUN_NOTES[b.id].after}</td></tr> : null,
+            RUN_NOTES[b.id].after ? <tr key={b.id + '-after'} className="rs-after"><td className="rs-t">{b.end}</td><td colSpan={3}>{RUN_NOTES[b.id].after}</td></tr> : null,
           ])}</tbody>
         </table>
       </section>
@@ -115,7 +114,8 @@ export default function RunSheet() {
         </table>
       </section>
 
-      <section className="rs-sec">
+      {/* The contingency list stays on one page: "Never cut" is its last line. */}
+      <section className="rs-sec rs-keep">
         <h2>If we run behind</h2>
         <ol className="rs-list">{BEHIND.map((x) => <li key={x}>{x}</li>)}</ol>
       </section>

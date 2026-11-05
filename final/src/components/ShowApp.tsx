@@ -281,7 +281,8 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
             <div className="stage-scene" key={sc.id} data-step={pos.step} data-scene={sc.id}>
               {sc.id === 'film' ? <ShowFilm still={still} ctl={film} onChange={filmChanged} /> : View ? <View s={sv} step={pos.step} scene={sc} idx={idx} ctx={ctx} send={send} /> : null}
             </div>
-            {sc.chapter >= 0 && <Chrome i={pos.i} clock={!still} />}
+            {/* The film plays clean: no clock, part name or progress bars over the picture. */}
+            {sc.chapter >= 0 && sc.id !== 'film' && <Chrome i={pos.i} clock={!still} />}
             {VOTING.has(sc.id) && joinUrl && <JoinCorner url={joinUrl} />}
             <div className="grain" />
             <div className={'blank' + (blank ? ' on' : '')} />

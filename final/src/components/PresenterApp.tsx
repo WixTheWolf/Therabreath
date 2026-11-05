@@ -218,7 +218,7 @@ function FilmPanel({ f, now, cmd, next, prev }: { f?: FilmState; now: number; cm
         {next && <button disabled={!f} onClick={() => cmd({ c: 'go', d: 1 })}>Skip to {next}</button>}
         {prev && <button disabled={!f} onClick={() => cmd({ c: 'go', d: -1 })}>Back to {prev}</button>}
       </div>
-      <p className="pv-sub">Running late? Skip it. Every decision and owner is already saved, and the write-up has them all.</p>
+      <p className="pv-sub">Running late? Skip the film and start the tasting. Nothing is decided on it.</p>
       <p className="pv-sub">Keys here or on the presentation: Space or K to pause and play, R to start again, the arrows to move on or back.</p>
     </>
   );
