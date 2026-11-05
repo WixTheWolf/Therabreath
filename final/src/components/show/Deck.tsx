@@ -17,7 +17,6 @@ import { OUR_RINSES, OUR_KIDS, OUR_COUNT, type OurProduct } from '@/lib/ourFlavo
 const useLive = () => React.useContext(LiveCtx)!;
 const tally = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 const byHandNote = (n: number, one: string, many: string) => (n ? ` · ${n} ${n === 1 ? one : many} by hand` : '');
-const WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
 const Ask = ({ q, b, step, className = '' }: { q: string; b?: number; step: number; className?: string }) => (
   <R b={b ?? 0} step={step} className={'room-ask ' + className}><span className="k">For the room</span><p>{q}</p></R>
 );
@@ -87,11 +86,12 @@ export function OurFlavors() {
   );
 }
 
-// 8. The shelf. Left: TheraBreath's range as dots, one per flavor (mint in blue, everything else in amber), a row per
-// format, with only the flavors that aren't mint named, so the point reads from the back of the room. Right: what
-// competitors have launched (TheraBreath's own Target exclusive is in the talking points, not among the competitors),
-// with their sources on one line. Build 1: there's a lot of room around mint. Build 2: where TheraBreath stands.
-const SHELF_FORMATS = ['Rinse', 'Toothpaste', 'Kids', 'Lozenge', 'Gum'];
+// 8. The shelf. Left: TheraBreath's range as dots, one per product (mint in blue, everything else in amber), a row per
+// format, with only the flavors that aren't mint named, so the point reads from the back of the room. It counts products,
+// not flavors, since one flavor can be sold in several formats. Right: what competitors have launched (TheraBreath's own
+// Target exclusive is in the talking points, not among the competitors), with their sources on one line. Build 1: where
+// could flavor add something useful? Build 2: where TheraBreath stands, as a question rather than a verdict.
+const SHELF_FORMATS = ['Rinse', 'Toothpaste', 'Kids', 'Lozenge', 'Gum', 'Sachet'];
 const isMint = (flavor: string) => /mint/i.test(flavor);
 const RIVAL_SOURCES = 'Dentistry Today (July 2025 and March 2026), Kenvue (June 2026), CTV News, License Global and DesignRush (Hismile)';
 export function Shelf({ step }: SceneProps) {
@@ -102,7 +102,7 @@ export function Shelf({ step }: SceneProps) {
     <div className="pad shelf">
       <div className="sh-left">
         <Enter i={0}><div className="k">Your portfolio today</div></Enter>
-        <Enter i={1}><h2 className="h2 sh-title">{mint} of {PORTFOLIO.length} flavors are mint, across {WORDS[formats.length] || formats.length} formats.</h2></Enter>
+        <Enter i={1}><h2 className="h2 sh-title">Mint is the center of the range: {mint} of {PORTFOLIO.length} products.</h2></Enter>
         <div className={'sh-rows' + (step >= 1 ? ' sh-lit' : '')}>
           {formats.map((f, r) => {
             const vs = PORTFOLIO.filter((v) => v.format === f).sort((a, b) => Number(isMint(b.flavor)) - Number(isMint(a.flavor)));
@@ -120,7 +120,7 @@ export function Shelf({ step }: SceneProps) {
           })}
         </div>
         <Enter i={2 + formats.length} className="sh-key"><span><i className="mint" />Mint</span><span><i className="other" />Everything else</span></Enter>
-        <R b={1} step={step}><p className="h2 it sh-room">There&rsquo;s a lot of room around mint.</p></R>
+        <R b={1} step={step}><p className="h2 it sh-room">Where could flavor add something useful?</p></R>
         <Src k="listings" style={{ position: 'static', marginTop: 14 }} />
       </div>
       <div className="sh-right">
@@ -137,7 +137,7 @@ export function Shelf({ step }: SceneProps) {
       </div>
       <R b={2} step={step} className="mk-turn sh-turn">
         <span className="k">Where TheraBreath stands</span>
-        <p>TheraBreath has been alcohol-free and dye-free from the start, it uses sodium chlorite, and it already has a kids line. <span className="it">TheraBreath already has what they&rsquo;re chasing. What keeps it ahead?</span></p>
+        <p>TheraBreath has been alcohol-free and dye-free from the start, its original rinse is made with sodium chlorite, and it already has a kids line. <span className="it">Where can flavor add another reason to choose TheraBreath?</span></p>
       </R>
     </div>
   );

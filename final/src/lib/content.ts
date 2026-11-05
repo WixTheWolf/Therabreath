@@ -52,7 +52,7 @@ export const SOURCES: Record<string, string> = {
   tff: 'The Flavor Factory’s read, not a published finding',
   patent: 'US Patent 6,582,682 (public)',
   nidcd: 'NIH, National Institute on Deafness and Other Communication Disorders, “Taste Disorders”',
-  listings: 'therabreath.com product pages, checked November 4, 2026, with Target and Walmart listings for three retailer-only flavors',
+  listings: 'therabreath.com product pages, checked November 4, 2026, with Target and Walmart listings for three retailer-only flavors, and the rinse sachets from Church & Dwight’s Q3 2026 release',
   tffport: 'The Flavor Factory portfolio record, November 4, 2026',
   bottles: 'TheraBreath product photos (therabreath.com, Walmart and Target)',
   pepvan: 'Target listing for TheraBreath Peppermint Vanilla, 16 oz, checked November 4, 2026',
@@ -128,8 +128,11 @@ export type Variant = { format: string; line: string; flavor: string; kids?: boo
 // TheraBreath's range as it's sold today, one entry per product (format, product line, flavor), checked November 4, 2026
 // on therabreath.com (Shop all, three pages; bundles, travel sizes and trial sizes left out), plus three retailer-only
 // products: Eucalyptus Mint at Target (DrBicuspid, March 3, 2026), Peppermint Vanilla at Target and Grapes Galore at
-// Walmart (their listings, checked November 4 for slide 3). No TheraBreath sachets were found anywhere, so there are
-// five formats. A flavor is mint if its name says so.
+// Walmart (their listings, checked November 4 for slide 3), and the two portable rinse sachets that Church & Dwight's
+// Q3 2026 release (October 30) says just launched, in Invigorating Icy Mint and Anti-cavity Sparkle Mint, for travel,
+// purse or pocket. That makes six formats. Each entry is a product, so a flavor sold in two formats counts twice: the
+// slide says products, not flavors. A product is mint if its flavor name says so. The release calls the new toothpaste
+// line four variants; therabreath.com listed five on November 4, so the slide and the notes say "as listed".
 export const PORTFOLIO: Variant[] = [
   { format: 'Rinse', line: 'Fresh Breath', flavor: 'Invigorating Icy Mint' },
   { format: 'Rinse', line: 'Fresh Breath', flavor: 'Mild Mint' },
@@ -158,6 +161,8 @@ export const PORTFOLIO: Variant[] = [
   { format: 'Lozenge', line: 'Dry Mouth', flavor: 'Tart Berry' },
   { format: 'Gum', line: 'Fresh Breath', flavor: 'Invigorating Icy Mint' },
   { format: 'Gum', line: 'Fresh Breath', flavor: 'Citrus Mint' },
+  { format: 'Sachet', line: 'Fresh Breath', flavor: 'Invigorating Icy Mint', where: 'Q3 release' },
+  { format: 'Sachet', line: 'Anticavity', flavor: 'Sparkle Mint', where: 'Q3 release' },
 ];
 
 export const MARKET = [
@@ -434,7 +439,7 @@ export const TASTING_KIT = [
 const MINT = PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length;
 export const TOPICS = [
   { title: 'What\u2019s changing',
-    points: [`${MINT} of TheraBreath\u2019s ${PORTFOLIO.length} flavors are mint.`, '86 out of 100 US households don\u2019t buy TheraBreath yet.', 'Competitors are adding flavors, mostly as limited editions.', 'Then seven trends we think matter for oral care.'],
+    points: [`Mint is the center of the range: ${MINT} of TheraBreath\u2019s ${PORTFOLIO.length} products are mint.`, '86 out of 100 US households don\u2019t buy TheraBreath yet.', 'Competitors are adding flavors, mostly as limited editions.', 'Then seven trends we think matter for oral care.'],
     questions: ['Which three trends matter most for TheraBreath?', 'What are you seeing that we missed?'] },
   { title: 'Where flavor could go',
     points: ['Flavor combines taste, aroma and mouthfeel.', 'The flavor has to work in your base, sodium chlorite included, through shelf life.', 'We’ll show four directions, and two of them are in the tasting.', 'Four samples, all made in your Fresh Breath and Kids bases.'],
