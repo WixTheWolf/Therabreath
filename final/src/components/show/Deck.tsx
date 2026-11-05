@@ -224,7 +224,10 @@ export function FlavorSchool({ step }: SceneProps) {
       <div className={'fs-state school' + (at === 0 ? ' on' : '')}>
         <div className="pad">
           <h2 className="h1 fs-h">Flavor combines taste, aroma <span className="it">and mouthfeel.</span></h2>
-          <div className="venn">{parts.map((p, i) => <div key={p.t} className={'vc vc' + i}><div className="vc-in"><b className="h3">{p.t}</b><span className="k">{p.w}</span><p>{p.d}</p></div></div>)}</div>
+          {/* The circles blend into each other, so their words sit on a layer of their own above all three: no circle's
+              edge runs through another circle's text. */}
+          <div className="venn" aria-hidden="true">{parts.map((p, i) => <div key={p.t} className={'vc vc' + i} />)}</div>
+          <div className="venn">{parts.map((p, i) => <div key={p.t} className={'vc vc-label vc' + i}><div className="vc-in"><b className="h3">{p.t}</b><span className="k">{p.w}</span><p>{p.d}</p></div></div>)}</div>
           <Src k="nidcd" style={{ position: 'absolute', left: 120, bottom: 118 }} />
         </div>
       </div>

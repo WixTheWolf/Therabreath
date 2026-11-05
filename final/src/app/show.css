@@ -865,3 +865,13 @@
 .pt-pick dl.pt-key dt { font-size: 12px; }
 .pt-pick dl.pt-key dd { font-size: 20px; line-height: 1.25; }
 .pt-meta { font-size: 16px; }
+
+/* Review step 4: collisions and contrast. */
+/* Slide 11: the circles keep their blend; the words sit on a layer above them (see FlavorSchool) on a firmer panel. */
+.vc.vc-label { background: none; border-color: transparent; mix-blend-mode: normal; }
+.fs .vc-in { background: rgba(11, 22, 36, .8); }
+/* Slide 14: dark numerals from 3.4 up, where the fill gets light enough that white would fall under about 4 to 1. */
+/* Slide 22: a soft dark pool behind the words, so the subtitle holds over the brightest colors of the field. */
+.lunch-in { isolation: isolate; }
+.lunch-in::before { content: ''; position: absolute; left: 50%; top: 50%; width: 1300px; height: 620px; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(11,27,43,.42), rgba(11,27,43,0)); z-index: -1; pointer-events: none; }
+.lunch-in .sub { color: #F0EEE9; }

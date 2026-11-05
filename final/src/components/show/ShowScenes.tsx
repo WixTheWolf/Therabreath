@@ -170,12 +170,12 @@ export function TastingLive({ s, step }: SceneProps) {
           <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}{JAR.map((j) => <span key={j.key}>{j.l}<small>low · right · high</small></span>)}</div>
           {rows.map((r) => (
             <div key={r.code} className="hrow">
-              <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{/* The Mystery Flavor stays a mystery: its name goes up, but what's in it isn't shown. */}{step >= 2 && r.code !== MYSTERY && <small>{s.revealed?.samples[r.code]?.note}</small>}{!scoring && <em className="tl-n">{r.sum.n} {r.sum.n === 1 ? 'score' : 'scores'}</em>}</span></div>
+              <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{/* The Mystery Flavor stays a mystery: its name goes up, but what's in it isn't shown. */}{step >= 2 && r.code !== MYSTERY && <small>{s.revealed?.samples[r.code]?.note}</small>}{!scoring && step < 2 && <em className="tl-n">{r.sum.n} {r.sum.n === 1 ? 'score' : 'scores'}</em>}</span></div>
               {scoring ? (
                 <div className="tl-prog"><i style={{ width: `${prog.phones ? Math.round((prog.per[r.code] / prog.phones) * 100) : 0}%` }} /><b className="num">{prog.per[r.code]}</b><span>of {prog.phones} {prog.phones === 1 ? 'phone has' : 'phones have'} scored {r.code}</span></div>
               ) : (
                 <>
-                  {metrics.map(([m]) => <div key={m} className={'hcell' + (r.sum[m] >= 4 ? ' hi' : '')} style={cell(r.sum[m])}><b className="num">{r.sum[m] ? r.sum[m].toFixed(1) : ''}</b></div>)}
+                  {metrics.map(([m]) => <div key={m} className={'hcell' + (r.sum[m] >= 3.4 ? ' hi' : '')} style={cell(r.sum[m])}><b className="num">{r.sum[m] ? r.sum[m].toFixed(1) : ''}</b></div>)}
                   {/* All three answers, not only the most common one, so a split (too little and too much) shows. */}
                   {JAR.map((j) => <div key={j.key} className="hjar">{r.sum.n ? JAR_OPTS.map((o) => <b key={o} className="num" title={o}>{r.sum[j.key][o] || 0}</b>) : null}</div>)}
                 </>
@@ -183,10 +183,13 @@ export function TastingLive({ s, step }: SceneProps) {
             </div>
           ))}
         </div>
+        {/* The reveal (build 2) adds what's in each sample under its name, so the rows grow: there the score counts (in the
+            line above) and the one-word answers (on the build before) step aside, and the fruit guesses stay, to set
+            against the Mystery Flavor's name. */}
         <R b={1} step={step} className="words">
           {guesses.length > 0 && <span className="tl-guess">Fruit guesses for {MYSTERY}: {guesses.slice(-8).join(' · ')}</span>}
-          {words.slice(-16).map((x, i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 26 + ((i * 13) % 4) * 6 }}>{x.w}</span>)}
-          {!words.length && !guesses.length && <span className="empty">Your one-word answers will show up here.</span>}
+          {step < 2 && words.slice(-16).map((x, i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 26 + ((i * 13) % 4) * 6 }}>{x.w}</span>)}
+          {step < 2 && !words.length && !guesses.length && <span className="empty">Your one-word answers will show up here.</span>}
         </R>
       </div>
     </div>
