@@ -7,19 +7,19 @@ import { MOLECULES } from '@/lib/content';
 export function School({ step }: SceneProps) {
   const parts = [
     { t: 'Taste', w: 'The tongue', d: 'Sweet, sour, salty, bitter, umami.' },
-    { t: 'Aroma', w: 'The nose, both ways', d: 'What you sniff in, plus what rises from the back of your mouth as you swallow.' },
-    { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming. Most of what mint does happens here.' },
+    { t: 'Aroma', w: 'The nose, both ways', d: 'Aroma reaches the nose from the mouth as well as from sniffing.' },
+    { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming, like the coolness of mint.' },
   ];
   return (
     <div className="pad school">
       <Enter i={0}><div className="k">Flavor School · What flavor is</div></Enter>
-      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1400 }}>Most of what we call flavor is really smell. <span className="it">The rest is how it feels.</span></h2></Enter>
+      <Enter i={1}><h2 className="h1" style={{ maxWidth: 1400 }}>Flavor combines taste, aroma <span className="it">and mouthfeel.</span></h2></Enter>
       <div className="venn">
         {parts.map((p, i) => (
           <R key={p.t} b={i + 1} step={step} className={'vc vc' + i}><div className="vc-in"><b className="h3">{p.t}</b><span className="k">{p.w}</span><p>{p.d}</p></div></R>
         ))}
       </div>
-      <Src k="pf" style={{ position: 'absolute', left: 120, bottom: 118 }} />
+      <Src k="nidcd" style={{ position: 'absolute', left: 120, bottom: 118 }} />
     </div>
   );
 }
@@ -34,14 +34,15 @@ export function CoolingPlot({ shown = 3, frost = true }: { shown?: number; frost
     { id: 'A signature curve', col: '#FFFFFF', w: 5, dash: '', pts: [[0, .02], [.12, .50], [.25, .86], [.40, .74], [.55, .62], [.70, .52], [.85, .42], [1, .32]], lab: [.80, .52] },
   ];
   const path = (pts: number[][]) => { const P = pts.map(([a, b]) => [X(a), Y(b)]); let d = `M${P[0][0]} ${P[0][1]}`; for (let i = 0; i < P.length - 1; i++) { const p0 = P[i - 1] || P[i], p1 = P[i], p2 = P[i + 1], p3 = P[i + 2] || p2; d += ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]} ${p2[1]}`; } return d; };
-  const ticks: [string, number][] = [['1 sec', 0], ['10 sec', .24], ['1 min', .428], ['10 min', .668], ['1 hr', .855], ['4 hr', 1]];
+  // Phases, not times: the curves are drawn to explain the idea, so the axis carries no numbers that could read as data.
+  const phases: [string, number, number][] = [['Onset', 0, .22], ['Peak', .22, .46], ['Linger', .46, 1]];
   const sig = curves[2].pts;
   const flakes = Array.from({ length: 17 }, (_, i) => { const x = 0.06 + i * 0.038; let y = 0; for (let k = 0; k < sig.length - 1; k++) if (x >= sig[k][0] && x <= sig[k + 1][0]) y = sig[k][1] + (sig[k + 1][1] - sig[k][1]) * ((x - sig[k][0]) / (sig[k + 1][0] - sig[k][0])); return { x: X(x), y: Y(y) - 30 - ((i * 37) % 11) * 2, r: 6 + y * 14, i }; });
   const crystal = (cx: number, cy: number, r: number) => { let d = ''; for (let k = 0; k < 6; k++) { const a = k * Math.PI / 3, ca = Math.cos(a), sa = Math.sin(a); d += `M${cx} ${cy}L${cx + ca * r} ${cy + sa * r}`; for (const f of [0.45, 0.72]) { const bx = cx + ca * r * f, by = cy + sa * r * f, bl = r * 0.28 * (1.1 - f); for (const sgn of [-1, 1]) { const b = a + sgn * Math.PI / 4; d += `M${bx} ${by}L${bx + Math.cos(b) * bl} ${by + Math.sin(b) * bl}`; } } } return d; };
   return (
     <svg className="cool-plot" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
       <defs><filter id="cglow"><feGaussianBlur stdDeviation="7" /></filter></defs>
-      {ticks.map(([t, v]) => <g key={t}><line x1={X(v)} x2={X(v)} y1={Y(0)} y2={Y(1)} stroke="var(--rule2)" /><text x={X(v)} y={Y(0) + 36} textAnchor="middle" className="axis">{t.toUpperCase()}</text></g>)}
+      {phases.map(([t, a, b]) => <g key={t}>{a > 0 && <line x1={X(a)} x2={X(a)} y1={Y(0)} y2={Y(1)} stroke="var(--rule2)" strokeDasharray="4 8" />}<text x={(X(a) + X(b)) / 2} y={Y(0) + 36} textAnchor="middle" className="axis">{t.toUpperCase()}</text></g>)}
       <line x1={X(0)} x2={X(1)} y1={Y(0)} y2={Y(0)} stroke="var(--fg3)" strokeWidth={1.4} /><line x1={X(0)} x2={X(0)} y1={Y(0)} y2={Y(1)} stroke="var(--fg3)" strokeWidth={1.4} />
       <text x={(X(0) + X(1)) / 2} y={Y(0) + 72} textAnchor="middle" className="axis strong">TIME AFTER RINSING</text>
       <text transform={`translate(${X(0) - 34} ${(Y(0) + Y(1)) / 2}) rotate(-90)`} textAnchor="middle" className="axis strong">PERCEIVED COOLING</text>
@@ -62,7 +63,7 @@ export function Cooling({ step }: SceneProps) {
       <div className="cool-copy">
         <Enter i={0}><div className="k">Flavor School · How cooling works</div></Enter>
         <Enter i={1}><h2 className="h1">Cooling does<br />two jobs.</h2></Enter>
-        <R b={3} step={step}><p className="h3 it accent">There’s the hit when you first rinse, and there’s how long it lasts. We tune both.</p></R>
+        <R b={3} step={step}><p className="h3 it accent">Cooling has an onset and a linger. We can work on both.</p></R>
         <div className="src" style={{ marginTop: 40 }}>Drawn to explain the idea. These aren’t measured curves.</div>
       </div>
       <CoolingPlot shown={step + 1} frost={step >= 2} />
@@ -98,13 +99,13 @@ export function OxydField() {
 
 // 20. Flavor in an oxidizing world: flavor molecules drifting through an oxygen-rich field.
 export function Oxyd({ step }: SceneProps) {
-  const levers = ['Controlling pH', 'Incorporating and protecting the flavor', 'Choosing materials that hold up'];
+  const levers = ['Choose compatible materials', 'Work on incorporation and protection', 'Check stability in the agreed base'];
   return (
     <div className="oxyd">
       <OxydField />
       <div className="pad" style={{ position: 'relative' }}>
         <Enter i={0}><div className="k">Flavor School · Flavor and sodium chlorite</div></Enter>
-        <Enter i={1}><h2 className="h2" style={{ maxWidth: 1050 }}>Sodium chlorite is tough on the bacteria behind bad breath, and that makes it tough on flavor too.</h2></Enter>
+        <Enter i={1}><h2 className="h2" style={{ maxWidth: 1050 }}>The flavor has to work in the actual base, from the first rinse through shelf life.</h2></Enter>
         <div className="levers">{levers.map((l, i) => <R key={l} b={i + 1} step={step} className="lever"><span className="num">0{i + 1}</span>{l}</R>)}</div>
         <R b={3} step={step} className="oxyd-pay h2 it">A flavor only counts if it still tastes right after months on the shelf.</R>
       </div>

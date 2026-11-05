@@ -197,17 +197,18 @@ export function TrendVote({ s, step }: SceneProps) {
   );
 }
 
-// 11. Flavor School, as three things to know about flavor in a TheraBreath rinse: most of flavor is smell and feel,
-// cooling has a hit and a linger, and sodium chlorite is tough on flavor, so we incorporate and protect it. One slide, three
-// states, ending on the clean finish and a question. The words are Ryan's from the Flavor School slides.
-const FS = ['Smell and feel', 'Cooling', 'Sodium chlorite'];
+// 11. Flavor School, as three things to know about flavor in a TheraBreath rinse: flavor combines taste, aroma and
+// mouthfeel (NIDCD), cooling has an onset and a linger (drawn, with no times on the axis), and the flavor has to work in
+// the actual base through shelf life. One slide, three states, ending on the clean finish and a question. Ryan's Flavor
+// School words, made more careful after the November 4 review; Ryan signs off the science and the notes together.
+const FS = ['Taste, aroma and feel', 'Cooling', 'Sodium chlorite'];
 export function FlavorSchool({ step }: SceneProps) {
   const parts = [
     { t: 'Taste', w: 'The tongue', d: 'Sweet, sour, salty, bitter, umami.' },
-    { t: 'Aroma', w: 'The nose, both ways', d: 'What you sniff in, plus what rises from the back of your mouth as you swallow.' },
-    { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming. Most of what mint does happens here.' },
+    { t: 'Aroma', w: 'The nose, both ways', d: 'Aroma reaches the nose from the mouth as well as from sniffing.' },
+    { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming, like the coolness of mint.' },
   ];
-  const levers = ['Controlling pH', 'Incorporating and protecting the flavor', 'Choosing materials that hold up'];
+  const levers = ['Choose compatible materials', 'Work on incorporation and protection', 'Check stability in the agreed base'];
   const at = Math.min(2, step);
   return (
     <div className="fs">
@@ -218,9 +219,9 @@ export function FlavorSchool({ step }: SceneProps) {
       </div>
       <div className={'fs-state school' + (at === 0 ? ' on' : '')}>
         <div className="pad">
-          <h2 className="h1 fs-h">Most of what we call flavor is really smell. <span className="it">The rest is how it feels.</span></h2>
+          <h2 className="h1 fs-h">Flavor combines taste, aroma <span className="it">and mouthfeel.</span></h2>
           <div className="venn">{parts.map((p, i) => <div key={p.t} className={'vc vc' + i}><div className="vc-in"><b className="h3">{p.t}</b><span className="k">{p.w}</span><p>{p.d}</p></div></div>)}</div>
-          <Src k="pf" style={{ position: 'absolute', left: 120, bottom: 118 }} />
+          <Src k="nidcd" style={{ position: 'absolute', left: 120, bottom: 118 }} />
         </div>
       </div>
       <div className={'fs-state cooling' + (at === 1 ? ' on' : '')}>
@@ -228,8 +229,8 @@ export function FlavorSchool({ step }: SceneProps) {
           <div className="pad">
             <div className="cool-copy">
               <h2 className="h1">Cooling does<br />two jobs.</h2>
-              <p className="h3 it accent">There’s the hit when you first rinse, and there’s how long it lasts. We tune both.</p>
-              <div className="src fs-drawn">Drawn to explain, not measured.</div>
+              <p className="h3 it accent">Cooling has an onset and a linger. We can work on both.</p>
+              <div className="src fs-drawn">Drawn to explain the idea. Not measured, and not these samples.</div>
             </div>
             <CoolingPlot shown={3} frost />
           </div>
@@ -238,10 +239,10 @@ export function FlavorSchool({ step }: SceneProps) {
       <div className={'fs-state oxyd' + (at === 2 ? ' on' : '')}>
         {step >= 2 && (
           <div className="pad">
-            <h2 className="h2 fs-ox">Sodium chlorite is tough on the bacteria behind bad breath, and that makes it tough on flavor too.</h2>
-            <div className="k fs-ctl">What we control</div>
+            <h2 className="h2 fs-ox">The flavor has to work in the actual base, <span className="it">from the first rinse through shelf life.</span></h2>
+            <div className="k fs-ctl">What we do</div>
             <div className="levers">{levers.map((l, i) => <div key={l} className="lever" style={{ animationDelay: `${300 + i * 160}ms` }}><span className="num">0{i + 1}</span>{l}</div>)}</div>
-            <p className="h2 fs-pay">A TheraBreath flavor can start anywhere, <span className="it">but it has to finish clean.</span></p>
+            <p className="h2 fs-pay">Whatever direction we take, <span className="it">the finish needs to feel clean.</span></p>
             <Ask step={step} q="Where has flavor been hardest to get right with sodium chlorite for you?" className="fs-ask" />
             <Src k="patent" extra="Public chemistry only. No TheraBreath or TFF formula details" style={{ position: 'absolute', left: 120, bottom: 118 }} />
           </div>

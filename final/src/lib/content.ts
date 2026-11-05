@@ -51,6 +51,7 @@ export const SOURCES: Record<string, string> = {
   licensing: 'The Licensing Letter, Hismile × Chupa Chups toothpaste',
   tff: 'The Flavor Factory’s read, not a published finding',
   patent: 'US Patent 6,582,682 (public)',
+  nidcd: 'NIH, National Institute on Deafness and Other Communication Disorders, “Taste Disorders”',
   listings: 'therabreath.com product pages, checked November 4, 2026, with Target and Walmart listings for three retailer-only flavors',
   tffport: 'The Flavor Factory portfolio record, November 4, 2026',
   bottles: 'TheraBreath product photos (therabreath.com, Walmart and Target)',
@@ -70,6 +71,7 @@ export const SOURCE_URLS: Record<string, string> = {
   mccormick: 'https://news.mccormick.com/2025-12-09-McCormick-R-Unveils-the-2026-Flavor-of-the-Year-Black-Currant',
   kerry: 'https://www.kerry.com/about/news-and-media/2026/kerry-launches-taste-charts-2026',
   pf: 'https://www.cosmeticsandtoiletries.com/home/article/22963037/from-mint-to-marshmallow-the-sensory-revolution-in-modern-oral-hygiene',
+  nidcd: 'https://www.nidcd.nih.gov/health/taste-disorders',
   symrise: 'https://www.symrise.com/newsroom/article/optacoolr-fuji-symrise-introduces-advanced-cooling-substance-for-a-broad-range-of-oral-care-products/',
   kff: 'https://www.kff.org/health-costs/poll-1-in-8-adults-say-they-are-currently-taking-a-glp-1-drug-for-weight-loss-diabetes-or-another-condition-even-as-half-say-the-drugs-are-difficult-to-afford/',
   carequest: 'https://carequest.org/?p=7123',
@@ -175,7 +177,7 @@ export const SIGNALS: Signal[] = [
   { id: 'fruit', n: 3, hue: 330, from: 'Food and flavor', title: 'Fruit flavors are growing up.', proofs: [{ t: 'Black Currant is McCormick’s 2026 Flavor of the Year.', src: 'mccormick' }, { t: 'Kerry names dragon fruit, hibiscus and orange blossom among the flavors to watch in 2026.', src: 'kerry' }], so: 'Fruit-forward mints, made with adults in mind.', ask: 'Which fruit notes could sit next to mint without reading as a kids’ product?' },
   { id: 'botanical', n: 4, hue: 140, from: 'Oral care', title: 'Botanicals are showing up in daily routines.', proofs: [{ t: 'TheraBreath’s Eucalyptus Mint and Overnight Chamomile Mint are already on shelf. Both lead with a botanical, and one is named for a time of day.', src: 'drbicuspid' }, { t: '“Swishy Time” turned rinsing into a small self-care ritual, and share went up with it.', src: 'warc' }], so: 'Flavors made for a particular time of day, like first thing in the morning or right before bed.', ask: 'Which moment of the day could a botanical own?' },
   { id: 'allure', n: 5, hue: 36, from: 'Oral care', title: 'Sweeter, more playful flavors are reaching oral care.', proofs: [{ t: 'Perfumer & Flavorist’s April 2026 review of oral care names fun flavors, brand tie-ups and functional confectionery among the forces behind new products.', src: 'pf' }, { t: 'Hismile sells candy-brand toothpaste, such as its Chupa Chups line.', src: 'licensing' }], so: 'A sweeter start can work, as long as the finish is clean.', ask: 'Where is the line between fun and too sweet for TheraBreath?' },
-  { id: 'sensation', n: 6, hue: 210, from: 'Oral care', title: 'Mouthfeel matters as much as taste.', proofs: [{ t: 'Symrise launched Optacool Fuji for oral care, promising a quick burst of freshness and long-lasting cooling (Symrise’s own claim).', src: 'symrise' }, { t: 'Mouthfeel is what you feel rather than taste: the cooling, the tingle, the warmth and how smooth your mouth feels after. It’s how people know a rinse is working.', src: 'tff' }], so: 'Design the feel on purpose: how fast it cools, how long it lasts and how it finishes.', ask: 'What should TheraBreath feel like in the first ten seconds, and after a minute?' },
+  { id: 'sensation', n: 6, hue: 210, from: 'Oral care', title: 'The feel of a rinse is part of its experience.', proofs: [{ t: 'Symrise launched Optacool Fuji for oral care, promising a quick burst of freshness and long-lasting cooling (Symrise’s own claim).', src: 'symrise' }, { t: 'Mouthfeel is what you feel, not taste: cooling, tingle, warmth, smoothness. It shapes perceived freshness, but it doesn’t measure efficacy.', src: 'tff' }], so: 'Design the feel on purpose: how fast it cools, how long it lasts and how it finishes.', ask: 'What should TheraBreath feel like in the first ten seconds, and after a minute?' },
   { id: 'mouths', n: 7, hue: 260, from: 'Oral care', title: 'Many people live with dry mouth or changed taste.', proofs: [{ t: 'About 1 in 8 US adults say they currently take a GLP-1 drug.', src: 'kff' }, { t: 'CareQuest Institute advises dental teams to ask about GLP-1 use: dry mouth has been reported, and research on oral effects is still early.', src: 'carequest' }], so: 'A flavor that stays pleasant for people with a dry mouth or changed taste could be worth exploring, without any health claim.', ask: 'What would a flavor need to do to stay pleasant in a dry mouth, and what could we never claim?' },
 ];
 
@@ -435,7 +437,7 @@ export const TOPICS = [
     points: [`${MINT} of TheraBreath\u2019s ${PORTFOLIO.length} flavors are mint.`, '86 out of 100 US households don\u2019t buy TheraBreath yet.', 'Competitors are adding flavors, mostly as limited editions.', 'Then seven trends we think matter for oral care.'],
     questions: ['Which three trends matter most for TheraBreath?', 'What are you seeing that we missed?'] },
   { title: 'Where flavor could go',
-    points: ['Most of what people call flavor is smell. The rest is how it feels.', 'Sodium chlorite is hard on flavor, so everything we make has to hold up in it.', 'We’ll show four directions, and two of them are in the tasting.', 'Four samples, all made in your Fresh Breath and Kids bases.'],
+    points: ['Flavor combines taste, aroma and mouthfeel.', 'The flavor has to work in your base, sodium chlorite included, through shelf life.', 'We’ll show four directions, and two of them are in the tasting.', 'Four samples, all made in your Fresh Breath and Kids bases.'],
     questions: ['Which direction feels most like TheraBreath, and which one stretches it the most?', 'What would set TheraBreath\u2019s flavors apart from what competitors are launching?'] },
   { title: 'What we could make',
     points: ['Start from the samples and directions that did well.', 'For each concept, agree who it’s for, when they’d use it, its role in the range, the format and what it grows.', 'Aim for up to three.'],
