@@ -409,16 +409,6 @@ export const RUN: Block[] = [
 ];
 export const AGENDA: [string, string, string?][] = RUN.map((b) => [b.t, b.title, b.obj]);
 
-// From sample to next step: how the morning turns four blind samples into up to three directions, each with owners and
-// a date. The times come from RUN.
-export const DECIDE = [
-  { v: 'Taste', when: '10:40', d: 'Four samples, blind, made in the bases you sent. Water between each one.' },
-  { v: 'Score', when: 'As you taste', d: 'How much you like the flavor, how well it fits TheraBreath and how different it is from current mouthwash flavors, from 1 to 5. Then whether the sweetness and cooling are right. On your phone or a paper card.' },
-  { v: 'Reveal', when: 'Once everyone’s scored', d: 'The names go up on screen, next to everyone’s scores.' },
-  { v: 'Discuss', when: 'Before the vote', d: 'Where each sample landed, and what it would take to make it work.' },
-  { v: 'Vote', when: 'Chips by 11:00', d: 'Five chips each on the flavors or directions we should develop next. After the concepts, three dots each on which to develop.' },
-  { v: 'Assign', when: '11:20', d: 'Each direction goes under Now, Next or Later with everything below, and we read it back before noon.' },
-];
 // What every direction leaves with: the same six the presentation's Now, Next, Later rows ask for.
 export const RECORD = [
   { l: 'Consumer or occasion', d: 'Who it’s for, or when they’d reach for it' },

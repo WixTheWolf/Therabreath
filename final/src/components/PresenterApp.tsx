@@ -238,8 +238,8 @@ function FilmPanel({ f, now, cmd, next, prev }: { f?: FilmState; now: number; cm
   );
 }
 
-// The four directions: open any profile card on the TV, or go back to the map. The short version skips the two that
-// aren't in the tasting when stepping through, but any card can still be opened here.
+// The four directions: open any profile card on the TV, or go back to the map. The arrows step through all four, in
+// the short version too: the two not in the tasting are on the chips, so they always get their card.
 // The directions with samples in today's tasting; the other two are discussed and on the chips, but not tasted.
 const TASTED = [...new Set(SAMPLES.map((x) => x.territory))];
 function Profiles({ step, off, cmd, i, short }: { step: number; off: boolean; cmd: (c: ShowCmd) => void; i: number; short: boolean }) {

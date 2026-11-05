@@ -146,13 +146,16 @@ assert(fs.readFileSync('src/app/show.css','utf8').includes('.tl .pad > .enter:fi
 // 18 says that what's filled in is a proposal.
 {const n=fs.readFileSync('src/lib/sceneNotes.ts','utf8');assert(n.includes('We have a starting shortlist')&&n.includes('Start with the moment and the need'),'slide 16 talking points');
 assert(fs.readFileSync('src/components/show/ShowScenes.tsx','utf8').includes('what’s filled in is a proposal until we agree it'),'slide 18 says the cards are proposals');}
-{const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes("want = 'reveal'")&&sh.includes("v?.revealed && want === 'open'"),'the tasting stays closed once its scores have been up');
-assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("send('vote', { key: 'tasting', action: 'open' })"),'Reopen scoring in the presenter view');}
+// The facilitation guide's five issues. Ties: the vote settles only the places that fit in three seats; a tie at the
+// cutoff waits for the room. The tasting stays closed once its scores have been up. An edited agreed card needs the
+// room's yes again. A marked moment keeps its words (above). The short version only skips the July row (above).
 {const {shortlist}=load('state');
 let x=shortlist({C:5,D:5,A:3,bright:3,B:1});assert.equal(x.sure.join(),'C,D');assert.equal(x.tied.sort().join(),'A,bright');assert.equal(x.seats,1,'two tied for third: one seat for the room');
 x=shortlist({C:4,D:3,A:2});assert.equal(x.sure.join(),'C,D,A');assert.equal(x.tied.length,0);assert.equal(x.seats,0);
 x=shortlist({C:2,D:2,A:2,bright:2});assert.equal(x.sure.length,0);assert.equal(x.tied.length,4);assert.equal(x.seats,3,'four tied for first: the room picks three');
 x=shortlist({C:3,D:3,A:3,B:1});assert.equal(x.sure.join(),'C,D,A','three tied for first all fit');
-const c=fs.readFileSync('src/components/show/Concepts.tsx','utf8');assert(c.includes("shortlist(tallyPick(s, 'directions')).sure")&&!c.includes('.slice(0, 3)')&&c.includes('Tied in the chips'),'concept cards start only from settled places');}
-assert(fs.readFileSync('src/components/show/Concepts.tsx','utf8').includes("set({ ...fields, agreed: '' })"),'an edit takes agreement off');
+const c=fs.readFileSync('src/components/show/Concepts.tsx','utf8');assert(c.includes("shortlist(tallyPick(s, 'directions')).sure")&&!c.includes('.slice(0, 3)'),'concept cards start only from settled places');assert(c.includes('Tied in the chips')&&c.includes("set({ ...fields, agreed: '' })"),'tie picker, and an edit takes agreement off');
+const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes("want = 'reveal'")&&sh.includes("v?.revealed && want === 'open'"),'the tasting stays closed once its scores have been up');
+assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("send('vote', { key: 'tasting', action: 'open' })"),'Reopen scoring in the presenter view');
+assert(!fs.readFileSync('src/lib/content.ts','utf8').includes('three dots each'),'no three-dot vote in the run of show');}
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');

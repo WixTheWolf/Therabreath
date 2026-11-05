@@ -32,8 +32,8 @@ const opener = (n: number, block: string): Row => ({
   id: `open${n}`, act: PART(n), chapter: n - 1, theme: 'b', builds: 0, title: TOPICS[n - 1].title, block, room: W(TOPICS[n - 1].title),
 });
 // Twenty-two slides, built for talking with the room rather than at it. Each of Ross's four objectives opens on its own
-// chapter slide. `skip` lists the builds the short version (S) leaves out: the July row on Who we are, and the two
-// directions that are not in the tasting.
+// chapter slide. `skip` lists the builds the short version (S) leaves out: only the July row on Who we are. The two
+// directions not in the tasting always show, even in the short version, because the room can put chips on them.
 const SHOW: Row[] = [
   { id: 'arrival', act: 'Before we start', chapter: -1, theme: 'b', builds: 0, title: 'The Future of Freshness', block: 'welcome', room: W('Welcome. We start at 10:00.') },
   { id: 'team', act: 'Welcome', chapter: -1, theme: 'a', builds: 1, skip: [1], title: 'Who we are, since July', block: 'welcome', room: W() },
