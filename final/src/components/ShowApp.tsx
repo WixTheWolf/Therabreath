@@ -10,7 +10,7 @@
 // the talking points, the clock, the controls, the hand votes, the paper card count, the concept cards and the plan.
 // Keys: right, space or click to go on (a click on the slides with things to tap never moves on); left to go back;
 // ] and [ next and previous part; S short version; F full screen; N talking points on this screen; P presenter view;
-// B blank screen.
+// B blank screen; 1 to 7 on the trends slide open that trend (the same key, 0 or Escape goes back).
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { useSealed } from '@/lib/sealedClient';
@@ -80,6 +80,9 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const [pos, setPos] = useState({ i: 0, step: 0 });
   const [notes, setNotes] = useState(false);
   const [blank, setBlank] = useState(false);
+  // On the trends slide, the keys 1 to 7 open that trend for more discussion, whether or not it made the top three: the
+  // same key again (or 0, or Escape) closes it, and moving on or back clears it. The presenter view has the same keys.
+  const [pick, setPick] = useState(0);
   const [hint, setHint] = useState(true);
   // A short message on the TV, such as the check before the tasting scores go up.
   const [toast, setToast] = useState('');
@@ -178,6 +181,8 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   }, [pos, still, mode, s.concepts, sv, send, status.lastOk]);
 
   const posRef = useRef(pos); posRef.current = pos;
+  useEffect(() => { setPick(0); }, [pos.i, pos.step]);
+  const pickTrend = useCallback((k: number) => { if (SCENES[posRef.current.i]?.id === 'signals' && k >= 0 && k <= 7) setPick((p) => (k === p ? 0 : k)); }, []);
   const sRef = useRef(s); sRef.current = s;
   // The blind round closes when the scores go up (build 1 of the tasting). If some phones haven't scored all four, the
   // first press says how many and a second press within ten seconds goes on, so the scores never go up by accident.
@@ -231,9 +236,11 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       else if (e.key === 'p' || e.key === 'P') window.open(presenterUrl(code), 'pb-presenter-' + code, 'popup,width=1280,height=820');
       else if (e.key === 'b' || e.key === 'B') setBlank((x) => !x);
       else if (e.key === 'f' || e.key === 'F') { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen?.(); }
+      else if (/^[0-7]$/.test(e.key)) pickTrend(Number(e.key));
+      else if (e.key === 'Escape') pickTrend(0);
     };
     addEventListener('keydown', kd); return () => removeEventListener('keydown', kd);
-  }, [go, jump, n, code]);
+  }, [go, jump, n, code, pickTrend]);
 
   // The presenter view: tell it where we are on every move, and do what it asks.
   const shownList = useMemo(() => SCENES.filter((_, i) => !skip(i)), [skip]);
@@ -243,8 +250,8 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
     const nx = SCENES.slice(i + 1).find((_, j) => !skip(i + 1 + j)); const next = nx ? titleOf(nx) : '';
     const pv = SCENES.slice(0, i).reverse().find((x) => !skip(x.n)); const prev = pv ? titleOf(pv) : '';
     let nb = step + 1; while (nb <= SCENES[i].builds && skipBuild(i, nb)) nb++;
-    return { t: 'pos', pos: { i, step, short, blank, at: shownList.indexOf(SCENES[i]) + 1, total: shownList.length, next, prev, build: nb <= SCENES[i].builds, film: film.current?.state(), told } };
-  }, [skip, skipBuild, short, blank, shownList, told]);
+    return { t: 'pos', pos: { i, step, short, blank, at: shownList.indexOf(SCENES[i]) + 1, total: shownList.length, next, prev, build: nb <= SCENES[i].builds, film: film.current?.state(), told, pick } };
+  }, [skip, skipBuild, short, blank, shownList, told, pick]);
   useEffect(() => {
     if (still || mode) return;
     const ch = showChannel(code); link.current = ch; if (!ch) return;
@@ -259,9 +266,10 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       else if (c.c === 'short') setShort((v) => !v);
       else if (c.c === 'blank') setBlank((v) => !v);
       else if (c.c === 'film') film.current?.act(c.a);
+      else if (c.c === 'pick') pickTrend(c.n);
     };
     return () => { ch.close(); link.current = null; };
-  }, [code, still, mode, go, jump, n, posMsg]);
+  }, [code, still, mode, go, jump, n, posMsg, pickTrend]);
   useEffect(() => {
     link.current?.postMessage(posMsg());
     const iv = setInterval(() => link.current?.postMessage(posMsg()), 2000); // a heartbeat, so the presenter view knows we're here
@@ -298,7 +306,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
         <div className="stage-wrap" style={{ width: 1920 * scale, height: 1080 * scale }}>
           <div className="stage" data-theme={sc.theme} style={{ transform: `scale(${scale})` }}>
             <div className="stage-scene" key={sc.id} data-step={pos.step} data-scene={sc.id}>
-              {sc.id === 'film' ? <ShowFilm still={still} ctl={film} onChange={filmChanged} /> : View ? <View s={sv} step={pos.step} scene={sc} idx={idx} ctx={ctx} send={send} /> : null}
+              {sc.id === 'film' ? <ShowFilm still={still} ctl={film} onChange={filmChanged} /> : View ? <View s={sv} step={pos.step} scene={sc} idx={idx} ctx={ctx} send={send} pick={pick} /> : null}
             </div>
             {/* The film plays clean: no clock, part name or progress bars over the picture. */}
             {sc.chapter >= 0 && sc.id !== 'film' && <Chrome i={pos.i} clock={!still} />}

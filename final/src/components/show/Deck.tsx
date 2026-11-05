@@ -145,21 +145,23 @@ export function Shelf({ step }: SceneProps) {
 
 // 9. Seven trends: vote, then discuss. All seven show at once as one line each with where the evidence comes from, and
 // the phones vote for three straight away while the bars fill. Builds 1 to 3 open the top three one at a time (the
-// vote closes on build 1 and reopens if we go back); the other four stay as one line.
+// vote closes on build 1 and reopens if we go back); the other four stay as one line. The keys 1 to 7 open any trend
+// in the same panel for more discussion (`pick`, from ShowApp), and the same key again goes back to the build.
 export function topTrends(s: SessionState) {
   const t = tallyPick(s, 'signals');
   const voted = ranked(t).filter(([, n]) => n > 0).map(([id]) => id);
   // Fewer than three with votes: the rest come in list order, so every build has a trend to open.
   return [...voted, ...SIGNALS.map((x) => x.id).filter((id) => !voted.includes(id))].slice(0, 3).map((id) => ({ sig: SIGNALS.find((x) => x.id === id)!, n: t[id] || 0 }));
 }
-export function TrendVote({ s, step }: SceneProps) {
+export function TrendVote({ s, step, pick = 0 }: SceneProps) {
   const t = tallyPick(s, 'signals');
   const c = voteCounts(s, 'signals');
   const max = Math.max(1, ...Object.values(t));
   const top = topTrends(s);
   const pl = places(t), cut = topIds(t);
   const k = Math.min(3, Math.max(0, step));
-  const focus = k > 0 ? top[k - 1] : null;
+  const picked = pick ? SIGNALS.find((x) => x.n === pick) || null : null;
+  const focus = picked ? { sig: picked, n: t[picked.id] || 0 } : k > 0 ? top[k - 1] : null;
   // Anything tied with the third is lit too, and the kicker says so: the room picks which one to open.
   const isTop = (id: string) => step >= 1 && (top.some((x) => x.sig.id === id) || cut.includes(id));
   const votes = c.phones + c.hand;
@@ -175,7 +177,7 @@ export function TrendVote({ s, step }: SceneProps) {
             const n = t[x.id] || 0;
             const on = focus?.sig.id === x.id;
             return (
-              <div key={x.id} className={'tv-row' + (on ? ' on' : '') + (isTop(x.id) && !on ? ' top' : '') + (step >= 1 && !isTop(x.id) ? ' dim' : '')} style={{ ['--h' as any]: x.hue, ['--i' as any]: i }}>
+              <div key={x.id} className={'tv-row' + (on ? ' on' : '') + (isTop(x.id) && !on ? ' top' : '') + (step >= 1 && !isTop(x.id) && !on ? ' dim' : '')} style={{ ['--h' as any]: x.hue, ['--i' as any]: i }}>
                 <span className="num">0{x.n}</span>
                 <div className="tv-t"><b>{x.title.replace(/\.$/, '')}</b><small className="tv-tag">{x.from}</small></div>
                 <div className="tv-bar"><i style={{ width: `${(n / max) * 100}%` }} /></div>
@@ -187,7 +189,7 @@ export function TrendVote({ s, step }: SceneProps) {
         </div>
         {focus ? (
           <div className="sigs-focus tv-focus" key={focus.sig.id}>
-            <div className="k">{focus.n ? `${label(focus.sig.id)} · ${tally(focus.n, 'vote', 'votes')}` : `To discuss · trend ${focus.sig.n} of 7`} · Seen in {focus.sig.from === 'Oral care' ? 'oral care' : 'food and flavor'}</div>
+            <div className="k">{focus.n ? `${isTop(focus.sig.id) ? label(focus.sig.id) : `Trend ${focus.sig.n} of 7`} · ${tally(focus.n, 'vote', 'votes')}` : `To discuss · trend ${focus.sig.n} of 7`} · Seen in {focus.sig.from === 'Oral care' ? 'oral care' : 'food and flavor'}</div>
             <h3 className="sf-title">{focus.sig.title}</h3>
             <div className="sf-proofs">{focus.sig.proofs.map((p, i) => <div key={i} className="proof" style={{ ['--d' as any]: `${i * 180}ms` }}><p>{p.t}</p><div className="src">{clean(SOURCES[p.src])}</div></div>)}</div>
             <div className="sig-so"><span className="k">What it could mean for TheraBreath</span><div className="h3 it">{focus.sig.so}</div></div>

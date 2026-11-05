@@ -158,4 +158,8 @@ const c=fs.readFileSync('src/components/show/Concepts.tsx','utf8');assert(c.incl
 const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes("want = 'reveal'")&&sh.includes("v?.revealed && want === 'open'"),'the tasting stays closed once its scores have been up');
 assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("send('vote', { key: 'tasting', action: 'open' })"),'Reopen scoring in the presenter view');
 assert(!fs.readFileSync('src/lib/content.ts','utf8').includes('three dots each'),'no three-dot vote in the run of show');}
+// Slide 9: the keys 1 to 7 open any trend for more discussion, on the TV and in the presenter view.
+{const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes("/^[0-7]$/.test(e.key)) pickTrend(Number(e.key))")&&sh.includes("SCENES[posRef.current.i]?.id === 'signals'")&&sh.includes('pick={pick}'),'keys 1 to 7 on the trends slide');
+const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');assert(d.includes('SIGNALS.find((x) => x.n === pick)'),'the trends slide opens the picked trend');
+assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("cmd({ c: 'pick', n: x.n })"),'the presenter view can open a trend');}
 console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');

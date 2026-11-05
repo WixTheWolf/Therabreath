@@ -67,7 +67,7 @@ Every page is noindex, and there are no analytics.
 | 21 | What we decided and what happens next | 7 |
 | 22 | Thank you | 0 |
 
-- **Keys:** right arrow, space or a click goes on; left goes back; `]` and `[` jump between parts; `S` is the short version (it skips the optional builds); `F` is full screen; `N` shows the talking points on the TV; `P` opens the presenter window; `B` blanks the TV.
+- **Keys:** right arrow, space or a click goes on; left goes back; `]` and `[` jump between parts; `S` is the short version (it skips the optional builds); `F` is full screen; `N` shows the talking points on the TV; `P` opens the presenter window; `B` blanks the TV; on the trends slide, `1` to `7` open that trend for more discussion (the same key again, `0` or `Esc` goes back).
 - **The presenter window** shows the talking points, the next slide and the clock against the run of show, and its buttons move the presentation. Hand votes for anyone without a phone, the paper scorecard count, the concept cards and Now, Next, Later all go in there by tapping. Nothing is typed on the day. Both windows must be open in the same browser (`src/lib/showLink.ts`).
 - **The tasting stays blind:** sample names are sealed on every attendee screen until the room flips them at build 2 of slide 14. The scores stay hidden until everyone has finished, and scoring closes when they go up.
 - **Rehearse** on `/host?code=REHEARSE`. Any code other than `FOF1109` is a separate practice session that never touches the live one. A rehearsal with no pre-brief answers of its own shows the live answers on slide 5 (read only, without names). "Refresh the rehearsal" on the team page clears it for the next run.

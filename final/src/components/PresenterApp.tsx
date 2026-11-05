@@ -56,6 +56,8 @@ export default function PresenterApp({ code }: { code: string }) {
       else if (e.key === 's' || e.key === 'S') cmd({ c: 'short' });
       else if (e.key === 'b' || e.key === 'B') cmd({ c: 'blank' });
       else if (e.key === 'End') cmd({ c: 'goto', i: SCENES.length - 1 });
+      else if (/^[0-7]$/.test(e.key)) cmd({ c: 'pick', n: Number(e.key) }); // the trends slide: open a trend, as on the TV
+      else if (e.key === 'Escape') cmd({ c: 'pick', n: 0 });
     };
     addEventListener('keydown', kd); return () => removeEventListener('keydown', kd);
   }, [cmd]);
@@ -66,7 +68,7 @@ export default function PresenterApp({ code }: { code: string }) {
   onFilm.current = linked && sc.id === 'film';
   const tm = now ? runTiming(sc.block, new Date(now)) : null;
   const joined = people(s).filter((p) => !p.paper).length;
-  const room = sc.id === 'signals' ? <HandVotes s={s} events={events} send={send} k="signals" title="Hand votes: the three trends" items={SIGNALS.map((x) => ({ id: x.id, label: x.title.replace(/\.$/, '') }))} value={(id) => [id]} />
+  const room = sc.id === 'signals' ? <><TrendPicks off={off} cmd={cmd} pick={pos?.pick || 0} /><HandVotes s={s} events={events} send={send} k="signals" title="Hand votes: the three trends" items={SIGNALS.map((x) => ({ id: x.id, label: x.title.replace(/\.$/, '') }))} value={(id) => [id]} /></>
     : sc.id === 'nextround' ? <HandVotes s={s} events={events} send={send} k="directions" title="Hand chips: what deserves the next round" how="Each person without a phone has five chips too, and can stack them. Ask where their five go and add one per chip." items={DIRECTIONS.map((d) => ({ id: d.id, label: dirName(s, d.id), sub: d.sub }))} value={(id) => ({ [id]: 1 })} />
     : sc.id === 'tasting' ? <PaperCount s={s} send={send} code={code} step={step} />
     : sc.id === 'concepts' ? <ConceptEditor s={s} send={send} />
@@ -157,6 +159,21 @@ function HandVotes({ s, events, send, k, title, items, value, how }: { s: Sessio
           );
         })}
       </ul>
+    </>
+  );
+}
+
+// The trends slide: open any of the seven on the TV for more discussion, top three or not. The keys 1 to 7 do the same
+// here and on the TV; the same one again, 0 or Escape goes back to the build, and moving on closes it.
+function TrendPicks({ off, cmd, pick }: { off: boolean; cmd: (c: ShowCmd) => void; pick: number }) {
+  return (
+    <>
+      <h2>Open a trend</h2>
+      <p className="pv-sub">To talk about any trend, in the top three or not, press its number (1 to 7) here or on the TV. Press it again, or 0, to go back. Moving on closes it.</p>
+      <div className="pt-group pv-picks" role="group" aria-label="Open a trend">
+        <span>Trends</span>
+        <div>{SIGNALS.map((x) => <button key={x.id} type="button" disabled={off} aria-pressed={pick === x.n} onClick={() => cmd({ c: 'pick', n: x.n })}><b className="num">{x.n}</b> {x.title.replace(/\.$/, '')}</button>)}</div>
+      </div>
     </>
   );
 }
