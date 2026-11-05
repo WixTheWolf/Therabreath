@@ -369,8 +369,9 @@ export const NEXT_STEPS = [
 ];
 
 // Freshness, designed: where the two worlds meet (site).
-export const SCIENCE = ['Volatile aromatics', 'Sensory perception', 'Cooling', 'Trigeminal sensations', 'Taste masking', 'Solubility', 'Stability', 'Oral-care systems'];
-export const IMAGINATION = ['Culture', 'Emotion', 'Consumer expectation', 'Food and beverage trends', 'Hospitality', 'Beauty', 'Wellness', 'Travel', 'Ritual'];
+// The few that matter for this morning, so the room remembers two capabilities instead of reading a catalog.
+export const SCIENCE = ['Cooling', 'Taste masking', 'Stability', 'Oral-care systems'];
+export const IMAGINATION = ['Food and beverage trends', 'Wellness', 'Beauty'];
 
 // The atlas. Adoption stages are The Flavor Factory's read, not measured data.
 export const ATLAS_STAGES = ['Origin cuisine', 'Specialist menus', 'Cafe and cocktail culture', 'Mainstream food and drink', 'Personal care'];
