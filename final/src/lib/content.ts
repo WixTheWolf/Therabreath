@@ -169,7 +169,7 @@ export const MARKET = [
   { when: 'July 2025', who: 'Listerine', what: 'Watermelon Mint. Alcohol-free, for a limited time, and only at Target.', src: 'dtoday25' },
   { when: 'March 2026', who: 'Listerine', what: 'Citrus Mint, with grapefruit and yuzu. Alcohol-free, at Target.', src: 'dtoday26' },
   { when: 'March 2026', who: 'TheraBreath', what: 'Eucalyptus Mint, only at Target.', src: 'drbicuspid' },
-  { when: 'June 2026', who: 'Listerine', what: 'A range of intensities, down to Extra Mild, pointing to the 54% of Americans who want a milder-tasting mouthwash.', src: 'kenvue' },
+  { when: 'June 2026', who: 'Listerine', what: 'A range of intensities, down to Extra Mild, citing a survey in which 54% wanted a milder-tasting option.', src: 'kenvue' },
   { when: '2025 to 2026', who: 'Hismile', what: 'Toothpaste as entertainment, with tie-ins to Lucky Charms, Reese’s, KFC and more.', src: 'hismile' },
 ];
 
