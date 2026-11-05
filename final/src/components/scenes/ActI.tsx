@@ -42,7 +42,7 @@ export function Gap({ step }: SceneProps) {
   return (
     <>
       <div className={'thesis gap-thesis' + (step === 0 ? '' : ' away')}>
-        <div className="tl1 on">TheraBreath took the burn out of mouthwash.</div>
+        <div className="tl1 on">TheraBreath built a strong position on a rinse without the burn.</div>
         <div className="tl2 it on">The next job is giving more people a reason to want it.</div>
       </div>
       {step >= 1 && <Glasses step={step} />}
@@ -70,11 +70,11 @@ function Glasses({ step }: { step: number }) {
         <Enter i={1} className="gap-share">TheraBreath is already number 2 in mouthwash.</Enter>
         <R b={2} step={step} className="gap-groups">
           <div className="tb"><b className="num">{GAP.tb}</b><span>buy TheraBreath</span></div>
-          <div><b className="num">{OTHER.another}</b><span>buy another mouthwash</span></div>
-          <div><b className="num">{OTHER.none}</b><span>don&rsquo;t buy mouthwash at all</span></div>
+          <div><b className="num">{OTHER.another}</b><span>buy mouthwash, but not TheraBreath</span></div>
+          <div><b className="num">{OTHER.none}</b><span>don&rsquo;t buy mouthwash</span></div>
         </R>
         <R b={3} step={step}><div className="gap-second it">Flavor could give more of these households a reason to try it.</div></R>
-        <R b={3} step={step} className="room-ask"><span className="k">For the room</span><p>Which group is a new flavor for: the {OTHER.another} or the {OTHER.none}?</p></R>
+        <R b={3} step={step} className="room-ask"><span className="k">For the room</span><p>Which should a new flavor focus on first: the {GAP.tb}, the {OTHER.another} or the {OTHER.none}?</p></R>
       </div>
       <Src k="q3call" extra={`Household penetration: TheraBreath ${GAP.tb}%, mouthwash ${GAP.category}%`} style={{ left: 120, width: 820 }} />
       <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}</div><div className="who">of 100 buy mouthwash</div></div>
