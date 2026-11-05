@@ -49,7 +49,8 @@ function Bubbles({ s, cam }: { s: any; cam: any }) {
 
 export function Arrival({ s, ctx }: SceneProps) {
   const qr = useQR(ctx.joinUrl);
-  const n = people(s).length;
+  const joined = people(s).filter((p) => !p.paper);
+  const n = joined.length;
   return (
     <>
       <Light scene="drop" theme="b" camera={DROP_CAM} frame={(t) => ({ rot: 0.6 + t * 0.12 })} fallback="/img/cover-drop.jpg" />
@@ -64,7 +65,8 @@ export function Arrival({ s, ctx }: SceneProps) {
         <div className="qr" dangerouslySetInnerHTML={{ __html: qr }} />
         <div><h3>Scan to join</h3><p>Point your phone’s camera at the code. All we need is your first name.</p><code>{ctx.code}</code></div>
       </Enter>
-      <div className="presence"><div className="count num">{n}</div><div className="lbl">Joined</div>{n > 0 && <div className="presence-names">{people(s).filter((p) => !p.paper).slice(-16).map((p) => p.name).join(' · ')}</div>}</div>
+      {/* Nothing shows until the first phone joins, so a slow start never puts a big zero on the TV. */}
+      {n > 0 && <div className="presence quiet"><div className="lbl"><b className="num">{n}</b> joined</div><div className="presence-names">{joined.slice(-16).map((p) => p.name).join(' · ')}</div></div>}
     </>
   );
 }

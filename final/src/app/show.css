@@ -882,3 +882,8 @@
 .lunch-in { isolation: isolate; }
 .lunch-in::before { content: ''; position: absolute; left: 50%; top: 50%; width: 1300px; height: 620px; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(11,27,43,.42), rgba(11,27,43,0)); z-index: -1; pointer-events: none; }
 .lunch-in .sub { color: #F0EEE9; }
+
+/* Review step 6, slide 1: the joined count is a supporting status, not a headline. */
+.presence.quiet .lbl { font: 500 20px/1 var(--mono); letter-spacing: .14em; color: var(--fg2); }
+.presence.quiet .lbl b { font: 400 44px/1 var(--serif); letter-spacing: 0; color: var(--fg); margin-right: 10px; vertical-align: -6px; }
+.presence.quiet .presence-names { margin-top: 10px; font-size: 24px; }

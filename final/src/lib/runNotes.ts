@@ -89,7 +89,7 @@ export const BEHIND = [
 // nobody has answered.
 export type SlidePlan = { clicks?: string[]; ask?: string; phones?: string };
 export const SLIDES: Record<string, SlidePlan> = {
-  arrival: { clicks: ['The title, the QR code, the number of phones joined and their first names.'], ask: 'At 10:00: welcome, thank Ross, and set up the two hours: four objectives, four samples, a plan to leave with.', phones: 'Scan the code and type a first name.' },
+  arrival: { clicks: ['The title and the QR code. Once phones join, how many and their first names.'], ask: 'At 10:00: welcome, thank Ross, and say what the morning is for: what deserves another round, what you’d change and the next step.', phones: 'Scan the code and type a first name.' },
   team: { clicks: ['The four of us, what we test in the lab and what we bring in from outside oral care.', 'Optional (S skips it): the four July themes, and Growth, November, lights up.'] },
   ours: { clicks: ['The 14 TheraBreath rinses on shelf today with our flavors in them, each bottle with its flavor and product line.'] },
   brief: { clicks: ['“We’ve built the morning around your four objectives.”', 'Objective 01 and its time, 10:10 to 10:25.', 'Objective 02, 10:25 to 11:00.', 'Objective 03, 11:00 to 11:20.', 'Objective 04, 11:20 to 11:40.', 'Ross’s goal, in his words.'] },
