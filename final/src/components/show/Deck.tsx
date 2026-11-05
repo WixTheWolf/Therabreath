@@ -5,7 +5,7 @@
 // for talking with the room: one question on screen where there is one, and nothing to type.
 import React, { useEffect, useState } from 'react';
 import { R, Enter, Src, SceneProps, clean } from '../scenes/ui';
-import { CoolingPlot, OxydField } from '../scenes/School';
+import { CoolingPlot } from '../scenes/School';
 import { POS } from '../scenes/Territories';
 import { LiveCtx, OBJ_HUE, directionName } from './ShowScenes';
 import {
@@ -205,27 +205,33 @@ export function TrendVote({ s, step, pick = 0 }: SceneProps) {
 
 // 11. Flavor School, as three things to know about flavor in a TheraBreath rinse: flavor combines taste, aroma and
 // mouthfeel (NIDCD), cooling has an onset and a linger (drawn, with no times on the axis), and the flavor has to work in
-// the actual base through shelf life. One slide, three states, ending on the clean finish and a question. Ryan's Flavor
-// School words, made more careful after the November 4 review; Ryan signs off the science and the notes together.
-const FS = ['Taste, aroma and feel', 'Cooling', 'Sodium chlorite'];
+// the actual base through shelf life. One slide, three states, each ending on a question for the room. Ryan's Flavor
+// School words, made more careful after the November 4 review and made plainer on November 5 (the same three points:
+// no causal story about sodium chlorite, no claim that we control the base, no percentages); Ryan signs off the science
+// and the notes together. Nothing moves behind the words: the molecule field that used to drift under the third state
+// made the copy hard to read, so it's gone.
+const FS = ['Three senses', 'The chill', 'Your base'];
 export function FlavorSchool({ step }: SceneProps) {
   const parts = [
     { t: 'Taste', w: 'The tongue', d: 'Sweet, sour, salty, bitter, umami.' },
-    { t: 'Aroma', w: 'The nose, both ways', d: 'Aroma reaches the nose from the mouth as well as from sniffing.' },
-    { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming, like the coolness of mint.' },
+    { t: 'Aroma', w: 'The nose, both ways', d: 'As you rinse, aroma rises from your mouth to your nose. Sniffing isn’t the only way in.' },
+    { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming. Mint’s chill is a feeling, not a taste.' },
   ];
-  const levers = ['Choose compatible materials', 'Work on incorporation and protection', 'Check stability in the agreed base'];
+  const levers = ['Choose materials that suit the base', 'Blend the flavor in and protect what’s fragile', 'Check it holds up in the base we agree on'];
   const at = Math.min(2, step);
   return (
     <div className="fs">
-      {at === 2 && <OxydField />}
       <div className="pad fs-head">
-        <Enter i={0}><div className="k">Flavor School · Three things to know</div></Enter>
+        <Enter i={0}><div className="k">Flavor School · Three things to know before you taste</div></Enter>
         <ol className="fs-steps">{FS.map((x, i) => <li key={x} className={i === at ? 'on' : i < at ? 'done' : ''}><span className="num">0{i + 1}</span>{x}</li>)}</ol>
       </div>
       <div className={'fs-state school' + (at === 0 ? ' on' : '')}>
         <div className="pad">
-          <h2 className="h1 fs-h">Flavor combines taste, aroma <span className="it">and mouthfeel.</span></h2>
+          <h2 className="h1 fs-h">You don’t just <span className="it">taste</span> a rinse.</h2>
+          <div className="fs-left">
+            <p className="h3 it accent">Flavor combines taste, aroma and mouthfeel.</p>
+            <div className="room-ask fs-q"><span className="k">For the room</span><p>Which of the three do you notice first in a TheraBreath rinse?</p></div>
+          </div>
           {/* The circles blend into each other, so their words sit on a layer of their own above all three: no circle's
               edge runs through another circle's text. */}
           <div className="venn" aria-hidden="true">{parts.map((p, i) => <div key={p.t} className={'vc vc' + i} />)}</div>
@@ -237,9 +243,10 @@ export function FlavorSchool({ step }: SceneProps) {
         {step >= 1 && (
           <div className="pad">
             <div className="cool-copy">
-              <h2 className="h1">Cooling does<br />two jobs.</h2>
-              <p className="h3 it accent">Cooling has an onset and a linger. We can work on both.</p>
-              <div className="src fs-drawn">Drawn to explain the idea. Not measured, and not these samples.</div>
+              <h2 className="h1">Cool has<br />a shape.</h2>
+              <p className="h3 it accent">How fast the chill arrives, and how long it stays. We can work on both.</p>
+              <div className="src fs-drawn">An illustration, not data from these samples.</div>
+              <div className="room-ask fs-q"><span className="k">For the room</span><p>Quick blast or slow build: which feels more like TheraBreath?</p></div>
             </div>
             <CoolingPlot shown={3} frost />
           </div>
@@ -248,12 +255,15 @@ export function FlavorSchool({ step }: SceneProps) {
       <div className={'fs-state oxyd' + (at === 2 ? ' on' : '')}>
         {step >= 2 && (
           <div className="pad">
-            <h2 className="h2 fs-ox">The flavor has to work in the actual base, <span className="it">from the first rinse through shelf life.</span></h2>
-            <div className="k fs-ctl">What we do</div>
-            <div className="levers">{levers.map((l, i) => <div key={l} className="lever" style={{ animationDelay: `${300 + i * 160}ms` }}><span className="num">0{i + 1}</span>{l}</div>)}</div>
-            <p className="h2 fs-pay">Whatever direction we take, <span className="it">the finish needs to feel clean.</span></p>
-            <Ask step={step} q="Where has flavor been hardest to get right with sodium chlorite for you?" className="fs-ask" />
-            <Src k="patent" extra="Public chemistry only. No TheraBreath or TFF formula details" style={{ position: 'absolute', left: 120, bottom: 118 }} />
+            <div className="fs-col">
+              <h2 className="h2 fs-ox">A flavor isn’t done until <span className="it">it works in your base.</span></h2>
+              <p className="h3 it accent fs-sub">From the first rinse to the last day of shelf life.</p>
+              <div className="k fs-ctl">How we get there</div>
+              <ol className="levers fs-list">{levers.map((l, i) => <li key={l} className="lever" style={{ animationDelay: `${300 + i * 160}ms` }}><span className="num">0{i + 1}</span>{l}</li>)}</ol>
+              <p className="fs-pay">And whatever we make has to finish clean.</p>
+              <Ask step={step} q="What’s the toughest flavor you’ve tried to keep alive in a sodium chlorite base?" className="fs-ask" />
+            </div>
+            <Src k="patent" style={{ position: 'absolute', left: 120, bottom: 118 }} />
           </div>
         )}
       </div>

@@ -923,3 +923,22 @@
 .lunch-in::before { width: 1500px; height: 720px; background: radial-gradient(closest-side, rgba(11,27,43,.62), rgba(11,27,43,0)); }
 .lunch-in .sub, .lunch-in .k { text-shadow: 0 1px 18px rgba(11,27,43,.5); }
 .lunch-in .k { color: rgba(240,238,233,.92); }
+
+/* November 5: Flavor School, plainer and calmer. Build 1 puts the words on the left and the circles on the right, the
+   way build 2 sets its words beside the chart. Every build ends on a question for the room. Build 3 flows down the page
+   with nothing moving behind it: the three steps are plain numbered lines (no capsules), and the clean-finish line is a
+   supporting line, not a second headline. */
+.fs .fs-h { top: 218px; }
+.fs .fs-left { position: absolute; left: 120px; top: 430px; width: 600px; display: flex; flex-direction: column; gap: 60px; }
+.fs .school .venn { left: auto; right: 60px; transform: none; top: 400px; }
+.fs .cool-copy .fs-q { margin-top: 48px; }
+.fs .fs-col { position: absolute; left: 120px; right: 120px; top: 222px; display: flex; flex-direction: column; align-items: flex-start; }
+.fs .fs-col > * { position: static; }
+.fs .fs-col .fs-ox { max-width: 1500px; }
+.fs .fs-col .fs-sub { margin-top: 20px; }
+.fs .fs-col .fs-ctl { margin-top: 64px; }
+.fs .fs-col .fs-list { margin: 28px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 22px; }
+.fs .fs-col .fs-list .lever { padding: 0; border: 0; border-radius: 0; background: none; backdrop-filter: none; font: 400 36px/1.2 var(--sans); color: var(--fg); gap: 24px; }
+.fs .fs-col .fs-list .lever .num { font-size: 32px; color: var(--accent); min-width: 46px; }
+.fs .fs-col .fs-pay { margin-top: 52px; font: 400 italic 38px/1.25 var(--serif); color: var(--accent); }
+.fs .fs-col .fs-ask { margin-top: 44px; }
