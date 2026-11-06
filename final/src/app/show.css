@@ -797,7 +797,7 @@
 .bk-tag.vote { color: #8A4E08; background: rgba(244,184,96,.32); }
 .bk-orbs { display: flex; gap: 6px; }
 .bk-orbs i { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, var(--rc) 55%); box-shadow: 0 0 14px color-mix(in oklab, var(--rc) 70%, transparent); animation: enterUp .5s var(--ease) both; }
-.bk-tray { position: absolute; left: 120px; right: 120px; top: 796px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.bk-tray { position: absolute; left: 120px; right: 120px; top: 818px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
 .bk-tray > .k { font-size: 16px; color: var(--fg2); }
 .bk-chips { display: flex; gap: 12px; flex-wrap: wrap; }
 .bk-chip { display: inline-flex; align-items: center; gap: 12px; padding: 10px 20px 10px 14px; border-radius: 99px; border: 2px solid var(--rule); background: var(--panel2); cursor: pointer; color: var(--fg); }
