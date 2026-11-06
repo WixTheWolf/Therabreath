@@ -36,6 +36,8 @@ const NOTES = {
   o3: 'Anything the room added to the concepts, or asked us to look into.',
   o4: 'What has to be true for the Now directions to work, and what Church & Dwight wants to see in the next round.',
   asks: 'What we need from Church & Dwight: base samples, reviewers’ names, dates.',
+  // Asked on What we decided (slide 21) and jotted on the notes sheet in the room; typed in after the morning, in edit mode.
+  success: 'What January’s samples need to do for Church & Dwight to say yes: the success criteria, from the notes sheet.',
 } as const;
 type NoteKey = keyof typeof NOTES;
 
@@ -217,6 +219,11 @@ export default function WriteupDoc({ code }: { code: string }) {
           <PracticeMark code={code} />
           <h2 className="wu-h2">What happens next</h2>
           <ol className="wu-next">{NEXT_STEPS.map((n) => <li key={n.t}><b>{n.t}</b><p>{n.d}</p></li>)}</ol>
+          {/* The success criteria for January's samples: To confirm until the team types in what the room said. */}
+          <h3 className="wu-h3">What January’s samples need to do for you to say yes</h3>
+          {edit ? note('success', 'Success criteria for January’s samples') : (s.notes?.success || '').trim()
+            ? <div className="wu-note has"><div className="wu-note-out wu-show">{s.notes!.success.trim().split(/\n\s*\n/).map((p, i) => <p key={i}>{p}</p>)}</div></div>
+            : <p className="wu-tbc"><span>To confirm</span></p>}
           {d.dues.length > 0 && <>
             <h3 className="wu-h3">Next samples, by date</h3>
             <ul className="wu-dues">{d.dues.map((r) => <li key={r.id}><span className="num">{planCell(r, 'due')}</span><b>{r.what || 'Untitled direction'}</b>{r.owner && <small>{r.owner}</small>}</li>)}</ul>

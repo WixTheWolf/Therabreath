@@ -16,6 +16,8 @@ import { ConceptEditor } from './show/Concepts';
 import { runTiming, etClock } from '@/lib/time';
 import { SLIDE_MIN, SLIDE_TIMES } from '@/lib/slideTimes';
 import { showChannel, ShowPos, ShowCmd, ShowMsg, FilmState } from '@/lib/showLink';
+import { offBrand, answersOf } from '@/lib/prebrief';
+import { roomWords } from './scenes/Close';
 
 type Send = (kind: string, data?: any, pid?: string) => any;
 const dirName = (s: SessionState, id: string) => s.revealed?.samples[id]?.name || DIRECTIONS.find((d) => d.id === id)?.label || id;
@@ -75,6 +77,9 @@ export default function PresenterApp({ code }: { code: string }) {
     : sc.id === 'board' || sc.id === 'playbook' ? <PlanEditor s={s} send={send} />
     : sc.id === 'map' ? <Profiles step={step} off={off} cmd={cmd} i={i} short={!!pos?.short} />
     : sc.id === 'film' ? <FilmPanel f={linked ? pos?.film : undefined} now={now} cmd={cmd} next={pos?.next || ''} prev={pos?.prev || ''} />
+    : sc.id === 'arrival' ? <><WarmUps s={s} send={send} /><Joined s={s} code={code} /></>
+    : sc.id === 'prework' ? <FeaturePick s={s} send={send} code={code} />
+    : sc.id === 'lunch' ? <WordsPick s={s} send={send} />
     : <Joined s={s} code={code} />;
 
   return (
@@ -271,6 +276,51 @@ function Profiles({ step, off, cmd, i, short }: { step: number; off: boolean; cm
           <li key={t.id}><button disabled={off} aria-pressed={step === t.n} onClick={() => cmd({ c: 'goto', i, step: t.n })}>{t.n}. {t.name}{skipped.includes(t.n) ? <small>Optional</small> : <small>{TASTED.includes(t.id) ? 'In the tasting' : 'Not tasted, on the chips'}</small>}</button></li>
         ))}
       </ul>
+    </>
+  );
+}
+
+// The arrival screen: the warm-up answers as they come in. Tap one to take it off the TV (the name stays); tap again to
+// put it back. The results page keeps every answer.
+function WarmUps({ s, send }: { s: SessionState; send: Send }) {
+  const hidden = new Set(s.hidden || []);
+  const list = people(s).filter((p) => !p.paper && p.warm);
+  return (
+    <>
+      <h2>Warm-up answers</h2>
+      <p className="pv-sub">A flavor that surprised them this year, as people join. The TV shows the latest six with first names. Tap one to hide it from the TV; tap again to show it.</p>
+      {list.length ? <ul className="pv-taps">{list.map((p) => { const off = hidden.has('warm:' + p.pid); return <li key={p.pid}><button type="button" aria-pressed={!off} className={off ? 'off' : ''} onClick={() => send('hide', { key: 'warm:' + p.pid })}><b>{p.name}</b> {p.warm}<small>{off ? 'Hidden from the TV' : 'On the TV'}</small></button></li>; })}</ul> : <p className="pv-empty">No warm-up answers yet. They’re optional on the join screen.</p>}
+    </>
+  );
+}
+
+// Your pre-brief answers: feature one off-brand answer. It fills the TV at full size on the slide's last build; tap it
+// again to clear it, and with nothing featured that build skips itself.
+function FeaturePick({ s, send, code }: { s: SessionState; send: Send; code: string }) {
+  const own = Object.keys(s.survey || {}).length;
+  const live = useLiveSurvey(code, own === 0); // a rehearsal reads the live answers, read only, without names
+  const list = offBrand(answersOf(own ? s.survey : live));
+  const on = s.featured?.kind === 'veto' ? s.featured.ref : '';
+  return (
+    <>
+      <h2>Feature an answer</h2>
+      <p className="pv-sub">Tap an off-brand answer to feature it: the slide’s last build shows it at full size with “We’ll come back to this.” Tap it again to clear it. With nothing featured, that build is skipped.</p>
+      {list.length ? <ul className="pv-taps">{list.map((x) => <li key={x.key}><button type="button" aria-pressed={on === x.key} className={on === x.key ? 'on' : ''} onClick={() => send('feature', on === x.key ? { ref: '' } : { kind: 'veto', ref: x.key })}>&ldquo;{x.text}&rdquo;{x.n > 1 && <small>{x.n} people</small>}{on === x.key && <small>Featured</small>}</button></li>)}</ul> : <p className="pv-empty">No off-brand answers yet.</p>}
+    </>
+  );
+}
+
+// The thank-you card: the room's one-word tasting answers float behind it (three or more). Tap a word to take it off the
+// TV; tap again to bring it back.
+function WordsPick({ s, send }: { s: SessionState; send: Send }) {
+  const hidden = new Set(s.hidden || []);
+  const all = roomWords({ ...s, hidden: [] });
+  const shown = roomWords(s).length;
+  return (
+    <>
+      <h2>The room’s words</h2>
+      <p className="pv-sub">Their one-word tasting answers, behind the thank-you card{shown < 3 ? ' once there are three or more on the TV' : ''}. Tap a word to hide it from the TV; tap again to show it.</p>
+      {all.length ? <ul className="pv-taps words">{all.map((w) => { const off = hidden.has('word:' + w.toLowerCase()); return <li key={w}><button type="button" aria-pressed={!off} className={off ? 'off' : ''} onClick={() => send('hide', { key: 'word:' + w.toLowerCase() })}>{w}</button></li>; })}</ul> : <p className="pv-empty">No one-word answers came in.</p>}
     </>
   );
 }
