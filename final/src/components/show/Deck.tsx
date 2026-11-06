@@ -9,8 +9,9 @@ import { CoolingPlot } from '../scenes/School';
 import { POS } from '../scenes/Territories';
 import { LiveCtx, OBJ_HUE, directionName } from './ShowScenes';
 import {
-  TEAM, SCIENCE, IMAGINATION, JULY, PORTFOLIO, MARKET, SOURCES, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, DIRECTIONS,
+  TEAM, SCIENCE, IMAGINATION, JULY, PORTFOLIO, MARKET, SOURCES, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, DIRECTIONS, RUN, MOLECULES, type Signal,
 } from '@/lib/content';
+import { prebrief, said } from '@/lib/prebrief';
 import { tallyPick, ranked, voteCounts, tasteSummary, tasters, places, topIds, placeLabel, SessionState } from '@/lib/state';
 import { OUR_RINSES, OUR_KIDS, OUR_COUNT, type OurProduct } from '@/lib/ourFlavors';
 
@@ -21,8 +22,11 @@ const Ask = ({ q, b, step, className = '' }: { q: string; b?: number; step: numb
   <R b={b ?? 0} step={step} className={'room-ask ' + className}><span className="k">For the room</span><p>{q}</p></R>
 );
 
-// 2. Who we are, since July. The four of us and one line each on the lab and what we bring in from outside oral care.
-// Build 1 (optional, S skips it) brings in July's four themes with Growth, November, lighting up.
+// 2. Who we are, since July. The four of us, then the three things Ross asked to see, in his words: technical expertise
+// (the lab, and our flavors already in their rinses), creativity (the four samples made in their bases) and innovation
+// (what we bring in from outside oral care). Build 1 (optional, S skips it) brings in July's four themes with Growth,
+// November, lighting up.
+const TASTE_AT = RUN.find((b) => b.id === 'tasting')?.t || '10:40';
 export function TeamSince({ step }: SceneProps) {
   const still = !!useLive()?.still;
   const [lit, setLit] = useState(false);
@@ -36,10 +40,12 @@ export function TeamSince({ step }: SceneProps) {
         <div className="ts-people">
           {TEAM.map((t, i) => <Enter key={t.name} i={2 + i} className="st-person"><b>{t.name}</b><span className="k">{t.title}</span></Enter>)}
         </div>
-        <Enter i={6} className="ts-lines">
-          <div className="ts-line sci"><span className="k">In the lab</span><div className="st-chips">{SCIENCE.map((x) => <span key={x}>{x}</span>)}</div></div>
-          <div className="ts-line ima"><span className="k">From outside oral care</span><div className="st-chips">{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</div></div>
+        <Enter i={6} className="ts-lines ts-three">
+          <div className="ts-line sci"><span className="k">Technical expertise</span><div className="st-chips">{SCIENCE.map((x) => <span key={x}>{x}</span>)}</div><p className="ts-note">Our flavors in {OUR_COUNT} of your rinses</p></div>
+          <div className="ts-line cre"><span className="k">Creativity</span><p className="ts-note big">Four new samples made in your bases. You’ll taste them at {TASTE_AT}.</p></div>
+          <div className="ts-line ima"><span className="k">Innovation</span><div className="st-chips">{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</div></div>
         </Enter>
+        <Enter i={7} className="ts-judge"><p className="h3 it">Today you get to judge all three.</p></Enter>
         {step >= 1 && (
           <div className="july ts-july">
             {JULY.map((w, i) => (
@@ -57,12 +63,15 @@ export function TeamSince({ step }: SceneProps) {
 // 3. Our flavors in your range: every TheraBreath product on shelf today with a Flavor Factory flavor in it, as its
 // own bottle on one shelf, the rinses and then the kids rinses. Flavor names only: usage levels and flavor codes never
 // go on this slide.
+// Two get a quiet highlight: Peppermint Vanilla, the seasonal one the question is about, and Tingling Mint, the dry mouth
+// rinse trend 7 comes back to.
+const HIGHLIGHT = ['Peppermint Vanilla', 'Tingling Mint'];
 const Bottles = ({ label, items, from }: { label: string; items: OurProduct[]; from: number }) => (
   <div className="of-g" style={{ flexGrow: items.length }}>
     <Enter i={2} className="of-gl"><span className="k">{label}</span></Enter>
     <div className="of-row">
       {items.map((p, j) => (
-        <figure key={p.img} className="of-b" style={{ ['--i' as any]: from + j }}>
+        <figure key={p.img} className={'of-b' + (HIGHLIGHT.includes(p.flavor) ? ' hl' : '')} style={{ ['--i' as any]: from + j }}>
           <div className="of-img"><img src={`/img/bottles/${p.img}.webp`} alt={`TheraBreath ${p.line} rinse, ${p.flavor}`} /></div>
           <figcaption><b>{p.flavor}</b>{p.line !== p.flavor && <span>{p.line}</span>}</figcaption>
         </figure>
@@ -77,6 +86,7 @@ export function OurFlavors() {
         <Enter i={0}><div className="k">The Flavor Factory in TheraBreath</div></Enter>
         <Enter i={1}><h2 className="h2 of-title">You already know our work. <span className="it">It’s in {OUR_COUNT} TheraBreath rinses on shelf today.</span></h2></Enter>
       </div>
+      <Enter i={3} className="room-ask of-ask"><span className="k">For the room</span><p>Peppermint Vanilla is the festive one here. What did it teach you about seasonal flavors?</p></Enter>
       <div className="of-shelf">
         <Bottles label="Oral rinses" items={OUR_RINSES} from={0} />
         <Bottles label="Kids rinses" items={OUR_KIDS} from={OUR_RINSES.length} />
@@ -120,11 +130,10 @@ export function Shelf({ step }: SceneProps) {
           })}
         </div>
         <Enter i={2 + formats.length} className="sh-key"><span><i className="mint" />Mint</span><span><i className="other" />Everything else</span></Enter>
-        <R b={1} step={step}><p className="h2 it sh-room">Where’s the gap on this shelf?</p></R>
-        <Src k="listings" style={{ position: 'static', marginTop: 14 }} />
+        <R b={1} step={step} className="room-ask sh-ask"><span className="k">For the room</span><p>Gentle is TheraBreath’s ground, and Listerine is moving onto it. What’s the next thing only TheraBreath can own?</p></R>
       </div>
       <div className="sh-right">
-        <Enter i={1}><div className="k">What competitors are launching</div></Enter>
+        <Enter i={1}><h3 className="h3 sh-rt">Competitors are moving onto your ground.</h3></Enter>
         <ol className="sh-launch">
           {rivals.map((m, i) => (
             <Enter key={i} i={2 + i} className="sh-mk">
@@ -133,7 +142,7 @@ export function Shelf({ step }: SceneProps) {
             </Enter>
           ))}
         </ol>
-        <Enter i={2 + rivals.length}><p className="src sh-srcs">Sources: {RIVAL_SOURCES}</p></Enter>
+        <Enter i={2 + rivals.length}><p className="src sh-srcs">Sources: {RIVAL_SOURCES}</p><Src k="listings" style={{ position: 'static', marginTop: 8 }} /></Enter>
       </div>
       <R b={2} step={step} className="mk-turn sh-turn">
         <span className="k">What’s already yours</span>
@@ -152,6 +161,15 @@ export function topTrends(s: SessionState) {
   const voted = ranked(t).filter(([, n]) => n > 0).map(([id]) => id);
   // Fewer than three with votes: the rest come in list order, so every build has a trend to open.
   return [...voted, ...SIGNALS.map((x) => x.id).filter((id) => !voted.includes(id))].slice(0, 3).map((id) => ({ sig: SIGNALS.find((x) => x.id === id)!, n: t[id] || 0 }));
+}
+// The question for a trend. Three quote the room's own pre-brief when the answer is there (the top occasion for trend 4,
+// two off-brand answers for trends 5 and 6), and otherwise fall back to the trend's own question.
+export function trendAsk(sig: Signal, s: SessionState) {
+  const pb = prebrief(s);
+  if (sig.id === 'botanical' && pb.topOccasion) return `Chamomile already has bedtime. You told us “${pb.topOccasion.label}.” What should that taste like?`;
+  if (sig.id === 'allure' && said(pb.answers, 'too fun for that')) return 'One of you wrote: clinical solutions, we are too fun for that. Where does fun stop for TheraBreath?';
+  if (sig.id === 'sensation' && said(pb.answers, 'tangible signal of freshness')) return 'One of you asked for a tangible signal of freshness for the modern era. What is it: cold, tingle or something nobody has done yet?';
+  return sig.ask;
 }
 export function TrendVote({ s, step, pick = 0 }: SceneProps) {
   const t = tallyPick(s, 'signals');
@@ -193,7 +211,7 @@ export function TrendVote({ s, step, pick = 0 }: SceneProps) {
             <h3 className="sf-title">{focus.sig.title}</h3>
             <div className="sf-proofs">{focus.sig.proofs.map((p, i) => <div key={i} className="proof" style={{ ['--d' as any]: `${i * 180}ms` }}><p>{p.t}</p><div className="src">{clean(SOURCES[p.src])}</div></div>)}</div>
             <div className="sig-so"><span className="k">What it could mean for TheraBreath</span><div className="h3 it">{focus.sig.so}</div></div>
-            <div className="tv-ask"><span className="k">For the room</span><p>{focus.sig.ask}</p></div>
+            <div className="tv-ask"><span className="k">For the room</span><p>{trendAsk(focus.sig, s)}</p></div>
           </div>
         ) : (
           <div className="sigs-hint tv-hint">Vote first. Then we’ll open your top three, one at a time.</div>
@@ -203,40 +221,32 @@ export function TrendVote({ s, step, pick = 0 }: SceneProps) {
   );
 }
 
-// 11. Flavor School, as three things to know about flavor in a TheraBreath rinse: flavor combines taste, aroma and
-// mouthfeel (NIDCD), cooling has an onset and a linger (drawn, with no times on the axis), and the flavor has to work in
+// 11. Flavor School, as three things we design for, from our bench: seven molecules of freshness, numbered 1 to 7 to match
+// a tray of smelling strips (optional, S skips it; added November 6 in place of taste, aroma and feel, which moved to the
+// talking points), cooling has an onset and a linger (drawn, with no times on the axis), and the flavor has to work in
 // the actual base through shelf life. One slide, three states, each ending on a question for the room. Ryan's Flavor
 // School words, made more careful after the November 4 review and made plainer on November 5 (the same three points:
 // no causal story about sodium chlorite, no claim that we control the base, no percentages); Ryan signs off the science
 // and the notes together. Nothing moves behind the words: the molecule field that used to drift under the third state
 // made the copy hard to read, so it's gone.
-const FS = ['Three senses', 'The chill', 'Your base'];
+const FS = ['On the strip', 'The chill', 'Your base'];
 export function FlavorSchool({ step }: SceneProps) {
-  const parts = [
-    { t: 'Taste', w: 'The tongue', d: 'Sweet, sour, salty, bitter, umami.' },
-    { t: 'Aroma', w: 'The nose, both ways', d: 'As you rinse, aroma rises from your mouth to your nose. Sniffing isn’t the only way in.' },
-    { t: 'Feel', w: 'The trigeminal nerve', d: 'Cooling, tingling and warming. Mint’s chill is a feeling, not a taste.' },
-  ];
   const levers = ['Choose materials that suit the base', 'Blend the flavor in and protect what’s fragile', 'Check it holds up in the base we agree on'];
   const at = Math.min(2, step);
   return (
     <div className="fs">
       <div className="pad fs-head">
-        <Enter i={0}><div className="k">Flavor School · Three things to know before you taste</div></Enter>
+        <Enter i={0}><div className="k">From our bench: three things we design for</div></Enter>
         <ol className="fs-steps">{FS.map((x, i) => <li key={x} className={i === at ? 'on' : i < at ? 'done' : ''}><span className="num">0{i + 1}</span>{x}</li>)}</ol>
       </div>
-      <div className={'fs-state school' + (at === 0 ? ' on' : '')}>
+      <div className={'fs-state mols' + (at === 0 ? ' on' : '')}>
         <div className="pad">
-          <h2 className="h1 fs-h">You don’t just <span className="it">taste</span> a rinse.</h2>
-          <div className="fs-left">
-            <p className="h3 it accent">Flavor combines taste, aroma and mouthfeel.</p>
-            <div className="room-ask fs-q"><span className="k">For the room</span><p>Which of the three do you notice first in a TheraBreath rinse?</p></div>
-          </div>
-          {/* The circles blend into each other, so their words sit on a layer of their own above all three: no circle's
-              edge runs through another circle's text. */}
-          <div className="venn" aria-hidden="true">{parts.map((p, i) => <div key={p.t} className={'vc vc' + i} />)}</div>
-          <div className="venn">{parts.map((p, i) => <div key={p.t} className={'vc vc-label vc' + i}><div className="vc-in"><b className="h3">{p.t}</b><span className="k">{p.w}</span><p>{p.d}</p></div></div>)}</div>
-          <Src k="nidcd" style={{ position: 'absolute', left: 120, bottom: 118 }} />
+          <h2 className="h1 fs-h">Seven molecules <span className="it">of freshness.</span></h2>
+          {/* Numbered 1 to 7 to match the labeled smelling strips on the tray: strips only, not for tasting. */}
+          <ol className="fs-mols">
+            {MOLECULES.map((m, i) => <li key={m.id} style={{ ['--i' as any]: i }}><span className="num">{i + 1}</span><div><b>{m.name}</b><span className="k">{m.source}</span><p>{m.note}</p></div></li>)}
+            <li className="fs-molq"><div className="room-ask"><span className="k">For the room</span><p>Which one says clean to you? Which one says medicine?</p></div></li>
+          </ol>
         </div>
       </div>
       <div className={'fs-state cooling' + (at === 1 ? ' on' : '')}>
@@ -273,9 +283,12 @@ export function FlavorSchool({ step }: SceneProps) {
 
 // 12. Four directions. The map (familiar to adventurous, gentle to bold, our view) with all four; builds 1 to 4 open
 // each direction's profile card. Clicking a direction on the TV opens its card; clicking it again goes back to the map.
-// Global Brightness and Modern Clean (builds 2 and 3) are the optional ones the short version skips.
-export function DirectionsMap({ step }: SceneProps) {
+// Global Brightness and Modern Clean (builds 2 and 3) are the optional ones the short version skips. The empty gentle,
+// adventurous corner, where the glow sits, is labeled as a question, and the question for the room follows the
+// pre-brief's lean when the room leans adventurous.
+export function DirectionsMap({ s, step }: SceneProps) {
   const live = useLive();
+  const adventurous = !!prebrief(s).lean?.adventurous;
   const W = 1160, H = 700;
   const t = step >= 1 ? TERRITORIES[step - 1] : null;
   const tasted = (id: string) => SAMPLES.some((x) => x.territory === id);
@@ -286,10 +299,11 @@ export function DirectionsMap({ step }: SceneProps) {
         <Enter i={0}><div className="k">Four directions · our view, not data</div></Enter>
         <Enter i={1}><h2 className="h1">Four ways <span className="it">freshness could go.</span></h2></Enter>
         <Enter i={2}><p className="lede dm-lede">You’ll taste two of them in a few minutes. The other two are up for debate.</p></Enter>
-        <Ask step={step} q="Which one would you put on the shelf first? Which one would you argue against?" className="dm-ask" />
+        <Ask step={step} q={adventurous ? 'You told us you lean adventurous. Nothing on our map is. Where should we push?' : 'Nothing on our map sits here yet. What would?'} className="dm-ask" />
       </div>
       <div className="map-plot dm-plot" style={{ width: W, height: H }}>
         <div className="map-glow on" />
+        <div className="dm-empty"><span>Nothing here yet.</span><b className="it">What goes here?</b></div>
         <div className="ax ax-x"><span>Familiar</span><span>Character</span><span>Adventurous</span></div>
         <div className="ax ax-y dm-ay"><span>Gentle</span><span>Intensity</span><span>Bold</span></div>
         {TERRITORIES.map((x, i) => {
@@ -314,6 +328,8 @@ export function DirectionsMap({ step }: SceneProps) {
               <div><span className="k">What it tastes like</span><p>{t.signature}</p>{tasted(t.id) && <p className="dm-note">We’ll tell you which samples these are after the tasting.</p>}</div>
               <div><span className="k">Who it’s for</span><p>{t.who}</p></div>
             </div>
+            {t.id === 'bright' && <div className="dm-q"><p className="dm-also">Listerine Citrus Mint (March 2026) already pairs grapefruit and yuzu. <span className="src">{clean(SOURCES.dtoday26)}</span></p><div className="room-ask"><span className="k">For the room</span><p>What would a TheraBreath version do that Listerine’s can’t?</p></div></div>}
+            {t.id === 'botanical' && <div className="dm-q"><div className="room-ask"><span className="k">For the room</span><p>Mild Mint is already on your shelf. What would make Modern Clean more than milder?</p></div></div>}
           </div>
         </section>
       )}
@@ -369,8 +385,9 @@ export function Landed({ s, step }: SceneProps) {
         <div className="matrix lm-m">
           <div className="mx-plot">
             <i className="mx-mid v" /><i className="mx-mid h" />
-            <span className="mx-ax x">Fit with TheraBreath <em>1 to 5</em> →</span>
-            <span className="mx-ax y">Perceived difference <em>1 to 5</em> →</span>
+            <span className="mx-ax x">Fits TheraBreath (what loyal users expect) <em>1 to 5</em> →</span>
+            <span className="mx-ax y">Different (a reason for someone new to try) <em>1 to 5</em> →</span>
+            <span className="mx-quad">Both: what Ross asked for.</span>
             {[1, 3, 5].map((v) => <span key={'x' + v} className="mx-tk x num" style={{ left: `${at(v)}%` }}>{v}</span>)}
             {[1, 3, 5].map((v) => <span key={'y' + v} className="mx-tk y num" style={{ bottom: `${at(v)}%` }}>{v}</span>)}
             {pts.map((p, i) => {
@@ -388,13 +405,13 @@ export function Landed({ s, step }: SceneProps) {
           <div className="lm-swap">
             <div className={'lm-layer' + (step === 0 ? ' on' : '')}>
               <div className="room-ask"><span className="k">For the room</span><p>{fresh || 'C or D'}: which one tastes more like TheraBreath?</p></div>
-              <div className="room-ask"><p>If only one went back to the lab tomorrow, which one? What would you fix first?</p></div>
+              <div className="room-ask"><p>Top right is both at once. What would it take to move the others there?</p></div>
             </div>
             <div className={'lm-layer' + (step >= 1 ? ' on' : '')}>
               <div className="room-ask"><span className="k">Now on your phone</span><p>Five chips each. Spend them on what we should develop next. Stack them on one if you love it.</p></div>
             </div>
           </div>
-          <p className="src">Bubble size is liking. Scores: {pts.map((p) => `${p.code} ${p.sum.n}`).join(', ')}.{moved ? ' Close scores are nudged apart.' : ''} {paperLeft ? `Phone scores only so far: ${paperLeft} paper ${paperLeft === 1 ? 'card' : 'cards'} to add.` : 'First reactions, not consumer research.'}</p>
+          <p className="src">Bubble size is liking. Scores: {pts.map((p) => `${p.code} ${p.sum.n}`).join(', ')}.{moved ? ' Close scores are nudged apart.' : ''} A lens on Ross’s goal, not a measure of it. First reactions, not consumer research.{paperLeft ? ` Phone scores only so far: ${paperLeft} paper ${paperLeft === 1 ? 'card' : 'cards'} to add.` : ''}</p>
         </div>
         <div className="lm-chips">
           <div className="k">{step === 0 ? 'Next: five chips each, once we’ve talked' : <>Five chips each · {tally(c.phones, 'person has', 'people have')} voted{byHandNote(c.hand, 'chip', 'chips')}</>}</div>

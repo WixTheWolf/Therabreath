@@ -6,7 +6,7 @@ import { R, Enter, SceneProps, Src } from './ui';
 import { EVENT, JULY, OBJECTIVES, SURVEY } from '@/lib/content';
 import { people, ranked } from '@/lib/state';
 import Orb from '../Orb';
-import { LEAN, leans, listOf, roomProfile } from '@/lib/prebrief';
+import { LEAN, leans, listOf, roomProfile, prebrief, plainAudience } from '@/lib/prebrief';
 
 export function useQR(text: string) {
   const [svg, setSvg] = useState('');
@@ -139,6 +139,9 @@ export function Prework({ s, step }: SceneProps) {
   const vetoes = Object.values(vetoCount).sort((a, b) => b[1] - a[1]);
   const max = (l: [string, number][]) => Math.max(1, ...l.map((x) => x[1]));
   const profiled = answers.filter((a) => a.profile).length;
+  // The headline and the first question come from the answers when they say something clear (no tie), else the slide
+  // keeps its own wording.
+  const pb = prebrief(s), aud = pb.topAudience, ln = pb.lean;
   const Bars = ({ list }: { list: [string, number][] }) => (
     <div className="pw-bars">{list.slice(0, 5).map(([k, v]) => <div key={k} className={v === max(list) ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">No answers yet.</div>}</div>
   );
@@ -146,7 +149,10 @@ export function Prework({ s, step }: SceneProps) {
     <div className="pad">
       {/* The question sits beside the count from the first build: it's for the whole slide, and the list of off-brand
           answers below can run long. */}
-      <Enter i={0} className="pw-top"><div className="k">You told us · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div><div className="room-ask pw-ask"><span className="k">For the room</span><p>Anything here you’d argue with?</p></div></Enter>
+      <Enter i={0} className={'pw-top' + (aud ? ' has-h' : '')}>
+        <div className="pw-hd"><div className="k">You told us · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div>{aud && <h2 className="h2 pw-h">{aud.count} of {aud.total} of you want to win <span className="it">{plainAudience(aud.label)}.</span></h2>}</div>
+        <div className="room-ask pw-ask"><span className="k">For the room</span><div className="pw-qs">{ln && <p>You lean {ln.text}. Is your consumer the same, or are you the exception?</p>}<p>Anything here you’d argue with?</p></div></div>
+      </Enter>
       <div className="pw-grid">
         <R b={0} step={step} className="pw-card"><h3 className="h3">Who you’d focus on first</h3><Bars list={cons} />{others.length > 0 && <p className="src pw-others">Someone else: {others.slice(0, 6).join(', ')}</p>}</R>
         <R b={1} step={step} className="pw-card"><h3 className="h3">The occasion you’d explore first</h3><Bars list={mom} />{otherMoments.length > 0 && <p className="src pw-others">{SURVEY.moment.other}: {otherMoments.slice(0, 6).join(', ')}</p>}</R>

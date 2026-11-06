@@ -32,7 +32,8 @@ const opener = (n: number, block: string): Row => ({
   id: `open${n}`, act: PART(n), chapter: n - 1, theme: 'b', builds: 0, title: TOPICS[n - 1].title, block, room: W(TOPICS[n - 1].title),
 });
 // Twenty-two slides, built for talking with the room rather than at it. Each of Ross's four objectives opens on its own
-// chapter slide. `skip` lists the builds the short version (S) leaves out: only the July row on Who we are. The two
+// chapter slide. `skip` lists the builds the short version (S) leaves out: the July row on Who we are and the smelling strips
+// on Flavor School (its first build, so S opens that slide on its second). The two
 // directions not in the tasting always show, even in the short version, because the room can put chips on them.
 const SHOW: Row[] = [
   { id: 'arrival', act: 'Before we start', chapter: -1, theme: 'b', builds: 0, title: 'The Future of Freshness', block: 'welcome', room: W('Welcome. We start at 10:00.') },
@@ -48,7 +49,8 @@ const SHOW: Row[] = [
     room: { kind: 'pick', key: 'signals', max: 3, prompt: 'Pick the three trends that matter most for TheraBreath.' } },
 
   opener(2, 'school'),
-  { id: 'school', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'Flavor School: flavor and sodium chlorite', block: 'school', room: W('Flavor School') },
+  // Its first build, the seven molecules on smelling strips, is optional: S skips it and the slide opens on the chill.
+  { id: 'school', act: PART(2), chapter: 1, theme: 'b', builds: 2, skip: [0], title: 'Flavor School: flavor and sodium chlorite', block: 'school', room: W('Flavor School') },
   { id: 'map', act: PART(2), chapter: 1, theme: 'a', builds: 4, title: 'Four directions', block: 'school', room: W('Four directions') },
   { id: 'film', act: PART(2), chapter: 1, theme: 'b', builds: 0, title: 'Before we taste', block: 'school', room: W('Phones down for a couple of minutes. Eyes on the screen.') },
   { id: 'tasting', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'The blind tasting', block: 'tasting', room: { kind: 'taste' } },

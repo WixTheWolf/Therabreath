@@ -10,8 +10,9 @@ import { teamConcepts } from '../scenes/CoCreate';
 import { useQR } from '../scenes/Opening';
 import {
   EVENT, OBJECTIVES, TOPICS, RUN, TEAM, ABOUT, SCIENCE, IMAGINATION, ROSS_WORDS, SIGNALS, SAMPLES, PRIMARY_TERRITORIES as PLATFORMS,
-  SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA, JAR, JAR_OPTS, judgeAs, NEXT_STEPS,
+  SURVEY, ROLES, FORMATS, ROSS_GOAL, HORIZONS, WHITESPACE, DIRECTIONS, MYSTERY, CRITERIA, JAR, JAR_OPTS, judgeAs, NEXT_STEPS, SHIFTS,
 } from '@/lib/content';
+import { prebrief } from '@/lib/prebrief';
 import type { FilmAct, FilmState } from '@/lib/showLink';
 import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, tastingProgress, places, topIds, SessionState } from '@/lib/state';
 import { PlanTap, planRows, planCell } from './Plan';
@@ -75,7 +76,7 @@ export function ShowBrief({ step }: SceneProps) {
   return (
     <div className="pad">
       <Enter i={0}><div className="k">From Ross&rsquo;s invitation</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1500 }}>We’ve built the morning <span className="it">around your four objectives.</span></h2></Enter>
+      <Enter i={1} className="bf-top"><h2 className="h2">We’ve built the morning <span className="it">around your four objectives.</span></h2><div className="room-ask"><span className="k">For the room</span><p>Which one matters most to you this year?</p></div></Enter>
       <div className="brief-tiles">
         {OBJECTIVES.map((o, i) => (
           <R key={o.n} b={0} d={i * 120} step={step} className="bt" style={{ ['--h' as any]: OBJ_HUE[i] }}>
@@ -90,7 +91,14 @@ export function ShowBrief({ step }: SceneProps) {
   );
 }
 
-// Each objective opens on one screen: a photograph in its color, its number, its question and Ross's words.
+// Each objective opens on one screen: a photograph in its color, its number, its question and Ross's words, then one
+// question for the room (one answer, then move on). Part 1 also shows the three shifts under Ross's words.
+const OPEN_ASK = [
+  'Which of these three is already showing up in your consumer data?',
+  'Name a flavor you love anywhere else that’s never been in a mouthwash.',
+  'Who is the one person you’d most like TheraBreath to win next?',
+  'If we could only make one thing by January, what is it?',
+];
 export function Opener({ idx }: SceneProps) {
   const o = OBJECTIVES[idx - 1], t = TOPICS[idx - 1];
   return (
@@ -102,6 +110,8 @@ export function Opener({ idx }: SceneProps) {
         <Enter i={0}><div className="k">Part {idx} of 4 · {when(o.n)}</div></Enter>
         <Enter i={1}><h1 className="hero op-title">{t.title}</h1></Enter>
         <Enter i={2} className="op-ross"><span className="k">From Ross&rsquo;s invitation</span><p>&ldquo;{o.ask}&rdquo;</p></Enter>
+        {idx === 1 && <Enter i={3} className="op-shifts">{SHIFTS.map((x) => <div key={x.a}><span>{x.a}</span><i aria-hidden="true">→</i><b>{x.b}</b></div>)}</Enter>}
+        <Enter i={idx === 1 ? 4 : 3} className="room-ask op-ask"><span className="k">For the room</span><p>{OPEN_ASK[idx - 1]}</p></Enter>
       </div>
     </div>
   );
@@ -171,7 +181,7 @@ export function TastingLive({ s, step }: SceneProps) {
           <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}{JAR.map((j) => <span key={j.key}>{j.l}<small>low · right · high</small></span>)}</div>
           {rows.map((r) => (
             <div key={r.code} className="hrow">
-              <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{/* The Mystery Flavor stays a mystery: its name goes up, but what's in it isn't shown. */}{step >= 2 && r.code !== MYSTERY && <small>{s.revealed?.samples[r.code]?.note}</small>}{!scoring && step < 2 && <em className="tl-n">{r.sum.n} {r.sum.n === 1 ? 'score' : 'scores'}</em>}</span></div>
+              <div className={'hname' + (step >= 2 ? ' flip' : '')}><b className="num">{r.code}</b><span>{step >= 2 ? s.revealed?.samples[r.code]?.name || r.base : r.base}{scoring && r.code === MYSTERY && <em className="tl-game">Guess the fruit.</em>}{/* The Mystery Flavor stays a mystery: its name goes up, but what's in it isn't shown. */}{step >= 2 && r.code !== MYSTERY && <small>{s.revealed?.samples[r.code]?.note}</small>}{!scoring && step < 2 && <em className="tl-n">{r.sum.n} {r.sum.n === 1 ? 'score' : 'scores'}</em>}</span></div>
               {scoring ? (
                 prog.phones ? <div className="tl-prog"><i style={{ width: `${prog.phones ? Math.round((prog.per[r.code] / prog.phones) * 100) : 0}%` }} /><b className="num">{prog.per[r.code]}</b><span>of {prog.phones} {prog.phones === 1 ? 'phone has' : 'phones have'} scored {r.code}</span></div> : <div className="tl-prog"><span>Score {r.code} before we talk about it</span></div>
               ) : (
@@ -192,6 +202,7 @@ export function TastingLive({ s, step }: SceneProps) {
           {step < 2 && words.slice(-16).map((x, i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 26 + ((i * 13) % 4) * 6 }}>{x.w}</span>)}
           {step < 2 && !words.length && !guesses.length && <span className="empty">Your one-word answers will show up here.</span>}
         </R>
+        {step >= 2 && <div className="room-ask tl-ask"><span className="k">For the room</span><p>Which one surprised you, and was it a good surprise?</p></div>}
       </div>
     </div>
   );
@@ -236,7 +247,7 @@ export function ConceptCanvas({ s }: SceneProps) {
   return (
     <div className="pad ccv">
       <Enter i={0}><div className="k">Up to three concepts · proposals until we agree them</div></Enter>
-      <Enter i={1} className="ccv-top"><h2 className="h2">Let’s make <span className="it">them real.</span></h2><div className="room-ask"><span className="k">For the room</span><p>Picture one person who’d buy this. Who are they, and when do they reach for it?</p></div></Enter>
+      <Enter i={1} className="ccv-top"><h2 className="h2">Let’s make <span className="it">them real.</span></h2><div className="room-ask"><span className="k">For the room</span><p>Picture one person who’d buy this. Who are they, and when do they reach for it?</p><p className="ccv-gate">What would make you say no to this at your next gate review?</p></div></Enter>
       <ConceptCards s={s} />
     </div>
   );
@@ -275,6 +286,7 @@ const arcAt = (deg: number) => { const a = (deg * Math.PI) / 180; return { x: AR
 const arcPath = (from: number, to: number) => { const a = arcAt(from), b = arcAt(to); return `M ${a.x} ${a.y} A ${ARC.rx} ${ARC.ry} 0 0 1 ${b.x} ${b.y}`; };
 export function WhiteSpaceShow({ s, step }: SceneProps) {
   const live = useLive();
+  const occ = prebrief(s).topOccasion; // the pre-brief's most named moment, or null on a tie
   const marks = s.marks || [];
   const answers = Object.values(s.survey || {});
   const tally = (key: 'consumer' | 'moment') => { const t: Record<string, number> = {}; answers.forEach((a) => a[key] && (t[a[key]!] = (t[a[key]!] || 0) + 1)); return t; };
@@ -315,7 +327,7 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
       <div className="bk-head">
         <div className={'wsp-h' + (step === 0 ? ' on' : '')}><h2 className="h2">From wake-up <span className="it">to wind-down.</span></h2></div>
         <div className={'wsp-h' + (step === 1 || step === 2 ? ' on' : '')}><h2 className="h2">The rinse bookends the day: <span className="it">morning and night.</span></h2></div>
-        <div className={'wsp-h' + (step >= 3 ? ' on' : '')}><h2 className="h2">Pick a moment. <span className="it">What should it taste like?</span></h2><p className="bk-lede">After coffee, before going out, after the gym: where would a flavor earn its place?</p></div>
+        <div className={'wsp-h' + (step >= 3 ? ' on' : '')}><h2 className="h2">{occ ? <>You named &ldquo;{occ.label}&rdquo; most. </> : 'Pick a moment. '}<span className="it">What should it taste like?</span></h2><p className="bk-lede">After coffee, before going out, after the gym: where would a flavor earn its place? <span className="bk-format">And what does it come in: rinse, sachet, spray or lozenge?</span></p></div>
       </div>
       <svg className="bk-arc" viewBox="0 0 1920 1080" aria-hidden="true">
         <defs>
@@ -344,7 +356,7 @@ export function Board({ s }: SceneProps) {
   return (
     <div className="pad sb">
       <Enter i={0}><div className="k">Now, Next, Later</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>What do we make first? <span className="it">And what would you need to taste next time?</span></h2></Enter>
+      <Enter i={1} className="sb-top"><h2 className="h2">What do we make first? <span className="it">And what would you need to taste next time?</span></h2><div className="room-ask"><span className="k">For the room</span><p>What has to be true for this to move from Next to Now?</p></div></Enter>
       <Enter i={2} className="sb-tap"><PlanTap s={s} send={live.send} still={live.still} /></Enter>
     </div>
   );
@@ -355,7 +367,8 @@ export function decided(s: SessionState) {
   return {
     // The top three with their places, ties kept (two trends on the same votes share a place).
     signals: (() => { const t = tallyPick(s, 'signals'), p = places(t); return topIds(t).map((id) => ({ t: SIGNALS.find((x) => x.id === id)?.title || id, so: SIGNALS.find((x) => x.id === id)?.so || '', n: t[id], place: p[id].place })); })(),
-    directions: (() => { const t = tallyPick(s, 'directions'), p = places(t); return topIds(t).map((id) => ({ t: directionName(id, s), n: t[id], place: p[id].place })); })(),
+    // A sample reads with its direction in brackets after its name; a direction by its own name.
+    directions: (() => { const t = tallyPick(s, 'directions'), p = places(t); return topIds(t).map((id) => { const d = DIRECTIONS.find((x) => x.id === id); return { t: d?.tasted ? `${directionName(id, s)} (${d.sub})` : directionName(id, s), n: t[id], place: p[id].place }; }); })(),
     concepts: teamConcepts(s),
     plan: planRows(s),
     tasting: SAMPLES.map((x) => ({ ...x, name: directionName(x.code, s), sum: tasteSummary(s, x.code) })),
@@ -371,7 +384,7 @@ export function Playbook({ s, step }: SceneProps) {
   const d = decided(s);
   const pages = [
     { k: 'Chapter 1', t: 'Trends', l: d.signals.map((x) => x.t) },
-    { k: 'Chapter 2', t: 'Directions', l: d.directions.map((x) => x.t) },
+    { k: 'Chapter 2', t: 'Directions and samples', l: d.directions.map((x) => x.t) },
     { k: 'Chapter 3', t: 'Concepts', l: d.concepts.map((c) => c.name).filter(Boolean) },
     { k: 'Chapter 4', t: 'The plan', l: d.plan.slice(0, 6).map((x) => `${x.label} · ${x.what}`) },
   ];
@@ -416,6 +429,7 @@ export function Playbook({ s, step }: SceneProps) {
               </R>
             ))}
           </ol>
+          <R b={7} step={step} className="room-ask pb-ask"><span className="k">For the room</span><p>What would January’s samples need to do for you to say yes?</p></R>
         </div>
       )}
       {reading && <ReadPage key={step} n={step} d={d} />}
@@ -424,7 +438,7 @@ export function Playbook({ s, step }: SceneProps) {
 }
 
 // One chapter of the Playbook at a size the back of the room can read.
-const CH = ['Trends', 'Directions', 'Concepts', 'The plan'];
+const CH = ['Trends', 'Directions and samples', 'Concepts', 'The plan'];
 function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
   const none = (t: string) => <p className="rp-none">{t}</p>;
   let body: React.ReactNode = null, title = '';

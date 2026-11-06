@@ -76,6 +76,8 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   const [short, setShort] = useState(false);
   const skip = useCallback((i: number) => (SCENES[i].id === 'prework' && !told) || (short && !!SCENES[i].optional), [told, short]);
   const skipBuild = useCallback((i: number, b: number) => short && !!SCENES[i].skip?.includes(b), [short]);
+  // Where a slide opens: its first build that isn't skipped (Flavor School's first build is optional).
+  const firstBuild = useCallback((i: number) => { let b = 0; while (b < SCENES[i].builds && skipBuild(i, b)) b++; return b; }, [skipBuild]);
 
   const [pos, setPos] = useState({ i: 0, step: 0 });
   const [notes, setNotes] = useState(false);
@@ -208,21 +210,21 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       let b = step + 1; while (b <= sc.builds && skipBuild(i, b)) b++;
       if (b <= sc.builds) return setPos({ i, step: b });
       let j = i + 1; while (j < n && skip(j)) j++;
-      if (j < n) setPos({ i: j, step: 0 });
+      if (j < n) setPos({ i: j, step: firstBuild(j) });
     } else {
-      let b = step - 1; while (b > 0 && skipBuild(i, b)) b--;
-      if (step > 0) return setPos({ i, step: Math.max(0, b) });
+      let b = step - 1; while (b >= 0 && skipBuild(i, b)) b--;
+      if (b >= 0) return setPos({ i, step: b });
       let j = i - 1; while (j > 0 && skip(j)) j--;
       if (j >= 0) { let last = SCENES[j].builds; while (last > 0 && skipBuild(j, last)) last--; setPos({ i: j, step: last }); }
     }
-  }, [n, skip, skipBuild, still]);
+  }, [n, skip, skipBuild, firstBuild, still]);
   // ] and [ jump to the next or previous part (the map and the tasting count as their own stops).
   const jump = useCallback((d: number) => {
     const stops = SECTIONS.map((id) => SCENES.findIndex((x) => x.id === id)).filter((x) => x >= 0);
     const { i } = posRef.current;
     const j = d > 0 ? stops.find((x) => x > i) : [...stops].reverse().find((x) => x < i);
-    if (j !== undefined) setPos({ i: j, step: 0 });
-  }, []);
+    if (j !== undefined) setPos({ i: j, step: firstBuild(j) });
+  }, [firstBuild]);
   useEffect(() => {
     const kd = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement;
@@ -267,14 +269,14 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
       const c = x.cmd;
       if (c.c === 'go') go(c.d);
       else if (c.c === 'jump') jump(c.d);
-      else if (c.c === 'goto') setPos({ i: Math.max(0, Math.min(n - 1, c.i)), step: Math.min(SCENES[Math.max(0, Math.min(n - 1, c.i))].builds, c.step || 0) });
+      else if (c.c === 'goto') { const gi = Math.max(0, Math.min(n - 1, c.i)); setPos({ i: gi, step: c.step === undefined ? firstBuild(gi) : Math.min(SCENES[gi].builds, c.step) }); }
       else if (c.c === 'short') setShort((v) => !v);
       else if (c.c === 'blank') setBlank((v) => !v);
       else if (c.c === 'film') film.current?.act(c.a);
       else if (c.c === 'pick') pickTrend(c.n);
     };
     return () => { ch.close(); link.current = null; };
-  }, [code, still, mode, go, jump, n, posMsg, pickTrend]);
+  }, [code, still, mode, go, jump, n, posMsg, pickTrend, firstBuild]);
   useEffect(() => {
     link.current?.postMessage(posMsg());
     const iv = setInterval(() => link.current?.postMessage(posMsg()), 2000); // a heartbeat, so the presenter view knows we're here
