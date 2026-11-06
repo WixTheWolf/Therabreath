@@ -32,34 +32,53 @@ export function Climb({ step }: SceneProps) {
   );
 }
 
-// 7. The gap: 65 vs 14. The empty space fills with light.
+// 7. Out of every 100 households. It opens on the thesis; build 1 fills the glasses (65 of 100 buy mouthwash, 14 of 100
+// buy TheraBreath), build 2 splits the 100 into three groups that add up (14, 51, 35), build 3 says what flavor could do
+// and asks which group. One unit throughout: households out of 100. The record share of sales (a different measure) is
+// in the talking points, not on screen, so the two never sit side by side.
 const GLASS_CAM = { pos: [0, 1.3, 10.8], target: [0, 0.98, 0], fov: 24, shift: [0.36, 0.0] };
+const OTHER = { another: GAP.category - GAP.tb, none: 100 - GAP.category };
 export function Gap({ step }: SceneProps) {
+  return (
+    <>
+      <div className={'thesis gap-thesis' + (step === 0 ? '' : ' away')}>
+        <div className="tl1 on">TheraBreath built a strong position on a rinse without the burn.</div>
+        <div className="tl2 it on">The next job is giving more people a reason to want it.</div>
+      </div>
+      {step >= 1 && <Glasses step={step} />}
+    </>
+  );
+}
+function Glasses({ step }: { step: number }) {
   // The labels count up with the glasses, from the glasses' first drawn frame, and stay hidden until then so the TV never
   // reads 0%. The PDF export (?still=1) shows the final figures straight away.
   const still = !!useContext(LiveCtx)?.still;
   const [t0, setT0] = useState(0);
   const ease = (x: number) => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
   const [lab, setLab] = useState([0, 0]);
-  useEffect(() => { if (still) setLab([65, 14]); }, [still]);
+  useEffect(() => { if (still) setLab([GAP.category, GAP.tb]); }, [still]);
   useEffect(() => { const id = setTimeout(() => setT0((v) => v || performance.now()), 8000); return () => clearTimeout(id); }, []);
-  useEffect(() => { if (!t0 || still) return; let r = 0; const f = () => { const t = (performance.now() - t0) / 1000; setLab([Math.round(65 * ease((t - 0.4) / 2.6)), Math.round(14 * ease((t - 0.4) / 2.6))]); if (t < 3.2) r = requestAnimationFrame(f); }; r = requestAnimationFrame(f); return () => cancelAnimationFrame(r); }, [t0, still]);
+  useEffect(() => { if (!t0 || still) return; let r = 0; const f = () => { const t = (performance.now() - t0) / 1000; setLab([Math.round(GAP.category * ease((t - 0.4) / 2.6)), Math.round(GAP.tb * ease((t - 0.4) / 2.6))]); if (t < 3.2) r = requestAnimationFrame(f); }; r = requestAnimationFrame(f); return () => cancelAnimationFrame(r); }, [t0, still]);
   const shown = still || t0 > 0;
-  const [x0, y0] = project([-0.95, 0, 0.9], GLASS_CAM), [x1, y1] = project([0.95, 0, 0.9], GLASS_CAM), [tx, ty] = project([1.61, 1.55, 0], GLASS_CAM);
-  const stepRef = step;
+  const [x0, y0] = project([-0.95, 0, 0.9], GLASS_CAM), [x1, y1] = project([0.95, 0, 0.9], GLASS_CAM);
+  const glow = step >= 2 ? 1 : 0;
   return (
     <>
-      <Light scene="glasses" theme="a" camera={GLASS_CAM} frame={(t) => ({ fill: [Math.max(0.001, 0.65 * ease((t - 0.4) / 2.6)), Math.max(0.001, 0.14 * ease((t - 0.4) / 2.6))], glow: stepRef >= 1 ? 1 : 0 })} onStart={() => setT0(performance.now())} />
-      <div className="gap-copy">
-        <div className="k">Household penetration</div>
-        <R b={1} step={step}><h1 className="h1"><span className="it">86</span> out of 100 households don&rsquo;t buy TheraBreath yet.</h1></R>
-        <R b={2} step={step}><div className="gap-second it">Flavor could give more of them a reason to try it.</div></R>
-        <Src k="q3call" extra="TheraBreath 14%, mouthwash category 65%" style={{ position: 'absolute', top: 700, left: 0, width: 760 }} />
-        <Enter i={1} className="gap-share">TheraBreath reached a record <b className="num">26.8%</b> of mouthwash in Q3 2026, number 2 in the category. Even so, most households still don’t buy it, and 35 in 100 don’t buy mouthwash at all.</Enter>
+      <Light scene="glasses" theme="a" camera={GLASS_CAM} frame={(t) => ({ fill: [Math.max(0.001, (GAP.category / 100) * ease((t - 0.4) / 2.6)), Math.max(0.001, (GAP.tb / 100) * ease((t - 0.4) / 2.6))], glow })} onStart={() => setT0(performance.now())} />
+      <div className="gap-copy gap-talk">
+        <Enter i={0}><div className="k">Out of every 100 households</div></Enter>
+        <Enter i={1} className="gap-share">TheraBreath is already number 2 in mouthwash.</Enter>
+        <R b={2} step={step} className="gap-groups">
+          <div className="tb"><b className="num">{GAP.tb}</b><span>buy TheraBreath</span></div>
+          <div><b className="num">{OTHER.another}</b><span>buy mouthwash, not TheraBreath</span></div>
+          <div><b className="num">{OTHER.none}</b><span>don&rsquo;t buy mouthwash</span></div>
+        </R>
+        <R b={3} step={step}><div className="gap-second it">Flavor could give more of these households a reason to try it.</div></R>
+        <R b={3} step={step} className="room-ask"><span className="k">For the room</span><p>Who should the next flavor win over first: the {GAP.tb} who buy it, the {OTHER.another} who buy another brand or the {OTHER.none} who don’t buy mouthwash?</p></R>
       </div>
-      <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}<sup>%</sup></div><div className="who">Mouthwash category</div></div>
-      <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}<sup>%</sup></div><div className="who">TheraBreath</div></div>
-      <R b={1} step={step} className="tag86" style={{ left: Math.min(tx + 10, 1600), top: ty }}>The other 86</R>
+      <Src k="q3call" extra={`Household penetration: TheraBreath ${GAP.tb}%, mouthwash ${GAP.category}%`} style={{ left: 120, width: 820 }} />
+      <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}</div><div className="who">of 100 buy mouthwash</div></div>
+      <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x1, top: y1 + 20 }}><div className="num">{lab[1]}</div><div className="who">of 100 buy TheraBreath</div></div>
     </>
   );
 }
@@ -83,7 +102,7 @@ export function Portfolio({ step }: SceneProps) {
       <div className="pad" style={{ position: 'absolute', zIndex: 2 }}>
         <Enter i={0}><div className="k">Your portfolio today · {PORTFOLIO.length} flavors across six formats</div></Enter>
         <div className="pf-title">
-          <div className={'pft' + (zoom ? ' out' : '')}><h2 className="h1">{PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length} of your {PORTFOLIO.length} flavors are mint,<br /><span className="it">and that’s a real strength.</span></h2></div>
+          <div className={'pft' + (zoom ? ' out' : '')}><h2 className="h1">{PORTFOLIO.filter((v) => /mint/i.test(v.flavor)).length} of your {PORTFOLIO.length} products are mint,<br /><span className="it">and that’s a real strength.</span></h2></div>
           <div className={'pft' + (zoom ? '' : ' out')}><h2 className="h1 it" style={{ maxWidth: 900 }}>There’s a lot of room around mint.</h2></div>
         </div>
       </div>
@@ -118,7 +137,7 @@ export function Market({ step }: SceneProps) {
           </R>
         ))}
       </div>
-      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">Where you stand</span><p>TheraBreath has been alcohol-free and dye-free from the start. It has OXYD-8, and it already has a kids line. <span className="it">So the real question is how flavor keeps it ahead.</span></p></R>
+      <R b={MARKET.length + 1} step={step} className="mk-turn"><span className="k">Where you stand</span><p>TheraBreath has been alcohol-free and dye-free from the start. It uses sodium chlorite, and it already has a kids line. <span className="it">So the real question is how flavor keeps it ahead.</span></p></R>
     </div>
   );
 }

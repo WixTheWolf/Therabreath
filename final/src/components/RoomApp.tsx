@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
 import { SCENES } from '@/lib/scenes';
-import { CRITERIA, DEVELOP, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT, DIALS, MYSTERY, DIRECTIONS } from '@/lib/content';
+import { CRITERIA, judgeAs, JAR, JAR_OPTS, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, MOLECULES, MISSIONS, CODE, SENSORY, FORMATS, SEGMENTS, HORIZONS, EVENT, DIALS, MYSTERY, DIRECTIONS } from '@/lib/content';
 import { DEFAULT_DIALS, readouts } from '@/lib/bench';
-import { uid } from '@/lib/state';
+import { uid, tastingClosed } from '@/lib/state';
 import { candidates } from './scenes/Build';
 
 type Me = { pid: string; name: string };
@@ -70,6 +70,9 @@ function JoinForm({ onJoin }: { onJoin: (n: string) => void }) {
 }
 
 type P = { s: any; me: Me; p: (k: string, d: any) => void; step: number; room?: any };
+// Two chip allocations are the same when every option has the same count, whatever order the keys are in (the review
+// saw a sent vote flip back to Send because the saved copy came back with its keys in another order).
+const sameChips = (a: Record<string, number>, b: Record<string, number>) => [...new Set([...Object.keys(a), ...Object.keys(b)])].every((k) => (Number(a[k]) || 0) === (Number(b[k]) || 0));
 const Lock = ({ v }: { v: any }) => (v?.locked ? <div className="rm-lock">This vote is closed.</div> : null);
 
 function Pick({ s, me, p, room }: P) {
@@ -86,37 +89,51 @@ function Pick({ s, me, p, room }: P) {
   );
 }
 
-function Chips({ s, me, p, room }: P) {
+function Chips({ s, me, p, room, step }: P) {
   const v = s.votes[room.key]; const mine: Record<string, number> = v?.picks?.[me.pid] || {};
   const [o, setO] = useState<Record<string, number>>(mine);
   const used = Object.values(o).reduce((a, b) => a + b, 0);
   const add = (id: string, d: number) => setO((x) => { const n = Math.max(0, (x[id] || 0) + d); if (d > 0 && used >= room.total) return x; return { ...x, [id]: n }; });
+  // The room talks about the chart first, so the chips wait for the build that opens them.
+  if (room.opens && step < room.opens) return (
+    <div className="rm-center"><div className="rm-drop" /><div className="k">Next: five chips each</div><h1 className="h3">First, the chart on the screen.</h1><p className="rm-p">Talk about where each sample landed and what you’d change. The chips open here in a moment.</p></div>
+  );
   return (
     <div className="rm-pad">
       <h1 className="h3">{room.prompt}</h1><Lock v={v} />
       <div className="rm-chipsleft">{Array.from({ length: room.total }, (_, i) => <i key={i} className={i < used ? 'used' : ''} />)}</div>
-      <div className="rm-list">{DIRECTIONS.map((d) => { return (
-        <div key={d.id} className="rm-chip" style={{ ['--c1' as any]: d.colors[0], ['--c2' as any]: d.colors[1] }}>
-          <span className="sw" /><b>{s.revealed?.samples[d.id]?.name || d.label}<small>{d.sub}</small></b>
-          <button onClick={() => add(d.id, -1)} disabled={!o[d.id] || v?.locked}>-</button><em className="num">{o[d.id] || 0}</em><button onClick={() => add(d.id, 1)} disabled={used >= room.total || v?.locked}>+</button>
-        </div>
-      ); })}</div>
-      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{JSON.stringify(o) === JSON.stringify(mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} chips`}</button>
+      {/* Two groups, so it's clear what a chip is for: the flavors just tasted (by name once revealed, with their
+          direction), then the two directions nobody has tasted yet. */}
+      {[{ h: 'Tasted today', ds: DIRECTIONS.filter((d) => d.tasted) }, { h: 'New directions, not tasted today', ds: DIRECTIONS.filter((d) => !d.tasted) }].map((g) => (
+        <section key={g.h} className="rm-chipgroup" aria-label={g.h}>
+          <div className="k">{g.h}</div>
+          <div className="rm-list">{g.ds.map((d) => (
+            <div key={d.id} className="rm-chip" style={{ ['--c1' as any]: d.colors[0], ['--c2' as any]: d.colors[1] }}>
+              <span className="sw" /><b>{s.revealed?.samples[d.id]?.name || d.label}{d.tasted && <small>{d.sub}</small>}</b>
+              <button onClick={() => add(d.id, -1)} disabled={!o[d.id] || v?.locked} aria-label={`One chip off ${s.revealed?.samples[d.id]?.name || d.label}`}>-</button><em className="num">{o[d.id] || 0}</em><button onClick={() => add(d.id, 1)} disabled={used >= room.total || v?.locked} aria-label={`One chip on ${s.revealed?.samples[d.id]?.name || d.label}`}>+</button>
+            </div>
+          ))}</div>
+        </section>
+      ))}
+      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{sameChips(o, mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} chips`}</button>
     </div>
   );
 }
 
-function Scale({ label, v, set }: { label: string; v: number; set: (n: number) => void }) {
-  return <div className="rm-scale"><span>{label}</span><div>{[1, 2, 3, 4, 5].map((n) => <button key={n} className={n <= v ? 'on' : ''} onClick={() => set(n)}>{n}</button>)}</div></div>;
+function Scale({ label, lo, hi, v, set, off }: { label: string; lo: string; hi: string; v: number; set: (n: number) => void; off?: boolean }) {
+  return <div className="rm-scale" role="group" aria-label={`${label} 1 is ${lo}, 5 is ${hi}`}><span>{label}</span><div>{[1, 2, 3, 4, 5].map((n) => <button key={n} className={n <= v ? 'on' : ''} aria-pressed={n === v} disabled={off} onClick={() => set(n)}>{n}</button>)}</div><small className="rm-anch"><span>1 = {lo}</span><span>5 = {hi}</span></small></div>;
 }
 function Taste({ s, me, p, step }: P) {
   const [cur, setCur] = useState('A');
   const saved = s.ratings[cur]?.[me.pid];
-  const [r, setR] = useState<any>(saved || { appeal: 0, feels: 0, newness: 0, who: [], word: '' });
-  useEffect(() => { setR(s.ratings[cur]?.[me.pid] || { appeal: 0, feels: 0, newness: 0, who: [], word: '' }); }, [cur]);
+  const blank = { appeal: 0, feels: 0, newness: 0, sweet: '', cool: '', word: '' };
+  const [r, setR] = useState<any>(saved || blank);
+  useEffect(() => { setR(s.ratings[cur]?.[me.pid] || blank); }, [cur]); // eslint-disable-line react-hooks/exhaustive-deps
   const done = (c: string) => !!s.ratings[c]?.[me.pid];
-  const ok = r.appeal && r.feels && r.newness;
+  const ok = r.appeal && r.feels && r.newness && r.sweet && r.cool;
   const named = s.revealed && SAMPLES.every((x) => done(x.code)) ? s.revealed.samples[cur] : null;
+  // Once the scores are on the TV, scoring is closed: what was saved stays as it was.
+  const closed = tastingClosed(s);
   return (
     <div className="rm-pad">
       <div className="rm-tabs">{SAMPLES.map((x) => <button key={x.code} className={(cur === x.code ? 'on' : '') + (done(x.code) ? ' done' : '')} onClick={() => setCur(x.code)}>{x.code}</button>)}</div>
@@ -125,14 +142,17 @@ function Taste({ s, me, p, step }: P) {
       <h1 className="h3">Sample {cur}{named ? <span className="it"> · {named.name}</span> : null}</h1>
       {named && cur !== MYSTERY && <p>{named.note}</p>}
       {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess" /></label>}
-      {CRITERIA.map((c) => <Scale key={c.key} label={c.l} v={r[c.key]} set={(n) => setR({ ...r, [c.key]: n })} />)}
-      <div className="k" style={{ margin: '18px 0 10px' }}>Who would buy it?</div>
-      <div className="rm-tags">{WHO_CHIPS.map((w) => <button key={w} className={r.who.includes(w) ? 'on' : ''} onClick={() => setR({ ...r, who: r.who.includes(w) ? r.who.filter((x: string) => x !== w) : [...r.who, w] })}>{w}</button>)}</div>
-      <div className="k" style={{ margin: '4px 0 10px' }}>Which direction do you think it comes from?</div>
-      <div className="rm-tags">{TERRITORIES.map((t) => <button key={t.id} className={r.guess === t.id ? 'on' : ''} onClick={() => setR({ ...r, guess: t.id })}>{t.name}</button>)}</div>
-      <div className="k">{DEVELOP.q}</div><div className="rm-tags">{DEVELOP.opts.map(v => <button key={v} className={r.advance === v ? 'on' : ''} onClick={() => setR({ ...r, advance: v })}>{v}</button>)}</div>
-      <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="Sum it up in one word" />
-      <button className="rm-btn sticky" disabled={!ok} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
+      <p className="rm-ctx">{SAMPLES.find((x) => x.code === cur)?.base}: judge it as {judgeAs(SAMPLES.find((x) => x.code === cur)?.base || '')}.</p>
+      {closed && <div className="rm-lock">Scoring is closed. {SAMPLES.every((x) => done(x.code)) ? 'Thanks, all four of your scores are in.' : 'The scores you saved are in.'}</div>}
+      {CRITERIA.map((c) => <Scale key={c.key} label={c.q} lo={c.lo} hi={c.hi} v={r[c.key]} off={closed} set={(n) => setR({ ...r, [c.key]: n })} />)}
+      {JAR.map((j) => (
+        <div key={j.key} className="rm-jar" role="group" aria-label={j.l}>
+          <span>{j.l}</span>
+          <div className="rm-tags">{JAR_OPTS.map((o) => <button key={o} aria-pressed={r[j.key] === o} className={r[j.key] === o ? 'on' : ''} disabled={closed} onClick={() => setR({ ...r, [j.key]: o })}>{o}</button>)}</div>
+        </div>
+      ))}
+      <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="One word for it (optional)" aria-label="One word for it (optional)" />
+      <button className="rm-btn sticky" disabled={!ok || closed} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
     </div>
   );
 }
@@ -214,7 +234,7 @@ function DotsVote({ s, me, p, room }: P) {
           <button onClick={() => setO({ ...o, [x.id]: Math.max(0, (o[x.id] || 0) - 1) })} disabled={!o[x.id] || v?.locked}>-</button><em className="num">{o[x.id] || 0}</em><button onClick={() => used < room.total && setO({ ...o, [x.id]: (o[x.id] || 0) + 1 })} disabled={used >= room.total || v?.locked}>+</button>
         </div>
       ))}</div>
-      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{JSON.stringify(o) === JSON.stringify(mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} dots`}</button>
+      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{sameChips(o, mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} dots`}</button>
     </div>
   );
 }

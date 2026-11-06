@@ -2,16 +2,20 @@ const fs=require('fs'),vm=require('vm'),ts=require('typescript'),assert=require(
 const {stripTypeScriptTypes}=require('node:module');
 const cache={};function load(name){if(cache[name])return cache[name];const module={exports:{}};let code=stripTypeScriptTypes(fs.readFileSync('src/lib/'+name+'.ts','utf8'));const names=[...code.matchAll(/export (?:const|function) (\w+)/g)].map(m=>m[1]);code=code.replace(/import \{ ([^}]+) \} from '([^']+)';/g,(_,n,p)=>`const {${n}} = require('${p}');`).replace(/export /g,'');code+='\nObject.assign(module.exports,{'+names.join(',')+'});';vm.runInNewContext(code,{module,exports:module.exports,require:p=>load(p.replace('./','')),globalThis,console});return cache[name]=module.exports;}
 
-const {SCENES,EXECUTIVE}=load('scenes'),{SAMPLES,PRIMARY_TERRITORIES,SEEDS,MISSIONS,EVENT,ROSS_GOAL,SOURCES,DIRECTIONS,RUN,TOPICS,OBJECTIVES}=load('content'),{fold}=load('state');
-// The run of show: Ross's four objectives as four parts, each opened by its own scene, with phone votes on the trends,
-// the tasting, the next round and the ideas.
-const ids=SCENES.map(s=>s.id),at=(id)=>ids.indexOf(id),room=(id)=>SCENES.find(s=>s.id===id).room;
-assert.equal(SCENES.length,36);assert.equal(ids[0],'arrival');assert.equal(ids[1],'title');assert.equal(ids.slice(-3).join(),'playbook,next,lunch');assert.equal(at('film'),at('tasting')-1,'THE FLAVOR RACE plays right before the tasting');
-for(const id of ['brief','prework','thesis','open1','gap','portfolio','market','signals','signalvote','open2','school','cooling','oxyd','anatomy','map','platform1','platform4','tasting','matrix','nextround','open3','concepts','dots','open4','whitespace','board'])assert(ids.includes(id),'missing scene '+id);
-for(const id of ['chips','canvas','bench','pipeline','assemble','climb','code'])assert(!ids.includes(id),'cut scene still live: '+id);
-assert(at('open1')<at('gap')&&at('signalvote')<at('open2')&&at('nextround')<at('open3')&&at('dots')<at('open4')&&at('board')<at('playbook'),'parts out of order');
-assert.equal(at('signalvote'),at('signals')+1);assert.equal(at('matrix'),at('tasting')+1);assert.equal(at('nextround'),at('matrix')+1);assert.equal(SCENES.find(s=>s.id==='signals').builds,7);
-assert.equal(room('signalvote').kind,'pick');assert.equal(room('signalvote').max,3);assert.equal(room('tasting').kind,'taste');assert.equal(room('nextround').kind,'chips');assert.equal(room('nextround').key,'directions');assert.equal(room('dots').kind,'dots');assert.equal(room('dots').total,3);
+const {SCENES,EXECUTIVE}=load('scenes'),{SAMPLES,PRIMARY_TERRITORIES,SEEDS,MISSIONS,EVENT,ROSS_GOAL,SOURCES,DIRECTIONS,RUN,TOPICS,OBJECTIVES,CRITERIA,JAR,JAR_OPTS,SIGNALS}=load('content'),{fold,tasteSummary,jarTop,jarAll}=load('state');
+// The run of show: twenty-two slides for Ross's four objectives, discussion first. Each part opens on a chapter slide
+// (open1 to open4) with Ross's objective. Phone votes on the trends, the tasting and the next round.
+const ids=SCENES.map(s=>s.id),at=(id)=>ids.indexOf(id),room=(id)=>SCENES.find(s=>s.id===id).room,sc=(id)=>SCENES.find(s=>s.id===id);
+assert.equal(SCENES.length,22);
+assert.equal(ids.join(),'arrival,team,ours,brief,prework,open1,gap,market,signals,open2,school,map,film,tasting,nextround,open3,whitespace,concepts,open4,board,playbook,lunch','the twenty-two slides, in order');
+assert.equal(at('film'),12,'THE FLAVOR RACE is slide 13');assert.equal(at('school'),10,'Flavor School is slide 11');assert.equal(at('film'),at('tasting')-1,'THE FLAVOR RACE plays right before the tasting');
+for(const id of ['title','july','thesis','portfolio','signalvote','cooling','oxyd','anatomy','platform1','platform2','platform3','platform4','matrix','dots','next'])assert(!ids.includes(id),'merged or cut slide still live: '+id);
+assert.equal(room('signals').kind,'pick');assert.equal(room('signals').key,'signals');assert.equal(room('signals').max,3);assert.equal(room('tasting').kind,'taste');assert.equal(room('nextround').kind,'chips');assert.equal(room('nextround').key,'directions');assert.equal(room('nextround').total,5);
+assert(!SCENES.some(s=>s.room.kind==='dots'),'no dot vote on the day');
+assert.equal(String(sc('team').skip),'1','the July row is the optional build');assert(!sc('map').skip,'the two untasted directions always show: the room can put chips on them');assert.equal(sc('map').builds,4);assert.equal(sc('gap').builds,3);assert.equal(sc('signals').builds,3);assert.equal(sc('school').builds,2);assert.equal(sc('playbook').builds,7);
+assert(SCENES.every(s=>!s.optional),'no whole slide is optional: the short version skips builds');
+const {firstOfPart}=load('scenes');assert.equal(SCENES.filter(firstOfPart).map(s=>s.id+':'+s.chapter).join(),'open1:0,open2:1,open3:2,open4:3','a chapter slide opens each part');
+['gap','school','whitespace','board'].forEach((id,i)=>{const o=sc('open'+(i+1));assert.equal(ids[at(id)-1],o.id,o.id+' sits right before '+id);assert.equal(o.title,TOPICS[i].title);assert.equal(o.block,sc(id).block);assert.equal(o.builds,0);assert.equal(o.room.kind,'watch');});
 assert(EXECUTIVE.every(id=>ids.includes(id)),'executive cut names a missing scene');assert(SCENES.every(s=>RUN.some(b=>b.id===s.block)),'scene outside the run of show');assert.equal(TOPICS.length,4);assert.equal(OBJECTIVES.length,4);
 assert(DIRECTIONS.length>=4&&SAMPLES.every(s=>DIRECTIONS.some(d=>d.id===s.code||d.id===s.id)),'every sample is a direction to vote on');
 assert.equal(EVENT.code,'FOF1109');assert(EVENT.lockup.includes('Princeton, New Jersey'));assert(SOURCES[ROSS_GOAL.src]);assert(SAMPLES.every(s=>s.base));
@@ -19,18 +23,167 @@ assert.equal(PRIMARY_TERRITORIES.length,4);assert.equal(MISSIONS.length,2);asser
 const events=[{id:'1',t:1,kind:'rate',pid:'p',data:{sample:'D',appeal:4,feels:4,newness:5,who:['Families'],fruitGuess:'apple, grape',advance:'Yes'}},{id:'2',t:2,kind:'commitment',data:{ref:'workshop-D',fields:{owner:'Test owner',date:'2026-12-01'}}},{id:'3',t:3,kind:'commitment',data:{ref:'workshop-D',fields:{action:'Revise sweetness'}}}];
 const state=fold(events);assert.equal(state.ratings.D.p.fruitGuess,'apple, grape');assert.equal(state.ratings.D.p.advance,'Yes');assert.equal(state.commitments['workshop-D'].owner,'Test owner');assert.equal(state.commitments['workshop-D'].action,'Revise sweetness');assert.equal(state.commitments['workshop-D'].date,'2026-12-01');
 const live=fold([{id:'4',t:4,kind:'board',data:{horizon:'now',text:'Sample A, second round'}},{id:'5',t:5,kind:'mark',data:{cell:'am|loyal'}},{id:'6',t:6,kind:'mark',data:{cell:'pm|new'}},{id:'7',t:7,kind:'mark',data:{cell:'am|loyal'}},{id:'8',t:8,kind:'goto',data:{scene:3,step:1}}]);
-assert.equal(live.board.now,'Sample A, second round');assert.equal(live.marks.join(),'pm|new');assert.equal(live.scene,3);assert.equal(live.step,1);
+assert.equal(live.board.now,'Sample A, second round');assert.equal(live.marks.join(),'pm|new');assert.equal(live.scene,3);assert.equal(live.step,1);assert.equal(live.sceneId,undefined,'a move without a slide name names no slide');
+// A move names its slide: the name wins over the position, so a position from the old 36-slide order never steers the
+// room, and nothing resumes from a move that names no slide.
+const named=fold([{id:'g1',t:1,kind:'goto',data:{scene:24,step:2}},{id:'g2',t:2,kind:'goto',data:{scene:0,step:1,id:'tasting'}}]);assert.equal(named.scene,at('tasting'));assert.equal(named.sceneId,'tasting');assert.equal(named.step,1);
+const old=fold([{id:'o1',t:1,kind:'goto',data:{scene:30,step:3}}]);assert.equal(old.sceneId,undefined);assert.equal(old.scene,SCENES.length-1);
+const unknown=fold([{id:'u1',t:1,kind:'goto',data:{scene:2,step:0,id:'signalvote'}}]);assert.equal(unknown.sceneId,undefined);assert.equal(unknown.scene,2);
 // the plan rows, hand votes taken back and a paper card removed
 const plan=fold([{id:'p1',t:10,kind:'plan',data:{id:'r1',h:'Now',fields:{what:'Sample A, second round'}}},{id:'p2',t:11,kind:'plan',data:{id:'r1',fields:{owner:'Test owner',next:'Two versions'}}},{id:'p3',t:12,kind:'plan',data:{id:'r2',h:'Next',fields:{what:'Gone'}}},{id:'p4',t:13,kind:'unplan',data:{id:'r2'}},{id:'p5',t:14,kind:'plan',data:{id:'r1',h:'Future'}},
   {id:'h1',t:15,kind:'pick',pid:'hand-1',data:{key:'signals',value:['mild'],paper:true}},{id:'h2',t:16,kind:'pick',pid:'hand-2',data:{key:'signals',value:['mild'],paper:true}},{id:'h3',t:17,kind:'unpick',pid:'hand-1',data:{key:'signals'}},
   {id:'c1',t:18,kind:'rate',pid:'paper-1',data:{sample:'A',appeal:3,feels:3,newness:3,who:[]}},{id:'c2',t:19,kind:'rate',pid:'paper-1',data:{sample:'B',appeal:3,feels:3,newness:3,who:[]}},{id:'c3',t:20,kind:'unrate',pid:'paper-1',data:{sample:'A'}}]);
 assert.deepEqual(Object.keys(plan.plan),['r1']);assert.equal(plan.plan.r1.h,'Future');assert.equal(plan.plan.r1.what,'Sample A, second round');assert.equal(plan.plan.r1.owner,'Test owner');
 assert.deepEqual(Object.keys(plan.votes.signals.picks),['hand-2']);assert.ok(!plan.ratings.A['paper-1']);assert.ok(plan.ratings.B['paper-1']);
+// Nothing typed on the day: the concept library and its option lists, the paper card counter, and plan lines placed by
+// tapping (with the concept or direction they came from, and a drafted brief that runs longer than the other fields).
+const L=load('conceptLibrary');
+assert.equal(L.WHO.length,6);assert.equal(L.WHEN.slice(0,8).join(),load('content').SURVEY.moment.options.join(),'When starts with the eight moments, word for word');assert.equal(L.WHEN.length,12);assert.equal(L.ROLE.join(),'Core range,Limited edition,New sub-line,Kids range');assert.equal(L.FORMAT.length,5);assert.equal(L.GROWS.join(),'Loyal users,New users,Both');
+assert.equal(L.STARTS.length,8,'four samples and four directions');assert.equal(L.TESTS.length,6);assert.equal(L.OWNERS.join(),'Dan,Alex,Ryan,Matt');assert.equal(L.DUE_DEFAULT,'To confirm','placing a line sets no review date');assert(L.STEPS.includes('To confirm')&&L.DUES.includes('To confirm'));
+assert(L.LIBRARY.length>=10&&L.LIBRARY.every(c=>c.status==='DRAFT'),'every drafted card is marked DRAFT');
+for(const c of L.LIBRARY){assert(L.STARTS.some(x=>x.id===c.start),c.id+' starts somewhere real');assert(L.WHO.includes(c.segment)&&L.WHEN.includes(c.occasion)&&(c.role===''||L.ROLE.includes(c.role))&&L.FORMAT.includes(c.format)&&(c.incremental===''||L.GROWS.includes(c.incremental)),c.id+' uses the option lists');}
+// Decisions made explicit (review step 3): starter cards leave role and growth to the room, every list can take an answer
+// outside it (written on the notes sheet), the next version is its own field, and a card is a proposal until agreed.
+assert(L.LIBRARY.filter(c=>!c.title||c.id.startsWith('dir-')).every(c=>c.role===''&&c.incremental===''),'starter cards leave role in the range and the growth opportunity to the room');
+assert.equal(L.CONCEPT_FIELDS.map(f=>f.l).join('|'),'Where it starts|Who it’s for|When|Role in the range|Format|Intended growth opportunity|Next version or question to test');
+assert(L.CONCEPT_FIELDS.filter(f=>f.opts).every(f=>f.opts[f.opts.length-1]===L.OTHER),'every concept field can take an answer outside its options');
+assert([L.TESTS,L.STEPS].every(o=>o.includes(L.OTHER)));assert(L.unconfirmed(L.OTHER)&&L.unconfirmed('To confirm')&&L.unconfirmed('')&&!L.unconfirmed('Less sweet'),'the write-up highlights open and noted answers');
+{let v='';v=L.toggleIn(v,'Less sweet');v=L.toggleIn(v,'More cooling');assert.equal(v,'Less sweet · More cooling');assert(L.hasOpt(v,'More cooling'));v=L.toggleIn(v,L.KEEP);assert.equal(v,L.KEEP,'keeping it as tasted rules out a change');v=L.toggleIn(v,'Sweeter');assert.equal(v,'Sweeter');assert.equal(L.toggleIn(v,'Sweeter'),'');}
+{const cf=fold([{id:'c1',t:1,kind:'concept',data:{team:1,slot:1,fields:{name:'Grove',change:'Less sweet',agreed:''}}},{id:'c2',t:2,kind:'concept',data:{team:1,slot:1,fields:{agreed:'1'}}}]);assert.equal(cf.concepts['t1-1'].change,'Less sweet');assert.equal(cf.concepts['t1-1'].agreed,'1','agreeing a card keeps its fields');assert.equal(cf.concepts['t1-1'].name,'Grove');}
+{const pf=fold([{id:'p1',t:1,kind:'plan',data:{id:'r1',h:'Now',fields:{what:'Grove',change:'Less cooling'}}}]);assert.equal(pf.plan.r1.change,'Less cooling','a plan line carries the next version');}
+{const srcs=['src/lib/sceneNotes.ts','src/lib/runNotes.ts','src/components/show/Plan.tsx','src/components/show/Concepts.tsx'].map(f=>fs.readFileSync(f,'utf8')).join('\n');assert(!/Placing it is the vote|What it grows|January review unless/.test(srcs),'no wording that turns a tap into a decision');assert(/Place it when the group agrees/.test(srcs));assert(/Starting point for discussion/.test(srcs));}
+// Review step 4: the Playbook cover title is dark on its light page, the plan reads back in four columns, and score cells
+// switch to dark numerals from 3.4 up.
+{const css=fs.readFileSync('src/app/show.css','utf8'),sc=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');assert(/\.page\.cover \.cover-t \{ color: #0B1B2B/.test(css),'the Playbook title reads on its cover');assert(sc.includes('<th>Idea</th><th>Next version or test</th><th>Owners</th><th>Next sample due</th>'),'the plan reads back in four columns');assert(sc.includes(">= 3.4 ? ' hi'"),'dark numerals from 3.4 up');}
+// Review step 5: the backups. The slides PDF has a blind tasting page before the reveal and labels every page; the run
+// sheet cues the trays at the film's black, not its first tray, has no empty Owner column and keeps its contingency list
+// together; the film plays without the clock and bars; the skip line says what skipping does.
+{const ex=fs.readFileSync('scripts/export-show.mjs','utf8'),rn=fs.readFileSync('src/lib/runNotes.ts','utf8'),rs=fs.readFileSync('src/app/host/run/page.tsx','utf8'),pv=fs.readFileSync('src/components/PresenterApp.tsx','utf8'),sa=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(ex.includes('tasting: [0, 2]')&&ex.includes('class="lab"'),'blind tasting page and page labels in the slides PDF');assert(!/ends on four glasses/.test(rn)&&/at black/i.test(rn),'trays come out at the film\'s black');assert(!rs.includes('<th>Owner</th>')&&rs.includes('rs-keep'),'no empty Owner column; the run-behind list stays together');assert(!pv.includes('already saved')&&pv.includes('Skip the film and start the tasting'),'the skip line');assert(sa.includes("sc.id !== 'film' && <Chrome"),'no chrome over the film');}
+assert(DIRECTIONS.every(d=>L.cardFor(d.id)),'every chips option has a starter card');assert(Object.values(L.MOMENT_WHEN).every(w=>L.WHEN.includes(w)));assert(Object.entries(L.MOMENT_WHEN).every(([m,w])=>m===w)&&Object.keys(L.MOMENT_WHEN).length===8,'a marked moment goes on the card as it is');
+const pc=fold([{id:'q1',t:1,kind:'papercard',data:{d:1}},{id:'q2',t:2,kind:'papercard',data:{d:1}},{id:'q3',t:3,kind:'papercard',data:{d:-1}},{id:'q4',t:4,kind:'papercard',data:{d:-1}},{id:'q5',t:5,kind:'papercard',data:{d:-1}},{id:'q6',t:6,kind:'papercard',data:{d:1}}]);assert.equal(pc.paperCards,1,'the count never goes below zero');assert.equal(fold([]).paperCards,0);
+const tap=fold([{id:'t1',t:1,kind:'plan',data:{id:'r9',h:'Next',fields:{what:'Grove',ref:'D',draft:'1',brief:'x'.repeat(400),due:'January 2027 review'}}}]);assert.equal(tap.plan.r9.ref,'D');assert.equal(tap.plan.r9.draft,'1');assert.equal(tap.plan.r9.brief.length,400);assert.equal(tap.plan.r9.due,'January 2027 review');
+// Every slide has a view on the TV (the presentation looks a slide up by its id without the trailing number).
+{const src=fs.readFileSync('src/components/ShowApp.tsx','utf8');const views=src.slice(src.indexOf('const VIEWS'),src.indexOf('};',src.indexOf('const VIEWS')));for(const s of SCENES){if(s.id==='film')continue;assert(new RegExp('\\b'+s.id.replace(/\d+$/,'')+':').test(views),'no view for slide '+s.id);}}
+// The household slide speaks one unit (households out of 100): three groups that add up to 100, and the share of sales
+// (a different measure) stays off the screen.
+{const a=fs.readFileSync('src/components/scenes/ActI.tsx','utf8');const g=a.slice(a.indexOf('function Glasses'),a.indexOf('function Portfolio'));assert(!g.includes('GAP.share')&&!g.includes('>86<')&&!/other 86/i.test(g),'the share of sales or the 86 is back on the household slide');assert(g.includes('{GAP.tb}')&&g.includes('{OTHER.another}')&&g.includes('{OTHER.none}'));const {GAP}=load('content');assert.equal(GAP.tb+(GAP.category-GAP.tb)+(100-GAP.category),100);assert.equal(sc('gap').title,'Out of every 100 households');}
+// The shelf (slide 8): the range as checked on November 4 plus the two rinse sachets from the Q3 release, six formats,
+// counted as products rather than flavors, no flavor listed twice
+// in one format, no open source note, and sodium chlorite rather than OXYD-8 wherever the room or the Playbook reads it.
+{const C=load('content');const P=C.PORTFOLIO;assert(P.every(v=>['Rinse','Toothpaste','Kids','Lozenge','Gum','Sachet'].includes(v.format)),'a format outside the six');assert.equal(P.filter(v=>v.format==='Sachet').length,2,'the two rinse sachets');assert.equal(new Set(P.map(v=>v.format+'|'+v.flavor)).size,P.length,'a flavor listed twice in one format');assert.equal(P.length,29);assert.equal(P.filter(v=>/mint/i.test(v.flavor)).length,24);assert(!/CONFIRM/.test(C.SOURCES.listings));assert(/sachet/i.test(C.WHITESPACE.present['On the go']),'the rinse sachets from the Q3 release are missing from on the go');
+for(const f of ['src/lib/content.ts','src/lib/sceneNotes.ts','src/lib/runNotes.ts','src/components/show/Deck.tsx','src/components/scenes/ActI.tsx','src/components/scenes/School.tsx'])assert(!fs.readFileSync(f,'utf8').includes('OXYD'),'OXYD-8 is back in '+f);}
+// Slide 8 counts products, not flavors, and asks where flavor could add a reason to choose TheraBreath rather than
+// claiming it already has what competitors are chasing. Slide 3 uses the names printed on the bottles, as slide 8 does.
+{const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');const g=d.slice(d.indexOf('export function Shelf'),d.indexOf('// 9. Seven trends'));assert(g.includes('products.</h2>')&&!/flavors are mint|what they&rsquo;re chasing/.test(g),'slide 8 wording');const o=fs.readFileSync('src/lib/ourFlavors.ts','utf8');assert(o.includes("'Chamomile Mint'")&&o.includes("'Bubblegum Blast'")&&!o.includes("'Bubble Gum'"),'slide 3 names match the bottles');}
+// Slide 15 shows the scores that were collected: fit and perceived difference 1 to 5, linear, liking as size, no leader and no
+// develop-first corner, and the number of scores per sample.
+{const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');const l=d.slice(d.indexOf('export function Landed'),d.indexOf('// 16.')>0?d.indexOf('// 16.'):undefined);assert(l.includes('a second round?')&&l.includes('Bubble size is liking')&&l.includes('[1, 3, 5]'),'slide 15 chart');assert(!/loyal users|new consumers|Develop first|Does both|lead\?\.|' lead'/.test(l),'slide 15 claims loyalty or a leader again');assert(l.includes('(Math.max(1, Math.min(5, v)) - 1) / 4'),'slide 15 maps 1 to 5 straight onto the plot');}
+// Slide 11: flavor combines taste, aroma and mouthfeel; no times on the cooling axis; the base, not a causal story.
+{const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');const f=d.slice(d.indexOf('export function FlavorSchool'),d.indexOf('export function DirectionsMap'));assert(f.includes('Flavor combines taste, aroma')&&f.includes('From the first rinse to the last day of shelf life')&&f.includes('Check it holds up in the base we agree on')&&!f.includes('OxydField')&&!f.includes('Public chemistry only')&&!/really smell|as you swallow|tough on flavor|What we control|Controlling pH/.test(f),'slide 11 wording');const sc=fs.readFileSync('src/components/scenes/School.tsx','utf8');assert(!/1 sec|10 min|1 hr|4 hr/.test(sc)&&sc.includes("['Onset'"),'the cooling axis carries times again');}
+// Slide 17 asks a question rather than announcing white space: the blank moments say To explore, ties in the pre-brief
+// all glow, and the tray says that the first moment becomes the When on the concept card.
+{const w=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');const g=w.slice(w.indexOf('export function WhiteSpaceShow'),w.indexOf('export function Board'));assert(g.includes('Pick a moment.')&&g.includes('To explore')&&fs.readFileSync('src/lib/sceneNotes.ts','utf8').includes('becomes the When on its concept card'),'slide 17 wording');assert(!/still open|Every open moment|>Open</.test(g),'slide 17 announces open space again');assert(g.includes('mom[m] === most'),'a tied pre-brief moment would not glow');}
+// The blind round (November 4 review): scoring closes when the scores go up (a `tasting` lock); a phone's score after
+// that is ignored, a paper card typed in afterwards still counts, and going back reopens it. The TV shows counts, not
+// averages, until then, and the first press with people still scoring only warns.
+{const {tastingProgress,tastingClosed}=load('state');const ev=(id,kind,pid,data)=>({id,t:id.length,kind,pid,data});
+const base=[ev('j1','join','p1',{name:'A'}),ev('j2','join','p2',{name:'B'}),ev('j3','join','pp',{name:'C',paper:true})];
+const r=(id,pid,sample)=>ev(id,'rate',pid,{sample,appeal:4,feels:4,newness:3,sweet:'Just right',cool:'Too much'});
+let st=fold([...base,...['A','B','C','D'].map((c,i)=>r('r1'+i,'p1',c)),r('r2','p2','A')]);let pr=tastingProgress(st,['A','B','C','D']);
+assert.equal(pr.phones,2,'a person on paper is not a phone');assert.equal(pr.done,1);assert.equal(pr.left,1);assert.equal(pr.per.A,2);assert(!tastingClosed(st));
+st=fold([...base,r('x1','p1','A'),ev('lk','vote',null,{key:'tasting',action:'lock'}),r('x2','p2','A'),r('x3','paper-1','A')]);
+assert(tastingClosed(st));assert(!st.ratings.A.p2,'a phone scored after the scores went up');assert(st.ratings.A['paper-1'],'a paper card typed in afterwards');
+st=fold([...base,ev('lk','vote',null,{key:'tasting',action:'lock'}),ev('op','vote',null,{key:'tasting',action:'open'}),r('x4','p2','B')]);assert(st.ratings.B.p2,'going back reopens scoring');
+const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(/key: 'tasting', id: 'tasting'/.test(sh)&&/key: 'directions', id: 'nextround'/.test(sh)&&sh.includes('still scoring. Press again'),'the locks and the press-again check');
+const tl=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');const g=tl.slice(tl.indexOf('export function TastingLive'),tl.indexOf('// The chip vote'));assert(g.includes('const scoring = step === 0')&&g.includes('finished all four')&&g.includes('JAR_OPTS.map'),'the tasting slide: counts first, then every answer');}
+// Ties (November 4 review): equal totals share a place, the top three keep anything tied with the third, and a sent
+// chip vote stays Sent whatever order its keys come back in.
+{const {places,topIds,placeLabel}=load('state');const t={a:5,b:3,c:3,d:3,e:1};const p=places(t);
+assert.equal(p.a.place,1);assert.equal(p.b.place,2);assert.equal(p.d.place,2);assert(p.b.tied&&!p.a.tied);assert.equal(placeLabel(p.c),'Tied for second');assert.equal(placeLabel(p.a),'Number 1');
+assert.equal(topIds(t).join(),'a,b,c,d','a tie at third keeps every tied option');assert.equal(topIds({x:4,y:4,z:2,w:1}).join(),'x,y,z');assert.equal(topIds({}).length,0);
+const rm=fs.readFileSync('src/components/RoomApp.tsx','utf8');assert(!rm.includes('JSON.stringify(o) === JSON.stringify(mine)')&&rm.includes('sameChips(o, mine)'),'the Sent check compares by option');
+const dk=fs.readFileSync('src/components/show/Deck.tsx','utf8');assert(dk.includes("'No votes came in · three trends to discuss'")&&dk.includes('placeLabel(pl[d.id])')&&!/>Number \{rank \+ 1\}</.test(dk),'ties and the no-vote fallback on slides 9 and 15');
+assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes('Ask where their five go and add one per chip'),'hand chips use the five-chip budget');}
+// The tasting questions (November 4): liking, fit with TheraBreath and perceived difference from 1 to 5, then
+// sweetness and cooling as not enough, just right or too much. Ratings saved before then (with who, a direction guess
+// and develop it further) still read.
+assert.equal(CRITERIA.map(c=>c.key+':'+c.l).join(),'appeal:Liking,feels:Fit with TheraBreath,newness:Perceived difference');assert.equal(CRITERIA.map(c=>c.q).join('|'),'How much do you like the flavor?|How well does this fit TheraBreath?|How different is it from current mouthwash flavors?','the three questions, as the review worded them');assert(CRITERIA.every(c=>c.lo&&c.hi),'every scale names its two ends');{const sc=fs.readFileSync('src/app/scorecard/page.tsx','utf8'),rm=fs.readFileSync('src/components/RoomApp.tsx','utf8');assert(sc.includes('c.lo')&&rm.includes('lo={c.lo}'),'the phone and the paper card show the scale ends');}
+assert.equal(JAR.map(j=>j.key).join(),'sweet,cool');assert.equal(JAR_OPTS.join(),'Not enough,Just right,Too much');assert.equal(load('content').DEVELOP,undefined,'develop it further is no longer asked');
+const jr=fold([{id:'j1',t:1,kind:'rate',pid:'a',data:{sample:'C',appeal:4,feels:3,newness:5,sweet:'Just right',cool:'Too much',word:'Bright'}},{id:'j2',t:2,kind:'rate',pid:'b',data:{sample:'C',appeal:2,feels:4,newness:3,sweet:'Just right',cool:'Not enough'}},{id:'j3',t:3,kind:'rate',pid:'c',data:{sample:'C',appeal:3,feels:3,newness:3,who:['Families'],advance:'Maybe'}}]);
+const js=tasteSummary(jr,'C');assert.equal(js.n,3);assert.equal(js.sweet['Just right'],2);assert.equal(jarTop(js.sweet),'Just right, 2 of 2');assert.equal(jarAll(js.cool,JAR_OPTS),'1 not enough, 1 too much');assert.equal(jr.ratings.C.c.advance,'Maybe','an old rating keeps its answers');assert.equal(jarTop({}),'');
+// The chips: the four samples under Tasted today, then the two directions not tasted today.
+assert.equal(DIRECTIONS.filter(d=>d.tasted).map(d=>d.id).join(),'A,B,C,D');assert.equal(DIRECTIONS.filter(d=>!d.tasted).length,2);assert(DIRECTIONS.filter(d=>d.tasted).every(d=>PRIMARY_TERRITORIES.some(t=>t.name===d.sub)),'a sample chip names its direction underneath');
+assert.equal(SIGNALS[5].title,'The feel of a rinse is part of its experience.','the sixth trend says what mouthfeel is, without the unmeasured comparison');assert(/measure efficacy/.test(SIGNALS[5].proofs[1].t),'trend 6 separates feel from efficacy');
 // The slide-by-slide plan: every scene has one, each part's minutes fill its window exactly, and no slide lists more
 // clicks than it has builds.
 const {SLIDES}=load('runNotes'),{SLIDE_MIN,SLIDE_TIMES}=load('slideTimes');const mm=(t)=>{const [h,m]=t.split(':').map(Number);return h*60+m;};
 assert(SCENES.every(s=>SLIDES[s.id]&&SLIDE_TIMES[s.id]&&s.id in SLIDE_MIN),'a scene has no slide plan');
 for(const b of RUN){const sum=SCENES.filter(s=>s.block===b.id).reduce((n,s)=>n+SLIDE_MIN[s.id],0);assert.equal(sum,mm(b.end)-mm(b.t),'slide minutes for '+b.id+' do not fill '+b.t+' to '+b.end);}
 assert(SCENES.every(s=>!SLIDES[s.id].clicks||SLIDES[s.id].clicks.length<=s.builds+1),'a slide lists more clicks than builds');
-assert.equal(SLIDE_TIMES.film.from,'10:40');assert.equal(SLIDE_TIMES.tasting.from,'10:43');assert.equal(SLIDE_TIMES.nextround.to,'11:00');
-console.log('PASS: run of show and slide plan ('+SCENES.length+' scenes), phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards and white-space marks.');
+const T={arrival:'10:00',team:'10:01',ours:'10:03',brief:'10:04',prework:'10:06',open1:'10:10',gap:'10:11',market:'10:14',signals:'10:17',open2:'10:25',school:'10:26',map:'10:30',film:'10:37',tasting:'10:40',nextround:'10:53',open3:'11:00',whitespace:'11:01',concepts:'11:06',open4:'11:20',board:'11:21',playbook:'11:40',lunch:'11:44'};
+for(const [id,t] of Object.entries(T))assert.equal(SLIDE_TIMES[id].from,t,id+' starts at '+t);assert.equal(SLIDE_TIMES.lunch.to,'12:00');
+// Review step 6, slides 1 to 5: no big zero before anyone joins, short capability rows, the objectives in two states,
+// and on the pre-brief slide ties lit together, one type size for off-brand answers and no "as a group" claim.
+{const o=fs.readFileSync('src/components/scenes/Opening.tsx','utf8');assert(o.includes('{n > 0 && <div className="presence quiet">'),'the joined count only shows once someone joins');assert(o.includes("v === max(list) ? 'top'"),'tied pre-brief answers light up together');assert(!/fontSize: 30 \+/.test(o),'off-brand answers share one size');assert(!o.includes('As a group, you want'),'the freshness line is not a group claim');assert(o.includes('Your own taste in freshness'));
+const c=fs.readFileSync('src/lib/content.ts','utf8');const sci=c.match(/export const SCIENCE = \[([^\]]*)\]/)[1].split(',').length,ima=c.match(/export const IMAGINATION = \[([^\]]*)\]/)[1].split(',').length;assert(sci<=4&&ima<=4,'two short capability rows');
+assert.equal(sc('brief').builds,1,'the four objectives in one click, then the goal');}
+// Review step 7, slides 6 to 9: the households slide names its groups exactly and keeps loyal users in the question; the
+// trends say what their evidence shows; the trend vote title stops before the QR code.
+{const a=fs.readFileSync('src/components/scenes/ActI.tsx','utf8');assert(a.includes('buy mouthwash, not TheraBreath')&&a.includes('the {GAP.tb} who buy it, the {OTHER.another} who buy another brand or the {OTHER.none} who don’t buy mouthwash')&&!a.includes('took the burn out'),'slide 7 wording');
+const sig=Object.fromEntries(SIGNALS.map(s=>[s.id,s]));assert.equal(sig.allure.title,'Playful flavors are expanding in oral care.');assert(/counts use, not dry mouth/.test(sig.mouths.proofs[0].t));assert(!/54% of Americans/.test(fs.readFileSync('src/lib/content.ts','utf8')),'the 54% is the survey Kenvue cites');assert(/florals like hibiscus/.test(sig.fruit.proofs[1].t));assert(/Emotion360/.test(sig.warm.proofs[0].t));assert(!/share went up with it/.test(sig.botanical.proofs[1].t));
+assert(/\.sigs\.tv h2\.h2 \{ max-width: 1480px/.test(fs.readFileSync('src/app/show.css','utf8')),'the QR gutter on slide 9');}
+// Slide 5: off-brand answers as a list, one per line in quotes; the freshness read-back in the sliders' own words.
+{const o=fs.readFileSync('src/components/scenes/Opening.tsx','utf8');assert(o.includes('className="pw-off"')&&o.includes('Your answers lean toward ${listOf(l)}.')&&!o.includes('className="cloud"'),'slide 5 lists the off-brand answers and reads back the sliders');}
+// Review step 9, slide 15: the chart is talked about first. Build 0 holds the two questions with the chips closed (the
+// phones wait), build 1 swaps in the chip question and opens the chips, build 2 shows the top three and closes them.
+{assert.equal(sc('nextround').builds,2,'slide 15 has its talk, chips and results builds');assert.equal(room('nextround').opens,1,'the chips open at build 1');
+const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes('pos.step < l.opens || pos.step >= l.opens + 1'),'the chips lock before build 1 and from build 2');
+const d=fs.readFileSync('src/components/show/Deck.tsx','utf8'),l=d.slice(d.indexOf('export function Landed'));assert(l.includes("'lm-layer' + (step === 0 ? ' on' : '')")&&l.includes("'lm-layer' + (step >= 1 ? ' on' : '')")&&l.includes("step >= 2 && rank > -1")&&!l.includes('step >= 1 && rank'),'slide 15 builds');
+assert(fs.readFileSync('src/components/RoomApp.tsx','utf8').includes('room.opens && step < room.opens'),'the phones wait for the chips to open');
+assert(fs.readFileSync('scripts/export-show.mjs','utf8').includes('nextround: [0, 2]'),'the PDF shows slide 15 before the chips and with the top three');
+assert(fs.readFileSync('src/app/show.css','utf8').includes('.tl .pad > .enter:first-child .k, .landed .pad > .enter:first-child .k { max-width: 1480px;'),'slides 14 and 15 keep their header clear of the QR code');}
+// Review step 10: slide 16 is a ten-second signpost, a marked moment keeps the pre-brief's words on the card, and slide
+// 18 says that what's filled in is a proposal.
+{const n=fs.readFileSync('src/lib/sceneNotes.ts','utf8');assert(n.includes('We have a starting shortlist')&&n.includes('Start with the moment and the need'),'slide 16 talking points');
+assert(fs.readFileSync('src/components/show/ShowScenes.tsx','utf8').includes('proposals until we agree them'),'slide 18 says the cards are proposals');}
+// The facilitation guide's five issues. Ties: the vote settles only the places that fit in three seats; a tie at the
+// cutoff waits for the room. The tasting stays closed once its scores have been up. An edited agreed card needs the
+// room's yes again. A marked moment keeps its words (above). The short version only skips the July row (above).
+{const {shortlist}=load('state');
+let x=shortlist({C:5,D:5,A:3,bright:3,B:1});assert.equal(x.sure.join(),'C,D');assert.equal(x.tied.sort().join(),'A,bright');assert.equal(x.seats,1,'two tied for third: one seat for the room');
+x=shortlist({C:4,D:3,A:2});assert.equal(x.sure.join(),'C,D,A');assert.equal(x.tied.length,0);assert.equal(x.seats,0);
+x=shortlist({C:2,D:2,A:2,bright:2});assert.equal(x.sure.length,0);assert.equal(x.tied.length,4);assert.equal(x.seats,3,'four tied for first: the room picks three');
+x=shortlist({C:3,D:3,A:3,B:1});assert.equal(x.sure.join(),'C,D,A','three tied for first all fit');
+const c=fs.readFileSync('src/components/show/Concepts.tsx','utf8');assert(c.includes("shortlist(tallyPick(s, 'directions')).sure")&&!c.includes('.slice(0, 3)'),'concept cards start only from settled places');assert(c.includes('Tied in the chips')&&c.includes("set({ ...fields, agreed: '' })"),'tie picker, and an edit takes agreement off');
+const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes("want = 'reveal'")&&sh.includes("v?.revealed && want === 'open'"),'the tasting stays closed once its scores have been up');
+assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("send('vote', { key: 'tasting', action: 'open' })"),'Reopen scoring in the presenter view');
+assert(!fs.readFileSync('src/lib/content.ts','utf8').includes('three dots each'),'no three-dot vote in the run of show');}
+// Slide 9: the keys 1 to 7 open any trend for more discussion, on the TV and in the presenter view.
+{const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes("/^[0-7]$/.test(e.key)) pickTrend(Number(e.key))")&&sh.includes("SCENES[posRef.current.i]?.id === 'signals'")&&sh.includes('pick={pick}'),'keys 1 to 7 on the trends slide');
+const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');assert(d.includes('SIGNALS.find((x) => x.n === pick)'),'the trends slide opens the picked trend');
+assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("cmd({ c: 'pick', n: x.n })"),'the presenter view can open a trend');}
+// Review step 11: a two to four minute read-back leaves the time to 12:00 for questions, and slide 22's subtitle sits on
+// a deeper wash.
+{const n=fs.readFileSync('src/lib/sceneNotes.ts','utf8');assert(n.includes('save the record')&&n.includes('what surprised you this morning')&&n.includes('what have we missed')&&n.includes('reaching a decision, not starting another presentation'),'slides 19, 21 and 22 talking points');
+assert(fs.readFileSync('src/app/show.css','utf8').includes('rgba(11,27,43,.62)'),'slide 22 subtitle contrast');}
+// Review step 12: the pre-brief asks for a priority, offers Another occasion (kept off the day map), and its sliders have
+// two ends of one scale; the first answers still count under the same options and slider numbers. The letter says coded
+// samples, both pages use the deck's household wording, and the run sheet keeps the loaner with one person, says who
+// votes and gives each block a one-line action.
+{const C=load('content');assert.equal(C.SURVEY.consumer.q,'Which audience should a new flavor focus on first?');assert.equal(C.SURVEY.moment.q,'Which occasion would be most useful to explore together?');
+assert.equal(C.SURVEY.moment.other,'Another occasion');assert(!C.SURVEY.moment.options.includes('Another occasion')&&C.SURVEY.moment.options.length===8,'Another occasion is not a moment on the day map');
+assert.equal(C.PROFILE.map((x)=>x.id).join(),'adv,cool,bot,exp,occ');assert.equal(C.PROFILE.map((x)=>x.l+'/'+x.r).join('|'),'More familiar/More adventurous|Strong cooling/Gentle cooling|Classic mint/Mint with other notes|Just does the job/Something to enjoy|Any time of day/Made for one moment');
+const st=load('state');const f=st.fold([{seq:1,id:'x1',t:1,kind:'survey',pid:'p1',data:{name:'A',consumer:'Gen Z',moment:'Another occasion',momentOther:'Before a date'}},{seq:2,id:'x2',t:2,kind:'survey',pid:'p2',data:{name:'B',consumer:'Gen Z',moment:'Wind-down'}}]);
+assert.equal(f.survey.p1.momentOther,'Before a date');assert.equal(f.survey.p2.momentOther,undefined);
+const sa=fs.readFileSync('src/components/SurveyApp.tsx','utf8'),fd=fs.readFileSync('src/components/SiteApp.tsx','utf8');assert(sa.includes('[...SURVEY.moment.options, SURVEY.moment.other]')&&sa.includes('momentOther'),'the pre-brief offers Another occasion');
+assert(!sa.includes('taste them blind')&&sa.includes('as coded samples'),'the letter says coded samples');for(const x of [sa,fd])assert(!x.includes('took the burn out')&&x.includes('buy mouthwash but not TheraBreath'),'household wording matches the deck');
+const ws=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');assert(ws.includes('...WHITESPACE.moments.map((m) => mom[m] || 0)'),'only moments on the arc glow');
+assert(fs.readFileSync('src/components/scenes/Opening.tsx','utf8').includes('SURVEY.moment.other}: {otherMoments'),'slide 5 lists Another occasion answers');
+const rs=fs.readFileSync('src/app/host/run/page.tsx','utf8');assert(rs.includes('It stays with that one person all morning')&&rs.includes('Who votes:')&&rs.includes('RUN_NOTES[b.id].act'),'run sheet: loaner, who votes, one-line actions');
+const RN=load('runNotes');for(const b of C.RUN)assert(RN.RUN_NOTES[b.id].act&&RN.RUN_NOTES[b.id].act.length<90,'one-line action for '+b.id);}
+// Review step 13: the run sheet's still-to-confirm list carries the review's checks for the team and the venue.
+{const rs=fs.readFileSync('src/app/host/run/page.tsx','utf8');for(const x of ['Ryan to confirm each sample','The shelf (slide 8)','only what Ryan can back with data','Owners: which of us takes each kind of direction forward','The room, with Ross'])assert(rs.includes(x),'still to confirm: '+x);}
+// A second presentation window left on another slide stays passive: the vote locks, the reveal and the re-seal, and the
+// starter cards only run in the window on the session's latest move.
+{const sh=fs.readFileSync('src/components/ShowApp.tsx','utf8');assert(sh.includes('const inSync = s.scene === pos.i && s.step === pos.step;'),'inSync defined');assert.equal((sh.match(/\|\| !inSync\) return;/g)||[]).length,3,'locks, reveal and starters wait for inSync');}
+console.log('PASS: run of show and slide plan ('+SCENES.length+' slides), slide names on every move, optional builds, chapter slides, tasting questions, chips groups, phone votes, lineup, Mystery Flavor, commitments, board, plan rows, hand votes, paper cards, the concept library, tap-only plan lines and white-space marks.');

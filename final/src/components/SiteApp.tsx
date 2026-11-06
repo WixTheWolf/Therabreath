@@ -44,7 +44,7 @@ export default function SiteApp({ prebrief, team = false }: { prebrief: string; 
         <section className="fd-sec" aria-labelledby="fd-why">
           <h2 id="fd-why">Why we’re meeting</h2>
           <blockquote className="fd-quote"><p>“{ROSS_GOAL.lead} {ROSS_GOAL.loyal} {ROSS_GOAL.joiner} {ROSS_GOAL.fresh}”</p><cite>{SOURCES[ROSS_GOAL.src]}</cite></blockquote>
-          <p>TheraBreath took the burn out of mouthwash, and it now holds a record {GAP.share}% of the category, number 2 in mouthwash. The next job is giving more people a reason to want it. Church &amp; Dwight puts TheraBreath’s household penetration at {GAP.tb}%, against {GAP.category}% for mouthwash as a whole. So {100 - GAP.tb} in 100 households don’t buy TheraBreath yet: some buy another mouthwash, and some don’t buy mouthwash at all. Flavor could give more of them a reason to try it.</p>
+          <p>TheraBreath built a strong position on a rinse without the burn: a record {GAP.share}% share of mouthwash, number 2 in the category. The next job is giving more people a reason to want it. Church &amp; Dwight puts TheraBreath’s household penetration at {GAP.tb}%, against {GAP.category}% for mouthwash as a whole. So out of every 100 households, {GAP.category - GAP.tb} buy mouthwash but not TheraBreath, and {100 - GAP.category} don’t buy mouthwash. Flavor could give more of them a reason to try it.</p>
           <p className="fd-src">Source: {CITE.q3call.src}</p>
         </section>
 

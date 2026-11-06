@@ -4,7 +4,8 @@ import type { SessionState } from '@/lib/state';
 import type { Scene } from '@/lib/scenes';
 import type { Ctx } from '../StageApp';
 
-export type SceneProps = { s: SessionState; step: number; scene: Scene; idx: number; ctx: Ctx; send: (k: string, d?: any, pid?: string) => any };
+// `pick` is a trend opened with the keys 1 to 7 on the trends slide (its number, 0 for none).
+export type SceneProps = { s: SessionState; step: number; scene: Scene; idx: number; ctx: Ctx; send: (k: string, d?: any, pid?: string) => any; pick?: number };
 
 // Reveal on a build step. Children fade and rise in once step >= b.
 export function R({ b = 0, step, d = 0, className = '', children, style, as: Tag = 'div' }: { b?: number; step: number; d?: number; className?: string; children?: React.ReactNode; style?: React.CSSProperties; as?: any }) {

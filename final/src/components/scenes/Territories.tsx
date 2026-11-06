@@ -7,7 +7,7 @@ import { PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, WHO_CHIPS, ROSS_GOAL, MYST
 import { tallyPick, ranked, tasteSummary } from '@/lib/state';
 
 // Map positions: x = character (familiar to adventurous), y = intensity (gentle to bold). Our perspective, illustrative.
-const POS: Record<string, [number, number]> = { mint: [0.16, 0.58], bright: [0.5, 0.74], botanical: [0.3, 0.3], warmcool: [0.66, 0.6], fruit: [0.62, 0.42], night: [0.7, 0.16], ladder: [0.3, 0.1] };
+export const POS: Record<string, [number, number]> = { mint: [0.16, 0.58], bright: [0.5, 0.74], botanical: [0.3, 0.3], warmcool: [0.66, 0.6], fruit: [0.62, 0.42], night: [0.7, 0.16], ladder: [0.3, 0.1] };
 
 // 23. The map
 export function MapScene({ step }: SceneProps) {
@@ -143,7 +143,7 @@ export function Tasting({ s, step }: SceneProps) {
   );
 }
 
-// The growth matrix: Ross's two goals as two axes. Fit with TheraBreath (loyal users) across, newness (new consumers) up, appeal as size.
+// The score chart on the old stage route: fit with TheraBreath across, perceived difference up, liking as size. Scores, not a measure of loyalty or recruitment.
 export function Matrix({ s, step }: SceneProps) {
   const pts = SAMPLES.map((x) => ({ ...x, sum: tasteSummary(s, x.code), c: x.color[1] }));
   const scored = pts.filter((p) => p.sum.n > 0);
@@ -165,8 +165,8 @@ export function Matrix({ s, step }: SceneProps) {
         <span className="mx-q tl">New, but doesn&rsquo;t feel like TheraBreath yet<b>Work on the finish</b></span>
         <span className="mx-q br">Fits TheraBreath<b>Could extend a line</b></span>
         <span className="mx-q bl">Neither yet<b>Rethink it</b></span>
-        <span className="mx-ax x">Fit with TheraBreath <em>strengthens loyal users</em> →</span>
-        <span className="mx-ax y">Newness <em>attracts new consumers</em> →</span>
+        <span className="mx-ax x">Fit with TheraBreath <em>1 to 5</em> →</span>
+        <span className="mx-ax y">Perceived difference <em>1 to 5</em> →</span>
         {pts.map((p, i) => {
           const x = out && p.sum.n ? at(p.sum.feels) : 50, y = out && p.sum.n ? at(p.sum.newness) : 50;
           const size = out && p.sum.n ? 70 + at(p.sum.appeal) * 1.3 : 56;

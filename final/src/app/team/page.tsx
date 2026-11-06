@@ -1,6 +1,7 @@
 import { EVENT, SOURCES, SOURCE_URLS } from '@/lib/content';
 import { joinToken } from '@/lib/auth';
 import LivePanel from './LivePanel';
+import RehearsalReset from './RehearsalReset';
 
 export const metadata = { title: 'Team page' };
 
@@ -14,16 +15,17 @@ const FILES = '/files';
 export default async function Team() {
   const prebrief = `/survey/${PRACTICE}?k=${await joinToken(PRACTICE)}`;
   const before = [
-    { href: `${FILES}/The-Future-of-Freshness-Presenter-Deck.pdf`, t: 'The presentation, page by page', d: 'Every slide with its time and talking points. The easiest way to read it on a phone.' },
-    { href: '/host/run', t: 'The run sheet', d: 'The morning minute by minute, the 9:30 setup and what we still need to confirm.' },
+    { href: `${FILES}/The-Future-of-Freshness-Presenter-Deck.pdf`, t: 'The presentation, page by page', d: 'Every slide with its builds, times and talking points. The easiest way to read it on a phone.' },
+    { href: '/host/run', t: 'The run sheet', d: 'The morning minute by minute, the 9:30 setup and what we still need to confirm, including the drafted concept cards, the Flavor School slide and the bottles on slide 3.' },
     { href: '/', t: 'The front door', d: 'What Church & Dwight sees after their password.' },
     { href: prebrief, t: 'The pre-brief', d: 'The pre-read Ross sends on November 3. A practice copy, so try the questions freely.' },
     { href: '/media/opening.mp4', t: 'The opening film', d: '1:22, on the front door and the pre-brief. It isn’t shown in the room.' },
   ];
   const day = [
     { href: '/host/writeup?code=REHEARSE', t: 'The Playbook write-up', d: 'What we send everyone within 8 business days. This is a practice copy; after the morning, switch to the live session at the top.' },
-    { href: '/scorecard', t: 'The paper scorecard', d: 'For anyone who’d rather not score on a phone. One page per person.' },
-    { href: '/media/flavor-race.mp4', t: 'THE FLAVOR RACE', d: '2:24, at 10:40, right before the tasting. Save a copy to the presenting laptop the day before.' },
+    { href: '/scorecard', t: 'The paper scorecard', d: 'For anyone without a phone (the loaner is for one person only). One page per person. On the day we only count them.' },
+    { href: '/host/cards?code=REHEARSE', t: 'Paper scorecards, after the morning', d: 'Where the paper cards are typed in once the morning is over. A practice copy; after the morning, use /host/cards for the live session.' },
+    { href: '/media/flavor-race.mp4', t: 'THE FLAVOR RACE', d: '2:24, at 10:37, right before the tasting. Save a copy to the presenting laptop the day before.' },
   ];
   // Every PDF, to save or forward inside the team. The decks show the sample names, so they stay behind the team link.
   const pdfs = [
@@ -48,6 +50,7 @@ export default async function Team() {
         <div className="tm-start">
           <a className="tm-go" href="/host?code=REHEARSE#1">Rehearse the presentation</a>
           <p>Scan the code with your own phone to try the votes and the tasting, and press P for the presenter view. Nothing here reaches the live session.</p>
+          <RehearsalReset />
         </div>
         <LivePanel code={EVENT.code} />
         <h2>Before the day</h2>

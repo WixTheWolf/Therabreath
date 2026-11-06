@@ -1,45 +1,33 @@
-# Future of Freshness - TheraBreath Flavor Playbook
+# The Future of Freshness
 
-**The Flavor Factory x TheraBreath / Church & Dwight**  
-**Monday, November 9, 2026 | 10:00 AM to 12:00 PM ET | Darwin room | Church & Dwight, New Jersey**
+**TheraBreath × The Flavor Factory | Monday, November 9, 2026 | 10:00 AM to 12:00 PM ET**
+**Darwin room, Church & Dwight, 469 N Harrison St, Princeton, NJ 08540**
 
-This repository is now centered on the **Future of Freshness** workshop for November 9, 2026.
+A two-hour workshop for Church & Dwight's Oral Care R&D leadership team, built around Ross Conroy's four objectives (emerging trends; new flavor territories and sensory experiences; concepts for new occasions and consumers; a pipeline for incremental growth). The room tastes four blind samples made in TheraBreath's own bases, picks what deserves a next round and leaves with The Flavor Playbook.
 
-The July capabilities workshop is historical context. The November session is about **growth through flavor innovation**: what is changing in freshness, where TheraBreath can lead, which flavor territories deserve attention, and how the best ideas move into a practical innovation pipeline.
+## Where the current work is
 
-## November workshop goals
+**[`final/`](final/README.md)** is the workshop: the front door, the pre-brief, the presentation on the room's TV, the phones and the team's pages, in one Next.js app. It deploys as the Vercel project `final-future-of-freshness` (Root Directory `final`). Start with [`final/README.md`](final/README.md).
 
-1. **Trends** - identify the flavor, sensory, and consumer shifts that matter for oral care.
-2. **Territories** - explore where freshness can go beyond traditional mint.
-3. **Concepts** - turn promising territories into ideas tied to consumers and occasions.
-4. **Pipeline** - prioritize what moves now, next, and later.
+Work happens on the branch `claude/fof-17-slides` (draft PR #8), and production for `final-future-of-freshness` is deployed from it.
 
-## Headline flavor directions
+## The rest of the repository
 
-The current Future of Freshness concept directions are:
+Nothing below is used by `final/` except the film sources in `video/`. The other folders still back their own Vercel projects, so they stay until those projects are retired.
 
-- **Arctic Yuzu**
-- **Green Tea Cucumber**
-- **Ginger Lime**
-- **Grapefruit Rose Mint**
-- **Pear Cardamom Mint**
-- **Chamomile Vanilla Mint**
+| Path | What it is | Vercel project | Status |
+| --- | --- | --- | --- |
+| `video/` | Remotion sources, scripts and notes for the opening film and THE FLAVOR RACE. The rendered films the site plays are in `final/public/media/`. | none | Source for the films |
+| `simple/` | A simplified copy of `final/` from November 3 | `simple-future-of-freshness` | Not in use |
+| `playbook/` | The earlier live workshop app (Stage, Console and phones) that `final/` grew out of | `therabreath-flavor-innovation-workshop-experience-d2` | Superseded |
+| `freshness/` | The earlier static narrative with six headline directions (Arctic Yuzu and others) | none | Superseded: the directions and the tasting now live in `final/src/lib/content.ts` |
+| `index.html`, `classic.html`, `assets/`, `site/`, `brief/`, `deck/`, `lab3d/`, `scripts/` | The first static prototype of the site, deck and pre-brief, with its PDF helpers | `therabreath`, `future-of-freshness` (both build from the repository root) | Superseded |
+| `build_booklet.py`, `dist/` | The July 2026 capabilities workshop booklet and an early deck PDF | none | Legacy |
+| `.github/workflows/dash-check.yml` | CI on every push: the dash check across the repository and the `playbook/` sign-in tests | | Active |
 
-These are working innovation directions, not final product names, claims, or commercial formulations. Final sample selection and formula feasibility remain subject to flavorist review and stability work in the actual TheraBreath base.
+## Rules for everything here
 
-## Current development
-
-The full November workshop build is being developed in **PR #4**, including:
-
-- the Future of Freshness presentation
-- the opening film and Flavor Race edits
-- the pre-brief
-- the live Flavor Playbook app
-- tasting and co-creation tools
-- workshop deck and leave-behind materials
-
-The files currently on `main` that generate the July 2026 capabilities booklet are **legacy material** and should not be treated as the current November workshop direction.
-
-## Important privacy note
-
-The workshop materials are customer-specific. The live experience is designed with password protection and noindex controls, but the **GitHub repository itself is currently public**.
+- **The repository is public.** The sites are password protected and noindex, but anything committed here can be read by anyone. Never commit pre-brief answers, passwords, keys or team links.
+- No TheraBreath or The Flavor Factory formula details (usage levels, flavor codes) anywhere.
+- Sample names stay sealed on every attendee surface until the room's reveal.
+- No em dashes or en dashes anywhere: copy, code, comments or commit messages. The dash check enforces it.

@@ -98,3 +98,36 @@ test('on the server, the signing key does not come from the password hashes in t
     assert.notEqual(await auth.authToken(), fromDb[0]);
   } finally { delete process.env.POSTGRES_URL; delete process.env.PLAYBOOK_SECRET; }
 });
+
+test('the owner link is off until PLAYBOOK_OWNER_KEY is set, and needs at least 20 characters', async () => {
+  delete process.env.PLAYBOOK_OWNER_KEY;
+  assert.equal(auth.ownerEnabled(), false);
+  assert.equal(await auth.checkOwnerKey(''), false);
+  assert.equal(await auth.isOwner(await auth.ownerToken()), false);
+  process.env.PLAYBOOK_OWNER_KEY = 'too-short';
+  try { assert.equal(auth.ownerEnabled(), false); assert.equal(await auth.checkOwnerKey('too-short'), false); } finally { delete process.env.PLAYBOOK_OWNER_KEY; }
+});
+
+test('only the exact owner key opens the answers, and changing it signs the old cookie out', async () => {
+  process.env.PLAYBOOK_OWNER_KEY = 'Owner-Test-Key-0123456789';
+  try {
+    assert.equal(await auth.checkOwnerKey('Owner-Test-Key-0123456789'), true);
+    assert.equal(await auth.checkOwnerKey(' Owner-Test-Key-0123456789 '), true);
+    for (const k of ['owner-test-key-0123456789', 'Owner-Test-Key-012345678', '']) assert.equal(await auth.checkOwnerKey(k), false);
+    const cookie = await auth.ownerToken();
+    assert.equal(await auth.isOwner(cookie), true);
+    assert.equal(await auth.isOwner(await auth.hostToken()), false);
+    assert.equal(await auth.isOwner(await auth.authToken()), false);
+    process.env.PLAYBOOK_OWNER_KEY = 'Another-Owner-Key-0123456789';
+    assert.equal(await auth.isOwner(cookie), false);
+  } finally { delete process.env.PLAYBOOK_OWNER_KEY; }
+});
+
+test('the team key and the host cookie are not the owner key', async () => {
+  process.env.PLAYBOOK_OWNER_KEY = 'Owner-Test-Key-0123456789';
+  process.env.PLAYBOOK_TEAM_KEY = 'team-test-key';
+  try {
+    assert.equal(await auth.checkOwnerKey('team-test-key'), false);
+    assert.equal(await auth.checkTeamKey('Owner-Test-Key-0123456789'), false);
+  } finally { delete process.env.PLAYBOOK_OWNER_KEY; delete process.env.PLAYBOOK_TEAM_KEY; }
+});

@@ -11,7 +11,7 @@ web
 Two audiences carry equal weight. Neither wins by default, so each conflict between them is weighed on its own.
 
 - **Church & Dwight's Oral Care R&D leadership team**, invited by Ross Conroy. Before the day they read the front door and a personal pre-brief and answer four quick questions. On November 9 they watch the presentation on the room's TV, taste four blind samples, and vote on their own phones (a signed link from a QR code, first name only).
-- **The Flavor Factory team running the morning**: Dan Wixted (President), Alex Wixted (Business Operations), Ryan Wixted (QC/QA Manager) and Matt Wixted (Production Manager). They rehearse, then run the morning from the presenting laptop with the talking points, the run sheet, the team page and the paper scorecard.
+- **The Flavor Factory team running the morning**: Dan Wixted (President), Alex Wixted (Business Operations), Ryan Wixted (QC/Product Development) and Matt Wixted (Production Manager). They rehearse, then run the morning from the presenting laptop with the talking points, the run sheet, the team page and the paper scorecard.
 
 ## Product Purpose
 
@@ -37,7 +37,7 @@ The Flavor Factory is a wholesale flavor manufacturer making liquid and powder f
 - **On the day:** the presentation (`/host`) runs on a fixed 1920 x 1080 canvas from the presenting laptop, mirrored to the TV in a lit conference room and read from across the table. 35 scenes, or 36 once pre-brief answers exist, in four parts, one per objective. Phones join by QR code and vote four times: three trends, the tasting scores, five chips on what gets a next round, and three dots on the ideas to develop. Anyone without a phone votes by hand on screen or on the paper scorecard.
 - **The team's tools:** the team link (`/t/KEY`), or the host password on the sign-in page, opens the presentation, the run sheet, the team page, the scorecard, the Playbook write-up (`/host/writeup`), every PDF (`/files/`) and THE FLAVOR RACE, the film that closes the morning before lunch. Church & Dwight's password alone opens none of them; a visitor signed in with it who reaches a team page is asked for the team link or the host password. Only the team can move the slides, open votes or type on the board.
 - **Sessions:** `FOF1109` is the live session; any other code (for example `REHEARSE`) is a clean rehearsal that never touches it. `?still=1` renders without writing to the session.
-- **Running late:** `S` skips the optional slides, `]` and `[` jump between parts, and the talking points show how far over the current part is.
+- **Running late:** `S` skips the optional builds, `]` and `[` jump between parts, and the talking points show how far over the current part is.
 
 ## Capabilities and Constraints
 
@@ -45,7 +45,7 @@ The Flavor Factory is a wholesale flavor manufacturer making liquid and powder f
 - The blind flight, in tasting order: A Berry Blast and B the Mystery Flavor in the Kids base, then C Blossom Mint and D Grove Mint in the Fresh Breath base (Ryan moved the Kids samples first on November 2). Names stay sealed on every surface until the room's reveal.
 - **Confidentiality (binding):** password protected, noindex, no third-party analytics. No TheraBreath or The Flavor Factory formula details, codes or usage levels anywhere. The samples and concepts are development work made for this session, not finished products or claims.
 - **Copy rules (binding):** no em dashes or en dashes anywhere in the repo (`scripts/check-dashes.mjs` enforces it); curly quotes; no invented data, so every number carries its source; Ross's four objectives and his goal quoted word for word; nobody is named as presenting any part.
-- Open before November 9 (see the README's [CONFIRM] list): the bases and the Mystery Flavor's fruits with Ryan, the Flavor School and OXYD-8 wording, attendee names for the personal links, the Q3 earnings refresh after October 30, next-step dates (including a January 2027 review), the official TheraBreath orange and logo, and the Darwin room's TV, laptop and Wi-Fi.
+- Open before November 9: see "Still to confirm" at the end of the README.
 
 ## Brand Commitments
 
@@ -54,7 +54,7 @@ The Flavor Factory is a wholesale flavor manufacturer making liquid and powder f
 
 ## Evidence on Hand
 
-- Church & Dwight Q2 2026 earnings call (July 31, 2026): TheraBreath had 25.3% of US mouthwash in Q2 2026, up 4.5 points, number 2 in the category; 14% of US households buy TheraBreath against 65% for mouthwash, which leaves 86 of every 100 who don't buy it yet.
+- Church & Dwight Q3 2026 earnings call (October 30, 2026): TheraBreath at a record 26.8% of total mouthwash, number 2 in the category; 14% of US households buy TheraBreath against 65% for mouthwash, so out of every 100 households 14 buy TheraBreath, 51 buy another mouthwash and 35 buy none. The Q2 call (July 31, 2026) had TheraBreath at 25.3%.
 - Kenvue press release (June 2, 2026), “LISTERINE® introduces range of mouthwash intensities, including new Extra Mild”: 54% of American consumers are looking for a milder-tasting option. The release's footnote gives the survey: Kenvue / Suzy UA Refresh, 2024, US general population aged 15 and over, n = 1,019. Quote it as the release words it, with that basis.
 - Ross Conroy's invitation (September 18, 2026), quoted above.
 - Seven trends, each with two public sources, and competitor launches from public coverage, all in `src/lib/content.ts`.

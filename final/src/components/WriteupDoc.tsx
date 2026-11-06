@@ -8,12 +8,13 @@
 // one on every page; it never touches the live session.
 import { useEffect, useMemo, useState } from 'react';
 import { useSession } from '@/lib/useSession';
-import { EVENT, OBJECTIVES, ROSS_GOAL, SIGNALS, SAMPLES, DIRECTIONS, PRIMARY_TERRITORIES, CRITERIA, SURVEY, HORIZONS, NEXT_STEPS, TEAM, SOURCES, MYSTERY } from '@/lib/content';
-import { tallyPick, ranked, tasteSummary, voteCounts, tasters, type SessionState } from '@/lib/state';
+import { EVENT, OBJECTIVES, ROSS_GOAL, SIGNALS, SAMPLES, DIRECTIONS, PRIMARY_TERRITORIES, CRITERIA, JAR, JAR_OPTS, SURVEY, HORIZONS, NEXT_STEPS, TEAM, SOURCES, MYSTERY } from '@/lib/content';
+import { tallyPick, ranked, tasteSummary, voteCounts, tasters, jarAll, type SessionState } from '@/lib/state';
 import { teamConcepts } from './scenes/CoCreate';
 import { candidates } from './scenes/Build';
 import { FIELDS, OBJ_IMG, directionName, markLabel } from './show/ShowScenes';
-import { PLAN_COLS, planCell, planRows, Synced } from './show/Plan';
+import { PLAN_COLS, planCell, planRows, reviewers, Synced } from './show/Plan';
+import { TESTS, OWNERS, BASES, DUES, STEPS, WHO, WHEN, CHANGES, OTHER, unconfirmed } from '@/lib/conceptLibrary';
 
 // 8 business days after the morning: weekdays only, counted from the day after.
 function sendBy(day: string, n = 8) {
@@ -29,7 +30,8 @@ const avg = (n: number) => n.toFixed(1);
 const NOTES = {
   summary: 'Our summary: two or three sentences on what the morning decided and why, in our own words.',
   told: 'Anything from the pre-brief answers worth calling out.',
-  o1: 'What the room said about the trends, and anything they told us we’d missed.',
+  o1: 'What the room said about the trends.',
+  missed: 'What the room said we’d missed: asked out loud after the trend vote.',
   o2: 'What the room said about each sample, and what it would take to make the best ones work.',
   o3: 'Anything the room added to the concepts, or asked us to look into.',
   o4: 'What has to be true for the Now directions to work, and what Church & Dwight wants to see in the next round.',
@@ -40,6 +42,8 @@ type NoteKey = keyof typeof NOTES;
 export default function WriteupDoc({ code }: { code: string }) {
   const { state: s, send, status } = useSession(code, { admin: true, interval: 3000 });
   const [size, setSize] = useState<'Letter' | 'A4'>('Letter');
+  // Edit mode, after the morning: what's still to confirm on Now, Next, Later and the drafted flavor briefs, typed in.
+  const [edit, setEdit] = useState(false);
   const [today, setToday] = useState('');
   useEffect(() => {
     document.documentElement.dataset.theme = 'a';
@@ -54,7 +58,7 @@ export default function WriteupDoc({ code }: { code: string }) {
     <div className="wu">
       {/* The paper size, and a footer on every page after the cover (Chromium prints page margin boxes). */}
       <style>{`@page { size: ${size === 'A4' ? 'A4' : 'letter'}; @bottom-left { content: "${practice ? `Practice copy (${code}), not for sending` : 'The Flavor Playbook \\00B7  Confidential'}"; font: 400 7.5pt Geist, system-ui, sans-serif; color: #59636E; } @bottom-right { content: counter(page); font: 500 7.5pt Geist, system-ui, sans-serif; color: #59636E; } } @page :first { @bottom-left { content: none; } @bottom-right { content: none; } }`}</style>
-      <Toolbar code={code} s={s} d={d} size={size} setSize={setSize} online={status.online} />
+      <Toolbar code={code} s={s} d={d} size={size} setSize={setSize} online={status.online} edit={edit} setEdit={setEdit} />
 
       <div className={'wu-doc ' + size}>
         {/* Cover */}
@@ -96,7 +100,7 @@ export default function WriteupDoc({ code }: { code: string }) {
           <dl className="wu-chose">
             <div><dt>The three trends that matter most</dt><dd>{d.topSignals.length ? d.topSignals.map((x) => x.title).join(' · ') : <span className="wu-ghost">No votes yet</span>}</dd></div>
             <div><dt>What gets a next round</dt><dd>{d.chips.filter((x) => x.n > 0).slice(0, 3).map((x) => x.name).join(' · ') || <span className="wu-ghost">No chips yet</span>}</dd></div>
-            <div><dt>Concepts we wrote</dt><dd>{d.concepts.map((c) => c.name).join(' · ') || <span className="wu-ghost">None written yet</span>}</dd></div>
+            <div><dt>Concepts we put together</dt><dd>{d.concepts.map((c) => c.name).join(' · ') || <span className="wu-ghost">None yet</span>}</dd></div>
           </dl>
         </section>
 
@@ -127,6 +131,7 @@ export default function WriteupDoc({ code }: { code: string }) {
             ))}</tbody>
           </table>
           {note('o1', 'Notes on the trends')}
+          {note('missed', 'What we missed', 'What you told us we missed')}
         </section>
 
         {/* Objective 2 */}
@@ -139,18 +144,19 @@ export default function WriteupDoc({ code }: { code: string }) {
             return <li key={t.id}><i style={{ background: `radial-gradient(circle at 35% 30%, #fff, ${t.palette[0]} 45%, ${t.palette[1]})` }} /><div><b>{t.name}</b><p>{t.promise}</p><small>{tasted.length ? `In the tasting as samples ${tasted.join(' and ')}` : 'Not in the tasting'}</small></div></li>;
           })}</ul>
           <h3 className="wu-h3">The blind tasting</h3>
-          <p className="wu-small">Four samples, made in the Fresh Breath and Kids bases Church &amp; Dwight sent, tasted blind. {d.tasters.phones + d.tasters.cards ? `${d.tasters.phones} scored on phones${d.tasters.cards ? ` and ${d.tasters.cards} on paper` : ''}.` : ''} Scores run from 1 (low) to 5 (high), averaged across everyone who tasted.</p>
+          <p className="wu-small">Four samples, made in the Fresh Breath and Kids bases Church &amp; Dwight sent, tasted blind. {d.tasters.phones + d.tasters.cards ? `${d.tasters.phones} scored on phones${d.tasters.cards ? ` and ${d.tasters.cards} on paper` : ''}.` : ''} Scores run from 1 to 5 (liking: not at all to very much; fit: poor to strong; perceived difference: very similar to very different), averaged across everyone who scored that sample.</p>
           <table className="wu-table wu-taste">
-            <thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key} className="r">{c.l}</th>)}<th className="r">Tasters</th><th>Develop it further?</th></tr></thead>
+            <thead><tr><th>Sample</th>{CRITERIA.map((c) => <th key={c.key} className="r">{c.l}</th>)}<th className="r">Tasters</th>{JAR.map((j) => <th key={j.key}>{j.l}</th>)}</tr></thead>
             <tbody>{d.tasting.map((x) => (
               <tr key={x.code}>
                 <td><b>{x.code}{x.name ? `. ${x.name}` : ''}</b><small>{x.base}{x.note ? ` · ${x.note}` : ''}</small></td>
                 {CRITERIA.map((c) => <td key={c.key} className="r num">{x.sum.n ? avg(x.sum[c.key]) : ''}</td>)}
                 <td className="r num">{x.sum.n || ''}</td>
-                <td className="wu-dev">{x.sum.n ? `${x.dev.Yes} yes, ${x.dev.Maybe} maybe, ${x.dev.No} no` : ''}</td>
+                {JAR.map((j) => <td key={j.key} className="wu-dev">{jarAll(x.sum[j.key], JAR_OPTS)}</td>)}
               </tr>
             ))}</tbody>
           </table>
+          {d.paperLeft > 0 && <p className="wu-small">Phone scores only so far: {plural(d.paperLeft, 'paper card')} still to be typed in.</p>}
           {!d.tasted && <p className="wu-ghost">No scores yet. The table fills in as people score on their phones or the paper cards are typed in.</p>}
           {d.tasting.some((x) => x.sum.words.length) && <dl className="wu-words">{d.tasting.filter((x) => x.sum.words.length).map((x) => <div key={x.code}><dt>{x.code} in one word</dt><dd>{x.sum.words.join(', ')}</dd></div>)}</dl>}
           {d.guesses.length > 0 && <p className="wu-small">The room’s guesses at the fruits in {MYSTERY}: {d.guesses.join(', ')}.</p>}
@@ -164,16 +170,20 @@ export default function WriteupDoc({ code }: { code: string }) {
         <section className="wu-sheet">
           <PracticeMark code={code} />
           <ObjHead i={2} />
-          <h3 className="wu-h3">The concepts we wrote</h3>
+          <h3 className="wu-h3">The concepts we put together</h3>
+          {/* A card the room didn't mark agreed is reported as a proposal, and every field still open is highlighted. */}
           {d.concepts.length ? <div className="wu-concepts">{d.concepts.map((c) => (
             <article key={c.id} className="wu-concept">
-              <h4>{c.name}</h4>
-              <dl>{FIELDS.map((f) => { const v = (c as any)[f.key]; return <div key={f.f}><dt>{f.l}</dt><dd>{v || <span className="wu-ghost">To agree</span>}</dd></div>; })}</dl>
+              <h4>{c.name}<span className={'wu-state' + (c.agreed ? '' : ' open')}>{c.agreed ? 'Agreed in the room' : 'Proposed, not agreed in the room'}</span></h4>
+              <dl>{FIELDS.map((f) => { const v = (c as any)[f.key]; return <div key={f.f} className={f.key !== 'why' && unconfirmed(v) ? 'wu-tbc' : ''}><dt>{f.l}</dt><dd>{v || <span className="wu-ghost">To agree</span>}</dd></div>; })}</dl>
             </article>
-          ))}</div> : <p className="wu-ghost">No concepts written yet. Up to three, from the concept slide in the presentation.</p>}
-          <h3 className="wu-h3">The dot vote</h3>
-          <p className="wu-small">Three dots each on the ideas to develop.</p>
-          <BarList rows={d.dots.map((x) => ({ k: x.id, l: x.name, sub: x.sub, n: x.dots }))} empty="No dots yet." />
+          ))}</div> : <p className="wu-ghost">No concepts yet. Up to three, from the concept slide in the presentation.</p>}
+          {/* The dot vote left the morning on November 4; a session that has one still shows it. */}
+          {d.dots.length > 0 && <>
+            <h3 className="wu-h3">The dot vote</h3>
+            <p className="wu-small">Three dots each on the ideas to develop.</p>
+            <BarList rows={d.dots.map((x) => ({ k: x.id, l: x.name, sub: x.sub, n: x.dots }))} empty="No dots yet." />
+          </>}
           {note('o3', 'Notes on the concepts')}
         </section>
 
@@ -190,9 +200,10 @@ export default function WriteupDoc({ code }: { code: string }) {
               <div key={h.id} className="wu-hz">
                 <h4>{h.label}<span>{h.when}</span></h4>
                 {rows.length ? rows.map((r) => (
-                  <article key={r.id} className="wu-row">
+                  <article key={r.id} className={'wu-row' + (edit && !r.id.startsWith('board-') ? ' editing' : '')}>
                     <b>{r.what || 'Untitled direction'}</b>
-                    <dl>{PLAN_COLS.map((c) => { const v = planCell(r, c.f); return <div key={c.f}><dt>{c.l}</dt><dd>{v || <span className="wu-ghost">To agree</span>}</dd></div>; })}</dl>
+                    <dl>{PLAN_COLS.map((c) => { const v = planCell(r, c.f); return <div key={c.f} className={unconfirmed(v) ? 'wu-tbc' : ''}><dt>{c.l}{c.f === 'brief' && r.draft && v ? <small> (draft)</small> : null}</dt><dd>{v || <span className="wu-ghost">To agree</span>}</dd></div>; })}</dl>
+                    {edit && !r.id.startsWith('board-') && <PlanEdit r={r} s={s} send={send} />}
                   </article>
                 )) : <p className="wu-ghost">Nothing here.</p>}
               </div>
@@ -218,6 +229,30 @@ export default function WriteupDoc({ code }: { code: string }) {
           <p className="wu-conf">Confidential. These are development samples and concepts made for this session. They aren’t finished products or claims, and this document holds no formula details.</p>
         </section>
       </div>
+    </div>
+  );
+}
+
+// The order the next samples come in: a date, or one of the morning's options (December, January, February).
+const dueOrder = (v?: string) => { const i = ['December 2026', 'January 2027 review', 'February 2027'].indexOf(v || ''); return i >= 0 ? Date.UTC(2026, 11 + i, 1) : Date.parse(v || '') || Infinity; };
+
+// After the morning, a line of Now, Next, Later typed in: each field with the morning's options to pick from, and the
+// flavor brief in full. Finishing the brief clears its draft label.
+function PlanEdit({ r, s, send }: { r: any; s: SessionState; send: (kind: string, data?: any) => any }) {
+  const opts: Record<string, string[]> = { who: [...WHO, ...WHEN], change: [...CHANGES, OTHER], test: TESTS, owner: OWNERS, reviewer: reviewers(s), base: BASES, due: DUES, step: STEPS };
+  const set = (f: string, v: string) => send('plan', { id: r.id, fields: f === 'brief' ? { brief: v, draft: '' } : { [f]: v } });
+  return (
+    <div className="wu-edit">
+      {PLAN_COLS.map((c) => {
+        const v = c.f === 'brief' ? r.brief || r.next || '' : r[c.f] || '';
+        return (
+          <label key={c.f} className={unconfirmed(v) ? 'wu-tbc' : ''}>
+            <span>{c.l}{c.f === 'brief' && r.draft ? ' (draft)' : ''}</span>
+            {c.f === 'brief' ? <Synced area rows={3} value={v} commit={(x: string) => set('brief', x)} /> : <Synced list={`wu-${c.f}`} value={v} commit={(x: string) => set(c.f, x)} />}
+          </label>
+        );
+      })}
+      {Object.entries(opts).map(([f, o]) => <datalist key={f} id={`wu-${f}`}>{o.map((x) => <option key={x} value={x} />)}</datalist>)}
     </div>
   );
 }
@@ -261,10 +296,7 @@ function digest(s: SessionState) {
   const vetoCount: Record<string, [string, number]> = {};
   for (const v of answers.map((a) => a.veto).filter(Boolean) as string[]) { const key = v.trim().toLowerCase().replace(/[.!]+$/, ''); if (!key) continue; vetoCount[key] = [vetoCount[key]?.[0] || v.trim().replace(/[.!]+$/, ''), (vetoCount[key]?.[1] || 0) + 1]; }
   const tasting = SAMPLES.map((x) => {
-    const rs = Object.values(s.ratings[x.code] || {});
-    const dev = { Yes: 0, Maybe: 0, No: 0 } as Record<string, number>;
-    rs.forEach((r) => { if (r.advance && r.advance in dev) dev[r.advance]++; });
-    return { ...x, name: s.revealed?.samples[x.code]?.name || '', note: x.code === MYSTERY ? '' : s.revealed?.samples[x.code]?.note || '', /* the Mystery Flavor's contents stay off the page */ sum: tasteSummary(s, x.code), dev };
+    return { ...x, name: s.revealed?.samples[x.code]?.name || '', note: x.code === MYSTERY ? '' : s.revealed?.samples[x.code]?.note || '', /* the Mystery Flavor's contents stay off the page */ sum: tasteSummary(s, x.code) };
   });
   const chipT = tallyPick(s, 'directions');
   const chips = DIRECTIONS.map((x) => ({ id: x.id, name: directionName(x.id, s), sub: x.sub, n: chipT[x.id] || 0 })).sort((a, b) => b.n - a.n);
@@ -285,11 +317,11 @@ function digest(s: SessionState) {
   return {
     signals, topSignals, signalVotes: voteCounts(s, 'signals'),
     answers: answers.length, consumer: count('consumer'), moment: count('moment'), vetoes: Object.values(vetoCount).sort((a, b) => b[1] - a[1]),
-    tasting, tasted: tasting.some((x) => x.sum.n > 0), tasters: who,
+    tasting, tasted: tasting.some((x) => x.sum.n > 0), tasters: who, paperLeft: Math.max(0, (s.paperCards || 0) - who.cards),
     guesses: Object.values(s.ratings[MYSTERY] || {}).map((r) => r.fruitGuess).filter(Boolean) as string[],
     chips, concepts, dots: candidates(s).filter((x) => x.dots > 0),
     marks: (s.marks || []).map((c) => markLabel(s, c)),
-    plan, dues: plan.filter((r) => r.due).sort((a, b) => String(a.due).localeCompare(String(b.due))),
+    plan, dues: plan.filter((r) => r.due && !unconfirmed(r.due)).sort((a, b) => dueOrder(a.due) - dueOrder(b.due)),
     headline, sources: srcKeys.map((k) => SOURCES[k]).filter(Boolean),
   };
 }
@@ -321,14 +353,17 @@ function savePdf() {
 }
 
 // The team's bar: which session, the paper size, the date it's due, what's still missing, and Save as PDF. Not printed.
-function Toolbar({ code, s, d, size, setSize, online }: { code: string; s: SessionState; d: Digest; size: string; setSize: (v: 'Letter' | 'A4') => void; online: boolean }) {
+function Toolbar({ code, s, d, size, setSize, online, edit, setEdit }: { code: string; s: SessionState; d: Digest; size: string; setSize: (v: 'Letter' | 'A4') => void; online: boolean; edit: boolean; setEdit: (v: boolean) => void }) {
   const live = code === EVENT.code;
-  const missing = (f: 'owner' | 'reviewer' | 'base' | 'due' | 'test' | 'step', l: string) => { const n = d.plan.filter((r) => !planCell(r, f)).length; return n ? `${plural(n, 'direction')} without ${l}` : ''; };
+  const missing = (f: 'owner' | 'reviewer' | 'base' | 'due' | 'test' | 'step', l: string) => { const n = d.plan.filter((r) => unconfirmed(planCell(r, f))).length; return n ? `${plural(n, 'direction')} without ${l} confirmed` : ''; };
+  const drafts = d.plan.filter((r) => r.draft && planCell(r, 'brief')).length;
   const gaps = [missing('owner', 'a TFF owner'), missing('reviewer', 'a C&D reviewer'), missing('base', 'a base'), missing('due', 'a next sample date'), missing('test', 'a next test'), missing('step', 'an agreed next step')].filter(Boolean);
   const checks: { ok: boolean; t: string }[] = [
     { ok: !!s.revealed, t: s.revealed ? 'The sample names are in' : 'The sample names show once the tasting reveals them in the presentation' },
-    { ok: d.tasting.every((x) => x.sum.n > 0), t: d.tasted ? (d.tasting.every((x) => x.sum.n > 0) ? 'Every sample has scores' : 'Some samples have no scores yet') : 'No tasting scores yet. Type in any paper cards from the presenter view' },
+    { ok: d.tasting.every((x) => x.sum.n > 0), t: d.tasted ? (d.tasting.every((x) => x.sum.n > 0) ? 'Every sample has scores' : 'Some samples have no scores yet') : 'No tasting scores yet' },
+    ...((s.paperCards || 0) > d.tasters.cards ? [{ ok: false, t: `${plural((s.paperCards || 0) - d.tasters.cards, 'paper card')} counted on the day still to type in (/host/cards)` }] : []),
     { ok: d.plan.length > 0 && !gaps.length, t: !d.plan.length ? 'Nothing on Now, Next, Later yet' : gaps.length ? gaps.join(', ') : 'Every direction has its owners, base and next sample date' },
+    { ok: !drafts, t: drafts ? `${plural(drafts, 'flavor brief')} still a draft (Edit what’s to confirm)` : 'Every flavor brief is finished' },
     { ok: !!s.notes?.summary?.trim(), t: s.notes?.summary?.trim() ? 'Our summary is written' : 'Write our summary on the second page' },
   ];
   return (
@@ -341,6 +376,7 @@ function Toolbar({ code, s, d, size, setSize, online }: { code: string; s: Sessi
         </nav>
         <span className={'wu-status' + (online ? '' : ' off')}>{online ? 'Saved to the session as you type' : 'Offline. Your words are kept and sent when you’re back'}</span>
         <div className="wu-seg" role="group" aria-label="Paper size">{(['Letter', 'A4'] as const).map((x) => <button key={x} type="button" aria-pressed={size === x} onClick={() => setSize(x)}>{x}</button>)}</div>
+        <button type="button" aria-pressed={edit} onClick={() => setEdit(!edit)}>{edit ? 'Done editing' : 'Edit what’s to confirm'}</button>
         <button type="button" className="wu-save" onClick={savePdf}>Save as PDF</button>
       </div>
       <div className="wu-bar-check">
