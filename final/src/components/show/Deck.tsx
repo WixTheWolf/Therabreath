@@ -283,11 +283,10 @@ export function DirectionsMap({ step }: SceneProps) {
   return (
     <div className={'pad dm' + (t ? ' open' : '')}>
       <div className="map-copy dm-copy">
-        <Enter i={0}><div className="k">Four directions</div></Enter>
-        <Enter i={1}><h2 className="h1">Where we think <span className="it">flavor could go.</span></h2></Enter>
-        <Enter i={2}><p className="lede dm-lede">Two of these are in today’s tasting. For the other two, we just want your opinion.</p></Enter>
-        <div className="src dm-view">Our view, not data.</div>
-        <Ask step={step} q="Which direction feels most like TheraBreath, and which stretches it in a useful way?" className="dm-ask" />
+        <Enter i={0}><div className="k">Four directions · our view, not data</div></Enter>
+        <Enter i={1}><h2 className="h1">Four ways <span className="it">freshness could go.</span></h2></Enter>
+        <Enter i={2}><p className="lede dm-lede">You’ll taste two of them in a few minutes. The other two are up for debate.</p></Enter>
+        <Ask step={step} q="Which one would you put on the shelf first? Which one would you argue against?" className="dm-ask" />
       </div>
       <div className="map-plot dm-plot" style={{ width: W, height: H }}>
         <div className="map-glow on" />
@@ -360,13 +359,13 @@ export function Landed({ s, step }: SceneProps) {
   const c = voteCounts(s, 'directions');
   const max = Math.max(1, ...Object.values(t));
   const top = topIds(t), pl = places(t); // the top three, plus anything tied with the third
-  const fresh = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.code).join(' and ');
+  const fresh = SAMPLES.filter((x) => x.base.startsWith('Fresh')).map((x) => x.code).join(' or ');
   return (
     <div className="vt landed" style={{ ['--h' as any]: OBJ_HUE[1] }}>
       <div className="vt-glow" />
       <div className="pad">
         <Enter i={0}><div className="k">From your scores · {tally(scorers, 'person', 'people')} · then five chips each on your phone</div></Enter>
-        <Enter i={1}><h2 className="h2 lm-title">What deserves <span className="it">the next round?</span></h2></Enter>
+        <Enter i={1}><h2 className="h2 lm-title">What gets <span className="it">a second round?</span></h2></Enter>
         <div className="matrix lm-m">
           <div className="mx-plot">
             <i className="mx-mid v" /><i className="mx-mid h" />
@@ -388,11 +387,11 @@ export function Landed({ s, step }: SceneProps) {
         <div className="lm-asks">
           <div className="lm-swap">
             <div className={'lm-layer' + (step === 0 ? ' on' : '')}>
-              <div className="room-ask"><span className="k">For the room</span><p>Of {fresh || 'C and D'}, which feels more like TheraBreath?</p></div>
-              <div className="room-ask"><p>Which of these deserves another round, and what would you change?</p></div>
+              <div className="room-ask"><span className="k">For the room</span><p>{fresh || 'C or D'}: which one tastes more like TheraBreath?</p></div>
+              <div className="room-ask"><p>If only one went back to the lab tomorrow, which one? What would you fix first?</p></div>
             </div>
             <div className={'lm-layer' + (step >= 1 ? ' on' : '')}>
-              <div className="room-ask"><span className="k">Now on your phone</span><p>Which flavors or directions should we develop next? Five chips each. You can stack them.</p></div>
+              <div className="room-ask"><span className="k">Now on your phone</span><p>Five chips each. Spend them on what we should develop next. Stack them on one if you love it.</p></div>
             </div>
           </div>
           <p className="src">Bubble size is liking. Scores: {pts.map((p) => `${p.code} ${p.sum.n}`).join(', ')}.{moved ? ' Close scores are nudged apart.' : ''} {paperLeft ? `Phone scores only so far: ${paperLeft} paper ${paperLeft === 1 ? 'card' : 'cards'} to add.` : 'First reactions, not consumer research.'}</p>

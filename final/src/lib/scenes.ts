@@ -54,7 +54,7 @@ const SHOW: Row[] = [
   { id: 'tasting', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'The blind tasting', block: 'tasting', room: { kind: 'taste' } },
   { id: 'nextround', act: PART(2), chapter: 1, theme: 'b', builds: 2, title: 'What deserves the next round', block: 'tasting',
     // The chart is talked about first; the chips open on the phones at build 1 (`opens`) and close at build 2.
-    room: { kind: 'chips', key: 'directions', total: 5, opens: 1, prompt: 'Which flavors or directions should we develop next? Put your five chips on them. You can stack them.' } },
+    room: { kind: 'chips', key: 'directions', total: 5, opens: 1, prompt: 'Spend your five chips on what we should develop next. Stack them on one if you love it.' } },
 
   opener(3, 'concepts'),
   { id: 'whitespace', act: PART(3), chapter: 2, theme: 'a', builds: 3, title: 'Where TheraBreath fits in a day', block: 'concepts', room: W('Where TheraBreath fits in a day') },

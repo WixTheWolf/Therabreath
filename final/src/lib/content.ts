@@ -444,13 +444,13 @@ export const TOPICS = [
     questions: ['Which three trends matter most for TheraBreath?', 'What’s on your radar that isn’t on this list?'] },
   { title: 'Where flavor could go',
     points: ['Flavor combines taste, aroma and mouthfeel.', 'The flavor has to work in your base, sodium chlorite included, through shelf life.', 'We’ll show four directions, and two of them are in the tasting.', 'Four samples, all made in your Fresh Breath and Kids bases.'],
-    questions: ['Which direction feels most like TheraBreath, and which one stretches it in a useful way?', 'What would set TheraBreath\u2019s flavors apart from what competitors are launching?'] },
+    questions: ['Which one would you put on the shelf first? Which one would you argue against?', 'What would make a TheraBreath flavor impossible to mistake for anyone else\u2019s?'] },
   { title: 'What we could make',
     points: ['Start from the samples and directions that did well.', 'For each concept, agree who it’s for, when they’d use it, its role in the range, the format, the intended growth opportunity and what the next sample should do differently.', 'One or two well-defined concepts, up to three.'],
-    questions: ['Which occasions could TheraBreath serve better?', 'Who could a new flavor bring in?'] },
+    questions: ['Pick a moment. What should it taste like?', 'Think of someone you know who never buys mouthwash. What flavor would change their mind?'] },
   { title: 'What to do first',
     points: ['Where TheraBreath shows up in a day now, and where the concepts could fit.', 'Then Now, Next and Later: the next sample round, what follows the first results, and what’s worth exploring further.', 'Every direction leaves with its consumer or occasion, a flavor brief, the next test, a TFF owner, a C&D reviewer, a base, a next-sample date and an agreed next step.'],
-    questions: ['What should go first, and what has to be true for it to work?', 'What would you need to see in the next round of samples?'] },
+    questions: ['What do we make first?', 'What would you need to taste next time to say yes?'] },
 ];
 
 // The four of us, as the pre-brief letter introduces us (names and titles confirmed by Matt on October 27). Who presents

@@ -77,12 +77,12 @@ for(const f of ['src/lib/content.ts','src/lib/sceneNotes.ts','src/lib/runNotes.t
 {const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');const g=d.slice(d.indexOf('export function Shelf'),d.indexOf('// 9. Seven trends'));assert(g.includes('products.</h2>')&&!/flavors are mint|what they&rsquo;re chasing/.test(g),'slide 8 wording');const o=fs.readFileSync('src/lib/ourFlavors.ts','utf8');assert(o.includes("'Chamomile Mint'")&&o.includes("'Bubblegum Blast'")&&!o.includes("'Bubble Gum'"),'slide 3 names match the bottles');}
 // Slide 15 shows the scores that were collected: fit and perceived difference 1 to 5, linear, liking as size, no leader and no
 // develop-first corner, and the number of scores per sample.
-{const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');const l=d.slice(d.indexOf('export function Landed'),d.indexOf('// 16.')>0?d.indexOf('// 16.'):undefined);assert(l.includes('What deserves')&&l.includes('Bubble size is liking')&&l.includes('[1, 3, 5]'),'slide 15 chart');assert(!/loyal users|new consumers|Develop first|Does both|lead\?\.|' lead'/.test(l),'slide 15 claims loyalty or a leader again');assert(l.includes('(Math.max(1, Math.min(5, v)) - 1) / 4'),'slide 15 maps 1 to 5 straight onto the plot');}
+{const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');const l=d.slice(d.indexOf('export function Landed'),d.indexOf('// 16.')>0?d.indexOf('// 16.'):undefined);assert(l.includes('a second round?')&&l.includes('Bubble size is liking')&&l.includes('[1, 3, 5]'),'slide 15 chart');assert(!/loyal users|new consumers|Develop first|Does both|lead\?\.|' lead'/.test(l),'slide 15 claims loyalty or a leader again');assert(l.includes('(Math.max(1, Math.min(5, v)) - 1) / 4'),'slide 15 maps 1 to 5 straight onto the plot');}
 // Slide 11: flavor combines taste, aroma and mouthfeel; no times on the cooling axis; the base, not a causal story.
 {const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');const f=d.slice(d.indexOf('export function FlavorSchool'),d.indexOf('export function DirectionsMap'));assert(f.includes('Flavor combines taste, aroma')&&f.includes('From the first rinse to the last day of shelf life')&&f.includes('Check it holds up in the base we agree on')&&!f.includes('OxydField')&&!f.includes('Public chemistry only')&&!/really smell|as you swallow|tough on flavor|What we control|Controlling pH/.test(f),'slide 11 wording');const sc=fs.readFileSync('src/components/scenes/School.tsx','utf8');assert(!/1 sec|10 min|1 hr|4 hr/.test(sc)&&sc.includes("['Onset'"),'the cooling axis carries times again');}
 // Slide 17 asks a question rather than announcing white space: the blank moments say To explore, ties in the pre-brief
 // all glow, and the tray says that the first moment becomes the When on the concept card.
-{const w=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');const g=w.slice(w.indexOf('export function WhiteSpaceShow'),w.indexOf('export function Board'));assert(g.includes('Which occasions could TheraBreath')&&g.includes('To explore')&&g.includes('first moment goes on its concept card'),'slide 17 wording');assert(!/still open|Every open moment|>Open</.test(g),'slide 17 announces open space again');assert(g.includes('mom[m] === most'),'a tied pre-brief moment would not glow');}
+{const w=fs.readFileSync('src/components/show/ShowScenes.tsx','utf8');const g=w.slice(w.indexOf('export function WhiteSpaceShow'),w.indexOf('export function Board'));assert(g.includes('Pick a moment.')&&g.includes('To explore')&&fs.readFileSync('src/lib/sceneNotes.ts','utf8').includes('becomes the When on its concept card'),'slide 17 wording');assert(!/still open|Every open moment|>Open</.test(g),'slide 17 announces open space again');assert(g.includes('mom[m] === most'),'a tied pre-brief moment would not glow');}
 // The blind round (November 4 review): scoring closes when the scores go up (a `tasting` lock); a phone's score after
 // that is ignored, a paper card typed in afterwards still counts, and going back reopens it. The TV shows counts, not
 // averages, until then, and the first press with people still scoring only warns.
@@ -145,7 +145,7 @@ assert(fs.readFileSync('src/app/show.css','utf8').includes('.tl .pad > .enter:fi
 // Review step 10: slide 16 is a ten-second signpost, a marked moment keeps the pre-brief's words on the card, and slide
 // 18 says that what's filled in is a proposal.
 {const n=fs.readFileSync('src/lib/sceneNotes.ts','utf8');assert(n.includes('We have a starting shortlist')&&n.includes('Start with the moment and the need'),'slide 16 talking points');
-assert(fs.readFileSync('src/components/show/ShowScenes.tsx','utf8').includes('what’s filled in is a proposal until we agree it'),'slide 18 says the cards are proposals');}
+assert(fs.readFileSync('src/components/show/ShowScenes.tsx','utf8').includes('proposals until we agree them'),'slide 18 says the cards are proposals');}
 // The facilitation guide's five issues. Ties: the vote settles only the places that fit in three seats; a tie at the
 // cutoff waits for the room. The tasting stays closed once its scores have been up. An edited agreed card needs the
 // room's yes again. A marked moment keeps its words (above). The short version only skips the July row (above).
@@ -164,7 +164,7 @@ const d=fs.readFileSync('src/components/show/Deck.tsx','utf8');assert(d.includes
 assert(fs.readFileSync('src/components/PresenterApp.tsx','utf8').includes("cmd({ c: 'pick', n: x.n })"),'the presenter view can open a trend');}
 // Review step 11: a two to four minute read-back leaves the time to 12:00 for questions, and slide 22's subtitle sits on
 // a deeper wash.
-{const n=fs.readFileSync('src/lib/sceneNotes.ts','utf8');assert(n.includes('save the record')&&n.includes('what have we missed or left unclear')&&n.includes('reaching a decision, not starting another presentation'),'slides 19, 21 and 22 talking points');
+{const n=fs.readFileSync('src/lib/sceneNotes.ts','utf8');assert(n.includes('save the record')&&n.includes('what surprised you this morning')&&n.includes('what have we missed')&&n.includes('reaching a decision, not starting another presentation'),'slides 19, 21 and 22 talking points');
 assert(fs.readFileSync('src/app/show.css','utf8').includes('rgba(11,27,43,.62)'),'slide 22 subtitle contrast');}
 // Review step 12: the pre-brief asks for a priority, offers Another occasion (kept off the day map), and its sliders have
 // two ends of one scale; the first answers still count under the same options and slider numbers. The letter says coded

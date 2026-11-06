@@ -163,10 +163,10 @@ export function TastingLive({ s, step }: SceneProps) {
       <div className="tl-shade" />
       <div className="pad">
         <Enter i={0}><div className="k">The blind tasting · made in the bases you sent · {head}</div></Enter>
-        <Enter i={1}><h2 className="h1">Four samples, <span className="it">tasted blind.</span></h2></Enter>
+        <Enter i={1}><h2 className="h1 tl-h">Four cups. No names. <span className="it">Just your first reaction.</span></h2></Enter>
         <Enter i={2}><p className="lede tl-lede">{scoring
-          ? `Judge ${judge(true)} as kids rinses and ${judge(false)} as Fresh Breath rinses. Score each one before we talk about it. When everyone has finished all four, we’ll show the scores, then the names.`
-          : 'First reactions from this room, not consumer research.'}</p></Enter>
+          ? `${judge(true)} are kids rinses, ${judge(false)} are Fresh Breath. Score each one before anyone says a word. Scores first, names after.`
+          : 'Here’s what the room thought.'}</p></Enter>
         <div className={'heat' + (scoring ? ' tl-blind' : '')}>
           <div className="hrow head"><span />{metrics.map(([, l]) => <span key={l}>{l}</span>)}{JAR.map((j) => <span key={j.key}>{j.l}<small>low · right · high</small></span>)}</div>
           {rows.map((r) => (
@@ -235,8 +235,8 @@ export const FIELDS = CONCEPT_FIELDS.map((x) => ({ f: x.key, key: x.key, l: x.l,
 export function ConceptCanvas({ s }: SceneProps) {
   return (
     <div className="pad ccv">
-      <Enter i={0}><div className="k">Up to three concepts · what’s filled in is a proposal until we agree it</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>What should each idea <span className="it">become?</span></h2></Enter>
+      <Enter i={0}><div className="k">Up to three concepts · proposals until we agree them</div></Enter>
+      <Enter i={1} className="ccv-top"><h2 className="h2">Let’s make <span className="it">them real.</span></h2><div className="room-ask"><span className="k">For the room</span><p>Picture one person who’d buy this. Who are they, and when do they reach for it?</p></div></Enter>
       <ConceptCards s={s} />
     </div>
   );
@@ -311,11 +311,11 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
   const mid = [deg(1), deg(day.length - 2)];
   return (
     <div className="pad bk">
-      <Enter i={0}><div className="k">White-space opportunities · our read, so correct us where we’re wrong</div></Enter>
+      <Enter i={0}><div className="k">White-space opportunities · our read, so correct us</div></Enter>
       <div className="bk-head">
-        <div className={'wsp-h' + (step === 0 ? ' on' : '')}><h2 className="h2">Where TheraBreath shows up <span className="it">in a day.</span></h2></div>
+        <div className={'wsp-h' + (step === 0 ? ' on' : '')}><h2 className="h2">From wake-up <span className="it">to wind-down.</span></h2></div>
         <div className={'wsp-h' + (step === 1 || step === 2 ? ' on' : '')}><h2 className="h2">The rinse bookends the day: <span className="it">morning and night.</span></h2></div>
-        <div className={'wsp-h' + (step >= 3 ? ' on' : '')}><h2 className="h2">Which occasions could TheraBreath <span className="it">serve better?</span></h2><p className="bk-lede">For each idea: what need would it serve better than what’s already there?</p></div>
+        <div className={'wsp-h' + (step >= 3 ? ' on' : '')}><h2 className="h2">Pick a moment. <span className="it">What should it taste like?</span></h2><p className="bk-lede">After coffee, before going out, after the gym: where would a flavor earn its place?</p></div>
       </div>
       <svg className="bk-arc" viewBox="0 0 1920 1080" aria-hidden="true">
         <defs>
@@ -331,7 +331,6 @@ export function WhiteSpaceShow({ s, step }: SceneProps) {
         <div className="bk-chips">{rows.map((r) => (
           <button key={r.id} type="button" data-nonav aria-pressed={r.id === sel} onClick={() => setPick(r.id)} className={'bk-chip' + (r.id === sel ? ' on' : '')} style={{ ['--rc' as any]: r.color }}><i /><b>{r.name}</b></button>
         ))}</div>
-        <span className="bk-how">Tap a flavor, then a moment. Its first moment goes on its concept card. Tap again to take it back.</span>
       </div>
       <div className="src stage-src">{WHITESPACE.read}{step >= 2 ? segLine(ranked(seg), answers.length) : ''}</div>
     </div>
@@ -345,7 +344,7 @@ export function Board({ s }: SceneProps) {
   return (
     <div className="pad sb">
       <Enter i={0}><div className="k">Now, Next, Later</div></Enter>
-      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>What should go first? <span className="it">And what has to be true for it to work?</span></h2></Enter>
+      <Enter i={1}><h2 className="h2" style={{ maxWidth: 1600 }}>What do we make first? <span className="it">And what would you need to taste next time?</span></h2></Enter>
       <Enter i={2} className="sb-tap"><PlanTap s={s} send={live.send} still={live.still} /></Enter>
     </div>
   );
