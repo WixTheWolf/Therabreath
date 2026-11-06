@@ -6,7 +6,8 @@ const LEGACY = SURVEY.legacy;
 
 export type Ev = { id: string; seq?: number; t: number; kind: string; pid?: string; data?: any };
 
-export type Participant = { pid: string; name: string; role?: string; team?: number; joined: number; sim?: boolean; paper?: boolean };
+// `warm` is the optional warm-up answer from the join screen (a flavor that surprised them this year; added November 6).
+export type Participant = { pid: string; name: string; role?: string; team?: number; joined: number; sim?: boolean; paper?: boolean; warm?: string };
 export type Rating = { appeal: number; feels: number; newness: number; who: string[]; word?: string; guess?: string; fruitGuess?: string; advance?: string; card?: string; sweet?: string; cool?: string };
 export type Dials = Record<string, number>;
 export type Bench = { dials: Record<string, Dials>; base?: string; overrides: Record<string, { value: string; note?: string }>; locked?: Dials };
@@ -19,8 +20,10 @@ export type Placement = { horizon: string; role: string; t: number };
 // `ref` is the concept or direction a line was placed from, and `draft` marks a flavor brief drafted from its profile
 // (finalized in the write-up). `due` is a date from before November 4, or one of the morning's options. `change` is
 // what the next sample should do differently (added November 5; older rows don't have it).
-export type PlanRow = { id: string; h: string; what: string; who?: string; brief?: string; change?: string; test?: string; owner?: string; reviewer?: string; base?: string; due?: string; step?: string; next?: string; ref?: string; draft?: string; t: number };
-export const PLAN_FIELDS = ['what', 'who', 'brief', 'change', 'test', 'owner', 'reviewer', 'base', 'due', 'step', 'next', 'ref', 'draft'] as const;
+// `role` is its place in the portfolio (Core, Expanders, Explorers or Specialists; added November 6, older rows read it
+// from their concept card).
+export type PlanRow = { id: string; h: string; what: string; who?: string; brief?: string; change?: string; test?: string; owner?: string; reviewer?: string; base?: string; due?: string; step?: string; next?: string; ref?: string; draft?: string; role?: string; t: number };
+export const PLAN_FIELDS = ['what', 'who', 'brief', 'change', 'test', 'owner', 'reviewer', 'base', 'due', 'step', 'next', 'ref', 'draft', 'role'] as const;
 
 export type SessionState = {
   // Where the presentation is. `sceneId` names the slide; moves saved before the 17-slide deck carry only a position in
@@ -45,6 +48,11 @@ export type SessionState = {
   paperCards: number; // paper scorecards handed in on the day, counted with +1 and -1; the cards are typed in after the morning
   timer: { running: boolean; endsAt: number; remaining: number; total: number };
   spotlight: { kind: string; ref: string } | null;
+  // The off-brand answer the presenter featured on Your pre-brief answers (a `feature` event, team only). Unlike the old
+  // spotlight, moving between slides doesn't clear it. `hidden` lists what the presenter took off the TV by tap: warm-up
+  // answers (`warm:<pid>`) and one-word tasting answers (`word:<text>`). Both added November 6.
+  featured?: { kind: string; ref: string } | null;
+  hidden?: string[];
   paper: boolean; blank: boolean; sound: boolean;
   revealed: Sealed | null; // the sample names, once the presentation has flipped them (a `reveal` event, team only)
   lastEvent: number;
@@ -53,7 +61,7 @@ export type SessionState = {
 export const initialState = (): SessionState => ({
   scene: 0, step: 0, participants: {}, votes: {}, ratings: {}, guesses: {}, concepts: {},
   missions: ['m1', 'm2'], placements: {}, reactions: {}, commitments: {}, calendar: {}, bench: {}, survey: {}, board: {}, plan: {}, marks: [], notes: {}, paperCards: 0,
-  timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, paper: false, blank: false, sound: false, revealed: null, lastEvent: 0,
+  timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, featured: null, hidden: [], paper: false, blank: false, sound: false, revealed: null, lastEvent: 0,
 });
 
 const vote = (s: SessionState, key: string) => (s.votes[key] ||= { open: false, locked: false, revealed: false, picks: {} });
@@ -62,7 +70,7 @@ export function reduce(s: SessionState, e: Ev): SessionState {
   s.lastEvent = Math.max(s.lastEvent, e.t);
   const d = e.data || {};
   switch (e.kind) {
-    case 'join': s.participants[e.pid!] = { ...(s.participants[e.pid!] || {}), pid: e.pid!, name: String(d.name || 'Guest').slice(0, 24), role: d.role, joined: s.participants[e.pid!]?.joined || e.t, sim: !!d.sim, paper: !!d.paper }; break;
+    case 'join': { const was = s.participants[e.pid!]; const warm = typeof d.warm === 'string' ? d.warm.trim().slice(0, 60) : ''; s.participants[e.pid!] = { ...(was || {}), pid: e.pid!, name: String(d.name || 'Guest').slice(0, 24), role: d.role, joined: was?.joined || e.t, sim: !!d.sim, paper: !!d.paper, warm: warm || was?.warm }; break; }
     case 'team': if (s.participants[e.pid!]) s.participants[e.pid!].team = d.team; break;
     case 'goto': {
       // A move names its slide (`id`) as well as its position. The name wins, so a position saved against an older order
@@ -111,6 +119,8 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'note': if (typeof d.key === 'string' && d.key) s.notes[d.key.slice(0, 24)] = String(d.text || '').slice(0, 2400); break;
     case 'mark': s.marks = s.marks.includes(d.cell) ? s.marks.filter((x) => x !== d.cell) : [...s.marks, String(d.cell).slice(0, 120)]; break;
     case 'spotlight': s.spotlight = d.ref ? { kind: d.kind, ref: d.ref } : null; break;
+    case 'feature': s.featured = d.ref ? { kind: String(d.kind || 'veto'), ref: String(d.ref).slice(0, 400) } : null; break;
+    case 'hide': { const k = String(d.key || '').slice(0, 120); if (!k) break; const h = s.hidden || []; s.hidden = h.includes(k) ? h.filter((x) => x !== k) : [...h, k]; break; }
     case 'flag': (s as any)[d.name] = !!d.value; break;
     case 'reveal': if (d.samples) s.revealed = { samples: d.samples, heroes: d.heroes || {}, flavors: d.flavors || {} }; break;
     case 'seal': s.revealed = null; break; // a rehearsal going back before the tasting, so the next run-through is blind

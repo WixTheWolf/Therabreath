@@ -6,6 +6,7 @@ import { R, Enter, SceneProps, Src } from './ui';
 import { EVENT, JULY, OBJECTIVES, SURVEY } from '@/lib/content';
 import { people, ranked } from '@/lib/state';
 import Orb from '../Orb';
+import { LEAN, leans, listOf, roomProfile } from '@/lib/prebrief';
 
 export function useQR(text: string) {
   const [svg, setSvg] = useState('');
@@ -162,10 +163,7 @@ export function Prework({ s, step }: SceneProps) {
 }
 
 // The freshness sliders, read back in the slider's own words: what the answers lean toward on each, and how many sit in
-// the middle. An average of 2 or less leans to the left label, 4 or more to the right; 3 is the middle.
-const LEAN: Record<string, [string, string]> = { adv: ['the familiar', 'the adventurous'], cool: ['strong cooling', 'gentle cooling'], bot: ['classic mint', 'mint with other notes'], exp: ['a rinse that just does the job', 'something to enjoy'], occ: ['a flavor for any time of day', 'a flavor made for one moment'] };
-const listOf = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
-const leans = (p: Record<string, number>) => Object.keys(LEAN).filter((k) => p[k] <= 2 || p[k] >= 4).map((k) => LEAN[k][p[k] <= 2 ? 0 : 1]);
+// the middle (the rules are in prebrief.ts, which the other slides read too).
 function leanLine(p: Record<string, number>) {
   const l = leans(p);
   return l.length ? `Your answers lean toward ${listOf(l)}.` : 'Your answers sit in the middle on every slider.';
@@ -176,11 +174,6 @@ function leanNote(p: Record<string, number>, n: number) {
   return mid > 0 && mid < Object.keys(LEAN).length ? `${avg}; the other ${words[mid]} ${mid === 1 ? 'sits' : 'sit'} in the middle.` : `${avg}.`;
 }
 
-function roomProfile(answers: any[]) {
-  const ps = answers.map((a) => a.profile).filter(Boolean); const out: Record<string, number> = {};
-  for (const k of ['adv', 'cool', 'bot', 'exp', 'occ']) out[k] = ps.length ? Math.round(ps.reduce((s, p) => s + (p[k] || 3), 0) / ps.length) : 3;
-  return out;
-}
 
 export function Thesis({ step }: SceneProps) {
   return (
