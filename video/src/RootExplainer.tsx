@@ -9,6 +9,10 @@ import { TipsScene } from "./explainer/TipsScene";
 import { EndScene } from "./explainer/EndScene";
 import { BLOCKS } from "./explainer/data";
 import { s } from "./explainer/ui";
+import { SlideBySlide, SLIDE_BY_SLIDE_FRAMES, V2_TITLE, slideFrames } from "./explainer/SlideBySlide";
+import { SlideTitleScene } from "./explainer/SlideTitleScene";
+import { SlideScene } from "./explainer/SlideScene";
+import { SLIDE_CARDS } from "./explainer/slideData";
 
 /* How the morning runs, the team's walkthrough of the presentation, on its own entry point (src/indexExplainer.ts).
    Each scene is also its own composition, so it can be previewed and edited on its own in the Studio. */
@@ -26,5 +30,13 @@ export const RemotionRootExplainer: React.FC = () => (
       <Composition id="ExplainerEnd" component={EndScene} durationInFrames={s(SCENE_SEC.end)} fps={30} width={1920} height={1080} />
     </Folder>
     <Composition id="MorningExplainer" component={MorningExplainer} durationInFrames={EXPLAINER_FRAMES} fps={30} width={1920} height={1080} />
+    {/* v2: slide by slide, why each slide is there and what to say on it. */}
+    <Folder name="SlideBySlide-Slides">
+      <Composition id="SlideBySlideTitle" component={SlideTitleScene} durationInFrames={V2_TITLE} fps={30} width={1920} height={1080} />
+      {SLIDE_CARDS.map((c, i) => (
+        <Composition key={c.id} id={`SlideBySlide-${String(c.n).padStart(2, "0")}-${c.id}`} component={SlideScene} defaultProps={{ i }} durationInFrames={slideFrames[i]} fps={30} width={1920} height={1080} />
+      ))}
+    </Folder>
+    <Composition id="SlideBySlide" component={SlideBySlide} durationInFrames={SLIDE_BY_SLIDE_FRAMES} fps={30} width={1920} height={1080} />
   </>
 );
