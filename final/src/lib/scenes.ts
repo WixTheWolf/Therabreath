@@ -40,7 +40,8 @@ const SHOW: Row[] = [
   { id: 'team', act: 'Welcome', chapter: -1, theme: 'a', builds: 1, skip: [1], title: 'Who we are, since July', block: 'welcome', room: W() },
   { id: 'ours', act: 'Welcome', chapter: -1, theme: 'a', builds: 0, title: 'Our flavors in your range', block: 'welcome', room: W() },
   { id: 'brief', act: 'Welcome', chapter: -1, theme: 'a', builds: 1, title: 'Your four objectives', block: 'welcome', room: W() },
-  { id: 'prework', act: 'Welcome', chapter: -1, theme: 'a', builds: 2, title: 'Your pre-brief answers', block: 'welcome', room: W() },
+  // Build 3 is the off-brand answer the presenter featured, at full size; with nothing featured it skips itself.
+  { id: 'prework', act: 'Welcome', chapter: -1, theme: 'a', builds: 3, title: 'Your pre-brief answers', block: 'welcome', room: W() },
 
   opener(1, 'market'),
   { id: 'gap', act: PART(1), chapter: 0, theme: 'a', builds: 3, title: 'Out of every 100 households', block: 'market', room: W() },
@@ -66,7 +67,8 @@ const SHOW: Row[] = [
   { id: 'board', act: PART(4), chapter: 3, theme: 'a', builds: 0, title: 'Now, Next, Later', block: 'pipeline', room: W('Now, Next, Later') },
 
   { id: 'playbook', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 7, title: 'What we decided and what happens next', block: 'close', room: W('Here’s what we decided') },
-  { id: 'lunch', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 0, title: 'Thank you', block: 'close', room: { kind: 'thanks' } },
+  // Build 1 is the Mystery Flavor reveal line (sealed.ts); while it's empty, and in the PDFs, it skips itself.
+  { id: 'lunch', act: 'Wrapping up', chapter: -1, theme: 'b', builds: 1, title: 'Thank you', block: 'close', room: { kind: 'thanks' } },
 ];
 
 export const SCENES: Scene[] = SHOW.map((s, n) => ({ ...s, n }));

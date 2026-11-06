@@ -55,6 +55,8 @@ export function Arrival({ s, ctx }: SceneProps) {
   const qr = useQR(ctx.joinUrl);
   const joined = people(s).filter((p) => !p.paper);
   const n = joined.length;
+  const hidden = new Set(s.hidden || []);
+  const warm = joined.filter((p) => p.warm && !hidden.has('warm:' + p.pid)).slice(-6);
   return (
     <>
       <Light scene="drop" theme="b" camera={DROP_CAM} frame={(t) => ({ rot: 0.6 + t * 0.12 })} fallback="/img/cover-drop.jpg" />
@@ -70,7 +72,10 @@ export function Arrival({ s, ctx }: SceneProps) {
         <div><h3>Scan to join</h3><p>Point your phone’s camera at the code. All we need is your first name.</p><code>{ctx.code}</code></div>
       </Enter>
       {/* Nothing shows until the first phone joins, so a slow start never puts a big zero on the TV. */}
-      {n > 0 && <div className="presence quiet"><div className="lbl"><b className="num">{n}</b> joined</div><div className="presence-names">{joined.slice(-16).map((p) => p.name).join(' · ')}</div></div>}
+      {n > 0 && <div className="presence quiet"><div className="lbl"><b className="num">{n}</b> joined</div><div className="presence-names">{joined.slice(-16).map((p) => p.name).join(' · ')}</div>
+        {/* The warm-up answers as people join, with their first names; anything the presenter hid stays off the TV. */}
+        {warm.length > 0 && <ul className="presence-warm">{warm.map((p) => <li key={p.pid} style={{ ['--i' as any]: 0 }}><b>{p.name}</b> {p.warm}</li>)}</ul>}
+      </div>}
     </>
   );
 }
@@ -142,11 +147,13 @@ export function Prework({ s, step }: SceneProps) {
   // The headline and the first question come from the answers when they say something clear (no tie), else the slide
   // keeps its own wording.
   const pb = prebrief(s), aud = pb.topAudience, ln = pb.lean;
+  // Build 3: the off-brand answer the presenter featured, at full size (the build skips itself with nothing featured).
+  const quote = pb.featuredQuote, featuring = step >= 3 && !!quote;
   const Bars = ({ list }: { list: [string, number][] }) => (
     <div className="pw-bars">{list.slice(0, 5).map(([k, v]) => <div key={k} className={v === max(list) ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">No answers yet.</div>}</div>
   );
   return (
-    <div className="pad">
+    <div className={'pad' + (featuring ? ' pw-featuring' : '')}>
       {/* The question sits beside the count from the first build: it's for the whole slide, and the list of off-brand
           answers below can run long. */}
       <Enter i={0} className={'pw-top' + (aud ? ' has-h' : '')}>
@@ -164,6 +171,7 @@ export function Prework({ s, step }: SceneProps) {
         {vetoes.length ? <ul className="pw-off">{vetoes.slice(0, 6).map(([v, n], i) => <li key={i} style={{ ['--i' as any]: i }}>&ldquo;{v}&rdquo;{n > 1 && <span className="pw-n">{n} people</span>}</li>)}</ul> : <p className="empty pw-none">No answers yet.</p>}
         {vetoes.length > 6 && <p className="pw-more">And {vetoes.length - 6} more.</p>}
       </R>
+      {featuring && <div className="pw-feature"><span className="k">One of you wrote</span><p className="pw-quote">&ldquo;{quote}&rdquo;</p><span className="pw-back it">We’ll come back to this.</span></div>}
     </div>
   );
 }

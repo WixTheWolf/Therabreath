@@ -15,12 +15,13 @@ import {
 import { prebrief } from '@/lib/prebrief';
 import type { FilmAct, FilmState } from '@/lib/showLink';
 import { tallyPick, ranked, tasteSummary, voteCounts, tasters as tasterCounts, tastingProgress, places, topIds, SessionState } from '@/lib/state';
-import { PlanTap, planRows, planCell } from './Plan';
+import { PlanTap, planRows, planCell, rowRole, roleCounts } from './Plan';
 import { ConceptCards } from './Concepts';
 import { CONCEPT_FIELDS, unconfirmed } from '@/lib/conceptLibrary';
 
 // goStep moves to a build of the current slide (a direction's profile card on the map, say).
-export type Live = { send: (kind: string, data?: any, pid?: string) => any; still: boolean; joinUrl: string; goStep: (step: number) => void };
+// `reveal` is the Mystery Flavor line for the thank-you card (team window only; empty means no reveal).
+export type Live = { send: (kind: string, data?: any, pid?: string) => any; still: boolean; joinUrl: string; goStep: (step: number) => void; reveal?: string };
 export const LiveCtx = createContext<Live | null>(null);
 const useLive = () => useContext(LiveCtx)!;
 // "12 people have voted · 3 chips by hand": the phones, then what the presenter view added for people without one.
@@ -357,11 +358,14 @@ export function Board({ s }: SceneProps) {
     <div className="pad sb">
       <Enter i={0}><div className="k">Now, Next, Later</div></Enter>
       <Enter i={1} className="sb-top"><h2 className="h2">What do we make first? <span className="it">And what would you need to taste next time?</span></h2><div className="room-ask"><span className="k">For the room</span><p>What has to be true for this to move from Next to Now?</p></div></Enter>
-      <Enter i={2} className="sb-tap"><PlanTap s={s} send={live.send} still={live.still} /></Enter>
+      {/* The four portfolio roles with how many lines each has: an empty role stands out. */}
+      <Enter i={2} className="sb-roles">{(() => { const n = roleCounts(s); return ROLES.map((r) => <div key={r.id} className={'sb-role' + (n[r.id] ? '' : ' empty')}><b>{r.id}</b><span>{ROLE_SHORT[r.id]}</span><em>{n[r.id] ? `${n[r.id]} ${n[r.id] === 1 ? 'line' : 'lines'}` : 'Nothing yet'}</em></div>); })()}</Enter>
+      <Enter i={3} className="sb-tap"><PlanTap s={s} send={live.send} still={live.still} /></Enter>
     </div>
   );
 }
 
+const ROLE_SHORT: Record<string, string> = { Core: 'Always-on mints', Expanders: 'Permanent, beyond mint', Explorers: 'Limited editions and drops', Specialists: 'Dry mouth, night, kids' };
 // What the morning decided, in one place: shared by the Playbook scene and the results page.
 export function decided(s: SessionState) {
   return {
@@ -432,14 +436,14 @@ export function Playbook({ s, step }: SceneProps) {
           <R b={7} step={step} className="room-ask pb-ask"><span className="k">For the room</span><p>What would January’s samples need to do for you to say yes?</p></R>
         </div>
       )}
-      {reading && <ReadPage key={step} n={step} d={d} />}
+      {reading && <ReadPage key={step} n={step} d={d} s={s} />}
     </div>
   );
 }
 
 // One chapter of the Playbook at a size the back of the room can read.
 const CH = ['Trends', 'Directions and samples', 'Concepts', 'The plan'];
-function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
+function ReadPage({ n, d, s }: { n: number; d: ReturnType<typeof decided>; s: SessionState }) {
   const none = (t: string) => <p className="rp-none">{t}</p>;
   let body: React.ReactNode = null, title = '';
   if (n === 1) {
@@ -483,7 +487,7 @@ function ReadPage({ n, d }: { n: number; d: ReturnType<typeof decided> }) {
           return (
             <tr key={r.id} className={r.h.toLowerCase()}>
               <td>{j === 0 || d.plan[j - 1].h !== r.h ? <span className="rp-h">{r.label}</span> : null}</td>
-              <td><b>{r.what || 'Untitled'}</b></td>
+              <td><b>{r.what || 'Untitled'}</b>{rowRole(r, s) && <small className="rp-role">{rowRole(r, s)}</small>}</td>
               <td><span className={tbc(r.change)}>{r.change || 'To agree'}</span><small className={tbc(r.test)}>Next test: {r.test || 'To agree'}</small></td>
               <td><span className={tbc(r.owner)}>TFF: {r.owner || 'To agree'}</span><small className={tbc(r.reviewer)}>C&amp;D: {r.reviewer || 'To agree'}</small></td>
               <td className={tbc(due)}>{due || 'To confirm'}</td>

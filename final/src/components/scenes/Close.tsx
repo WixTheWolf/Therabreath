@@ -1,10 +1,12 @@
 'use client';
+import { useContext } from 'react';
 import Light from '../Light';
 import { R, Enter, SceneProps } from './ui';
 import { EVENT, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, CODE, NEXT_STEPS } from '@/lib/content';
 import { SessionState, people, tallyPick, ranked } from '@/lib/state';
 import { candidates } from './Build';
 import { planRows, dueLabel } from '../show/Plan';
+import { LiveCtx } from '../show/ShowScenes';
 
 // What the room decided, in one place. Shared by the Stage close and the Playbook document.
 export function decisions(s: SessionState) {
@@ -72,17 +74,34 @@ export function Next({ s, step }: SceneProps) {
 }
 
 // 43. Thank you: an ambient field in the colors of the territories the room chose.
-export function Lunch({ s }: SceneProps) {
-  // The last slide is a thank-you card (it said Lunch until November 2).
+// The room's one-word tasting answers, each once, without the ones the presenter hid from the TV.
+export function roomWords(s: any) {
+  const hidden = new Set<string>(s.hidden || []); const seen = new Set<string>(); const out: string[] = [];
+  for (const r of Object.values(s.ratings || {}) as any[]) for (const x of Object.values(r) as any[]) {
+    const w = String(x?.word || '').trim(); const k = w.toLowerCase();
+    if (w && !seen.has(k) && !hidden.has('word:' + k)) { seen.add(k); out.push(w); }
+  }
+  return out;
+}
+export function Lunch({ s, step }: SceneProps) {
+  // The last slide is a thank-you card (it said Lunch until November 2). Since November 6 it sits over a soft field of the
+  // room's one-word tasting answers (three or more), and build 1 is the Mystery Flavor reveal: one line from sealed.ts,
+  // on the TV only, and the build skips itself while the line is empty.
   const d = decisions(s);
   const cols = (d.ter.length ? d.ter : TERRITORIES.slice(0, 3)).flatMap((t) => t.palette.slice(0, 2));
+  const live = useContext(LiveCtx);
+  const reveal = live?.still ? '' : live?.reveal || '';
+  const words = roomWords(s);
+  const showReveal = step >= 1 && !!reveal;
   return (
-    <div className="lunch">
+    <div className={'lunch' + (showReveal ? ' lunch-reveal' : '')}>
       <div className="aurora">{cols.map((c, i) => <i key={i} style={{ ['--c' as any]: c, ['--i' as any]: i }} />)}</div>
+      {words.length >= 3 && <div className="lunch-words" aria-hidden="true">{words.slice(0, 28).map((w, i) => <span key={w} style={{ ['--i' as any]: i, left: `${8 + ((i * 37) % 84)}%`, top: `${10 + ((i * 53) % 78)}%`, fontSize: 26 + ((i * 7) % 4) * 8 }}>{w}</span>)}</div>}
       <div className="lunch-in">
         <div className="k">TheraBreath × The Flavor Factory</div>
         <h1 className="hero center">Thank you.</h1>
         <p className="sub it center">For spending the morning with us.</p>
+        {showReveal && <p className="lunch-mystery center"><span className="k">One last thing.</span><span className="it">The Mystery Flavor was {reveal}.</span></p>}
       </div>
     </div>
   );

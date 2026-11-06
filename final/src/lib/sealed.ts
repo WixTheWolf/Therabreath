@@ -4,6 +4,9 @@
 // from a 'use client' file; tests/sealed.test.mjs checks, and checks that no browser bundle carries a name.
 import type { Sealed } from './content';
 
+// The last build of the thank-you card: "One last thing. The Mystery Flavor was ..." with this line. Ryan supplies it, or
+// it stays empty and the build skips itself. Shown on the TV only: never on the phones, the results page or the write-up.
+export const MYSTERY_REVEAL = '';
 export const SEALED: Sealed = {
   samples: {
     A: { name: 'Berry Blast', note: 'Blueberry, Blackberry, Raspberry' },

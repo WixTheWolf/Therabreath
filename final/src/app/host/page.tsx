@@ -1,5 +1,5 @@
 import ShowApp from '@/components/ShowApp';
-import { SEALED } from '@/lib/sealed';
+import { SEALED, MYSTERY_REVEAL } from '@/lib/sealed';
 import { SealedProvider } from '@/lib/sealedClient';
 import { EVENT } from '@/lib/content';
 import { joinToken } from '@/lib/auth';
@@ -17,5 +17,5 @@ const clean = (c: string) => c.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 
 
 export default async function Host({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const code = clean((await searchParams).code || '') || EVENT.code;
-  return <SealedProvider value={SEALED}><ShowApp code={code} k={await joinToken(code)} /></SealedProvider>;
+  return <SealedProvider value={SEALED}><ShowApp code={code} k={await joinToken(code)} reveal={MYSTERY_REVEAL} /></SealedProvider>;
 }

@@ -64,6 +64,9 @@ export const initialState = (): SessionState => ({
   timer: { running: false, endsAt: 0, remaining: 0, total: 0 }, spotlight: null, featured: null, hidden: [], paper: false, blank: false, sound: false, revealed: null, lastEvent: 0,
 });
 
+// Role in the range before November 6, read as the portfolio role it matches (conceptLibrary.ts ROLE).
+const OLD_ROLE: Record<string, string> = { 'Core range': 'Core (always-on mints)', 'New sub-line': 'Expanders (permanent, beyond mint)', 'Limited edition': 'Explorers (limited editions and drops)', 'Kids range': 'Specialists (dry mouth, night, kids)' };
+const newRole = (f: any) => (f && typeof f.role === 'string' && OLD_ROLE[f.role] ? { ...f, role: OLD_ROLE[f.role] } : f);
 const vote = (s: SessionState, key: string) => (s.votes[key] ||= { open: false, locked: false, revealed: false, picks: {} });
 
 export function reduce(s: SessionState, e: Ev): SessionState {
@@ -86,7 +89,7 @@ export function reduce(s: SessionState, e: Ev): SessionState {
     case 'rate': if (s.votes.tasting?.locked && !onPaper(e.pid || '')) break; (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess, fruitGuess: d.fruitGuess, advance: d.advance, card: d.card, sweet: d.sweet, cool: d.cool }; break;
     case 'unrate': if (s.ratings[d.sample]) delete s.ratings[d.sample][e.pid!]; break; // removing a paper card typed in by mistake
     case 'guess': (s.guesses[d.molecule] ||= {})[e.pid!] = d.answer; break;
-    case 'concept': { const id = `t${d.team}-${d.slot || 1}`; s.concepts[id] = { ...(s.concepts[id] || { suggestions: [] }), ...d.fields, id, team: d.team, slot: d.slot || 1 }; break; }
+    case 'concept': { const id = `t${d.team}-${d.slot || 1}`; s.concepts[id] = { ...(s.concepts[id] || { suggestions: [] }), ...newRole(d.fields), id, team: d.team, slot: d.slot || 1 }; break; }
     case 'suggest': { const id = `t${d.team}-${d.slot || 1}`; const c = s.concepts[id] || ({ id, team: d.team, slot: d.slot || 1, suggestions: [] } as any); c.suggestions = [...(c.suggestions || []), { pid: e.pid!, text: String(d.text).slice(0, 140) }]; s.concepts[id] = c; break; }
     case 'mission': s.missions[d.team - 1] = d.mission; break;
     case 'place': if (d.horizon) s.placements[d.ref] = { horizon: d.horizon, role: d.role || 'Expanders', t: e.t }; else delete s.placements[d.ref]; break;

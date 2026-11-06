@@ -32,7 +32,8 @@ import { EVENT, TOPICS, RUN, CRITERIA, JAR, JAR_OPTS, SAMPLES } from '@/lib/cont
 import { runTiming } from '@/lib/time';
 import { PLAN_COLS, planCell } from './show/Plan';
 import { showChannel, presenterUrl, ShowMsg } from '@/lib/showLink';
-import { tasters as tasterCounts, jarAll, tastingProgress } from '@/lib/state';
+import { tasters as tasterCounts, jarAll, tastingProgress, people } from '@/lib/state';
+import { featuredQuote, answersOf } from '@/lib/prebrief';
 
 type View = (p: SceneProps) => React.ReactNode;
 const VIEWS: Record<string, View> = {
@@ -53,7 +54,7 @@ const STAY = new Set(['whitespace', 'concepts', 'board']);
 const sealKey = (x: { samples: Record<string, { name: string; note: string }> }) =>
   Object.keys(x.samples).sort().map((c) => `${c}:${x.samples[c]?.name}|${x.samples[c]?.note}`).join(';');
 
-export default function ShowApp({ code, k }: { code: string; k: string }) {
+export default function ShowApp({ code, k, reveal = '' }: { code: string; k: string; reveal?: string }) {
   const [still, setStill] = useState(false);
   const [mode, setMode] = useState<'' | 'results'>('');
   const { state: s, send, status } = useSession(code, { admin: true, interval: 500 });
@@ -75,7 +76,11 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   // optional build (the July row). The two directions not in the tasting always show: the room can put chips on them.
   const [short, setShort] = useState(false);
   const skip = useCallback((i: number) => (SCENES[i].id === 'prework' && !told) || (short && !!SCENES[i].optional), [told, short]);
-  const skipBuild = useCallback((i: number, b: number) => short && !!SCENES[i].skip?.includes(b), [short]);
+  // Two builds skip themselves when there's nothing for them: the featured pre-brief answer (slide 5, build 3) and the
+  // Mystery Flavor reveal (slide 22, build 1, never in the PDFs).
+  const featured = useMemo(() => featuredQuote(sv, answersOf(sv.survey)), [sv]);
+  const autoSkip = useCallback((i: number, b: number) => (SCENES[i].id === 'prework' && b === 3 && !featured) || (SCENES[i].id === 'lunch' && b === 1 && (still || !reveal)), [featured, still, reveal]);
+  const skipBuild = useCallback((i: number, b: number) => (short && !!SCENES[i].skip?.includes(b)) || autoSkip(i, b), [short, autoSkip]);
   // Where a slide opens: its first build that isn't skipped (Flavor School's first build is optional).
   const firstBuild = useCallback((i: number) => { let b = 0; while (b < SCENES[i].builds && skipBuild(i, b)) b++; return b; }, [skipBuild]);
 
@@ -288,7 +293,7 @@ export default function ShowApp({ code, k }: { code: string; k: string }) {
   useEffect(() => { document.documentElement.dataset.theme = mode === 'results' ? 'a' : sc.theme; }, [sc.theme, mode]);
   const joinUrl = origin ? `${origin}/j/${code}?k=${k}` : '';
   const goStep = useCallback((b: number) => setPos((p) => ({ i: p.i, step: Math.max(0, Math.min(SCENES[p.i].builds, b)) })), []);
-  const ctxLive: Live = useMemo(() => ({ send, still, joinUrl, goStep }), [send, still, joinUrl, goStep]);
+  const ctxLive: Live = useMemo(() => ({ send, still, joinUrl, goStep, reveal: still ? '' : reveal }), [send, still, joinUrl, goStep, reveal]);
   const ctx = useMemo(() => ({ code, k, origin, joinUrl }), [code, k, origin, joinUrl]);
   // The export script (scripts/export-show.mjs) reads the run of show from here, and rehearsal scripts read the join link.
   useEffect(() => { Object.assign(window, { __join: joinUrl, __run: RUN, __show: SCENES.filter((_, i) => !skip(i)).map((x) => ({ id: x.id, title: titleOf(x), builds: x.builds, skip: x.skip || [], block: x.block, optional: !!x.optional, notes: pointsOf(x), ch: x.chapter, at: SCENES.findIndex((y) => y.id === x.id) + 1 })) }); }, [skip, joinUrl]);
@@ -376,6 +381,7 @@ function Results({ s, code }: { s: any; code: string }) {
       <section><h2 className="h3">What gets a next round</h2><ul>{d.directions.map((x) => <li key={x.t}>{x.t} <em>{x.n} chips</em></li>)}{!d.directions.length && <li className="ghost">No votes yet</li>}</ul></section>
       <section><h2 className="h3">Concepts</h2>{cs.length ? cs.map((c: any) => <div key={c.id} className="sr-concept"><b>{c.name} <em className={c.agreed ? '' : 'tbc'}>{c.agreed ? 'Agreed' : 'Proposed, not agreed yet'}</em></b><dl>{FIELDS.map((f) => <div key={f.f} className={f.key !== 'why' && unconfirmed(c[f.key]) ? 'tbc' : ''}><dt>{f.l}</dt><dd>{c[f.key] || <span className="ghost">To agree</span>}</dd></div>)}</dl></div>) : <p className="ghost">None yet</p>}</section>
       <section><h2 className="h3">Now, Next, Later</h2>{d.plan.length ? <table className="sr-plan"><thead><tr><th /><th>Direction</th>{PLAN_COLS.map((c) => <th key={c.f}>{c.l}</th>)}</tr></thead><tbody>{d.plan.map((r) => <tr key={r.id}><td>{r.label}</td><td><b>{r.what || 'Untitled'}</b></td>{PLAN_COLS.map((c) => { const v = planCell(r, c.f); return <td key={c.f} className={unconfirmed(v) ? 'tbc' : ''}>{v || <span className="ghost">To agree</span>}{c.f === 'brief' && r.draft && v ? <em className="ghost"> (draft, finalized in the write-up)</em> : null}</td>; })}</tr>)}</tbody></table> : <p className="ghost">Nothing yet</p>}</section>
+      <section><h2 className="h3">Warm-up: a flavor that surprised them this year</h2><ul>{people(s).filter((p: any) => p.warm).map((p: any) => <li key={p.pid}>{p.name}: {p.warm}</li>)}{!people(s).some((p: any) => p.warm) && <li className="ghost">No warm-up answers</li>}</ul></section>
       <section><h2 className="h3">Where the ideas could fit in a day</h2><ul>{marks.map((c) => <li key={c}>{markLabel(s, c)}</li>)}{!marks.length && <li className="ghost">No cells marked</li>}</ul></section>
       <p className="src">Confidential. These are development samples and concepts made for this session. They aren’t finished products or claims.</p>
       <div className="sr-actions"><button className="sr-print" onClick={() => print()}>Print or save as PDF</button><a href={code === EVENT.code ? '/host/writeup' : `/host/writeup?code=${code}`}>Open the Playbook write-up</a></div>
