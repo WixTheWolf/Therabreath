@@ -46,6 +46,7 @@ const CONFIRM = [
   'A video call with Ross before the day. He asked to connect once or twice ahead of time.',
   `Whether to tell the room what’s in the ${SEALED.samples.B.name} once the names go up. The presentation, the phones and the write-up show its name but not its contents, so the room can keep guessing.`,
   'That the samples were made in the unflavored bases Church & Dwight sent, as the front door says.',
+  'The shelf (slide 8): the Listerine Citrus Mint launch (March 2026, Dentistry Today), with grapefruit and yuzu. Check the product and the date before we show it.',
   'Four directions (slide 12): the Global Brightness card says Listerine Citrus Mint (March 2026, Dentistry Today) already pairs grapefruit and yuzu. Check the product and the date before we show it.',
   'Ryan to check the seven molecules of freshness on Flavor School (slide 11) and what each one says, and to decide where the tray of smelling strips sits and who passes it round. The slide and the notes don’t say which samples carry which note.',
   'Trend 4 now reads “Flavors are being made for a moment of the day.” Both proofs are TheraBreath’s own. Find one example from outside the brand before the day, or say it as our read.',
