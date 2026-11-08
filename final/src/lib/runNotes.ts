@@ -91,7 +91,7 @@ export const BEHIND = [
 export type SlidePlan = { clicks?: string[]; ask?: string; phones?: string };
 export const SLIDES: Record<string, SlidePlan> = {
   arrival: { clicks: ['The title and the QR code. Once phones join, how many and their first names.'], ask: 'At 10:00: welcome, thank Ross, and say what the morning is for: what deserves another round, what you’d change and the next step.', phones: 'Scan the code and type a first name.' },
-  team: { clicks: ['The four of us, what we test in the lab and what we bring in from outside oral care.', 'Optional (S skips it): the four July themes, and Growth, November, lights up.'] },
+  team: { clicks: ['The four of us, then three columns in Ross’s words: technical expertise (the lab, and our flavors in 14 of their rinses), creativity (four new samples made in their bases, tasted at 10:40) and innovation (what we bring in from outside oral care). “Today you get to judge all three.”', 'Optional (S skips it): the four July themes, and Growth, November, lights up.'] },
   ours: { clicks: ['The 14 TheraBreath rinses on shelf today with our flavors in them, each bottle with its flavor and product line.'] },
   brief: { clicks: ['“We’ve built the morning around your four objectives,” all four at once, each with its time and part.', 'Ross’s goal, in his words.'], ask: 'Is there anything critical we should add?' },
   prework: { clicks: ['Which audience a new flavor should focus on first, with any “Someone else” answers.', 'The occasion most useful to explore together, with any “Another occasion” answers, and their own taste in freshness.', 'What would feel off-brand, without names.'], ask: 'Anything here you’d argue with? Then: what makes each off-brand answer feel wrong for the brand?' },

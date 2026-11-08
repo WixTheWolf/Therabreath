@@ -9,7 +9,7 @@ import { CoolingPlot } from '../scenes/School';
 import { POS } from '../scenes/Territories';
 import { LiveCtx, OBJ_HUE, directionName } from './ShowScenes';
 import {
-  TEAM, SCIENCE, IMAGINATION, JULY, PORTFOLIO, MARKET, SOURCES, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, DIRECTIONS,
+  TEAM, SCIENCE, IMAGINATION, JULY, PORTFOLIO, MARKET, SOURCES, SIGNALS, PRIMARY_TERRITORIES as TERRITORIES, SAMPLES, DIRECTIONS, RUN,
 } from '@/lib/content';
 import { tallyPick, ranked, voteCounts, tasteSummary, tasters, places, topIds, placeLabel, SessionState } from '@/lib/state';
 import { OUR_RINSES, OUR_KIDS, OUR_COUNT, type OurProduct } from '@/lib/ourFlavors';
@@ -21,8 +21,11 @@ const Ask = ({ q, b, step, className = '' }: { q: string; b?: number; step: numb
   <R b={b ?? 0} step={step} className={'room-ask ' + className}><span className="k">For the room</span><p>{q}</p></R>
 );
 
-// 2. Who we are, since July. The four of us and one line each on the lab and what we bring in from outside oral care.
-// Build 1 (optional, S skips it) brings in July's four themes with Growth, November, lighting up.
+// 2. Who we are, since July. The four of us, then the three things Ross asked to see, in his words: technical expertise
+// (the lab, and our flavors already in their rinses), creativity (the four samples made in their bases) and innovation
+// (what we bring in from outside oral care). Build 1 (optional, S skips it) brings in July's four themes with Growth,
+// November, lighting up.
+const TASTE_AT = RUN.find((b) => b.id === 'tasting')?.t || '10:40';
 export function TeamSince({ step }: SceneProps) {
   const still = !!useLive()?.still;
   const [lit, setLit] = useState(false);
@@ -36,10 +39,12 @@ export function TeamSince({ step }: SceneProps) {
         <div className="ts-people">
           {TEAM.map((t, i) => <Enter key={t.name} i={2 + i} className="st-person"><b>{t.name}</b><span className="k">{t.title}</span></Enter>)}
         </div>
-        <Enter i={6} className="ts-lines">
-          <div className="ts-line sci"><span className="k">In the lab</span><div className="st-chips">{SCIENCE.map((x) => <span key={x}>{x}</span>)}</div></div>
-          <div className="ts-line ima"><span className="k">From outside oral care</span><div className="st-chips">{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</div></div>
+        <Enter i={6} className="ts-lines ts-three">
+          <div className="ts-line sci"><span className="k">Technical expertise</span><div className="st-chips">{SCIENCE.map((x) => <span key={x}>{x}</span>)}</div><p className="ts-note">Our flavors in {OUR_COUNT} of your rinses</p></div>
+          <div className="ts-line cre"><span className="k">Creativity</span><p className="ts-note big">Four new samples made in your bases. You’ll taste them at {TASTE_AT}.</p></div>
+          <div className="ts-line ima"><span className="k">Innovation</span><div className="st-chips">{IMAGINATION.map((x) => <span key={x}>{x}</span>)}</div></div>
         </Enter>
+        <Enter i={7} className="ts-judge"><p className="h3 it">Today you get to judge all three.</p></Enter>
         {step >= 1 && (
           <div className="july ts-july">
             {JULY.map((w, i) => (
