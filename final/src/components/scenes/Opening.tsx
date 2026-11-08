@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import Light, { project } from '../Light';
 import { R, Enter, SceneProps, Src } from './ui';
@@ -136,13 +136,31 @@ export function Prework({ s, step }: SceneProps) {
   const vetoCount: Record<string, [string, number]> = {};
   for (const v of answers.map((a) => a.veto).filter(Boolean) as string[]) { const key = v.trim().toLowerCase().replace(/[.!]+$/, ''); if (!key) continue; vetoCount[key] = [vetoCount[key]?.[0] || v.trim().replace(/[.!]+$/, ''), (vetoCount[key]?.[1] || 0) + 1]; }
   const vetoes = Object.values(vetoCount).sort((a, b) => b[1] - a[1]);
+  // Every off-brand answer has to fit on the slide, however long people wrote. The list gets the space down to the bottom
+  // margin, and its type steps down from 30px (to no less than 20px) only when the answers would otherwise run off. Up
+  // to eight show; only if eight still don't fit at 20px does the last one move into "And 1 more", so nothing is cut.
+  // Layout sizes only (offsetTop, clientHeight), so the stage's scale and the reveal's slide-in don't change the result.
+  const fitRef = useRef<HTMLDivElement>(null);
+  const vetoKey = vetoes.map(([v, n]) => v + n).join('|');
+  const [cut, setCut] = useState({ key: '', n: 8 });
+  const shown = cut.key === vetoKey ? cut.n : 8;
+  useLayoutEffect(() => {
+    const box = fitRef.current; if (!box) return;
+    const fit = () => {
+      const over = () => { const last = box.lastElementChild as HTMLElement | null; return !!last && last.offsetTop + last.offsetHeight > box.clientHeight; };
+      let px = 30; box.style.setProperty('--pw-fs', px + 'px');
+      while (px > 20 && over()) { px -= 1; box.style.setProperty('--pw-fs', px + 'px'); }
+      if (over() && shown > 1) setCut({ key: vetoKey, n: shown - 1 });
+    };
+    fit(); document.fonts?.ready.then(fit);
+  }, [vetoKey, shown]);
   const max = (l: [string, number][]) => Math.max(1, ...l.map((x) => x[1]));
   const profiled = answers.filter((a) => a.profile).length;
   const Bars = ({ list }: { list: [string, number][] }) => (
     <div className="pw-bars">{list.slice(0, 5).map(([k, v]) => <div key={k} className={v === max(list) ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">No answers yet.</div>}</div>
   );
   return (
-    <div className="pad">
+    <div className="pad pw">
       {/* The question sits beside the count from the first build: it's for the whole slide, and the list of off-brand
           answers below can run long. */}
       <Enter i={0} className="pw-top"><div className="k">You told us · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div><div className="room-ask pw-ask"><span className="k">For the room</span><p>Anything here you’d argue with?</p></div></Enter>
@@ -154,8 +172,10 @@ export function Prework({ s, step }: SceneProps) {
       <R b={2} step={step} className="vetoes">
         <div className="k">What would feel wrong for TheraBreath</div>
         {/* One answer per line, each in its own quotes, in the words people typed; a repeat shows once with how many said it. */}
-        {vetoes.length ? <ul className="pw-off">{vetoes.slice(0, 6).map(([v, n], i) => <li key={i} style={{ ['--i' as any]: i }}>&ldquo;{v}&rdquo;{n > 1 && <span className="pw-n">{n} people</span>}</li>)}</ul> : <p className="empty pw-none">No answers yet.</p>}
-        {vetoes.length > 6 && <p className="pw-more">And {vetoes.length - 6} more.</p>}
+        <div ref={fitRef} className="pw-fit">
+          {vetoes.length ? <ul className="pw-off">{vetoes.slice(0, shown).map(([v, n], i) => <li key={i} style={{ ['--i' as any]: i }}>&ldquo;{v}&rdquo;{n > 1 && <span className="pw-n">{n} people</span>}</li>)}</ul> : <p className="empty pw-none">No answers yet.</p>}
+          {vetoes.length > shown && <p className="pw-more">And {vetoes.length - shown} more.</p>}
+        </div>
       </R>
     </div>
   );
