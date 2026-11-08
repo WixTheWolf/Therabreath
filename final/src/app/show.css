@@ -1036,8 +1036,8 @@
 .pw-top.has-h ~ .pw-grid .pw-card { padding: 24px 32px 26px; }
 .pw-top.has-h ~ .pw-grid .pw-bars { margin-top: 14px; gap: 9px; }
 .pw-top.has-h ~ .vetoes { margin-top: 20px; }
-.pw-top.has-h ~ .vetoes .pw-off { gap: 8px; }
-.pw-top.has-h ~ .vetoes .pw-off li { font-size: 26px; }
+.pw-top.has-h ~ .vetoes .pw-off { gap: calc(min(var(--pw-fs, 26px), 26px) * .3); }
+.pw-top.has-h ~ .vetoes .pw-off li { font-size: min(var(--pw-fs, 26px), 26px); }
 .pw-top.has-h ~ .pw-orb { top: 740px; }
 .pw-qs { display: flex; flex-direction: column; gap: 6px; }
 .pw-top.has-h .pw-ask { flex-direction: column; gap: 6px; max-width: 760px; }
@@ -1088,3 +1088,13 @@
 .ccv-show.long dl > div { padding: 6px 0; }
 .rp-plan .rp-role { display: block; margin-top: 4px; font: 500 15px/1.2 var(--mono); letter-spacing: .06em; color: var(--fg3); }
 @keyframes lunchWord { from { opacity: 0; } to { opacity: 1; } }
+
+/* 5. You told us: the off-brand answers get the space down to the bottom margin, and their type size comes from
+   Prework's fit (30px, stepping down to 20px only when the answers would run off the slide). In a flex column the
+   margins no longer collapse, so the top row drops its own and the cards stay where they were. */
+.pad.pw { display: flex; flex-direction: column; padding-bottom: 60px; }
+.pad.pw .pw-top { margin-bottom: 0; }
+.pad.pw .vetoes { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.pw-fit { flex: 1 1 0; min-height: 0; position: relative; overflow: hidden; }
+.pw-fit .pw-off { gap: calc(var(--pw-fs, 30px) * .4); }
+.pw-fit .pw-off li { font-size: var(--pw-fs, 30px); }
