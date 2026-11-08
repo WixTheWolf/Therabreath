@@ -13,6 +13,7 @@ import { STARTS, CONCEPT_FIELDS, LIBRARY, Card, cardFor, MOMENT_WHEN, toggleIn, 
 import { tallyPick, shortlist, SessionState, tasteSummary, jarAll } from '@/lib/state';
 import { JAR, JAR_OPTS } from '@/lib/content';
 import { teamConcepts } from '../scenes/CoCreate';
+import { prebrief, AUDIENCE_WHO } from '@/lib/prebrief';
 
 type Send = (kind: string, data?: any, pid?: string) => any;
 export const SLOTS = [1, 2, 3];
@@ -42,9 +43,33 @@ export function tastingRead(start: string, s: SessionState) {
   return JAR.map((j) => { const v = jarAll(sum[j.key], JAR_OPTS); return v ? `${j.l}: ${v}` : ''; }).filter(Boolean).join('. ');
 }
 // The cards the concept slide starts with: one for each place the chips vote settled in the top three. A tie at the
-// cutoff isn't broken by the order of a list: those cards wait for the room.
+// cutoff isn't broken by the order of a list: those cards wait for the room. Since November 6: an adult card's Who is the
+// pre-brief's top audience when it has a close match (else its direction's own); two cards that would be the same apart
+// from their name (same Who, When and Format, like the two kids samples) become one card that names both, and the card
+// that frees up starts from the white space, with When and Who from the pre-brief and everything else To agree.
+type Fields = ReturnType<typeof fromCard>;
+export const WHITE_SPACE = 'The white space';
+export function whiteSpaceCard(s: SessionState): Fields {
+  const pb = prebrief(s);
+  return { name: WHITE_SPACE, why: 'the white space in the day', start: '', card: 'white-space', segment: (pb.topAudience && AUDIENCE_WHO[pb.topAudience.label]) || '', occasion: pb.topOccasion?.label || '', role: '', format: '', incremental: '', change: '', agreed: '' };
+}
 export function starters(s: SessionState) {
-  return shortlist(tallyPick(s, 'directions')).sure.map((id) => { const c = cardFor(id); return c ? fromCard(c, s, id) : null; }).filter(Boolean) as ReturnType<typeof fromCard>[];
+  const pb = prebrief(s);
+  const who = pb.topAudience ? AUDIENCE_WHO[pb.topAudience.label] : '';
+  const cards = shortlist(tallyPick(s, 'directions')).sure.map((id) => {
+    const c = cardFor(id); if (!c) return null;
+    const f = fromCard(c, s, id);
+    const kids = STARTS.find((x) => x.id === id)?.territory === 'ladder';
+    return who && !kids ? { ...f, segment: who } : f;
+  }).filter(Boolean) as Fields[];
+  const out: Fields[] = [];
+  for (const f of cards) {
+    const twin = out.find((o) => o.segment === f.segment && o.occasion === f.occasion && o.format === f.format);
+    if (twin) { twin.name = `${twin.name}, with ${f.name}`; twin.why = `${twin.why} and ${f.why}`; }
+    else out.push({ ...f });
+  }
+  if (out.length < cards.length) out.push(whiteSpaceCard(s));
+  return out.slice(0, SLOTS.length);
 }
 // A tie at the cutoff the room still has to settle: the tied ideas no card has started from yet, and how many seats are
 // left for them.
@@ -65,7 +90,7 @@ export function ConceptCards({ s }: { s: SessionState }) {
   return (
     <div className="ccv-grid">
       {cs.map((c, i) => (
-        <div key={i} className={'cv-card ccv-card ccv-show' + (c ? ' named' : ' empty') + (c?.agreed ? ' agreed' : '')} style={{ ['--i' as any]: 2 + i }}>
+        <div key={i} className={'cv-card ccv-card ccv-show' + (c ? ' named' : ' empty') + (c?.agreed ? ' agreed' : '') + (c && (c.name.length > 24 || (c.why || '').length > 44) ? ' long' : '')} style={{ ['--i' as any]: 2 + i }}>
           <div className="ccv-head">
             <span className="k">Concept {i + 1}</span>
             {c && <span className="ccv-state">{c.agreed ? 'Agreed' : 'Starting point for discussion'}</span>}
@@ -97,7 +122,7 @@ export function ConceptEditor({ s, send }: { s: SessionState; send: Send }) {
   const use = (card: Card) => { set(fromCard(card, s)); setSwap(false); };
   const setStart = (id: string) => {
     // The name follows the start while it's still the start's own name.
-    const auto = !c || c.name === startName(c.start || '', s) || c.name === c.why;
+    const auto = !c || c.name === startName(c.start || '', s) || c.name === c.why || c.name === WHITE_SPACE;
     edit({ start: id, why: startLabel(id, s), ...(auto ? { name: startName(id, s) } : {}) });
   };
   const library = (

@@ -6,6 +6,7 @@ import { R, Enter, SceneProps, Src } from './ui';
 import { EVENT, JULY, OBJECTIVES, SURVEY } from '@/lib/content';
 import { people, ranked } from '@/lib/state';
 import Orb from '../Orb';
+import { LEAN, leans, listOf, roomProfile, prebrief, plainAudience } from '@/lib/prebrief';
 
 export function useQR(text: string) {
   const [svg, setSvg] = useState('');
@@ -54,6 +55,8 @@ export function Arrival({ s, ctx }: SceneProps) {
   const qr = useQR(ctx.joinUrl);
   const joined = people(s).filter((p) => !p.paper);
   const n = joined.length;
+  const hidden = new Set(s.hidden || []);
+  const warm = joined.filter((p) => p.warm && !hidden.has('warm:' + p.pid)).slice(-6);
   return (
     <>
       <Light scene="drop" theme="b" camera={DROP_CAM} frame={(t) => ({ rot: 0.6 + t * 0.12 })} fallback="/img/cover-drop.jpg" />
@@ -69,7 +72,10 @@ export function Arrival({ s, ctx }: SceneProps) {
         <div><h3>Scan to join</h3><p>Point your phone’s camera at the code. All we need is your first name.</p><code>{ctx.code}</code></div>
       </Enter>
       {/* Nothing shows until the first phone joins, so a slow start never puts a big zero on the TV. */}
-      {n > 0 && <div className="presence quiet"><div className="lbl"><b className="num">{n}</b> joined</div><div className="presence-names">{joined.slice(-16).map((p) => p.name).join(' · ')}</div></div>}
+      {n > 0 && <div className="presence quiet"><div className="lbl"><b className="num">{n}</b> joined</div><div className="presence-names">{joined.slice(-16).map((p) => p.name).join(' · ')}</div>
+        {/* The warm-up answers as people join, with their first names; anything the presenter hid stays off the TV. */}
+        {warm.length > 0 && <ul className="presence-warm">{warm.map((p) => <li key={p.pid} style={{ ['--i' as any]: 0 }}><b>{p.name}</b> {p.warm}</li>)}</ul>}
+      </div>}
     </>
   );
 }
@@ -156,14 +162,22 @@ export function Prework({ s, step }: SceneProps) {
   }, [vetoKey, shown]);
   const max = (l: [string, number][]) => Math.max(1, ...l.map((x) => x[1]));
   const profiled = answers.filter((a) => a.profile).length;
+  // The headline and the first question come from the answers when they say something clear (no tie), else the slide
+  // keeps its own wording.
+  const pb = prebrief(s), aud = pb.topAudience, ln = pb.lean;
+  // Build 3: the off-brand answer the presenter featured, at full size (the build skips itself with nothing featured).
+  const quote = pb.featuredQuote, featuring = step >= 3 && !!quote;
   const Bars = ({ list }: { list: [string, number][] }) => (
     <div className="pw-bars">{list.slice(0, 5).map(([k, v]) => <div key={k} className={v === max(list) ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">No answers yet.</div>}</div>
   );
   return (
-    <div className="pad pw">
+    <div className={'pad pw' + (featuring ? ' pw-featuring' : '')}>
       {/* The question sits beside the count from the first build: it's for the whole slide, and the list of off-brand
           answers below can run long. */}
-      <Enter i={0} className="pw-top"><div className="k">You told us · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div><div className="room-ask pw-ask"><span className="k">For the room</span><p>Anything here you’d argue with?</p></div></Enter>
+      <Enter i={0} className={'pw-top' + (aud ? ' has-h' : '')}>
+        <div className="pw-hd"><div className="k">You told us · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div>{aud && <h2 className="h2 pw-h">{aud.count} of {aud.total} of you want to win <span className="it">{plainAudience(aud.label)}.</span></h2>}</div>
+        <div className="room-ask pw-ask"><span className="k">For the room</span><div className="pw-qs">{ln && <p>You lean {ln.text}. Is your consumer the same, or are you the exception?</p>}<p>Anything here you’d argue with?</p></div></div>
+      </Enter>
       <div className="pw-grid">
         <R b={0} step={step} className="pw-card"><h3 className="h3">Who you’d focus on first</h3><Bars list={cons} />{others.length > 0 && <p className="src pw-others">Someone else: {others.slice(0, 6).join(', ')}</p>}</R>
         <R b={1} step={step} className="pw-card"><h3 className="h3">The occasion you’d explore first</h3><Bars list={mom} />{otherMoments.length > 0 && <p className="src pw-others">{SURVEY.moment.other}: {otherMoments.slice(0, 6).join(', ')}</p>}</R>
@@ -177,15 +191,13 @@ export function Prework({ s, step }: SceneProps) {
           {vetoes.length > shown && <p className="pw-more">And {vetoes.length - shown} more.</p>}
         </div>
       </R>
+      {featuring && <div className="pw-feature"><span className="k">One of you wrote</span><p className="pw-quote">&ldquo;{quote}&rdquo;</p><span className="pw-back it">We’ll come back to this.</span></div>}
     </div>
   );
 }
 
 // The freshness sliders, read back in the slider's own words: what the answers lean toward on each, and how many sit in
-// the middle. An average of 2 or less leans to the left label, 4 or more to the right; 3 is the middle.
-const LEAN: Record<string, [string, string]> = { adv: ['the familiar', 'the adventurous'], cool: ['strong cooling', 'gentle cooling'], bot: ['classic mint', 'mint with other notes'], exp: ['a rinse that just does the job', 'something to enjoy'], occ: ['a flavor for any time of day', 'a flavor made for one moment'] };
-const listOf = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
-const leans = (p: Record<string, number>) => Object.keys(LEAN).filter((k) => p[k] <= 2 || p[k] >= 4).map((k) => LEAN[k][p[k] <= 2 ? 0 : 1]);
+// the middle (the rules are in prebrief.ts, which the other slides read too).
 function leanLine(p: Record<string, number>) {
   const l = leans(p);
   return l.length ? `Your answers lean toward ${listOf(l)}.` : 'Your answers sit in the middle on every slider.';
@@ -196,11 +208,6 @@ function leanNote(p: Record<string, number>, n: number) {
   return mid > 0 && mid < Object.keys(LEAN).length ? `${avg}; the other ${words[mid]} ${mid === 1 ? 'sits' : 'sit'} in the middle.` : `${avg}.`;
 }
 
-function roomProfile(answers: any[]) {
-  const ps = answers.map((a) => a.profile).filter(Boolean); const out: Record<string, number> = {};
-  for (const k of ['adv', 'cool', 'bot', 'exp', 'occ']) out[k] = ps.length ? Math.round(ps.reduce((s, p) => s + (p[k] || 3), 0) / ps.length) : 3;
-  return out;
-}
 
 export function Thesis({ step }: SceneProps) {
   return (

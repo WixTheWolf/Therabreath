@@ -242,3 +242,7 @@
   .bw-conf { font-size: 8pt; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+/* The optional warm-up under the first name (November 6). */
+.rm-warm { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 10px; text-align: left; }
+.rm-warm span { font: 400 15px/1.4 var(--sans); color: var(--fg2); }
+.rm-join .rm-warm input { font-size: 18px; margin-top: 4px; }

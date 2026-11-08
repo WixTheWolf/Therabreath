@@ -5,6 +5,7 @@ import { R, Enter, SceneProps, Src, clean } from './ui';
 import { CLIMB, GAP, PORTFOLIO, MARKET, SIGNALS, SOURCES, WHITESPACE, OBJECTIVES } from '@/lib/content';
 import { tallyPick, ranked } from '@/lib/state';
 import { LiveCtx } from '../show/ShowScenes';
+import { prebrief, AUDIENCE_GROUP } from '@/lib/prebrief';
 
 // 6. The climb: a share line that draws itself.
 export function Climb({ step }: SceneProps) {
@@ -38,18 +39,24 @@ export function Climb({ step }: SceneProps) {
 // in the talking points, not on screen, so the two never sit side by side.
 const GLASS_CAM = { pos: [0, 1.3, 10.8], target: [0, 0.98, 0], fov: 24, shift: [0.36, 0.0] };
 const OTHER = { another: GAP.category - GAP.tb, none: 100 - GAP.category };
-export function Gap({ step }: SceneProps) {
+export function Gap({ s, step }: SceneProps) {
   return (
     <>
       <div className={'thesis gap-thesis' + (step === 0 ? '' : ' away')}>
         <div className="tl1 on">TheraBreath built a strong position on a rinse without the burn.</div>
         <div className="tl2 it on">The next job is giving more people a reason to want it.</div>
       </div>
-      {step >= 1 && <Glasses step={step} />}
+      {step >= 1 && <Glasses step={step} s={s} />}
     </>
   );
 }
-function Glasses({ step }: { step: number }) {
+// The last build marks the group the pre-brief's top audience belongs to (the 14, the 51 or the 35), when it is one of
+// them, and asks about switching when that group is the 51.
+function Glasses({ step, s }: { step: number; s: any }) {
+  const aud = prebrief(s).topAudience;
+  const grp = aud ? AUDIENCE_GROUP[aud.label] : undefined;
+  const here = (g: string) => (step >= 3 && grp === g ? ' here' : '');
+  const tag = (g: string) => (step >= 3 && grp === g ? <em className="gap-here">You told us: start here.</em> : null);
   // The labels count up with the glasses, from the glasses' first drawn frame, and stay hidden until then so the TV never
   // reads 0%. The PDF export (?still=1) shows the final figures straight away.
   const still = !!useContext(LiveCtx)?.still;
@@ -69,12 +76,12 @@ function Glasses({ step }: { step: number }) {
         <Enter i={0}><div className="k">Out of every 100 households</div></Enter>
         <Enter i={1} className="gap-share">TheraBreath is already number 2 in mouthwash.</Enter>
         <R b={2} step={step} className="gap-groups">
-          <div className="tb"><b className="num">{GAP.tb}</b><span>buy TheraBreath</span></div>
-          <div><b className="num">{OTHER.another}</b><span>buy mouthwash, not TheraBreath</span></div>
-          <div><b className="num">{OTHER.none}</b><span>don&rsquo;t buy mouthwash</span></div>
+          <div className={'tb' + here('tb')}><b className="num">{GAP.tb}</b><span>buy TheraBreath</span>{tag('tb')}</div>
+          <div className={here('another')}><b className="num">{OTHER.another}</b><span>buy mouthwash, not TheraBreath</span>{tag('another')}</div>
+          <div className={here('none')}><b className="num">{OTHER.none}</b><span>don&rsquo;t buy mouthwash</span>{tag('none')}</div>
         </R>
         <R b={3} step={step}><div className="gap-second it">Flavor could give more of these households a reason to try it.</div></R>
-        <R b={3} step={step} className="room-ask"><span className="k">For the room</span><p>Who should the next flavor win over first: the {GAP.tb} who buy it, the {OTHER.another} who buy another brand or the {OTHER.none} who don’t buy mouthwash?</p></R>
+        <R b={3} step={step} className="room-ask"><span className="k">For the room</span><p>{grp === 'another' ? 'What would make someone who buys another brand switch, and is flavor the reason or just the excuse?' : `Who should the next flavor win over first: the ${GAP.tb} who buy it, the ${OTHER.another} who buy another brand or the ${OTHER.none} who don’t buy mouthwash?`}</p></R>
       </div>
       <Src k="q3call" extra={`Household penetration: TheraBreath ${GAP.tb}%, mouthwash ${GAP.category}%`} style={{ left: 120, width: 820 }} />
       <div className={'glabel' + (shown ? ' on' : '')} style={{ left: x0, top: y0 + 20 }}><div className="num">{lab[0]}</div><div className="who">of 100 buy mouthwash</div></div>

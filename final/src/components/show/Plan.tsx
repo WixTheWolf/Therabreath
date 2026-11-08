@@ -6,7 +6,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { HORIZONS, SAMPLES, TEAM, PRIMARY_TERRITORIES, JAR, JAR_OPTS } from '@/lib/content';
 import { uid, SessionState, PlanRow, tallyPick, ranked, topIds, people, tasteSummary, jarAll } from '@/lib/state';
-import { STARTS, WHO, WHEN, TESTS, OWNERS, BASES, DUES, STEPS, DUE_DEFAULT, TO_CONFIRM, OTHER, CHANGES, cardFor, unconfirmed, toggleIn, hasOpt } from '@/lib/conceptLibrary';
+import { STARTS, WHO, WHEN, TESTS, OWNERS, BASES, DUES, STEPS, DUE_DEFAULT, TO_CONFIRM, OTHER, CHANGES, ROLE, roleId, cardFor, unconfirmed, toggleIn, hasOpt } from '@/lib/conceptLibrary';
 import { teamConcepts } from '../scenes/CoCreate';
 
 type Send = (kind: string, data?: any, pid?: string) => any;
@@ -31,6 +31,7 @@ export function Synced({ value, commit, area, ...rest }: { value: string; commit
 // tasting for a sample, from the map for a direction) and stays a draft until the team reviews it in the write-up.
 export const PLAN_COLS = [
   { f: 'who', l: 'Consumer or occasion' },
+  { f: 'role', l: 'Role in the range' },
   { f: 'brief', l: 'Flavor brief' },
   { f: 'change', l: 'Next version or question to test' },
   { f: 'test', l: 'Next test' },
@@ -114,8 +115,12 @@ export function placeFields(item: TrayItem, s: SessionState): Record<string, str
   const c: any = item.kind === 'concept' ? s.concepts[item.ref] : null;
   const card = cardFor(item.start) || null;
   const who = c ? [c.segment, c.occasion] : card ? [card.segment, card.occasion] : [];
-  return { ref: item.ref, who: who.filter(Boolean).join(' · '), change: c?.change || '', brief: draftBrief(item.start, s), draft: '1', base: baseFor(item.start), due: DUE_DEFAULT };
+  return { ref: item.ref, who: who.filter(Boolean).join(' · '), role: c?.role || '', change: c?.change || '', brief: draftBrief(item.start, s), draft: '1', base: baseFor(item.start), due: DUE_DEFAULT };
 }
+// A line's role in the range (Core, Expanders, Explorers or Specialists): its own, else its concept card's (a line placed
+// before November 6 has none of its own).
+export const rowRole = (r: { role?: string; ref?: string }, s: SessionState) => r.role || (r.ref ? (s.concepts?.[r.ref] as any)?.role || '' : '');
+export const roleCounts = (s: SessionState) => { const rows = Object.values(s.plan || {}); return Object.fromEntries(ROLE.map((o) => [roleId(o), rows.filter((r) => roleId(rowRole(r, s)) === roleId(o)).length])) as Record<string, number>; };
 // The C&D reviewer shortlist: the pre-brief names first (that link went to Church & Dwight), then first names that
 // joined on phones, leaving out names that match our own team's. It's a shortlist, not a record of who is responsible:
 // the presenter confirms the person in the room before tapping. Then Other, in the notes, and To confirm.
@@ -205,6 +210,7 @@ export function PlanFields({ r, s, send }: { r: PlanRow; s: SessionState; send: 
   const groups: { f: string; l: string; opts: string[]; v: string; set: (v: string) => void }[] = [
     { f: 'who', l: 'Consumer', opts: WHO, v: who, set: (v) => act.set(r.id, { who: join(v === who ? '' : v, when) }) },
     { f: 'when', l: 'Occasion', opts: WHEN, v: when, set: (v) => act.set(r.id, { who: join(who, v === when ? '' : v) }) },
+    { f: 'role', l: 'Role in the range', opts: ROLE, v: rowRole(r, s), set: (v) => act.set(r.id, { role: v === rowRole(r, s) ? '' : v }) },
     ...([['test', 'Next test', TESTS], ['owner', 'TFF owner', OWNERS], ['reviewer', 'C&D reviewer (confirm the person in the room)', reviewers(s)], ['base', 'Base', BASES], ['due', 'Next sample due', DUES], ['step', 'Agreed next step', STEPS]] as [string, string, string[]][])
       .map(([f, l, opts]) => ({ f, l, opts, v: (r as any)[f] || '', set: (v: string) => act.set(r.id, { [f]: v === (r as any)[f] ? '' : v }) })),
   ];

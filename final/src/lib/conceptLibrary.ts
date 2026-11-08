@@ -19,7 +19,10 @@ export const WHO = ['Loyal TheraBreath users', 'People who find mouthwash too st
 // if it agrees to widen a moment (the starter cards use these).
 export const MOMENTS: string[] = [...SURVEY.moment.options];
 export const WHEN = [...MOMENTS, 'First thing in the morning', 'After meals', 'Before a social moment', 'Wind-down, before bed'];
-export const ROLE = ['Core range', 'Limited edition', 'New sub-line', 'Kids range'];
+// Role in the range: the four portfolio roles (ROLES in content.ts), each with a short label. Cards and plan lines saved
+// before November 6 used four other labels; the session reads them as these (OLD_ROLE in state.ts).
+export const ROLE = ['Core (always-on mints)', 'Expanders (permanent, beyond mint)', 'Explorers (limited editions and drops)', 'Specialists (dry mouth, night, kids)'];
+export const roleId = (v?: string) => (v || '').split(' (')[0];
 export const FORMAT = ['Rinse', 'Portable rinse sachet', 'Spray', 'Lozenge, mint or gum', 'Toothpaste'];
 export const GROWS = ['Loyal users', 'New users', 'Both'];
 export const OTHER = 'Other, in the notes';
@@ -55,27 +58,27 @@ export const CONCEPT_FIELDS: { key: ConceptKey; l: string; opts?: string[]; mult
 export const MOMENT_WHEN: Record<string, string> = Object.fromEntries(MOMENTS.map((m) => [m, m]));
 
 // The starter cards. A card that starts from a sample has no title of its own: it takes the sample's name once the
-// tasting has revealed it. The defaults come from the direction's profile on the map (who it's for, its moment) and
-// are proposals for the room to change. Role in the range and the growth opportunity start empty on purpose: those are
+// tasting has revealed it. The defaults come from the direction's profile on the map (who it's for, its moment, always a
+// moment on the day arc word for word) and are proposals for the room to change. Role in the range and the growth opportunity start empty on purpose: those are
 // the room's call, not the starter card's. The two named ideas are the example concepts on the run sheet.
 export type Card = { id: string; status: 'DRAFT' | 'READY'; title?: string; start: string; segment: string; occasion: string; role: string; format: string; incremental: string };
 const DIRECTION_DEFAULTS: Record<string, Omit<Card, 'id' | 'status' | 'title' | 'start'>> = {
   // Plant-Powered Freshness: "Adults who'd like something besides straight mint."
-  warmcool: { segment: 'Adults who want something new', occasion: 'After meals', role: '', format: 'Rinse', incremental: '' },
+  warmcool: { segment: 'Adults who want something new', occasion: 'After lunch', role: '', format: 'Rinse', incremental: '' },
   // Global Brightness: "Morning rinsers and people heading out the door."
-  bright: { segment: 'Adults who want something new', occasion: 'First thing in the morning', role: '', format: 'Rinse', incremental: '' },
+  bright: { segment: 'Adults who want something new', occasion: 'Wake-up', role: '', format: 'Rinse', incremental: '' },
   // Modern Clean: "Possibly people who find mouthwash too harsh." A hypothesis to test.
-  botanical: { segment: 'People who find mouthwash too strong', occasion: 'After meals', role: '', format: 'Rinse', incremental: '' },
+  botanical: { segment: 'People who find mouthwash too strong', occasion: 'After lunch', role: '', format: 'Rinse', incremental: '' },
   // Next-Generation Kids: "Kids and their parents."
-  ladder: { segment: 'Families with kids and tweens', occasion: 'Wind-down, before bed', role: '', format: 'Rinse', incremental: '' },
+  ladder: { segment: 'Families with kids and tweens', occasion: 'Wind-down', role: '', format: 'Rinse', incremental: '' },
 };
 export const defaultsFor = (start: string) => DIRECTION_DEFAULTS[STARTS.find((x) => x.id === start)?.territory || start] || DIRECTION_DEFAULTS.warmcool;
 
 export const LIBRARY: Card[] = [
   ...PRIMARY_TERRITORIES.map((t) => ({ id: 'dir-' + t.id, status: 'DRAFT' as const, title: t.name, start: t.id, ...defaultsFor(t.id) })),
   ...SAMPLES.map((x) => ({ id: 'sample-' + x.code, status: 'DRAFT' as const, start: x.code, ...defaultsFor(x.code) })),
-  { id: 'calm-rinse', status: 'DRAFT', title: 'A calmer last rinse of the day', start: 'warmcool', segment: 'Loyal TheraBreath users', occasion: 'Wind-down, before bed', role: 'New sub-line', format: 'Rinse', incremental: 'Loyal users' },
-  { id: 'sink-game', status: 'DRAFT', title: 'A guessing game at the sink', start: 'ladder', segment: 'Families with kids and tweens', occasion: 'Wind-down, before bed', role: 'Kids range', format: 'Rinse', incremental: 'New users' },
+  { id: 'calm-rinse', status: 'DRAFT', title: 'A calmer last rinse of the day', start: 'warmcool', segment: 'Loyal TheraBreath users', occasion: 'Wind-down', role: ROLE[1], format: 'Rinse', incremental: 'Loyal users' },
+  { id: 'sink-game', status: 'DRAFT', title: 'A guessing game at the sink', start: 'ladder', segment: 'Families with kids and tweens', occasion: 'Wind-down', role: ROLE[3], format: 'Rinse', incremental: 'New users' },
 ];
 // The library card for a sample or direction picked in the chips vote.
 export const cardFor = (start: string) => LIBRARY.find((c) => c.id === (STARTS.find((x) => x.id === start)?.kind === 'sample' ? 'sample-' + start : 'dir-' + start));

@@ -8,7 +8,7 @@ import { DEFAULT_DIALS, readouts } from '@/lib/bench';
 import { uid, tastingClosed } from '@/lib/state';
 import { candidates } from './scenes/Build';
 
-type Me = { pid: string; name: string };
+type Me = { pid: string; name: string; warm?: string };
 const KEY = (c: string) => `pb-me-${c}`;
 
 export default function RoomApp({ code, k }: { code: string; k: string }) {
@@ -21,10 +21,10 @@ export default function RoomApp({ code, k }: { code: string; k: string }) {
   useEffect(() => { document.documentElement.dataset.theme = theme; }, [theme]);
 
   // Re-announce after a wipe or on a new device session so the Stage always knows who is here.
-  useEffect(() => { if (me && status.lastOk && !s.participants[me.pid]) send('join', { name: me.name }, me.pid); }, [me, status.lastOk, s.participants, send]);
+  useEffect(() => { if (me && status.lastOk && !s.participants[me.pid]) send('join', { name: me.name, warm: me.warm || '' }, me.pid); }, [me, status.lastOk, s.participants, send]);
 
   if (!ready) return <main className="room" data-theme={theme} />;
-  if (!me) return <JoinForm onJoin={(name) => { const m = { pid: uid(), name }; try { localStorage.setItem(KEY(code), JSON.stringify(m)); } catch {} setMe(m); send('join', { name }, m.pid); }} />;
+  if (!me) return <JoinForm onJoin={(name, warm) => { const m = { pid: uid(), name, warm }; try { localStorage.setItem(KEY(code), JSON.stringify(m)); } catch {} setMe(m); send('join', { name, warm }, m.pid); }} />;
 
   const room = scene.room as any;
   const p = (kind: string, data: any) => send(kind, data, me.pid);
@@ -53,17 +53,23 @@ export default function RoomApp({ code, k }: { code: string; k: string }) {
   );
 }
 
-function JoinForm({ onJoin }: { onJoin: (n: string) => void }) {
+// The first name, then one optional warm-up question (added November 6). The warm-up never blocks joining: leave it
+// empty and Join works the same.
+function JoinForm({ onJoin }: { onJoin: (n: string, warm: string) => void }) {
   const [n, setN] = useState('');
+  const [w, setW] = useState('');
   return (
     <main className="room" data-theme="b">
-      <form className="rm-center rm-join" onSubmit={(e) => { e.preventDefault(); if (n.trim()) onJoin(n.trim().split(/\s+/)[0].slice(0, 20)); }}>
+      <form className="rm-center rm-join" onSubmit={(e) => { e.preventDefault(); if (n.trim()) onJoin(n.trim().split(/\s+/)[0].slice(0, 20), w.trim().slice(0, 60)); }}>
         <div className="rm-drop" />
         <div className="k">{EVENT.lockup}</div>
         <h1 className="h2">The Future<br /><span className="it">of Freshness</span></h1>
         <input autoFocus value={n} onChange={(e) => setN(e.target.value)} placeholder="Your first name" aria-label="Your first name" maxLength={20} />
+        <label className="rm-warm"><span>Optional: a flavor that surprised you this year. Anything, not just oral care.</span>
+          <input value={w} onChange={(e) => setW(e.target.value)} placeholder="Skip it if nothing comes to mind" aria-label="A flavor that surprised you this year (optional)" maxLength={60} />
+        </label>
         <button className="rm-btn" disabled={!n.trim()}>Join</button>
-        <p className="rm-fine">Just your first name is fine. It pops up on the screen when you join, and your votes are only used for this session.</p>
+        <p className="rm-fine">Just your first name is fine. It pops up on the screen when you join, with your flavor if you add one, and your votes are only used for this session.</p>
       </form>
     </main>
   );
