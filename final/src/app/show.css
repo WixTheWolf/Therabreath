@@ -18,8 +18,8 @@
 .show .brief-tiles { top: 360px; }
 .show .bt { border-top: 4px solid hsl(var(--h) 65% 55%); }
 .show .bt-n { color: hsl(var(--h) 55% 42%); }
-.show .bt-goal { top: 905px; }
-.show .bt-goal p { font-size: 28px; }
+.show .bt-goal { top: 830px; }
+.show .bt-goal p { font-size: 31px; }
 
 /* who we are: the lab bench behind, the four of us in front */
 .st { position: absolute; inset: 0; overflow: hidden; }
@@ -97,7 +97,21 @@
 .tl .pad { z-index: 2; }
 .tl-lede { margin-top: 18px; font-size: 28px; max-width: 1300px; }
 .tl .heat { margin-top: 34px; }
-.tl .hrow { grid-template-columns: 520px repeat(3, 1fr) 400px; }
+.tl .hrow { grid-template-columns: 480px repeat(3, 1fr) 200px 200px; }
+/* sweetness and cooling: the most common answer and how many gave it */
+.tl .hjar { display: grid; grid-template-columns: repeat(3, 1fr); align-items: center; justify-items: center; padding: 0 10px; border-radius: 16px; border: 1px solid var(--rule); background: rgba(255,255,255,.03); }
+.tl .hjar b { font-size: 32px; color: var(--fg); }
+.tl .hjar b:nth-child(2) { color: var(--accent); }
+.tl .hrow.head span small { display: block; margin-top: 6px; font: 400 16px/1 var(--sans); letter-spacing: 0; text-transform: none; color: var(--fg2); }
+/* The blind round: one bar per sample for how many phones have scored it, across the score columns. */
+.tl .tl-prog { grid-column: 2 / -1; position: relative; display: flex; align-items: center; gap: 16px; padding: 0 26px; border-radius: 16px; border: 1px solid var(--rule); background: rgba(255,255,255,.03); overflow: hidden; }
+.tl .tl-prog i { position: absolute; inset: 0 auto 0 0; background: color-mix(in oklab, var(--accent) 22%, transparent); transition: width .8s var(--ease); }
+.tl .tl-prog b { position: relative; font-size: 44px; color: var(--fg); }
+.tl .tl-prog span { position: relative; font: 400 22px/1.2 var(--sans); color: var(--fg2); }
+.tl .tl-blind .hrow.head span:not(:first-child) { visibility: hidden; }
+.tl .tl-n { display: block; margin-top: 4px; font: 400 17px/1.2 var(--sans); font-style: normal; color: var(--fg2); }
+/* Dark numerals on the brightest cells, so a high score reads as well as a low one. */
+.tl .hcell.hi b { color: #0B1B2B; }
 .tl .hname { padding: 12px 22px; background: rgba(255,255,255,.06); }
 .tl .hname span { opacity: 1; filter: none; transform: none; font-size: 32px; }
 .tl .hname small { display: block; font: 400 15px/1.3 var(--sans); color: var(--fg2); margin-top: 4px; }
@@ -214,6 +228,7 @@
 .show-notes ul { margin: 4px 0 0 18px; display: flex; flex-direction: column; gap: 8px; }
 .show-notes li { font: 400 15px/1.45 var(--sans); color: rgba(240,238,233,.85); }
 .show-notes small { font: 500 12px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: rgba(240,238,233,.5); }
+.show-toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 210; padding: 16px 28px; border-radius: 40px; background: rgba(11,27,43,.92); color: #F0EEE9; font: 500 24px/1.2 var(--sans); box-shadow: 0 10px 40px rgba(0,0,0,.35); pointer-events: none; }
 .show-hint { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 200; padding: 10px 18px; border-radius: 30px; background: rgba(11,27,43,.75); color: rgba(240,238,233,.85); font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; animation: hintOut 1s ease 5s forwards; pointer-events: none; }
 @keyframes hintOut { to { opacity: 0; } }
 .show-rehearse { position: fixed; left: 16px; bottom: 16px; z-index: 200; padding: 8px 14px; border-radius: 30px; background: #F4B860; color: #0B1B2B; font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; pointer-events: none; }
@@ -439,3 +454,536 @@
 .show .next .agreed span { font-size: 22px; }
 .show .next .agreed em { font-size: 16px; }
 .pw-others { margin-top: 14px; }
+
+/* The 17-slide morning (November 9). Each part's first slide carries a small objective tag instead of a divider. */
+.obj-tag { position: absolute; left: 120px; top: 92px; z-index: 21; padding: 7px 14px; border-radius: 99px; border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent); font: 500 15px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--accent-ink); background: color-mix(in oklab, var(--bg) 70%, transparent); animation: enterUp .9s var(--ease) both; animation-delay: .2s; }
+.room-ask { display: flex; flex-direction: column; gap: 8px; }
+.room-ask p { font: 400 italic 32px/1.3 var(--serif); color: var(--fg); max-width: 1100px; }
+
+/* 2. Who we are, since July */
+.ts .h1 { margin-top: 4px; }
+.ts-people { position: absolute; left: 120px; right: 120px; top: 360px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; z-index: 2; }
+.ts-lines { position: absolute; left: 120px; right: 120px; top: 520px; display: flex; flex-direction: column; gap: 18px; z-index: 2; }
+.ts-line { display: grid; grid-template-columns: 300px 1fr; align-items: center; gap: 20px; padding: 16px 22px; border-radius: 20px; background: color-mix(in oklab, var(--panel2) 92%, transparent); border: 1px solid var(--rule); backdrop-filter: blur(16px); }
+.ts-line .k { font-size: 16px; line-height: 1.3; }
+.ts-line.sci { box-shadow: inset 4px 0 0 rgba(108,199,221,.8); } .ts-line.ima { box-shadow: inset 4px 0 0 rgba(244,184,96,.85); }
+.ts-line .st-chips { margin-top: 0; gap: 8px; }
+.ts-line .st-chips span { font-size: 19px; padding: 8px 14px; }
+.ts-july { top: auto; bottom: 96px; z-index: 2; }
+.ts-july .jf { padding: 22px 26px; gap: 10px; }
+.ts-july .jf b { font-size: 40px; }
+.ts-july .jf.grow.lit b { font-size: 64px; }
+.ts-july .jf.grow { transition: all 1s var(--ease); }
+
+/* 7. Out of every 100 households */
+.gap-thesis { z-index: 4; transition: opacity 1s var(--ease), filter 1s var(--ease), transform 1s var(--ease); }
+.gap-thesis.away { opacity: 0; filter: blur(10px); transform: translateY(-30px); pointer-events: none; }
+.gap-thesis > div { font-size: 104px; }
+[data-theme="a"] .gap-thesis .tl1.on { color: var(--fg2); }
+[data-theme="a"] .gap-thesis .tl2 { background: linear-gradient(90deg, #1F6C82, #2E8FA8 40%, #B4743A 75%, #B5507F); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.gap-talk { top: 150px; display: flex; flex-direction: column; gap: 22px; }
+.gap-talk .gap-share { position: static; width: auto; font-size: 30px; line-height: 1.35; color: var(--fg); }
+.gap-talk .h1 { margin-top: 6px; font-size: 76px; }
+.gap-split { display: flex; gap: 18px; }
+.gap-split > div { flex: 1; display: flex; align-items: baseline; gap: 14px; padding: 16px 20px; border-radius: 18px; background: var(--panel2); border: 1px solid var(--rule); }
+.gap-split b { font-size: 56px; line-height: 1; color: var(--accent-ink); }
+.gap-split span { font: 400 22px/1.25 var(--sans); color: var(--fg2); }
+.gap-groups { display: flex; flex-direction: column; gap: 10px; width: 640px; }
+.gap-groups > div { display: flex; align-items: baseline; gap: 22px; padding: 10px 24px; border-radius: 18px; background: var(--panel2); border: 1px solid var(--rule); }
+.gap-groups b { min-width: 86px; font-size: 64px; line-height: 1; color: var(--fg); }
+.gap-groups .tb b { color: var(--accent-ink); }
+.gap-groups span { font: 400 30px/1.25 var(--sans); color: var(--fg2); }
+.gap-talk .gap-second { margin-top: 4px; font-size: 46px; max-width: 760px; }
+.gap-talk .room-ask p { font-size: 34px; }
+
+/* 6. The shelf */
+/* our flavors in your range: the products on one shelf, each bottle cut out of its product photo */
+.of-head { position: absolute; left: 120px; right: 120px; top: 150px; }
+.of-title { margin-top: 6px; font-size: 64px; }
+.of-shelf { position: absolute; left: 120px; right: 120px; top: 360px; display: flex; gap: 32px; }
+.of-g { flex-basis: 0; display: flex; flex-direction: column; min-width: 0; }
+.of-gl { margin-bottom: 16px; }
+.of-gl .k { font-size: 15px; color: var(--fg3); }
+.of-row { display: flex; }
+.of-b { flex: 1 1 0; min-width: 0; margin: 0; padding: 0 4px; animation: enterUp 1.1s var(--ease) both; animation-delay: calc(var(--i, 0) * 60ms + 380ms); }
+.of-img { position: relative; height: 320px; display: flex; align-items: flex-end; justify-content: center; border-bottom: 2px solid var(--rule); }
+.of-img::after { content: ''; position: absolute; left: 14%; right: 14%; bottom: -5px; height: 12px; border-radius: 50%; background: radial-gradient(closest-side, rgba(11,27,43,.18), transparent); }
+.of-img img { position: relative; z-index: 1; display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
+.of-b figcaption { padding-top: 14px; display: flex; flex-direction: column; gap: 4px; }
+.of-b figcaption b { font: 500 16px/1.2 var(--sans); color: var(--fg); }
+.of-b figcaption span { font: 400 14px/1.25 var(--sans); color: var(--fg3); }
+
+.shelf .sh-left { position: absolute; left: 120px; top: 150px; width: 820px; }
+.sh-title { margin-top: 4px; font-size: 58px; max-width: 800px; }
+.sh-rows { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+.sh-row { display: grid; grid-template-columns: 150px 1fr; gap: 14px; align-items: center; }
+.sh-row > div { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; }
+.sh-row > .k { font-size: 16px; color: var(--fg2); }
+.sh-dots { display: flex; flex-wrap: wrap; gap: 6px; }
+.sh-dots i, .sh-key i { width: 22px; height: 22px; border-radius: 50%; display: inline-block; transition: opacity .9s var(--ease), box-shadow .9s var(--ease); }
+.sh-dots i.mint, .sh-key i.mint { background: #8FD3E4; box-shadow: inset 0 0 0 1px #4FA9C2; }
+.sh-dots i.other, .sh-key i.other { background: #F0B25C; box-shadow: inset 0 0 0 1px #C98630; }
+.sh-note { font: 400 21px/1.3 var(--sans); color: var(--fg2); }
+.sh-note b { font-weight: 500; color: var(--fg); }
+.sh-rows.sh-lit .sh-dots i.mint { opacity: .4; }
+.sh-rows.sh-lit .sh-dots i.other { box-shadow: inset 0 0 0 1px #C98630, 0 0 18px rgba(244,184,96,.85); }
+.sh-key { display: flex; gap: 24px; margin-top: 16px; font: 500 14px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--fg3); }
+.sh-key span { display: inline-flex; align-items: center; gap: 10px; }
+.sh-key i { width: 16px; height: 16px; }
+.sh-room { margin-top: 18px; font-size: 46px; color: var(--accent-ink); }
+.shelf .sh-right { position: absolute; left: 1010px; right: 120px; top: 150px; }
+.sh-launch { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+.sh-launch { gap: 10px; }
+.sh-mk { display: grid; grid-template-columns: 190px 1fr; gap: 18px; padding: 12px 20px; border-radius: 18px; background: var(--panel); border: 1px solid var(--rule); }
+.sh-mk > :first-child { display: flex; flex-direction: column; gap: 8px; }
+.sh-mk.tb { border-color: color-mix(in oklab, var(--accent) 55%, transparent); background: var(--panel2); }
+.sh-when { font: 500 14px/1.3 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--fg3); }
+.sh-mk b { font: 300 30px/1 var(--serif); }
+.sh-mk.tb b { color: var(--accent-ink); }
+.sh-mk p { font: 400 20px/1.35 var(--sans); color: var(--fg2); margin: 0; }
+.sh-srcs { margin-top: 14px; font-size: 14px; line-height: 1.45; }
+.sh-turn { z-index: 6; left: 1010px; right: 120px; width: auto; bottom: 96px; padding: 18px 24px; background: color-mix(in oklab, var(--bg) 92%, white); grid-template-columns: 1fr; gap: 10px; }
+.sh-turn p { font-size: 26px; }
+.sh-turn .k { font-size: 16px; line-height: 1.35; }
+
+/* 7. Seven trends: vote, then discuss */
+.tv-list { position: absolute; left: 120px; top: 310px; width: 860px; display: flex; flex-direction: column; gap: 7px; }
+.tv-row { position: relative; display: grid; grid-template-columns: 40px 1fr 100px 44px; align-items: center; gap: 14px; padding: 9px 16px; border-radius: 16px; border: 1px solid var(--rule2); background: color-mix(in oklab, var(--panel2) 70%, transparent); transition: opacity .7s var(--ease), background .7s var(--ease), border-color .7s var(--ease), transform .7s var(--ease); }
+.tv-row .num { font-size: 20px; color: var(--fg3); }
+.tv-t { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.tv-t b { font: 300 26px/1.1 var(--serif); }
+.tv-tag { font: 500 13px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--fg3); }
+.tv-bar { height: 10px; border-radius: 6px; background: var(--rule2); overflow: hidden; }
+.tv-bar i { display: block; height: 100%; background: linear-gradient(90deg, hsla(var(--h), 70%, 60%, .5), hsl(var(--h), 70%, 50%)); transition: width 1s var(--ease); }
+.tv-n { font-size: 32px; text-align: right; color: var(--fg); }
+.tv-rank { position: absolute; right: 18px; top: -10px; padding: 4px 10px; border-radius: 99px; background: var(--bg); font-size: 12px; color: hsl(var(--h), 55%, 36%); border: 1px solid hsla(var(--h), 60%, 50%, .5); }
+.tv-row.dim { opacity: .38; }
+.tv-row.top { border-color: hsla(var(--h), 60%, 50%, .45); }
+.tv-row.on { background: var(--panel2); border-color: hsla(var(--h), 60%, 50%, .7); transform: translateX(12px); box-shadow: 0 0 40px hsla(var(--h), 90%, 60%, .22); }
+.tv-row.on .tv-t b { color: hsl(var(--h), 55%, 32%); }
+.tv-focus { left: 1040px; top: 310px; bottom: 110px; display: flex; flex-direction: column; }
+.tv-focus .sf-title { font-size: 50px; margin-top: 12px; }
+.tv-focus .sf-proofs { gap: 10px; margin-top: 16px; }
+.tv-focus .sf-proofs .proof { padding: 16px 22px; }
+.tv-focus .sf-proofs .proof p { font-size: 21px; margin-bottom: 6px; }
+.tv-focus .sig-so .h3 { font-size: 30px; }
+.tv-ask { margin-top: auto; padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.tv-ask p { font: 400 italic 30px/1.25 var(--serif); }
+.tv-hint { left: 1040px; top: 340px; }
+
+/* 8. Flavor School: flavor and sodium chlorite */
+.fs { position: absolute; inset: 0; }
+.fs-head { z-index: 3; pointer-events: none; display: flex; justify-content: space-between; align-items: flex-start; bottom: auto; }
+.fs-steps { list-style: none; display: flex; gap: 10px; }
+.fs-steps li { display: flex; gap: 10px; align-items: center; padding: 9px 16px; border-radius: 99px; border: 1px solid var(--rule); font: 500 15px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--fg3); transition: all .6s var(--ease); }
+.fs-steps li .num { font-size: 15px; }
+.fs-steps li.on { color: var(--fg); border-color: var(--accent); background: var(--accent-soft); }
+.fs-steps li.done { color: var(--fg2); }
+.fs-state { position: absolute; inset: 0; opacity: 0; filter: blur(10px); transform: translateY(24px); transition: opacity 1s var(--ease), filter 1s var(--ease), transform 1s var(--ease); pointer-events: none; }
+.fs-state.on { opacity: 1; filter: none; transform: none; }
+.fs-h { position: absolute; left: 120px; top: 220px; max-width: 1450px; }
+.fs .venn { top: 420px; }
+.fs .cool-copy { top: 230px; }
+.fs .cool-copy .h1 { margin: 0 0 36px; }
+.fs-drawn { margin-top: 40px; }
+.fs-ox { position: absolute; left: 120px; top: 230px; max-width: 1200px; }
+.fs-ctl { position: absolute; left: 120px; top: 470px; }
+.fs .levers { position: absolute; left: 120px; top: 520px; margin-top: 0; }
+.fs .lever { animation: enterUp .9s var(--ease) both; }
+.fs-pay { position: absolute; left: 120px; top: 640px; max-width: 1400px; }
+.fs-pay .it { color: var(--accent); }
+.fs-ask { position: absolute; left: 120px; top: 830px; }
+
+/* 9. Four directions */
+.dm-copy { transition: opacity .8s var(--ease), filter .8s var(--ease); }
+.dm-lede { max-width: 470px; margin-top: 30px; font-size: 30px; }
+.dm-view { margin-top: 24px; }
+.dm-ask { margin-top: 40px; }
+.dm-ask p { font-size: 30px; max-width: 470px; }
+.dm.open .dm-copy { opacity: 0; filter: blur(8px); pointer-events: none; }
+.dm-plot { transform-origin: 0 0; transition: transform 1s var(--ease), left 1s var(--ease), right 1s var(--ease); }
+.dm.open .dm-plot { right: auto; left: 150px; top: 290px; transform: scale(.56); }
+.dm-pt { background: none; border: 0; padding: 8px; cursor: pointer; color: var(--fg); text-align: left; border-radius: 99px; font: inherit; animation: dmIn 1s var(--ease) both; animation-delay: calc(var(--i) * 120ms); }
+.dm-lab { display: flex; flex-direction: column; gap: 8px; }
+.dm-pt small { font-size: 13px; color: var(--fg3); }
+.dm-pt b { font-size: 32px; }
+.dm-pt:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.dm-pt i { transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+.dm-pt.on i { transform: scale(1.25); box-shadow: 0 0 0 6px var(--bg), 0 0 0 8px var(--c2), 0 0 60px var(--c2); }
+.dm.open .dm-pt:not(.on) { opacity: .55; }
+.dm.open .dm-pt b { font-size: 40px; }
+@keyframes dmIn { from { opacity: 0; } to { opacity: 1; } }
+.dm-card { position: absolute; left: 860px; right: 120px; top: 170px; border-radius: 28px; overflow: hidden; background: var(--panel2); border: 1px solid var(--rule); box-shadow: 0 40px 100px -50px var(--c2); backdrop-filter: blur(20px); display: flex; flex-direction: column; animation: enterUp .8s var(--ease) both; }
+.dm-hero { height: 200px; flex: none; position: relative; background: linear-gradient(120deg, var(--c1), var(--c2) 60%, var(--c3)); }
+.dm-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dm-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, color-mix(in oklab, var(--bg) 35%, transparent)); }
+.dm-body { padding: 30px 40px 34px; display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+.dm-name { font: 300 66px/1 var(--serif); letter-spacing: -.02em; }
+.dm-promise { font: 400 italic 30px/1.3 var(--serif); color: var(--fg2); }
+.dm-arc ol { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+.dm-arc li { padding: 14px 18px; border-radius: 16px; background: var(--panel); border: 1px solid var(--rule); border-top: 4px solid var(--c2); display: flex; flex-direction: column; gap: 6px; }
+.dm-arc li .k { font-size: 13px; color: var(--fg3); }
+.dm-arc li b { font: 400 26px/1.15 var(--serif); }
+.dm-two { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.dm-two p { font: 400 22px/1.4 var(--sans); color: var(--fg2); margin-top: 8px; }
+.dm-two .dm-note { font-size: 18px; color: var(--fg3); }
+.dm .k { font-size: 16px; }
+
+/* 15. What deserves the next round */
+.lm-title { margin-top: 4px; font-size: 60px; }
+.landed .lm-m { position: absolute; left: 180px; top: 310px; width: 780px; height: 400px; }
+.landed .lm-m .mx-plot { left: 0; right: 0; top: 0; bottom: 0; }
+/* The scale as collected: ticks at 1, 3 and 5, the axis names clear of them, and each letter on a solid light disk in a
+   layer above every bubble, so it reads on any sample color. */
+.landed .lm-m .mx-ax.x { bottom: -60px; } .landed .lm-m .mx-ax.y { left: -50px; }
+.landed .mx-tk { position: absolute; font: 500 16px/1 var(--mono); color: var(--fg3); }
+.landed .mx-tk.x { bottom: -28px; transform: translateX(-50%); }
+.landed .mx-tk.y { left: -14px; transform: translate(-100%, 50%); }
+.landed .mx-lt { position: absolute; z-index: 3; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; font-weight: 500; color: #0B1B2B; background: var(--c0); box-shadow: 0 2px 10px rgba(0,0,0,.35); transition: left 1.8s var(--ease), top 1.8s var(--ease); transition-delay: calc(var(--i) * 140ms); }
+.landed .mx-lt.none { opacity: .5; }
+.lm-asks { position: absolute; left: 120px; width: 860px; top: 800px; display: flex; flex-direction: column; gap: 10px; }
+.lm-asks .room-ask p { font-size: 26px; }
+.lm-asks .src { font-size: 15px; }
+.lm-chips { position: absolute; left: 1060px; right: 120px; top: 300px; bottom: 110px; display: flex; flex-direction: column; gap: 14px; }
+.lm-chips > .k { font-size: 16px; }
+.landed .dotlist.lm-list { position: static; gap: 8px; }
+.landed .lm-list .dl { grid-template-columns: 300px 1fr 50px 160px; gap: 14px; padding: 10px 18px; }
+.landed .lm-list .dl-name small { font-size: 12px; white-space: nowrap; }
+.landed .lm-list .dl em { white-space: nowrap; font-size: 14px; }
+.landed .lm-list .dl.top { transform: none; }
+.landed .lm-list .dl-name b { font-size: 28px; }
+.landed .lm-list .dl-dots i { width: 16px; height: 16px; }
+.landed .lm-list .dl-n { font-size: 36px; }
+.landed .lm-list .dl.dim { opacity: .4; }
+.landed .lm-list .lm-group { font-size: 13px; color: var(--fg3); margin: 6px 0 -2px; }
+.lm-q3 { margin-top: auto; }
+.lm-q3 p { font-size: 28px; }
+
+/* 16. What we decided and what happens next */
+.show .as-copy.pb-steps { max-width: none; width: 1000px; top: 170px; }
+.pb-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-top: 34px; }
+.pb-step { display: grid; grid-template-columns: 70px 1fr; gap: 18px; padding: 20px 26px; border-radius: 22px; background: var(--panel2); border: 1px solid var(--rule); backdrop-filter: blur(14px); }
+.pb-step > .num { font-size: 48px; color: var(--accent); line-height: 1; }
+.pb-step b { font: 300 36px/1.1 var(--serif); }
+.pb-step p { font: 400 21px/1.4 var(--sans); color: var(--fg2); margin-top: 8px; text-shadow: none; }
+.pb-step .agreed { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.pb-step .agreed li { display: flex; gap: 14px; align-items: baseline; }
+.pb-step .agreed b { font-size: 26px; } .pb-step .agreed span { font: 400 19px/1.3 var(--sans); color: var(--fg2); }
+.pb-next .as-copy .h1 { font-size: 72px; margin-top: 16px; }
+
+/* the presenter view's profile cards */
+.pv-profiles { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.pv-profiles button { width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.pv-profiles small { font-size: 12px; color: var(--fg3); }
+.ts::after { background: linear-gradient(90deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 92%, transparent) 50%, color-mix(in oklab, var(--bg) 60%, transparent) 78%, color-mix(in oklab, var(--bg) 35%, transparent)); }
+
+/* Nothing to type on November 9: concept cards on the TV, Now, Next, Later by tapping */
+.ccv-show { display: flex; flex-direction: column; gap: 10px; padding: 30px 32px; animation: enterUp 1s var(--ease) both; animation-delay: calc(var(--i) * 110ms + 150ms); }
+.ccv-show .ccv-name { display: block; border: 0; padding: 4px 0 12px; }
+.ccv-show dl { display: flex; flex-direction: column; }
+.ccv-show dl > div { display: grid; grid-template-columns: 180px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule2); opacity: .55; }
+.ccv-show dl > div.on { opacity: 1; }
+.ccv-show dt { font: 500 14px/1.35 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg3); }
+.ccv-show dd { font: 400 22px/1.3 var(--sans); color: var(--fg); }
+.ccv-show.empty { border-style: dashed; justify-content: flex-start; }
+.ccv-none { font: 300 italic 28px/1.3 var(--serif); color: var(--fg3); margin-top: 10px; }
+
+.sb-tap { position: absolute; left: 120px; right: 120px; top: 330px; bottom: 80px; }
+.pt { display: flex; flex-direction: column; gap: 16px; height: 100%; min-height: 0; }
+.pt-tray { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.pt-tray .k { font-size: 16px; color: var(--fg3); margin-right: 6px; }
+.pt-tray em { font: 300 italic 24px/1 var(--serif); color: var(--fg3); }
+.pt-tray .tchip { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 10px 16px; border-radius: 14px; border: 1px solid var(--rule); background: var(--panel2); font: 400 22px/1.1 var(--serif); color: var(--fg); cursor: pointer; transition: background .2s, border-color .2s, opacity .2s, transform .2s; }
+.pt-tray .tchip small { font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg3); }
+.pt-tray .tchip.on { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-2px); box-shadow: 0 0 0 2px var(--accent); }
+.pt-tray .tchip:disabled { opacity: .45; cursor: default; }
+.pt-hint { font: 400 18px/1.3 var(--sans); color: var(--fg2); margin-left: auto; }
+.pt-cols { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.pt-col { position: relative; min-height: 0; display: flex; flex-direction: column; border-radius: 24px; background: var(--panel2); border: 1px solid var(--rule); overflow: hidden; transition: border-color .3s, box-shadow .3s; }
+.pt-col::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 5px; background: linear-gradient(90deg, var(--glacier-d), var(--accent)); }
+.pt-col.next::before { background: linear-gradient(90deg, #F4B860, #D98E3A); } .pt-col.future::before { background: linear-gradient(90deg, #C9B8FF, #8C86C9); }
+.pt-col.ready { border-color: color-mix(in oklab, var(--accent) 55%, transparent); box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 40%, transparent); }
+.pt-head { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 22px 26px 12px; background: none; border: 0; text-align: left; color: var(--fg); cursor: default; font: inherit; }
+.pt-col.ready .pt-head { cursor: pointer; }
+.pt-head b { font: 300 48px/1 var(--serif); letter-spacing: -.02em; }
+.pt-head .k { font-size: 14px; color: var(--fg3); }
+.pt-head em { font: 500 13px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent-ink); padding: 6px 10px; border-radius: 99px; background: var(--accent-soft); font-style: normal; }
+.pt-rows { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 18px 20px; display: flex; flex-direction: column; gap: 12px; scrollbar-width: thin; }
+.pt-row { position: relative; border-radius: 16px; background: rgba(255,255,255,.75); border: 1px solid var(--rule2); box-shadow: 0 10px 24px -18px rgba(11,27,43,.4); }
+.pt-row.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.pt-row.legacy { padding: 14px 16px; }
+.pt-pick { display: block; width: 100%; text-align: left; padding: 14px 16px; background: none; border: 0; color: var(--fg); cursor: pointer; font: inherit; }
+.pt-pick:disabled { cursor: default; }
+.pt-pick > b, .pt-row.legacy b { display: block; font: 400 28px/1.15 var(--serif); margin-bottom: 8px; }
+.pt-pick dl { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; }
+.pt-pick dl > div:first-child { grid-column: 1 / -1; }
+.pt-pick dt { font: 500 11px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg3); }
+.pt-pick dd { font: 400 16px/1.3 var(--sans); color: var(--fg); }
+.pt-pick .tbc dd { color: #A4581E; }
+.pt-brief { margin-top: 8px; font: 400 15px/1.35 var(--sans); color: var(--fg2); }
+.pt-brief .k { display: block; font-size: 11px; margin-bottom: 3px; color: var(--fg3); }
+.pt-back { margin: 0 16px 14px; padding: 8px 14px; border-radius: 99px; border: 1px solid #E0876B; background: none; color: #B14E31; font: 500 15px/1 var(--sans); cursor: pointer; }
+
+/* the presenter view: the same board, smaller, with the selected line's options below */
+.pv .pt { height: auto; }
+.pv .pt-tray .tchip { font-size: 16px; padding: 8px 12px; border-radius: 12px; }
+.pv .pt-hint { font-size: 14px; width: 100%; margin-left: 0; }
+.pv .pt-cols { gap: 10px; }
+.pv .pt-col { border-radius: 16px; max-height: 420px; }
+.pv .pt-head { padding: 14px 14px 8px; align-items: flex-start; justify-content: flex-start; border-radius: 0; }
+.pv .pt-head b { font-size: 28px; }
+.pv .pt-rows { padding: 4px 10px 12px; gap: 8px; }
+.pv .pt-row { background: var(--panel); }
+.pv .pt-pick { display: block; padding: 10px 12px; border: 0; border-radius: 14px; background: none; }
+.pv .pt-pick > b { font-size: 18px; margin-bottom: 4px; }
+.pv .pt-pick dl { display: none; }
+.pv .pt-brief { display: none; }
+.pv .pt-back { margin: 0 12px 10px; padding: 6px 12px; color: #F7A48F; border-color: #F27A5E; }
+.pt-fields { margin-top: 6px; padding: 16px; border-radius: 16px; background: var(--panel); border: 1px solid var(--accent); display: flex; flex-direction: column; gap: 12px; }
+.pt-fields h3 { font: 300 24px/1.1 var(--serif); }
+.pt-group { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 10px; align-items: start; }
+.pt-group > span { font-size: 13px; color: var(--fg2); padding-top: 8px; }
+.pt-group > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.pv .pt-group button { padding: 7px 12px; border-radius: 99px; font-size: 14px; }
+.pv .pt-group button.tbc { border-style: dashed; }
+.pt-briefnote { font-size: 13px; color: var(--fg2); line-height: 1.45; }
+.pt-briefnote span { display: block; font-size: 12px; color: var(--fg3); margin-bottom: 2px; }
+
+.pv-paper { display: flex; align-items: center; gap: 14px; margin: 14px 0; }
+.pv-paper > b { font-size: 44px; line-height: 1; }
+.pv-paper > span { color: var(--fg2); font-size: 15px; margin-right: auto; }
+.pv-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 12px; }
+.pv-concept { display: flex; flex-direction: column; gap: 12px; }
+.pv-concept h3 { font: 300 24px/1.1 var(--serif); }
+.pv-chead { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.pv-chead h3 { margin-right: auto; }
+.pv-lib { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+.pv-lib button { width: 100%; justify-content: space-between; text-align: left; align-items: flex-start; }
+.pv-lib button > span { display: flex; flex-direction: column; gap: 4px; }
+.pv-lib small { font-size: 12px; color: var(--fg3); font-weight: 400; }
+.pv-draft { font-style: normal; font: 600 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #F4B860; border: 1px solid #F4B860; border-radius: 99px; padding: 4px 7px; }
+.pv-cards .pv-now { overflow: auto; max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+/* the results page: anything still to confirm */
+.show-results td.tbc { color: #A4581E; }
+/* on the TV the lines stay short: the brief lives in the presenter view and the write-up */
+.sb-tap { bottom: 100px; }
+.stage .pt-brief { display: none; }
+.stage .pt-pick dl { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.stage .pt-pick > b { font-size: 26px; margin-bottom: 6px; }
+.stage .pt-pick { padding: 12px 14px; }
+
+/* 17. Bookends of the day */
+.bk .bk-head { position: relative; height: 150px; margin-top: 6px; }
+.bk .bk-head .wsp-h { position: absolute; inset: 0 0 auto 0; }
+.bk-lede { margin-top: 10px; font: 300 30px/1.3 var(--serif); color: var(--fg2); max-width: 1300px; }
+.bk-arc { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+.bk-line { fill: none; stroke-width: 6; stroke-linecap: round; opacity: .85; }
+.bk-middle { fill: none; stroke: #F4B860; stroke-width: 34; stroke-linecap: round; opacity: 0; filter: blur(10px); transition: opacity 1s var(--ease); }
+.bk-middle.on { opacity: .45; }
+.bk-stop { position: absolute; transform: translate(-50%, -15px); width: 190px; display: flex; flex-direction: column; align-items: center; gap: 8px; background: none; border: 0; padding: 0; cursor: pointer; text-align: center; color: inherit; font: inherit; }
+.bk-dot { width: 30px; height: 30px; border-radius: 50%; background: var(--bg); border: 3px solid var(--fg3); transition: all .8s var(--ease); }
+.bk-stop:hover .bk-dot { border-color: var(--fg); }
+.bk-stop.any .bk-dot { border-style: dashed; }
+.bk-stop.now .bk-dot { border-color: transparent; background: linear-gradient(135deg, var(--glacier), var(--accent)); box-shadow: 0 0 26px rgba(108,199,221,.9); transform: scale(1.25); }
+.bk-stop.top .bk-dot { box-shadow: 0 0 0 6px rgba(244,184,96,.35), 0 0 26px rgba(244,184,96,.9); }
+.bk-stop.open .bk-dot { border-color: #E39A35; }
+.bk-name { font: 500 24px/1.15 var(--sans); color: var(--fg); max-width: 170px; text-wrap: balance; }
+.bk-name, .bk-tags, .bk-orbs { transform: translateX(var(--lean, 0px)); }
+.bk-tags { display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 0; }
+.bk-tag { font: 500 18px/1.2 var(--sans); font-style: normal; padding: 5px 12px; border-radius: 99px; white-space: nowrap; }
+.bk-tag.now { color: #0B1B2B; background: linear-gradient(135deg, var(--glacier), var(--accent)); }
+.bk-tag.open { color: #8A4E08; background: rgba(244,184,96,.2); border: 1px dashed rgba(227,154,53,.7); }
+.bk-tag.vote { color: #8A4E08; background: rgba(244,184,96,.32); }
+.bk-orbs { display: flex; gap: 6px; }
+.bk-orbs i { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, var(--rc) 55%); box-shadow: 0 0 14px color-mix(in oklab, var(--rc) 70%, transparent); animation: enterUp .5s var(--ease) both; }
+.bk-tray { position: absolute; left: 120px; right: 120px; top: 796px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.bk-tray > .k { font-size: 16px; color: var(--fg2); }
+.bk-chips { display: flex; gap: 12px; flex-wrap: wrap; }
+.bk-chip { display: inline-flex; align-items: center; gap: 12px; padding: 10px 20px 10px 14px; border-radius: 99px; border: 2px solid var(--rule); background: var(--panel2); cursor: pointer; color: var(--fg); }
+.bk-chip i { width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, var(--rc) 55%); }
+.bk-chip b { font: 400 24px/1 var(--serif); }
+.bk-chip.on { border-color: var(--rc); box-shadow: 0 0 0 4px color-mix(in oklab, var(--rc) 25%, transparent); }
+.bk-how { flex-basis: 100%; margin-top: -4px; font: 400 19px/1.3 var(--sans); color: var(--fg2); }
+
+/* Readability floor (November 4): nothing on a slide is under 16px, and no text crosses a line or another label. */
+.of-gl .k { font-size: 16px; }
+.of-b figcaption span { font-size: 16px; }
+.sh-key, .sh-when, .sh-srcs { font-size: 16px; }
+.tv-tag { font-size: 16px; }
+.tv-rank { font-size: 16px; }
+.fs-steps li, .fs-steps li .num { font-size: 17px; }
+.dm-arc li .k { font-size: 16px; }
+.lm-asks .src { font-size: 18px; }
+.landed .lm-list .lm-group { font-size: 16px; }
+.landed .lm-list .dl-name small { font: 400 16px/1.2 var(--sans); letter-spacing: 0; text-transform: none; }
+.landed .lm-list .dl em { font-size: 16px; letter-spacing: .08em; }
+/* With no scores yet, the note sits below the four letters waiting in the middle. */
+.landed .mx-empty { top: 84%; }
+.pt-tray .tchip small { font-size: 16px; }
+.pt-head .k { font-size: 16px; }
+.show dl dt { font-size: 16px; }
+/* The Venn: each label sits in its own part of its circle, on a soft backing, so the circle lines never cross the words. */
+.fs .vc-in { max-width: 250px; padding: 14px 16px; border-radius: 18px; background: rgba(11, 22, 36, .62); backdrop-filter: blur(6px); }
+.fs .vc0 .vc-in { transform: translate(-92px, 34px); }
+.fs .vc1 .vc-in { transform: translateY(-96px); }
+.fs .vc2 .vc-in { transform: translate(92px, 34px); }
+.fs .vc-in .k { font-size: 17px; }
+/* The map's side axis: Gentle at the bottom, Bold at the top, Intensity between. */
+.dm .ax-y.dm-ay { flex-direction: row; justify-content: space-between; font-size: 16px; }
+
+/* Decisions made explicit (review step 3): a concept card is a starting point until the room agrees it; a line on the
+   board leads with what the next round does and the next step. */
+.ccv-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ccv-state { font: 600 14px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg2); border: 1px dashed currentColor; border-radius: 99px; padding: 7px 11px; white-space: nowrap; }
+.ccv-card.agreed .ccv-state { color: var(--accent); border-style: solid; }
+.ccv-show dl > div.ccv-next dd { font-weight: 500; }
+.rp-concept > em.rp-state { font: 600 16px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #A4581E; }
+.rp-concept.agreed > em.rp-state { color: #1F6C82; }
+.rp-concept .tbc dd { color: #A4581E; }
+.rp-concept .rp-next { grid-column: 1 / -1; }
+.pt-pick dl.pt-key { grid-template-columns: 1fr 1fr; }
+.pt-pick dl.pt-key dd { font-weight: 500; }
+.pt-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; font: 400 15px/1.3 var(--sans); color: var(--fg2); }
+.pt-meta .tbc { color: #A4581E; }
+.pv .pt-meta { display: none; }
+.stage .pt-pick dl.pt-key { grid-template-columns: 1fr 1fr; }
+.pt-tray .tchip.more { border-style: dashed; }
+.pt-tray .tchip.more-toggle { border-style: dashed; background: none; }
+.pv-agree { border-style: dashed; }
+.pv-concept .pt-group > span small, .pt-fields .pt-group > span small { display: block; font-size: 12px; color: var(--fg3); }
+.pv-taste { width: 100%; margin-top: 4px; font-size: 13px; line-height: 1.45; color: var(--fg2); }
+.sr-concept b em { font: 600 12px/1 var(--mono); font-style: normal; letter-spacing: .1em; text-transform: uppercase; margin-left: 10px; color: #1F6C82; vertical-align: middle; }
+.sr-concept b em.tbc, .sr-concept .tbc dd { color: #A4581E; }
+.ccv-grid { top: 300px; }
+.ccv-show .ccv-name { padding-bottom: 6px; border-bottom: 0; }
+.ccv-from { font: 400 18px/1.3 var(--sans); color: var(--fg2); padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
+.ccv-show dl > div { padding: 9px 0; }
+.ccv-show dl > div.ccv-next { grid-template-columns: 1fr; gap: 4px; border-bottom: 0; }
+.pt-pick dl.pt-key { gap: 10px 18px; }
+.pt-pick dl.pt-key dt { font-size: 12px; }
+.pt-pick dl.pt-key dd { font-size: 20px; line-height: 1.25; }
+.pt-meta { font-size: 16px; }
+
+/* Review step 4: collisions and contrast. */
+/* Slide 11: the circles keep their blend; the words sit on a layer above them (see FlavorSchool) on a firmer panel. */
+.vc.vc-label { background: none; border-color: transparent; mix-blend-mode: normal; }
+.fs .vc-in { background: rgba(11, 22, 36, .8); }
+/* Slide 14: dark numerals from 3.4 up, where the fill gets light enough that white would fall under about 4 to 1. */
+/* Slide 21: the cover keeps the deck's light page, so its title is dark navy, not the slide's light text. */
+.page.cover .cover-t { color: #0B1B2B; }
+/* Slide 21, chapter 4: the plan read back in four columns. The full set is in the write-up and the results page. */
+.rp-plan.short th, .rp-plan.short td { padding-right: 28px; }
+.rp-plan.short td small { display: block; margin-top: 6px; font: 400 .78em/1.3 var(--sans); color: rgba(11,27,43,.68); }
+.rp-plan.short .tbc, .rp-plan.short small.tbc { color: #A4581E; }
+.rp-plan.short col.c-idea { width: 26%; } .rp-plan.short col.c-next { width: 34%; } .rp-plan.short col.c-own { width: 22%; } .rp-plan.short col.c-due { width: 18%; }
+/* Slide 22: a soft dark pool behind the words, so the subtitle holds over the brightest colors of the field. */
+.lunch-in { isolation: isolate; }
+.lunch-in::before { content: ''; position: absolute; left: 50%; top: 50%; width: 1300px; height: 620px; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(11,27,43,.42), rgba(11,27,43,0)); z-index: -1; pointer-events: none; }
+.lunch-in .sub { color: #F0EEE9; }
+
+/* Review step 6, slide 1: the joined count is a supporting status, not a headline. */
+.presence.quiet .lbl { font: 500 20px/1 var(--mono); letter-spacing: .14em; color: var(--fg2); }
+.presence.quiet .lbl b { font: 400 44px/1 var(--serif); letter-spacing: 0; color: var(--fg); margin-right: 10px; vertical-align: -6px; }
+.presence.quiet .presence-names { margin-top: 10px; font-size: 24px; }
+
+/* Review step 6, slide 5: every off-brand answer in one size, so none looks more important than another. */
+.vetoes .cloud span { font-size: 32px; line-height: 1.25; }
+/* Review step 6, slide 2: the shorter capability rows hug their chips instead of running the full width. */
+.ts-lines .ts-line { align-self: flex-start; grid-template-columns: 300px auto; }
+
+/* Review step 7, slide 9: a fixed gutter for the QR code at the top right, so a longer title wraps instead of running
+   into it. */
+.sigs.tv h2.h2 { max-width: 1480px; }
+
+/* Slide 5: what would feel off-brand as a list, one answer per line in its own quotes, evenly spaced; and the freshness
+   read-back with its average underneath. */
+.vetoes .pw-off { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; max-width: 800px; }
+.vetoes .pw-off li { padding-left: 32px; text-indent: -12px; border-left: 3px solid var(--accent-soft); font: italic 300 30px/1.3 var(--serif); color: var(--fg); text-wrap: pretty; animation: enterUp .8s var(--ease) both; animation-delay: calc(var(--i) * 70ms); }
+.vetoes .pw-n { margin-left: 14px; font: 500 17px/1 var(--mono); font-style: normal; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-ink); white-space: nowrap; vertical-align: 4px; }
+.vetoes .pw-more, .vetoes .pw-none { margin: 14px 0 0; font: 400 22px/1.3 var(--sans); color: var(--fg2); }
+.pw-orb .h3.it { text-wrap: balance; }
+.pw-orb .pw-avg { margin-top: 10px; font: 400 20px/1.35 var(--sans); color: var(--fg2); }
+/* Slide 15: one prompt at a time under the chart. The two questions for the room, then the chip question in the same
+   place; the chips list waits, a little quieter, until the chips open. */
+.lm-swap { display: grid; }
+.lm-layer { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(14px); visibility: hidden; transition: opacity .6s var(--ease), transform .6s var(--ease), visibility 0s linear .6s; }
+.lm-layer.on { opacity: 1; transform: none; visibility: visible; transition: opacity .6s var(--ease) .15s, transform .6s var(--ease) .15s, visibility 0s; }
+.landed .lm-list { transition: opacity .6s var(--ease); }
+.landed .lm-list.wait { opacity: .55; }
+/* Review step 9, slides 14 and 15: the header line keeps clear of the QR code at the top right. With paper cards still
+   to type in, the tasting's line runs long, so it wraps before the code instead of running under it. */
+.tl .pad > .enter:first-child .k, .landed .pad > .enter:first-child .k { max-width: 1480px; line-height: 1.45; }
+/* A tie in the chips at the concept cards' cutoff, and a changed agreed card: both wait for the room. */
+.pv-tie { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; padding: 14px 16px; border-radius: 12px; border: 1px solid #F4B860; }
+.pv-tie h3 { font-size: 20px; line-height: 1.25; }
+.pv-reagree { padding: 10px 14px; border-radius: 10px; background: rgba(244, 184, 96, .14); color: var(--fg); }
+/* Review step 11, slide 22: the subtitle and the partnership line sit on a deeper wash, so they read over the bright
+   yellow and green of the background on the room's TV. */
+.lunch-in::before { width: 1500px; height: 720px; background: radial-gradient(closest-side, rgba(11,27,43,.62), rgba(11,27,43,0)); }
+.lunch-in .sub, .lunch-in .k { text-shadow: 0 1px 18px rgba(11,27,43,.5); }
+.lunch-in .k { color: rgba(240,238,233,.92); }
+
+/* November 5: Flavor School, plainer and calmer. Build 1 puts the words on the left and the circles on the right, the
+   way build 2 sets its words beside the chart. Every build ends on a question for the room. Build 3 flows down the page
+   with nothing moving behind it: the three steps are plain numbered lines (no capsules), and the clean-finish line is a
+   supporting line, not a second headline. */
+.fs .fs-h { top: 218px; }
+.fs .fs-left { position: absolute; left: 120px; top: 430px; width: 600px; display: flex; flex-direction: column; gap: 60px; }
+.fs .school .venn { left: auto; right: 60px; transform: none; top: 400px; }
+.fs .cool-copy .fs-q { margin-top: 48px; }
+.fs .fs-col { position: absolute; left: 120px; right: 120px; top: 222px; display: flex; flex-direction: column; align-items: flex-start; }
+.fs .fs-col > * { position: static; }
+.fs .fs-col .fs-ox { max-width: 1500px; }
+.fs .fs-col .fs-sub { margin-top: 20px; }
+.fs .fs-col .fs-ctl { margin-top: 64px; }
+.fs .fs-col .fs-list { margin: 28px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 22px; }
+.fs .fs-col .fs-list .lever { padding: 0; border: 0; border-radius: 0; background: none; backdrop-filter: none; font: 400 36px/1.2 var(--sans); color: var(--fg); gap: 24px; }
+.fs .fs-col .fs-list .lever .num { font-size: 32px; color: var(--accent); min-width: 46px; }
+.fs .fs-col .fs-pay { margin-top: 52px; font: 400 italic 38px/1.25 var(--serif); color: var(--accent); }
+.fs .fs-col .fs-ask { margin-top: 44px; }
+
+/* November 5, slide 5: the question for the room sits on the same line as the count, so it's there for every build and
+   the off-brand list below keeps its room. */
+.pw-top { display: flex; justify-content: space-between; align-items: baseline; gap: 40px; }
+.pw-top .pw-ask { flex-direction: row; align-items: baseline; gap: 18px; }
+.pw-top .pw-ask p { font-size: 32px; }
+
+/* November 5, slide 14: the longer headline stays on one line, clear of the QR code. Slide 18: the question for the room
+   sits beside the headline, above the cards. */
+.tl .tl-h { font-size: 84px; }
+.ccv-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 60px; }
+.ccv-top .room-ask { max-width: 1060px; gap: 6px; }
+.ccv-top .room-ask p { font-size: 28px; }
+
+/* 2. Who we are: three columns in Ross's three words, and the line that hands the judging to the room. */
+.ts-lines.ts-three { flex-direction: row; align-items: stretch; gap: 22px; top: 500px; }
+.ts-three .ts-line { flex: 1 1 0; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 22px 26px 24px; }
+.ts-three .ts-line .k { font-size: 18px; }
+.ts-three .ts-line.cre { box-shadow: inset 4px 0 0 rgba(224,64,123,.75); }
+.ts-note { font: 400 20px/1.35 var(--sans); color: var(--fg); }
+.ts-note.big { font: 300 italic 30px/1.3 var(--serif); }
+.ts-judge { position: absolute; left: 120px; top: 770px; z-index: 2; }
+.ts-judge p { font-size: 40px; color: var(--accent-ink); }
+.st.ts:has(.ts-july) .ts-judge { display: none; }
+
+/* 5. You told us: the off-brand answers get the space down to the bottom margin, and their type size comes from
+   Prework's fit (30px, stepping down to 20px only when the answers would run off the slide). In a flex column the
+   margins no longer collapse, so the top row drops its own and the cards stay where they were. */
+.pad.pw { display: flex; flex-direction: column; padding-bottom: 60px; }
+.pad.pw .pw-top { margin-bottom: 0; }
+.pad.pw .vetoes { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.pw-fit { flex: 1 1 0; min-height: 0; position: relative; overflow: hidden; }
+.pw-fit .pw-off { gap: calc(var(--pw-fs, 30px) * .4); }
+.pw-fit .pw-off li { font-size: var(--pw-fs, 30px); }
+
+/* Church & Dwight's presentation (/cd/show, ClientShow): back and next with the slide count, for a mouse or a tap. */
+.cd-nav { position: fixed; right: 18px; bottom: 18px; z-index: 210; display: flex; align-items: center; gap: 6px; padding: 6px; border-radius: 99px; background: rgba(11,27,43,.72); backdrop-filter: blur(10px); color: #F0EEE9; opacity: .4; transition: opacity .25s; }
+.cd-nav:hover, .cd-nav:focus-within { opacity: 1; }
+@media (hover: none) { .cd-nav { opacity: .85; } }
+/* The room is closed, so the arrival slide has no code to scan and no list of who joined. */
+.cd-show .stage-scene[data-scene="arrival"] .join, .cd-show .stage-scene[data-scene="arrival"] .presence, .cd-show .stage-scene[data-scene="arrival"] .sub { display: none; }
+.cd-nav button { width: 44px; height: 44px; border-radius: 50%; background: transparent; color: inherit; font: 400 28px/1 var(--serif); cursor: pointer; }
+.cd-nav button:hover { background: rgba(255,255,255,.12); }
+.cd-nav .num { min-width: 64px; text-align: center; font: 500 13px/1 var(--mono); letter-spacing: .08em; }
+

@@ -27,6 +27,14 @@ export const hostToken = () => hmac('host-console-wipe');
 export async function isHost(cookieValue?: string | null) { return !!cookieValue && cookieValue === (await hostToken()); }
 export const HOST_COOKIE = 'pb_host';
 export const joinToken = async (code: string) => (await hmac('join:' + code.toUpperCase())).slice(0, 16);
+
+// The Church & Dwight link (/c/TOKEN), sent after the morning. It opens only /cd (the presentation to look through, the
+// slides PDF and the follow-up tasting) and the two files those pages use; nothing else on the site, and none of the
+// team's pages. Signed like the join links, so a new PLAYBOOK_SECRET turns the old link off.
+export const CLIENT_COOKIE = 'pb_client';
+export const clientToken = async () => (await hmac('client:after-the-morning')).slice(0, 24);
+export async function isClient(v?: string | null) { return !!v && v === (await clientToken()); }
+export const CLIENT_FILES = new Set(['/media/flavor-race.mp4', '/files/The-Future-of-Freshness-Slides.pdf']);
 export async function isAuthed(cookieValue?: string | null) { return !!cookieValue && cookieValue === (await authToken()); }
 export const COOKIE = 'pb_auth';
 export const cookieOpts = () => ({ httpOnly: true, sameSite: 'lax' as const, secure: process.env.NODE_ENV === 'production', path: '/', maxAge: 60 * 60 * 24 * 30 });
@@ -36,6 +44,16 @@ export const cookieOpts = () => ({ httpOnly: true, sameSite: 'lax' as const, sec
 const DEFAULT_TEAM_HASH = '6365923b5ee706dfbbbca21ea0e48c6046d86e23342c44cfc6391f5fe9e07d95';
 export async function teamHash() { return process.env.PLAYBOOK_TEAM_KEY ? sha256(norm(process.env.PLAYBOOK_TEAM_KEY)) : DEFAULT_TEAM_HASH; }
 export async function checkTeamKey(k: string) { return !!norm(k) && (await sha256(norm(k))) === (await teamHash()); }
+
+// The owner link (/o/KEY) is for one person: it opens the pre-brief answers with names (/answers). It exists only when
+// PLAYBOOK_OWNER_KEY is set on the server (at least 20 characters); nothing about the key is stored here. The cookie is
+// signed with the key, so changing the key signs the old browser out.
+export const OWNER_COOKIE = 'pb_owner';
+const ownerKey = () => (process.env.PLAYBOOK_OWNER_KEY || '').trim();
+export const ownerEnabled = () => ownerKey().length >= 20;
+export async function checkOwnerKey(k: string) { return ownerEnabled() && !!k && (await sha256(k.trim())) === (await sha256(ownerKey())); }
+export const ownerToken = async () => hmac('owner:' + (await sha256(ownerKey())));
+export async function isOwner(cookieValue?: string | null) { return ownerEnabled() && !!cookieValue && cookieValue === (await ownerToken()); }
 
 // The team's own pages need the team link (or the host password): the presentation, which moves everyone's phones, the
 // run sheet, the write-up, the team page, the paper scorecard, the old Stage, the PDFs (the decks show the sealed names)

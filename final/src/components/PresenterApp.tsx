@@ -2,16 +2,17 @@
 // The presenter view (/host/presenter): the laptop's own screen while the presentation is full screen on the TV. P in
 // the presentation opens it. It shows the talking points, where we are, Eastern time against the run of show and the
 // short-version state, and it moves the presentation (over showLink.ts, so both windows must be in the same browser).
-// It is also where hand votes and paper scorecards go in for anyone without a phone, and where a mistaken one comes
-// back out. Nothing here is on the TV.
+// It is also where hand votes go in for anyone without a phone (and come back out), where paper scorecards are counted,
+// and where the concept cards and Now, Next, Later are filled in, all by tapping. Nothing here is on the TV.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/useSession';
+import { useLiveSurvey } from '@/lib/liveSurvey';
 import { SCENES } from '@/lib/scenes';
 import { pointsOf, titleOf } from '@/lib/sceneNotes';
-import { EVENT, SIGNALS, DIRECTIONS, SAMPLES, WHO_CHIPS, MYSTERY, HORIZONS, CRITERIA, DEVELOP, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
-import { tallyPick, voteCounts, tasters, byHand, onPaper, people, uid, Ev, SessionState } from '@/lib/state';
-import { candidates } from './scenes/Build';
-import { Synced, PLAN_COLS, PlanLists, RemoveRow, planActions } from './show/Plan';
+import { EVENT, SIGNALS, DIRECTIONS, SAMPLES, MYSTERY, HORIZONS, CRITERIA, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
+import { tallyPick, voteCounts, tasters, tastingProgress, byHand, onPaper, people, uid, Ev, SessionState } from '@/lib/state';
+import { PlanTap } from './show/Plan';
+import { ConceptEditor } from './show/Concepts';
 import { runTiming, etClock } from '@/lib/time';
 import { SLIDE_MIN, SLIDE_TIMES } from '@/lib/slideTimes';
 import { showChannel, ShowPos, ShowCmd, ShowMsg, FilmState } from '@/lib/showLink';
@@ -55,6 +56,8 @@ export default function PresenterApp({ code }: { code: string }) {
       else if (e.key === 's' || e.key === 'S') cmd({ c: 'short' });
       else if (e.key === 'b' || e.key === 'B') cmd({ c: 'blank' });
       else if (e.key === 'End') cmd({ c: 'goto', i: SCENES.length - 1 });
+      else if (/^[0-7]$/.test(e.key)) cmd({ c: 'pick', n: Number(e.key) }); // the trends slide: open a trend, as on the TV
+      else if (e.key === 'Escape') cmd({ c: 'pick', n: 0 });
     };
     addEventListener('keydown', kd); return () => removeEventListener('keydown', kd);
   }, [cmd]);
@@ -65,13 +68,14 @@ export default function PresenterApp({ code }: { code: string }) {
   onFilm.current = linked && sc.id === 'film';
   const tm = now ? runTiming(sc.block, new Date(now)) : null;
   const joined = people(s).filter((p) => !p.paper).length;
-  const room = sc.id === 'signalvote' ? <HandVotes s={s} events={events} send={send} k="signals" title="Hand votes: the three trends" items={SIGNALS.map((x) => ({ id: x.id, label: x.title.replace(/\.$/, '') }))} value={(id) => [id]} />
-    : sc.id === 'nextround' ? <HandVotes s={s} events={events} send={send} k="directions" title="Hand votes: chips for a next round" items={DIRECTIONS.map((d) => ({ id: d.id, label: dirName(s, d.id), sub: d.sub }))} value={(id) => ({ [id]: 1 })} />
-    : sc.id === 'dots' ? <HandVotes s={s} events={events} send={send} k="concepts" title="Hand votes: dots for the ideas" items={candidates(s).map((x) => ({ id: x.id, label: x.name || 'Untitled concept', sub: x.sub }))} value={(id) => ({ [id]: 1 })} />
-    : sc.id === 'tasting' || sc.id === 'matrix' ? <PaperCards s={s} events={events} sendMany={sendMany} />
-    : sc.id === 'board' || sc.id === 'playbook' || sc.id === 'next' ? <PlanEditor s={s} send={send} />
+  const room = sc.id === 'signals' ? <><TrendPicks off={off} cmd={cmd} pick={pos?.pick || 0} /><HandVotes s={s} events={events} send={send} k="signals" title="Hand votes: the three trends" items={SIGNALS.map((x) => ({ id: x.id, label: x.title.replace(/\.$/, '') }))} value={(id) => [id]} /></>
+    : sc.id === 'nextround' ? <HandVotes s={s} events={events} send={send} k="directions" title="Hand chips: what deserves the next round" how="Each person without a phone has five chips too, and can stack them. Ask where their five go and add one per chip." items={DIRECTIONS.map((d) => ({ id: d.id, label: dirName(s, d.id), sub: d.sub }))} value={(id) => ({ [id]: 1 })} />
+    : sc.id === 'tasting' ? <PaperCount s={s} send={send} code={code} step={step} />
+    : sc.id === 'concepts' ? <ConceptEditor s={s} send={send} />
+    : sc.id === 'board' || sc.id === 'playbook' ? <PlanEditor s={s} send={send} />
+    : sc.id === 'map' ? <Profiles step={step} off={off} cmd={cmd} i={i} short={!!pos?.short} />
     : sc.id === 'film' ? <FilmPanel f={linked ? pos?.film : undefined} now={now} cmd={cmd} next={pos?.next || ''} prev={pos?.prev || ''} />
-    : <Joined s={s} />;
+    : <Joined s={s} code={code} />;
 
   return (
     // A click never leaves a button focused, so Space and the arrows keep moving the presentation instead of pressing
@@ -93,25 +97,25 @@ export default function PresenterApp({ code }: { code: string }) {
         <p className="pv-alert" role="status">This window moves the presentation only when both are open in this browser. Open the presentation from the team page (Present on the day), then press P there. Hand votes and paper cards still go in from here.</p>
       )}
 
-      <div className={'pv-main' + (['tasting', 'matrix', 'board', 'playbook', 'next'].includes(sc.id) ? ' wide' : '')}>
+      <div className={'pv-main' + (['concepts', 'board', 'playbook'].includes(sc.id) ? ' wide' : '')}>
         <section className="pv-now" aria-live="polite">
           <h1>{titleOf(sc)}</h1>
           {sc.builds > 0 && <p className="pv-build">Build {step} of {sc.builds}</p>}
           <ul className="pv-points">{pointsOf(sc).map((x, j) => <li key={j}>{x}</li>)}</ul>
           {pos?.next && <p className="pv-next">Next: <b>{pos.next}</b></p>}
-          {sc.id === 'platform4' && <button className="pv-skipfilm" disabled={off} onClick={() => cmd({ c: 'goto', i: SCENES.findIndex((x) => x.id === 'tasting') })}>Running late: skip the film, go to the tasting</button>}
+          {sc.id === 'map' && <button className="pv-skipfilm" disabled={off} onClick={() => cmd({ c: 'goto', i: SCENES.findIndex((x) => x.id === 'tasting') })}>Running late: skip the film, go to the tasting</button>}
         </section>
         <aside className="pv-room">{room}</aside>
       </div>
 
       <footer className="pv-ctl">
         <button disabled={off} onClick={() => cmd({ c: 'go', d: -1 })}><Icon d="M10 3 5 8l5 5" />Back</button>
-        <button disabled={off} className="primary" onClick={() => cmd({ c: 'go', d: 1 })}>{step < sc.builds ? 'Next build' : 'Next slide'}<Icon d="m6 3 5 5-5 5" /></button>
+        <button disabled={off} className="primary" onClick={() => cmd({ c: 'go', d: 1 })}>{(pos ? pos.build : step < sc.builds) ? 'Next build' : 'Next slide'}<Icon d="m6 3 5 5-5 5" /></button>
         <button disabled={off} onClick={() => cmd({ c: 'jump', d: -1 })}>Previous part</button>
         <button disabled={off} onClick={() => cmd({ c: 'jump', d: 1 })}>Next part</button>
         <label className="pv-goto"><span>Go to</span>
           <select disabled={off} value={i} onChange={(e) => cmd({ c: 'goto', i: Number(e.target.value) })}>
-            {SCENES.map((x, j) => <option key={x.id} value={j}>{j + 1}. {titleOf(x)}{x.optional ? ' (optional)' : ''}</option>)}
+            {SCENES.map((x, j) => { const empty = x.id === 'prework' && pos?.told === false; return <option key={x.id} value={j} disabled={empty}>{j + 1}. {titleOf(x)}{x.optional ? ' (optional)' : ''}{empty ? ' (skipped: no answers yet)' : ''}</option>; })}
           </select>
         </label>
         <button disabled={off} aria-pressed={!!pos?.short} onClick={() => cmd({ c: 'short' })}>Short version</button>
@@ -128,7 +132,7 @@ function Icon({ d }: { d: string }) {
 // One row per option: the count so far, and buttons to add a vote for someone without a phone or take the latest
 // one back. A hand vote is a pick from a one-off id (hand-...), so taking it back removes exactly that one.
 const counts = (v: any, id: string) => (Array.isArray(v) ? v.includes(id) : !!v && typeof v === 'object' && Number(v[id]) > 0);
-function HandVotes({ s, events, send, k, title, items, value }: { s: SessionState; events: Ev[]; send: Send; k: string; title: string; items: { id: string; label: string; sub?: string }[]; value: (id: string) => any }) {
+function HandVotes({ s, events, send, k, title, items, value, how }: { s: SessionState; events: Ev[]; send: Send; k: string; title: string; items: { id: string; label: string; sub?: string }[]; value: (id: string) => any; how?: string }) {
   const t = tallyPick(s, k), c = voteCounts(s, k);
   const picks = s.votes[k]?.picks || {};
   const handFor = (id: string) => Object.entries(picks).filter(([pid, v]) => byHand(pid) && counts(v, id)).length;
@@ -140,7 +144,7 @@ function HandVotes({ s, events, send, k, title, items, value }: { s: SessionStat
   return (
     <>
       <h2>{title}</h2>
-      <p className="pv-sub">{c.phones} on phones · {c.hand} by hand. Add one for each person voting by show of hands.</p>
+      <p className="pv-sub">{c.phones} on phones · {c.hand} by hand. {how || 'Add one for each person voting by show of hands.'}</p>
       <ul className="pv-votes">
         {items.map((x) => {
           const h = handFor(x.id);
@@ -159,121 +163,65 @@ function HandVotes({ s, events, send, k, title, items, value }: { s: SessionStat
   );
 }
 
-// Paper scorecards, typed in from the card (the same questions as /scorecard and the phones). A card is one pid
-// (paper-...) across the samples it scored, so removing it takes back exactly that card.
-type Row = { appeal: number; feels: number; newness: number; who: string[]; guess: string; advance: string; word: string; fruitGuess: string };
-const blankRow = (): Row => ({ appeal: 0, feels: 0, newness: 0, who: [], guess: '', advance: '', word: '', fruitGuess: '' });
-const blankCard = () => Object.fromEntries(SAMPLES.map((x) => [x.code, blankRow()])) as Record<string, Row>;
-function PaperCards({ s, events, sendMany }: { s: SessionState; events: Ev[]; sendMany: (evs: { kind: string; data?: any; pid?: string }[]) => void }) {
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
-  const [card, setCard] = useState(blankCard);
-  const [err, setErr] = useState('');
-  const [confirm, setConfirm] = useState('');
-  const who = tasters(s);
-  const cards = useMemo(() => {
-    const order = events.filter((e) => e.kind === 'rate' && e.pid && onPaper(e.pid)).map((e) => e.pid!);
-    return [...new Set(order)].map((pid) => {
-      const done = SAMPLES.filter((x) => s.ratings[x.code]?.[pid]).map((x) => x.code);
-      return { pid, done, name: SAMPLES.map((x) => s.ratings[x.code]?.[pid]?.card).find(Boolean) || '' };
-    }).filter((c) => c.done.length);
-  }, [events, s.ratings]);
-  const set = (code: string, patch: Partial<Row>) => setCard((c) => ({ ...c, [code]: { ...c[code], ...patch } }));
-  const save = () => {
-    const rows = SAMPLES.map((x) => ({ code: x.code, r: card[x.code] }));
-    const part = rows.filter(({ r }) => [r.appeal, r.feels, r.newness].some(Boolean) && ![r.appeal, r.feels, r.newness].every(Boolean));
-    if (part.length) return setErr(`Sample ${part.map((x) => x.code).join(' and ')} needs all three scores, or none if the card left it blank.`);
-    const full = rows.filter(({ r }) => r.appeal && r.feels && r.newness);
-    if (!full.length) return setErr('Score at least one sample from the card.');
-    const pid = 'paper-' + uid();
-    sendMany(full.map(({ code, r }) => ({ kind: 'rate', pid, data: { sample: code, appeal: r.appeal, feels: r.feels, newness: r.newness, who: r.who, guess: r.guess || undefined, advance: r.advance || undefined, word: r.word.trim().split(/\s+/)[0] || undefined, fruitGuess: r.fruitGuess.trim() || undefined, card: name.trim().slice(0, 40) || undefined } })));
-    setCard(blankCard()); setName(''); setErr(''); setOpen(false);
-  };
-  const remove = (pid: string, done: string[]) => { sendMany(done.map((code) => ({ kind: 'unrate', pid, data: { sample: code } }))); setConfirm(''); };
-
+// The trends slide: open any of the seven on the TV for more discussion, top three or not. The keys 1 to 7 do the same
+// here and on the TV; the same one again, 0 or Escape goes back to the build, and moving on closes it.
+function TrendPicks({ off, cmd, pick }: { off: boolean; cmd: (c: ShowCmd) => void; pick: number }) {
   return (
     <>
-      <h2>Paper scorecards</h2>
-      <p className="pv-sub">{who.phones} scored on phones · {cards.length} paper {cards.length === 1 ? 'card' : 'cards'} in. They count in the heat map as soon as they’re saved.</p>
-      {cards.length > 0 && (
-        <ul className="pv-cards">
-          {cards.map((c, n) => (
-            <li key={c.pid}>
-              <span><b>{c.name || `Card ${n + 1}`}</b><small>Scored {c.done.join(', ')}</small></span>
-              {confirm === c.pid
-                ? <span className="pv-confirm">Remove this card? <button onClick={() => remove(c.pid, c.done)}>Remove</button><button onClick={() => setConfirm('')}>Keep</button></span>
-                : <button onClick={() => setConfirm(c.pid)}>Remove</button>}
-            </li>
-          ))}
-        </ul>
-      )}
-      {!open ? <button className="pv-add" onClick={() => setOpen(true)}><Icon d="M3.5 8h9M8 3.5v9" />Add a paper card</button> : (
-        <form className="pv-card" onSubmit={(e) => { e.preventDefault(); save(); }}>
-          <label className="pv-field"><span>Name on the card</span><input value={name} onChange={(e) => setName(e.target.value)} placeholder="Optional" maxLength={40} /></label>
-          {SAMPLES.map((x) => {
-            const r = card[x.code];
-            return (
-              <fieldset key={x.code} className="pv-sample">
-                <legend><b>{x.code}</b>{s.revealed?.samples[x.code]?.name ? ` · ${s.revealed.samples[x.code].name}` : ''}<small>{x.base}</small></legend>
-                {CRITERIA.map(({ key, l }) => (
-                  <div key={key} className="pv-scale" role="group" aria-label={`${x.code}: ${l}`}>
-                    <span>{l}</span>
-                    <div>{[1, 2, 3, 4, 5].map((v) => <button type="button" key={v} aria-pressed={r[key] === v} onClick={() => set(x.code, { [key]: r[key] === v ? 0 : v })}>{v}</button>)}</div>
-                  </div>
-                ))}
-                <div className="pv-chips" role="group" aria-label={`${x.code}: who would buy it`}>
-                  <span>Who would buy it</span>
-                  <div>{WHO_CHIPS.map((w) => <button type="button" key={w} aria-pressed={r.who.includes(w)} onClick={() => set(x.code, { who: r.who.includes(w) ? r.who.filter((y) => y !== w) : [...r.who, w] })}>{w}</button>)}</div>
-                </div>
-                <div className="pv-chips" role="group" aria-label={`${x.code}: which direction`}>
-                  <span>Which direction</span>
-                  <div>{TERRITORIES.map((t) => <button type="button" key={t.id} aria-pressed={r.guess === t.id} onClick={() => set(x.code, { guess: r.guess === t.id ? '' : t.id })}>{t.name}</button>)}</div>
-                </div>
-                <div className="pv-chips" role="group" aria-label={`${x.code}: would you develop it further`}>
-                  <span>Develop further</span>
-                  <div>{DEVELOP.opts.map((v) => <button type="button" key={v} aria-pressed={r.advance === v} onClick={() => set(x.code, { advance: r.advance === v ? '' : v })}>{v}</button>)}</div>
-                </div>
-                <div className="pv-words">
-                  <label className="pv-field"><span>One word</span><input value={r.word} onChange={(e) => set(x.code, { word: e.target.value.slice(0, 24) })} /></label>
-                  {x.code === MYSTERY && <label className="pv-field"><span>Fruits they tasted</span><input value={r.fruitGuess} onChange={(e) => set(x.code, { fruitGuess: e.target.value.slice(0, 160) })} /></label>}
-                </div>
-              </fieldset>
-            );
-          })}
-          {err && <p className="pv-err" role="alert">{err}</p>}
-          <div className="pv-formctl"><button type="submit" className="primary">Save this card</button><button type="button" onClick={() => { setOpen(false); setErr(''); }}>Cancel</button></div>
-        </form>
-      )}
+      <h2>Open a trend</h2>
+      <p className="pv-sub">To talk about any trend, in the top three or not, press its number (1 to 7) here or on the TV. Press it again, or 0, to go back. Moving on closes it.</p>
+      <div className="pt-group pv-picks" role="group" aria-label="Open a trend">
+        <span>Trends</span>
+        <div>{SIGNALS.map((x) => <button key={x.id} type="button" disabled={off} aria-pressed={pick === x.n} onClick={() => cmd({ c: 'pick', n: x.n })}><b className="num">{x.n}</b> {x.title.replace(/\.$/, '')}</button>)}</div>
+      </div>
     </>
   );
 }
 
-// Now, Next, Later from the laptop: the same rows the board shows on the TV, typed here instead.
+// Paper scorecards on the day: count each card as it's handed in, with +1 (and -1 for a mistake). The cards themselves
+// are typed in after the morning, on /host/cards, and their scores join the results and the write-up from there.
+// Once the scores have been on the TV, scoring stays closed even back on the blind build; Reopen scoring (on the blind
+// build, asked twice) is the one way to open it again, for someone who genuinely hadn't finished.
+function PaperCount({ s, send, code, step }: { s: SessionState; send: Send; code: string; step: number }) {
+  const [reopening, setReopening] = useState(false);
+  const t = s.votes.tasting;
+  const who = tasters(s);
+  const n = s.paperCards || 0;
+  const prog = tastingProgress(s, SAMPLES.map((x) => x.code));
+  return (
+    <>
+      <h2>Who has finished</h2>
+      <p className="pv-sub"><b className="num">{prog.done}</b> of {prog.phones} {prog.phones === 1 ? 'phone has' : 'phones have'} scored all four. {SAMPLES.map((x) => `${x.code} ${prog.per[x.code]}`).join(' · ')}.</p>
+      <p className="pv-sub">The TV shows only these counts until the next build, which puts the scores up and closes scoring on the phones. If anyone is still scoring, the first press says so and a second press goes on.</p>
+      <h2>Paper scorecards</h2>
+      <p className="pv-sub">{who.phones} scored on phones. Tap +1 for each paper card handed in. You type them in after the morning, so nothing to type now.</p>
+      <div className="pv-paper">
+        <button className="pv-round" disabled={!n} aria-label="Take back one paper card" onClick={() => send('papercard', { d: -1 })}><Icon d="M3.5 8h9" /></button>
+        <b className="num">{n}</b><span>{n === 1 ? 'paper card' : 'paper cards'}</span>
+        <button className="primary" onClick={() => send('papercard', { d: 1 })}><Icon d="M3.5 8h9M8 3.5v9" />+1 paper card</button>
+      </div>
+      {who.cards > 0 && <p className="pv-sub">{who.cards} already typed in.</p>}
+      {t?.locked && (
+        <>
+          <h2>Scoring is closed</h2>
+          <p className="pv-sub">{t.revealed ? 'The scores have been on the TV, so going back to the blind build doesn’t reopen scoring on the phones.' : 'Scoring closed when we moved past the tasting.'}{step >= 1 ? ' To let someone finish, go back to the blind build first.' : ''}</p>
+          {step === 0 && (reopening
+            ? <span className="pv-confirm">Reopen scoring on the phones? <button onClick={() => { send('vote', { key: 'tasting', action: 'open' }); setReopening(false); }}>Reopen</button><button onClick={() => setReopening(false)}>Keep it closed</button></span>
+            : <button onClick={() => setReopening(true)}>Reopen scoring</button>)}
+        </>
+      )}
+      <p className="pv-sub">After the morning: <a href={`/host/cards${code === EVENT.code ? '' : `?code=${code}`}`} target="_blank" rel="noreferrer">type in the paper cards</a>.</p>
+    </>
+  );
+}
+
+// Now, Next, Later from the laptop: the same board as the TV, and the selected line's fields to tap.
 function PlanEditor({ s, send }: { s: SessionState; send: Send }) {
-  const act = planActions(send);
-  const rows = Object.values(s.plan || {}).sort((a, b) => a.t - b.t);
   return (
     <>
       <h2>Now, Next, Later</h2>
-      <p className="pv-sub">One line per direction, with its next test, owners, base, next sample and agreed next step. It shows on the board, the Playbook and the last slides as you type.</p>
-      {HORIZONS.map((h) => {
-        const mine = rows.filter((r) => r.h === h.id);
-        return (
-          <section key={h.id} className="pv-plan">
-            <h3>{h.label} <small>{h.when}</small></h3>
-            {mine.map((r) => (
-              <div key={r.id} className="pv-prow">
-                <Synced className="pv-pwhat" value={r.what} commit={(v: string) => act.set(r.id, { what: v })} placeholder="Direction or concept" aria-label={`${h.label}: direction or concept`} />
-                {PLAN_COLS.map((c) => <label key={c.f} className={'pv-field pv-p' + c.f}><span>{c.l}</span><Synced {...('date' in c ? { type: 'date' } : {})} list={'list' in c ? c.list : undefined} value={c.f === 'brief' ? r.brief || r.next || '' : (r as any)[c.f] || ''} commit={(v: string) => act.set(r.id, { [c.f]: v })} /></label>)}
-                <label className="pv-field"><span>Move to</span><select value={r.h} onChange={(e) => act.move(r.id, e.target.value)}>{HORIZONS.map((x) => <option key={x.id} value={x.id}>{x.label}</option>)}</select></label>
-                <RemoveRow label={r.what || 'this line'} onRemove={() => act.remove(r.id)} className="pv-premove" />
-              </div>
-            ))}
-            <button className="pv-padd" onClick={() => act.add(h.id)}>Add a line under {h.label}</button>
-          </section>
-        );
-      })}
-      <PlanLists />
+      <p className="pv-sub">Place it when the group agrees: tap a concept or direction, then Now, Next or Later. More ideas holds the rest. Tap a line to fill in its fields, move it or take it back. Nothing to type.</p>
+      <PlanTap s={s} send={send} edit />
     </>
   );
 }
@@ -301,20 +249,43 @@ function FilmPanel({ f, now, cmd, next, prev }: { f?: FilmState; now: number; cm
         {next && <button disabled={!f} onClick={() => cmd({ c: 'go', d: 1 })}>Skip to {next}</button>}
         {prev && <button disabled={!f} onClick={() => cmd({ c: 'go', d: -1 })}>Back to {prev}</button>}
       </div>
-      <p className="pv-sub">Running late? Skip it. Every decision and owner is already saved, and the write-up has them all.</p>
+      <p className="pv-sub">Running late? Skip the film and start the tasting. Nothing is decided on it.</p>
       <p className="pv-sub">Keys here or on the presentation: Space or K to pause and play, R to start again, the arrows to move on or back.</p>
     </>
   );
 }
 
+// The four directions: open any profile card on the TV, or go back to the map. The arrows step through all four, in
+// the short version too: the two not in the tasting are on the chips, so they always get their card.
+// The directions with samples in today's tasting; the other two are discussed and on the chips, but not tasted.
+const TASTED = [...new Set(SAMPLES.map((x) => x.territory))];
+function Profiles({ step, off, cmd, i, short }: { step: number; off: boolean; cmd: (c: ShowCmd) => void; i: number; short: boolean }) {
+  const skipped = SCENES[i]?.skip || [];
+  return (
+    <>
+      <h2>Profile cards</h2>
+      <p className="pv-sub">Open a direction’s card on the TV, or click it on the TV itself. The arrows step through all four. The two not in the tasting get a short, fair explanation even in the short version: the room can put chips on them.</p>
+      <ul className="pv-profiles">
+        <li><button disabled={off} aria-pressed={step === 0} onClick={() => cmd({ c: 'goto', i, step: 0 })}>The map, all four</button></li>
+        {TERRITORIES.map((t) => (
+          <li key={t.id}><button disabled={off} aria-pressed={step === t.n} onClick={() => cmd({ c: 'goto', i, step: t.n })}>{t.n}. {t.name}{skipped.includes(t.n) ? <small>Optional</small> : <small>{TASTED.includes(t.id) ? 'In the tasting' : 'Not tasted, on the chips'}</small>}</button></li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
 // Everywhere else: who's in the room on a phone.
-function Joined({ s }: { s: SessionState }) {
+function Joined({ s, code }: { s: SessionState; code: string }) {
   const list = people(s).filter((p) => !p.paper);
-  const pre = Object.keys(s.survey || {}).length;
+  const own = Object.keys(s.survey || {}).length;
+  // A rehearsal counts the live answers it shows on "Your pre-brief answers" (read only).
+  const live = Object.keys(useLiveSurvey(code, own === 0)).length;
+  const pre = own || live;
   return (
     <>
       <h2>In the room</h2>
-      <p className="pv-sub">{list.length} {list.length === 1 ? 'phone' : 'phones'} joined · {pre} pre-brief {pre === 1 ? 'answer' : 'answers'}. Hand votes and paper cards go in here on the vote and tasting slides.</p>
+      <p className="pv-sub">{list.length} {list.length === 1 ? 'phone' : 'phones'} joined · {pre} pre-brief {pre === 1 ? 'answer' : 'answers'}{!own && live ? ' (from the live session)' : ''}. Hand votes go in here on the vote slides, and paper cards are counted on the tasting.</p>
       {list.length > 0 ? <ul className="pv-people">{list.map((p) => <li key={p.pid}>{p.name}</li>)}</ul> : <p className="pv-empty">Nobody has joined yet. The code is on the arrival screen.</p>}
     </>
   );

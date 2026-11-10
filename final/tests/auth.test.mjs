@@ -98,3 +98,52 @@ test('on the server, the signing key does not come from the password hashes in t
     assert.notEqual(await auth.authToken(), fromDb[0]);
   } finally { delete process.env.POSTGRES_URL; delete process.env.PLAYBOOK_SECRET; }
 });
+
+test('the owner link is off until PLAYBOOK_OWNER_KEY is set, and needs at least 20 characters', async () => {
+  delete process.env.PLAYBOOK_OWNER_KEY;
+  assert.equal(auth.ownerEnabled(), false);
+  assert.equal(await auth.checkOwnerKey(''), false);
+  assert.equal(await auth.isOwner(await auth.ownerToken()), false);
+  process.env.PLAYBOOK_OWNER_KEY = 'too-short';
+  try { assert.equal(auth.ownerEnabled(), false); assert.equal(await auth.checkOwnerKey('too-short'), false); } finally { delete process.env.PLAYBOOK_OWNER_KEY; }
+});
+
+test('only the exact owner key opens the answers, and changing it signs the old cookie out', async () => {
+  process.env.PLAYBOOK_OWNER_KEY = 'Owner-Test-Key-0123456789';
+  try {
+    assert.equal(await auth.checkOwnerKey('Owner-Test-Key-0123456789'), true);
+    assert.equal(await auth.checkOwnerKey(' Owner-Test-Key-0123456789 '), true);
+    for (const k of ['owner-test-key-0123456789', 'Owner-Test-Key-012345678', '']) assert.equal(await auth.checkOwnerKey(k), false);
+    const cookie = await auth.ownerToken();
+    assert.equal(await auth.isOwner(cookie), true);
+    assert.equal(await auth.isOwner(await auth.hostToken()), false);
+    assert.equal(await auth.isOwner(await auth.authToken()), false);
+    process.env.PLAYBOOK_OWNER_KEY = 'Another-Owner-Key-0123456789';
+    assert.equal(await auth.isOwner(cookie), false);
+  } finally { delete process.env.PLAYBOOK_OWNER_KEY; }
+});
+
+test('the team key and the host cookie are not the owner key', async () => {
+  process.env.PLAYBOOK_OWNER_KEY = 'Owner-Test-Key-0123456789';
+  process.env.PLAYBOOK_TEAM_KEY = 'team-test-key';
+  try {
+    assert.equal(await auth.checkOwnerKey('team-test-key'), false);
+    assert.equal(await auth.checkTeamKey('Owner-Test-Key-0123456789'), false);
+  } finally { delete process.env.PLAYBOOK_OWNER_KEY; delete process.env.PLAYBOOK_TEAM_KEY; }
+});
+
+test('the Church & Dwight pass only takes its own token, and is none of the other cookies or links', async () => {
+  const t = await auth.clientToken();
+  assert.equal(t.length, 24);
+  assert.equal(await auth.isClient(t), true);
+  for (const x of ['', null, undefined, t.slice(0, 23), t + 'x', await auth.joinToken('FOF1109'), await auth.authToken(), await auth.hostToken()]) assert.equal(await auth.isClient(x), false);
+  assert.equal(await auth.isHost(t), false);
+  assert.equal(await auth.isAuthed(t), false);
+  process.env.PLAYBOOK_SECRET = 'rotated';
+  try { assert.notEqual(await auth.clientToken(), t); } finally { delete process.env.PLAYBOOK_SECRET; }
+});
+
+test('the Church & Dwight pass opens two files and no team page', () => {
+  assert.deepEqual([...auth.CLIENT_FILES].sort(), ['/files/The-Future-of-Freshness-Slides.pdf', '/media/flavor-race.mp4']);
+  for (const p of ['/files/The-Future-of-Freshness-Deck.pdf', '/files/The-Future-of-Freshness-Presenter-Deck.pdf', '/files/The-Future-of-Freshness-Run-Sheet.pdf', '/host', '/team']) assert.equal(auth.CLIENT_FILES.has(p), false);
+});

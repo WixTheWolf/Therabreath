@@ -20,22 +20,35 @@ const SETUP = [
   'Film backup: the day before, download THE FLAVOR RACE from the team page (flavor-race.mp4: 2:24, 2560 × 1440, with sound) and keep it on the laptop’s desktop. Open it once to check it plays. If the site won’t play it on the day, play the file from there, full screen, with the sound up. The opening film isn’t shown in the room: we open with our own welcome.',
   `Sound and picture check, before anyone arrives and on the rehearsal session so nobody’s phone moves: open /host?code=REHEARSE on the TV, press F for full screen, then Go to THE FLAVOR RACE (slide ${FILM_AT}) in the presenter view, or open /host?code=REHEARSE#${FILM_AT}. Check it fills the screen, play ten seconds through the speakers and set the volume, and press R to check it starts again. Then close that window and open Present on the day. Keep the film off the TV once people start arriving.`,
   'Rehearse on /host?code=REHEARSE (the team page links to it), never on /host itself, so rehearsal votes stay out of the live session. Leave the live session FOF1109 alone the night before: it holds everyone’s pre-brief answers, and the team page shows how many are in.',
-  `Samples: ${kids} in the Kids base and ${fresh} in the Fresh Breath base, poured blind into coded cups. Set out water to rinse, cups to spit into and napkins.`,
+  `Samples: ${kids} in the Kids base and ${fresh} in the Fresh Breath base. During setup, pre-pour them into cups coded A to D on covered trays, out of sight, and bring the trays out as THE FLAVOR RACE ends. Set out water to rinse, cups to spit into and napkins.`,
+  'Set up one loaner phone or tablet for someone who arrives without a phone: at setup, scan the code on the arrival screen and leave it on the name screen, so whoever uses it types their own first name. It stays with that one person all morning. A phone keeps one identity, so if it’s passed round, the next person’s votes and scores replace the first person’s. Anyone else without a phone votes by hand and scores on a paper card. Keep it charged and on the table.',
+  'Who votes: the Church & Dwight people in the room. The four of us don’t vote, on our phones or by hand, so every count on screen is theirs. To check a phone works, use the rehearsal session (Rehearse on the team page), never the live one.',
   'If we’re running late, see If we run behind below. The presenter view shows how far over the current part is and whether the short version is on.',
-  'Bring a few paper scorecards and pens for anyone who’d rather not use a phone (print them from /scorecard). On the vote slides, the presenter view has a button to add a hand vote for each option, and one to take it back. On the tasting, type each paper card in with Add a paper card. A card typed in by mistake can be removed.',
+  'Nothing gets typed on the day. On the vote slides, the presenter view has a button to add a hand vote for each option, and one to take it back. The concept cards and Now, Next, Later are filled in by tapping options.',
+  'Paper scorecards are for anyone without a phone once the loaner is taken (print a few from /scorecard, with pens). On the tasting, tap +1 paper card in the presenter view for each one handed in, and -1 for a mistake. The cards are typed in after the morning.',
 ];
 const AFTER = [
   'Before you close the laptop, open /host?results=1 and print it to PDF: the votes, the scores, the concepts, the white-space marks and Now, Next, Later as we left them. The Playbook write-up (/host/writeup) fills in from the same session.',
-  'Collect the paper scorecards, and check each one is typed in.',
+  'Collect the paper scorecards and type them in on /host/cards (the team page links to it). Their scores join the results page and the write-up as each one is saved.',
+  'In the write-up, press Edit what’s to confirm: finish the drafted flavor briefs and fill in anything still To confirm. Both are highlighted until they’re done.',
   ...NEXT_STEPS.map((n) => `${n.t}: ${n.d}`),
 ];
 const CONFIRM = [
-  'The Flavor School wording, with Ryan.',
-  `The bases: ${SEALED.samples.A.name} and the ${SEALED.samples.B.name} in the Kids base, ${SEALED.samples.C.name} and ${SEALED.samples.D.name} in the Fresh Breath base.`,
-  'The dates on What happens next, including the January 2027 review.',
+  'Ryan to review the Flavor School slide (slide 11): his wording, merged onto one slide in three builds, now naming sodium chlorite rather than OXYD-8, with incorporating and protecting the flavor.',
+  'Check the bottles and flavor names on Our flavors in your range (slide 3) against our portfolio record. Names only: no usage levels or flavor codes.',
+  'Review the drafted concept cards and the option lists in src/lib/conceptLibrary.ts. Every starter card is marked DRAFT until we’ve checked it.',
+  `Ryan to confirm each sample: its name, its base (${SEALED.samples.A.name} and the ${SEALED.samples.B.name} in the Kids base, ${SEALED.samples.C.name} and ${SEALED.samples.D.name} in the Fresh Breath base) and what’s in it, as the phones show it after the reveal.`,
+  'The two commitments on What happens next (slide 21): the write-up within 8 business days and the next samples in January 2027. Kept for now; confirm both before we say them.',
+  'The shelf (slide 8): the range as listed on therabreath.com and three retailer listings on November 4, so the US range. Check it’s still current, and say so if someone asks about other markets.',
+  'Shelf life, stability and sensory performance: we say only what Ryan can back with data, on screen or out loud.',
+  'Owners: which of us takes each kind of direction forward, so the TFF owner on Now, Next, Later is a real choice. The C&D reviewers are confirmed in the room, by name.',
+  'The room, with Ross: how many people and where they sit for the tasting, who pours and serves, how many phones join at once, the mobile signal in the Darwin room, whether the TV reads from the back row, and the speaker volume for THE FLAVOR RACE.',
   'A video call with Ross before the day. He asked to connect once or twice ahead of time.',
   `Whether to tell the room what’s in the ${SEALED.samples.B.name} once the names go up. The presentation, the phones and the write-up show its name but not its contents, so the room can keep guessing.`,
   'That the samples were made in the unflavored bases Church & Dwight sent, as the front door says.',
+  'The shelf (slide 8): the Listerine Citrus Mint launch (March 2026, Dentistry Today), with grapefruit and yuzu. Check the product and the date before we show it.',
+  'Trend 4, “Botanicals are showing up in daily routines”: both proofs are TheraBreath’s own. Find one example from outside the brand before the day, or say it as our read.',
+  'On the call with Ross before the day, ask whether he’d like to open his four objectives (slide 4) himself, in his own words.',
 ];
 
 export default function RunSheet() {
@@ -52,23 +65,22 @@ export default function RunSheet() {
       </section>
 
       <section className="rs-sec">
-        <h2>At a glance: owners, kit and what each block should leave us with</h2>
+        <h2>At a glance: what we do, the kit and what each block should leave us with</h2>
         <table className="rs-run rs-glance">
-          <thead><tr><th>Time</th><th>Block</th><th>Owner</th><th>Technology and materials</th><th>Output</th></tr></thead>
+          <thead><tr><th>Time</th><th>Block</th><th>Technology and materials</th><th>Output</th></tr></thead>
           <tbody>{RUN.map((b) => [
             <tr key={b.id}>
               <td className="rs-t">{b.t}<small>to {b.end}</small></td>
-              <td><b>{b.title}</b></td>
-              <td className="rs-owner" />
+              <td><b>{b.title}</b><small>{RUN_NOTES[b.id].act}</small></td>
               <td data-l="Technology and materials">{RUN_NOTES[b.id].kit}</td>
               <td data-l="Output">{RUN_NOTES[b.id].output}</td>
             </tr>,
-            RUN_NOTES[b.id].after ? <tr key={b.id + '-after'} className="rs-after"><td className="rs-t">{b.end}</td><td colSpan={4}>{RUN_NOTES[b.id].after}</td></tr> : null,
+            RUN_NOTES[b.id].after ? <tr key={b.id + '-after'} className="rs-after"><td className="rs-t">{b.end}</td><td colSpan={3}>{RUN_NOTES[b.id].after}</td></tr> : null,
           ])}</tbody>
         </table>
       </section>
 
-      <section className="rs-sec">
+      <section className="rs-sec rs-keep">
         <h2>The tasting table (check before 10:40)</h2>
         <ol className="rs-check">{TASTING_KIT.map((x) => <li key={x}>{x}</li>)}</ol>
       </section>
@@ -89,7 +101,7 @@ export default function RunSheet() {
 
       <section className="rs-sec rs-slides">
         <h2>Slide by slide</h2>
-        <p className="rs-lead">Planned minutes, so each part ends on time; the presenter view shows each slide’s planned window. Numbers match the presenter view’s Go to list. Slides marked optional are the ones S skips. Your pre-brief answers (6) shows only once someone has answered; if nobody has, its three minutes are spare.</p>
+        <p className="rs-lead">Planned minutes, so each part ends on time; the presenter view shows each slide’s planned window. Numbers match the presenter view’s Go to list. Builds marked optional are the ones S skips. Your pre-brief answers (5) shows only once someone has answered; if nobody has, its four minutes are spare.</p>
         <table className="rs-run rs-slide">
           <thead><tr><th>Planned</th><th>#</th><th>Slide</th><th>On screen, click by click</th><th>Ask the room, and the phones</th></tr></thead>
           <tbody>{RUN.map((b) => [
@@ -100,7 +112,7 @@ export default function RunSheet() {
                 <tr key={s.id}>
                   <td className="rs-t">{min ? <>{t.from}<small>{min} min</small></> : <>Before<small>10:00</small></>}</td>
                   <td className="rs-n">{s.n + 1}</td>
-                  <td><b>{titleOf(s)}</b>{s.optional && <em>Optional</em>}{s.id === 'prework' && <em>If answered</em>}</td>
+                  <td><b>{titleOf(s)}</b>{s.optional && <em>Optional</em>}{s.skip?.length ? <em>Optional {s.skip.length === 1 ? 'build' : 'builds'}</em> : null}{s.id === 'prework' && <em>If answered</em>}</td>
                   <td data-l="On screen">{p.clicks && <ul className="rs-clicks">{p.clicks.map((c, i) => <li key={i}>{i > 0 && !c.startsWith('Clicks') && <span className="num">{i}</span>}{c}</li>)}</ul>}</td>
                   <td data-l="Ask the room">{p.ask && <span>{p.ask}</span>}{p.phones && <i>Phones: {p.phones}</i>}</td>
                 </tr>
@@ -110,14 +122,15 @@ export default function RunSheet() {
         </table>
       </section>
 
-      <section className="rs-sec">
+      {/* The contingency list stays on one page: "Never cut" is its last line. */}
+      <section className="rs-sec rs-keep">
         <h2>If we run behind</h2>
         <ol className="rs-list">{BEHIND.map((x) => <li key={x}>{x}</li>)}</ol>
       </section>
 
       <section className="rs-sec rs-examples">
         <h2>If the room needs a starting point: two example concepts</h2>
-        <p className="rs-lead">Offer one only if the room is stuck, and let them change it. The assumptions are ours, not facts.</p>
+        <p className="rs-lead">Both are cards in the concept library: swap one in from the presenter view only if the room is stuck, and let them change it. The assumptions are ours, not facts.</p>
         <div className="rs-two">{EXAMPLES.map((x) => (
           <div key={x.name} className="rs-ex">
             <b>{x.name}</b>
@@ -143,7 +156,7 @@ export default function RunSheet() {
           <ol className="rs-check">{CONFIRM.map((x) => <li key={x}>{x}</li>)}</ol>
         </section>
       </div>
-      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on (clicks don’t move on while there are boxes to type in); left arrow to go back; ] for the next part and [ for the previous one; S to skip the optional slides; Home for the start; End for the thank-you card, which skips the film; F for full screen; P for the presenter view; N for the talking points on the TV itself; B to blank the screen. On THE FLAVOR RACE, space or K pauses and plays and R starts it again. The same keys work in the presenter view. If the page reloads, it picks up where the session left off.</p>
+      <p className="sc-foot">Confidential. Keys in the presentation: right arrow, space or click to go on; left arrow to go back; ] for the next part and [ for the previous one; S for the short version, which skips the optional builds; Home for the start; End for the thank-you card; F for full screen; P for the presenter view; N for the talking points on the TV itself; B to blank the screen. On THE FLAVOR RACE, space or K pauses and plays and R starts it again. The same keys work in the presenter view. If the page reloads, it picks up where the session left off.</p>
     </main>
   );
 }

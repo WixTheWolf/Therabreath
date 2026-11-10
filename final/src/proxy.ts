@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isAuthed, isHost, joinToken, teamOnly, COOKIE, HOST_COOKIE } from '@/lib/auth';
+import { isAuthed, isHost, isClient, joinToken, teamOnly, COOKIE, HOST_COOKIE, CLIENT_COOKIE, CLIENT_FILES } from '@/lib/auth';
 
 // Church & Dwight's password opens the front door. The team's pages (see teamOnly) need the team link or the host
 // password; someone signed in with only the room password is asked for one of those, so a teammate who used the room
@@ -9,6 +9,8 @@ const HOST_ONLY = (p: string) => p.startsWith('/console/') || p.startsWith('/ses
 
 // Stage, Console and the Playbook need the password. Phones join through signed links instead.
 export async function proxy(req: NextRequest) {
+  // The Church & Dwight link reaches the film and the slides PDF its pages use, and nothing else behind the password.
+  if (CLIENT_FILES.has(req.nextUrl.pathname) && (await isClient(req.cookies.get(CLIENT_COOKIE)?.value))) return NextResponse.next();
   const authed = await isAuthed(req.cookies.get(COOKIE)?.value);
   if (authed && HOST_ONLY(req.nextUrl.pathname) && !(await isHost(req.cookies.get(HOST_COOKIE)?.value))) {
     const url = req.nextUrl.clone(); url.pathname = '/login'; url.search = ''; url.searchParams.set('host', '1'); url.searchParams.set('next', req.nextUrl.pathname + req.nextUrl.search);

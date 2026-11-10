@@ -1,11 +1,13 @@
-import { EVENT, SAMPLES, WHO_CHIPS, CRITERIA, DEVELOP, PRIMARY_TERRITORIES as TERRITORIES } from '@/lib/content';
+import { EVENT, SAMPLES, CRITERIA, JAR, JAR_OPTS, judgeAs } from '@/lib/content';
 import PrintButton from './PrintButton';
 
 export const metadata = { title: 'Tasting scorecard' };
 
-// The tasting scorecard, on paper: the same questions the phones ask, one card per person. Prints to one page. The team
-// types each card into the presenter view (/host/presenter) on the tasting slide.
-const SCALES = CRITERIA.map((c) => c.l);
+// The tasting scorecard, on paper: the same questions the phones ask, one card per person. Prints to one page. On the day
+// the presenter view only counts the cards; the team types them in after the morning on /host/cards.
+
+const KIDS = SAMPLES.filter((x) => judgeAs(x.base) === 'a kids rinse').map((x) => x.code).join(' and ');
+const ADULT = SAMPLES.filter((x) => judgeAs(x.base) !== 'a kids rinse').map((x) => x.code).join(' and ');
 
 export default function Scorecard() {
   return (
@@ -15,18 +17,14 @@ export default function Scorecard() {
         <label>Name <i /></label>
         <PrintButton />
       </header>
-      <p className="sc-how">Taste each sample, rinse, then score it from 1 (low) to 5 (high). We’ll reveal the names once everyone has scored.</p>
+      <p className="sc-how">Taste each sample, rinse, then circle a score from 1 to 5 and tick how the sweetness and cooling are. Judge {KIDS} as kids rinses and {ADULT} as Fresh Breath rinses. We’ll reveal the names once everyone has scored.</p>
       {SAMPLES.map((x) => (
         <section key={x.code} className="sc-card">
           <div className="sc-id"><b>{x.code}</b><small>{x.base}</small></div>
           <div className="sc-body">
-            {SCALES.map((l) => <div key={l} className="sc-row"><span>{l}</span><div className="sc-dots">{[1, 2, 3, 4, 5].map((n) => <i key={n}>{n}</i>)}</div></div>)}
-            <div className="sc-row"><span>Who would buy it?</span><div className="sc-boxes">{WHO_CHIPS.map((w) => <i key={w}>{w}</i>)}</div></div>
-            <div className="sc-row"><span>Which direction do you think it comes from?</span><div className="sc-boxes">{TERRITORIES.map((t) => <i key={t.id}>{t.name}</i>)}</div></div>
-            <div className="sc-row sc-pair">
-              <span>{DEVELOP.q}</span><div className="sc-boxes">{DEVELOP.opts.map((w) => <i key={w}>{w}</i>)}</div>
-              <span>One word for it</span><u />
-            </div>
+            {CRITERIA.map((c) => <div key={c.key} className="sc-row"><span>{c.q}<small className="sc-anch">1 = {c.lo} · 5 = {c.hi}</small></span><div className="sc-dots">{[1, 2, 3, 4, 5].map((n) => <i key={n}>{n}</i>)}</div></div>)}
+            {JAR.map((j) => <div key={j.key} className="sc-row"><span>{j.l}</span><div className="sc-boxes">{JAR_OPTS.map((o) => <i key={o}>{o}</i>)}</div></div>)}
+            <div className="sc-row"><span>One word for it (optional)</span><u /></div>
             {x.mystery && <div className="sc-row"><span>Which fruits can you taste?</span><u /></div>}
           </div>
         </section>

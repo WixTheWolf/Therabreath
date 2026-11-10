@@ -1,11 +1,11 @@
 'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import Light, { project } from '../Light';
 import { R, Enter, SceneProps, Src } from './ui';
 import { EVENT, JULY, OBJECTIVES, SURVEY } from '@/lib/content';
 import { people, ranked } from '@/lib/state';
-import Orb, { describe } from '../Orb';
+import Orb from '../Orb';
 
 export function useQR(text: string) {
   const [svg, setSvg] = useState('');
@@ -35,11 +35,14 @@ function Bubbles({ s, cam }: { s: any; cam: any }) {
         const [sx, sy] = project([x, y, 0.3 * narrow], cam);
         const r = (0.058 - i * 0.002) * px * (settled ? 0.7 : 1);
         const burst = !settled ? Math.max(0, 1 - Math.abs(u - 0.9) * 10) : 0;
+        // People who join within a second or so of each other rise together: each later name drops a line, so the
+        // names never print on top of each other.
+        const k = list.slice(0, i).filter((q) => Math.abs(q.joined - p.joined) < 1500).length;
         return (
           <div key={p.pid}>
             <i className="bubble" style={{ left: sx, top: sy, width: r * 2, height: r * 2, opacity: settled ? 0.55 : 1 }} />
             {burst > 0 && <i className="spark" style={{ left: sx, top: sy, opacity: burst }} />}
-            <span className="bname" style={{ left: sx + r + 12, top: sy, opacity: settled ? 0 : Math.min(1, age * 2) }}>{p.name}</span>
+            <span className="bname" style={{ left: sx + r + 12, top: sy + k * 34, opacity: settled ? 0 : Math.min(1, age * 2) }}>{p.name}</span>
           </div>
         );
       })}
@@ -49,7 +52,8 @@ function Bubbles({ s, cam }: { s: any; cam: any }) {
 
 export function Arrival({ s, ctx }: SceneProps) {
   const qr = useQR(ctx.joinUrl);
-  const n = people(s).length;
+  const joined = people(s).filter((p) => !p.paper);
+  const n = joined.length;
   return (
     <>
       <Light scene="drop" theme="b" camera={DROP_CAM} frame={(t) => ({ rot: 0.6 + t * 0.12 })} fallback="/img/cover-drop.jpg" />
@@ -57,14 +61,15 @@ export function Arrival({ s, ctx }: SceneProps) {
       <div className="arrival-copy">
         <Enter i={0}><div className="k">Welcome. We start at 10:00.</div></Enter>
         <Enter i={1}><h1 className="hero">The Future<br /><span className="it">of Freshness</span></h1></Enter>
-        <Enter i={2}><div className="sub">Grab a seat and scan the code. We’ll be using phones a few times this morning.</div></Enter>
+        <Enter i={2}><div className="sub">Grab a seat and scan the code. Your phone is your scorecard this morning.</div></Enter>
         <Enter i={3}><div className="meta">{EVENT.lockup}</div></Enter>
       </div>
       <Enter i={4} className="join">
         <div className="qr" dangerouslySetInnerHTML={{ __html: qr }} />
         <div><h3>Scan to join</h3><p>Point your phone’s camera at the code. All we need is your first name.</p><code>{ctx.code}</code></div>
       </Enter>
-      <div className="presence"><div className="count num">{n}</div><div className="lbl">Joined</div>{n > 0 && <div className="presence-names">{people(s).filter((p) => !p.paper).slice(-16).map((p) => p.name).join(' · ')}</div>}</div>
+      {/* Nothing shows until the first phone joins, so a slow start never puts a big zero on the TV. */}
+      {n > 0 && <div className="presence quiet"><div className="lbl"><b className="num">{n}</b> joined</div><div className="presence-names">{joined.slice(-16).map((p) => p.name).join(' · ')}</div></div>}
     </>
   );
 }
@@ -125,28 +130,70 @@ export function Prework({ s, step }: SceneProps) {
   const cons = count('consumer'), mom = count('moment');
   // Who people typed when they picked "Someone else".
   const others = [...new Set(answers.map((a) => a.other?.trim()).filter(Boolean) as string[])];
+  // And the occasions people typed when they picked "Another occasion".
+  const otherMoments = [...new Set(answers.map((a) => a.momentOther?.trim()).filter(Boolean) as string[])];
   // The same veto from several people shows once, with a count.
   const vetoCount: Record<string, [string, number]> = {};
   for (const v of answers.map((a) => a.veto).filter(Boolean) as string[]) { const key = v.trim().toLowerCase().replace(/[.!]+$/, ''); if (!key) continue; vetoCount[key] = [vetoCount[key]?.[0] || v.trim().replace(/[.!]+$/, ''), (vetoCount[key]?.[1] || 0) + 1]; }
   const vetoes = Object.values(vetoCount).sort((a, b) => b[1] - a[1]);
+  // Every off-brand answer has to fit on the slide, however long people wrote. The list gets the space down to the bottom
+  // margin, and its type steps down from 30px (to no less than 20px) only when the answers would otherwise run off. Up
+  // to eight show; only if eight still don't fit at 20px does the last one move into "And 1 more", so nothing is cut.
+  // Layout sizes only (offsetTop, clientHeight), so the stage's scale and the reveal's slide-in don't change the result.
+  const fitRef = useRef<HTMLDivElement>(null);
+  const vetoKey = vetoes.map(([v, n]) => v + n).join('|');
+  const [cut, setCut] = useState({ key: '', n: 8 });
+  const shown = cut.key === vetoKey ? cut.n : 8;
+  useLayoutEffect(() => {
+    const box = fitRef.current; if (!box) return;
+    const fit = () => {
+      const over = () => { const last = box.lastElementChild as HTMLElement | null; return !!last && last.offsetTop + last.offsetHeight > box.clientHeight; };
+      let px = 30; box.style.setProperty('--pw-fs', px + 'px');
+      while (px > 20 && over()) { px -= 1; box.style.setProperty('--pw-fs', px + 'px'); }
+      if (over() && shown > 1) setCut({ key: vetoKey, n: shown - 1 });
+    };
+    fit(); document.fonts?.ready.then(fit);
+  }, [vetoKey, shown]);
   const max = (l: [string, number][]) => Math.max(1, ...l.map((x) => x[1]));
+  const profiled = answers.filter((a) => a.profile).length;
   const Bars = ({ list }: { list: [string, number][] }) => (
-    <div className="pw-bars">{list.slice(0, 5).map(([k, v], i) => <div key={k} className={i === 0 ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">No answers yet.</div>}</div>
+    <div className="pw-bars">{list.slice(0, 5).map(([k, v]) => <div key={k} className={v === max(list) ? 'top' : ''}><span>{k}</span><i style={{ width: `${(v / max(list)) * 100}%` }} /><b className="num">{v}</b></div>)}{!list.length && <div className="empty">No answers yet.</div>}</div>
   );
   return (
-    <div className="pad">
-      <Enter i={0}><div className="k">From your pre-brief · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div></Enter>
+    <div className="pad pw">
+      {/* The question sits beside the count from the first build: it's for the whole slide, and the list of off-brand
+          answers below can run long. */}
+      <Enter i={0} className="pw-top"><div className="k">You told us · {answers.length} {answers.length === 1 ? 'answer' : 'answers'}</div><div className="room-ask pw-ask"><span className="k">For the room</span><p>Anything here you’d argue with?</p></div></Enter>
       <div className="pw-grid">
-        <R b={0} step={step} className="pw-card"><h3 className="h3">{SURVEY.consumer.q}</h3><Bars list={cons} />{others.length > 0 && <p className="src pw-others">Someone else: {others.slice(0, 6).join(', ')}</p>}</R>
-        <R b={1} step={step} className="pw-card"><h3 className="h3">{SURVEY.moment.q}</h3><Bars list={mom} /></R>
+        <R b={0} step={step} className="pw-card"><h3 className="h3">Who you’d focus on first</h3><Bars list={cons} />{others.length > 0 && <p className="src pw-others">Someone else: {others.slice(0, 6).join(', ')}</p>}</R>
+        <R b={1} step={step} className="pw-card"><h3 className="h3">The occasion you’d explore first</h3><Bars list={mom} />{otherMoments.length > 0 && <p className="src pw-others">{SURVEY.moment.other}: {otherMoments.slice(0, 6).join(', ')}</p>}</R>
       </div>
-      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">Your freshness, as a group</span><p className="h3 it">{describe(roomProfile(answers), 'As a group, you want freshness that’s')}</p></div></R>}
+      {answers.some((x) => x.profile) && <R b={1} step={step} className="pw-orb"><Orb profile={roomProfile(answers)} size={300} /><div><span className="k">Your own taste in freshness</span><p className="h3 it">{leanLine(roomProfile(answers))}</p><p className="pw-avg">{leanNote(roomProfile(answers), profiled)}</p></div></R>}
       <R b={2} step={step} className="vetoes">
-        <div className="k">What would feel off-brand</div>
-        <div className="cloud">{vetoes.length ? vetoes.slice(0, 14).map(([v, n], i) => <span key={i} style={{ ['--i' as any]: i, fontSize: 30 + ((i * 17) % 5) * 6 + Math.min(18, (n - 1) * 6) }}>{v}{n > 1 && <sup className="num">{n}</sup>}</span>) : <span className="empty">No answers yet.</span>}</div>
+        <div className="k">What would feel wrong for TheraBreath</div>
+        {/* One answer per line, each in its own quotes, in the words people typed; a repeat shows once with how many said it. */}
+        <div ref={fitRef} className="pw-fit">
+          {vetoes.length ? <ul className="pw-off">{vetoes.slice(0, shown).map(([v, n], i) => <li key={i} style={{ ['--i' as any]: i }}>&ldquo;{v}&rdquo;{n > 1 && <span className="pw-n">{n} people</span>}</li>)}</ul> : <p className="empty pw-none">No answers yet.</p>}
+          {vetoes.length > shown && <p className="pw-more">And {vetoes.length - shown} more.</p>}
+        </div>
       </R>
     </div>
   );
+}
+
+// The freshness sliders, read back in the slider's own words: what the answers lean toward on each, and how many sit in
+// the middle. An average of 2 or less leans to the left label, 4 or more to the right; 3 is the middle.
+const LEAN: Record<string, [string, string]> = { adv: ['the familiar', 'the adventurous'], cool: ['strong cooling', 'gentle cooling'], bot: ['classic mint', 'mint with other notes'], exp: ['a rinse that just does the job', 'something to enjoy'], occ: ['a flavor for any time of day', 'a flavor made for one moment'] };
+const listOf = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
+const leans = (p: Record<string, number>) => Object.keys(LEAN).filter((k) => p[k] <= 2 || p[k] >= 4).map((k) => LEAN[k][p[k] <= 2 ? 0 : 1]);
+function leanLine(p: Record<string, number>) {
+  const l = leans(p);
+  return l.length ? `Your answers lean toward ${listOf(l)}.` : 'Your answers sit in the middle on every slider.';
+}
+function leanNote(p: Record<string, number>, n: number) {
+  const mid = Object.keys(LEAN).length - leans(p).length, words = ['', 'one', 'two', 'three', 'four'];
+  const avg = `The average of ${n} ${n === 1 ? 'answer' : 'answers'}`;
+  return mid > 0 && mid < Object.keys(LEAN).length ? `${avg}; the other ${words[mid]} ${mid === 1 ? 'sits' : 'sit'} in the middle.` : `${avg}.`;
 }
 
 function roomProfile(answers: any[]) {

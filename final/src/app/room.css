@@ -50,10 +50,18 @@
 .rm-tabs button.on { background: var(--fg); color: var(--bg); }
 .rm-tabs button.done::after { content: ''; position: absolute; right: 8px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #5FD39A; }
 .rm-scale { margin-bottom: 14px; }
-.rm-scale > span { display: block; font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--fg2); margin-bottom: 8px; }
+.rm-scale > span, .rm-jar > span { display: block; font: 500 16px/1.35 var(--sans); color: var(--fg); margin-bottom: 8px; } /* the tasting questions, asked in full */
+.rm-jar { margin-bottom: 14px; }
+.rm-jar .rm-tags { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 0; }
+.rm-jar .rm-tags button { padding: 10px 6px; border-radius: 12px; font-size: 14px; }
+.rm-chipgroup { margin-bottom: 16px; }
+.rm-chipgroup > .k { font-size: 12px; line-height: 1.5; margin-bottom: 8px; }
 .rm-scale > div { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
 .rm-scale button { padding: 14px 0; border-radius: 12px; border: 1px solid var(--rule); font: 400 18px/1 var(--sans); transition: all .15s; }
 .rm-scale button.on { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--bg); }
+/* The two ends of each scale, named under the buttons, and who the sample is judged for. */
+.rm-anch { display: flex; justify-content: space-between; margin-top: 6px; font: 400 13px/1.3 var(--sans); color: var(--fg2); }
+.rm-ctx { margin: 0 0 14px; font: 400 15px/1.4 var(--sans); color: var(--fg2); }
 .rm-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .rm-tags button { min-height: 44px; padding: 10px 16px; border-radius: 22px; border: 1px solid var(--rule); font: 400 15px/1 var(--sans); }
 .rm-tags button.on { background: var(--accent-soft); border-color: var(--accent); }
@@ -215,21 +223,36 @@
   .bw-hero { height: 3.3in; border-radius: 12px; }
   .bw-sec { padding-top: 16px; }
   .bw-sec h2 { font-size: 22pt; }
-  .bw-sec h3 { margin: 16px 0 4px; font-size: 15pt; break-after: avoid; }
-  .bw-letter { font-size: 15px; line-height: 1.5; margin: 0 0 8px; }
+  .bw-sec h3 { margin: 12px 0 4px; font-size: 15pt; break-after: avoid; }
+  .bw-letter { font-size: 15px; line-height: 1.45; margin: 0 0 7px; }
   .bw-expect, .bw-p { font-size: 11pt; margin-bottom: 6px; }
   .bw-agenda li { padding: 4px 0; }
   .bw-agenda b, .bw-signals b, .bw-think li { font-size: 11pt; }
   .bw-agenda q, .bw-signals p { font-size: 10pt; }
   .bw-signals li, .bw-think li { padding: 3px 0 3px 4px; }
-  .bw-more { margin-top: 18pt; }
-  .bw-part { break-inside: avoid; }
+  .bw-more { margin-top: 12pt; }
+  /* A part can run on to the next page, but never splits an agenda line or a trend, and a heading stays with what follows. */
+  .bw-part li, .bw-part .bw-p { break-inside: avoid; }
   .bw-print-only { display: block; font: 400 italic 15px var(--serif); }
   .bw-print-qs { margin: 10px 0 0 18px; font: 400 10.5pt/1.45 var(--sans); }
-  .bw-print-qs li { margin-bottom: 6px; }
+  .bw-print-qs li { margin-bottom: 4px; }
   .bw-print-qs b { font-weight: 600; }
   .bw-foot { padding: 16px 0 0; break-inside: avoid; }
   .bw-foot::before { margin-bottom: 12px; }
   .bw-conf { font-size: 8pt; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* The follow-up link (FollowupApp): the two steps, a line under them and the way back to either. */
+.rm-fu-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 560px; margin: 0 auto; padding: 14px 18px 0; }
+.rm-fu-steps button { display: grid; grid-template-columns: auto 1fr; align-items: baseline; column-gap: 10px; min-height: 56px; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--rule); background: transparent; color: var(--fg2); font: 500 16px/1.2 var(--sans); text-align: left; }
+.rm-fu-steps button .num { grid-row: span 2; font: 400 26px/1 var(--serif); color: var(--fg3); }
+.rm-fu-steps button small { font: 400 13px/1.3 var(--sans); color: var(--fg3); }
+.rm-fu-steps button.on { border-color: var(--fg); color: var(--fg); }
+.rm-fu-steps button.on .num { color: var(--fg); }
+.rm-fu-lede { max-width: 560px; margin: 16px auto 0; padding: 0 18px; font: 400 16px/1.45 var(--sans); color: var(--fg2); }
+.rm-fu-next { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: calc(100% - 36px); max-width: 524px; margin: 14px auto 0; padding: 12px 12px 12px 16px; border-radius: 14px; background: var(--panel2, rgba(255,255,255,.06)); font: 400 15px/1.3 var(--sans); }
+.rm-fu-next button { min-height: 44px; padding: 0 16px; border-radius: 99px; background: var(--fg); color: var(--bg); font: 500 15px/1 var(--sans); white-space: nowrap; }
+.rm-fu-again { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 6px; }
+.rm-fu-again button { min-height: 44px; padding: 0 18px; border-radius: 99px; border: 1px solid var(--rule); background: transparent; color: var(--fg); font: 500 15px/1 var(--sans); }
+
