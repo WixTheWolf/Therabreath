@@ -8,7 +8,7 @@ import { DEFAULT_DIALS, readouts } from '@/lib/bench';
 import { uid, tastingClosed } from '@/lib/state';
 import { candidates } from './scenes/Build';
 
-type Me = { pid: string; name: string };
+export type Me = { pid: string; name: string };
 const KEY = (c: string) => `pb-me-${c}`;
 
 export default function RoomApp({ code, k }: { code: string; k: string }) {
@@ -53,7 +53,8 @@ export default function RoomApp({ code, k }: { code: string; k: string }) {
   );
 }
 
-function JoinForm({ onJoin }: { onJoin: (n: string) => void }) {
+// The follow-up link (FollowupApp) uses the same form with its own lines.
+export function JoinForm({ onJoin, follow }: { onJoin: (n: string) => void; follow?: boolean }) {
   const [n, setN] = useState('');
   return (
     <main className="room" data-theme="b">
@@ -61,15 +62,17 @@ function JoinForm({ onJoin }: { onJoin: (n: string) => void }) {
         <div className="rm-drop" />
         <div className="k">{EVENT.lockup}</div>
         <h1 className="h2">The Future<br /><span className="it">of Freshness</span></h1>
+        {follow && <p className="rm-p">The phone scoring didn’t open on the day, so here’s the part we missed: score the four samples you tasted, then spend five chips on what deserves the next round. About two minutes.</p>}
         <input autoFocus value={n} onChange={(e) => setN(e.target.value)} placeholder="Your first name" aria-label="Your first name" maxLength={20} />
-        <button className="rm-btn" disabled={!n.trim()}>Join</button>
-        <p className="rm-fine">Just your first name is fine. It pops up on the screen when you join, and your votes are only used for this session.</p>
+        <button className="rm-btn" disabled={!n.trim()}>{follow ? 'Start' : 'Join'}</button>
+        <p className="rm-fine">{follow ? 'Just your first name is fine. Your answers go into the Flavor Playbook we send everyone, and are only used for this work.' : 'Just your first name is fine. It pops up on the screen when you join, and your votes are only used for this session.'}</p>
       </form>
     </main>
   );
 }
 
-type P = { s: any; me: Me; p: (k: string, d: any) => void; step: number; room?: any };
+// `fu`: the follow-up link after the morning. The day's closed votes don't apply there, and the names are already out.
+type P = { s: any; me: Me; p: (k: string, d: any) => void; step: number; room?: any; fu?: boolean };
 // Two chip allocations are the same when every option has the same count, whatever order the keys are in (the review
 // saw a sent vote flip back to Send because the saved copy came back with its keys in another order).
 const sameChips = (a: Record<string, number>, b: Record<string, number>) => [...new Set([...Object.keys(a), ...Object.keys(b)])].every((k) => (Number(a[k]) || 0) === (Number(b[k]) || 0));
@@ -89,18 +92,19 @@ function Pick({ s, me, p, room }: P) {
   );
 }
 
-function Chips({ s, me, p, room, step }: P) {
+export function Chips({ s, me, p, room, step, fu }: P) {
   const v = s.votes[room.key]; const mine: Record<string, number> = v?.picks?.[me.pid] || {};
+  const locked = !fu && !!v?.locked;
   const [o, setO] = useState<Record<string, number>>(mine);
   const used = Object.values(o).reduce((a, b) => a + b, 0);
   const add = (id: string, d: number) => setO((x) => { const n = Math.max(0, (x[id] || 0) + d); if (d > 0 && used >= room.total) return x; return { ...x, [id]: n }; });
   // The room talks about the chart first, so the chips wait for the build that opens them.
-  if (room.opens && step < room.opens) return (
+  if (!fu && room.opens && step < room.opens) return (
     <div className="rm-center"><div className="rm-drop" /><div className="k">Next: five chips each</div><h1 className="h3">First, the chart on the screen.</h1><p className="rm-p">Talk about where each sample landed and what you’d change. The chips open here in a moment.</p></div>
   );
   return (
     <div className="rm-pad">
-      <h1 className="h3">{room.prompt}</h1><Lock v={v} />
+      <h1 className="h3">{room.prompt}</h1>{!fu && <Lock v={v} />}
       <div className="rm-chipsleft">{Array.from({ length: room.total }, (_, i) => <i key={i} className={i < used ? 'used' : ''} />)}</div>
       {/* Two groups, so it's clear what a chip is for: the flavors just tasted (by name once revealed, with their
           direction), then the two directions nobody has tasted yet. */}
@@ -110,12 +114,12 @@ function Chips({ s, me, p, room, step }: P) {
           <div className="rm-list">{g.ds.map((d) => (
             <div key={d.id} className="rm-chip" style={{ ['--c1' as any]: d.colors[0], ['--c2' as any]: d.colors[1] }}>
               <span className="sw" /><b>{s.revealed?.samples[d.id]?.name || d.label}{d.tasted && <small>{d.sub}</small>}</b>
-              <button onClick={() => add(d.id, -1)} disabled={!o[d.id] || v?.locked} aria-label={`One chip off ${s.revealed?.samples[d.id]?.name || d.label}`}>-</button><em className="num">{o[d.id] || 0}</em><button onClick={() => add(d.id, 1)} disabled={used >= room.total || v?.locked} aria-label={`One chip on ${s.revealed?.samples[d.id]?.name || d.label}`}>+</button>
+              <button onClick={() => add(d.id, -1)} disabled={!o[d.id] || locked} aria-label={`One chip off ${s.revealed?.samples[d.id]?.name || d.label}`}>-</button><em className="num">{o[d.id] || 0}</em><button onClick={() => add(d.id, 1)} disabled={used >= room.total || locked} aria-label={`One chip on ${s.revealed?.samples[d.id]?.name || d.label}`}>+</button>
             </div>
           ))}</div>
         </section>
       ))}
-      <button className="rm-btn sticky" disabled={used !== room.total || v?.locked} onClick={() => p('pick', { key: room.key, value: o })}>{sameChips(o, mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} chips`}</button>
+      <button className="rm-btn sticky" disabled={used !== room.total || locked} onClick={() => p('pick', { key: room.key, value: o, ...(fu ? { followup: true } : {}) })}>{sameChips(o, mine) && used === room.total ? 'Sent' : `Send ${used} of ${room.total} chips`}</button>
     </div>
   );
 }
@@ -123,7 +127,7 @@ function Chips({ s, me, p, room, step }: P) {
 function Scale({ label, lo, hi, v, set, off }: { label: string; lo: string; hi: string; v: number; set: (n: number) => void; off?: boolean }) {
   return <div className="rm-scale" role="group" aria-label={`${label} 1 is ${lo}, 5 is ${hi}`}><span>{label}</span><div>{[1, 2, 3, 4, 5].map((n) => <button key={n} className={n <= v ? 'on' : ''} aria-pressed={n === v} disabled={off} onClick={() => set(n)}>{n}</button>)}</div><small className="rm-anch"><span>1 = {lo}</span><span>5 = {hi}</span></small></div>;
 }
-function Taste({ s, me, p, step }: P) {
+export function Taste({ s, me, p, step, fu }: P) {
   const [cur, setCur] = useState('A');
   const saved = s.ratings[cur]?.[me.pid];
   const blank = { appeal: 0, feels: 0, newness: 0, sweet: '', cool: '', word: '' };
@@ -131,9 +135,10 @@ function Taste({ s, me, p, step }: P) {
   useEffect(() => { setR(s.ratings[cur]?.[me.pid] || blank); }, [cur]); // eslint-disable-line react-hooks/exhaustive-deps
   const done = (c: string) => !!s.ratings[c]?.[me.pid];
   const ok = r.appeal && r.feels && r.newness && r.sweet && r.cool;
-  const named = s.revealed && SAMPLES.every((x) => done(x.code)) ? s.revealed.samples[cur] : null;
+  // On the follow-up link the names are already out (the room saw them on the TV), so they show from the start.
+  const named = s.revealed && (fu || SAMPLES.every((x) => done(x.code))) ? s.revealed.samples[cur] : null;
   // Once the scores are on the TV, scoring is closed: what was saved stays as it was.
-  const closed = tastingClosed(s);
+  const closed = !fu && tastingClosed(s);
   return (
     <div className="rm-pad">
       <div className="rm-tabs">{SAMPLES.map((x) => <button key={x.code} className={(cur === x.code ? 'on' : '') + (done(x.code) ? ' done' : '')} onClick={() => setCur(x.code)}>{x.code}</button>)}</div>
@@ -141,7 +146,7 @@ function Taste({ s, me, p, step }: P) {
           sealedClient.ts), and even then a phone still scoring, or one that joined late, shows only the letter. */}
       <h1 className="h3">Sample {cur}{named ? <span className="it"> · {named.name}</span> : null}</h1>
       {named && cur !== MYSTERY && <p>{named.note}</p>}
-      {cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess" /></label>}
+      {!fu && cur === MYSTERY && step < 2 && <label>Which fruits can you taste?<input className="rm-input" value={r.fruitGuess || ''} maxLength={160} onChange={e => setR({ ...r, fruitGuess: e.target.value })} placeholder="Your best guess" /></label>}
       <p className="rm-ctx">{SAMPLES.find((x) => x.code === cur)?.base}: judge it as {judgeAs(SAMPLES.find((x) => x.code === cur)?.base || '')}.</p>
       {closed && <div className="rm-lock">Scoring is closed. {SAMPLES.every((x) => done(x.code)) ? 'Thanks, all four of your scores are in.' : 'The scores you saved are in.'}</div>}
       {CRITERIA.map((c) => <Scale key={c.key} label={c.q} lo={c.lo} hi={c.hi} v={r[c.key]} off={closed} set={(n) => setR({ ...r, [c.key]: n })} />)}
@@ -152,7 +157,7 @@ function Taste({ s, me, p, step }: P) {
         </div>
       ))}
       <input className="rm-input" value={r.word || ''} onChange={(e) => setR({ ...r, word: e.target.value.slice(0, 24) })} placeholder="One word for it (optional)" aria-label="One word for it (optional)" />
-      <button className="rm-btn sticky" disabled={!ok || closed} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
+      <button className="rm-btn sticky" disabled={!ok || closed} onClick={() => { p('rate', { sample: cur, ...r, word: (r.word || '').trim().split(/\s+/)[0] || undefined, ...(fu ? { followup: true } : {}) }); const nx = SAMPLES.find((x) => !done(x.code) && x.code !== cur); if (nx) setCur(nx.code); }}>{done(cur) ? 'Update' : 'Save'} sample {cur}</button>
     </div>
   );
 }

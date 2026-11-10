@@ -73,9 +73,11 @@ export function reduce(s: SessionState, e: Ev): SessionState {
       s.step = Math.max(0, Math.min(SCENES[s.scene].builds, d.step || 0)); s.spotlight = null; break;
     }
     case 'vote': { const v = vote(s, d.key); if (d.action === 'open') { v.open = true; v.locked = false; } if (d.action === 'lock') { v.open = false; v.locked = true; } if (d.action === 'reveal') { v.revealed = true; v.open = false; v.locked = true; } if (d.action === 'reset') s.votes[d.key] = { open: false, locked: false, revealed: false, picks: {} }; break; }
-    case 'pick': { const v = vote(s, d.key); if (!v.locked || d.paper) v.picks[e.pid!] = d.value; break; }
+    // The follow-up link (after the morning) sends the tasting scores and the chips with `followup`, so they count
+    // although the day's votes are closed. Only the chips take it; every other vote stays as the room left it.
+    case 'pick': { const v = vote(s, d.key); if (!v.locked || d.paper || (d.followup && d.key === 'directions')) v.picks[e.pid!] = d.value; break; }
     case 'unpick': delete vote(s, d.key).picks[e.pid!]; break; // the presenter view taking back a hand vote
-    case 'rate': if (s.votes.tasting?.locked && !onPaper(e.pid || '')) break; (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess, fruitGuess: d.fruitGuess, advance: d.advance, card: d.card, sweet: d.sweet, cool: d.cool }; break;
+    case 'rate': if (s.votes.tasting?.locked && !onPaper(e.pid || '') && !d.followup) break; (s.ratings[d.sample] ||= {})[e.pid!] = { appeal: d.appeal, feels: d.feels, newness: d.newness, who: d.who || [], word: d.word, guess: d.guess, fruitGuess: d.fruitGuess, advance: d.advance, card: d.card, sweet: d.sweet, cool: d.cool }; break;
     case 'unrate': if (s.ratings[d.sample]) delete s.ratings[d.sample][e.pid!]; break; // removing a paper card typed in by mistake
     case 'guess': (s.guesses[d.molecule] ||= {})[e.pid!] = d.answer; break;
     case 'concept': { const id = `t${d.team}-${d.slot || 1}`; s.concepts[id] = { ...(s.concepts[id] || { suggestions: [] }), ...d.fields, id, team: d.team, slot: d.slot || 1 }; break; }
