@@ -131,3 +131,19 @@ test('the team key and the host cookie are not the owner key', async () => {
     assert.equal(await auth.checkTeamKey('Owner-Test-Key-0123456789'), false);
   } finally { delete process.env.PLAYBOOK_OWNER_KEY; delete process.env.PLAYBOOK_TEAM_KEY; }
 });
+
+test('the Church & Dwight pass only takes its own token, and is none of the other cookies or links', async () => {
+  const t = await auth.clientToken();
+  assert.equal(t.length, 24);
+  assert.equal(await auth.isClient(t), true);
+  for (const x of ['', null, undefined, t.slice(0, 23), t + 'x', await auth.joinToken('FOF1109'), await auth.authToken(), await auth.hostToken()]) assert.equal(await auth.isClient(x), false);
+  assert.equal(await auth.isHost(t), false);
+  assert.equal(await auth.isAuthed(t), false);
+  process.env.PLAYBOOK_SECRET = 'rotated';
+  try { assert.notEqual(await auth.clientToken(), t); } finally { delete process.env.PLAYBOOK_SECRET; }
+});
+
+test('the Church & Dwight pass opens two files and no team page', () => {
+  assert.deepEqual([...auth.CLIENT_FILES].sort(), ['/files/The-Future-of-Freshness-Slides.pdf', '/media/flavor-race.mp4']);
+  for (const p of ['/files/The-Future-of-Freshness-Deck.pdf', '/files/The-Future-of-Freshness-Presenter-Deck.pdf', '/files/The-Future-of-Freshness-Run-Sheet.pdf', '/host', '/team']) assert.equal(auth.CLIENT_FILES.has(p), false);
+});

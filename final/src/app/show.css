@@ -976,3 +976,14 @@
 .pw-fit { flex: 1 1 0; min-height: 0; position: relative; overflow: hidden; }
 .pw-fit .pw-off { gap: calc(var(--pw-fs, 30px) * .4); }
 .pw-fit .pw-off li { font-size: var(--pw-fs, 30px); }
+
+/* Church & Dwight's presentation (/cd/show, ClientShow): back and next with the slide count, for a mouse or a tap. */
+.cd-nav { position: fixed; right: 18px; bottom: 18px; z-index: 210; display: flex; align-items: center; gap: 6px; padding: 6px; border-radius: 99px; background: rgba(11,27,43,.72); backdrop-filter: blur(10px); color: #F0EEE9; opacity: .4; transition: opacity .25s; }
+.cd-nav:hover, .cd-nav:focus-within { opacity: 1; }
+@media (hover: none) { .cd-nav { opacity: .85; } }
+/* The room is closed, so the arrival slide has no code to scan and no list of who joined. */
+.cd-show .stage-scene[data-scene="arrival"] .join, .cd-show .stage-scene[data-scene="arrival"] .presence, .cd-show .stage-scene[data-scene="arrival"] .sub { display: none; }
+.cd-nav button { width: 44px; height: 44px; border-radius: 50%; background: transparent; color: inherit; font: 400 28px/1 var(--serif); cursor: pointer; }
+.cd-nav button:hover { background: rgba(255,255,255,.12); }
+.cd-nav .num { min-width: 64px; text-align: center; font: 500 13px/1 var(--mono); letter-spacing: .08em; }
+

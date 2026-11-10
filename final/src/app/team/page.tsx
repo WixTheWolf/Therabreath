@@ -1,5 +1,5 @@
 import { EVENT, SOURCES, SOURCE_URLS } from '@/lib/content';
-import { joinToken } from '@/lib/auth';
+import { joinToken, clientToken } from '@/lib/auth';
 import LivePanel from './LivePanel';
 import RehearsalReset from './RehearsalReset';
 
@@ -25,7 +25,9 @@ export default async function Team() {
     { href: prebrief, t: 'The pre-brief', d: 'The pre-read Ross sends on November 3. A practice copy, so try the questions freely.' },
     { href: '/media/opening.mp4', t: 'The opening film', d: '1:22, on the front door and the pre-brief. It isn’t shown in the room.' },
   ];
+  const clientLink = `/c/${await clientToken()}`;
   const after = [
+    { href: clientLink, t: 'The Church & Dwight link', d: 'The one to email Church & Dwight: the presentation to look through (it changes nothing in the session), the slides as a PDF and the follow-up tasting. It opens nothing else on the site. Copy the address of this link; opening it here shows you what they see.' },
     { href: followLive, t: 'The follow-up link (live)', d: 'The tasting scores and the five chips the phones missed on the day. Send this link to everyone who was in the room; their answers go into the live session, so the Playbook write-up picks them up.' },
     { href: followPractice, t: 'The follow-up link (practice)', d: 'The same page on the rehearsal session, to try it yourself first. Nothing here reaches the live session.' },
     { href: `/host/writeup?code=${EVENT.code}`, t: 'The Playbook write-up (live)', d: 'Fills in as the follow-up answers come in: the tasting table, where each sample landed and the chips.' },

@@ -27,6 +27,14 @@ export const hostToken = () => hmac('host-console-wipe');
 export async function isHost(cookieValue?: string | null) { return !!cookieValue && cookieValue === (await hostToken()); }
 export const HOST_COOKIE = 'pb_host';
 export const joinToken = async (code: string) => (await hmac('join:' + code.toUpperCase())).slice(0, 16);
+
+// The Church & Dwight link (/c/TOKEN), sent after the morning. It opens only /cd (the presentation to look through, the
+// slides PDF and the follow-up tasting) and the two files those pages use; nothing else on the site, and none of the
+// team's pages. Signed like the join links, so a new PLAYBOOK_SECRET turns the old link off.
+export const CLIENT_COOKIE = 'pb_client';
+export const clientToken = async () => (await hmac('client:after-the-morning')).slice(0, 24);
+export async function isClient(v?: string | null) { return !!v && v === (await clientToken()); }
+export const CLIENT_FILES = new Set(['/media/flavor-race.mp4', '/files/The-Future-of-Freshness-Slides.pdf']);
 export async function isAuthed(cookieValue?: string | null) { return !!cookieValue && cookieValue === (await authToken()); }
 export const COOKIE = 'pb_auth';
 export const cookieOpts = () => ({ httpOnly: true, sameSite: 'lax' as const, secure: process.env.NODE_ENV === 'production', path: '/', maxAge: 60 * 60 * 24 * 30 });

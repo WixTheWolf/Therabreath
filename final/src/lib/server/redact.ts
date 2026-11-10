@@ -3,13 +3,15 @@
 // for the person that stays the same across their answers but can't be matched to anything else in the session.
 // Everyone else (the pre-brief pages and the phones, which only need to know their own answer arrived) gets the event
 // with nothing in it.
-import { hmac, isOwner, isHost, OWNER_COOKIE, HOST_COOKIE } from '../auth';
+import { hmac, isOwner, isHost, isClient, OWNER_COOKIE, HOST_COOKIE, CLIENT_COOKIE } from '../auth';
 
 export type Viewer = 'owner' | 'team' | 'guest';
 type Cookies = { get(name: string): { value: string } | undefined };
 export async function viewerOf(cookies: Cookies): Promise<Viewer> {
   if (await isOwner(cookies.get(OWNER_COOKIE)?.value)) return 'owner';
   if (await isHost(cookies.get(HOST_COOKIE)?.value)) return 'team';
+  // Church & Dwight's presentation (/cd/show) shows their own pre-brief answers as the room saw them: without names.
+  if (await isClient(cookies.get(CLIENT_COOKIE)?.value)) return 'team';
   return 'guest';
 }
 
